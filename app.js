@@ -10,7 +10,10 @@ const players = [
     minutes: 2500,
     bigMatch: 91,
     form: 93,
-    story: "Lig gol kralligi seviyesine cikan, hava gucu ve ceza sahasi bitiriciligiyle sezonun en buyuk etkilerinden biri."
+    story: "Lig gol kralligi seviyesine cikan, hava gucu ve ceza sahasi bitiriciligiyle sezonun en buyuk etkilerinden biri.",
+    career: ["Midtjylland", "Genk", "Southampton", "Trabzonspor"],
+    strengths: ["Hava toplari", "Ceza sahasi", "Bitiricilik"],
+    profile: "Uzun boyu ve fizik gucuyle ceza sahasinda fark yaratan klasik santrfor. Trabzonspor icin sadece gol degil, rakip savunmayi geri iten bir oyun merkezi."
   },
   {
     name: "Eldor Shomurodov",
@@ -23,7 +26,10 @@ const players = [
     minutes: 2450,
     bigMatch: 86,
     form: 91,
-    story: "Basaksehir'in skor yukunu tasiyan, gol katkisi ve istikrariyla deger/etki listesinde yukari tirmanan santrfor."
+    story: "Basaksehir'in skor yukunu tasiyan, gol katkisi ve istikrariyla deger/etki listesinde yukari tirmanan santrfor.",
+    career: ["Bunyodkor", "Rostov", "Genoa", "Roma", "Basaksehir"],
+    strengths: ["Kosular", "Skor sezgisi", "Fizik"],
+    profile: "Ceza sahasina dogru zamanlamayla giren, takim oyunu icinde skor tehdidi yaratan hareketli forvet profili."
   },
   {
     name: "Talisca",
@@ -36,7 +42,10 @@ const players = [
     minutes: 2300,
     bigMatch: 88,
     form: 89,
-    story: "Skor tehdidi yuksek, ceza sahasi disi sut ve duran top etkisiyle Fenerbahce'nin en net hucum silahlarindan."
+    story: "Skor tehdidi yuksek, ceza sahasi disi sut ve duran top etkisiyle Fenerbahce'nin en net hucum silahlarindan.",
+    career: ["Bahia", "Benfica", "Besiktas", "Guangzhou", "Al Nassr", "Fenerbahce"],
+    strengths: ["Sut", "Duran top", "Skor katkisi"],
+    profile: "Klasik on numara ile ikinci forvet arasinda oynayabilen, uzaktan sut ve duran toplarla macin dengesini degistiren oyuncu."
   },
   {
     name: "Victor Osimhen",
@@ -49,7 +58,10 @@ const players = [
     minutes: 2100,
     bigMatch: 90,
     form: 88,
-    story: "Piyasa degeri cok yuksek ama skor, pres ve fiziksel baski tarafinda Galatasaray'a elit seviye etki veren forvet."
+    story: "Piyasa degeri cok yuksek ama skor, pres ve fiziksel baski tarafinda Galatasaray'a elit seviye etki veren forvet.",
+    career: ["Wolfsburg", "Charleroi", "Lille", "Napoli", "Galatasaray"],
+    strengths: ["Pres", "Derin kosu", "Bitiricilik"],
+    profile: "Modern elit santrfor profili. Sadece gol atmaz; savunmayi zorlar, presi baslatir ve takim hucumunu fiziksel olarak yukari tasir."
   },
   {
     name: "Mohamed Bayo",
@@ -62,7 +74,10 @@ const players = [
     minutes: 2200,
     bigMatch: 82,
     form: 86,
-    story: "Buyuk takim disindan gelip gol listesine giren, degerine gore ciddi skor etkisi ureten forvet profili."
+    story: "Buyuk takim disindan gelip gol listesine giren, degerine gore ciddi skor etkisi ureten forvet profili.",
+    career: ["Clermont", "Lille", "Le Havre", "Watford", "Gaziantep"],
+    strengths: ["Bitiricilik", "Pozisyon alma", "Fizik"],
+    profile: "Buyuk takim disinda skor ureten forvetler bu projenin en degerli hikayesi. Bayo, maliyet/katki analizinde tam bu yuzden one cikiyor."
   },
   {
     name: "Mauro Icardi",
@@ -75,7 +90,10 @@ const players = [
     minutes: 2050,
     bigMatch: 87,
     form: 85,
-    story: "Klasik bitirici roluyle az alanda cok is yapan, buyuk anlarda skor tehdidi yuksek Galatasaray kaptani."
+    story: "Klasik bitirici roluyle az alanda cok is yapan, buyuk anlarda skor tehdidi yuksek Galatasaray kaptani.",
+    career: ["Sampdoria", "Inter", "PSG", "Galatasaray"],
+    strengths: ["Pozisyon alma", "Penalti", "Tek vurus"],
+    profile: "Ceza sahasinda az temasla maksimum sonuc almaya calisan elit bitirici. Kariyer markasi tamamen skor ve buyuk an hissi uzerine kurulu."
   },
   {
     name: "Felipe Augusto",
@@ -88,7 +106,10 @@ const players = [
     minutes: 2250,
     bigMatch: 84,
     form: 88,
-    story: "Trabzonspor'un skor dagilimini guclendiren, yasi ve maliyetiyle scout radarinda durmasi gereken hucumcu."
+    story: "Trabzonspor'un skor dagilimini guclendiren, yasi ve maliyetiyle scout radarinda durmasi gereken hucumcu.",
+    career: ["Corinthians", "Cercle Brugge", "Trabzonspor"],
+    strengths: ["Potansiyel", "Ceza sahasi", "Hareketlilik"],
+    profile: "Yasi ve skor katkisi bir araya geldiginde scout radarina giren profillerden. Deger skorunda yukselme potansiyeli yuksek."
   },
   {
     name: "Marco Asensio",
@@ -101,7 +122,10 @@ const players = [
     minutes: 2350,
     bigMatch: 85,
     form: 87,
-    story: "Gol ve asist dengesini birlikte tasiyan, degeri yuksek ama toplam hucum katkisi da cok guclu profil."
+    story: "Gol ve asist dengesini birlikte tasiyan, degeri yuksek ama toplam hucum katkisi da cok guclu profil.",
+    career: ["Mallorca", "Real Madrid", "PSG", "Aston Villa", "Fenerbahce"],
+    strengths: ["Sut", "Pas kalitesi", "Tecrube"],
+    profile: "Teknik kalite ve son pas tehdidiyle oynayan sol ayakli hucum oyuncusu. Degeri yuksek olsa da toplam hucum etkisiyle analizde anlamli yer tutuyor."
   },
   {
     name: "Ernest Muci",
@@ -114,7 +138,10 @@ const players = [
     minutes: 2100,
     bigMatch: 88,
     form: 90,
-    story: "Buyuk maclarda skor ureten, orta saha/hucum arasi rolde Trabzonspor'a farkli bir bitiricilik katan oyuncu."
+    story: "Buyuk maclarda skor ureten, orta saha/hucum arasi rolde Trabzonspor'a farkli bir bitiricilik katan oyuncu.",
+    career: ["Tirana", "Legia Warsaw", "Besiktas", "Trabzonspor"],
+    strengths: ["Sut", "Yaraticilik", "Buyuk mac"],
+    profile: "Hucum orta saha ve kanat rollerine kayabilen, skor tehdidiyle klasik pasor orta sahadan ayrilan dinamik profil."
   },
   {
     name: "Dorgeles Nene",
@@ -127,7 +154,10 @@ const players = [
     minutes: 1900,
     bigMatch: 86,
     form: 89,
-    story: "Hat-trick etkisiyle one cikan, hiz ve skor tehdidiyle Fenerbahce'nin patlama potansiyeli yuksek kanadi."
+    story: "Hat-trick etkisiyle one cikan, hiz ve skor tehdidiyle Fenerbahce'nin patlama potansiyeli yuksek kanadi.",
+    career: ["Salzburg", "Westerlo", "Fenerbahce"],
+    strengths: ["Hiz", "Bire bir", "Patlama"],
+    profile: "Genc, hizli ve direkt oynayan kanat profili. Form yakaladiginda maci bir anda acabilen oyuncu tiplerinden."
   },
   {
     name: "Juan",
@@ -140,7 +170,10 @@ const players = [
     minutes: 1950,
     bigMatch: 79,
     form: 84,
-    story: "Goztepe tarafinda skor katkisi veren, buyuk butceli olmayan takimdan deger/katki listesine giren hucumcu."
+    story: "Goztepe tarafinda skor katkisi veren, buyuk butceli olmayan takimdan deger/katki listesine giren hucumcu.",
+    career: ["Gremio", "Santos", "Goztepe"],
+    strengths: ["Skor katkisi", "Hareketlilik", "Firsatcilik"],
+    profile: "Buyuk takim disindan gelen skor katkisi projeye hikaye katar. Juan gibi oyuncular deger/katki listelerinin en eglenceli tarafini olusturur."
   },
   {
     name: "Mateusz Lis",
@@ -153,7 +186,10 @@ const players = [
     minutes: 3000,
     bigMatch: 86,
     form: 92,
-    story: "Clean sheet listesinde zirveye oynayan, kaleci etkisini deger/katki modeline dahil etmemiz gerektigini gosteren isim."
+    story: "Clean sheet listesinde zirveye oynayan, kaleci etkisini deger/katki modeline dahil etmemiz gerektigini gosteren isim.",
+    career: ["Lech Poznan", "Southampton", "Troyes", "Goztepe"],
+    strengths: ["Refleks", "Clean sheet", "Konsantrasyon"],
+    profile: "Kaleciler icin gol/asist modeli yetmez. Lis, kurtaris ve clean sheet etkisini ayri puanlamamiz gerektigini gosteren iyi bir ornek."
   },
   {
     name: "Muhammed Sengezer",
@@ -166,7 +202,10 @@ const players = [
     minutes: 2850,
     bigMatch: 83,
     form: 88,
-    story: "Basaksehir savunma performansinin merkezindeki kaleci; clean sheet katkisi onu radar listesinde tutuyor."
+    story: "Basaksehir savunma performansinin merkezindeki kaleci; clean sheet katkisi onu radar listesinde tutuyor.",
+    career: ["Bursaspor", "Basaksehir", "Adana Demirspor", "Basaksehir"],
+    strengths: ["Refleks", "Pozisyon", "Istikrar"],
+    profile: "Savunma istikrarinin merkezinde duran kaleci. Deger/etki modelinde kaleci rolu icin ayri agirliklar kullanmamiz gerektigini destekliyor."
   },
   {
     name: "Ugurcan Cakir",
@@ -179,7 +218,10 @@ const players = [
     minutes: 2900,
     bigMatch: 89,
     form: 87,
-    story: "Sezon icinde Trabzonspor-Galatasaray hikayesiyle dikkat ceken, buyuk takim kalecisi etkisini temsil eden profil."
+    story: "Sezon icinde Trabzonspor-Galatasaray hikayesiyle dikkat ceken, buyuk takim kalecisi etkisini temsil eden profil.",
+    career: ["1461 Trabzon", "Trabzonspor", "Galatasaray"],
+    strengths: ["Liderlik", "Refleks", "Buyuk mac"],
+    profile: "Turkiye liginin en bilinen kaleci profillerinden. Buyuk takim kalecisinde beklenti yuksek oldugu icin deger/etki yorumu farkli ele alinmali."
   }
 ];
 
@@ -404,12 +446,52 @@ const teamSquads = {
   ]
 };
 
-const weights = {
-  goal: 7,
-  assist: 5,
-  minutes: 0.012,
-  bigMatch: 0.38,
-  form: 0.32
+const positionModels = {
+  Forvet: {
+    goal: 8.5,
+    assist: 4.2,
+    minutes: 0.01,
+    bigMatch: 0.42,
+    form: 0.35,
+    roleBonus: 8,
+    label: "Forvet modeli: gol, bitiricilik ve buyuk mac etkisi daha agirlikli."
+  },
+  Kanat: {
+    goal: 7,
+    assist: 5.6,
+    minutes: 0.011,
+    bigMatch: 0.38,
+    form: 0.42,
+    roleBonus: 10,
+    label: "Kanat modeli: gol, asist, form ve patlama etkisi dengeli olculur."
+  },
+  "Orta saha": {
+    goal: 5.8,
+    assist: 6.8,
+    minutes: 0.014,
+    bigMatch: 0.34,
+    form: 0.45,
+    roleBonus: 14,
+    label: "Orta saha modeli: asist, sure, form ve oyuna etki daha yuksek agirlik alir."
+  },
+  Defans: {
+    goal: 4,
+    assist: 4.4,
+    minutes: 0.018,
+    bigMatch: 0.48,
+    form: 0.38,
+    roleBonus: 34,
+    label: "Defans modeli: sure, buyuk mac direnci ve istikrar daha fazla puan getirir."
+  },
+  Kaleci: {
+    goal: 0,
+    assist: 2,
+    minutes: 0.02,
+    bigMatch: 0.62,
+    form: 0.58,
+    roleBonus: 48,
+    label: "Kaleci modeli: sure, form, buyuk mac ve clean sheet etkisini temsil eden savunma katkisi one cikar."
+  }
 };
 
 const state = {
@@ -419,62 +501,15 @@ const state = {
   budgetOnly: false
 };
 
-// Yeni otomatik oyuncu üretme bölümümüz
-const allPlayers = [...players];
-
-Object.keys(teamSquads).forEach(teamName => {
-  teamSquads[teamName].forEach(squadPlayer => {
-    if (!allPlayers.find(p => p.name === squadPlayer.name)) {
-      
-      let baseValue = Math.random() * 4 + 0.5; 
-      if (["Galatasaray", "Fenerbahce", "Besiktas", "Trabzonspor"].includes(teamName)) {
-        baseValue += Math.random() * 8 + 2; 
-      }
-
-      let goals = 0; 
-      let assists = 0;
-      const pos = squadPlayer.position || "Orta saha";
-      
-      let cleanPosition = "Orta saha";
-      if (pos.includes("Kanat")) cleanPosition = "Kanat";
-      else if (pos.includes("Kaleci")) cleanPosition = "Kaleci";
-      else if (pos.includes("Forvet") || pos.includes("Santrfor") || pos.includes("Hucum")) cleanPosition = "Forvet";
-      else if (pos.includes("Defans") || pos.includes("Stoper") || pos.includes("bek")) cleanPosition = "Defans";
-
-      if (cleanPosition === "Forvet") { 
-        goals = Math.floor(Math.random() * 12); assists = Math.floor(Math.random() * 4); 
-      } else if (cleanPosition === "Orta saha" || cleanPosition === "Kanat") { 
-        goals = Math.floor(Math.random() * 6); assists = Math.floor(Math.random() * 8); 
-      } else if (cleanPosition === "Defans") { 
-        goals = Math.floor(Math.random() * 2); assists = Math.floor(Math.random() * 3); 
-      }
-
-      allPlayers.push({
-        name: squadPlayer.name,
-        team: teamName,
-        position: cleanPosition,
-        age: 18 + Math.floor(Math.random() * 15),
-        marketValue: baseValue,
-        goals: goals,
-        assists: assists,
-        minutes: 300 + Math.floor(Math.random() * 2500),
-        bigMatch: 65 + Math.floor(Math.random() * 25), 
-        form: 60 + Math.floor(Math.random() * 35), 
-        story: `${teamName} kadrosundan sisteme analiz icin entegre edildi.`
-      });
-    }
-  });
-});
-
-const enrichedPlayers = allPlayers.map((player) => {
-  const attacking = player.goals * weights.goal + player.assists * weights.assist;
-  const roleBonus = player.position === "Kaleci" ? 46 : player.position === "Defans" ? 28 : 0;
+const enrichedPlayers = players.map((player) => {
+  const model = positionModels[player.position] || positionModels["Orta saha"];
+  const attacking = player.goals * model.goal + player.assists * model.assist;
   const impactScore = Math.round(
     attacking +
-      player.minutes * weights.minutes +
-      player.bigMatch * weights.bigMatch +
-      player.form * weights.form +
-      roleBonus
+      player.minutes * model.minutes +
+      player.bigMatch * model.bigMatch +
+      player.form * model.form +
+      model.roleBonus
   );
   const valueScore = Math.round((impactScore / Math.max(player.marketValue, 0.35)) * 7);
   const scoutScore = Math.round(valueScore * 0.58 + player.form * 0.28 + (28 - Math.min(player.age, 28)) * 1.6);
@@ -486,7 +521,8 @@ const enrichedPlayers = allPlayers.map((player) => {
     valueScore,
     scoutScore,
     surpriseScore,
-    contribution: player.goals + player.assists
+    contribution: player.goals + player.assists,
+    modelLabel: model.label
   };
 });
 
@@ -507,6 +543,12 @@ const activeThemeName = document.querySelector("#activeThemeName");
 const squadTeamSelect = document.querySelector("#squadTeamSelect");
 const squadGrid = document.querySelector("#squadGrid");
 const squadNote = document.querySelector("#squadNote");
+const playerModal = document.querySelector("#playerModal");
+const modalClose = document.querySelector("#modalClose");
+const modalPlayerName = document.querySelector("#modalPlayerName");
+const modalPlayerTeam = document.querySelector("#modalPlayerTeam");
+const modalPlayerTag = document.querySelector("#modalPlayerTag");
+const modalContent = document.querySelector("#modalContent");
 
 function formatValue(value) {
   return value >= 1 ? value.toFixed(1) + "M" : Math.round(value * 1000) + "K";
@@ -664,7 +706,7 @@ function renderPlayers() {
     .map((player) => {
       const meterWidth = Math.min(100, Math.round(player.valueScore / 10));
       return `
-        <article class="player-card">
+        <article class="player-card" data-player="${player.name}" tabindex="0" role="button" aria-label="${player.name} detayini ac">
           <div class="card-head">
             <div>
               <h3>${player.name}</h3>
@@ -674,8 +716,8 @@ function renderPlayers() {
           </div>
           <div class="stat-row">
             <div class="stat"><span>Deger</span><strong>${formatValue(player.marketValue)} EUR</strong></div>
-            <div class="stat"><span>G+A</span><strong>${player.contribution}</strong></div>
-            <div class="stat"><span>Etki</span><strong>${player.impactScore}</strong></div>
+            <div class="stat"><span>Etki skoru</span><strong>${player.impactScore}</strong></div>
+            <div class="stat"><span>Fiyat/Katki</span><strong>${player.valueScore}</strong></div>
           </div>
           <div>
             <div class="meter" aria-label="Deger skoru">
@@ -687,6 +729,53 @@ function renderPlayers() {
       `;
     })
     .join("");
+}
+
+function openPlayerModal(playerName) {
+  const player = enrichedPlayers.find((item) => item.name === playerName);
+  if (!player) return;
+
+  modalPlayerName.textContent = player.name;
+  modalPlayerTeam.textContent = `${player.team} - ${player.position} - ${player.age} yas`;
+  modalPlayerTag.textContent = getLabel(player);
+  modalContent.innerHTML = `
+    <div class="modal-stats">
+      <div class="stat"><span>Piyasa degeri</span><strong>${formatValue(player.marketValue)} EUR</strong></div>
+      <div class="stat"><span>Gol + asist</span><strong>${player.contribution}</strong></div>
+      <div class="stat"><span>Etki skoru</span><strong>${player.impactScore}</strong></div>
+      <div class="stat"><span>Deger skoru</span><strong>${player.valueScore}</strong></div>
+    </div>
+    <section class="modal-section">
+      <h3>Mevki analiz modeli</h3>
+      <p>${player.modelLabel}</p>
+    </section>
+    <section class="modal-section">
+      <h3>Kariyer ozeti</h3>
+      <p>${player.profile}</p>
+    </section>
+    <section class="modal-section">
+      <h3>Kulup gecmisi</h3>
+      <div class="career-list">
+        ${(player.career || [player.team]).map((club) => `<span class="career-chip">${club}</span>`).join("")}
+      </div>
+    </section>
+    <section class="modal-section">
+      <h3>Guclu yonler</h3>
+      <div class="strength-list">
+        ${(player.strengths || ["Etki", "Form", "Katki"]).map((item) => `<span>${item}</span>`).join("")}
+      </div>
+    </section>
+    <section class="modal-section">
+      <h3>Deger yorumu</h3>
+      <p>${player.story}</p>
+    </section>
+  `;
+  playerModal.hidden = false;
+  modalClose.focus();
+}
+
+function closePlayerModal() {
+  playerModal.hidden = true;
 }
 
 function fillCompareOptions() {
@@ -775,6 +864,24 @@ budgetOnly.addEventListener("change", (event) => {
 playerA.addEventListener("change", renderComparison);
 playerB.addEventListener("change", renderComparison);
 squadTeamSelect.addEventListener("change", renderSquad);
+playerGrid.addEventListener("click", (event) => {
+  const card = event.target.closest(".player-card");
+  if (card) openPlayerModal(card.dataset.player);
+});
+playerGrid.addEventListener("keydown", (event) => {
+  if (event.key !== "Enter" && event.key !== " ") return;
+  const card = event.target.closest(".player-card");
+  if (!card) return;
+  event.preventDefault();
+  openPlayerModal(card.dataset.player);
+});
+modalClose.addEventListener("click", closePlayerModal);
+playerModal.addEventListener("click", (event) => {
+  if (event.target === playerModal) closePlayerModal();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !playerModal.hidden) closePlayerModal();
+});
 swapButton.addEventListener("click", () => {
   const oldA = playerA.value;
   playerA.value = playerB.value;
