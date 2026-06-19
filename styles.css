@@ -76,6 +76,7 @@ select {
 .hero,
 .scoreboard,
 .theme-panel,
+.formula-panel,
 .squad-panel,
 .leaderboards,
 .workspace,
@@ -224,6 +225,7 @@ h2 {
 
 .scoreboard article,
 .theme-panel,
+.formula-panel,
 .squad-panel,
 .leaderboards article,
 .control-panel,
@@ -242,6 +244,7 @@ h2 {
 
 .scoreboard article:hover,
 .theme-panel:hover,
+.formula-panel:hover,
 .squad-panel:hover,
 .leaderboards article:hover,
 .player-card:hover {
@@ -353,6 +356,39 @@ h2 {
   padding: 18px;
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
   animation: riseIn 760ms ease 110ms both;
+}
+
+.formula-panel {
+  padding: 18px;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  animation: riseIn 770ms ease 125ms both;
+}
+
+.formula-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.formula-grid article {
+  min-height: 116px;
+  padding: 14px;
+  border: 1px solid #e5eae2;
+  border-radius: 8px;
+  background: #fbfcfa;
+}
+
+.formula-grid strong {
+  display: block;
+  color: var(--theme-dark);
+  font-size: 1rem;
+}
+
+.formula-grid p {
+  margin: 8px 0 0;
+  color: #4b5a51;
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
 .theme-bar {
@@ -576,6 +612,8 @@ select {
   background: #ffffff;
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
   animation: cardIn 520ms ease both;
+  cursor: pointer;
+  text-align: left;
 }
 
 .card-head {
@@ -722,6 +760,135 @@ select {
   line-height: 1.5;
 }
 
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(5, 12, 8, 0.62);
+  backdrop-filter: blur(8px);
+}
+
+.modal-backdrop[hidden] {
+  display: none;
+}
+
+.player-modal {
+  width: min(760px, 100%);
+  max-height: min(86vh, 760px);
+  overflow: auto;
+  border: 1px solid color-mix(in srgb, var(--theme-primary) 38%, #dfe6dc);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: modalIn 180ms ease both;
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #dfe6dc;
+  border-radius: 8px;
+  background: #fbfcfa;
+  color: var(--ink);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 44px;
+  padding: 24px 24px 16px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--theme-primary) 13%, transparent), transparent 62%),
+    #fbfcfa;
+  border-bottom: 1px solid #e6ebe4;
+}
+
+.modal-head h2 {
+  font-size: 2rem;
+  line-height: 1.05;
+}
+
+.modal-content {
+  display: grid;
+  gap: 14px;
+  padding: 18px 24px 24px;
+}
+
+.modal-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.modal-section {
+  padding: 14px;
+  border: 1px solid #e6ebe4;
+  border-radius: 8px;
+  background: #fbfcfa;
+}
+
+.modal-section h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.modal-section p {
+  margin: 0;
+  color: #46554b;
+  line-height: 1.55;
+}
+
+.career-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.career-chip {
+  padding: 7px 9px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--theme-primary) 9%, #ffffff);
+  border: 1px solid color-mix(in srgb, var(--theme-primary) 24%, #dfe6dc);
+  color: #26342c;
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.strength-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.strength-list span {
+  padding: 9px;
+  border-radius: 8px;
+  background: #f7f4ee;
+  color: #2f3d34;
+  font-weight: 850;
+  text-align: center;
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 @keyframes pitchDrift {
   from {
     background-position: 0 0;
@@ -807,6 +974,7 @@ select {
   .workspace,
   .scoreboard,
   .leaderboards,
+  .formula-grid,
   .squad-grid,
   .player-grid,
   .comparison {
@@ -851,6 +1019,8 @@ select {
   }
 
   .stat-row,
+  .modal-stats,
+  .strength-list,
   .board-item {
     grid-template-columns: 1fr;
   }

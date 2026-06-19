@@ -55,6 +55,29 @@
         <div id="themeBar" class="theme-bar"></div>
       </section>
 
+      <section class="formula-panel" aria-label="Skor aciklamasi">
+        <div class="section-title compact">
+          <div>
+            <p class="eyebrow">Analiz modeli</p>
+            <h2>Skorlar neye gore uretiliyor?</h2>
+          </div>
+        </div>
+        <div class="formula-grid">
+          <article>
+            <strong>Etki Skoru</strong>
+            <p>Oyuncunun gol, asist, sure, form, buyuk mac etkisi ve mevki rolunden aldigi toplam puan.</p>
+          </article>
+          <article>
+            <strong>Fiyat/Katki Skoru</strong>
+            <p>Etki skorunun piyasa degerine bolunmus hali. Ucuz ama etkili oyuncular burada yukari cikar.</p>
+          </article>
+          <article>
+            <strong>Mevki Analizi</strong>
+            <p>Forvet, orta saha, defans ve kaleci ayni formulde degerlendirilmez; her mevkinin agirligi farklidir.</p>
+          </article>
+        </div>
+      </section>
+
       <section class="squad-panel" aria-label="Takim kadrolari">
         <div class="section-title">
           <div>
@@ -160,6 +183,20 @@
 
         <div id="comparison" class="comparison"></div>
       </section>
+
+      <div id="playerModal" class="modal-backdrop" hidden>
+        <article class="player-modal" role="dialog" aria-modal="true" aria-labelledby="modalPlayerName">
+          <button id="modalClose" class="modal-close" type="button" aria-label="Detayi kapat">X</button>
+          <div class="modal-head">
+            <div>
+              <p id="modalPlayerTeam" class="eyebrow">Oyuncu detayi</p>
+              <h2 id="modalPlayerName">Oyuncu</h2>
+            </div>
+            <span id="modalPlayerTag" class="tag">Analiz</span>
+          </div>
+          <div id="modalContent" class="modal-content"></div>
+        </article>
+      </div>
     </main>
 
     <script src="app.js"></script>
