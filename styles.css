@@ -3010,3 +3010,20 @@ select:focus {
   align-items: center;
   gap: 10px;
 }
+
+/* User Squad Row Highlight in Standings Simulation */
+.sim-row-user {
+  background: rgba(56, 189, 248, 0.16) !important;
+  border-left: 4px solid var(--theme-primary) !important;
+  box-shadow: inset 0 0 15px rgba(56, 189, 248, 0.15);
+  font-weight: 800;
+}
+
+.sim-row-user td {
+  color: var(--theme-primary) !important;
+}
+
+.sim-row-user .team-logo-wrapper {
+  border-color: var(--theme-primary) !important;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+}

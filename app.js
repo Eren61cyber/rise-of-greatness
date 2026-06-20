@@ -1173,6 +1173,7 @@ const simStatPoints        = document.querySelector("#simStatPoints");
 const simStatRecord        = document.querySelector("#simStatRecord");
 const simStatGoals         = document.querySelector("#simStatGoals");
 const simStatDiff          = document.querySelector("#simStatDiff");
+const simStandingsBody     = document.querySelector("#simStandingsBody");
 
 const simReportContent     = document.querySelector("#simReportContent");
 const simDerbyHeader       = document.querySelector("#simDerbyHeader");
@@ -1213,7 +1214,7 @@ function runSquadSimulation() {
     { text: "🔍 [AI Ajanı] Oyuncu verileri ve kariyer istatistikleri inceleniyor...", delay: 0 },
     { text: "⚙️ [AI Ajanı] 4-3-3 taktiksel formasyon yerleşimi doğrulanıyor...", delay: 600 },
     { text: "🧬 [AI Ajanı] Takım kimyası ve saha içi uyum faktörleri hesaplanıyor...", delay: 1200 },
-    { text: "🏟️ [AI Ajanı] Süper Lig devlerine karşı 10 maçlık simülasyon başlatıldı...", delay: 1800 },
+    { text: "🏟️ [AI Ajanı] Süper Lig devlerine karşı 25 maçlık simülasyon başlatıldı...", delay: 1800 },
     { text: "📊 [AI Ajanı] Rakip analizleri tamamlandı, derbi maçı simüle ediliyor...", delay: 2400 },
     { text: "✅ [AI Ajanı] Rapor hazırlandı! Sonuçlar ekrana aktarılıyor...", delay: 3000, cls: "success" }
   ];
@@ -1249,38 +1250,117 @@ function runSquadSimulation() {
   const formBonus = Math.round((avgForm - 75) * 0.4);
   const totalChemistry = Math.min(100, baselineChemistry + synergyBonus + dmfBonus + formBonus);
 
-  // 2. Expected points calculation (10 matches)
+  // 2. Expected points calculation (25 matches)
   const totalImpact = selectedPlayers.reduce((s, p) => s + p.impactScore, 0);
-  const calculatedPointsBase = ((totalImpact - 700) / 280) * 16 + 10;
-  const randomFactor = Math.floor(Math.random() * 5) - 2;
-  const points = Math.max(0, Math.min(30, Math.round(calculatedPointsBase + randomFactor)));
+  const calculatedPointsBase = ((totalImpact - 700) / 280) * 40 + 25;
+  const randomFactor = Math.floor(Math.random() * 11) - 5;
+  let points = Math.max(0, Math.min(75, Math.round(calculatedPointsBase + randomFactor)));
+  if (points === 74) points = 73; // 74 is mathematically impossible in 25 games
   
-  let wins = Math.floor(points / 3);
-  let draws = points % 3;
-  let losses = 10 - wins - draws;
-  if (losses < 0) {
-    wins = 10;
-    draws = 0;
-    losses = 0;
+  let wins = 0;
+  let draws = 0;
+  let losses = 0;
+  for (let w = Math.min(25, Math.floor(points / 3)); w >= 0; w--) {
+    let d = points - 3 * w;
+    if (w + d <= 25) {
+      wins = w;
+      draws = d;
+      losses = 25 - w - d;
+      break;
+    }
   }
 
-  // 3. Goal Average
+  // 3. Goal Average (25 matches)
   const forwards = selectedPlayers.filter(p => p.position === "Forvet" || p.position === "Kanat");
   const defenders = selectedPlayers.filter(p => p.position === "Defans" || p.position === "Kaleci");
   
   const fwdImpact = forwards.reduce((s, p) => s + p.impactScore, 0);
   const defImpact = defenders.reduce((s, p) => s + p.impactScore, 0);
   
-  const goalsScoredBase = (fwdImpact / 350) * 12 + 6;
-  const goalsScored = Math.round(goalsScoredBase + (Math.random() * 6 - 3));
+  const goalsScoredBase = (fwdImpact / 350) * 30 + 15;
+  const goalsScored = Math.round(goalsScoredBase + (Math.random() * 15 - 7));
   
-  const goalsConcededBase = 22 - (defImpact / 450) * 12;
-  const goalsConceded = Math.max(2, Math.round(goalsConcededBase + (Math.random() * 6 - 3)));
+  const goalsConcededBase = 55 - (defImpact / 450) * 30;
+  const goalsConceded = Math.max(5, Math.round(goalsConcededBase + (Math.random() * 15 - 7)));
 
   const goalDiff = goalsScored - goalsConceded;
   const sign = goalDiff >= 0 ? "+" : "";
 
-  // 4. AI Report Content Generation
+  // 4. Generate simulated standings for the 18 real teams + user's squad
+  const simStandings = standings.map(r => {
+    const ratio = 25 / 34;
+    let basePts = Math.round(r.pts * ratio);
+    const variation = Math.floor(Math.random() * 9) - 4;
+    let simPts = Math.max(0, Math.min(75, basePts + variation));
+    if (simPts === 74) simPts = 73;
+    
+    let teamG = 0, teamB = 0, teamM = 0;
+    for (let w = Math.min(25, Math.floor(simPts / 3)); w >= 0; w--) {
+      let d = simPts - 3 * w;
+      if (w + d <= 25) {
+        teamG = w;
+        teamB = d;
+        teamM = 25 - w - d;
+        break;
+      }
+    }
+    
+    let teamAg = Math.round(r.ag * ratio + (Math.random() * 8 - 4));
+    let teamYg = Math.round(r.yg * ratio + (Math.random() * 8 - 4));
+    teamAg = Math.max(0, teamAg);
+    teamYg = Math.max(0, teamYg);
+    const teamGd = teamAg - teamYg;
+    
+    return {
+      team: r.team,
+      o: 25,
+      g: teamG,
+      b: teamB,
+      m: teamM,
+      ag: teamAg,
+      yg: teamYg,
+      gd: teamGd,
+      pts: simPts,
+      isUser: false
+    };
+  });
+
+  simStandings.push({
+    team: "Kendi Kadronuz",
+    o: 25,
+    g: wins,
+    b: draws,
+    m: losses,
+    ag: goalsScored,
+    yg: goalsConceded,
+    gd: goalDiff,
+    pts: points,
+    isUser: true
+  });
+
+  // Sort by points, then goal difference, then goals scored
+  simStandings.sort((a, b) => {
+    if (b.pts !== a.pts) return b.pts - a.pts;
+    if (b.gd !== a.gd) return b.gd - a.gd;
+    return b.ag - a.ag;
+  });
+
+  const userRank = simStandings.findIndex(t => t.isUser) + 1;
+
+  // AI Scout Report Content Generation
+  let rankComment = "";
+  if (userRank === 1) {
+    rankComment = `<p>🏆 <strong>ŞAMPİYONLUK RÜYASI!</strong> Kadronuz 25 maçlık simülasyonu <strong>${userRank}. sırada (Şampiyon)</strong> tamamladı! Ligin tozunu atan bu yapılanma, Süper Lig'in yeni hükümdarı olmaya aday.</p>`;
+  } else if (userRank <= 4) {
+    rankComment = `<p>🇪🇺 <strong>Avrupa Vizesi:</strong> Kadronuz 25 maçlık simülasyonu <strong>${userRank}. sırada</strong> bitirerek Avrupa kupalarına katılma hakkı kazandı. Zirve yarışında büyük bir tehdit oluşturuyorsunuz.</p>`;
+  } else if (userRank <= 8) {
+    rankComment = `<p>📈 <strong>Orta Sıra Güvenliği:</strong> Kadronuz ligi <strong>${userRank}. sırada</strong> tamamladı. İstikrarlı bir performans sergilese de şampiyonluk ortaklığı için kadro derinliği artırılmalı.</p>`;
+  } else if (userRank <= 15) {
+    rankComment = `<p>⚠️ <strong>Gelişime Açık:</strong> Kadronuz ligi <strong>${userRank}. sırada</strong> bitirdi. Düşme hattından uzak olsa da hedeflenen başarıların gerisinde kalındı.</p>`;
+  } else {
+    rankComment = `<p>🚨 <strong>KÜME DÜŞME TEHLİKESİ!</strong> Kadronuz simülasyonu <strong>${userRank}. sırada (Küme düşme hattı)</strong> tamamladı. Acilen taktiksel değişikliklere ve kritik takviyelere ihtiyaç var!</p>`;
+  }
+
   const avgAge = selectedPlayers.reduce((s, p) => s + p.age, 0) / 11;
   let ageAnalysis = "";
   if (avgAge > 30) {
@@ -1322,7 +1402,7 @@ function runSquadSimulation() {
     advice = `<p>💡 <strong>AI Önerisi:</strong> Harika bir bütçe/performans dengesi yakalanmış! Bu kadro şampiyonluk yarışının en güçlü adaylarından biri olacaktır. Taktiksel yapıyı bozmadan devam edin.</p>`;
   }
 
-  simReportContent.innerHTML = ageAnalysis + budgetAnalysis + strengthsText + advice;
+  simReportContent.innerHTML = rankComment + ageAnalysis + budgetAnalysis + strengthsText + advice;
 
   // 5. Derby Simulation Generation
   const bigTeams = ["Galatasaray", "Fenerbahce", "Besiktas", "Trabzonspor"];
@@ -1423,6 +1503,32 @@ function runSquadSimulation() {
     } else {
       simStatDiff.style.color = "#ef4444";
     }
+
+    // Render Standings Table
+    simStandingsBody.innerHTML = simStandings.map((t, index) => {
+      const rank = index + 1;
+      const rowClass = t.isUser ? "class='sim-row-user'" : "";
+      const logoHtml = t.isUser ? getTeamLogoHtml("Kadro Kur", "small") : getTeamLogoHtml(t.team, "small");
+      const teamDisplayName = t.isUser ? "Kendi Kadronuz" : t.team;
+      const signStr = t.gd >= 0 ? "+" : "";
+      return `
+        <tr ${rowClass}>
+          <td>${rank}</td>
+          <td>
+            <div class="st-team">
+              ${logoHtml}
+              <span>${teamDisplayName}</span>
+            </div>
+          </td>
+          <td>${t.o}</td>
+          <td>${t.g}</td>
+          <td>${t.b}</td>
+          <td>${t.m}</td>
+          <td>${signStr}${t.gd}</td>
+          <td class="st-pts">${t.pts}</td>
+        </tr>
+      `;
+    }).join("");
   }, 3400);
 }
 
