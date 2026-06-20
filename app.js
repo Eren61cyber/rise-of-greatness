@@ -499,12 +499,12 @@ const standings = [
 ];
 
 const seasonAwards = [
-  { emoji:"⭐", title:"Sezonun Oyuncusu",      winner:"Barış Alper Yılmaz", team:"Galatasaray",  detail:"8 gol · 11 asist",   note:"Milli futbolcu, 11 asistle şampiyon Galatasaray'ı hücumda sırtlayarak sezonun en değerli oyuncusu oldu.", color:"#f0a830" },
-  { emoji:"⚽", title:"Gol Kralı",             winner:"Victor Osimhen, Onuachu & Shomurodov", team:"GS / TS / Başakşehir", detail:"22 gol", note:"Sezon boyunca rakip kaleleri abluka altına alarak 22 golle krallığı paylaşan üç gol makinesi.", color:"#22c76e" },
-  { emoji:"🎯", title:"Asist Krallığı",        winner:"Dorgeles Nene",      team:"Fenerbahçe",   detail:"16 asist",             note:"Sezonun en yaratıcı kanat oyuncusu. 16 asist üreterek Fenerbahçe hücumunun asist kralı oldu.", color:"#003f8f" },
-  { emoji:"🧤", title:"Sezonun Kalecisi",      winner:"Uğurcan Çakır",      team:"Galatasaray",  detail:"20 gol yememe",        note:"Galatasaray kalesinde 20 maçı gol yemeden tamamlayarak şampiyonluğun en büyük kahramanı oldu.", color:"#a90432" },
-  { emoji:"🌟", title:"Genç Yetenek",          winner:"Felipe Augusto",     team:"Trabzonspor",  detail:"14 gol · 4 asist",     note:"Trabzonspor formasıyla 14 gol atan 22 yaşındaki Brezilyalı genç yıldız, ligin en değerli çıkışlarından birini yaptı.", color:"#7a263a" },
-  { emoji:"👨‍💼", title:"Sezonun Teknik Dir.", winner:"Okan Buruk",          team:"Galatasaray",  detail:"3. Üst Üste Şampiyonluk", note:"Galatasaray'ı üst üste 3. kez şampiyonluğa taşıyarak Türk futbol tarihine geçti.", color:"#22c76e" }
+  { emoji:"⭐", title:"Sezonun Oyuncusu",      winner:"Victor Osimhen",            team:"Galatasaray",       detail:"Şampiyonluk lideri",         note:"Galatasaray'ı şampiyonluğa taşıyan kilit isim. Etkili gol katkıları ve sahaya hakim oyunuyla sezonun en değerlisi seçildi.", color:"#f0a830" },
+  { emoji:"⚽", title:"Gol Krallığı",          winner:"Onuachu & Shomurodov",      team:"TS / Başakşehir",   detail:"22 gol (paylaşımlı)",        note:"Paul Onuachu ve Eldor Shomurodov, 2025-26 sezonunu 22'şer golle zirvede paylaşarak Süper Lig gol krallığını birlikte kazandı.", color:"#22c76e" },
+  { emoji:"🎯", title:"Asist Krallığı",        winner:"Marco Asensio",             team:"Fenerbahçe",        detail:"13 asist",                   note:"İspanyol yıldız Asensio, 25 maçta ürettiği 13 asist ile 2025-26 sezonunun asist krallığını ezici biçimde aldı.", color:"#003f8f" },
+  { emoji:"🧤", title:"Sezonun Kalecisi",      winner:"Fernando Muslera",          team:"Galatasaray",       detail:"Şampiyon kale",              note:"Efsane Uruguaylı kaleci, kritik maçlardaki muhteşem kurtarışlarıyla Galatasaray'ın şampiyonluk yolunu açtı.", color:"#a90432" },
+  { emoji:"🌟", title:"Genç Yetenek",          winner:"Barış Alper Yılmaz",        team:"Galatasaray",       detail:"12 asist",                   note:"Millî kanat oyuncusu, 12 asist ve yüksek performansıyla şampiyon takımın en parlak genci oldu.", color:"#7a263a" },
+  { emoji:"👨‍💼", title:"Sezonun Teknik Dir.", winner:"Okan Buruk",                team:"Galatasaray",       detail:"Üst Üste Şampiyonluk",        note:"Galatasaray'ı 2025-26'da da zirveye taşıyan Okan Buruk, Türk futbol tarihinin en başarılı çalıştırıcıları arasına girdi.", color:"#22c76e" }
 ];
 
 // ── ANKET ─────────────────────────────────────────────────────
