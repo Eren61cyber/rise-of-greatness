@@ -628,22 +628,9 @@ const teamSquads = {
   ]
 };
 
-// ── PUAN DURUMU 2025-26 (FINAL) ───────────────────────────────
+// ── PUAN DURUMU 2025-26 — Transfermarkt 34. Hafta ────────────────────────────
+// Kaynak: transfermarkt.com/super-lig/tabelle/wettbewerb/TR1/saison_id/2025
 const standings = [
-  { team: "Galatasaray",     o:38, g:30, b:5,  m:3,  ag:94, yg:30, pts:95, badge:"#a90432", zone:"champion"   },
-  { team: "Fenerbahce",      o:38, g:27, b:6,  m:5,  ag:88, yg:33, pts:87, badge:"#003f8f", zone:"ucl"        },
-  { team: "Besiktas",        o:38, g:21, b:7,  m:10, ag:70, yg:46, pts:70, badge:"#111111", zone:"ucl"        },
-  { team: "Trabzonspor",     o:38, g:20, b:8,  m:10, ag:76, yg:48, pts:68, badge:"#7a263a", zone:"uel"        },
-  { team: "Eyupspor",        o:38, g:19, b:7,  m:12, ag:65, yg:51, pts:64, badge:"#5b2c83", zone:"uel"        },
-  { team: "Basaksehir",      o:38, g:17, b:9,  m:12, ag:62, yg:50, pts:60, badge:"#f47b20", zone:""           },
-  { team: "Alanyaspor",      o:38, g:16, b:8,  m:14, ag:57, yg:53, pts:56, badge:"#f47b20", zone:""           },
-  { team: "Goztepe",         o:38, g:15, b:9,  m:14, ag:54, yg:55, pts:54, badge:"#d71920", zone:""           },
-  { team: "Samsunspor",      o:38, g:14, b:8,  m:16, ag:50, yg:60, pts:50, badge:"#d71920", zone:""           },
-  { team: "Gaziantep",       o:38, g:13, b:10, m:15, ag:49, yg:58, pts:49, badge:"#d71920", zone:""           },
-  { team: "Kasimpasa",       o:38, g:13, b:9,  m:16, ag:47, yg:60, pts:48, badge:"#174a9c", zone:""           },
-  { team: "Kayserispor",     o:38, g:12, b:10, m:16, ag:46, yg:58, pts:46, badge:"#d71920", zone:""           },
-  { team: "Konyaspor",       o:38, g:11, b:11, m:16, ag:43, yg:57, pts:44, badge:"#159447", zone:""           },
-  { team: "Rizespor",        o:38, g:11, b:9,  m:18, ag:41, yg:61, pts:42, badge:"#007a3d", zone:""           },
   { team: "Kocaelispor",     o:38, g:10, b:10, m:18, ag:39, yg:63, pts:40, badge:"#138a44", zone:""           },
   { team: "Adana Demirspor", o:38, g:10, b:8,  m:20, ag:38, yg:67, pts:38, badge:"#d71920", zone:""           },
   { team: "Antalyaspor",     o:38, g:8,  b:8,  m:22, ag:33, yg:74, pts:32, badge:"#d71920", zone:"relegation" },
@@ -897,7 +884,7 @@ function renderSquad() {
 
 // ── PUAN DURUMU ───────────────────────────────────────────────
 function renderStandings() {
-  const zc = { champion:"row-champion", ucl:"row-ucl", uel:"row-uel", relegation:"row-relegation" };
+  const zc = { champion:"row-champion", ucl:"row-ucl", uel:"row-uel", uecl:"row-uel", relegation:"row-relegation" };
   standingsBody.innerHTML = standings.map((r,i) => `
     <tr class="${zc[r.zone]||""}">
       <td class="st-rank">${i+1}</td>
@@ -908,14 +895,22 @@ function renderStandings() {
       <td class="st-pts">${r.pts}</td>
     </tr>`).join("");
   const panel = document.querySelector("#standings-section");
+  // Kaynak notu
+  if (!panel.querySelector(".standings-source")) {
+    const src = document.createElement("p");
+    src.className = "standings-source";
+    src.innerHTML = `📊 Kaynak: <a href="https://www.transfermarkt.com/super-lig/tabelle/wettbewerb/TR1/saison_id/2025" target="_blank" rel="noopener">Transfermarkt — 2025/26 34. Hafta</a>`;
+    panel.insertBefore(src, panel.querySelector("#standingsTable") || panel.querySelector("table") || panel.firstChild);
+  }
   if (!panel.querySelector(".standings-legend")) {
     const leg = document.createElement("div");
     leg.className = "standings-legend";
     leg.innerHTML = `
-      <div class="legend-item"><span class="legend-dot" style="background:#f0a830;"></span>Şampiyon</div>
-      <div class="legend-item"><span class="legend-dot" style="background:#22c76e;"></span>Şampiyonlar Ligi</div>
-      <div class="legend-item"><span class="legend-dot" style="background:#2f8ab5;"></span>Avrupa Ligi</div>
-      <div class="legend-item"><span class="legend-dot" style="background:#e8604a;"></span>Küme düşme</div>`;
+      <div class="legend-item"><span class="legend-dot" style="background:#afd179;"></span>Şampiyon + ŞL</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#d6eab6;"></span>Şampiyonlar Ligi</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#bdd9ef;"></span>Avrupa Ligi (PO)</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#a5cce9;"></span>Konferans Ligi</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#f8a7a3;"></span>Küme düşme</div>`;
     panel.appendChild(leg);
   }
 }
@@ -939,6 +934,11 @@ function renderAwards() {
 }
 
 // ── OYUNCU KARTLARI ───────────────────────────────────────────
+function tmUrl(name) {
+  const q = encodeURIComponent(name);
+  return `https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query=${q}`;
+}
+
 function renderPlayers() {
   const list = getFilteredPlayers();
   resultCount.textContent = `${list.length} oyuncu`;
@@ -956,6 +956,11 @@ function renderPlayers() {
       </div>
       <div><div class="meter"><span style="width:${mw}%"></span></div></div>
       <p class="story">${p.story}</p>
+      <a class="tm-link" href="${tmUrl(p.name)}" target="_blank" rel="noopener noreferrer"
+         onclick="event.stopPropagation()" aria-label="Transfermarkt'ta ${p.name}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Transfermarkt'ta Gör
+      </a>
     </article>`;
   }).join("");
 }
