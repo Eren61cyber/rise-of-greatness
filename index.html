@@ -59,12 +59,18 @@
             Değerinin üzerinde katkı veren oyuncuları keşfet, takımları karşılaştır, scout gibi karar ver.
           </p>
         </div>
-        <div class="hero-card" aria-label="Demo haftanın oyuncusu">
-          <span class="live-dot"></span>
-          <p>Haftanın Değer Patlaması</p>
-          <strong id="heroPlayer">-</strong>
-          <small id="heroNote">Lig verisi taslağıyla hesaplandı</small>
+        <div class="hero-card" aria-label="Demo haftanın oyuncusu" style="display:flex; align-items:center; gap:14px; padding: 16px 20px;">
+          <div class="player-photo-wrapper medium" id="heroPlayerPhotoWrapper" style="margin: 0; box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);">
+            <img id="heroPlayerImg" class="player-photo-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100%25' height='100%25' fill='%230f172a'/%3E%3C/svg%3E" alt="Haftanın Oyuncusu">
+          </div>
+          <div>
+            <span class="live-dot"></span>
+            <p style="margin:0 0 4px 0;">Haftanın Değer Patlaması</p>
+            <strong id="heroPlayer" style="display:block; font-size: 1.25rem;">-</strong>
+            <small id="heroNote" style="display:block; margin-top:2px;">Lig verisi taslağıyla hesaplandı</small>
+          </div>
         </div>
+
       </section>
 
       <!-- SCOREBOARD -->

@@ -618,13 +618,24 @@ function renderSummary() {
   document.querySelector("#topBigMatch").textContent = `${bb.name} (${bb.bigMatch})`;
   document.querySelector("#heroPlayer").textContent  = hero.name;
   document.querySelector("#heroNote").textContent    = `${hero.team} · ${formatValue(hero.marketValue)} EUR · skor ${hero.surpriseScore}`;
+  
+  // Load hero image
+  loadPlayerImage(hero.name, "heroPlayerImg");
 }
 
 // ── LIDERBOARD ───────────────────────────────────────────────
 function boardItem(p,i,key) {
-  return `<div class="board-item">
+  const imgId = `board-img-${key}-${p.name.replace(/\s+/g, '-')}-${i}`;
+  setTimeout(() => loadPlayerImage(p.name, imgId), 0);
+  return `<div class="board-item" style="display:flex; align-items:center; gap:10px;">
     <span class="rank">${i+1}</span>
-    <div><strong>${p.name}</strong><span class="board-meta">${p.team} · ${p.position} · ${formatValue(p.marketValue)} EUR</span></div>
+    <div class="player-photo-wrapper tiny">
+      <img id="${imgId}" class="player-photo-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100%25' height='100%25' fill='%230f172a'/%3E%3C/svg%3E" alt="${p.name}">
+    </div>
+    <div style="flex-grow:1; text-align:left;">
+      <strong style="display:block;">${p.name}</strong>
+      <span class="board-meta" style="display:inline-flex; align-items:center; gap:4px; margin-top:2px;">${getTeamLogoHtml(p.team, "tiny")} <span>${p.team}</span> · ${p.position} · ${formatValue(p.marketValue)} €</span>
+    </div>
     <span class="board-score">${p[key]}</span>
   </div>`;
 }
@@ -997,12 +1008,38 @@ function renderComparison() {
   const w = l.impactScore===r.impactScore ? "Bu eşleşmede performans dengesi tam anlamıyla eşit."
     : l.impactScore>r.impactScore ? `${l.name} sahaya yansıttığı etki skoru ve performansı ile bu kıyaslamada öne çıkıyor.`
     : `${r.name} sahaya yansıttığı etki skoru ve performansı ile bu kıyaslamada öne çıkıyor.`;
+    
+  const imgLId = `compare-img-L-${l.name.replace(/\s+/g, '-')}`;
+  const imgRId = `compare-img-R-${r.name.replace(/\s+/g, '-')}`;
+  setTimeout(() => {
+    loadPlayerImage(l.name, imgLId);
+    loadPlayerImage(r.name, imgRId);
+  }, 0);
+
   comparison.innerHTML = `
-    <article class="duel-card"><h3>${l.name}</h3>
+    <article class="duel-card">
+      <div class="card-header-with-photo">
+        <div class="player-photo-wrapper">
+          <img id="${imgLId}" class="player-photo-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100%25' height='100%25' fill='%230f172a'/%3E%3C/svg%3E" alt="${l.name}">
+        </div>
+        <div class="card-head-details" style="text-align: left;">
+          <h3 style="margin:0 0 4px 0;">${l.name}</h3>
+          <p style="margin:0; display:flex; align-items:center; gap:4px;">${getTeamLogoHtml(l.team, "tiny")} <span>${l.team}</span></p>
+        </div>
+      </div>
       ${sl("Gol",l.goals,r.goals)}${sl("Asist",l.assists,r.assists)}
       ${sl("Etki skoru",l.impactScore,r.impactScore)}${sl("Değer skoru",l.valueScore,r.valueScore)}${sl("Form",l.form,r.form)}
     </article>
-    <article class="duel-card"><h3>${r.name}</h3>
+    <article class="duel-card">
+      <div class="card-header-with-photo">
+        <div class="player-photo-wrapper">
+          <img id="${imgRId}" class="player-photo-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100%25' height='100%25' fill='%230f172a'/%3E%3C/svg%3E" alt="${r.name}">
+        </div>
+        <div class="card-head-details" style="text-align: left;">
+          <h3 style="margin:0 0 4px 0;">${r.name}</h3>
+          <p style="margin:0; display:flex; align-items:center; gap:4px;">${getTeamLogoHtml(r.team, "tiny")} <span>${r.team}</span></p>
+        </div>
+      </div>
       <div class="duel-row"><span>Piyasa değeri</span><strong>${formatValue(l.marketValue)} / ${formatValue(r.marketValue)} €</strong></div>
       <div class="duel-row"><span>Dakika</span><strong>${l.minutes} / ${r.minutes}</strong></div>
       <div class="duel-row"><span>Büyük maç</span><strong>${l.bigMatch} / ${r.bigMatch}</strong></div>
@@ -1844,9 +1881,14 @@ function updateBuilderSlotDOM(role) {
   
   const player = state.builderSquad[role];
   if (player) {
+    const imgId = `slot-img-${role}-${player.name.replace(/\s+/g, '-')}`;
+    setTimeout(() => loadPlayerImage(player.name, imgId), 0);
     slotEl.classList.add("populated");
     slotEl.innerHTML = `
       <button class="remove-player-btn" data-role="${role}" type="button" aria-label="Kaldır">✕</button>
+      <div class="slot-photo-wrapper">
+        <img id="${imgId}" class="slot-player-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100%25' height='100%25' fill='%230f172a'/%3E%3C/svg%3E" alt="${player.name}">
+      </div>
       <span class="slot-role">${role.toUpperCase()}</span>
       <span class="populated-player-name">${player.name}</span>
       <span class="populated-player-value">${player.marketValue.toFixed(1)} M€</span>
