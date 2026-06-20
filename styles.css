@@ -2533,3 +2533,402 @@ select:focus {
     height: 80px;
   }
 }
+
+/* ===================== SIMULATION & ACTIONS ===================== */
+.builder-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#simulateSquadBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--theme-primary), var(--green-dark));
+  color: white;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 0 15px color-mix(in srgb, var(--theme-primary) 30%, transparent);
+  font-weight: 700;
+  transition: all 260ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#simulateSquadBtn:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 25px color-mix(in srgb, var(--theme-primary) 60%, transparent);
+}
+
+#simulateSquadBtn:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+#simulateSquadBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.04);
+  box-shadow: none;
+  color: var(--muted);
+}
+
+/* Simulation Modal Container */
+.simulation-modal-container {
+  max-width: 600px !important;
+}
+
+/* Yükleme Ekranı */
+.sim-loading-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 36px 20px;
+  gap: 24px;
+}
+
+.sim-spinner-container {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sim-pulse-ring {
+  position: absolute;
+  inset: 0;
+  border: 3px solid var(--theme-primary);
+  border-radius: 50%;
+  animation: pulseRing 1.3s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
+}
+
+.sim-spinner-icon {
+  font-size: 2.5rem;
+  animation: spinSlow 3s linear infinite;
+}
+
+@keyframes pulseRing {
+  0% { transform: scale(0.6); opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { transform: scale(1.15); opacity: 0; }
+}
+
+@keyframes spinSlow {
+  100% { transform: rotate(360deg); }
+}
+
+.sim-console-logs {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 16px 20px;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  height: 170px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+  scrollbar-width: thin;
+}
+
+.sim-log-line {
+  color: var(--theme-primary);
+  opacity: 0;
+  transform: translateY(6px);
+  animation: logFadeIn 280ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.sim-log-line.success {
+  color: #10b981;
+}
+
+.sim-log-line.info {
+  color: var(--theme-secondary);
+}
+
+@keyframes logFadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Sonuç Ekranı */
+.sim-results-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 10px 20px 28px;
+  animation: simResultsIn 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes simResultsIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Stats Cards */
+.sim-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.sim-stat-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1), border-color 200ms ease, box-shadow 200ms ease;
+  box-sizing: border-box;
+}
+
+.sim-stat-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(56, 189, 248, 0.2);
+  box-shadow: 0 8px 24px rgba(56, 189, 248, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.sim-stat-card span {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.sim-stat-card strong {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: var(--ink);
+  margin: 6px 0;
+  text-shadow: 0 0 10px rgba(255,255,255,0.1);
+  transition: color 300ms ease;
+}
+
+.sim-stat-card small {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.sim-stat-bar-track {
+  width: 85%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.sim-stat-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--theme-secondary), var(--theme-primary));
+  border-radius: inherit;
+  width: 0%; /* Dynamic */
+  transition: width 1200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Report Cards */
+.sim-report-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.sim-report-card h3 {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--theme-primary);
+  margin: 0 0 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sim-report-content {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: rgba(248, 250, 252, 0.88);
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sim-report-content p {
+  margin: 0;
+}
+
+.sim-report-content strong {
+  color: var(--theme-primary);
+  font-weight: 700;
+}
+
+.sim-report-content .highlight-val {
+  color: var(--theme-secondary);
+}
+
+/* Highlight / Derby Cards */
+.highlight-card {
+  border-color: rgba(251, 191, 36, 0.12);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(251, 191, 36, 0.01) 100%);
+}
+
+.highlight-card h3 {
+  color: var(--theme-secondary);
+}
+
+.sim-derby-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 10px;
+  margin-bottom: 16px;
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--ink);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.sim-derby-score {
+  color: var(--theme-secondary);
+  font-size: 1.35rem;
+  font-weight: 900;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
+  letter-spacing: 2px;
+}
+
+.sim-derby-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  padding-left: 20px;
+}
+
+.sim-derby-timeline::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.sim-derby-timeline::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.sim-timeline-event {
+  position: relative;
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: rgba(248, 250, 252, 0.9);
+  font-weight: 600;
+  opacity: 0;
+  transform: translateX(-8px);
+  animation: timelineEventIn 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes timelineEventIn {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.sim-timeline-event::before {
+  content: "";
+  position: absolute;
+  left: -19px;
+  top: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--theme-primary);
+  border: 2px solid var(--bg);
+  box-sizing: border-box;
+  box-shadow: 0 0 5px rgba(56, 189, 248, 0.5);
+  transition: background-color 200ms ease, box-shadow 200ms ease;
+}
+
+.sim-timeline-event.goal {
+  color: var(--theme-secondary);
+  font-weight: 700;
+}
+
+.sim-timeline-event.goal::before {
+  background: var(--theme-secondary);
+  box-shadow: 0 0 6px rgba(251, 191, 36, 0.6);
+}
+
+.sim-timeline-event.cards {
+  color: #ef4444;
+}
+
+.sim-timeline-event.cards::before {
+  background: #ef4444;
+  box-shadow: 0 0 5px rgba(239, 68, 68, 0.5);
+}
+
+/* Stagger animations for modal details */
+.sim-results-screen > * {
+  animation: simResultsFadeIn 450ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.sim-results-screen > *:nth-child(1) { animation-delay: 100ms; }
+.sim-results-screen > *:nth-child(2) { animation-delay: 250ms; }
+.sim-results-screen > *:nth-child(3) { animation-delay: 400ms; }
+
+@keyframes simResultsFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Modal backdrop scale entry */
+.modal-backdrop:not([hidden]) .simulation-modal-container {
+  animation: scaleInModal 350ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes scaleInModal {
+  from { opacity: 0; transform: scale(0.9) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@media (max-width: 580px) {
+  .sim-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .sim-stat-card {
+    padding: 12px;
+  }
+  .sim-derby-header {
+    font-size: 0.95rem;
+    padding: 10px 12px;
+  }
+}

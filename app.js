@@ -1105,6 +1105,276 @@ const builderModalSubtitle  = document.querySelector("#builderModalSubtitle");
 const builderSearchInput    = document.querySelector("#builderSearchInput");
 const builderPlayerList     = document.querySelector("#builderPlayerList");
 
+const simulateSquadBtn     = document.querySelector("#simulateSquadBtn");
+const simulationModal      = document.querySelector("#simulationModal");
+const simulationModalClose = document.querySelector("#simulationModalClose");
+const simLoadingScreen     = document.querySelector("#simLoadingScreen");
+const simResultsScreen     = document.querySelector("#simResultsScreen");
+const simConsoleLogs       = document.querySelector("#simConsoleLogs");
+
+const simStatChemistry     = document.querySelector("#simStatChemistry");
+const simChemistryBar      = document.querySelector("#simChemistryBar");
+const simStatPoints        = document.querySelector("#simStatPoints");
+const simStatRecord        = document.querySelector("#simStatRecord");
+const simStatGoals         = document.querySelector("#simStatGoals");
+const simStatDiff          = document.querySelector("#simStatDiff");
+
+const simReportContent     = document.querySelector("#simReportContent");
+const simDerbyHeader       = document.querySelector("#simDerbyHeader");
+const simDerbyTimeline     = document.querySelector("#simDerbyTimeline");
+
+function animateCountUp(element, target, suffix = "", duration = 1000) {
+  let start = 0;
+  const startTime = performance.now();
+  
+  function update(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const ease = progress * (2 - progress); // easeOutQuad
+    const current = Math.round(start + ease * (target - start));
+    
+    element.textContent = current + suffix;
+    
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    } else {
+      element.textContent = target + suffix;
+    }
+  }
+  
+  requestAnimationFrame(update);
+}
+
+function runSquadSimulation() {
+  const selectedPlayers = Object.values(state.builderSquad).filter(p => p !== null);
+  if (selectedPlayers.length < 11) return;
+
+  simConsoleLogs.innerHTML = "";
+  simResultsScreen.hidden = true;
+  simLoadingScreen.hidden = false;
+  simulationModal.hidden = false;
+
+  const logLines = [
+    { text: "🔍 [AI Ajanı] Oyuncu verileri ve kariyer istatistikleri inceleniyor...", delay: 0 },
+    { text: "⚙️ [AI Ajanı] 4-3-3 taktiksel formasyon yerleşimi doğrulanıyor...", delay: 600 },
+    { text: "🧬 [AI Ajanı] Takım kimyası ve saha içi uyum faktörleri hesaplanıyor...", delay: 1200 },
+    { text: "🏟️ [AI Ajanı] Süper Lig devlerine karşı 10 maçlık simülasyon başlatıldı...", delay: 1800 },
+    { text: "📊 [AI Ajanı] Rakip analizleri tamamlandı, derbi maçı simüle ediliyor...", delay: 2400 },
+    { text: "✅ [AI Ajanı] Rapor hazırlandı! Sonuçlar ekrana aktarılıyor...", delay: 3000, cls: "success" }
+  ];
+
+  logLines.forEach(line => {
+    setTimeout(() => {
+      const p = document.createElement("p");
+      p.className = "sim-log-line" + (line.cls ? " " + line.cls : "");
+      p.textContent = line.text;
+      simConsoleLogs.appendChild(p);
+      simConsoleLogs.scrollTop = simConsoleLogs.scrollHeight;
+    }, line.delay);
+  });
+
+  // 1. Chemistry calculation
+  let baselineChemistry = 50;
+  const teamCounts = {};
+  selectedPlayers.forEach(p => {
+    teamCounts[p.team] = (teamCounts[p.team] || 0) + 1;
+  });
+  const maxSameTeam = Math.max(...Object.values(teamCounts));
+  const synergyBonus = (maxSameTeam - 1) * 4;
+  
+  let dmfBonus = 0;
+  const mids = selectedPlayers.filter(p => p.position === "Orta saha");
+  const hasDmf = mids.some(p => {
+    const s = p.strengths.join(" ").toLowerCase();
+    return s.includes("savunma") || s.includes("top kapma") || s.includes("mücadele") || p.name.includes("Torreira") || p.name.includes("Ndidi") || p.name.includes("Alvarez");
+  });
+  if (hasDmf) dmfBonus = 12;
+  
+  const avgForm = selectedPlayers.reduce((s, p) => s + p.form, 0) / 11;
+  const formBonus = Math.round((avgForm - 75) * 0.4);
+  const totalChemistry = Math.min(100, baselineChemistry + synergyBonus + dmfBonus + formBonus);
+
+  // 2. Expected points calculation (10 matches)
+  const totalImpact = selectedPlayers.reduce((s, p) => s + p.impactScore, 0);
+  const calculatedPointsBase = ((totalImpact - 700) / 280) * 16 + 10;
+  const randomFactor = Math.floor(Math.random() * 5) - 2;
+  const points = Math.max(0, Math.min(30, Math.round(calculatedPointsBase + randomFactor)));
+  
+  let wins = Math.floor(points / 3);
+  let draws = points % 3;
+  let losses = 10 - wins - draws;
+  if (losses < 0) {
+    wins = 10;
+    draws = 0;
+    losses = 0;
+  }
+
+  // 3. Goal Average
+  const forwards = selectedPlayers.filter(p => p.position === "Forvet" || p.position === "Kanat");
+  const defenders = selectedPlayers.filter(p => p.position === "Defans" || p.position === "Kaleci");
+  
+  const fwdImpact = forwards.reduce((s, p) => s + p.impactScore, 0);
+  const defImpact = defenders.reduce((s, p) => s + p.impactScore, 0);
+  
+  const goalsScoredBase = (fwdImpact / 350) * 12 + 6;
+  const goalsScored = Math.round(goalsScoredBase + (Math.random() * 6 - 3));
+  
+  const goalsConcededBase = 22 - (defImpact / 450) * 12;
+  const goalsConceded = Math.max(2, Math.round(goalsConcededBase + (Math.random() * 6 - 3)));
+
+  const goalDiff = goalsScored - goalsConceded;
+  const sign = goalDiff >= 0 ? "+" : "";
+
+  // 4. AI Report Content Generation
+  const avgAge = selectedPlayers.reduce((s, p) => s + p.age, 0) / 11;
+  let ageAnalysis = "";
+  if (avgAge > 30) {
+    ageAnalysis = `<p>👴 <strong>Deneyim Odaklı Kadro:</strong> Takımınızın yaş ortalaması oldukça yüksek (<strong>${avgAge.toFixed(1)}</strong>). Büyük maç streslerini kolaylıkla yönetebilecek deneyimli ayaklara sahipsiniz ancak uzun maratonlarda fiziksel düşüşler ve sakatlık riskleri yaşanabilir.</p>`;
+  } else if (avgAge < 25) {
+    ageAnalysis = `<p>👶 <strong>Gelecek ve Dinamizm:</strong> Kadronuz çok genç ve enerjik (<strong>${avgAge.toFixed(1)}</strong> yaş). Tempolu oyunda ve pres gücünde rakipleri boğabilirsiniz fakat ligin kırılma anlarında tecrübe eksikliği hissedilebilir.</p>`;
+  } else {
+    ageAnalysis = `<p>⚖️ <strong>Dengeli Yaş Dağılımı:</strong> Takım yaş ortalaması son derece dengeli (<strong>${avgAge.toFixed(1)}</strong>). Tecrübe ile atletizm arasındaki altın dengeyi yakalamış durumdasınız.</p>`;
+  }
+
+  const budget = state.builderBudget;
+  const maxVal = Math.max(...selectedPlayers.map(p => p.marketValue));
+  const superstar = selectedPlayers.find(p => p.marketValue === maxVal);
+  let budgetAnalysis = "";
+  if (maxVal > budget * 0.4) {
+    budgetAnalysis = `<p>⭐ <strong>Yıldız Bağımlılığı:</strong> Bütçenizin <strong>%${Math.round((maxVal/budget)*100)}</strong>'ini kaplayan <strong>${superstar.name}</strong> takımın mutlak lideri. Bu superstar odaklı bir yapı sunsa da, onun sakatlanması halinde alternatif üretmekte zorlanabilirsiniz.</p>`;
+  } else {
+    budgetAnalysis = `<p>💼 <strong>Dengeli Bütçe Yönetimi:</strong> Bütçenizi tek bir yıldıza yatırmak yerine homojen dağıtarak geniş ve dengeli bir kadro kurmuşsunuz. Sakatlık veya formsuzluk durumlarında alternatiflerinizin olması takımı koruyacaktır.</p>`;
+  }
+
+  const strengthCounts = {};
+  selectedPlayers.forEach(p => {
+    p.strengths.forEach(s => {
+      strengthCounts[s] = (strengthCounts[s] || 0) + 1;
+    });
+  });
+  const sortedStrengths = Object.entries(strengthCounts).sort((a,b) => b[1] - a[1]);
+  let strengthsText = "";
+  if (sortedStrengths.length > 0) {
+    strengthsText = `<p>🎯 <strong>Taktiksel Güçler:</strong> Kadronuzda en çok öne çıkan yetenekler: <strong>${sortedStrengths.slice(0, 2).map(x => x[0]).join(" ve ")}</strong>. Bu nitelikler, oyun kurarken ve hücum varyasyonlarında temel silahlarınız olacaktır.</p>`;
+  }
+
+  let advice = "";
+  if (totalChemistry < 70) {
+    advice = `<p>💡 <strong>AI Önerisi:</strong> Takım kimyanız (<strong>%${totalChemistry}</strong>) biraz düşük. Aynı takımdan oynayan oyuncuları bir araya getirerek (örneğin stoper ikilisini veya kanat-bek uyumunu) sinerjiyi artırabilirsiniz.</p>`;
+  } else if (totalImpact < 800) {
+    advice = `<p>💡 <strong>AI Önerisi:</strong> Kadronuz dengeli ancak genel etki kalitesi biraz sınırda. Bütçe limitinizi sonuna kadar zorlayıp, daha ucuz mevkilerden tasarruf ederek kilit pozisyonlara daha yüksek puanlı lider oyuncular yerleştirebilirsiniz.</p>`;
+  } else {
+    advice = `<p>💡 <strong>AI Önerisi:</strong> Harika bir bütçe/performans dengesi yakalanmış! Bu kadro şampiyonluk yarışının en güçlü adaylarından biri olacaktır. Taktiksel yapıyı bozmadan devam edin.</p>`;
+  }
+
+  simReportContent.innerHTML = ageAnalysis + budgetAnalysis + strengthsText + advice;
+
+  // 5. Derby Simulation Generation
+  const bigTeams = ["Galatasaray", "Fenerbahce", "Besiktas", "Trabzonspor"];
+  let opponent = "Galatasaray";
+  let minPlayers = 11;
+  bigTeams.forEach(t => {
+    const cnt = selectedPlayers.filter(p => p.team === t).length;
+    if (cnt < minPlayers) {
+      minPlayers = cnt;
+      opponent = t;
+    }
+  });
+
+  let userGoals = 0;
+  let oppGoals = 0;
+  if (totalImpact > 880) {
+    userGoals = Math.floor(Math.random() * 3) + 1;
+    oppGoals = Math.floor(Math.random() * (userGoals + 1));
+  } else if (totalImpact < 780) {
+    oppGoals = Math.floor(Math.random() * 3) + 1;
+    userGoals = Math.floor(Math.random() * oppGoals);
+  } else {
+    userGoals = Math.floor(Math.random() * 3);
+    oppGoals = Math.floor(Math.random() * 3);
+  }
+
+  simDerbyHeader.innerHTML = `
+    <span>Kendi Kadronuz</span>
+    <span class="sim-derby-score">${userGoals} - ${oppGoals}</span>
+    <span>${opponent}</span>
+  `;
+
+  const timelineEvents = [];
+  const defs = selectedPlayers.filter(p => p.position === "Defans" || p.position === "Orta saha");
+  const cardPlayer = defs.length > 0 ? defs[Math.floor(Math.random() * defs.length)].name : "Oyuncu";
+  timelineEvents.push({
+    min: Math.floor(Math.random() * 30) + 15,
+    type: "cards",
+    text: `⚠️ <strong>${cardPlayer}</strong> rakip hücumu kesmek için yaptığı taktik faul nedeniyle sarı kart gördü.`
+  });
+
+  const userScorers = selectedPlayers.filter(p => p.position === "Forvet" || p.position === "Kanat" || p.position === "Orta saha");
+  for (let i = 0; i < userGoals; i++) {
+    const scorer = userScorers.length > 0 ? userScorers[Math.floor(Math.random() * userScorers.length)].name : "Forvet";
+    const assistProvider = selectedPlayers.filter(p => p.name !== scorer && p.position !== "Kaleci");
+    const assister = assistProvider.length > 0 ? assistProvider[Math.floor(Math.random() * assistProvider.length)].name : null;
+    const assistText = assister ? `, <strong>${assister}</strong>'in asistinde` : "";
+    
+    timelineEvents.push({
+      min: Math.floor(Math.random() * 40) + (i * 20) + 5,
+      type: "goal",
+      text: `⚽ <strong>GOL!</strong> Takımınızda <strong>${scorer}</strong> ceza sahası içinden klas bir vuruşla${assistText} golü buluyor!`
+    });
+  }
+
+  for (let i = 0; i < oppGoals; i++) {
+    timelineEvents.push({
+      min: Math.floor(Math.random() * 45) + (i * 15) + 10,
+      type: "opp-goal",
+      text: `⚽ <strong>Gol!</strong> ${opponent} takımı hızlı hücumla savunmamızın arkasına sarkarak golü atıyor.`
+    });
+  }
+
+  const gks = selectedPlayers.filter(p => p.position === "Kaleci");
+  const gkName = gks.length > 0 ? gks[0].name : "Kalecimiz";
+  timelineEvents.push({
+    min: Math.floor(Math.random() * 20) + 70,
+    type: "save",
+    text: `🧤 <strong>Dev Kurtarış!</strong> ${opponent} hücumunda karşı karşıya kalınan pozisyonda kalecimiz <strong>${gkName}</strong> müthiş refleksle golü önledi.`
+  });
+
+  timelineEvents.sort((a, b) => a.min - b.min);
+
+  simDerbyTimeline.innerHTML = timelineEvents.map((e, idx) => {
+    let cls = e.type === "goal" ? "goal" : (e.type === "cards" ? "cards" : "");
+    return `
+      <div class="sim-timeline-event ${cls}" style="animation-delay: ${400 + idx * 120}ms;">
+        <strong>${e.min}'</strong> ${e.text}
+      </div>
+    `;
+  }).join("");
+
+  setTimeout(() => {
+    simLoadingScreen.hidden = true;
+    simResultsScreen.hidden = false;
+    
+    animateCountUp(simStatChemistry, totalChemistry, "%", 1200);
+    simChemistryBar.style.width = totalChemistry + "%";
+    
+    animateCountUp(simStatPoints, points, " Puan", 1200);
+    simStatRecord.textContent = `${wins}G ${draws}B ${losses}M`;
+    
+    simStatGoals.textContent = `${goalsScored} - ${goalsConceded}`;
+    simStatDiff.textContent = sign + goalDiff;
+    simStatDiff.className = goalDiff >= 0 ? "success" : "danger";
+    if (goalDiff >= 0) {
+      simStatDiff.style.color = "#10b981";
+    } else {
+      simStatDiff.style.color = "#ef4444";
+    }
+  }, 3400);
+}
+
+function closeSimulationModal() {
+  simulationModal.hidden = true;
+}
+
 function renderBuilderPlayers() {
   if (!state.activeSlotId) return;
   const slotEl = document.getElementById(state.activeSlotId);
@@ -1246,6 +1516,11 @@ function updateBuilderStats() {
       builderMessage.hidden = true;
     }
   }
+
+  const isComplete = (populatedCount === 11 && totalValue <= budget);
+  if (simulateSquadBtn) {
+    simulateSquadBtn.disabled = !isComplete;
+  }
 }
 
 function closeBuilderModal() {
@@ -1311,11 +1586,29 @@ function initSquadBuilder() {
   if (resetBuilderBtn) {
     resetBuilderBtn.addEventListener("click", resetBuilder);
   }
+
+  // Simulation button click
+  if (simulateSquadBtn) {
+    simulateSquadBtn.addEventListener("click", runSquadSimulation);
+  }
+
+  if (simulationModalClose) {
+    simulationModalClose.addEventListener("click", closeSimulationModal);
+  }
+
+  if (simulationModal) {
+    simulationModal.addEventListener("click", (e) => {
+      if (e.target === simulationModal) {
+        closeSimulationModal();
+      }
+    });
+  }
   
-  // Escape key support to close builder modal
+  // Escape key support to close modals
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && !builderModal.hidden) {
-      closeBuilderModal();
+    if (e.key === "Escape") {
+      if (!builderModal.hidden) closeBuilderModal();
+      if (!simulationModal.hidden) closeSimulationModal();
     }
   });
   

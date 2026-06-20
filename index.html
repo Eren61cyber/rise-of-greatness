@@ -356,7 +356,10 @@
               <div id="budgetProgressBar" class="budget-progress-bar" style="width: 0%;"></div>
             </div>
           </div>
-          <button id="resetBuilderBtn" class="btn-ghost compact" type="button">Kadroyu Sıfırla</button>
+          <div class="builder-actions">
+            <button id="simulateSquadBtn" class="btn-primary compact" type="button" disabled>🤖 AI ile Simüle Et</button>
+            <button id="resetBuilderBtn" class="btn-ghost compact" type="button">Kadroyu Sıfırla</button>
+          </div>
         </div>
 
         <div id="builderMessage" class="builder-status-msg" hidden></div>
@@ -486,6 +489,74 @@
         </div>
         <div id="builderPlayerList" class="builder-player-list">
           <!-- JS dinamik dolduracak -->
+        </div>
+      </article>
+    </div>
+
+    <!-- SIMULATION MODAL -->
+    <div id="simulationModal" class="modal-backdrop" hidden>
+      <article class="player-modal simulation-modal-container" role="dialog" aria-modal="true" aria-labelledby="simModalTitle">
+        <button id="simulationModalClose" class="modal-close" type="button" aria-label="Detayı kapat">✕</button>
+        <div class="modal-head">
+          <div>
+            <p class="eyebrow">Kadro Testi</p>
+            <h2 id="simModalTitle">🤖 AI Ajan Simülasyonu</h2>
+          </div>
+          <span class="tag">Simülasyon Modu</span>
+        </div>
+        
+        <!-- Yükleme Ekranı -->
+        <div id="simLoadingScreen" class="sim-loading-screen">
+          <div class="sim-spinner-container">
+            <div class="sim-pulse-ring"></div>
+            <div class="sim-spinner-icon">⚽</div>
+          </div>
+          <div id="simConsoleLogs" class="sim-console-logs">
+            <!-- JS dynamic logs will go here -->
+          </div>
+        </div>
+
+        <!-- Sonuç Ekranı -->
+        <div id="simResultsScreen" class="sim-results-screen" hidden>
+          <!-- Stats Grid -->
+          <div class="sim-stats-grid">
+            <div class="sim-stat-card">
+              <span>Takım Kimyası</span>
+              <strong id="simStatChemistry" class="count-up">0%</strong>
+              <div class="sim-stat-bar-track">
+                <div id="simChemistryBar" class="sim-stat-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+            <div class="sim-stat-card">
+              <span>Beklenen Puan (10 Maç)</span>
+              <strong id="simStatPoints" class="count-up">0 Puan</strong>
+              <small id="simStatRecord">-</small>
+            </div>
+            <div class="sim-stat-card">
+              <span>Gol Averajı</span>
+              <strong id="simStatGoals" class="count-up">0 - 0</strong>
+              <small id="simStatDiff">+0</small>
+            </div>
+          </div>
+
+          <!-- Scout Analysis Card -->
+          <div class="sim-report-card">
+            <h3>📋 AI Ajan Scout Raporu</h3>
+            <div id="simReportContent" class="sim-report-content">
+              <!-- JS dynamic text -->
+            </div>
+          </div>
+
+          <!-- Derby Match Highlights -->
+          <div class="sim-report-card highlight-card">
+            <h3>🔥 Haftanın Derbi Mücadelesi</h3>
+            <div id="simDerbyHeader" class="sim-derby-header">
+              <!-- Team Names and score -->
+            </div>
+            <div id="simDerbyTimeline" class="sim-derby-timeline">
+              <!-- Timeline events -->
+            </div>
+          </div>
         </div>
       </article>
     </div>
