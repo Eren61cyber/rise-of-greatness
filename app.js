@@ -2068,13 +2068,18 @@ function initAmbientMusic() {
   if (!musicPlayer || !bgAudio || !playBtn) return;
   
   const playlist = [
-    { title: "Tribün Atmosferi", url: "https://assets.mixkit.co/music/preview/mixkit-stadium-crowd-cheering-loop-1033.mp3" },
-    { title: "Süper Lig Chill Beat", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" }
+    { title: "Lig Teması", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+    { title: "Atmosfer Müziği", url: "https://raw.githubusercontent.com/rafaelreis-hotmart/Audio-Sample-files/master/sample2.mp3" }
   ];
   let currentTrackIdx = 0;
+
+  // Load the first track source into the element
+  bgAudio.src = playlist[0].url;
+  titleText.textContent = playlist[0].title;
   
   function togglePlay() {
     if (bgAudio.paused) {
+      bgAudio.load();
       bgAudio.play()
         .then(() => {
           musicPlayer.classList.add("playing");
@@ -2082,8 +2087,8 @@ function initAmbientMusic() {
           statusText.textContent = "Oynatılıyor";
         })
         .catch(err => {
-          console.log("Audio play blocked by browser:", err);
-          statusText.textContent = "Engellendi (Tıkla)";
+          console.warn("Audio play blocked:", err);
+          statusText.textContent = "Tıkla & Oynat";
         });
     } else {
       bgAudio.pause();
@@ -2098,12 +2103,16 @@ function initAmbientMusic() {
     const track = playlist[currentTrackIdx];
     
     const wasPlaying = !bgAudio.paused;
+    if (wasPlaying) bgAudio.pause();
     bgAudio.src = track.url;
     titleText.textContent = track.title;
+    bgAudio.load();
     
     if (wasPlaying) {
       bgAudio.play()
         .then(() => {
+          musicPlayer.classList.add("playing");
+          playBtn.textContent = "⏸";
           statusText.textContent = "Oynatılıyor";
         })
         .catch(() => {
@@ -2118,6 +2127,25 @@ function initAmbientMusic() {
   
   playBtn.addEventListener("click", togglePlay);
   trackBtn.addEventListener("click", switchTrack);
+}
+
+function initWelcomeSplash() {
+  const splash = document.getElementById("welcomeSplash");
+  if (!splash) return;
+
+  // After page fully loaded, begin fade-out sequence
+  const dismiss = () => {
+    splash.classList.add("fade-out");
+    splash.addEventListener("transitionend", () => splash.remove(), { once: true });
+    // Fallback remove if transition doesn't fire
+    setTimeout(() => { if (splash.parentNode) splash.remove(); }, 1200);
+  };
+
+  // Give a bit of time to show the splash, then auto-dismiss
+  setTimeout(dismiss, 2800);
+
+  // Also allow early dismiss on click
+  splash.addEventListener("click", dismiss);
 }
 
 // ── INIT ──────────────────────────────────────────────────────
@@ -2135,3 +2163,4 @@ renderPoll();
 renderMatchPredictions();
 initSquadBuilder();
 initAmbientMusic();
+initWelcomeSplash();

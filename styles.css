@@ -3348,3 +3348,176 @@ body::before {
   transform: scale(1.08);
 }
 
+/* ===================== PREMIUM WELCOME SPLASH SCREEN ===================== */
+.welcome-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.welcome-splash.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.splash-backdrop {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 35% 40%, rgba(56, 189, 248, 0.18) 0%, transparent 55%),
+              radial-gradient(ellipse at 70% 65%, rgba(236, 72, 153, 0.12) 0%, transparent 55%),
+              linear-gradient(160deg, #060b19 0%, #0a1228 40%, #060e20 100%);
+}
+
+.splash-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+  animation: splashContentRise 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes splashContentRise {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.splash-logo-ring {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.splash-logo-inner {
+  position: relative;
+  z-index: 10;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle at 35% 35%, rgba(56, 189, 248, 0.3) 0%, rgba(15, 23, 42, 0.9) 70%);
+  border: 2px solid rgba(56, 189, 248, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 30px rgba(56, 189, 248, 0.35), inset 0 0 20px rgba(56, 189, 248, 0.08);
+  animation: splashBallPulse 2.2s ease-in-out infinite;
+}
+
+@keyframes splashBallPulse {
+  0%, 100% { box-shadow: 0 0 30px rgba(56, 189, 248, 0.35), inset 0 0 20px rgba(56, 189, 248, 0.08); }
+  50%       { box-shadow: 0 0 55px rgba(56, 189, 248, 0.65), inset 0 0 28px rgba(56, 189, 248, 0.15); }
+}
+
+.splash-ball {
+  font-size: 2rem;
+  animation: splashBallSpin 8s linear infinite;
+  display: block;
+  line-height: 1;
+}
+
+@keyframes splashBallSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.splash-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid rgba(56, 189, 248, 0.3);
+  animation: splashRingExpand 3s ease-out infinite;
+}
+
+.splash-ring.r1 { width: 100px; height: 100px; animation-delay: 0s; }
+.splash-ring.r2 { width: 120px; height: 120px; animation-delay: 0.8s; border-color: rgba(56, 189, 248, 0.18); }
+.splash-ring.r3 { width: 140px; height: 140px; animation-delay: 1.6s; border-color: rgba(56, 189, 248, 0.08); }
+
+@keyframes splashRingExpand {
+  0%   { opacity: 0.9; transform: scale(0.75); }
+  100% { opacity: 0;   transform: scale(1.35); }
+}
+
+.splash-title {
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: -0.5px;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.splash-title span {
+  background: linear-gradient(135deg, #38bdf8, #7dd3fc, #e879f9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 900;
+  filter: drop-shadow(0 0 18px rgba(56, 189, 248, 0.5));
+}
+
+.splash-subtitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(148, 163, 184, 0.9);
+  margin: 0;
+  letter-spacing: 0.8px;
+  animation: splashSubtitleBlink 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes splashSubtitleBlink {
+  from { opacity: 0.6; }
+  to   { opacity: 1.0; }
+}
+
+.splash-loader-track {
+  width: 220px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.splash-loader-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #38bdf8, #e879f9, #38bdf8);
+  background-size: 200% 100%;
+  animation: splashBarLoad 2.6s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+             splashBarGradient 1.5s linear infinite;
+}
+
+@keyframes splashBarLoad {
+  0%   { width: 0%; }
+  60%  { width: 70%; }
+  85%  { width: 90%; }
+  100% { width: 100%; }
+}
+
+@keyframes splashBarGradient {
+  0%   { background-position: 0% 0%; }
+  100% { background-position: 200% 0%; }
+}
+
+.splash-hint {
+  font-size: 0.72rem;
+  color: rgba(148, 163, 184, 0.45);
+  margin: 0;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  animation: splashHintFadeIn 2.5s ease 0.5s both;
+}
+
+@keyframes splashHintFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}

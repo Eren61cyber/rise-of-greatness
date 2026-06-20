@@ -15,6 +15,27 @@
   </head>
   <body>
 
+    <!-- PREMIUM WELCOME SPLASH -->
+    <div id="welcomeSplash" class="welcome-splash" role="status" aria-label="Yükleniyor">
+      <div class="splash-backdrop"></div>
+      <div class="splash-content">
+        <div class="splash-logo-ring">
+          <div class="splash-logo-inner">
+            <span class="splash-ball">⚽</span>
+          </div>
+          <div class="splash-ring r1"></div>
+          <div class="splash-ring r2"></div>
+          <div class="splash-ring r3"></div>
+        </div>
+        <h1 class="splash-title">Süper Lig <span>Atlası</span></h1>
+        <p class="splash-subtitle">AI Scout Portalı Başlatılıyor</p>
+        <div class="splash-loader-track">
+          <div class="splash-loader-bar"></div>
+        </div>
+        <p class="splash-hint">Yüklemek için tıklayın</p>
+      </div>
+    </div>
+
     <!-- NAV BAR -->
     <nav class="navbar" role="navigation" aria-label="Ana navigasyon">
       <div class="navbar-inner">
@@ -617,9 +638,7 @@
       </div>
       <button class="music-control-btn" id="musicPlayBtn" type="button" aria-label="Oynat/Duraklat">▶</button>
       <button class="music-control-btn" id="musicTrackBtn" type="button" aria-label="Şarkı Değiştir" title="Şarkı Değiştir">🔄</button>
-      <audio id="bgAudio" loop preload="none">
-        <source src="https://assets.mixkit.co/music/preview/mixkit-stadium-crowd-cheering-loop-1033.mp3" type="audio/mpeg">
-      </audio>
+      <audio id="bgAudio" loop preload="none"></audio>
     </div>
 
     <script src="app.js"></script>
