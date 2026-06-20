@@ -1,6 +1,57 @@
 // ================================================================
 // SÜPER LİG ATLASI — app.js  |  2025-26 Sezonu
 // ================================================================
+const teamLogos = {
+  Galatasaray: "https://upload.wikimedia.org/wikipedia/commons/e/ea/Galatasaray_Sports_Club_Logo.svg",
+  Fenerbahce: "https://upload.wikimedia.org/wikipedia/en/3/39/Fenerbah%C3%A7e_S.K._logo.svg",
+  Fenerbahçe: "https://upload.wikimedia.org/wikipedia/en/3/39/Fenerbah%C3%A7e_S.K._logo.svg",
+  Besiktas: "https://upload.wikimedia.org/wikipedia/commons/e/ea/Logo_Besiktas.svg",
+  Beşiktaş: "https://upload.wikimedia.org/wikipedia/commons/e/ea/Logo_Besiktas.svg",
+  Trabzonspor: "https://upload.wikimedia.org/wikipedia/commons/8/86/Trabzonspor_amblem.svg",
+  Basaksehir: "https://upload.wikimedia.org/wikipedia/en/e/ee/Medipol_Ba%C5%9Fak%C5%9Fehir_FK_logo.svg",
+  Başakşehir: "https://upload.wikimedia.org/wikipedia/en/e/ee/Medipol_Ba%C5%9Fak%C5%9Fehir_FK_logo.svg",
+  Goztepe: "https://upload.wikimedia.org/wikipedia/en/f/f6/G%C3%B6ztepe_Sports_Club_logo.svg",
+  Göztepe: "https://upload.wikimedia.org/wikipedia/en/f/f6/G%C3%B6ztepe_Sports_Club_logo.svg",
+  Samsunspor: "https://upload.wikimedia.org/wikipedia/commons/8/87/Samsunspor_Logo.svg",
+  Rizespor: "https://upload.wikimedia.org/wikipedia/en/a/a2/%C3%87aykur_Rizespor_logo.svg",
+  Konyaspor: "https://upload.wikimedia.org/wikipedia/commons/d/de/Konyaspor_amblem.svg",
+  Kocaelispor: "https://upload.wikimedia.org/wikipedia/commons/7/75/Kocaelispor_logo.svg",
+  Alanyaspor: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Alanyaspor_Logo.svg",
+  "Gaziantep FK": "https://upload.wikimedia.org/wikipedia/en/e/e0/Gaziantep_FK_logo.svg",
+  Kasimpasa: "https://upload.wikimedia.org/wikipedia/en/3/30/KASIMPA%C5%9EASPOR.svg",
+  Kasımpaşa: "https://upload.wikimedia.org/wikipedia/en/3/30/KASIMPA%C5%9EASPOR.svg",
+  Genclerbirligi: "https://upload.wikimedia.org/wikipedia/commons/9/9f/Genclerbirligi_Logo.svg",
+  Gençlerbirliği: "https://upload.wikimedia.org/wikipedia/commons/9/9f/Genclerbirligi_Logo.svg",
+  Eyupspor: "https://upload.wikimedia.org/wikipedia/commons/1/1a/Ey%C3%BCpspor_logo.svg",
+  Eyüpspor: "https://upload.wikimedia.org/wikipedia/commons/1/1a/Ey%C3%BCpspor_logo.svg",
+  Antalyaspor: "https://upload.wikimedia.org/wikipedia/commons/8/88/Antalyaspor_Logo.svg",
+  Kayserispor: "https://upload.wikimedia.org/wikipedia/commons/3/31/Kayserispor_logo.svg",
+  Karagumruk: "https://upload.wikimedia.org/wikipedia/en/1/17/Fatih_Karag%C3%BCmr%C3%BCk_logo.svg",
+  Karagümrük: "https://upload.wikimedia.org/wikipedia/en/1/17/Fatih_Karag%C3%BCmr%C3%BCk_logo.svg"
+};
+
+function getFallbackLogoSvg(teamName) {
+  const theme = (typeof teamThemes !== 'undefined' ? teamThemes.find(t => t.name === teamName) : null) || { primary: "#38bdf8", secondary: "#fbbf24" };
+  const initials = teamName.substring(0, 2).toUpperCase();
+  return `<svg class="team-logo-fallback" viewBox="0 0 100 100" style="background:linear-gradient(135deg, ${theme.primary}, ${theme.secondary || theme.primary}); border-radius:6px; display:inline-block; vertical-align:middle; width:100%; height:100%;"><text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" fill="white" font-family='Outfit', sans-serif font-weight='900' font-size='42'>${initials}</text></svg>`;
+}
+
+function getTeamLogoHtml(teamName, sizeClass = "small") {
+  const logoUrl = teamLogos[teamName];
+  if (!logoUrl) {
+    return `<span class="team-logo-wrapper ${sizeClass}">${getFallbackLogoSvg(teamName)}</span>`;
+  }
+  const escapedFallback = getFallbackLogoSvg(teamName).replace(/"/g, '&quot;').replace(/'/g, "\\'");
+  return `<span class="team-logo-wrapper ${sizeClass}"><img src="${logoUrl}" alt="${teamName}" class="team-logo-img" onerror="this.outerHTML='${escapedFallback}'"></span>`;
+}
+
+function getAwardLogoHtml(teamString) {
+  if (teamString.includes("/")) {
+    return `<span class="team-logo-wrapper tiny" style="background:#ffd700; border-radius:50%; width:18px; height:18px; display:inline-flex; align-items:center; justify-content:center;"><span style="font-size:10px;line-height:1;display:block;text-align:center;">🏆</span></span>`;
+  }
+  return getTeamLogoHtml(teamString, "tiny");
+}
+
 // ── OYUNCU VERİSİ ─────────────────────────────────────────────
 const players = [
   // ===== GALATASARAY =====
@@ -613,8 +664,8 @@ function renderSquadTeams() {
 function renderSquad() {
   const name=squadTeamSelect.value, squad=teamSquads[name], theme=teamThemes.find(t=>t.name===name);
   if(theme) applyTheme(theme);
-  if(!squad){ squadNote.textContent=`${name}: kadro henüz eklenmedi`; squadGrid.innerHTML=`<div class="squad-empty">${name} kadrosu yakında eklenecek.</div>`; return; }
-  squadNote.textContent=`${name}: ${squad.length} oyuncu — 2025-26 Sezonu`;
+  if(!squad){ squadNote.innerHTML=`${getTeamLogoHtml(name, "small")} <span style="vertical-align:middle; margin-left:6px;">${name}: kadro henüz eklenmedi</span>`; squadGrid.innerHTML=`<div class="squad-empty">${name} kadrosu yakında eklenecek.</div>`; return; }
+  squadNote.innerHTML=`${getTeamLogoHtml(name, "small")} <span style="vertical-align:middle; margin-left:6px;">${name}: ${squad.length} oyuncu — 2025-26 Sezonu</span>`;
   squadGrid.innerHTML=squad.map(p=>`
     <article class="squad-card">
       <strong>${p.name}</strong>
@@ -632,7 +683,7 @@ function renderStandings() {
   standingsBody.innerHTML = standings.map((r,i)=>`
     <tr class="${zc[r.zone]||""}">
       <td class="st-rank">${i+1}</td>
-      <td><div class="st-team"><span class="st-badge" style="background:${r.badge};"></span>${r.team}</div></td>
+      <td><div class="st-team">${getTeamLogoHtml(r.team, "small")} <span>${r.team}</span></div></td>
       <td>${r.o}</td><td>${r.g}</td><td>${r.b}</td><td>${r.m}</td>
       <td>${r.ag}</td><td>${r.yg}</td>
       <td>${r.ag-r.yg>=0?"+":""}${r.ag-r.yg}</td>
@@ -667,7 +718,7 @@ function renderAwards() {
         <span class="award-emoji-main">${a.emoji}</span>
         <span class="award-title">${a.title}</span>
         <span class="award-winner">${a.winner}</span>
-        <span class="award-team-badge">${a.team}</span>
+        <span class="award-team-badge" style="display:inline-flex; align-items:center; gap:6px;">${getAwardLogoHtml(a.team)} <span>${a.team}</span></span>
       </div>
       <div class="award-body">
         <div class="award-detail">${a.detail}</div>
@@ -685,7 +736,7 @@ function renderPlayers() {
     const mw = Math.min(100, Math.round(p.valueScore/10));
     return `<article class="player-card" data-player="${p.name}" tabindex="0" role="button" aria-label="${p.name} detayını aç">
       <div class="card-head">
-        <div><h3>${p.name}</h3><p>${p.team} · ${p.position} · ${p.age} yaş</p></div>
+        <div><h3>${p.name}</h3><p>${getTeamLogoHtml(p.team, "tiny")} <span>${p.team}</span> · ${p.position} · ${p.age} yaş</p></div>
         <span class="tag">${getLabel(p)}</span>
       </div>
       <div class="stat-row">
@@ -713,7 +764,7 @@ function openPlayerModal(name) {
   const p = enrichedPlayers.find(x=>x.name===name);
   if (!p) return;
   modalPlayerName.textContent = p.name;
-  modalPlayerTeam.textContent = `${p.team} · ${p.position} · ${p.age} yaş`;
+  modalPlayerTeam.innerHTML = `${getTeamLogoHtml(p.team, "tiny")} <span style="vertical-align:middle; margin-left:6px;">${p.team} · ${p.position} · ${p.age} yaş</span>`;
   modalPlayerTag.textContent  = getLabel(p);
   modalContent.innerHTML = `
     <div class="modal-stats">
@@ -749,7 +800,7 @@ function syncCustomSelectLabel(hiddenInputId) {
   const labelSpan = container.querySelector(".custom-select-label");
   const player = enrichedPlayers.find(p => p.name === hiddenInput.value);
   if (player && labelSpan) {
-    labelSpan.innerHTML = `<strong>${player.name}</strong> <span style="font-size:0.75rem;opacity:0.75;margin-left:4px;">— ${player.team}</span>`;
+    labelSpan.innerHTML = `${getTeamLogoHtml(player.team, "tiny")} <strong style="margin-left:6px;vertical-align:middle;">${player.name}</strong> <span style="font-size:0.75rem;opacity:0.75;margin-left:4px;vertical-align:middle;">— ${player.team}</span>`;
   }
 }
 
@@ -776,7 +827,7 @@ function initCustomSelect(containerId, hiddenInputId, defaultValue) {
                   data-value="${p.name}" role="option" aria-selected="${isSelected}">
         <div class="custom-select-opt-text">
           <strong>${p.name}</strong>
-          <span class="custom-select-opt-team">${p.team} · ${p.position}</span>
+          <span class="custom-select-opt-team">${getTeamLogoHtml(p.team, "tiny")} <span>${p.team} · ${p.position}</span></span>
         </div>
         <span class="custom-select-opt-val">${formatValue(p.marketValue)} €</span>
       </li>`;
@@ -787,7 +838,7 @@ function initCustomSelect(containerId, hiddenInputId, defaultValue) {
     hiddenInput.value = name;
     const player = enrichedPlayers.find(p => p.name === name);
     if (player && labelSpan) {
-      labelSpan.innerHTML = `<strong>${player.name}</strong> <span style="font-size:0.75rem;opacity:0.75;margin-left:4px;">— ${player.team}</span>`;
+      labelSpan.innerHTML = `${getTeamLogoHtml(player.team, "tiny")} <strong style="margin-left:6px;vertical-align:middle;">${player.name}</strong> <span style="font-size:0.75rem;opacity:0.75;margin-left:4px;vertical-align:middle;">— ${player.team}</span>`;
     }
     Array.from(optionsList.children).forEach(child => {
       const isSel = child.getAttribute("data-value") === name;
@@ -980,7 +1031,11 @@ function renderMatchPredictions() {
       else{cls="wrong";label=`❌ Yanlış. Gerçek: ${m.actualHome}–${m.actualAway}`;}
     }
     return `<div class="match-card ${cls}">
-      <div class="match-teams"><div class="match-team">${m.home}</div><div class="match-vs">VS</div><div class="match-team">${m.away}</div></div>
+      <div class="match-teams">
+        <div class="match-team">${getTeamLogoHtml(m.home, "small")} <span>${m.home}</span></div>
+        <div class="match-vs">VS</div>
+        <div class="match-team"><span>${m.away}</span> ${getTeamLogoHtml(m.away, "small")}</div>
+      </div>
       <div class="match-inputs">
         <input type="number" min="0" max="20" placeholder="0" id="pred_h_${i}" value="${sh}" ${submitted?"disabled":""}>
         <div class="match-sep">—</div>
@@ -1295,9 +1350,9 @@ function runSquadSimulation() {
   }
 
   simDerbyHeader.innerHTML = `
-    <span>Kendi Kadronuz</span>
+    <span style="display:flex; align-items:center; gap:8px;">${getFallbackLogoSvg("Kadro Kur")} Kendi Kadronuz</span>
     <span class="sim-derby-score">${userGoals} - ${oppGoals}</span>
-    <span>${opponent}</span>
+    <span style="display:flex; align-items:center; gap:8px;"><span>${opponent}</span> ${getTeamLogoHtml(opponent, "small")}</span>
   `;
 
   const timelineEvents = [];

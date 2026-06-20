@@ -2932,3 +2932,81 @@ select:focus {
     padding: 10px 12px;
   }
 }
+
+/* ===================== TEAM LOGO STYLES ===================== */
+.team-logo-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  line-height: 0;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.team-logo-wrapper.tiny {
+  width: 18px;
+  height: 18px;
+  padding: 1px;
+}
+
+.team-logo-wrapper.small {
+  width: 26px;
+  height: 26px;
+  padding: 2px;
+}
+
+.team-logo-wrapper.medium {
+  width: 38px;
+  height: 38px;
+  padding: 3px;
+  border-radius: 6px;
+}
+
+.team-logo-wrapper.large {
+  width: 50px;
+  height: 50px;
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.team-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.team-logo-fallback {
+  width: 100%;
+  height: 100%;
+  vertical-align: middle;
+}
+
+/* Align team cells with logos */
+.st-team {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.player-card .card-head p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.custom-select-opt-team {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.match-team {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
