@@ -270,7 +270,7 @@ h2 {
 .hero-text {
   max-width: 640px;
   margin-bottom: 0;
-  color: #4a5c52;
+  color: var(--muted);
   font-size: 1rem;
   line-height: 1.65;
 }
@@ -592,9 +592,10 @@ h2 {
 
 .formula-grid article {
   padding: 16px;
-  border: 1px solid #e0e8de;
+  border: 1px solid var(--line);
   border-radius: var(--radius-sm);
-  background: #f9faf8;
+  background: var(--panel);
+  backdrop-filter: blur(12px);
   transition: transform 160ms ease;
 }
 
@@ -604,7 +605,7 @@ h2 {
 
 .formula-grid strong {
   display: block;
-  color: var(--theme-dark);
+  color: var(--theme-primary);
   font-size: 0.98rem;
   font-weight: 800;
   margin-bottom: 8px;
@@ -612,7 +613,7 @@ h2 {
 
 .formula-grid p {
   margin: 0;
-  color: #4a5c52;
+  color: var(--muted);
   font-size: 0.88rem;
   line-height: 1.55;
 }
@@ -907,7 +908,7 @@ h2 {
 label {
   display: block;
   margin-bottom: 7px;
-  color: #2a3c30;
+  color: var(--ink);
   font-size: 0.88rem;
   font-weight: 800;
 }
@@ -917,9 +918,9 @@ select {
   width: 100%;
   min-height: 42px;
   padding: 9px 12px;
-  border: 1.5px solid #cdd6ca;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-sm);
-  background: #f9faf8;
+  background: rgba(15, 23, 42, 0.8);
   color: var(--ink);
   transition: border-color 160ms ease, box-shadow 160ms ease;
   font-weight: 600;
@@ -1054,8 +1055,8 @@ select:focus {
   align-self: start;
   padding: 5px 10px;
   border-radius: 999px;
-  background: linear-gradient(135deg, color-mix(in srgb, var(--theme-secondary) 20%, #fff8e8), #fff8e8);
-  color: #7a5200;
+  background: color-mix(in srgb, var(--theme-secondary) 15%, rgba(255, 255, 255, 0.06));
+  color: var(--theme-secondary);
   border: 1px solid color-mix(in srgb, var(--theme-secondary) 30%, transparent);
   font-size: 0.7rem;
   font-weight: 900;
@@ -1072,8 +1073,8 @@ select:focus {
 .stat {
   padding: 10px;
   border-radius: var(--radius-sm);
-  background: #f4f8f2;
-  border: 1px solid #e4ede1;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .stat span {
@@ -1090,13 +1091,14 @@ select:focus {
   margin-top: 4px;
   font-weight: 900;
   font-size: 0.92rem;
+  color: var(--ink);
 }
 
 .meter {
   height: 8px;
   overflow: hidden;
   border-radius: 999px;
-  background: #e4ede1;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .meter > span {
@@ -1110,7 +1112,7 @@ select:focus {
 
 .story {
   padding-top: 2px;
-  color: #425049;
+  color: var(--muted);
   font-size: 0.88rem;
   line-height: 1.5;
 }
@@ -1125,20 +1127,21 @@ select:focus {
 
 .compare-controls button {
   min-height: 42px;
-  border: 1.5px solid #cdd6ca;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, var(--theme-dark), #1e2e24);
-  color: white;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--ink);
   font-weight: 900;
   font-size: 0.9rem;
   cursor: pointer;
-  transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+  transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
 }
 
 .compare-controls button:hover {
   transform: scale(1.06);
-  background: linear-gradient(135deg, var(--theme-accent), #c0402c);
-  box-shadow: 0 6px 20px color-mix(in srgb, var(--theme-accent) 40%, transparent);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--theme-primary);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--theme-primary) 30%, transparent);
 }
 
 .comparison {
@@ -1233,7 +1236,7 @@ select:focus {
 }
 
 .predict-desc {
-  color: #4a5c52;
+  color: var(--muted);
   font-size: 0.92rem;
   margin-bottom: 20px;
   font-weight: 600;
@@ -1247,31 +1250,32 @@ select:focus {
 }
 
 .match-card {
-  border: 1.5px solid #e0e8de;
+  border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   padding: 16px;
-  background: #f9faf8;
+  background: var(--panel);
+  backdrop-filter: blur(12px);
   transition: border-color 200ms ease, box-shadow 200ms ease;
 }
 
 .match-card:hover {
-  border-color: color-mix(in srgb, var(--theme-primary) 40%, #e0e8de);
-  box-shadow: 0 6px 18px rgba(20,40,28,0.08);
+  border-color: color-mix(in srgb, var(--theme-primary) 40%, var(--line));
+  box-shadow: 0 0 15px color-mix(in srgb, var(--theme-primary) 12%, transparent);
 }
 
 .match-card.correct {
   border-color: var(--green);
-  background: color-mix(in srgb, var(--green) 6%, #ffffff);
+  background: color-mix(in srgb, var(--green) 8%, var(--panel));
 }
 
 .match-card.partial {
   border-color: var(--amber);
-  background: color-mix(in srgb, var(--amber) 6%, #ffffff);
+  background: color-mix(in srgb, var(--amber) 8%, var(--panel));
 }
 
 .match-card.wrong {
   border-color: var(--coral);
-  background: color-mix(in srgb, var(--coral) 5%, #ffffff);
+  background: color-mix(in srgb, var(--coral) 8%, var(--panel));
 }
 
 .match-teams {
@@ -1307,23 +1311,26 @@ select:focus {
   width: 100%;
   min-height: 38px;
   padding: 6px;
-  border: 1.5px solid #cdd6ca;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 6px;
-  background: #fff;
+  background: rgba(15, 23, 42, 0.8);
   text-align: center;
   font-weight: 900;
   font-size: 1.1rem;
   color: var(--ink);
-  transition: border-color 160ms ease;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
 }
 
 .match-inputs input:focus {
   outline: none;
   border-color: var(--theme-primary);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--theme-primary) 20%, transparent);
 }
 
 .match-inputs input:disabled {
-  background: #f0f4ee;
+  background: rgba(255, 255, 255, 0.02);
+  color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.06);
   cursor: not-allowed;
 }
 
@@ -1428,10 +1435,10 @@ select:focus {
   width: min(780px, 100%);
   max-height: min(88vh, 800px);
   overflow: auto;
-  border: 1px solid color-mix(in srgb, var(--theme-primary) 35%, #dde6da);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius);
-  background: #ffffff;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.38);
+  background: rgba(15, 23, 42, 0.95);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
   position: relative;
   animation: modalIn 200ms ease both;
 }
@@ -1442,18 +1449,18 @@ select:focus {
   right: 14px;
   width: 36px;
   height: 36px;
-  border: 1.5px solid #e0e8de;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-sm);
-  background: #f9faf8;
+  background: rgba(255, 255, 255, 0.06);
   color: var(--ink);
   font-weight: 900;
   cursor: pointer;
   font-size: 0.9rem;
-  transition: background 160ms ease, border-color 160ms ease;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
 }
 
 .modal-close:hover {
-  background: #fff0ee;
+  background: rgba(244, 63, 94, 0.15);
   border-color: var(--coral);
   color: var(--coral);
 }
@@ -1463,10 +1470,8 @@ select:focus {
   justify-content: space-between;
   gap: 44px;
   padding: 26px 26px 18px;
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--theme-primary) 10%, transparent), transparent 60%),
-    #f9faf8;
-  border-bottom: 1px solid #e4ede1;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--theme-primary) 12%, transparent), transparent 60%), rgba(15, 23, 42, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .modal-head h2 {
@@ -1489,21 +1494,21 @@ select:focus {
 
 .modal-section {
   padding: 16px;
-  border: 1px solid #e4ede1;
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: var(--radius-sm);
-  background: #f9faf8;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .modal-section h3 {
   margin: 0 0 10px;
   font-size: 0.95rem;
   font-weight: 800;
-  color: var(--theme-dark);
+  color: var(--theme-primary);
 }
 
 .modal-section p {
   margin: 0;
-  color: #435048;
+  color: var(--muted);
   line-height: 1.6;
   font-size: 0.9rem;
 }
@@ -1517,9 +1522,9 @@ select:focus {
 .career-chip {
   padding: 6px 12px;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--theme-primary) 8%, #ffffff);
-  border: 1px solid color-mix(in srgb, var(--theme-primary) 22%, #dde6da);
-  color: #243028;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--ink);
   font-size: 0.84rem;
   font-weight: 700;
 }
@@ -1533,9 +1538,9 @@ select:focus {
 .strength-list span {
   padding: 10px;
   border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, color-mix(in srgb, var(--theme-primary) 8%, #f4f8f2), #f4f8f2);
-  border: 1px solid #e4ede1;
-  color: #2a3c30;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--theme-primary);
   font-weight: 800;
   text-align: center;
   font-size: 0.88rem;
@@ -1706,15 +1711,16 @@ select:focus {
 .award-card {
   border-radius: var(--radius-sm);
   overflow: hidden;
-  border: 1px solid #e0e8de;
+  border: 1px solid var(--line);
   transition: transform 200ms ease, box-shadow 200ms ease;
-  background: #fff;
+  background: var(--panel);
+  backdrop-filter: blur(12px);
 }
 
 .award-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 18px 40px rgba(20,40,28,0.14);
-  border-color: color-mix(in srgb, var(--theme-primary) 45%, #e0e8de);
+  box-shadow: 0 0 15px color-mix(in srgb, var(--award-color, var(--theme-primary)) 15%, transparent);
+  border-color: color-mix(in srgb, var(--award-color, var(--theme-primary)) 45%, var(--line));
 }
 
 .award-header {
@@ -1768,11 +1774,11 @@ select:focus {
   margin-top: 6px;
   padding: 3px 10px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 0.76rem;
   font-weight: 700;
-  color: #c8ddd2;
+  color: var(--muted);
 }
 
 .award-body {
@@ -1785,17 +1791,17 @@ select:focus {
   gap: 6px;
   padding: 5px 12px;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--award-color, var(--theme-primary)) 10%, #f4f8f2);
-  border: 1px solid color-mix(in srgb, var(--award-color, var(--theme-primary)) 25%, #e0e8de);
+  background: color-mix(in srgb, var(--award-color, var(--theme-primary)) 12%, rgba(255, 255, 255, 0.05));
+  border: 1px solid color-mix(in srgb, var(--award-color, var(--theme-primary)) 25%, rgba(255, 255, 255, 0.12));
   font-size: 0.9rem;
   font-weight: 900;
-  color: var(--theme-dark);
+  color: var(--award-color, var(--theme-primary));
   margin-bottom: 10px;
 }
 
 .award-note {
   margin: 0;
-  color: #4a5c52;
+  color: var(--muted);
   font-size: 0.84rem;
   line-height: 1.55;
 }
@@ -1923,7 +1929,7 @@ select:focus {
   left: 0;
   width: 100%;
   max-height: 340px;
-  background: rgba(10, 18, 14, 0.96);
+  background: rgba(9, 14, 26, 0.96);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-sm);
@@ -2040,11 +2046,11 @@ select:focus {
   height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(10, 18, 14, 0.5);
+  background: rgba(9, 14, 26, 0.5);
 }
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.12);
-  border: 2px solid rgba(10, 18, 14, 0.5);
+  border: 2px solid rgba(9, 14, 26, 0.5);
   border-radius: 999px;
   transition: background 150ms ease;
 }
