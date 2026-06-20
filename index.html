@@ -283,9 +283,39 @@
         </div>
 
         <div class="compare-controls">
-          <select id="playerA"></select>
+          <input type="hidden" id="playerA">
+          <div class="custom-select-container" id="containerPlayerA">
+            <button type="button" class="custom-select-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="1. Oyuncuyu Seçin">
+              <span class="custom-select-label">Oyuncu Seçin</span>
+              <span class="custom-select-arrow">▼</span>
+            </button>
+            <div class="custom-select-dropdown" hidden>
+              <div class="custom-select-search-wrapper">
+                <input type="text" class="custom-select-search" placeholder="Oyuncu ara..." autocomplete="off">
+              </div>
+              <ul class="custom-select-options" role="listbox">
+                <!-- JS dinamik dolduracak -->
+              </ul>
+            </div>
+          </div>
+
           <button id="swapButton" type="button" aria-label="Oyuncuları değiştir" title="Oyuncuları değiştir">VS</button>
-          <select id="playerB"></select>
+
+          <input type="hidden" id="playerB">
+          <div class="custom-select-container" id="containerPlayerB">
+            <button type="button" class="custom-select-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="2. Oyuncuyu Seçin">
+              <span class="custom-select-label">Oyuncu Seçin</span>
+              <span class="custom-select-arrow">▼</span>
+            </button>
+            <div class="custom-select-dropdown" hidden>
+              <div class="custom-select-search-wrapper">
+                <input type="text" class="custom-select-search" placeholder="Oyuncu ara..." autocomplete="off">
+              </div>
+              <ul class="custom-select-options" role="listbox">
+                <!-- JS dinamik dolduracak -->
+              </ul>
+            </div>
+          </div>
         </div>
 
         <div id="comparison" class="comparison"></div>

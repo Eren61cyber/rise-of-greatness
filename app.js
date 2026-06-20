@@ -631,10 +631,176 @@ function openPlayerModal(name) {
 function closePlayerModal() { playerModal.hidden = true; }
 
 // ── KARŞILAŞTIRMA ─────────────────────────────────────────────
+function syncCustomSelectLabel(hiddenInputId) {
+  const containerId = "container" + hiddenInputId.charAt(0).toUpperCase() + hiddenInputId.slice(1);
+  const container = document.getElementById(containerId);
+  const hiddenInput = document.getElementById(hiddenInputId);
+  if (!container || !hiddenInput) return;
+  const labelSpan = container.querySelector(".custom-select-label");
+  const player = enrichedPlayers.find(p => p.name === hiddenInput.value);
+  if (player && labelSpan) {
+    labelSpan.innerHTML = `<strong>${player.name}</strong> <span style="font-size:0.75rem;opacity:0.75;margin-left:4px;">— ${player.team}</span>`;
+  }
+}
+
+function initCustomSelect(containerId, hiddenInputId, defaultValue) {
+  const container = document.getElementById(containerId);
+  const hiddenInput = document.getElementById(hiddenInputId);
+  if (!container || !hiddenInput) return;
+
+  const trigger = container.querySelector(".custom-select-trigger");
+  const dropdown = container.querySelector(".custom-select-dropdown");
+  const searchInput = container.querySelector(".custom-select-search");
+  const optionsList = container.querySelector(".custom-select-options");
+  const labelSpan = trigger.querySelector(".custom-select-label");
+
+  let activeIndex = -1;
+  let filteredPlayers = [...enrichedPlayers];
+
+  function renderOptions() {
+    optionsList.innerHTML = filteredPlayers.map((p, idx) => {
+      const isSelected = p.name === hiddenInput.value;
+      const highlightedCls = idx === activeIndex ? "highlighted" : "";
+      const selectedCls = isSelected ? "selected" : "";
+      return `<li class="custom-select-option ${selectedCls} ${highlightedCls}" 
+                  data-value="${p.name}" role="option" aria-selected="${isSelected}">
+        <div class="custom-select-opt-text">
+          <strong>${p.name}</strong>
+          <span class="custom-select-opt-team">${p.team} · ${p.position}</span>
+        </div>
+        <span class="custom-select-opt-val">${formatValue(p.marketValue)} €</span>
+      </li>`;
+    }).join("");
+  }
+
+  function selectPlayer(name) {
+    hiddenInput.value = name;
+    const player = enrichedPlayers.find(p => p.name === name);
+    if (player && labelSpan) {
+      labelSpan.innerHTML = `<strong>${player.name}</strong> <span style="font-size:0.75rem;opacity:0.75;margin-left:4px;">— ${player.team}</span>`;
+    }
+    Array.from(optionsList.children).forEach(child => {
+      const isSel = child.getAttribute("data-value") === name;
+      child.classList.toggle("selected", isSel);
+      child.setAttribute("aria-selected", isSel ? "true" : "false");
+    });
+    hiddenInput.dispatchEvent(new Event("change"));
+  }
+
+  function closeDropdown() {
+    dropdown.hidden = true;
+    container.classList.remove("open");
+    trigger.setAttribute("aria-expanded", "false");
+    activeIndex = -1;
+  }
+
+  function openDropdown() {
+    document.querySelectorAll(".custom-select-container").forEach(c => {
+      if (c !== container) {
+        c.querySelector(".custom-select-dropdown").hidden = true;
+        c.classList.remove("open");
+        c.querySelector(".custom-select-trigger").setAttribute("aria-expanded", "false");
+      }
+    });
+
+    dropdown.hidden = false;
+    container.classList.add("open");
+    trigger.setAttribute("aria-expanded", "true");
+    searchInput.value = "";
+    filteredPlayers = [...enrichedPlayers];
+    activeIndex = -1;
+    renderOptions();
+    searchInput.focus();
+    
+    const selEl = optionsList.querySelector(".custom-select-option.selected");
+    if (selEl) {
+      selEl.scrollIntoView({ block: "nearest" });
+    }
+  }
+
+  trigger.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (dropdown.hidden) {
+      openDropdown();
+    } else {
+      closeDropdown();
+    }
+  });
+
+  searchInput.addEventListener("input", (e) => {
+    const q = e.target.value.toLowerCase().trim();
+    filteredPlayers = enrichedPlayers.filter(p => 
+      p.name.toLowerCase().includes(q) || 
+      p.team.toLowerCase().includes(q) || 
+      p.position.toLowerCase().includes(q)
+    );
+    activeIndex = -1;
+    renderOptions();
+  });
+
+  optionsList.addEventListener("click", (e) => {
+    const opt = e.target.closest(".custom-select-option");
+    if (opt) {
+      selectPlayer(opt.getAttribute("data-value"));
+      closeDropdown();
+    }
+  });
+
+  container.addEventListener("keydown", (e) => {
+    if (dropdown.hidden) {
+      if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
+        e.preventDefault();
+        openDropdown();
+      }
+      return;
+    }
+
+    if (e.key === "Escape") {
+      closeDropdown();
+      trigger.focus();
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (filteredPlayers.length > 0) {
+        activeIndex = (activeIndex + 1) % filteredPlayers.length;
+        updateHighlighting();
+      }
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (filteredPlayers.length > 0) {
+        activeIndex = (activeIndex - 1 + filteredPlayers.length) % filteredPlayers.length;
+        updateHighlighting();
+      }
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (activeIndex >= 0 && activeIndex < filteredPlayers.length) {
+        selectPlayer(filteredPlayers[activeIndex].name);
+        closeDropdown();
+        trigger.focus();
+      }
+    }
+  });
+
+  function updateHighlighting() {
+    Array.from(optionsList.children).forEach((child, idx) => {
+      child.classList.toggle("highlighted", idx === activeIndex);
+      if (idx === activeIndex) {
+        child.scrollIntoView({ block: "nearest" });
+      }
+    });
+  }
+
+  document.addEventListener("click", (e) => {
+    if (!container.contains(e.target)) {
+      closeDropdown();
+    }
+  });
+
+  selectPlayer(defaultValue);
+}
+
 function fillCompareOptions() {
-  const opts = enrichedPlayers.map(p=>`<option value="${p.name}">${p.name} — ${p.team}</option>`).join("");
-  playerA.innerHTML=opts; playerB.innerHTML=opts;
-  playerA.value=topBy("impactScore").name; playerB.value=topBy("valueScore").name;
+  initCustomSelect("containerPlayerA", "playerA", topBy("impactScore").name);
+  initCustomSelect("containerPlayerB", "playerB", topBy("valueScore").name);
 }
 function sl(lbl,l,r) {
   return `<div class="duel-row"><span>${lbl}</span><strong>
@@ -787,7 +953,14 @@ playerGrid.addEventListener("keydown",e=>{
 modalClose.addEventListener("click",closePlayerModal);
 playerModal.addEventListener("click",e=>{if(e.target===playerModal)closePlayerModal();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!playerModal.hidden)closePlayerModal();});
-swapButton.addEventListener("click",()=>{const o=playerA.value;playerA.value=playerB.value;playerB.value=o;renderComparison();});
+swapButton.addEventListener("click",()=>{
+  const o=playerA.value;
+  playerA.value=playerB.value;
+  playerB.value=o;
+  syncCustomSelectLabel("playerA");
+  syncCustomSelectLabel("playerB");
+  renderComparison();
+});
 
 // ── INIT ──────────────────────────────────────────────────────
 fillTeamFilter();
