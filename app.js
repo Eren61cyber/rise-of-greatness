@@ -734,10 +734,22 @@ function renderPlayers() {
   const visibleList = list.slice(0, state.visibleLimit);
   playerGrid.innerHTML = visibleList.map(p => {
     const mw = Math.min(100, Math.round(p.valueScore/10));
+    const imgId = `card-img-${p.name.replace(/\s+/g, '-')}`;
+    
+    // Asynchronously fetch player image after DOM is updated
+    setTimeout(() => loadPlayerImage(p.name, imgId), 0);
+    
     return `<article class="player-card" data-player="${p.name}" tabindex="0" role="button" aria-label="${p.name} detayını aç">
-      <div class="card-head">
-        <div><h3>${p.name}</h3><p>${getTeamLogoHtml(p.team, "tiny")} <span>${p.team}</span> · ${p.position} · ${p.age} yaş</p></div>
-        <span class="tag">${getLabel(p)}</span>
+      <div class="card-header-with-photo">
+        <div class="player-photo-wrapper">
+          <img id="${imgId}" class="player-photo-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100%25' height='100%25' fill='%230f172a'/%3E%3C/svg%3E" alt="${p.name}">
+        </div>
+        <div class="card-head-details">
+          <div class="card-head" style="margin-bottom: 0;">
+            <div><h3 style="margin-top:0;">${p.name}</h3><p style="margin-bottom:0; display:flex; align-items:center; gap:4px;">${getTeamLogoHtml(p.team, "tiny")} <span>${p.team}</span> · ${p.position} · ${p.age} yaş</p></div>
+            <span class="tag">${getLabel(p)}</span>
+          </div>
+        </div>
       </div>
       <div class="stat-row">
         <div class="stat"><span>Piyasa Değeri</span><strong>${formatValue(p.marketValue)} €</strong></div>
@@ -766,12 +778,23 @@ function openPlayerModal(name) {
   modalPlayerName.textContent = p.name;
   modalPlayerTeam.innerHTML = `${getTeamLogoHtml(p.team, "tiny")} <span style="vertical-align:middle; margin-left:6px;">${p.team} · ${p.position} · ${p.age} yaş</span>`;
   modalPlayerTag.textContent  = getLabel(p);
+  
+  const modalImgId = `modal-img-${p.name.replace(/\s+/g, '-')}`;
+  setTimeout(() => loadPlayerImage(p.name, modalImgId), 0);
+  
   modalContent.innerHTML = `
-    <div class="modal-stats">
-      <div class="stat"><span>Piyasa Değeri</span><strong>${formatValue(p.marketValue)} €</strong></div>
-      <div class="stat"><span>Gol + Asist</span><strong>${p.contribution}</strong></div>
-      <div class="stat"><span>Etki Skoru</span><strong>${p.impactScore}</strong></div>
-      <div class="stat"><span>Değer Skoru</span><strong>${p.valueScore}</strong></div>
+    <div class="modal-body-wrapper">
+      <div class="modal-photo-container">
+        <img id="${modalImgId}" class="modal-player-photo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100%25' height='100%25' fill='%230f172a'/%3E%3C/svg%3E" alt="${p.name}">
+      </div>
+      <div class="modal-details-container">
+        <div class="modal-stats">
+          <div class="stat"><span>Piyasa Değeri</span><strong>${formatValue(p.marketValue)} €</strong></div>
+          <div class="stat"><span>Gol + Asist</span><strong>${p.contribution}</strong></div>
+          <div class="stat"><span>Etki Skoru</span><strong>${p.impactScore}</strong></div>
+          <div class="stat"><span>Değer Skoru</span><strong>${p.valueScore}</strong></div>
+        </div>
+      </div>
     </div>
     <section class="modal-section"><h3>Oyuncu profili</h3><p>${p.story}</p></section>
     <section class="modal-section"><h3>Kulüp geçmişi</h3>
@@ -1174,10 +1197,189 @@ const simStatRecord        = document.querySelector("#simStatRecord");
 const simStatGoals         = document.querySelector("#simStatGoals");
 const simStatDiff          = document.querySelector("#simStatDiff");
 const simStandingsBody     = document.querySelector("#simStandingsBody");
+const scoutSuggestionsPanel   = document.querySelector("#scoutSuggestionsPanel");
+const scoutSuggestionsContent = document.querySelector("#scoutSuggestionsContent");
 
 const simReportContent     = document.querySelector("#simReportContent");
 const simDerbyHeader       = document.querySelector("#simDerbyHeader");
 const simDerbyTimeline     = document.querySelector("#simDerbyTimeline");
+
+// Global cache for player images
+state.playerImages = state.playerImages || {};
+
+function loadPlayerImage(playerName, imgElementId) {
+  if (state.playerImages[playerName]) {
+    const imgEl = document.getElementById(imgElementId);
+    if (imgEl) {
+      imgEl.src = state.playerImages[playerName];
+      imgEl.style.opacity = 1;
+    }
+    return;
+  }
+  
+  const title = encodeURIComponent(playerName);
+  const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${title}&prop=pageimages&format=json&pithumbsize=150&origin=*`;
+  
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      const pages = data.query.pages;
+      const pageId = Object.keys(pages)[0];
+      if (pageId && pageId !== "-1" && pages[pageId].thumbnail) {
+        const imgSrc = pages[pageId].thumbnail.source;
+        state.playerImages[playerName] = imgSrc;
+        const imgEl = document.getElementById(imgElementId);
+        if (imgEl) {
+          imgEl.src = imgSrc;
+          imgEl.style.opacity = 1;
+        }
+      } else {
+        // Try Turkish Wikipedia as fallback
+        const trUrl = `https://tr.wikipedia.org/w/api.php?action=query&titles=${title}&prop=pageimages&format=json&pithumbsize=150&origin=*`;
+        fetch(trUrl)
+          .then(res => res.json())
+          .then(trData => {
+            const trPages = trData.query.pages;
+            const trPageId = Object.keys(trPages)[0];
+            if (trPageId && trPageId !== "-1" && trPages[trPageId].thumbnail) {
+              const trImgSrc = trPages[trPageId].thumbnail.source;
+              state.playerImages[playerName] = trImgSrc;
+              const imgEl = document.getElementById(imgElementId);
+              if (imgEl) {
+                imgEl.src = trImgSrc;
+                imgEl.style.opacity = 1;
+              }
+            } else {
+              // DiceBear Initials Avatar placeholder
+              const fallbackAvatar = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(playerName)}&backgroundColor=0f172a&textColor=38bdf8`;
+              state.playerImages[playerName] = fallbackAvatar;
+              const imgEl = document.getElementById(imgElementId);
+              if (imgEl) {
+                imgEl.src = fallbackAvatar;
+                imgEl.style.opacity = 1;
+              }
+            }
+          })
+          .catch(() => {
+            const fallbackAvatar = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(playerName)}&backgroundColor=0f172a&textColor=38bdf8`;
+            state.playerImages[playerName] = fallbackAvatar;
+            const imgEl = document.getElementById(imgElementId);
+            if (imgEl) {
+              imgEl.src = fallbackAvatar;
+              imgEl.style.opacity = 1;
+            }
+          });
+      }
+    })
+    .catch(() => {
+      const fallbackAvatar = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(playerName)}&backgroundColor=0f172a&textColor=38bdf8`;
+      state.playerImages[playerName] = fallbackAvatar;
+      const imgEl = document.getElementById(imgElementId);
+      if (imgEl) {
+        imgEl.src = fallbackAvatar;
+        imgEl.style.opacity = 1;
+      }
+    });
+}
+
+function updateScoutSuggestions() {
+  if (!scoutSuggestionsPanel || !scoutSuggestionsContent) return;
+
+  const selectedPlayers = Object.values(state.builderSquad).filter(p => p !== null);
+  const emptySlots = Object.entries(state.builderSquad).filter(([role, player]) => player === null);
+  
+  if (emptySlots.length === 0 || selectedPlayers.length === 0) {
+    scoutSuggestionsPanel.hidden = true;
+    return;
+  }
+  
+  let currentSquadValue = 0;
+  selectedPlayers.forEach(p => {
+    currentSquadValue += p.marketValue;
+  });
+  
+  const remainingBudget = state.builderBudget - currentSquadValue;
+  const N = emptySlots.length;
+  const averageBudgetPerPlayer = remainingBudget / N;
+  
+  const suggestions = [];
+  
+  for (let i = 0; i < Math.min(3, emptySlots.length); i++) {
+    const [role, _] = emptySlots[i];
+    const slotEl = document.getElementById("slot-" + role);
+    if (!slotEl) continue;
+    const slotPosition = slotEl.dataset.position;
+    const isForvet = slotPosition === "Forvet";
+    
+    const candidates = enrichedPlayers.filter(p => {
+      const matchesPos = isForvet 
+        ? (p.position === "Forvet" || p.position === "Kanat") 
+        : (p.position === slotPosition);
+      if (!matchesPos) return false;
+      
+      const isAlreadySelected = Object.values(state.builderSquad).some(sel => sel && sel.name === p.name);
+      if (isAlreadySelected) return false;
+      
+      return p.marketValue <= remainingBudget;
+    });
+    
+    if (candidates.length === 0) continue;
+    
+    // Score recommendation based on impactScore, penalizing if it exceeds average budget heavily
+    candidates.forEach(p => {
+      let score = p.impactScore;
+      if (p.marketValue > averageBudgetPerPlayer * 1.25) {
+        score -= (p.marketValue - averageBudgetPerPlayer) * 15;
+      }
+      p._recScore = score;
+    });
+    
+    candidates.sort((a, b) => b._recScore - a._recScore);
+    const recommendedPlayer = candidates[0];
+    
+    if (recommendedPlayer) {
+      suggestions.push({
+        role,
+        position: slotPosition,
+        player: recommendedPlayer
+      });
+    }
+  }
+  
+  if (suggestions.length === 0) {
+    scoutSuggestionsPanel.hidden = true;
+    return;
+  }
+  
+  scoutSuggestionsContent.innerHTML = suggestions.map(s => {
+    const roleUpper = s.role.toUpperCase();
+    return `
+      <div class="scout-suggestion-card">
+        <div class="scout-suggestion-info">
+          <span class="scout-suggestion-role">${roleUpper} (${s.position})</span>
+          <strong>${s.player.name}</strong>
+          <small>${s.player.team} • ${s.player.marketValue.toFixed(1)} M€ • ${s.player.impactScore} Pts</small>
+        </div>
+        <button class="btn-primary compact scout-add-btn" data-role="${s.role}" data-name="${s.player.name}" type="button">Hemen Ekle</button>
+      </div>
+    `;
+  }).join("");
+  
+  scoutSuggestionsContent.querySelectorAll(".scout-add-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const role = btn.dataset.role;
+      const name = btn.dataset.name;
+      const player = enrichedPlayers.find(x => x.name === name);
+      if (player) {
+        state.builderSquad[role] = player;
+        updateBuilderSlotDOM(role);
+        updateBuilderStats();
+      }
+    });
+  });
+  
+  scoutSuggestionsPanel.hidden = false;
+}
 
 function animateCountUp(element, target, suffix = "", duration = 1000) {
   let start = 0;
@@ -1715,6 +1917,9 @@ function updateBuilderStats() {
   if (simulateSquadBtn) {
     simulateSquadBtn.disabled = !isComplete;
   }
+
+  // AI Scout Suggestions Agent invocation
+  updateScoutSuggestions();
 }
 
 function closeBuilderModal() {
