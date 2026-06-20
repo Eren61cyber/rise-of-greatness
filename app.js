@@ -1252,7 +1252,8 @@ function runSquadSimulation() {
 
   // 2. Expected points calculation (25 matches)
   const totalImpact = selectedPlayers.reduce((s, p) => s + p.impactScore, 0);
-  const calculatedPointsBase = ((totalImpact - 700) / 280) * 40 + 25;
+  const chemBonus = (totalChemistry - 70) * 0.25; // -5 to +7.5 points effect
+  const calculatedPointsBase = ((totalImpact - 1600) / 1000) * 35 + 35 + chemBonus;
   const randomFactor = Math.floor(Math.random() * 11) - 5;
   let points = Math.max(0, Math.min(75, Math.round(calculatedPointsBase + randomFactor)));
   if (points === 74) points = 73; // 74 is mathematically impossible in 25 games
@@ -1418,15 +1419,47 @@ function runSquadSimulation() {
 
   let userGoals = 0;
   let oppGoals = 0;
-  if (totalImpact > 880) {
-    userGoals = Math.floor(Math.random() * 3) + 1;
-    oppGoals = Math.floor(Math.random() * (userGoals + 1));
-  } else if (totalImpact < 780) {
-    oppGoals = Math.floor(Math.random() * 3) + 1;
-    userGoals = Math.floor(Math.random() * oppGoals);
+  const squadStrength = (totalImpact * 0.7) + (totalChemistry * 5);
+  
+  if (squadStrength > 2000) {
+    // Strong squad: high chance of winning, but can still draw or lose a close match
+    const r = Math.random();
+    if (r < 0.6) {
+      userGoals = Math.floor(Math.random() * 3) + 1; // 1-3
+      oppGoals = Math.floor(Math.random() * userGoals); // 0 to userGoals-1 (Win)
+    } else if (r < 0.85) {
+      userGoals = Math.floor(Math.random() * 3); // 0-2
+      oppGoals = userGoals; // Draw
+    } else {
+      oppGoals = Math.floor(Math.random() * 2) + 1; // 1-2
+      userGoals = Math.floor(Math.random() * oppGoals); // Lose
+    }
+  } else if (squadStrength < 1600) {
+    // Weak squad: high chance of losing
+    const r = Math.random();
+    if (r < 0.6) {
+      oppGoals = Math.floor(Math.random() * 3) + 1;
+      userGoals = Math.floor(Math.random() * oppGoals); // Lose
+    } else if (r < 0.85) {
+      userGoals = Math.floor(Math.random() * 3);
+      oppGoals = userGoals; // Draw
+    } else {
+      userGoals = Math.floor(Math.random() * 2) + 1;
+      oppGoals = Math.floor(Math.random() * userGoals); // Win
+    }
   } else {
-    userGoals = Math.floor(Math.random() * 3);
-    oppGoals = Math.floor(Math.random() * 3);
+    // Average squad: balanced chances
+    const r = Math.random();
+    if (r < 0.4) {
+      userGoals = Math.floor(Math.random() * 3) + 1;
+      oppGoals = Math.floor(Math.random() * userGoals); // Win
+    } else if (r < 0.8) {
+      userGoals = Math.floor(Math.random() * 3);
+      oppGoals = userGoals; // Draw
+    } else {
+      oppGoals = Math.floor(Math.random() * 3) + 1;
+      userGoals = Math.floor(Math.random() * oppGoals); // Lose
+    }
   }
 
   simDerbyHeader.innerHTML = `
