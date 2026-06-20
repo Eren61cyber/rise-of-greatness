@@ -3225,3 +3225,126 @@ select:focus {
   object-fit: cover;
 }
 
+/* Aurora Background Animation */
+body::before {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.05) 0%, transparent 50%),
+              radial-gradient(circle, rgba(236, 72, 153, 0.03) 0%, transparent 60%);
+  animation: auroraFlow 25s infinite alternate linear;
+  z-index: -2;
+  pointer-events: none;
+}
+
+@keyframes auroraFlow {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate(10%, 12%) rotate(360deg);
+  }
+}
+
+/* Floating Music Player Widget */
+.music-player-widget {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 30px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(56, 189, 248, 0.15);
+  backdrop-filter: blur(12px);
+  z-index: 1000;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.music-player-widget:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56, 189, 248, 0.3);
+  box-shadow: 0 6px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.25);
+}
+
+.music-visualizer {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  width: 20px;
+  height: 20px;
+}
+
+.music-visualizer .bar {
+  width: 3px;
+  height: 4px;
+  background-color: var(--theme-primary);
+  border-radius: 1px;
+  transition: height 0.3s ease;
+}
+
+/* Visualizer animation when active */
+.music-player-widget.playing .music-visualizer .bar {
+  animation: visualize 1.2s ease infinite alternate;
+}
+
+.music-player-widget.playing .music-visualizer .bar:nth-child(1) { animation-delay: 0.1s; }
+.music-player-widget.playing .music-visualizer .bar:nth-child(2) { animation-delay: 0.4s; }
+.music-player-widget.playing .music-visualizer .bar:nth-child(3) { animation-delay: 0.2s; }
+.music-player-widget.playing .music-visualizer .bar:nth-child(4) { animation-delay: 0.5s; }
+
+@keyframes visualize {
+  0% { height: 4px; }
+  100% { height: 20px; }
+}
+
+.music-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 120px;
+}
+
+.music-title {
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
+}
+
+.music-status {
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.music-control-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.music-control-btn:hover {
+  background: var(--theme-primary);
+  border-color: var(--theme-primary);
+  color: #0f172a;
+  transform: scale(1.08);
+}
+

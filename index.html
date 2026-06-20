@@ -603,6 +603,25 @@
       </article>
     </div>
 
+    <!-- PREMIUM MUSIC WIDGET -->
+    <div class="music-player-widget" id="musicPlayer">
+      <div class="music-visualizer" id="musicVisualizer">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+      <div class="music-info">
+        <span class="music-title" id="musicTitle">Tribün Atmosferi</span>
+        <span class="music-status" id="musicStatus">Duraklatıldı</span>
+      </div>
+      <button class="music-control-btn" id="musicPlayBtn" type="button" aria-label="Oynat/Duraklat">▶</button>
+      <button class="music-control-btn" id="musicTrackBtn" type="button" aria-label="Şarkı Değiştir" title="Şarkı Değiştir">🔄</button>
+      <audio id="bgAudio" loop preload="none">
+        <source src="https://assets.mixkit.co/music/preview/mixkit-stadium-crowd-cheering-loop-1033.mp3" type="audio/mpeg">
+      </audio>
+    </div>
+
     <script src="app.js"></script>
   </body>
 </html>

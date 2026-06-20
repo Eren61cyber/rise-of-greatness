@@ -2057,6 +2057,69 @@ function initSquadBuilder() {
   updateBuilderStats();
 }
 
+function initAmbientMusic() {
+  const musicPlayer = document.querySelector("#musicPlayer");
+  const bgAudio = document.querySelector("#bgAudio");
+  const playBtn = document.querySelector("#musicPlayBtn");
+  const trackBtn = document.querySelector("#musicTrackBtn");
+  const titleText = document.querySelector("#musicTitle");
+  const statusText = document.querySelector("#musicStatus");
+  
+  if (!musicPlayer || !bgAudio || !playBtn) return;
+  
+  const playlist = [
+    { title: "Tribün Atmosferi", url: "https://assets.mixkit.co/music/preview/mixkit-stadium-crowd-cheering-loop-1033.mp3" },
+    { title: "Süper Lig Chill Beat", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" }
+  ];
+  let currentTrackIdx = 0;
+  
+  function togglePlay() {
+    if (bgAudio.paused) {
+      bgAudio.play()
+        .then(() => {
+          musicPlayer.classList.add("playing");
+          playBtn.textContent = "⏸";
+          statusText.textContent = "Oynatılıyor";
+        })
+        .catch(err => {
+          console.log("Audio play blocked by browser:", err);
+          statusText.textContent = "Engellendi (Tıkla)";
+        });
+    } else {
+      bgAudio.pause();
+      musicPlayer.classList.remove("playing");
+      playBtn.textContent = "▶";
+      statusText.textContent = "Duraklatıldı";
+    }
+  }
+  
+  function switchTrack() {
+    currentTrackIdx = (currentTrackIdx + 1) % playlist.length;
+    const track = playlist[currentTrackIdx];
+    
+    const wasPlaying = !bgAudio.paused;
+    bgAudio.src = track.url;
+    titleText.textContent = track.title;
+    
+    if (wasPlaying) {
+      bgAudio.play()
+        .then(() => {
+          statusText.textContent = "Oynatılıyor";
+        })
+        .catch(() => {
+          musicPlayer.classList.remove("playing");
+          playBtn.textContent = "▶";
+          statusText.textContent = "Duraklatıldı";
+        });
+    } else {
+      statusText.textContent = "Duraklatıldı";
+    }
+  }
+  
+  playBtn.addEventListener("click", togglePlay);
+  trackBtn.addEventListener("click", switchTrack);
+}
+
 // ── INIT ──────────────────────────────────────────────────────
 fillTeamFilter();
 fillCompareOptions();
@@ -2071,3 +2134,4 @@ renderComparison();
 renderPoll();
 renderMatchPredictions();
 initSquadBuilder();
+initAmbientMusic();
