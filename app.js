@@ -378,7 +378,7 @@ const positionModels = {
 };
 
 // ── STATE ─────────────────────────────────────────────────────
-const state = { search:"", position:"all", team:"all", sort:"valueScore", budgetOnly:false };
+const state = { search:"", position:"all", team:"all", sort:"valueScore", budgetOnly:false, visibleLimit: 12 };
 
 // ── ENRİCHED PLAYERS ──────────────────────────────────────────
 const enrichedPlayers = players.map(p => {
@@ -427,6 +427,7 @@ const predictResult    = document.querySelector("#predictResult");
 const userTotalScore   = document.querySelector("#userTotalScore");
 const navHamburger     = document.querySelector("#navHamburger");
 const navMobileMenu    = document.querySelector("#navMobileMenu");
+const loadMoreBtn      = document.querySelector("#loadMoreBtn");
 
 // ── YARDIMCILAR ───────────────────────────────────────────────
 function formatValue(v) { return v >= 1 ? v.toFixed(1)+"M" : Math.round(v*1000)+"K"; }
@@ -575,7 +576,8 @@ function renderAwards() {
 function renderPlayers() {
   const list = getFilteredPlayers();
   resultCount.textContent = `${list.length} oyuncu`;
-  playerGrid.innerHTML = list.map(p => {
+  const visibleList = list.slice(0, state.visibleLimit);
+  playerGrid.innerHTML = visibleList.map(p => {
     const mw = Math.min(100, Math.round(p.valueScore/10));
     return `<article class="player-card" data-player="${p.name}" tabindex="0" role="button" aria-label="${p.name} detayını aç">
       <div class="card-head">
@@ -596,6 +598,10 @@ function renderPlayers() {
       </a>
     </article>`;
   }).join("");
+
+  if (loadMoreBtn) {
+    loadMoreBtn.hidden = list.length <= state.visibleLimit;
+  }
 }
 
 // ── MODAL ─────────────────────────────────────────────────────
@@ -935,11 +941,11 @@ navMobileMenu.querySelectorAll(".nav-link").forEach(link=>{
 });
 
 // ── EVENT LISTENERS ───────────────────────────────────────────
-searchInput.addEventListener("input",  e=>{state.search=e.target.value;renderPlayers();});
-positionFilter.addEventListener("change",e=>{state.position=e.target.value;renderPlayers();});
-teamFilter.addEventListener("change",  e=>{state.team=e.target.value;renderPlayers();});
-sortMode.addEventListener("change",    e=>{state.sort=e.target.value;renderPlayers();});
-budgetOnly.addEventListener("change",  e=>{state.budgetOnly=e.target.checked;renderPlayers();});
+searchInput.addEventListener("input",  e=>{state.search=e.target.value; state.visibleLimit=12; renderPlayers();});
+positionFilter.addEventListener("change",e=>{state.position=e.target.value; state.visibleLimit=12; renderPlayers();});
+teamFilter.addEventListener("change",  e=>{state.team=e.target.value; state.visibleLimit=12; renderPlayers();});
+sortMode.addEventListener("change",    e=>{state.sort=e.target.value; state.visibleLimit=12; renderPlayers();});
+budgetOnly.addEventListener("change",  e=>{state.budgetOnly=e.target.checked; state.visibleLimit=12; renderPlayers();});
 playerA.addEventListener("change", renderComparison);
 playerB.addEventListener("change", renderComparison);
 squadTeamSelect.addEventListener("change", renderSquad);
@@ -961,6 +967,13 @@ swapButton.addEventListener("click",()=>{
   syncCustomSelectLabel("playerB");
   renderComparison();
 });
+
+if (loadMoreBtn) {
+  loadMoreBtn.addEventListener("click", () => {
+    state.visibleLimit += 12;
+    renderPlayers();
+  });
+}
 
 // ── INIT ──────────────────────────────────────────────────────
 fillTeamFilter();
