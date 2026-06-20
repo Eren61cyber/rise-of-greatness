@@ -3521,3 +3521,369 @@ body::before {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
+
+/* ========================================================
+   KAPSAMLI MOBİL İYİLEŞTİRME (max-width: 768px)
+   ======================================================== */
+@media (max-width: 768px) {
+
+  /* ---- Temel kap ---- */
+  .app-shell {
+    width: min(100% - 12px, 1200px);
+    padding-top: 12px;
+    padding-bottom: 40px;
+  }
+
+  /* ---- Navbar ---- */
+  .navbar-inner {
+    height: 58px;
+    padding: 0 12px;
+    gap: 12px;
+  }
+
+  .logo-text {
+    font-size: 0.92rem;
+  }
+
+  .logo-icon {
+    font-size: 1.25rem;
+  }
+
+  /* ---- Hero ---- */
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 20px 18px;
+    gap: 16px;
+  }
+
+  .hero::after {
+    right: -30px;
+    bottom: -50px;
+    font-size: 120px;
+  }
+
+  h1 {
+    font-size: clamp(1.5rem, 7vw, 2.2rem);
+    margin-bottom: 10px;
+  }
+
+  .hero-text {
+    font-size: 0.9rem;
+  }
+
+  .hero-card {
+    min-height: 150px;
+    padding: 18px;
+  }
+
+  .hero-card strong {
+    font-size: 1.4rem;
+  }
+
+  /* ---- Scoreboard: 2 kolonlu ---- */
+  .scoreboard {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .scoreboard article {
+    padding: 14px;
+  }
+
+  .scoreboard strong {
+    font-size: 0.92rem;
+  }
+
+  /* ---- Genel panel padding ---- */
+  .scoreboard article,
+  .leaderboards article,
+  .squad-panel,
+  .player-area,
+  .compare-panel,
+  .control-panel,
+  .poll-panel,
+  .predict-panel,
+  .standings-panel,
+  .squad-builder-panel,
+  .awards-panel,
+  .theme-panel,
+  .formula-panel {
+    padding: 14px;
+  }
+
+  /* ---- Section başlıkları ---- */
+  .section-title {
+    font-size: 1rem !important;
+    gap: 8px;
+  }
+
+  /* ---- Müzik widget ---- */
+  #musicPlayer {
+    bottom: 12px;
+    right: 12px;
+    padding: 10px 12px;
+    gap: 8px;
+    max-width: calc(100vw - 24px);
+  }
+
+  #musicTitle {
+    font-size: 0.72rem;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .music-control-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 0.82rem;
+  }
+
+  /* ---- Oyuncu kartları ---- */
+  .player-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px;
+  }
+
+  .player-card {
+    padding: 12px;
+  }
+
+  .card-name {
+    font-size: 0.9rem;
+  }
+
+  .card-val {
+    font-size: 0.8rem;
+  }
+
+  .card-stats {
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .stat-pill {
+    font-size: 0.72rem;
+    padding: 3px 7px;
+  }
+
+  /* ---- Karşılaştırma ---- */
+  .compare-controls {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .compare-controls button {
+    width: 100%;
+  }
+
+  /* ---- Puan durumu tablosu ---- */
+  .standings-panel {
+    overflow-x: auto;
+  }
+
+  .standings-table {
+    font-size: 0.78rem;
+    min-width: 380px;
+  }
+
+  .standings-table th,
+  .standings-table td {
+    padding: 8px 6px;
+  }
+
+  /* ---- Ödüller ızgarası ---- */
+  .awards-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+  }
+
+  .award-header {
+    padding: 12px 14px 10px;
+  }
+
+  .award-winner {
+    font-size: 1rem;
+  }
+
+  .award-body {
+    padding: 10px 14px 12px;
+  }
+
+  /* ---- Tahmin kartları ---- */
+  .match-cards {
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+  }
+
+  /* ---- Anket ---- */
+  .poll-options {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px;
+  }
+
+  /* ---- Modal ---- */
+  .modal-inner {
+    width: min(96vw, 500px);
+    padding: 16px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal-body-wrapper {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .modal-photo-container {
+    width: 72px;
+    height: 72px;
+    align-self: center;
+  }
+
+  /* ---- Filtre kontrolleri ---- */
+  .filters {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .filter-group {
+    width: 100%;
+  }
+
+  .filter-group select,
+  .filter-group input {
+    width: 100%;
+  }
+
+  /* ---- Leaderboard items ---- */
+  .board-item {
+    grid-template-columns: 26px 1fr auto;
+    gap: 6px;
+    padding: 8px 10px;
+  }
+
+  .board-name {
+    font-size: 0.82rem;
+  }
+
+  .board-val {
+    font-size: 0.8rem;
+  }
+
+  /* ---- Tema butonları ---- */
+  .theme-bar {
+    gap: 6px;
+  }
+
+  .theme-button {
+    min-width: 110px;
+    font-size: 0.78rem;
+    padding: 7px 10px;
+  }
+
+  /* ---- Düğmeler ---- */
+  .btn-primary, .btn-ghost {
+    font-size: 0.85rem;
+    padding: 9px 16px;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+
+  /* ---- Builder pitch ---- */
+  .football-pitch {
+    max-width: 100%;
+    aspect-ratio: 3 / 4.5;
+    padding: 12px 4px;
+  }
+
+  .pitch-slot {
+    width: 60px;
+    height: 76px;
+  }
+
+  /* ---- Simülasyon tablosu ---- */
+  #squadSimResults {
+    overflow-x: auto;
+  }
+
+  /* ---- Scout panel ---- */
+  .scout-suggestions {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+/* ========================================================
+   KÜÇÜK EKRAN (max-width: 430px)
+   ======================================================== */
+@media (max-width: 430px) {
+
+  .app-shell {
+    width: 100%;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  /* Scoreboard tek kolon */
+  .scoreboard {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Oyuncu kartları tek kolon */
+  .player-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Hero daha kompakt */
+  .hero {
+    padding: 16px 12px;
+  }
+
+  h1 {
+    font-size: clamp(1.3rem, 8vw, 1.9rem);
+  }
+
+  /* Navbar logo metni kısalt */
+  .logo-text {
+    font-size: 0.82rem;
+  }
+
+  /* Anket tek kolon */
+  .poll-options {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Tahmin butonları tam genişlik */
+  .predict-actions {
+    flex-direction: column;
+  }
+
+  /* Modal tam ekran */
+  .modal-inner {
+    width: 100vw;
+    border-radius: var(--radius) var(--radius) 0 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    top: auto;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
+  /* İstatistik satırı tek kolon */
+  .stat-row,
+  .modal-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  /* Müzik widget daha küçük */
+  #musicPlayer {
+    padding: 8px 10px;
+    font-size: 0.72rem;
+  }
+}
