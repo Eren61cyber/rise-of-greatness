@@ -3,99 +3,171 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Super Lig Oyuncu Atlasi</title>
+    <title>Süper Lig Atlası — Oyuncu Analiz Platformu</title>
+    <meta name="description" content="Süper Lig futbolcularını etki skoru, piyasa değeri ve form durumuyla analiz et. Scout gibi karar ver.">
+    <meta property="og:title" content="Süper Lig Atlası">
+    <meta property="og:description" content="Oyuncu değerini performans etkisiyle birlikte analiz et.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚽</text></svg>">
   </head>
   <body>
+
+    <!-- NAV BAR -->
+    <nav class="navbar" role="navigation" aria-label="Ana navigasyon">
+      <div class="navbar-inner">
+        <a href="#" class="navbar-logo" aria-label="Ana sayfa">
+          <span class="logo-icon">⚽</span>
+          <span class="logo-text">Süper Lig <strong>Atlası</strong></span>
+        </a>
+        <div class="navbar-links">
+          <a href="#hero" class="nav-link">Ana Sayfa</a>
+          <a href="#standings-section" class="nav-link">Puan Durumu</a>
+          <a href="#squad-section" class="nav-link">Kadrolar</a>
+          <a href="#poll-section" class="nav-link">Anket</a>
+          <a href="#predict-section" class="nav-link">Tahmin Oyunu</a>
+        </div>
+        <button class="nav-hamburger" id="navHamburger" aria-label="Menüyü aç" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      <div class="nav-mobile-menu" id="navMobileMenu" hidden>
+        <a href="#hero" class="nav-link">Ana Sayfa</a>
+        <a href="#standings-section" class="nav-link">Puan Durumu</a>
+        <a href="#squad-section" class="nav-link">Kadrolar</a>
+        <a href="#poll-section" class="nav-link">Anket</a>
+        <a href="#predict-section" class="nav-link">Tahmin Oyunu</a>
+      </div>
+    </nav>
+
     <main class="app-shell">
-      <section class="hero" aria-label="Uygulama ust bolumu">
+
+      <!-- HERO -->
+      <section class="hero" id="hero" aria-label="Uygulama üst bölümü">
         <div class="hero-copy">
-          <p class="eyebrow">Super Lig Oyuncu Atlasi</p>
-          <h1>Oyuncu degerini performans etkisiyle birlikte analiz et.</h1>
+          <p class="eyebrow">Süper Lig Oyuncu Atlası</p>
+          <h1>Oyuncu değerini performans etkisiyle birlikte analiz et.</h1>
           <p class="hero-text">
-            Super Lig futbolcularini skor katkisi, form durumu, buyuk mac etkisi ve piyasa degeriyle birlikte incele.
-            Degerinin uzerinde katki veren oyunculari kesfet, takimlari karsilastir, scout gibi karar ver.
+            Süper Lig futbolcularını skor katkısı, form durumu, büyük maç etkisi ve piyasa değeriyle birlikte incele.
+            Değerinin üzerinde katkı veren oyuncuları keşfet, takımları karşılaştır, scout gibi karar ver.
           </p>
         </div>
-        <div class="hero-card" aria-label="Demo haftanin oyuncusu">
+        <div class="hero-card" aria-label="Demo haftanın oyuncusu">
           <span class="live-dot"></span>
-          <p>Haftanin Deger Patlamasi</p>
+          <p>Haftanın Değer Patlaması</p>
           <strong id="heroPlayer">-</strong>
-          <small id="heroNote">Lig verisi taslagiyla hesaplandi</small>
+          <small id="heroNote">Lig verisi taslağıyla hesaplandı</small>
         </div>
       </section>
 
-      <section class="scoreboard" aria-label="Ozet skorlar">
+      <!-- SCOREBOARD -->
+      <section class="scoreboard" aria-label="Özet skorlar">
         <article>
-          <span>En yuksek etki</span>
+          <span>En yüksek etki</span>
           <strong id="topImpact">-</strong>
         </article>
         <article>
-          <span>En iyi fiyat/katki</span>
+          <span>En iyi fiyat/katkı</span>
           <strong id="topValue">-</strong>
         </article>
         <article>
-          <span>Scout radari</span>
+          <span>Scout radarı</span>
           <strong id="topScout">-</strong>
         </article>
         <article>
-          <span>Buyuk mac oyuncusu</span>
+          <span>Büyük maç oyuncusu</span>
           <strong id="topBigMatch">-</strong>
         </article>
       </section>
 
-      <section class="theme-panel" aria-label="Takim temalari">
+      <!-- TEAM THEMES -->
+      <section class="theme-panel" aria-label="Takım temaları">
         <div class="section-title compact">
           <div>
-            <p class="eyebrow">Takim modu</p>
-            <h2>Siteyi takim renklerine boya</h2>
+            <p class="eyebrow">Takım modu</p>
+            <h2>Siteyi takım renklerine boya</h2>
           </div>
-          <span id="activeThemeName">Lig temasi</span>
+          <span id="activeThemeName">Lig teması</span>
         </div>
         <div id="themeBar" class="theme-bar"></div>
       </section>
 
-      <section class="formula-panel" aria-label="Skor aciklamasi">
+      <!-- STANDINGS -->
+      <section class="standings-panel" id="standings-section" aria-label="Puan durumu">
+        <div class="section-title compact">
+          <div>
+            <p class="eyebrow">2024-25 Sezonu</p>
+            <h2>Puan Durumu</h2>
+          </div>
+          <span class="standings-badge">Final</span>
+        </div>
+        <div class="standings-table-wrap">
+          <table class="standings-table" aria-label="Süper Lig puan durumu">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Takım</th>
+                <th title="Oyun">O</th>
+                <th title="Galibiyet">G</th>
+                <th title="Beraberlik">B</th>
+                <th title="Mağlubiyet">M</th>
+                <th title="Atılan Gol">AG</th>
+                <th title="Yenilen Gol">YG</th>
+                <th title="Averaj">Av</th>
+                <th>Puan</th>
+              </tr>
+            </thead>
+            <tbody id="standingsBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- FORMULA PANEL -->
+      <section class="formula-panel" aria-label="Skor açıklaması">
         <div class="section-title compact">
           <div>
             <p class="eyebrow">Analiz modeli</p>
-            <h2>Skorlar neye gore uretiliyor?</h2>
+            <h2>Skorlar neye göre üretiliyor?</h2>
           </div>
         </div>
         <div class="formula-grid">
           <article>
             <strong>Etki Skoru</strong>
-            <p>Oyuncunun gol, asist, sure, form, buyuk mac etkisi ve mevki rolunden aldigi toplam puan.</p>
+            <p>Oyuncunun gol, asist, süre, form, büyük maç etkisi ve mevki rolünden aldığı toplam puan.</p>
           </article>
           <article>
-            <strong>Fiyat/Katki Skoru</strong>
-            <p>Etki skorunun piyasa degerine bolunmus hali. Ucuz ama etkili oyuncular burada yukari cikar.</p>
+            <strong>Fiyat/Katkı Skoru</strong>
+            <p>Etki skorunun piyasa değerine bölünmüş hali. Ucuz ama etkili oyuncular burada yukarı çıkar.</p>
           </article>
           <article>
             <strong>Mevki Analizi</strong>
-            <p>Forvet, orta saha, defans ve kaleci ayni formulde degerlendirilmez; her mevkinin agirligi farklidir.</p>
+            <p>Forvet, orta saha, defans ve kaleci aynı formülde değerlendirilmez; her mevkinin ağırlığı farklıdır.</p>
           </article>
         </div>
       </section>
 
-      <section class="squad-panel" aria-label="Takim kadrolari">
+      <!-- SQUAD PANEL -->
+      <section class="squad-panel" id="squad-section" aria-label="Takım kadroları">
         <div class="section-title">
           <div>
             <p class="eyebrow">Kadrolar</p>
-            <h2>Takim oyuncularini yavas yavas ekliyoruz</h2>
+            <h2>Takım oyuncularını yavaş yavaş ekliyoruz</h2>
           </div>
-          <select id="squadTeamSelect" aria-label="Takim sec"></select>
+          <select id="squadTeamSelect" aria-label="Takım seç"></select>
         </div>
-        <p id="squadNote" class="version-note">Yerel surum: 4 buyuk kadro guncellemesi v3</p>
+        <p id="squadNote" class="version-note">Yerel sürüm: 4 büyük kadro güncellemesi v3</p>
         <div id="squadGrid" class="squad-grid"></div>
       </section>
 
-      <section class="leaderboards" aria-label="Lider tablolari">
+      <!-- LEADERBOARDS -->
+      <section class="leaderboards" aria-label="Lider tabloları">
         <article>
           <div class="section-title compact">
             <div>
               <p class="eyebrow">Top 5</p>
-              <h2>Degerine gore katkida zirve</h2>
+              <h2>Değerine göre katkıda zirve</h2>
             </div>
           </div>
           <div id="valueBoard" class="board-list"></div>
@@ -104,24 +176,38 @@
           <div class="section-title compact">
             <div>
               <p class="eyebrow">Radar</p>
-              <h2>Az paraya yuksek potansiyel</h2>
+              <h2>Az paraya yüksek potansiyel</h2>
             </div>
           </div>
           <div id="scoutBoard" class="board-list"></div>
         </article>
       </section>
 
+      <!-- POLL SECTION -->
+      <section class="poll-panel" id="poll-section" aria-label="Haftanın anketi">
+        <div class="section-title compact">
+          <div>
+            <p class="eyebrow">Topluluk Anketi</p>
+            <h2>Haftanın en iyi oyuncusu kim?</h2>
+          </div>
+          <span class="poll-badge" id="pollBadge">Oy ver</span>
+        </div>
+        <div id="pollOptions" class="poll-options"></div>
+        <p class="poll-note" id="pollNote">Oyunuzu kullanın, sonuçları görün.</p>
+      </section>
+
+      <!-- WORKSPACE (filters + player grid) -->
       <section class="workspace">
         <aside class="control-panel" aria-label="Filtreler">
           <div class="panel-section">
             <label for="searchInput">Oyuncu ara</label>
-            <input id="searchInput" type="search" placeholder="Isim, takim veya mevki">
+            <input id="searchInput" type="search" placeholder="İsim, takım veya mevki">
           </div>
 
           <div class="panel-section">
             <label for="positionFilter">Mevki</label>
             <select id="positionFilter">
-              <option value="all">Tum mevkiler</option>
+              <option value="all">Tüm mevkiler</option>
               <option value="Forvet">Forvet</option>
               <option value="Kanat">Kanat</option>
               <option value="Orta saha">Orta saha</option>
@@ -131,27 +217,34 @@
           </div>
 
           <div class="panel-section">
-            <label for="sortMode">Sirala</label>
+            <label for="teamFilter">Takım</label>
+            <select id="teamFilter">
+              <option value="all">Tüm takımlar</option>
+            </select>
+          </div>
+
+          <div class="panel-section">
+            <label for="sortMode">Sırala</label>
             <select id="sortMode">
-              <option value="valueScore">Deger skoru</option>
+              <option value="valueScore">Değer skoru</option>
               <option value="impactScore">Etki skoru</option>
               <option value="form">Form</option>
-              <option value="marketValue">Piyasa degeri</option>
-              <option value="bigMatch">Buyuk mac</option>
+              <option value="marketValue">Piyasa değeri</option>
+              <option value="bigMatch">Büyük maç</option>
             </select>
           </div>
 
           <div class="panel-section">
             <label class="checkbox-row">
               <input id="budgetOnly" type="checkbox">
-              2M altindaki firsatlar
+              2M altındaki fırsatlar
             </label>
           </div>
 
           <div class="formula-box">
-            <strong>Deger Skoru</strong>
-            <span>Etki puani / piyasa degeri</span>
-            <small>Bu ilk formul taslagidir. Canli veri baglaninca sezon boyunca guncellenir.</small>
+            <strong>Değer Skoru</strong>
+            <span>Etki puanı / piyasa değeri</span>
+            <small>Bu ilk formül taslağıdır. Canlı veri bağlanınca sezon boyunca güncellenir.</small>
           </div>
         </aside>
 
@@ -159,7 +252,7 @@
           <div class="section-title">
             <div>
               <p class="eyebrow">Radar</p>
-              <h2>Oyuncu kartlari</h2>
+              <h2>Oyuncu kartları</h2>
             </div>
             <span id="resultCount">0 oyuncu</span>
           </div>
@@ -167,37 +260,61 @@
         </section>
       </section>
 
-      <section class="compare-panel" aria-label="Oyuncu kiyaslama">
+      <!-- COMPARE PANEL -->
+      <section class="compare-panel" aria-label="Oyuncu kıyaslama">
         <div class="section-title">
           <div>
-            <p class="eyebrow">Kapisma modu</p>
-            <h2>Iki oyuncuyu kiyasla</h2>
+            <p class="eyebrow">Kapışma modu</p>
+            <h2>İki oyuncuyu kıyasla</h2>
           </div>
         </div>
 
         <div class="compare-controls">
           <select id="playerA"></select>
-          <button id="swapButton" type="button" aria-label="Oyunculari degistir" title="Oyunculari degistir">VS</button>
+          <button id="swapButton" type="button" aria-label="Oyuncuları değiştir" title="Oyuncuları değiştir">VS</button>
           <select id="playerB"></select>
         </div>
 
         <div id="comparison" class="comparison"></div>
       </section>
 
-      <div id="playerModal" class="modal-backdrop" hidden>
-        <article class="player-modal" role="dialog" aria-modal="true" aria-labelledby="modalPlayerName">
-          <button id="modalClose" class="modal-close" type="button" aria-label="Detayi kapat">X</button>
-          <div class="modal-head">
-            <div>
-              <p id="modalPlayerTeam" class="eyebrow">Oyuncu detayi</p>
-              <h2 id="modalPlayerName">Oyuncu</h2>
-            </div>
-            <span id="modalPlayerTag" class="tag">Analiz</span>
+      <!-- MATCH PREDICTION GAME -->
+      <section class="predict-panel" id="predict-section" aria-label="Maç tahmin oyunu">
+        <div class="section-title compact">
+          <div>
+            <p class="eyebrow">Scout Modu</p>
+            <h2>🎯 Maç Skoru Tahmin Et — Puan Kazan!</h2>
           </div>
-          <div id="modalContent" class="modal-content"></div>
-        </article>
-      </div>
+          <div class="predict-score-badge">
+            <span>Puanın:</span>
+            <strong id="userTotalScore">0</strong>
+          </div>
+        </div>
+        <p class="predict-desc">Her maç için doğru skoru tahmin et. Tam isabet = <strong>3 puan</strong>, doğru sonuç = <strong>1 puan</strong>!</p>
+        <div id="matchCards" class="match-cards"></div>
+        <div class="predict-actions">
+          <button id="submitPredictions" class="btn-primary" type="button">Tahminleri Gönder</button>
+          <button id="resetPredictions" class="btn-ghost" type="button">Sıfırla</button>
+        </div>
+        <div id="predictResult" class="predict-result" hidden></div>
+      </section>
+
     </main>
+
+    <!-- PLAYER MODAL -->
+    <div id="playerModal" class="modal-backdrop" hidden>
+      <article class="player-modal" role="dialog" aria-modal="true" aria-labelledby="modalPlayerName">
+        <button id="modalClose" class="modal-close" type="button" aria-label="Detayı kapat">✕</button>
+        <div class="modal-head">
+          <div>
+            <p id="modalPlayerTeam" class="eyebrow">Oyuncu detayı</p>
+            <h2 id="modalPlayerName">Oyuncu</h2>
+          </div>
+          <span id="modalPlayerTag" class="tag">Analiz</span>
+        </div>
+        <div id="modalContent" class="modal-content"></div>
+      </article>
+    </div>
 
     <script src="app.js"></script>
   </body>
