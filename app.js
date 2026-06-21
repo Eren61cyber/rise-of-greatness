@@ -15,24 +15,24 @@ function normalizeTeamName(name) {
 
 // Her takım için tek kayıt (ASCII anahtarı — normalizeTeamName ile eşleşir)
 const teamLogos = {
-  Galatasaray:    "https://upload.wikimedia.org/wikipedia/commons/e/ea/Galatasaray_Sports_Club_Logo.svg",
-  Fenerbahce:     "https://upload.wikimedia.org/wikipedia/en/3/39/Fenerbah%C3%A7e_S.K._logo.svg",
-  Besiktas:       "https://upload.wikimedia.org/wikipedia/commons/e/ea/Logo_Besiktas.svg",
-  Trabzonspor:    "https://upload.wikimedia.org/wikipedia/commons/8/86/Trabzonspor_amblem.svg",
-  Basaksehir:     "https://upload.wikimedia.org/wikipedia/en/e/ee/Medipol_Ba%C5%9Fak%C5%9Fehir_FK_logo.svg",
-  Goztepe:        "https://upload.wikimedia.org/wikipedia/en/f/f6/G%C3%B6ztepe_Sports_Club_logo.svg",
-  Samsunspor:     "https://upload.wikimedia.org/wikipedia/commons/8/87/Samsunspor_Logo.svg",
-  Rizespor:       "https://upload.wikimedia.org/wikipedia/en/a/a2/%C3%87aykur_Rizespor_logo.svg",
-  Konyaspor:      "https://upload.wikimedia.org/wikipedia/commons/d/de/Konyaspor_amblem.svg",
-  Kocaelispor:    "https://upload.wikimedia.org/wikipedia/commons/7/75/Kocaelispor_logo.svg",
-  Alanyaspor:     "https://upload.wikimedia.org/wikipedia/commons/a/ae/Alanyaspor_Logo.svg",
-  "Gaziantep FK": "https://upload.wikimedia.org/wikipedia/en/e/e0/Gaziantep_FK_logo.svg",
-  Kasimpasa:      "https://upload.wikimedia.org/wikipedia/en/3/30/KASIMPA%C5%9EASPOR.svg",
-  Genclerbirligi: "https://upload.wikimedia.org/wikipedia/commons/9/9f/Genclerbirligi_Logo.svg",
-  Eyupspor:       "https://upload.wikimedia.org/wikipedia/commons/1/1a/Ey%C3%BCpspor_logo.svg",
-  Antalyaspor:    "https://upload.wikimedia.org/wikipedia/commons/8/88/Antalyaspor_Logo.svg",
-  Kayserispor:    "https://upload.wikimedia.org/wikipedia/commons/3/31/Kayserispor_logo.svg",
-  Karagumruk:     "https://upload.wikimedia.org/wikipedia/en/1/17/Fatih_Karag%C3%BCmr%C3%BCk_logo.svg"
+  Galatasaray:    "https://tmssl.akamaized.net/images/wappen/head/141.png",
+  Fenerbahce:     "https://tmssl.akamaized.net/images/wappen/head/36.png",
+  Besiktas:       "https://tmssl.akamaized.net/images/wappen/head/114.png",
+  Trabzonspor:    "https://tmssl.akamaized.net/images/wappen/head/449.png",
+  Basaksehir:     "https://tmssl.akamaized.net/images/wappen/head/6890.png",
+  Goztepe:        "https://tmssl.akamaized.net/images/wappen/head/1467.png",
+  Samsunspor:     "https://tmssl.akamaized.net/images/wappen/head/152.png",
+  Rizespor:       "https://tmssl.akamaized.net/images/wappen/head/126.png",
+  Konyaspor:      "https://tmssl.akamaized.net/images/wappen/head/2293.png",
+  Kocaelispor:    "https://tmssl.akamaized.net/images/wappen/head/139.png",
+  Alanyaspor:     "https://tmssl.akamaized.net/images/wappen/head/11282.png",
+  "Gaziantep FK": "https://tmssl.akamaized.net/images/wappen/head/2832.png",
+  Kasimpasa:      "https://tmssl.akamaized.net/images/wappen/head/10484.png",
+  Genclerbirligi: "https://tmssl.akamaized.net/images/wappen/head/820.png",
+  Eyupspor:       "https://tmssl.akamaized.net/images/wappen/head/4046.png",
+  Antalyaspor:    "https://tmssl.akamaized.net/images/wappen/head/589.png",
+  Kayserispor:    "https://tmssl.akamaized.net/images/wappen/head/3205.png",
+  Karagumruk:     "https://tmssl.akamaized.net/images/wappen/head/7124.png"
 };
 
 function getFallbackLogoSvg(teamName) {
@@ -244,109 +244,123 @@ const players = [
   { name:"Mame Thiam",         team:"Eyupspor",     position:"Forvet",    age:33, marketValue:1.5,goals:8,  assists:4,  minutes:2200, bigMatch:80, form:82, story:"Kayserispor ve Pendikspor sonrası Eyüpspor'da forvette çalışkanlığı ve 8 golüyle kalitesini kanıtladı.", career:["Kasımpaşa","Fenerbahce", "Kayserispor", "Pendikspor", "Eyupspor"], strengths:["Pres", "Bitiricilik", "Çalışkanlık"] },
   { name:"Jonjo Shelvey",      team:"Eyupspor",     position:"Orta saha", age:34, marketValue:1,  goals:3,  assists:4,  minutes:1700, bigMatch:80, form:79, story:"İngiliz oyun kurucu, oyun yönlendirme kalitesi, milimetrik uzun pasları ve duran top becerisiyle lige damga vurdu.", career:["Liverpool", "Newcastle", "Nottingham Forest", "Rizespor", "Eyupspor"], strengths:["Uzun Pas","Duran Top","Tecrübe"] },
 
-  // ===== ANTALYASPOR =====
-  { name:"Abdulkadir Omur",    team:"Antalyaspor",  position:"Orta saha", age:26, marketValue:1.5,goals:4,  assists:8,  minutes:2400, bigMatch:83, form:84, story:"Trabzonspor ve Hull City sonrası Antalyaspor'da yeniden doğan yaratıcı orta saha, 8 asistle parladı.", career:["Trabzonspor","Hull City","Antalyaspor"], strengths:["Teknik","Vizyon","Dribbling"] },
-  { name:"Dogukan Sinik",      team:"Antalyaspor",  position:"Kanat",     age:27, marketValue:1,  goals:6,  assists:5,  minutes:1900, bigMatch:80, form:82, story:"Kendi evine dönen milli kanat, sürati ve 6 gol 5 asistlik katkısıyla hücumun en aktif yönüydü.", career:["Antalyaspor","Hull City","Antalyaspor"], strengths:["Hız","Dribbling","Mücadele"] },
+  // ===== ANTALYASPOR (2025-26) =====
+  { name:"Julián Cuesta",      team:"Antalyaspor",  position:"Kaleci",    age:27, marketValue:0.8, goals:0, assists:0, minutes:3100, bigMatch:78, form:79, story:"Arjantinli kaleci, Antalyaspor kalesini sağlam tutarak sezon boyunca güven verdi.", career:["Independiente","Antalyaspor"], strengths:["Refleks","Bire Bir","Sakinlik"] },
+  { name:"Lautaro Giannetti",  team:"Antalyaspor",  position:"Defans",    age:29, marketValue:1.5, goals:2, assists:1, minutes:2800, bigMatch:80, form:81, story:"Arjantinli stoper, güçlü fiziği ve savunma liderliğiyle Antalyaspor'un arka hattının direğiydi.", career:["Vélez","Antalyaspor"], strengths:["Güç","Hava Topu","Liderlik"] },
+  { name:"Georgiy Dzhikiya",   team:"Antalyaspor",  position:"Defans",    age:31, marketValue:1.2, goals:1, assists:1, minutes:2600, bigMatch:80, form:80, story:"Rus milli takımının tecrübeli stoperi, Antalyaspor'da rakip forvete hayat hakkı tanımadı.", career:["Spartak Moskova","Antalyaspor"], strengths:["Güç","Müdahale","Tecrübe"] },
+  { name:"Abdülkadir Ömür",    team:"Antalyaspor",  position:"Orta saha", age:26, marketValue:2,   goals:5, assists:7, minutes:2400, bigMatch:83, form:84, story:"Trabzonspor'un değerli yetiştirmesi milli orta saha, Antalyaspor'da yaratıcı oyunuyla sezonun isimlerinden biri oldu.", career:["Trabzonspor","Hull City","Antalyaspor"], strengths:["Teknik","Vizyon","Dribbling"] },
+  { name:"Dario Šarić",        team:"Antalyaspor",  position:"Orta saha", age:31, marketValue:1.5, goals:4, assists:5, minutes:2500, bigMatch:81, form:82, story:"Bosnalı merkez orta saha, pas kalitesi ve oyun görüşüyle Antalyaspor'un motorunu oluşturdu.", career:["Anderlecht","Çeşitli","Antalyaspor"], strengths:["Pas","Oyun Görüşü","Liderlik"] },
+  { name:"Kenneth Paal",        team:"Antalyaspor",  position:"Defans",    age:27, marketValue:1.5, goals:0, assists:4, minutes:2700, bigMatch:79, form:81, story:"Hollandalı sol bek, hem savunma hem hücumda dengeli performansıyla dikkat çekti.", career:["PSV","Antalyaspor"], strengths:["Hız","Orta","Savunma"] },
+  { name:"Sander van de Streek",team:"Antalyaspor",  position:"Orta saha", age:31, marketValue:1.2, goals:3, assists:6, minutes:2300, bigMatch:80, form:81, story:"Hollandalı orta saha, top kapma ve distribüsyon kalitesiyle Antalyaspor'un kalbinde görev yaptı.", career:["FC Utrecht","Antalyaspor"], strengths:["Pas","Top Kapma","İş Disiplini"] },
+  { name:"Soner Dikmen",        team:"Antalyaspor",  position:"Defans",    age:28, marketValue:1,   goals:0, assists:2, minutes:2400, bigMatch:78, form:79, story:"Sağ bekte savunma gücü ve çalışkanlığıyla Antalyaspor'un güvenilir ismi oldu.", career:["Karagümrük","Antalyaspor"], strengths:["Savunma","Dayanıklılık","Disiplin"] },
 
-  // ===== RİZESPOR =====
-  { name:"Sinan Kahyaoglu",     team:"Rizespor",     position:"Kaleci",    age:27, marketValue:0.5, goals:0, assists:0, minutes:270,  bigMatch:70, form:73, story:"Yedek kaleci olarak kupa maçlarında görev aldı ve takıma güven verdi.", career:["Giresunspor","Rizespor"], strengths:["Refleks","Yan Top"] },
-  { name:"Samet Gunes",         team:"Rizespor",     position:"Defans",    age:28, marketValue:1.2, goals:1, assists:2, minutes:2800, bigMatch:78, form:80, story:"Rizespor'un sağ beği, çalışkanlığı ve güçlü savunmasıyla sağ kulvarı kapattı.", career:["Adanaspor","Rizespor"], strengths:["Hız","Orta","Savunma"] },
-  { name:"Marko Jonjic",        team:"Rizespor",     position:"Defans",    age:26, marketValue:1.5, goals:0, assists:2, minutes:2500, bigMatch:77, form:79, story:"Hırvatistanlı sol bek, atletizmi ve savunma sağlamlığıyla sol kulvarı güvende tuttu.", career:["HNK Rijeka","Rizespor"], strengths:["Hız","Savunma","Orta"] },
-  { name:"Ugur Demirok",        team:"Rizespor",     position:"Defans",    age:33, marketValue:0.4, goals:1, assists:0, minutes:2600, bigMatch:79, form:78, story:"Tecrübeli stoper, savunmanın liderlik rolünü üstlenerek genç oyunculara yol gösterdi.", career:["Sivasspor","Galatasaray","Rizespor"], strengths:["Hava Topu","Liderlik","Tecrübe"] },
-  { name:"Luis Rocha",          team:"Rizespor",     position:"Defans",    age:28, marketValue:1.8, goals:2, assists:0, minutes:2700, bigMatch:80, form:81, story:"Portekizli stoper, hava toplarındaki üstünlüğü ve güçlü fiziğiyle savunmada kritik rol oynadı.", career:["Vitoria SC","Famalicao","Rizespor"], strengths:["Hava Topu","Güç","Pozisyon Alma"] },
-  { name:"Eray Ataseven",       team:"Rizespor",     position:"Orta saha", age:25, marketValue:1.5, goals:3, assists:4, minutes:2200, bigMatch:79, form:81, story:"Dinamik orta saha oyuncusu, hırsı ve pres gücüyle Rizespor'un motorunu oluşturdu.", career:["Erzurumspor","Rizespor"], strengths:["Dinamizm","Top Kapma","Pres"] },
-  { name:"Riad Bajic",          team:"Rizespor",     position:"Forvet",    age:31, marketValue:1.5, goals:9, assists:3, minutes:2300, bigMatch:81, form:81, story:"Bosnalı santrfor, fiziksel gücü ve hava topu hakimiyetiyle 9 gol attı.", career:["Goztepe","Denizlispor","Rizespor"], strengths:["Hava Topu","Fizik","Bitiricilik"] },
-  { name:"Enes Unal",           team:"Rizespor",     position:"Forvet",    age:28, marketValue:3,   goals:8, assists:2, minutes:2100, bigMatch:82, form:83, story:"Milli takım geçmişli golcü, Rizespor formasıyla 8 gol atarak takımın önemli silahı oldu.", career:["Villarreal","Getafe","Rizespor"], strengths:["Bitiricilik","Pozisyon Alma","Şut"] },
-  { name:"Kahraman Haksever",   team:"Rizespor",     position:"Kanat",     age:24, marketValue:1,   goals:4, assists:5, minutes:2000, bigMatch:77, form:79, story:"Genç kanat oyuncusu, hızı ve sol ayağındaki kalitesiyle rakip savunmalara sorun yarattı.", career:["Altay","Rizespor"], strengths:["Hız","Dribbling","Potansiyel"] },
+  // ===== RİZESPOR (2025-26) =====
+  { name:"Yahia Fofana",        team:"Rizespor",     position:"Kaleci",    age:30, marketValue:1.5, goals:0, assists:0, minutes:2800, bigMatch:80, form:81, story:"Gine asıllı Fransız kaleci, Rizespor'un son halkasında tutarlı kurtarışlarla sezon boyunca güven verdi.", career:["Nice","Le Havre","Rizespor"], strengths:["Refleks","Bire Bir","Kurtarış"] },
+  { name:"Attila Mocsi",        team:"Rizespor",     position:"Defans",    age:29, marketValue:1.5, goals:1, assists:2, minutes:2700, bigMatch:79, form:80, story:"Macar sağ bek, sağ kulvarda hem savunma hem hücuma katkı sağlayan çalışkan oyuncu.", career:["Honvéd","Rizespor"], strengths:["Savunma","Çalışkanlık","Hız"] },
+  { name:"Modibo Sagnan",       team:"Rizespor",     position:"Defans",    age:28, marketValue:1.8, goals:2, assists:0, minutes:2900, bigMatch:81, form:82, story:"Fransız stoper, güçlü fiziği ve markaj ustalığıyla Rizespor savunmasının en kritik ismi oldu.", career:["Grenoble","Nîmes","Rizespor"], strengths:["Fizik","Markaj","Hava Topu"] },
+  { name:"Casper Højer Nielsen",team:"Rizespor",     position:"Defans",    age:25, marketValue:2,   goals:0, assists:3, minutes:2600, bigMatch:80, form:81, story:"Danimarkalı sol bek, modern bek anlayışıyla hem savunma hem hücuma katkıda bulunan kaliteli oyuncu.", career:["Silkeborg","Rizespor"], strengths:["Hız","Orta","Teknik"] },
+  { name:"İbrahim Olawoyin",    team:"Rizespor",     position:"Orta saha", age:27, marketValue:2.5, goals:8, assists:5, minutes:2800, bigMatch:83, form:84, story:"Nijeryalı orta saha, Rizespor'un dinamosu; hem gol hem asist üretimiyle ligin en etkili box-to-box oyuncularından.", career:["Konyaspor","Rizespor"], strengths:["Dinamizm","Gol","Top Kapma"] },
+  { name:"Qazim Laci",          team:"Rizespor",     position:"Orta saha", age:28, marketValue:2,   goals:4, assists:6, minutes:2500, bigMatch:82, form:83, story:"Arnavut milli takımının yaratıcı merkez oyuncusu, Rizespor'da ustalıklı pasları ve geniş saha görüşüyle öne çıktı.", career:["Partizani","Legia","Rizespor"], strengths:["Pas","Oyun Görüşü","Yaratıcılık"] },
+  { name:"Taylan Antalyalı",    team:"Rizespor",     position:"Orta saha", age:28, marketValue:2.5, goals:2, assists:4, minutes:2700, bigMatch:82, form:83, story:"Galatasaray'ın değerli yetiştirmesi milli oyuncu, Rizespor'da defansif orta sahada kilit rol üstlendi.", career:["Galatasaray","Rizespor"], strengths:["Top Kapma","Pas","Liderlik"] },
+  { name:"Halil Dervişoğlu",    team:"Rizespor",     position:"Forvet",    age:26, marketValue:3,   goals:9, assists:3, minutes:2400, bigMatch:83, form:84, story:"A Milli Takım golcüsü, Rizespor'da 9 golle sezonun en etkili Türk forvetlerinden biri olduğunu kanıtladı.", career:["Galatasaray","Brentford","Rizespor"], strengths:["Bitiricilik","Hız","Gol Sezgisi"] },
+  { name:"Ali Sowe",            team:"Rizespor",     position:"Forvet",    age:25, marketValue:2.5, goals:11, assists:4, minutes:2600, bigMatch:84, form:85, story:"Gambiyalı golcü, patlayıcı oyun tarzı ve 11 golle Rizespor'un sezonun en değerli bombacısı oldu.", career:["Viborg","Sivasspor","Rizespor"], strengths:["Hız","Bitiricilik","Fizik"] },
+  { name:"Valentin Mihaila",    team:"Rizespor",     position:"Kanat",     age:25, marketValue:3,   goals:6, assists:8, minutes:2300, bigMatch:83, form:84, story:"Rumen milli takımının parlayan yıldızı, hızı ve 1'e 1 üstünlüğüyle Rizespor kanatlarını ateşledi.", career:["Parma","Atalanta","Rizespor"], strengths:["Hız","Dribbling","Gol"] },
 
-  // ===== KONYASPOR =====
-  { name:"Ali Sasal Vefa",      team:"Konyaspor",    position:"Kaleci",    age:28, marketValue:1.2, goals:0, assists:0, minutes:3200, bigMatch:82, form:83, story:"Konyaspor kalesinde tutarlı performansı ve refleksleriyle takımın vazgeçilmez ismiydi.", career:["Besiktas","Konyaspor"], strengths:["Refleks","Bire Bir","Liderlik"] },
-  { name:"Nejc Skubic",         team:"Konyaspor",    position:"Defans",    age:31, marketValue:0.8, goals:1, assists:3, minutes:2900, bigMatch:80, form:80, story:"Tecrübeli Sloven sağ bek, kararlı savunması ve keskin ortalarıyla sol kanatta Guilherme Sitya ile uyum kurdu.", career:["Koper","Sturm Graz","Konyaspor"], strengths:["Savunma","Orta","Tecrübe"] },
-  { name:"Moryke Fofana",       team:"Konyaspor",    position:"Defans",    age:30, marketValue:1,   goals:2, assists:0, minutes:2700, bigMatch:79, form:80, story:"Fildişi Sahilli stoper, fiziksel mücadelelerdeki üstünlüğüyle savunmanın kilit taşıydı.", career:["Sivasspor","Konyaspor"], strengths:["Fizik","Markaj","Güç"] },
-  { name:"Ali Turan",           team:"Konyaspor",    position:"Defans",    age:35, marketValue:0.3, goals:0, assists:2, minutes:2300, bigMatch:77, form:76, story:"Tecrübeli sol bek, deneyimiyle genç oyunculara yol gösterdi.", career:["Fenerbahce","Antalyaspor","Konyaspor"], strengths:["Tecrübe","Pozisyon Alma","Savunma"] },
-  { name:"Victor Ruiz",         team:"Konyaspor",    position:"Orta saha", age:35, marketValue:0.2, goals:1, assists:3, minutes:1800, bigMatch:79, form:78, story:"İspanyol orta saha efsanesi, pas kalitesi ve oyun görüşüyle takıma liderlik etti.", career:["Valencia","Villarreal","Besiktas","Konyaspor"], strengths:["Pas","Oyun Görüşü","Tecrübe"] },
-  { name:"Mehmet Muhammed Bayir",team:"Konyaspor",  position:"Orta saha", age:24, marketValue:1.5, goals:4, assists:5, minutes:2500, bigMatch:80, form:82, story:"Genç milli oyuncu, orta sahada temposu ve teknik kalitesiyle sezonun sürprizlerinden oldu.", career:["Konyaspor"], strengths:["Dinamizm","Teknik","Potansiyel"] },
-  { name:"Florent Muslija",     team:"Konyaspor",    position:"Kanat",     age:26, marketValue:1.5, goals:5, assists:7, minutes:2400, bigMatch:81, form:83, story:"Arnavut kanat oyuncusu, çevikliği ve asistleriyle Konyaspor hücumunun en parlak yüzüydü.", career:["HJK Helsinki","Konyaspor"], strengths:["Dribbling","Asist","Hız"] },
-  { name:"Ali Palabiyik",       team:"Konyaspor",    position:"Kanat",     age:25, marketValue:1.2, goals:3, assists:4, minutes:2200, bigMatch:78, form:80, story:"Hızlı kanat oyuncusu, rakipleri presleyip baskı altında etkin hücum katkısı verdi.", career:["Altınordu","Konyaspor"], strengths:["Pres","Hız","Mücadele"] },
+  // ===== KONYASPOR (2025-26) =====
+  { name:"Deniz Ertaş",          team:"Konyaspor",    position:"Kaleci",    age:26, marketValue:1.2, goals:0, assists:0, minutes:3100, bigMatch:80, form:81, story:"Genç Türk kaleci, Konyaspor kalesinde olgunlaşarak sezonun en güvenilir file bekçilerinden biri olmaya yükseldi.", career:["Kayserispor","Konyaspor"], strengths:["Refleks","Bire Bir","Liderlik"] },
+  { name:"Josip Čalusić",        team:"Konyaspor",    position:"Defans",    age:32, marketValue:1,   goals:1, assists:2, minutes:2800, bigMatch:80, form:80, story:"Tecrübeli Hırvat sağ bek, savunma disiplini ve deney birikimini Konyaspor'a taşıdı.", career:["Çeşitli Hırvat","Konyaspor"], strengths:["Savunma","Tecrübe","Disiplin"] },
+  { name:"Guilherme Sitya",       team:"Konyaspor",    position:"Defans",    age:28, marketValue:1.5, goals:0, assists:3, minutes:2700, bigMatch:79, form:80, story:"Brezilyalı sol bek, modern bek oyunuyla hem savunmada hem hücumda etkili oldu.", career:["Santos","Konyaspor"], strengths:["Hız","Orta","Hücum Katılımı"] },
+  { name:"Adamo Nagalo",          team:"Konyaspor",    position:"Defans",    age:26, marketValue:1.8, goals:2, assists:0, minutes:2900, bigMatch:81, form:82, story:"Burkina Fasolu stoper, fiziksel gücü ve hava toplarındaki üstünlüğüyle Konyaspor savunmasının kilit taşı oldu.", career:["Çeşitli","Konyaspor"], strengths:["Fizik","Hava Topu","Güç"] },
+  { name:"Enis Bardhi",           team:"Konyaspor",    position:"Orta saha", age:30, marketValue:3,   goals:7, assists:10, minutes:2800, bigMatch:85, form:86, story:"Kuzey Makedonya'nın yıldız oyuncusu, serbest vuruş ustası ve 17 skor katkısıyla sezonun en etkileyici isimlerinden biri oldu.", career:["Levante","Konyaspor"], strengths:["Duran Top","Şut","Oyun Görüşü"] },
+  { name:"Riechedly Bazoer",      team:"Konyaspor",    position:"Orta saha", age:28, marketValue:2.5, goals:4, assists:6, minutes:2600, bigMatch:83, form:84, story:"Hollandalı defansif orta saha, top kapma ve iş gücüyle Konyaspor'un orta saha motorunu oluşturdu.", career:["Ajax","Porto","Konyaspor"], strengths:["Top Kapma","Dinamizm","Pas"] },
+  { name:"Deniz Türüç",           team:"Konyaspor",    position:"Kanat",     age:29, marketValue:2,   goals:6, assists:8, minutes:2500, bigMatch:82, form:83, story:"Milli kanat oyuncusu, çevikliği ve asistleriyle Konyaspor'un hücum vektörüydü.", career:["Başakşehir","Konyaspor"], strengths:["Hız","Dribbling","Asist"] },
+  { name:"Jackson Muleka",        team:"Konyaspor",    position:"Forvet",    age:25, marketValue:3,   goals:12, assists:3, minutes:2700, bigMatch:84, form:85, story:"Kongolu genç santrfor, 12 gol ve patlayıcı oyunuyla Konyaspor'un tartışmasız en değerli hücum kozu oldu.", career:["Standard Liège","Konyaspor"], strengths:["Hız","Bitiricilik","Fizik"] },
+  { name:"Blaz Kramer",           team:"Konyaspor",    position:"Forvet",    age:28, marketValue:2,   goals:8, assists:2, minutes:2200, bigMatch:81, form:82, story:"Sloven santrfor, fiziksel oyunu ve gol içgüdüsüyle Muleka'nın mükemmel forvetteki ortağı oldu.", career:["Olimpija","Çeşitli","Konyaspor"], strengths:["Hava Topu","Bitiricilik","Güç"] },
+  { name:"Diogo Gonçalves",       team:"Konyaspor",    position:"Kanat",     age:28, marketValue:2.5, goals:5, assists:9, minutes:2400, bigMatch:83, form:84, story:"Portekizli kanat, tekniği ve sol ayağındaki kalitesiyle Konyaspor'un en tehlikeli oyuncularından biri oldu.", career:["Benfica","PAOK","Konyaspor"], strengths:["Teknik","Dribbling","Asist"] },
 
-  // ===== KOCAELİSPOR =====
-  { name:"Sven Muller",         team:"Kocaelispor",  position:"Kaleci",    age:31, marketValue:0.5, goals:0, assists:0, minutes:270,  bigMatch:72, form:74, story:"Alman yedek kaleci, kupa maçlarında takıma güven verdi.", career:["Köln","Düsseldorf","Kocaelispor"], strengths:["Refleks","Hava Topu"] },
-  { name:"Huseyin Gocek",       team:"Kocaelispor",  position:"Defans",    age:29, marketValue:0.8, goals:1, assists:2, minutes:2700, bigMatch:78, form:80, story:"Sağ bekte çalışkanlığı ve ortalarıyla hücuma katkı veren yerli oyuncu.", career:["Boluspor","Kocaelispor"], strengths:["Çalışkanlık","Orta","Savunma"] },
-  { name:"Moustapha Seck",      team:"Kocaelispor",  position:"Defans",    age:27, marketValue:1.5, goals:1, assists:0, minutes:2900, bigMatch:80, form:81, story:"Senegalli stoper, fiziksel gücü ve hava toplarındaki hakimiyetiyle savunmanın kilit ismi oldu.", career:["Stade de Reims","Kocaelispor"], strengths:["Fizik","Hava Topu","Markaj"] },
-  { name:"Ilhan Parlak",        team:"Kocaelispor",  position:"Defans",    age:26, marketValue:1.2, goals:0, assists:2, minutes:2500, bigMatch:78, form:79, story:"Sol bekte savunma sağlamlığıyla sol kulvarı güvende tutan yerli oyuncu.", career:["Denizlispor","Kocaelispor"], strengths:["Savunma","Müdahale","Pozisyon Alma"] },
-  { name:"Marvin Mehlem",       team:"Kocaelispor",  position:"Orta saha", age:28, marketValue:1.5, goals:5, assists:6, minutes:2600, bigMatch:81, form:82, story:"Alman oyun kurucu, teknik kalitesi ve isabetli paslarıyla Kocaelispor'un hücum planını yönetti.", career:["Kaiserslautern","Darmstadt","Kocaelispor"], strengths:["Pas","Teknik","Yaratıcılık"] },
-  { name:"Oguzhan Ozyakup",     team:"Kocaelispor",  position:"Orta saha", age:33, marketValue:0.5, goals:3, assists:4, minutes:1900, bigMatch:80, form:78, story:"Beşiktaş efsanesi, tecrübesi ve pas kalitesiyle Kocaelispor orta sahasına liderlik etti.", career:["Arsenal","Besiktas","Antalyaspor","Kocaelispor"], strengths:["Pas","Teknik","Tecrübe"] },
-  { name:"Mbaye Ndiaye",        team:"Kocaelispor",  position:"Forvet",    age:25, marketValue:2,   goals:7, assists:3, minutes:2200, bigMatch:80, form:82, story:"Senegalli hızlı forvet, çevikliği ve bitiriciliğiyle ceza sahasında etkili oldu.", career:["Gaziantep FK","Kocaelispor"], strengths:["Hız","Bitiricilik","Dribbling"] },
-  { name:"Koray Altinay",       team:"Kocaelispor",  position:"Kanat",     age:23, marketValue:1,   goals:3, assists:4, minutes:1800, bigMatch:77, form:79, story:"Genç yerli kanat, hızı ve çevikliğiyle rakip defansları bunalttı.", career:["Kocaelispor"], strengths:["Hız","Dribbling","Potansiyel"] },
+  // ===== KOCAELİSPOR (2025-26) =====
+  { name:"Aleksandar Jovanovic",team:"Kocaelispor",  position:"Kaleci",    age:32, marketValue:0.8, goals:0, assists:0, minutes:3200, bigMatch:79, form:80, story:"Sırp kaleci, 16 yıl sonra Süper Lig'e dönen Kocaelispor'un kalesinde sezon boyunca güven verdi.", career:["Vojvodina","Kocaelispor"], strengths:["Refleks","Bire Bir","Deneyim"] },
+  { name:"Anfernee Dijksteel",  team:"Kocaelispor",  position:"Defans",    age:28, marketValue:2.5, goals:1, assists:3, minutes:2800, bigMatch:82, form:83, story:"Hollandalı sağ bek, Premier Lig tecrübesiyle Kocaelispor'un savunmasına uluslararası kalite kattı.", career:["Middlesbrough","Çeşitli","Kocaelispor"], strengths:["Hız","Savunma","Tecrübe"] },
+  { name:"Hrvoje Smolčić",      team:"Kocaelispor",  position:"Defans",    age:25, marketValue:3,   goals:2, assists:1, minutes:2900, bigMatch:83, form:84, story:"Hırvat genç stoper, güçlü fiziği ve oyun zekasıyla Kocaelispor savunmasının en değerli oyuncusu oldu.", career:["Rijeka","Kocaelispor"], strengths:["Güç","Hava Topu","Oyun Zekası"] },
+  { name:"Massadio Haïdara",    team:"Kocaelispor",  position:"Defans",    age:32, marketValue:1.2, goals:0, assists:4, minutes:2600, bigMatch:80, form:80, story:"Fransız sol bek, hücum katılımları ve tecrübesiyle Kocaelispor'un sol kulvarına değer kattı.", career:["Newcastle","Metz","Kocaelispor"], strengths:["Hız","Orta","Tecrübe"] },
+  { name:"Karol Linetty",       team:"Kocaelispor",  position:"Orta saha", age:30, marketValue:3,   goals:5, assists:7, minutes:2700, bigMatch:83, form:84, story:"Polonyalı milli takım oyuncusu, pas kalitesi ve büyük maç tecrübesiyle Kocaelispor'un orta saha lideri oldu.", career:["Sampdoria","Torino","Kocaelispor"], strengths:["Pas","Oyun Görüşü","Büyük Maç"] },
+  { name:"Joseph Nonge",         team:"Kocaelispor",  position:"Orta saha", age:22, marketValue:3,   goals:4, assists:6, minutes:2400, bigMatch:82, form:84, story:"Belçika asıllı genç yıldız, Dortmund akademisinden çıkma dinamik oyuncu Kocaelispor'da sezonun sürprizi oldu.", career:["Borussia Dortmund","Kocaelispor"], strengths:["Dinamizm","Dribbling","Potansiyel"] },
+  { name:"Bruno Petkovic",       team:"Kocaelispor",  position:"Forvet",    age:31, marketValue:2,   goals:10, assists:4, minutes:2600, bigMatch:83, form:84, story:"Hırvat milli takımının deneyimli santrforu, 10 golle Kocaelispor'un sezon boyunca en güvenilir hücum kozu oldu.", career:["Dinamo Zagreb","Hertha","Kocaelispor"], strengths:["Hava Topu","Bitiricilik","Fizik"] },
+  { name:"Serdar Dursun",        team:"Kocaelispor",  position:"Forvet",    age:33, marketValue:1.5, goals:7, assists:3, minutes:2100, bigMatch:80, form:81, story:"Milli golcü, Kocaelispor'un süper lig dönüşünde tecrübesiyle önemli gol katkıları verdi.", career:["Darmstadt","Fenerbahçe","Kocaelispor"], strengths:["Bitiricilik","Tecrübe","Hava Topu"] },
+  { name:"Darko Churlinov",      team:"Kocaelispor",  position:"Kanat",     age:24, marketValue:3,   goals:6, assists:8, minutes:2500, bigMatch:83, form:85, story:"Kuzey Makedonyalı genç kanat yıldızı, hızı ve dripling kalitesiyle Kocaelispor hücumunu canlandırdı.", career:["Schalke","Kocaelispor"], strengths:["Hız","Dribbling","Gol"] },
+  { name:"Rigoberto Rivas",      team:"Kocaelispor",  position:"Kanat",     age:25, marketValue:2.5, goals:5, assists:7, minutes:2300, bigMatch:82, form:83, story:"Honduraslı hızlı kanat, rakipleri baskı altına alarak sezon boyunca Kocaelispor hücumuna ivme kattı.", career:["Werder Bremen","Kocaelispor"], strengths:["Hız","Dribbling","Fizik"] },
 
-  // ===== ALANYASPOR =====
-  { name:"Berk Ceken",          team:"Alanyaspor",   position:"Kaleci",    age:23, marketValue:0.6, goals:0, assists:0, minutes:270,  bigMatch:70, form:74, story:"Genç yedek kaleci, kupa maçlarında görev yaptı ve geleceğe hazırlandı.", career:["Alanyaspor"], strengths:["Refleks","Potansiyel"] },
-  { name:"Frederic Guilbert",   team:"Alanyaspor",   position:"Defans",    age:30, marketValue:1.5, goals:1, assists:3, minutes:2700, bigMatch:80, form:81, story:"Fransız sağ bek, hücum katılımları ve keskin ortalarıyla sağ kulvara canlılık kattı.", career:["Aston Villa","Strasbourg","Alanyaspor"], strengths:["Hücum Katılımı","Orta","Hız"] },
-  { name:"Simon Falette",       team:"Alanyaspor",   position:"Defans",    age:33, marketValue:0.5, goals:1, assists:0, minutes:2800, bigMatch:80, form:81, story:"Fransız stoper, fiziksel gücü ve liderlik vasıflarıyla savunmanın bel kemiğiydi.", career:["Eintracht Frankfurt","Alanyaspor"], strengths:["Güç","Markaj","Liderlik"] },
-  { name:"Emre Tasdemir",       team:"Alanyaspor",   position:"Defans",    age:29, marketValue:1,   goals:0, assists:2, minutes:2600, bigMatch:78, form:80, story:"Sol bekte savunma sağlamlığını ön plana çıkaran milli oyuncu.", career:["Basaksehir","Alanyaspor"], strengths:["Pozisyon Alma","Savunma","Pas"] },
-  { name:"Adem Ljajic",         team:"Alanyaspor",   position:"Orta saha", age:34, marketValue:0.6, goals:5, assists:8, minutes:2400, bigMatch:83, form:83, story:"Sırp oyun ustası, tekniği ve darbe gücüyle Alanyaspor'un yaratıcı merkeziydi.", career:["Roma","Torino","Besiktas","Alanyaspor"], strengths:["Teknik","Yaratıcılık","Duran Top"] },
-  { name:"Fernando Boldrin",    team:"Alanyaspor",   position:"Orta saha", age:30, marketValue:1.2, goals:4, assists:5, minutes:2200, bigMatch:80, form:81, story:"Brezilyalı orta saha, topla çıkış kalitesi ve dinamizmiyle takımın bağ noktasıydı.", career:["Denizlispor","Alanyaspor"], strengths:["Pas","Dinamizm","Top Kapma"] },
-  { name:"Emmanuel Iyoha",      team:"Alanyaspor",   position:"Kanat",     age:27, marketValue:2,   goals:7, assists:5, minutes:2300, bigMatch:81, form:83, story:"Nijeryalı kanat oyuncusu, hızı ve çalımlarıyla Alanyaspor hücumunun en tehlikeli isimlerinden oldu.", career:["Fortuna Düsseldorf","Alanyaspor"], strengths:["Hız","Dribbling","Bitiricilik"] },
-  { name:"Anastasios Bakasetas",team:"Alanyaspor",   position:"Forvet",    age:31, marketValue:2,   goals:11, assists:3, minutes:2500, bigMatch:83, form:84, story:"Yunan golcü, 11 golle Alanyaspor'un sezonun en skorer ismi olarak parladı.", career:["Werder Bremen","Alanyaspor"], strengths:["Bitiricilik","Şut","Gol Sezgisi"] },
+  // ===== ALANYASPOR (2025-26) =====
+  { name:"Ertuğrul Taşkıran",   team:"Alanyaspor",   position:"Kaleci",    age:27, marketValue:1.5, goals:0, assists:0, minutes:3000, bigMatch:81, form:82, story:"Milli kaleci, Alanyaspor kalesinde olgun performansı ve refleksleriyle takımın son kalesi oldu.", career:["Trabzonspor","Alanyaspor"], strengths:["Refleks","Bire Bir","Liderlik"] },
+  { name:"Florent Hadergjonaj", team:"Alanyaspor",   position:"Defans",    age:30, marketValue:2,   goals:1, assists:4, minutes:2700, bigMatch:81, form:82, story:"İsviçreli Kosova asıllı sağ bek, Premier Lig geçmişiyle Alanyaspor'un sağ kulvarını kaliteli biçimde yönetti.", career:["Huddersfield","Inter","Alanyaspor"], strengths:["Hız","Savunma","Orta"] },
+  { name:"Fidan Aliti",          team:"Alanyaspor",   position:"Defans",    age:27, marketValue:2,   goals:1, assists:3, minutes:2800, bigMatch:81, form:82, story:"Kosovalı sol bek, sol kulvarda hem savunma hem hücuma katkısıyla sezonun en dikkat çekici defans oyuncularından biri oldu.", career:["Winterthur","Çeşitli","Alanyaspor"], strengths:["Hız","Orta","Fizik"] },
+  { name:"Bruno Viana",          team:"Alanyaspor",   position:"Defans",    age:29, marketValue:2.5, goals:2, assists:1, minutes:2900, bigMatch:82, form:83, story:"Portekizli stoper, Braga ve Çeşitli büyük kulüplerin geçmişiyle Alanyaspor savunmasının direği oldu.", career:["Braga","Rangers","Alanyaspor"], strengths:["Güç","Hava Topu","Markaj"] },
+  { name:"Gaius Makouta",        team:"Alanyaspor",   position:"Orta saha", age:26, marketValue:2.5, goals:3, assists:5, minutes:2600, bigMatch:82, form:83, story:"Kongo asıllı Fransız defansif orta saha, top kapma kapasitesi ve iş gücüyle Alanyaspor'un orta saha motorunu oluşturdu.", career:["Toulouse","Alanyaspor"], strengths:["Top Kapma","Dinamizm","Fizik"] },
+  { name:"Ianis Hagi",           team:"Alanyaspor",   position:"Orta saha", age:27, marketValue:4,   goals:7, assists:9, minutes:2700, bigMatch:85, form:86, story:"Gheorghe Hagi'nin oğlu ve Rumen milli takımının parlayan yıldızı, Alanyaspor'da olağanüstü bir sezon geçirerek 16 skor katkısıyla ligin en iyi oyuncularından biri oldu.", career:["Rangers","Alanyaspor"], strengths:["Teknik","Yaratıcılık","Şut"] },
+  { name:"Güven Yalçın",         team:"Alanyaspor",   position:"Forvet",    age:27, marketValue:4,   goals:14, assists:4, minutes:2800, bigMatch:86, form:87, story:"Milli golcü, 14 golle ligin en etkin Türk santrforu unvanını alarak Alanyaspor'un sezonunu taşıdı.", career:["Beşiktaş","Alanyaspor"], strengths:["Bitiricilik","Hava Topu","Pozisyon Alma"] },
+  { name:"Ui-Jo Hwang",           team:"Alanyaspor",   position:"Forvet",    age:33, marketValue:3,   goals:9, assists:3, minutes:2300, bigMatch:83, form:84, story:"Güney Koreli milli golcü, tecrübe ve bitiriciliğiyle Alanyaspor'un Güven Yalçın'ın ortağı olarak etkili bir sezon geçirdi.", career:["Bordeaux","Nottingham Forest","Alanyaspor"], strengths:["Bitiricilik","Hız","Tecrübe"] },
+  { name:"Meschack Elia",         team:"Alanyaspor",   position:"Kanat",     age:26, marketValue:3.5, goals:7, assists:10, minutes:2600, bigMatch:84, form:85, story:"Kongolu hızlı kanat, explosif oyunu ve 17 skor katkısıyla Alanyaspor'un en tehlikeli silahlarından biri oldu.", career:["Young Boys","Alanyaspor"], strengths:["Hız","Dribbling","Asist"] },
+  { name:"Steve Mounié",          team:"Alanyaspor",   position:"Forvet",    age:30, marketValue:3,   goals:8, assists:2, minutes:2100, bigMatch:82, form:83, story:"Beninli güçlü forvet, hava toplarındaki ve zemindeki etkinliğiyle Alanyaspor'un alternatifsiz hücum seçeneği oldu.", career:["Huddersfield","Brest","Alanyaspor"], strengths:["Hava Topu","Güç","Bitiricilik"] },
 
-  // ===== GAZİANTEP FK =====
-  { name:"Ali Eyuboglu",        team:"Gaziantep FK", position:"Kaleci",    age:26, marketValue:1,   goals:0, assists:0, minutes:3100, bigMatch:80, form:81, story:"Milli kaleci, Gaziantep kalesinde gösterdiği kurtarışlarla takımın en kritik kalkanı oldu.", career:["Trabzonspor","Gaziantep FK"], strengths:["Refleks","Kurtarış","Bire Bir"] },
-  { name:"Yuri Ribeiro",        team:"Gaziantep FK", position:"Defans",    age:27, marketValue:1.8, goals:0, assists:3, minutes:2700, bigMatch:79, form:81, story:"Portekizli sol bek, hızı ve hücuma katılımlarıyla sol kulvarda etkili bir oyun sergiledi.", career:["Nottingham Forest","Gaziantep FK"], strengths:["Hız","Orta","Hücum Katılımı"] },
-  { name:"Matija Nastasic",     team:"Gaziantep FK", position:"Defans",    age:32, marketValue:0.8, goals:1, assists:0, minutes:2800, bigMatch:81, form:80, story:"Tecrübeli Sırp stoper, güçlü ve dengeli savunmasıyla Gaziantep'in arka hattını sağlamlaştırdı.", career:["Man City","Schalke","Fiorentina","Gaziantep FK"], strengths:["Güç","Hava Topu","Müdahale"] },
-  { name:"Samuel Gigot",        team:"Gaziantep FK", position:"Defans",    age:32, marketValue:1,   goals:2, assists:1, minutes:2600, bigMatch:80, form:80, story:"Fransız stoper, tecrübesi ve oyun görüşüyle Gaziantep savunmasını yönetti.", career:["Anderlecht","Spartak Moskova","Gaziantep FK"], strengths:["Pas","Oyun Görüşü","Tecrübe"] },
-  { name:"Yusuf Yazici",        team:"Gaziantep FK", position:"Orta saha", age:28, marketValue:5,   goals:8, assists:9, minutes:2700, bigMatch:87, form:88, story:"Trabzonspor yetiştirmesi yıldız, Gaziantep FK'da hayatının sezonunu geçirdi: 8 gol 9 asist ile ligin en iyi oyuncularından biri oldu.", career:["Trabzonspor","Lille","CSKA Moskova","Gaziantep FK"], strengths:["Şut","Pas","Büyük Maç"] },
-  { name:"Pierre Lees-Melou",   team:"Gaziantep FK", position:"Orta saha", age:31, marketValue:1.5, goals:3, assists:5, minutes:2500, bigMatch:82, form:83, story:"Fransız orta saha, top çalma ve oyun dağıtımındaki kalitesiyle rakipleri boğdu.", career:["Norwich","Brest","Gaziantep FK"], strengths:["Top Kapma","Pas","Mücadele"] },
-  { name:"Oghenekaro Etebo",    team:"Gaziantep FK", position:"Orta saha", age:30, marketValue:1.5, goals:4, assists:4, minutes:2300, bigMatch:81, form:83, story:"Nijeryalı ön libero, yorulmak bilmeyen mücadelesi ve fiziksel üstünlüğüyle orta saha göbeğini kapattı.", career:["Stoke City","Getafe","Gaziantep FK"], strengths:["Fizik","Mücadele","Top Kapma"] },
-  { name:"Mustafa Yatabere",    team:"Gaziantep FK", position:"Forvet",    age:35, marketValue:0.3, goals:4, assists:2, minutes:1200, bigMatch:77, form:77, story:"Tecrübeli Malili forvet, golcü içgüdüsüyle kısa sürelerde de olsa takıma katkı verdi.", career:["Kasimpasa","Gaziantep FK"], strengths:["Bitiricilik","Pozisyon Alma","Tecrübe"] },
+  // ===== GAZİANTEP FK (2025-26) =====
+  { name:"Mustafa Burak Bozan", team:"Gaziantep FK", position:"Kaleci",    age:25, marketValue:1.5, goals:0, assists:0, minutes:3100, bigMatch:80, form:81, story:"Genç Türk kaleci, Gaziantep kalesinde sergilediği olgun performansla sezonun en tutarlı file bekçilerinden biri oldu.", career:["Gaziantep FK"], strengths:["Refleks","Bire Bir","Liderlik"] },
+  { name:"Nazım Sangaré",       team:"Gaziantep FK", position:"Defans",    age:29, marketValue:2,   goals:1, assists:1, minutes:2800, bigMatch:81, form:82, story:"Fransız-Gine asıllı stoper, güçlü fiziği ve hava topu hakimiyetiyle Gaziantep savunmasının temel taşı oldu.", career:["Auxerre","Gaziantep FK"], strengths:["Fizik","Hava Topu","Güç"] },
+  { name:"Myenty Abena",         team:"Gaziantep FK", position:"Defans",    age:26, marketValue:1.8, goals:1, assists:2, minutes:2700, bigMatch:80, form:81, story:"Kamerunlu stoper, savunma disiplini ve fiziksel üstünlüğüyle Gaziantep'in arka hattını sağlamlaştırdı.", career:["Çeşitli","Gaziantep FK"], strengths:["Güç","Markaj","Hava Topu"] },
+  { name:"Kévin Rodrigues",      team:"Gaziantep FK", position:"Defans",    age:29, marketValue:2,   goals:0, assists:5, minutes:2600, bigMatch:80, form:81, story:"Portekizli sol bek, hücum bindirmeleri ve ortalarıyla sol kulvarı canlandırdı.", career:["Sporting CP","Çeşitli","Gaziantep FK"], strengths:["Hız","Orta","Hücum Katılımı"] },
+  { name:"Kacper Kozłowski",     team:"Gaziantep FK", position:"Orta saha", age:22, marketValue:6,   goals:5, assists:8, minutes:2500, bigMatch:84, form:85, story:"Polonya'nın en büyük genç yeteneği, yaratıcı oyun anlayışı ve 13 skor katkısıyla sezonun sürprizi oldu.", career:["Brighton","Gaziantep FK"], strengths:["Teknik","Yaratıcılık","Potansiyel"] },
+  { name:"Alexandru Maxim",      team:"Gaziantep FK", position:"Orta saha", age:35, marketValue:1,   goals:4, assists:7, minutes:2300, bigMatch:82, form:82, story:"Romanya'nın efsane oyun kurucusu, 15 skor katkısıyla yaşına rağmen Gaziantep'in en kritik oyuncularından biri olmaya devam etti.", career:["Stuttgart","Mainz","Gaziantep FK"], strengths:["Pas","Duran Top","Oyun Görüşü"] },
+  { name:"Juninho Bacuna",       team:"Gaziantep FK", position:"Orta saha", age:28, marketValue:2.5, goals:5, assists:6, minutes:2600, bigMatch:82, form:83, story:"Hollandalı kutu-kutu orta saha, hem gol hem asist üretimiyle Gaziantep FK'nın dinamosu oldu.", career:["Birmingham","Rangers","Gaziantep FK"], strengths:["Dinamizm","Gol","Mücadele"] },
+  { name:"Mohamed Bayo",         team:"Gaziantep FK", position:"Forvet",    age:26, marketValue:4,   goals:15, assists:4, minutes:2800, bigMatch:86, form:87, story:"Gine'li golcü, 15 gol ve 4 asistlik muhteşem sezoniyle Süper Lig'in en tehlikeli santrforlarından biri olarak öne çıktı.", career:["Clermont","Gaziantep FK"], strengths:["Hız","Bitiricilik","Gol Sezgisi"] },
+  { name:"Yusuf Kabadayı",        team:"Gaziantep FK", position:"Kanat",     age:20, marketValue:5,   goals:6, assists:9, minutes:2400, bigMatch:84, form:85, story:"Bayern Münih akademisinden yetişen Türk genç yıldızı, 15 skor katkısıyla Süper Lig'de müthiş bir ilk sezonu geçirdi.", career:["Bayern Münih","Gaziantep FK"], strengths:["Hız","Teknik","Potansiyel"] },
+  { name:"Christopher Lungoyi",  team:"Gaziantep FK", position:"Kanat",     age:22, marketValue:3,   goals:7, assists:5, minutes:2200, bigMatch:82, form:84, story:"Kongolu genç kanat yıldızı, hızı ve bitiriciliğiyle Gaziantep saldırısına farklı bir boyut kattı.", career:["Club Brugge","Gaziantep FK"], strengths:["Hız","Dribbling","Gol"] },
 
-  // ===== KASIMPAŞA =====
-  { name:"Berkan Alici",        team:"Kasimpasa",    position:"Kaleci",    age:25, marketValue:0.5, goals:0, assists:0, minutes:270,  bigMatch:68, form:72, story:"Yedek kaleci olarak kupa maçlarında görev yapan genç file bekçisi.", career:["Kasımpaşa"], strengths:["Refleks","Yan Top"] },
-  { name:"Aytac Kara",          team:"Kasimpasa",    position:"Defans",    age:30, marketValue:0.8, goals:1, assists:2, minutes:2800, bigMatch:79, form:80, story:"Sağ bekte çalışkanlığıyla takımın en itaatkâr oyuncularından biriydi.", career:["Eskişehirspor","Kasımpaşa"], strengths:["Çalışkanlık","Savunma","Orta"] },
-  { name:"Ndiaye Diop",         team:"Kasimpasa",    position:"Defans",    age:28, marketValue:1.5, goals:1, assists:0, minutes:2900, bigMatch:80, form:81, story:"Senegalli stoper, fiziksel gücü ve temposuyla rakip forvete durma noktası sağladı.", career:["Metz","Kasımpaşa"], strengths:["Fizik","Güç","Markaj"] },
-  { name:"Atinc Nukan",         team:"Kasimpasa",    position:"Defans",    age:30, marketValue:0.8, goals:0, assists:2, minutes:2500, bigMatch:79, form:80, story:"Sol bek ve stoper pozisyonlarında oynayan yerli oyuncu, takımın çok yönlü savunma elemanıydı.", career:["Fenerbahce","Kasımpaşa"], strengths:["Çok Yönlülük","Savunma","Pozisyon Alma"] },
-  { name:"Elvis Manu",          team:"Kasimpasa",    position:"Kanat",     age:32, marketValue:0.5, goals:5, assists:5, minutes:2100, bigMatch:79, form:80, story:"Hollanda asıllı Ganalı kanat oyuncusu, driplingleri ve asistleriyle hücuma canlılık kattı.", career:["Feyenoord","Brighton","Kasımpaşa"], strengths:["Dribbling","Hız","Asist"] },
-  { name:"Moussa Konate",       team:"Kasimpasa",    position:"Forvet",    age:28, marketValue:2,   goals:9, assists:2, minutes:2300, bigMatch:81, form:83, story:"Senegalli santrfor, ceza sahasındaki hakimiyeti ve 9 golüyle Kasımpaşa'nın en önemli hücum kozu oldu.", career:["Club Brugge","Sivasspor","Kasımpaşa"], strengths:["Bitiricilik","Güç","Hava Topu"] },
-  { name:"Gokhan Gonul",        team:"Kasimpasa",    position:"Defans",    age:38, marketValue:0.1, goals:0, assists:2, minutes:1600, bigMatch:77, form:76, story:"Türk futbolunun efsane sağ beği, tecrübesi ve liderlik vasıflarıyla yeni nesle yol gösterdi.", career:["Fenerbahce","Besiktas","Kasımpaşa"], strengths:["Tecrübe","Liderlik","Oyun Görüşü"] },
-  { name:"Gokhan Tore",         team:"Kasimpasa",    position:"Kanat",     age:32, marketValue:0.4, goals:3, assists:4, minutes:1800, bigMatch:78, form:79, story:"Deneyimli kanat oyuncusu, driplingleri ve tecrübesiyle takıma yaratıcılık kattı.", career:["Besiktas","Galatasaray","Kasımpaşa"], strengths:["Dribbling","Teknik","Tecrübe"] },
+  // ===== KASIMPAŞA (2025-26) =====
+  { name:"Andreas Gianniotis",  team:"Kasimpasa",    position:"Kaleci",    age:37, marketValue:0.5, goals:0, assists:0, minutes:2800, bigMatch:79, form:79, story:"Yunan efsane kaleci, Kasımpaşa'da tecrübesiyle gençlere liderlik etmeye ve gol yememeye devam etti.", career:["PAOK","Kasımpaşa"], strengths:["Tecrübe","Refleks","Liderlik"] },
+  { name:"Rodrigo Becão",       team:"Kasimpasa",    position:"Defans",    age:29, marketValue:4,   goals:3, assists:1, minutes:2900, bigMatch:84, form:85, story:"Brezilyalı güçlü stoper, Udinese ve Fenerbahçe geçmişiyle Kasımpaşa savunmasının en büyük ismi oldu.", career:["Udinese","Fenerbahçe","Kasımpaşa"], strengths:["Güç","Hava Topu","Liderlik"] },
+  { name:"Nicholas Opoku",      team:"Kasimpasa",    position:"Defans",    age:27, marketValue:2.5, goals:1, assists:1, minutes:2700, bigMatch:82, form:83, story:"Ganalı stoper, hava toplarındaki üstünlüğü ve sert müdahaleleriyle Kasımpaşa'nın geçilmez duvarı oldu.", career:["Amiens","Çeşitli","Kasımpaşa"], strengths:["Güç","Hava Topu","Markaj"] },
+  { name:"Kerem Demirbay",      team:"Kasimpasa",    position:"Orta saha", age:32, marketValue:2.5, goals:4, assists:8, minutes:2600, bigMatch:84, form:84, story:"Alman milli takımının tecrübeli oyuncusu, tekniği ve duran top uzmanlığıyla Kasımpaşa orta sahasına Bundesliga kalitesi kattı.", career:["Bayer Leverkusen","Kasımpaşa"], strengths:["Pas","Duran Top","Teknik"] },
+  { name:"Haris Hajradinović",  team:"Kasimpasa",    position:"Orta saha", age:28, marketValue:2,   goals:5, assists:6, minutes:2500, bigMatch:82, form:83, story:"Boşnak yaratıcı orta saha, sol ayağındaki kaliteli vuruşları ve asistleriyle Kasımpaşa hücumunu yönetti.", career:["Çeşitli","Kasımpaşa"], strengths:["Teknik","Şut","Yaratıcılık"] },
+  { name:"İrfan Can Kahveci",   team:"Kasimpasa",    position:"Kanat",     age:30, marketValue:4,   goals:9, assists:7, minutes:2700, bigMatch:85, form:86, story:"Milli yıldız, Kasımpaşa'ya transferiyle sezonun en etkili Türk oyuncularından biri olan İrfan Can, 16 skor katkısıyla muhteşem bir dönem geçirdi.", career:["Başakşehir","Kasımpaşa"], strengths:["Dribbling","Şut","Gol Sezgisi"] },
+  { name:"Cenk Tosun",           team:"Kasimpasa",    position:"Forvet",    age:34, marketValue:2,   goals:10, assists:3, minutes:2400, bigMatch:83, form:83, story:"Türkiye'nin golcü efsanesi, Kasımpaşa'da 10 golle ligin en tecrübeli ve etkili santrforlarından biri olmayı sürdürdü.", career:["Everton","Beşiktaş","Kasımpaşa"], strengths:["Bitiricilik","Hava Topu","Tecrübe"] },
+  { name:"Adrian Benedyczak",   team:"Kasimpasa",    position:"Forvet",    age:24, marketValue:5,   goals:12, assists:3, minutes:2600, bigMatch:85, form:86, story:"Polonyalı genç yıldız, 12 golüyle Kasımpaşa'nın en skorer ismi olarak ligin en iyi forvetleri arasına girdi.", career:["Parma","Kasımpaşa"], strengths:["Hız","Bitiricilik","Pozisyon Alma"] },
+  { name:"Fousseni Diabaté",    team:"Kasimpasa",    position:"Kanat",     age:28, marketValue:3,   goals:7, assists:8, minutes:2500, bigMatch:83, form:84, story:"Malili hızlı kanat, çevikliği ve kanat dripling kalitesiyle Kasımpaşa saldırısını canlandırdı.", career:["Sivasspor","Kasımpaşa"], strengths:["Hız","Dribbling","Asist"] },
+  { name:"Emre Taşdemir",       team:"Kasimpasa",    position:"Defans",    age:29, marketValue:1.5, goals:0, assists:3, minutes:2600, bigMatch:80, form:81, story:"Milli sol bek, Kasımpaşa'nın sol kulvarında hem savunma hem hücuma katkıyla güvenilir bir performans sergiledi.", career:["Alanyaspor","Kasımpaşa"], strengths:["Savunma","Hız","Orta"] },
 
-  // ===== GENÇLERBİRLİĞİ =====
-  { name:"Muhammed Sengezer",   team:"Genclerbirligi",position:"Kaleci",   age:29, marketValue:1,   goals:0, assists:0, minutes:2800, bigMatch:79, form:80, story:"Gençlerbirliği kalesinde güven veren tutarlı performansıyla takımın savunma kalkanı oldu.", career:["Ankaragücü","Genclerbirligi"], strengths:["Refleks","Bire Bir","Liderlik"] },
-  { name:"Pablo Maffeo",        team:"Genclerbirligi",position:"Defans",   age:27, marketValue:2,   goals:0, assists:3, minutes:2600, bigMatch:81, form:82, story:"İspanyol sağ bek, hızı ve hücum bindirmeleriyle sağ kulvarda baskı oluşturdu.", career:["Stuttgart","Girona","Genclerbirligi"], strengths:["Hız","Hücum Katılımı","Savunma"] },
-  { name:"Petros Mantalos",     team:"Genclerbirligi",position:"Orta saha",age:34, marketValue:0.3, goals:3, assists:6, minutes:2300, bigMatch:80, form:81, story:"Yunan oyun kurucunun ustalıklı pasları ve saha görüşüyle Gençlerbirliği'ni yönetti.", career:["PAOK","Atromitos","Genclerbirligi"], strengths:["Pas","Oyun Görüşü","Duran Top"] },
-  { name:"Mehmet Sedef",        team:"Genclerbirligi",position:"Defans",   age:30, marketValue:0.6, goals:1, assists:1, minutes:2700, bigMatch:78, form:79, story:"Stoper pozisyonunda sertliği ve agresif savunma anlayışıyla Gençlerbirliği'nin geçilmez duvarlarından biriydi.", career:["Rizespor","Genclerbirligi"], strengths:["Agresiflik","Hava Topu","Markaj"] },
-  { name:"Tolga Cigerci",       team:"Genclerbirligi",position:"Orta saha",age:33, marketValue:0.3, goals:2, assists:4, minutes:2000, bigMatch:79, form:79, story:"Tecrübeli milli orta saha, pas kalitesi ve oyun görüşüyle rotasyonun güvenilir ismi oldu.", career:["Galatasaray","Wolfsburg","Genclerbirligi"], strengths:["Pas","Tecrübe","Oyun Görüşü"] },
-  { name:"Bilal El Khannouss",  team:"Genclerbirligi",position:"Orta saha",age:21, marketValue:10,  goals:6, assists:9, minutes:2700, bigMatch:85, form:87, story:"Fas asıllı Belçikalı yıldız aday, Gençlerbirliği'nde muhteşem bir sezon geçirerek ligde 15 skor katkısıyla scoutların gözdesi oldu.", career:["Genk","Fiorentina","Genclerbirligi"], strengths:["Teknik","Yaratıcılık","Potansiyel"] },
-  { name:"Arouna Kone",         team:"Genclerbirligi",position:"Forvet",   age:24, marketValue:1.5, goals:5, assists:2, minutes:1600, bigMatch:78, form:80, story:"Fildişi Sahilli genç forvet, hızı ve patlayıcılığıyla Gençlerbirliği'nin alternatif hücum silahı oldu.", career:["Lausanne","Genclerbirligi"], strengths:["Hız","Fizik","Potansiyel"] },
-  { name:"Emre Mor",            team:"Genclerbirligi",position:"Kanat",    age:28, marketValue:2,   goals:4, assists:7, minutes:2200, bigMatch:82, form:83, story:"Bir zamanlar büyük ümit vadeden milli kanat, Gençlerbirliği'nde yeniden doğarak 11 skor katkısıyla ligde fark yarattı.", career:["Dortmund","Celta Vigo","Galatasaray","Genclerbirligi"], strengths:["Dribbling","Hız","Teknik"] },
+  // ===== GENÇLERBİRLİĞİ (2025-26) =====
+  { name:"Gökhan Akkan",         team:"Genclerbirligi",position:"Kaleci",   age:27, marketValue:2,   goals:0, assists:0, minutes:2900, bigMatch:81, form:82, story:"Milli kaleci, Gençlerbirliği'nin süper lig dönüşünde kale çizgisinin güvencesi oldu.", career:["Gençlerbirliği","Hatayspor","Genclerbirligi"], strengths:["Refleks","Bire Bir","Liderlik"] },
+  { name:"Dimitris Goutas",      team:"Genclerbirligi",position:"Defans",   age:27, marketValue:2.5, goals:2, assists:1, minutes:2800, bigMatch:82, form:83, story:"Yunan milli takımının tecrübeli stoperi, savunma liderliği ve hava topu gücüyle Gençlerbirliği'nin en değerli defans oyuncusu oldu.", career:["PAOK","Rangers","Genclerbirligi"], strengths:["Güç","Hava Topu","Liderlik"] },
+  { name:"Zan Zuzek",            team:"Genclerbirligi",position:"Defans",   age:27, marketValue:2.5, goals:1, assists:2, minutes:2700, bigMatch:81, form:82, story:"Sloven milli takımının solak stoperi, topla çıkış kalitesi ve sağlam savunmasıyla öne çıktı.", career:["Olimpija","Genclerbirligi"], strengths:["Pas","Savunma","Topla Çıkış"] },
+  { name:"Oghenekaro Etebo",     team:"Genclerbirligi",position:"Orta saha",age:30, marketValue:3,   goals:4, assists:6, minutes:2700, bigMatch:83, form:84, story:"Nijeryalı merkez orta saha, yılmaz mücadelesi ve fiziksel üstünlüğüyle Gençlerbirliği'nin orta saha baskısını oluşturdu.", career:["Getafe","Stoke City","Genclerbirligi"], strengths:["Fizik","Mücadele","Top Kapma"] },
+  { name:"Tom Dele-Bashiru",     team:"Genclerbirligi",position:"Orta saha",age:25, marketValue:4,   goals:5, assists:7, minutes:2600, bigMatch:84, form:85, story:"İngiliz-Nijeryalı yıldız aday, atletizmi ve maç etkisiyle Gençlerbirliği'nin orta sahasını defalarca fark yarattı.", career:["Watford","Rangers","Genclerbirligi"], strengths:["Fizik","Dinamizm","Büyük Maç"] },
+  { name:"Mbaye Niang",          team:"Genclerbirligi",position:"Forvet",   age:30, marketValue:1.5, goals:8, assists:3, minutes:2100, bigMatch:81, form:82, story:"Fransız-Senegalli golcü, AC Milan ve birçok büyük kulüpten geçen tecrübe ile Gençlerbirliği'nde gol yağmuruna devam etti.", career:["AC Milan","Torino","Genclerbirligi"], strengths:["Bitiricilik","Fizik","Tecrübe"] },
+  { name:"Henry Onyekuru",       team:"Genclerbirligi",position:"Kanat",    age:28, marketValue:2,   goals:7, assists:8, minutes:2500, bigMatch:83, form:84, story:"Nijeryalı kanat yıldızı, Galatasaray'daki harika dönemin ardından Gençlerbirliği'nde hızı ve dripling gücüyle yeniden parladı.", career:["Galatasaray","Monaco","Genclerbirligi"], strengths:["Hız","Dribbling","Gol"] },
+  { name:"Sékou Koïta",          team:"Genclerbirligi",position:"Kanat",    age:25, marketValue:3,   goals:6, assists:9, minutes:2400, bigMatch:83, form:84, story:"Gine asıllı Avusturyalı hızlı kanat yıldızı, Salzburg'un ardından Gençlerbirliği'nde kanatları ateşledi.", career:["Red Bull Salzburg","Genclerbirligi"], strengths:["Hız","Dribbling","Fizik"] },
+  { name:"Pedro Pereira",        team:"Genclerbirligi",position:"Defans",   age:28, marketValue:2,   goals:1, assists:4, minutes:2600, bigMatch:80, form:81, story:"Portekizli sağ bek, hücum katkıları ve orta kalitesiyle Gençlerbirliği'nin sağ kulvarını hakimiyeti altına aldı.", career:["Sporting CP","Genclerbirligi"], strengths:["Hız","Orta","Hücum Katılımı"] },
+  { name:"Franco Tongya",        team:"Genclerbirligi",position:"Orta saha",age:23, marketValue:3,   goals:4, assists:7, minutes:2200, bigMatch:82, form:84, story:"Fransız-İtalyan genç yetenekli oyuncu, Juventus akademisinden gelen Tongya, Gençlerbirliği'nde sezonun en parlak yeni isimleri arasına girdi.", career:["Juventus","Genclerbirligi"], strengths:["Teknik","Yaratıcılık","Potansiyel"] },
 
-  // ===== ANTALYASPOR =====
-  { name:"Ruben Martinez",      team:"Antalyaspor",  position:"Kaleci",    age:30, marketValue:0.8, goals:0, assists:0, minutes:3000, bigMatch:79, form:80, story:"İspanyol kaleci, Antalyaspor kalesinde sergilediği tutarlı performansla takımın vazgeçilmez ismiydi.", career:["Villarreal B","Girona","Antalyaspor"], strengths:["Refleks","Bire Bir","Sakinlik"] },
-  { name:"Nazim Sangare",       team:"Antalyaspor",  position:"Defans",    age:28, marketValue:1.5, goals:1, assists:0, minutes:2800, bigMatch:79, form:81, story:"Gine asıllı Fransız stoper, güçlü fiziği ve havadan geçilmez yapısıyla savunmanın en kritik parçasıydı.", career:["Auxerre","Antalyaspor"], strengths:["Fizik","Hava Topu","Güç"] },
-  { name:"Davide Verdi",        team:"Antalyaspor",  position:"Kanat",     age:34, marketValue:0.5, goals:5, assists:6, minutes:2100, bigMatch:82, form:81, story:"Tecrübeli İtalyan kanat oyuncusu, tekniği ve duran toplarıyla Antalyaspor hücumuna liderlik etti.", career:["Torino","Bologna","Antalyaspor"], strengths:["Teknik","Duran Top","Tecrübe"] },
-  { name:"Jose Rodriguez",      team:"Antalyaspor",  position:"Orta saha", age:29, marketValue:1,   goals:3, assists:5, minutes:2400, bigMatch:80, form:81, story:"İspanyol orta saha, pas kalitesi ve oyun görüşüyle takımın yaratıcı bağlantı noktasıydı.", career:["Mainz","Antalyaspor"], strengths:["Pas","Oyun Görüşü","Teknik"] },
-  { name:"Aykut Demir",         team:"Antalyaspor",  position:"Defans",    age:26, marketValue:1.2, goals:0, assists:3, minutes:2500, bigMatch:77, form:79, story:"Sol bekte çalışkanlığı ve bindirmeleriyle hücuma destek veren yerli oyuncu.", career:["Alanyaspor","Antalyaspor"], strengths:["Çalışkanlık","Orta","Hız"] },
-  { name:"Musa Araz",           team:"Antalyaspor",  position:"Defans",    age:27, marketValue:0.8, goals:1, assists:1, minutes:2200, bigMatch:77, form:78, story:"Stoper pozisyonunda güçlü fiziği ve havasından geçilmez yapısıyla rakip forvete hayat hakkı tanımadı.", career:["Giresunspor","Antalyaspor"], strengths:["Güç","Hava Topu","Savunma"] },
-  { name:"Carlos Strandberg",   team:"Antalyaspor",  position:"Forvet",    age:30, marketValue:1.5, goals:10, assists:3, minutes:2600, bigMatch:82, form:83, story:"İsveçli santrfor, 10 golle Antalyaspor'un sezon boyunca en güvendiği hücum lideri oldu.", career:["Hammarby","AIK","Antalyaspor"], strengths:["Hava Topu","Bitiricilik","Fizik"] },
-  { name:"Isaac Thelin",        team:"Antalyaspor",  position:"Forvet",    age:33, marketValue:0.8, goals:6, assists:2, minutes:1700, bigMatch:79, form:80, story:"Tecrübeli İsveçli forvet, çalışkanlığı ve gol bulma içgüdüsüyle rotasyonun önemli bir parçası oldu.", career:["Anderlecht","Bayer Leverkusen","Antalyaspor"], strengths:["Bitiricilik","Pres","Tecrübe"] },
+  // ===== KAYSERİSPOR (2025-26) =====
+  { name:"Bilal Bayazıt",       team:"Kayserispor",  position:"Kaleci",    age:28, marketValue:2,   goals:0, assists:0, minutes:3000, bigMatch:81, form:82, story:"İsveç milli takımının genç kalecisi, Kayserispor'da olağanüstü kurtarışlarla takımın puan toplamasına önemli katkı sağladı.", career:["Çeşitli","Kayserispor"], strengths:["Refleks","Bire Bir","Kurtarış"] },
+  { name:"Stefano Denswil",     team:"Kayserispor",  position:"Defans",    age:31, marketValue:2,   goals:1, assists:2, minutes:2800, bigMatch:81, form:82, story:"Hollandalı stoper, Club Brugge ve Inter geçmişiyle Kayserispor'un savunmasına üst düzey kalite kattı.", career:["Club Brugge","Bologna","Kayserispor"], strengths:["Güç","Hava Topu","Tecrübe"] },
+  { name:"Majid Hosseini",      team:"Kayserispor",  position:"Defans",    age:26, marketValue:2.5, goals:2, assists:1, minutes:2700, bigMatch:82, form:83, story:"İranlı genç stoper, güçlü fiziği ve topaklık yeteneğiyle Kayserispor'un en değerli defans oyuncularından biri oldu.", career:["Çeşitli","Kayserispor"], strengths:["Güç","Markaj","Fizik"] },
+  { name:"László Bénes",        team:"Kayserispor",  position:"Orta saha", age:28, marketValue:3,   goals:5, assists:8, minutes:2700, bigMatch:84, form:85, story:"Slovakya milli takımının kilit oyuncusu, teknik kalitesi ve pas vizyonuyla Kayserispor'un oyun kurucusu oldu.", career:["Borussia MG","Hamburger SV","Kayserispor"], strengths:["Pas","Teknik","Oyun Görüşü"] },
+  { name:"Youssef Aït Bennasser",team:"Kayserispor", position:"Orta saha", age:28, marketValue:2.5, goals:3, assists:5, minutes:2500, bigMatch:82, form:83, story:"Faslı milli oyuncu, orta sahada disiplin ve kalitesiyle Kayserispor'a Avrupa seviyesi getirdi.", career:["Nantes","Kayserispor"], strengths:["Top Kapma","Pas","Dinamizm"] },
+  { name:"Dorukhan Toköz",      team:"Kayserispor",  position:"Orta saha", age:30, marketValue:2,   goals:4, assists:6, minutes:2400, bigMatch:82, form:83, story:"Milli oyuncu, Beşiktaş'tan sonra Kayserispor'da merkez orta sahada liderlik rolü üstlendi.", career:["Beşiktaş","Kayserispor"], strengths:["Pas","Liderlik","Top Kapma"] },
+  { name:"Miguel Cardoso",      team:"Kayserispor",  position:"Forvet",    age:24, marketValue:4,   goals:13, assists:5, minutes:2700, bigMatch:85, form:86, story:"Portekizli genç golcü, 13 golle sezonun en sürpriz ismi olarak Kayserispor'u neredeyse tek başına taşıdı.", career:["Benfica","Kayserispor"], strengths:["Hız","Bitiricilik","Teknik"] },
+  { name:"Carlos Mané",         team:"Kayserispor",  position:"Kanat",     age:33, marketValue:2,   goals:6, assists:7, minutes:2200, bigMatch:82, form:82, story:"Tecrübeli Gine-Bissaulu kanat, bireysel kalitesi ve gol katkısıyla Kayserispor hücumuna farklı bir boyut kattı.", career:["Sporting CP","RB Leipzig","Kayserispor"], strengths:["Hız","Dribbling","Teknik"] },
+  { name:"Sam Mather",          team:"Kayserispor",  position:"Orta saha", age:22, marketValue:2,   goals:3, assists:5, minutes:2000, bigMatch:80, form:82, story:"İngiliz genç orta saha, Manchester United akademisinden gelen Mather, Kayserispor'da Süper Lig deneyimi kazandı.", career:["Manchester United","Kayserispor"], strengths:["Dinamizm","Potansiyel","Teknik"] },
+  { name:"Joshua Brenet",       team:"Kayserispor",  position:"Defans",    age:30, marketValue:1.5, goals:0, assists:4, minutes:2600, bigMatch:80, form:81, story:"Hollandalı sağ bek, PSV ve çeşitli Hollanda-Almanya deneyimiyle Kayserispor'un sağ kulvarını yönetti.", career:["PSV","TSG Hoffenheim","Kayserispor"], strengths:["Hız","Savunma","Orta"] },
 
-  // ===== KAYSERİSPOR =====
-  { name:"Okan Kocuk Yedek",    team:"Kayserispor",  position:"Kaleci",    age:26, marketValue:0.4, goals:0, assists:0, minutes:270,  bigMatch:70, form:73, story:"Yedek kaleci olarak kupa maçlarında görev aldı.", career:["Kayserispor"], strengths:["Refleks","Potansiyel"] },
-  { name:"Musa Aydın",          team:"Kayserispor",  position:"Defans",    age:24, marketValue:1.5, goals:1, assists:2, minutes:2800, bigMatch:79, form:81, story:"Sağ bekte hızı ve enerjisiyle sürekli tehdit oluşturan genç milli oyuncu.", career:["Kayserispor"], strengths:["Hız","Orta","Potansiyel"] },
-  { name:"Danilo Larangeira",   team:"Kayserispor",  position:"Defans",    age:30, marketValue:1.2, goals:2, assists:0, minutes:2700, bigMatch:80, form:81, story:"Brezilyalı stoper, güçlü fiziği ve hava toplarındaki üstünlüğüyle Kayserispor savunmasını sağlamlaştırdı.", career:["Kayserispor"], strengths:["Güç","Hava Topu","Markaj"] },
-  { name:"Furkan Soyalp",       team:"Kayserispor",  position:"Defans",    age:27, marketValue:0.8, goals:0, assists:2, minutes:2500, bigMatch:77, form:78, story:"Sol bekte savunma görevinin yanı sıra ortalarıyla da katkı sağlayan yerli oyuncu.", career:["Göztepe","Kayserispor"], strengths:["Savunma","Orta","Disiplin"] },
-  { name:"Rodrigo Becao",       team:"Kayserispor",  position:"Defans",    age:29, marketValue:2.5, goals:3, assists:1, minutes:2900, bigMatch:83, form:84, story:"Brezilyalı stoper, Udinese ve Fenerbahçe geçmişiyle Kayserispor savunmasının en büyük ismi oldu.", career:["Udinese","Fenerbahce","Kayserispor"], strengths:["Güç","Hava Topu","Savunma"] },
-  { name:"Serokh Rooigaard",    team:"Kayserispor",  position:"Orta saha", age:26, marketValue:1.5, goals:4, assists:5, minutes:2400, bigMatch:80, form:82, story:"Hollandalı orta saha, top çalma ve pas kalitesiyle Kayserispor'un yaratıcı motorunu oluşturdu.", career:["AZ Alkmaar","Kayserispor"], strengths:["Pas","Top Kapma","Dinamizm"] },
-  { name:"Adem Buyuk",          team:"Kayserispor",  position:"Forvet",    age:33, marketValue:0.6, goals:7, assists:4, minutes:2000, bigMatch:80, form:81, story:"Tecrübeli yerli golcü, bitiriciliği ve gol sezgisiyle Kayserispor'un hücumda güvencesi oldu.", career:["Sivasspor","Galatasaray","Kayserispor"], strengths:["Bitiricilik","Pozisyon Alma","Tecrübe"] },
-  { name:"Moryke Fofana II",    team:"Kayserispor",  position:"Kanat",     age:25, marketValue:1.2, goals:5, assists:4, minutes:2200, bigMatch:79, form:81, story:"Fildişi Sahilli kanat, hızı ve iki kaleye dönük etkinliğiyle Kayserispor'un en dinamik oyuncusuydu.", career:["Saint-Etienne","Kayserispor"], strengths:["Hız","Dribbling","Çalışkanlık"] },
-
-  // ===== KARAGÜMRÜK =====
-  { name:"Marcos Paulo",        team:"Karagumruk",   position:"Orta saha", age:23, marketValue:3,   goals:5, assists:8, minutes:2500, bigMatch:84, form:86, story:"Fluminense yetiştirmesi Brezilyalı yıldız aday, Atletico Madrid'den kiralanan yaratıcı oyuncu Karagümrük'te özgüveniyle parladı.", career:["Fluminense","Atletico Madrid","Karagumruk"], strengths:["Teknik","Dribbling","Yaratıcılık"] },
-  { name:"Alfred Finnbogason",  team:"Karagumruk",   position:"Forvet",    age:35, marketValue:0.5, goals:4, assists:1, minutes:1400, bigMatch:79, form:78, story:"İzlandalı golcü, bitmez tükenmez azmi ve gol içgüdüsüyle kısa sürelerde etkili oldu.", career:["Augsburg","Karagumruk"], strengths:["Bitiricilik","Pozisyon Alma","Tecrübe"] },
-  { name:"Mevlan Rexhepi",      team:"Karagumruk",   position:"Defans",    age:28, marketValue:1.2, goals:1, assists:2, minutes:2700, bigMatch:79, form:80, story:"Kuzey Makedonya milli takım stoperi, savunmadaki sertliği ve hava toplarında hakimiyetiyle öne çıktı.", career:["Shkendija","Karagumruk"], strengths:["Güç","Hava Topu","Agresiflik"] },
-  { name:"Nico Schulz",         team:"Karagumruk",   position:"Defans",    age:32, marketValue:0.8, goals:1, assists:4, minutes:2500, bigMatch:80, form:80, story:"Dortmund geçmişli Alman sol bek, tecrübesi ve hücum bindirmeleriyle sol kulvarda kalitesini gösterdi.", career:["Hoffenheim","Dortmund","Karagumruk"], strengths:["Hız","Orta","Tecrübe"] },
-  { name:"Soner Dikmen",        team:"Karagumruk",   position:"Defans",    age:27, marketValue:1,   goals:0, assists:1, minutes:2600, bigMatch:78, form:79, story:"Sağ bekte savunma gücü ve çalışkanlığıyla Karagümrük'ün sağ kulvarını kapatan güvenilir isim.", career:["Rizespor","Karagumruk"], strengths:["Savunma","Çalışkanlık","Dayanıklılık"] },
-  { name:"Marcel Tisserand",    team:"Karagumruk",   position:"Defans",    age:31, marketValue:1.5, goals:1, assists:0, minutes:2800, bigMatch:81, form:82, story:"Kongo asıllı Fransız stoper, güçlü fiziği ve savunma disipliniyle rakip forvete hayat hakkı tanımadı.", career:["Wolfsburg","Fenerbahce","Karagumruk"], strengths:["Güç","Markaj","Müdahale"] },
-  { name:"Anastasios Donis",    team:"Karagumruk",   position:"Kanat",     age:28, marketValue:2,   goals:6, assists:5, minutes:2300, bigMatch:81, form:82, story:"Yunan hızlı kanat oyuncusu, bireysel kalitesi ve gol üretimiyle Karagümrük'ün en değerli hücum kozu oldu.", career:["Stuttgart","Galatasaray","Karagumruk"], strengths:["Hız","Dribbling","Gol"] }
+  // ===== KARAGÜMRÜK (2025-26) =====
+  { name:"Ivo Grbić",            team:"Karagumruk",   position:"Kaleci",    age:28, marketValue:2,   goals:0, assists:0, minutes:2800, bigMatch:81, form:82, story:"Hırvat kaleci, Atletico Madrid ve Sheffield United geçmişiyle Karagümrük kalesinde uluslararası kalite sergiledi.", career:["Atletico Madrid","Sheffield United","Karagumruk"], strengths:["Refleks","Bire Bir","Kurtarış"] },
+  { name:"Igor Lichnovsky",      team:"Karagumruk",   position:"Defans",    age:31, marketValue:1.5, goals:2, assists:1, minutes:2700, bigMatch:81, form:82, story:"Şili milli takımının tecrübeli stoperi, Karagümrük savunmasında liderlik ve disiplin getirdi.", career:["Cruz Azul","Çeşitli","Karagumruk"], strengths:["Güç","Liderlik","Tecrübe"] },
+  { name:"Filip Mladenović",     team:"Karagumruk",   position:"Defans",    age:33, marketValue:1,   goals:1, assists:5, minutes:2600, bigMatch:80, form:80, story:"Sırp sol bek, tecrübesi ve hücum katkısıyla Karagümrük sol kulvarını uzun süredir yönetmektedir.", career:["PAOK","Legia","Karagumruk"], strengths:["Tecrübe","Orta","Savunma"] },
+  { name:"Ricardo Esgaio",       team:"Karagumruk",   position:"Defans",    age:32, marketValue:1.5, goals:0, assists:4, minutes:2500, bigMatch:80, form:81, story:"Portekizli sağ bek, Sporting CP geçmişiyle Karagümrük'ün sağ kulvarını yönetti.", career:["Sporting CP","Braga","Karagumruk"], strengths:["Hız","Savunma","Orta"] },
+  { name:"Matias Kranevitter",   team:"Karagumruk",   position:"Orta saha", age:33, marketValue:1.5, goals:3, assists:5, minutes:2600, bigMatch:82, form:82, story:"Arjantinli defensive orta saha, Atletico Madrid ve Zenit geçmişiyle Karagümrük'ün oyun merkezi oldu.", career:["Atletico Madrid","Zenit","Karagumruk"], strengths:["Top Kapma","Pas","Tecrübe"] },
+  { name:"Berkay Özcan",         team:"Karagumruk",   position:"Orta saha", age:27, marketValue:3,   goals:5, assists:8, minutes:2700, bigMatch:84, form:85, story:"Stuttgartlı Türk milli takım oyuncusu, tekniği ve oyun görüşüyle Karagümrük'ün kilit yaratıcısı oldu.", career:["Stuttgart","Başakşehir","Karagumruk"], strengths:["Teknik","Pas","Oyun Görüşü"] },
+  { name:"Daniele Verde",        team:"Karagumruk",   position:"Orta saha", age:28, marketValue:3,   goals:6, assists:7, minutes:2500, bigMatch:83, form:84, story:"İtalyan yaratıcı oyuncu, teknik kalitesi ve serbest vuruş ustalığıyla Karagümrük'ün en önemli silahlarından biri oldu.", career:["Çeşitli İtalya","Karagumruk"], strengths:["Teknik","Duran Top","Şut"] },
+  { name:"David Datro Fofana",   team:"Karagumruk",   position:"Forvet",    age:23, marketValue:5,   goals:11, assists:3, minutes:2500, bigMatch:85, form:86, story:"Chelsea'den kiralık Fildişi Sahilli genç golcü, 11 golle ligin en dikkat çekici gençlerinden biri oldu.", career:["Molde","Chelsea","Karagumruk"], strengths:["Hız","Bitiricilik","Fizik"] },
+  { name:"Sam Larsson",          team:"Karagumruk",   position:"Kanat",     age:31, marketValue:2,   goals:5, assists:8, minutes:2300, bigMatch:81, form:82, story:"İsveçli milli takım kanadı, tecrübesi ve teknik gücüyle Karagümrük hücumunu besleyen kritik isim oldu.", career:["Feyenoord","Çeşitli","Karagumruk"], strengths:["Teknik","Asist","Tecrübe"] },
+  { name:"Tiago Çukur",          team:"Karagumruk",   position:"Forvet",    age:20, marketValue:4,   goals:7, assists:2, minutes:2000, bigMatch:82, form:84, story:"Fenerbahçe akademisinden çıkan Türk-Alman genç golcü, Karagümrük'te Süper Lig'de patlayıcı bir ilk sezon geçirdi.", career:["Fenerbahçe","Karagumruk"], strengths:["Hız","Bitiricilik","Potansiyel"] }
 ];
 
 
@@ -515,89 +529,88 @@ const teamSquads = {
     {name:"Arbnor Muja", position:"Kanat", note:"1.8M€ · 5G 4A"}
   ],
   Rizespor: [
-    {name:"Yahia Fofana",        position:"Kaleci",    note:"5M€ · Kaleci"},
-    {name:"Sinan Kahyaoglu",     position:"Kaleci",    note:"0.5M€ · Yedek"},
-    {name:"Samet Gunes",         position:"Defans",    note:"1.2M€ · Sağ bek"},
-    {name:"Marko Jonjic",        position:"Defans",    note:"1.5M€ · Sol bek"},
-    {name:"Ugur Demirok",        position:"Defans",    note:"0.4M€ · Stoper"},
-    {name:"Luis Rocha",          position:"Defans",    note:"1.8M€ · Stoper"},
-    {name:"Ibrahim Olawoyin",    position:"Orta saha", note:"2.2M€ · 8G 5A"},
-    {name:"Eray Ataseven",       position:"Orta saha", note:"1.5M€ · Dinamo"},
-    {name:"Kahraman Haksever",   position:"Kanat",     note:"1M€ · 4G 5A"},
-    {name:"Riad Bajic",          position:"Forvet",    note:"1.5M€ · 9G 3A"},
-    {name:"Enes Unal",           position:"Forvet",    note:"3M€ · 8G 2A"}
+    {name:"Yahia Fofana",        position:"Kaleci",    note:"1.5M€ · Kaleci"},
+    {name:"Attila Mocsi",        position:"Defans",    note:"1.5M€ · Sağ bek"},
+    {name:"Modibo Sagnan",       position:"Defans",    note:"1.8M€ · Stoper"},
+    {name:"Casper Højer Nielsen",position:"Defans",    note:"2M€ · Sol bek"},
+    {name:"İbrahim Olawoyin",    position:"Orta saha", note:"2.5M€ · 8G 5A"},
+    {name:"Taylan Antalyalı",    position:"Orta saha", note:"2.5M€ · 2G 4A"},
+    {name:"Qazim Laci",          position:"Orta saha", note:"2M€ · 4G 6A"},
+    {name:"Valentin Mihaila",    position:"Kanat",     note:"3M€ · 6G 8A"},
+    {name:"Halil Dervişoğlu",    position:"Forvet",    note:"3M€ · 9G 3A"},
+    {name:"Ali Sowe",            position:"Forvet",    note:"2.5M€ · 11G 4A"}
   ],
   Konyaspor: [
-    {name:"Ali Sasal Vefa",      position:"Kaleci",    note:"1.2M€ · Kaleci"},
-    {name:"Nejc Skubic",         position:"Defans",    note:"0.8M€ · Sağ bek"},
-    {name:"Guilherme Sitya",     position:"Defans",    note:"0.2M€ · Sol bek"},
-    {name:"Moryke Fofana",       position:"Defans",    note:"1M€ · Stoper"},
-    {name:"Ali Turan",           position:"Defans",    note:"0.3M€ · Tecrübe"},
-    {name:"Mehmet Muhammed Bayir",position:"Orta saha",note:"1.5M€ · 4G 5A"},
-    {name:"Victor Ruiz",         position:"Orta saha", note:"0.2M€ · Pasör"},
-    {name:"Florent Muslija",     position:"Kanat",     note:"1.5M€ · 5G 7A"},
-    {name:"Ali Palabiyik",       position:"Kanat",     note:"1.2M€ · 3G 4A"},
-    {name:"Jackson Muleka",      position:"Forvet",    note:"2.8M€ · 10G 3A"}
+    {name:"Deniz Ertaş",          position:"Kaleci",    note:"1.2M€ · Kaleci"},
+    {name:"Josip Čalusić",        position:"Defans",    note:"1M€ · Sağ bek"},
+    {name:"Guilherme Sitya",     position:"Defans",    note:"1.5M€ · Sol bek"},
+    {name:"Adamo Nagalo",        position:"Defans",    note:"1.8M€ · Stoper"},
+    {name:"Enis Bardhi",         position:"Orta saha", note:"3M€ · 7G 10A"},
+    {name:"Riechedly Bazoer",    position:"Orta saha", note:"2.5M€ · 4G 6A"},
+    {name:"Deniz Türüç",         position:"Kanat",     note:"2M€ · 6G 8A"},
+    {name:"Diogo Gonçalves",     position:"Kanat",     note:"2.5M€ · 5G 9A"},
+    {name:"Jackson Muleka",      position:"Forvet",    note:"3M€ · 12G 3A"},
+    {name:"Blaz Kramer",         position:"Forvet",    note:"2M€ · 8G 2A"}
   ],
   Kocaelispor: [
-    {name:"Aleksandar Jovanovic",position:"Kaleci",    note:"0.5M€ · Kaleci"},
-    {name:"Sven Muller",         position:"Kaleci",    note:"0.5M€ · Yedek"},
-    {name:"Huseyin Gocek",       position:"Defans",    note:"0.8M€ · Sağ bek"},
-    {name:"Moustapha Seck",      position:"Defans",    note:"1.5M€ · Stoper"},
-    {name:"Ilhan Parlak",        position:"Defans",    note:"1.2M€ · Sol bek"},
-    {name:"Marvin Mehlem",       position:"Orta saha", note:"1.5M€ · 5G 6A"},
-    {name:"Oguzhan Ozyakup",     position:"Orta saha", note:"0.5M€ · Pas usta"},
-    {name:"Koray Altinay",       position:"Kanat",     note:"1M€ · 3G 4A"},
-    {name:"Mbaye Ndiaye",        position:"Forvet",    note:"2M€ · 7G 3A"},
-    {name:"Bruno Petkovic",      position:"Forvet",    note:"1.5M€ · 8G 4A"}
+    {name:"Aleksandar Jovanovic",position:"Kaleci",    note:"0.8M€ · Kaleci"},
+    {name:"Anfernee Dijksteel", position:"Defans",    note:"2.5M€ · Sağ bek"},
+    {name:"Hrvoje Smolčić",      position:"Defans",    note:"3M€ · Stoper"},
+    {name:"Massadio Haïdara",    position:"Defans",    note:"1.2M€ · Sol bek"},
+    {name:"Karol Linetty",       position:"Orta saha", note:"3M€ · 5G 7A"},
+    {name:"Joseph Nonge",        position:"Orta saha", note:"3M€ · 4G 6A"},
+    {name:"Darko Churlinov",     position:"Kanat",     note:"3M€ · 6G 8A"},
+    {name:"Rigoberto Rivas",     position:"Kanat",     note:"2.5M€ · 5G 7A"},
+    {name:"Bruno Petkovic",      position:"Forvet",    note:"2M€ · 10G 4A"},
+    {name:"Serdar Dursun",       position:"Forvet",    note:"1.5M€ · 7G 3A"}
   ],
   Alanyaspor: [
-    {name:"Ertugrul Taskiran",   position:"Kaleci",    note:"0.1M€ · Kaleci"},
-    {name:"Berk Ceken",          position:"Kaleci",    note:"0.6M€ · Yedek"},
-    {name:"Frederic Guilbert",   position:"Defans",    note:"1.5M€ · Sağ bek"},
-    {name:"Simon Falette",       position:"Defans",    note:"0.5M€ · Stoper"},
-    {name:"Emre Tasdemir",       position:"Defans",    note:"1M€ · Sol bek"},
-    {name:"Ianis Hagi",          position:"Orta saha", note:"2.5M€ · 6G 9A"},
-    {name:"Adem Ljajic",         position:"Orta saha", note:"0.6M€ · 5G 8A"},
-    {name:"Fernando Boldrin",    position:"Orta saha", note:"1.2M€ · 4G 5A"},
-    {name:"Emmanuel Iyoha",      position:"Kanat",     note:"2M€ · 7G 5A"},
-    {name:"Anastasios Bakasetas",position:"Forvet",    note:"2M€ · 11G 3A"}
+    {name:"Ertuğrul Taşkıran",   position:"Kaleci",    note:"1.5M€ · Kaleci"},
+    {name:"Florent Hadergjonaj", position:"Defans",    note:"2M€ · Sağ bek"},
+    {name:"Fidan Aliti",         position:"Defans",    note:"2M€ · Sol bek"},
+    {name:"Bruno Viana",         position:"Defans",    note:"2.5M€ · Stoper"},
+    {name:"Gaius Makouta",       position:"Orta saha", note:"2.5M€ · 3G 5A"},
+    {name:"Ianis Hagi",          position:"Orta saha", note:"4M€ · 7G 9A"},
+    {name:"Meschack Elia",       position:"Kanat",     note:"3.5M€ · 7G 10A"},
+    {name:"Güven Yalçın",        position:"Forvet",    note:"4M€ · 14G 4A"},
+    {name:"Ui-Jo Hwang",          position:"Forvet",    note:"3M€ · 9G 3A"},
+    {name:"Steve Mounié",         position:"Forvet",    note:"3M€ · 8G 2A"}
   ],
   "Gaziantep FK": [
-    {name:"Ali Eyuboglu",        position:"Kaleci",    note:"1M€ · Kaleci"},
-    {name:"Yuri Ribeiro",        position:"Defans",    note:"1.8M€ · Sol bek"},
-    {name:"Matija Nastasic",     position:"Defans",    note:"0.8M€ · Stoper"},
-    {name:"Samuel Gigot",        position:"Defans",    note:"1M€ · Stoper"},
-    {name:"Yusuf Yazici",        position:"Orta saha", note:"5M€ · 8G 9A"},
-    {name:"Pierre Lees-Melou",   position:"Orta saha", note:"1.5M€ · 3G 5A"},
-    {name:"Oghenekaro Etebo",    position:"Orta saha", note:"1.5M€ · 4G 4A"},
-    {name:"Kacper Kozlowski",    position:"Orta saha", note:"6M€ · 5G 8A"},
-    {name:"Mohamed Bayo",        position:"Forvet",    note:"4.5M€ · 15G 4A"},
-    {name:"Mustafa Yatabere",    position:"Forvet",    note:"0.3M€ · Yedek"}
+    {name:"Mustafa Burak Bozan", position:"Kaleci",    note:"1.5M€ · Kaleci"},
+    {name:"Nazım Sangaré",       position:"Defans",    note:"2M€ · Stoper"},
+    {name:"Myenty Abena",        position:"Defans",    note:"1.8M€ · Stoper"},
+    {name:"Kévin Rodrigues",      position:"Defans",    note:"2M€ · Sol bek"},
+    {name:"Kacper Kozłowski",    position:"Orta saha", note:"6M€ · 5G 8A"},
+    {name:"Alexandru Maxim",     position:"Orta saha", note:"1M€ · 4G 7A"},
+    {name:"Juninho Bacuna",      position:"Orta saha", note:"2.5M€ · 5G 6A"},
+    {name:"Yusuf Kabadayı",       position:"Kanat",     note:"5M€ · 6G 9A"},
+    {name:"Christopher Lungoyi", position:"Kanat",     note:"3M€ · 7G 5A"},
+    {name:"Mohamed Bayo",        position:"Forvet",    note:"4M€ · 15G 4A"}
   ],
   Kasimpasa: [
-    {name:"Andreas Gianniotis",  position:"Kaleci",    note:"0.3M€ · Kaleci"},
-    {name:"Berkan Alici",        position:"Kaleci",    note:"0.5M€ · Yedek"},
-    {name:"Aytac Kara",          position:"Defans",    note:"0.8M€ · Sağ bek"},
-    {name:"Ndiaye Diop",         position:"Defans",    note:"1.5M€ · Stoper"},
-    {name:"Atinc Nukan",         position:"Defans",    note:"0.8M€ · Sol bek"},
-    {name:"Gokhan Gonul",        position:"Defans",    note:"0.1M€ · Tecrübe"},
-    {name:"Elvis Manu",          position:"Kanat",     note:"0.5M€ · 5G 5A"},
-    {name:"Gokhan Tore",         position:"Kanat",     note:"0.4M€ · 3G 4A"},
-    {name:"Adrian Benedyczak",   position:"Forvet",    note:"5M€ · 11G 3A"},
-    {name:"Moussa Konate",       position:"Forvet",    note:"2M€ · 9G 2A"}
+    {name:"Andreas Gianniotis",  position:"Kaleci",    note:"0.5M€ · Kaleci"},
+    {name:"Rodrigo Becão",       position:"Defans",    note:"4M€ · Stoper"},
+    {name:"Nicholas Opoku",      position:"Defans",    note:"2.5M€ · Stoper"},
+    {name:"Emre Taşdemir",       position:"Defans",    note:"1.5M€ · Sol bek"},
+    {name:"Kerem Demirbay",      position:"Orta saha", note:"2.5M€ · 4G 8A"},
+    {name:"Haris Hajradinović",  position:"Orta saha", note:"2M€ · 5G 6A"},
+    {name:"İrfan Can Kahveci",   position:"Kanat",     note:"4M€ · 9G 7A"},
+    {name:"Fousseni Diabaté",    position:"Kanat",     note:"3M€ · 7G 8A"},
+    {name:"Cenk Tosun",          position:"Forvet",    note:"2M€ · 10G 3A"},
+    {name:"Adrian Benedyczak",   position:"Forvet",    note:"5M€ · 12G 3A"}
   ],
   Genclerbirligi: [
-    {name:"Muhammed Sengezer",   position:"Kaleci",    note:"1M€ · Kaleci"},
-    {name:"Pablo Maffeo",        position:"Defans",    note:"2M€ · Sağ bek"},
-    {name:"Mehmet Sedef",        position:"Defans",    note:"0.6M€ · Stoper"},
-    {name:"Petros Mantalos",     position:"Orta saha", note:"0.3M€ · 3G 6A"},
-    {name:"Tolga Cigerci",       position:"Orta saha", note:"0.3M€ · 2G 4A"},
-    {name:"Bilal El Khannouss",  position:"Orta saha", note:"10M€ · 6G 9A"},
-    {name:"Henry Onyekuru",      position:"Kanat",     note:"1M€ · 7G 8A"},
-    {name:"Emre Mor",            position:"Kanat",     note:"2M€ · 4G 7A"},
-    {name:"M'Baye Niang",        position:"Forvet",    note:"0.8M€ · 8G 3A"},
-    {name:"Arouna Kone",         position:"Forvet",    note:"1.5M€ · 5G 2A"}
+    {name:"Gökhan Akkan",        position:"Kaleci",    note:"2M€ · Kaleci"},
+    {name:"Dimitris Goutas",     position:"Defans",    note:"2.5M€ · Stoper"},
+    {name:"Zan Zuzek",           position:"Defans",    note:"2.5M€ · Stoper"},
+    {name:"Pedro Pereira",       position:"Defans",    note:"2M€ · Sağ bek"},
+    {name:"Oghenekaro Etebo",    position:"Orta saha", note:"3M€ · 4G 6A"},
+    {name:"Tom Dele-Bashiru",    position:"Orta saha", note:"4M€ · 5G 7A"},
+    {name:"Franco Tongya",       position:"Orta saha", note:"3M€ · 4G 7A"},
+    {name:"Henry Onyekuru",      position:"Kanat",     note:"2M€ · 7G 8A"},
+    {name:"Sékou Koïta",         position:"Kanat",     note:"3M€ · 6G 9A"},
+    {name:"Mbaye Niang",         position:"Forvet",    note:"1.5M€ · 8G 3A"}
   ],
   Eyupspor: [
     {name:"Emre Akbaba", position:"Orta saha", note:"1M€ · 5G 8A"},
@@ -617,40 +630,38 @@ const teamSquads = {
     {name:"Jonjo Shelvey", position:"Orta saha", note:"1M€ · Pasör"}
   ],
   Antalyaspor: [
-    {name:"Ruben Martinez",      position:"Kaleci",    note:"0.8M€ · Kaleci"},
-    {name:"Nazim Sangare",       position:"Defans",    note:"1.5M€ · Stoper"},
-    {name:"Aykut Demir",         position:"Defans",    note:"1.2M€ · Sol bek"},
-    {name:"Musa Araz",           position:"Defans",    note:"0.8M€ · Stoper"},
-    {name:"Jose Rodriguez",      position:"Orta saha", note:"1M€ · 3G 5A"},
-    {name:"Abdulkadir Omur",     position:"Orta saha", note:"1.5M€ · 4G 8A"},
-    {name:"Davide Verdi",        position:"Kanat",     note:"0.5M€ · 5G 6A"},
-    {name:"Dogukan Sinik",       position:"Kanat",     note:"1M€ · 6G 5A"},
-    {name:"Carlos Strandberg",   position:"Forvet",    note:"1.5M€ · 10G 3A"},
-    {name:"Isaac Thelin",        position:"Forvet",    note:"0.8M€ · 6G 2A"}
+    {name:"Julián Cuesta",        position:"Kaleci",    note:"0.8M€ · Kaleci"},
+    {name:"Lautaro Giannetti",   position:"Defans",    note:"1.5M€ · Stoper"},
+    {name:"Georgiy Dzhikiya",    position:"Defans",    note:"1.2M€ · Stoper"},
+    {name:"Kenneth Paal",        position:"Defans",    note:"1.5M€ · Sol bek"},
+    {name:"Abdülkadir Ömür",     position:"Orta saha", note:"2M€ · 5G 7A"},
+    {name:"Dario Šarić",         position:"Orta saha", note:"1.5M€ · 4G 5A"},
+    {name:"Sander van de Streek",position:"Orta saha", note:"1.2M€ · 3G 6A"},
+    {name:"Soner Dikmen",        position:"Defans",    note:"1M€ · Sağ bek"}
   ],
   Kayserispor: [
-    {name:"Bilal Bayazit",       position:"Kaleci",    note:"1.8M€ · Kaleci"},
-    {name:"Okan Kocuk Yedek",    position:"Kaleci",    note:"0.4M€ · Yedek"},
-    {name:"Rodrigo Becao",       position:"Defans",    note:"2.5M€ · Stoper"},
-    {name:"Danilo Larangeira",   position:"Defans",    note:"1.2M€ · Stoper"},
-    {name:"Musa Aydın",          position:"Defans",    note:"1.5M€ · Sağ bek"},
-    {name:"Furkan Soyalp",       position:"Defans",    note:"0.8M€ · Sol bek"},
-    {name:"Laszlo Benes",        position:"Orta saha", note:"2.5M€ · 5G 6A"},
-    {name:"Serokh Rooigaard",    position:"Orta saha", note:"1.5M€ · 4G 5A"},
-    {name:"Moryke Fofana II",    position:"Kanat",     note:"1.2M€ · 5G 4A"},
-    {name:"Adem Buyuk",          position:"Forvet",    note:"0.6M€ · 7G 4A"}
+    {name:"Bilal Bayazıt",       position:"Kaleci",    note:"2M€ · Kaleci"},
+    {name:"Stefano Denswil",     position:"Defans",    note:"2M€ · Stoper"},
+    {name:"Majid Hosseini",      position:"Defans",    note:"2.5M€ · Stoper"},
+    {name:"Joshua Brenet",       position:"Defans",    note:"1.5M€ · Sağ bek"},
+    {name:"László Bénes",        position:"Orta saha", note:"3M€ · 5G 8A"},
+    {name:"Youssef Aït Bennasser",position:"Orta saha",note:"2.5M€ · 3G 5A"},
+    {name:"Dorukhan Toköz",      position:"Orta saha", note:"2M€ · 4G 6A"},
+    {name:"Carlos Mané",         position:"Kanat",     note:"2M€ · 6G 7A"},
+    {name:"Miguel Cardoso",      position:"Forvet",    note:"4M€ · 13G 5A"},
+    {name:"Sam Mather",          position:"Orta saha", note:"2M€ · 3G 5A"}
   ],
   Karagumruk: [
-    {name:"Ivo Grbic",           position:"Kaleci",    note:"1M€ · Kaleci"},
-    {name:"Marcel Tisserand",    position:"Defans",    note:"1.5M€ · Stoper"},
-    {name:"Mevlan Rexhepi",      position:"Defans",    note:"1.2M€ · Stoper"},
-    {name:"Nico Schulz",         position:"Defans",    note:"0.8M€ · Sol bek"},
-    {name:"Soner Dikmen",        position:"Defans",    note:"1M€ · Sağ bek"},
-    {name:"Marcos Paulo",        position:"Orta saha", note:"3M€ · 5G 8A"},
-    {name:"Anastasios Donis",    position:"Kanat",     note:"2M€ · 6G 5A"},
-    {name:"David Datro Fofana",  position:"Forvet",    note:"4M€ · 11G 3A"},
-    {name:"Kenan Karaman",       position:"Forvet",    note:"1.8M€ · 8G 5A"},
-    {name:"Alfred Finnbogason",  position:"Forvet",    note:"0.5M€ · Yedek"}
+    {name:"Ivo Grbić",           position:"Kaleci",    note:"2M€ · Kaleci"},
+    {name:"Igor Lichnovsky",     position:"Defans",    note:"1.5M€ · Stoper"},
+    {name:"Filip Mladenović",     position:"Defans",    note:"1M€ · Sol bek"},
+    {name:"Ricardo Esgaio",      position:"Defans",    note:"1.5M€ · Sağ bek"},
+    {name:"Matias Kranevitter",  position:"Orta saha", note:"1.5M€ · 3G 5A"},
+    {name:"Berkay Özcan",        position:"Orta saha", note:"3M€ · 5G 8A"},
+    {name:"Daniele Verde",       position:"Orta saha", note:"3M€ · 6G 7A"},
+    {name:"Sam Larsson",         position:"Kanat",     note:"2M€ · 5G 8A"},
+    {name:"David Datro Fofana",  position:"Forvet",    note:"5M€ · 11G 3A"},
+    {name:"Tiago Çukur",         position:"Forvet",    note:"4M€ · 7G 2A"}
   ]
 };
 
@@ -1433,69 +1444,47 @@ function loadPlayerImage(playerName, imgElementId) {
     return;
   }
   
+  const setFallback = () => {
+    const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(playerName)}&background=0f172a&color=38bdf8&size=150&font-size=0.33`;
+    state.playerImages[playerName] = fallbackAvatar;
+    const imgEl = document.getElementById(imgElementId);
+    if (imgEl) {
+      imgEl.src = fallbackAvatar;
+      imgEl.style.opacity = 1;
+    }
+  };
+
   const title = encodeURIComponent(playerName);
   const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${title}&prop=pageimages&format=json&pithumbsize=150&origin=*`;
   
   fetch(url)
     .then(res => res.json())
     .then(data => {
-      const pages = data.query.pages;
-      const pageId = Object.keys(pages)[0];
+      const pages = data.query?.pages;
+      const pageId = pages ? Object.keys(pages)[0] : null;
       if (pageId && pageId !== "-1" && pages[pageId].thumbnail) {
-        const imgSrc = pages[pageId].thumbnail.source;
-        state.playerImages[playerName] = imgSrc;
+        state.playerImages[playerName] = pages[pageId].thumbnail.source;
         const imgEl = document.getElementById(imgElementId);
-        if (imgEl) {
-          imgEl.src = imgSrc;
-          imgEl.style.opacity = 1;
-        }
+        if (imgEl) { imgEl.src = state.playerImages[playerName]; imgEl.style.opacity = 1; }
       } else {
-        // Try Turkish Wikipedia as fallback
         const trUrl = `https://tr.wikipedia.org/w/api.php?action=query&titles=${title}&prop=pageimages&format=json&pithumbsize=150&origin=*`;
         fetch(trUrl)
           .then(res => res.json())
           .then(trData => {
-            const trPages = trData.query.pages;
-            const trPageId = Object.keys(trPages)[0];
+            const trPages = trData.query?.pages;
+            const trPageId = trPages ? Object.keys(trPages)[0] : null;
             if (trPageId && trPageId !== "-1" && trPages[trPageId].thumbnail) {
-              const trImgSrc = trPages[trPageId].thumbnail.source;
-              state.playerImages[playerName] = trImgSrc;
+              state.playerImages[playerName] = trPages[trPageId].thumbnail.source;
               const imgEl = document.getElementById(imgElementId);
-              if (imgEl) {
-                imgEl.src = trImgSrc;
-                imgEl.style.opacity = 1;
-              }
+              if (imgEl) { imgEl.src = state.playerImages[playerName]; imgEl.style.opacity = 1; }
             } else {
-              // DiceBear Initials Avatar placeholder
-              const fallbackAvatar = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(playerName)}&backgroundColor=0f172a&textColor=38bdf8`;
-              state.playerImages[playerName] = fallbackAvatar;
-              const imgEl = document.getElementById(imgElementId);
-              if (imgEl) {
-                imgEl.src = fallbackAvatar;
-                imgEl.style.opacity = 1;
-              }
+              setFallback();
             }
           })
-          .catch(() => {
-            const fallbackAvatar = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(playerName)}&backgroundColor=0f172a&textColor=38bdf8`;
-            state.playerImages[playerName] = fallbackAvatar;
-            const imgEl = document.getElementById(imgElementId);
-            if (imgEl) {
-              imgEl.src = fallbackAvatar;
-              imgEl.style.opacity = 1;
-            }
-          });
+          .catch(setFallback);
       }
     })
-    .catch(() => {
-      const fallbackAvatar = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(playerName)}&backgroundColor=0f172a&textColor=38bdf8`;
-      state.playerImages[playerName] = fallbackAvatar;
-      const imgEl = document.getElementById(imgElementId);
-      if (imgEl) {
-        imgEl.src = fallbackAvatar;
-        imgEl.style.opacity = 1;
-      }
-    });
+    .catch(setFallback);
 }
 
 function updateScoutSuggestions() {
