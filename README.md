@@ -51,6 +51,15 @@ Projeyi bilgisayarınızda yerel olarak çalıştırmak oldukça basittir. Herha
 
 Bu proje **MIT Lisansı** ile lisanslanmıştır. Daha fazla bilgi için [LICENSE](LICENSE) dosyasını inceleyebilirsiniz. İstediğiniz gibi kopyalayabilir, geliştirebilir ve kendi projelerinizde kullanabilirsiniz.
 
+## 📫 İletişim
+
+Projeyle ilgili geri bildirim vermek, katkıda bulunmak veya sadece selam söylemek isterseniz bana aşağıdaki kanallardan ulaşabilirsiniz:
+
+- **E-posta:** [senin.epostan@email.com](mailto:senin.epostan@email.com)
+- **LinkedIn:** [linkedin.com/in/seninprofilin](https://linkedin.com/in/seninprofilin)
+- **X (Twitter):** [@seninKullaniciAdin](https://x.com/seninKullaniciAdin)
+- **GitHub:** [@Eren61cyber](https://github.com/Eren61cyber)
+
 ---
 <div align="center">
   <b>Eren61cyber</b> tarafından geliştirilmiştir. 👨‍💻
