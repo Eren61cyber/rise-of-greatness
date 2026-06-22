@@ -27,24 +27,5 @@ export function initWelcomeSplash() {
 
   // Also allow early dismiss on click
   splash.addEventListener("click", dismiss);
+f
 }
-
-// ── INIT ──────────────────────────────────────────────────────
-fillTeamFilter();
-fillCompareOptions();
-renderThemes();
-renderSquadTeams();
-renderSummary();
-renderBoards();
-renderStandings();
-renderAwards();
-renderPlayers();
-renderComparison();
-fillTeamCompareOptions();
-renderTeamComparison();
-renderStatsCharts();
-renderPoll();
-renderMatchPredictions();
-initSquadBuilder();
-initAmbientMusic();
-initWelcomeSplash();
