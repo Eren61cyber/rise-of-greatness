@@ -1460,6 +1460,98 @@ function renderTeamComparison() {
 
 
 // ── ANKET ─────────────────────────────────────────────────────
+// ── STATS CHARTS ──────────────────────────────────────────────
+let chartsInstance = [];
+
+function renderStatsCharts() {
+  if (typeof Chart === 'undefined') return;
+  Chart.defaults.color = '#94a3b8';
+  Chart.defaults.font.family = "'Outfit', sans-serif";
+
+  // Cleanup old charts if any
+  chartsInstance.forEach(c => c.destroy());
+  chartsInstance = [];
+
+  // 1. Goals & Assists by Team
+  const teamStats = {};
+  enrichedPlayers.forEach(p => {
+    if (!teamStats[p.team]) teamStats[p.team] = { goals: 0, assists: 0 };
+    teamStats[p.team].goals += p.goals;
+    teamStats[p.team].assists += p.assists;
+  });
+  const teams = Object.keys(teamStats).sort((a,b) => (teamStats[b].goals + teamStats[b].assists) - (teamStats[a].goals + teamStats[a].assists));
+  
+  const ctxGoals = document.getElementById('goalsChart');
+  if (ctxGoals) {
+    chartsInstance.push(new Chart(ctxGoals.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: teams,
+        datasets: [
+          { label: 'Gol', data: teams.map(t => teamStats[t].goals), backgroundColor: '#38bdf8' },
+          { label: 'Asist', data: teams.map(t => teamStats[t].assists), backgroundColor: '#fbbf24' }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'bottom' } },
+        scales: { x: { stacked: true }, y: { stacked: true } }
+      }
+    }));
+  }
+
+  // 2. Market Value by Position
+  const posStats = {};
+  enrichedPlayers.forEach(p => {
+    if (!posStats[p.position]) posStats[p.position] = 0;
+    posStats[p.position] += p.marketValue;
+  });
+  const positions = Object.keys(posStats);
+  const ctxValue = document.getElementById('valueChart');
+  if (ctxValue) {
+    chartsInstance.push(new Chart(ctxValue.getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: positions,
+        datasets: [{
+          data: positions.map(p => posStats[p].toFixed(1)),
+          backgroundColor: ['#f43f5e', '#10b981', '#3b82f6', '#f59e0b'],
+          borderWidth: 0
+        }]
+      },
+      options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    }));
+  }
+
+  // 3. Average Age by Team
+  const teamAges = {};
+  enrichedPlayers.forEach(p => {
+    if (!teamAges[p.team]) teamAges[p.team] = { sum: 0, count: 0 };
+    teamAges[p.team].sum += p.age;
+    teamAges[p.team].count++;
+  });
+  const ageTeams = Object.keys(teamAges);
+  const ctxAge = document.getElementById('ageChart');
+  if (ctxAge) {
+    chartsInstance.push(new Chart(ctxAge.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: ageTeams,
+        datasets: [{
+          label: 'Yaş Ortalaması',
+          data: ageTeams.map(t => (teamAges[t].sum / teamAges[t].count).toFixed(1)),
+          backgroundColor: '#8b5cf6'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'bottom' } },
+        scales: { y: { min: 20, max: 32 } }
+      }
+    }));
+  }
+}
+
 function renderPoll() {
   const poll=polls[0], voted=localStorage.getItem(poll.id);
   const counts=JSON.parse(localStorage.getItem(poll.id+"_counts")||"null")||Object.fromEntries(poll.candidates.map(c=>[c.name,0]));
@@ -2618,6 +2710,7 @@ renderPlayers();
 renderComparison();
 fillTeamCompareOptions();
 renderTeamComparison();
+renderStatsCharts();
 renderPoll();
 renderMatchPredictions();
 initSquadBuilder();

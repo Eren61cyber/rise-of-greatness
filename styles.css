@@ -236,6 +236,7 @@ button, input, select {
 .compare-panel,
 .squad-builder-panel,
 .standings-panel,
+.stats-panel,
 .poll-panel,
 .predict-panel {
   margin-bottom: 20px;
@@ -432,11 +433,12 @@ h2 {
 .player-area,
 .compare-panel,
 .standings-panel,
+.stats-panel,
 .poll-panel,
 .predict-panel {
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: var(--panel);
+  background: var(--card-bg);
   backdrop-filter: blur(24px) saturate(1.8);
   transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms ease, border-color 300ms ease;
 }
@@ -862,6 +864,52 @@ h2 {
   color: var(--theme-accent);
   font-weight: 900;
   font-size: 1rem;
+}
+
+/* ===================== STATS PANEL ===================== */
+.stats-panel {
+  padding: 22px;
+  animation: riseIn 780ms ease 135ms both;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.chart-container {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 16px;
+  transition: transform 250ms ease, box-shadow 250ms ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-container:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  border-color: color-mix(in srgb, var(--theme-primary) 30%, transparent);
+}
+
+.chart-container h3 {
+  font-size: 0.95rem;
+  margin: 0 0 12px 0;
+  text-align: center;
+  color: var(--muted);
+}
+
+.canvas-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* ===================== POLL PANEL ===================== */
@@ -1698,6 +1746,7 @@ option {
   .player-grid,
   .comparison,
   .match-cards,
+  .charts-grid,
   .poll-options {
     grid-template-columns: 1fr;
   }
@@ -1737,6 +1786,7 @@ option {
   .player-area,
   .compare-panel,
   .control-panel,
+  .stats-panel,
   .poll-panel,
   .predict-panel,
   .standings-panel {

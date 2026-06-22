@@ -12,7 +12,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚽</text></svg>">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
   </head>
   <body>
 
@@ -51,6 +52,7 @@
           <a href="#squad-section" class="nav-link">Kadrolar</a>
           <a href="#compare-section" class="nav-link">Kıyaslama</a>
           <a href="#squad-builder-section" class="nav-link">Kadro Kur</a>
+          <a href="#stats-section" class="nav-link">İstatistikler</a>
           <a href="#poll-section" class="nav-link">Anket</a>
           <a href="#predict-section" class="nav-link">Tahmin Oyunu</a>
           <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Temayı Değiştir" title="Aydınlık/Karanlık Tema">
@@ -69,6 +71,7 @@
         <a href="#squad-section" class="nav-link">Kadrolar</a>
         <a href="#compare-section" class="nav-link">Kıyaslama</a>
         <a href="#squad-builder-section" class="nav-link">Kadro Kur</a>
+        <a href="#stats-section" class="nav-link">İstatistikler</a>
         <a href="#poll-section" class="nav-link">Anket</a>
         <a href="#predict-section" class="nav-link">Tahmin Oyunu</a>
       </div>
@@ -233,6 +236,29 @@
           </div>
           <div id="scoutBoard" class="board-list"></div>
         </article>
+      </section>
+
+      <!-- STATS CHARTS SECTION -->
+      <section class="stats-panel" id="stats-section" aria-label="İstatistik Grafikleri">
+        <div class="section-title">
+          <p class="eyebrow">Veri Merkezi</p>
+          <h2>Süper Lig Analizleri</h2>
+        </div>
+        
+        <div class="charts-grid">
+          <div class="chart-container">
+            <h3>Gol & Asist (Takım)</h3>
+            <div class="canvas-wrapper"><canvas id="goalsChart"></canvas></div>
+          </div>
+          <div class="chart-container">
+            <h3>Piyasa Değeri (Mevki)</h3>
+            <div class="canvas-wrapper"><canvas id="valueChart"></canvas></div>
+          </div>
+          <div class="chart-container">
+            <h3>Yaş Ortalaması (Takım)</h3>
+            <div class="canvas-wrapper"><canvas id="ageChart"></canvas></div>
+          </div>
+        </div>
       </section>
 
       <!-- POLL SECTION -->
@@ -697,6 +723,6 @@
       <p>Eren61cyber tarafından açık kaynak (MIT) olarak geliştirilmiştir. <a href="mailto:Demirciahmeteren1@gmail.com">İletişim</a></p>
     </footer>
 
-    <script src="app.js?v=3"></script>
+    <script src="app.js?v=4"></script>
   </body>
 </html>
