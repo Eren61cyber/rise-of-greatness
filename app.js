@@ -84,7 +84,7 @@ function getTeamLogoHtml(teamName, sizeClass = "small") {
     return `<span class="team-logo-wrapper ${sizeClass}">${getFallbackLogoSvg(teamName)}</span>`;
   }
   const escapedFallback = getFallbackLogoSvg(teamName).replace(/"/g, '&quot;').replace(/'/g, "\\'")
-  return `<span class="team-logo-wrapper ${sizeClass}"><img src="${logoUrl}" alt="${teamName}" class="team-logo-img" onerror="this.outerHTML='${escapedFallback}'"></span>`;
+  return `<span class="team-logo-wrapper ${sizeClass}"><img src="${logoUrl}" alt="${teamName}" class="team-logo-img" loading="lazy" onerror="this.outerHTML='${escapedFallback}'"></span>`;
 }
 
 function getAwardLogoHtml(teamString) {
@@ -866,11 +866,10 @@ function renderSummary() {
 // ── LIDERBOARD ───────────────────────────────────────────────
 function boardItem(p,i,key) {
   const imgId = `board-img-${key}-${p.name.replace(/\s+/g, '-')}-${i}`;
-  setTimeout(() => loadPlayerImage(p.name, imgId), 0);
   return `<div class="board-item" style="display:flex; align-items:center; gap:10px;">
     <span class="rank">${i+1}</span>
     <div class="player-photo-wrapper tiny">
-      <img id="${imgId}" class="player-photo-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100%25' height='100%25' fill='%230f172a'/%3E%3C/svg%3E" alt="${p.name}">
+      <img id="${imgId}" class="player-photo-img lazy-player-img" data-player-name="${p.name}" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100%25' height='100%25' fill='%230f172a'/%3E%3C/svg%3E" alt="${p.name}">
     </div>
     <div style="flex-grow:1; text-align:left;">
       <strong style="display:block;">${p.name}</strong>
@@ -882,6 +881,7 @@ function boardItem(p,i,key) {
 function renderBoards() {
   valueBoard.innerHTML = [...enrichedPlayers].sort((a,b)=>b.valueScore-a.valueScore).slice(0,5).map((p,i)=>boardItem(p,i,"valueScore")).join("");
   scoutBoard.innerHTML = [...enrichedPlayers].filter(p=>p.marketValue<2.5&&p.age<=26).sort((a,b)=>b.scoutScore-a.scoutScore).slice(0,5).map((p,i)=>boardItem(p,i,"scoutScore")).join("");
+  observeImages();
 }
 
 // ── TEMA ─────────────────────────────────────────────────────
@@ -987,13 +987,10 @@ function renderPlayers() {
     const mw = Math.min(100, Math.round(p.valueScore/10));
     const imgId = `card-img-${p.name.replace(/\s+/g, '-')}`;
     
-    // Asynchronously fetch player image after DOM is updated
-    setTimeout(() => loadPlayerImage(p.name, imgId), 0);
-    
     return `<article class="player-card" data-player="${p.name}" tabindex="0" role="button" aria-label="${p.name} detayını aç">
       <div class="card-header-with-photo">
         <div class="player-photo-wrapper">
-          <img id="${imgId}" class="player-photo-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100%25' height='100%25' fill='%230f172a'/%3E%3C/svg%3E" alt="${p.name}">
+          <img id="${imgId}" class="player-photo-img lazy-player-img" data-player-name="${p.name}" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100%25' height='100%25' fill='%230f172a'/%3E%3C/svg%3E" alt="${p.name}">
         </div>
         <div class="card-head-details">
           <div class="card-head" style="margin-bottom: 0;">
@@ -1020,6 +1017,8 @@ function renderPlayers() {
   if (loadMoreBtn) {
     loadMoreBtn.hidden = list.length <= state.visibleLimit;
   }
+  
+  observeImages();
 }
 
 // ===================== RADAR CHART =====================
@@ -1783,6 +1782,50 @@ const simDerbyTimeline     = document.querySelector("#simDerbyTimeline");
 
 // Global cache for player images
 state.playerImages = state.playerImages || {};
+
+let playerImageObserver = null;
+
+function initPlayerImageObserver() {
+  if ("IntersectionObserver" in window) {
+    playerImageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          const playerName = img.dataset.playerName;
+          const imgId = img.id;
+          if (playerName && imgId) {
+            loadPlayerImage(playerName, imgId);
+          }
+          observer.unobserve(img);
+        }
+      });
+    }, {
+      rootMargin: "200px 0px", // Load images 200px before they enter viewport
+      threshold: 0.01
+    });
+  }
+}
+
+function observeImages() {
+  if (!playerImageObserver) {
+    initPlayerImageObserver();
+  }
+  
+  if (playerImageObserver) {
+    document.querySelectorAll(".lazy-player-img").forEach(img => {
+      playerImageObserver.observe(img);
+    });
+  } else {
+    // Fallback: load immediately if IntersectionObserver is not supported
+    document.querySelectorAll(".lazy-player-img").forEach(img => {
+      const playerName = img.dataset.playerName;
+      const imgId = img.id;
+      if (playerName && imgId) {
+        loadPlayerImage(playerName, imgId);
+      }
+    });
+  }
+}
 
 function loadPlayerImage(playerName, imgElementId) {
   if (state.playerImages[playerName]) {
