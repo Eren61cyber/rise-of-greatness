@@ -1012,6 +1012,12 @@ select:focus {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--theme-primary) 18%, transparent);
 }
 
+option {
+  background-color: #0f172a; /* Dark background */
+  color: white; /* White text */
+}
+
+/* ===================== CUSTOM SELECT COMPONENT ===================== */ 
 .checkbox-row {
   display: flex;
   align-items: center;
