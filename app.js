@@ -1682,6 +1682,7 @@ function loadPlayerImage(playerName, imgElementId) {
   if (state.playerImages[playerName]) {
     const imgEl = document.getElementById(imgElementId);
     if (imgEl) {
+      imgEl.crossOrigin = "anonymous";
       imgEl.src = state.playerImages[playerName];
       imgEl.style.opacity = 1;
     }
@@ -1693,6 +1694,7 @@ function loadPlayerImage(playerName, imgElementId) {
     state.playerImages[playerName] = fallbackAvatar;
     const imgEl = document.getElementById(imgElementId);
     if (imgEl) {
+      imgEl.crossOrigin = "anonymous";
       imgEl.src = fallbackAvatar;
       imgEl.style.opacity = 1;
     }
@@ -1709,7 +1711,7 @@ function loadPlayerImage(playerName, imgElementId) {
       if (pageId && pageId !== "-1" && pages[pageId].thumbnail) {
         state.playerImages[playerName] = pages[pageId].thumbnail.source;
         const imgEl = document.getElementById(imgElementId);
-        if (imgEl) { imgEl.src = state.playerImages[playerName]; imgEl.style.opacity = 1; }
+        if (imgEl) { imgEl.crossOrigin = "anonymous"; imgEl.src = state.playerImages[playerName]; imgEl.style.opacity = 1; }
       } else {
         const trUrl = `https://tr.wikipedia.org/w/api.php?action=query&titles=${title}&prop=pageimages&format=json&pithumbsize=150&origin=*`;
         fetch(trUrl)
@@ -1720,7 +1722,7 @@ function loadPlayerImage(playerName, imgElementId) {
             if (trPageId && trPageId !== "-1" && trPages[trPageId].thumbnail) {
               state.playerImages[playerName] = trPages[trPageId].thumbnail.source;
               const imgEl = document.getElementById(imgElementId);
-              if (imgEl) { imgEl.src = state.playerImages[playerName]; imgEl.style.opacity = 1; }
+              if (imgEl) { imgEl.crossOrigin = "anonymous"; imgEl.src = state.playerImages[playerName]; imgEl.style.opacity = 1; }
             } else {
               setFallback();
             }
