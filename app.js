@@ -903,13 +903,13 @@ function renderThemes() {
     const b=e.target.closest(".theme-button");
     if(b){const t=teamThemes.find(x=>x.name===b.dataset.theme);if(t)applyTheme(t);}
   });
-  applyTheme(teamThemes[0]);
+  applyTheme(teamThemes.find(t=>t.name==="Trabzonspor") || teamThemes[0]);
 }
 
 // ── KADRO ─────────────────────────────────────────────────────
 function renderSquadTeams() {
   squadTeamSelect.innerHTML = teamThemes.filter(t=>t.name!=="Lig teması").map(t=>`<option value="${t.name}">${t.name}</option>`).join("");
-  squadTeamSelect.value = "Galatasaray";
+  squadTeamSelect.value = "Trabzonspor";
   renderSquad();
 }
 function renderSquad() {
