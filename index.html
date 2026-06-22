@@ -77,6 +77,8 @@
 
       <!-- HERO -->
       <section class="hero" id="hero" aria-label="Uygulama üst bölümü">
+        <div class="hero-orb orb-1"></div>
+        <div class="hero-orb orb-2"></div>
         <div class="hero-copy">
           <p class="eyebrow">Süper Lig Oyuncu Atlası</p>
           <h1>Oyuncu değerini performans etkisiyle birlikte analiz et.</h1>
@@ -378,7 +380,29 @@
 
         <div id="comparison" class="comparison"></div>
       </section>
+      <!-- TEAM COMPARE PANEL -->
+      <section class="team-compare-panel compare-panel" id="team-compare-section" aria-label="Takım Karşılaştırma">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Derbi Modu</p>
+            <h2>Takımları Karşılaştır</h2>
+          </div>
+        </div>
 
+        <div class="compare-controls" style="gap:20px; align-items:center;">
+          <select id="teamASelect" class="team-select" style="flex:1; padding:12px; border-radius:var(--radius); border:1px solid rgba(255,255,255,0.1); background:var(--card-bg); color:var(--ink); font-weight:600; font-family:'Outfit', sans-serif;">
+            <option value="">1. Takımı Seçin</option>
+          </select>
+
+          <button id="swapTeamButton" type="button" aria-label="Takımları değiştir" title="Takımları değiştir">VS</button>
+
+          <select id="teamBSelect" class="team-select" style="flex:1; padding:12px; border-radius:var(--radius); border:1px solid rgba(255,255,255,0.1); background:var(--card-bg); color:var(--ink); font-weight:600; font-family:'Outfit', sans-serif;">
+            <option value="">2. Takımı Seçin</option>
+          </select>
+        </div>
+
+        <div id="teamComparison" class="comparison"></div>
+      </section>
       <!-- SQUAD BUILDER PANEL -->
       <section class="squad-builder-panel" id="squad-builder-section" aria-label="Bütçeli Kadro Kurucu">
         <div class="section-title">
