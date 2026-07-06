@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Futbol Atlası: Kariyer Efsanesi</title>
+    <!-- Google Fonts for premium typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Main Container -->
+    <div class="app-container">
+        
+        <!-- Header Profile Summary -->
+        <header class="main-header glass">
+            <div class="player-profile" style="display: flex; align-items: center; gap: 8px;">
+                <!-- Dynamic SVG avatar container -->
+                <div id="player-avatar-container" style="width: 44px; height: 44px; display: flex; justify-content: center; align-items: center; border-radius: 50%; overflow: hidden; background: rgba(255,255,255,0.03); border: 1.5px solid var(--border-glass);"></div>
+                <div class="rating-badge" id="player-rating">50</div>
+                <div class="player-info">
+                    <h1 id="player-name">Semih Şentürk</h1>
+                    <p><span id="player-club">Yıldız Gençlikspor</span> (<span id="player-position">Forvet</span>) - <span id="player-age">17</span> Yaş</p>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="weekly-salary" id="weekly-salary-text">150 €/Hafta</div>
+                <button id="btn-settings-open" class="btn" style="padding: 6px 10px; font-size: 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass); border-radius: 8px; cursor: pointer; color: white;">⚙️</button>
+            </div>
+        </header>
+
+        <!-- Stats Bar (Kondisyon, Moral, Para vb.) -->
+        <section class="stats-overview">
+            <div class="stat-card glass">
+                <span class="label">Kondisyon</span>
+                <span class="value" id="stat-fitness">100%</span>
+                <div class="progress-bar"><div class="fill fitness" id="bar-fitness"></div></div>
+            </div>
+            <div class="stat-card glass">
+                <span class="label">Moral</span>
+                <span class="value" id="stat-morale">100%</span>
+                <div class="progress-bar"><div class="fill morale" id="bar-morale"></div></div>
+            </div>
+            <div class="stat-card glass">
+                <span class="label">Hoca Güveni</span>
+                <span class="value" id="stat-trust">40%</span>
+                <div class="progress-bar"><div class="fill trust" id="bar-trust"></div></div>
+            </div>
+            <div class="stat-card glass">
+                <span class="label">Para</span>
+                <span class="value accent-yellow" id="stat-money">1,000 €</span>
+            </div>
+            <div class="stat-card glass">
+                <span class="label">Takipçi</span>
+                <span class="value accent-blue" id="stat-followers">2,500</span>
+            </div>
+        </section>
+
+        <!-- Tab Views Panels -->
+        <main class="panel-container">
+            
+            <!-- PANEL 1: CAREER DASHBOARD -->
+            <section id="panel-career" class="view-panel active">
+                <div class="card glass hero-card">
+                    <h2>Kariyer Özet Durumu</h2>
+                    <p class="league-info"><strong id="player-league">Süper Lig</strong> | Hafta <span id="current-week">1</span>/34</p>
+                    
+                    <div class="career-grids">
+                        <div class="grid-item">
+                            <span class="num" id="career-apps">0</span>
+                            <span class="desc">Maç</span>
+                        </div>
+                        <div class="grid-item">
+                            <span class="num" id="career-goals">0</span>
+                            <span class="desc">Gol</span>
+                        </div>
+                        <div class="grid-item">
+                            <span class="num" id="career-assists">0</span>
+                            <span class="desc">Asist</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Media Feed Card -->
+                <div class="card glass" style="margin-top: 10px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+                    <div style="font-size: 11px; font-weight: 800; color: var(--accent-blue); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px;">
+                        <span>📱</span> Sosyal Medya Akışı
+                    </div>
+                    <div id="social-feed-container" style="display: flex; flex-direction: column; gap: 8px;">
+                        <!-- Tweets render dynamically here -->
+                    </div>
+                </div>
+
+                <div class="action-zone" style="margin-top: 10px;">
+                    <div class="next-match-card glass">
+                        <h3>Sıradaki Rakip</h3>
+                        <p id="next-opponent-text">Rakip Aranıyor...</p>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
+                        <div style="display: flex; gap: 8px; width: 100%;">
+                            <button class="btn btn-primary btn-pulse" id="btn-play-match" style="flex: 1.2; padding: 12px 8px; font-size: 13px;">MAÇA BAŞLA</button>
+                            <button class="btn btn-secondary" id="btn-simulate-match" style="flex: 0.8; padding: 12px 8px; font-size: 13px;">SİMÜLE ET</button>
+                        </div>
+                        <button class="btn btn-warning" id="btn-rest" style="width: 100%; padding: 12px 8px; font-size: 13px;">DİNLEN (Haftayı Geçir)</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PANEL 2: LEAGUE STANDINGS -->
+            <section id="panel-standings" class="view-panel">
+                <div class="panel-header">
+                    <h2>Lig Puan Durumu</h2>
+                    <p>Mevcut ligindeki takımların puan durumu ve sıralaması.</p>
+                </div>
+                <div class="card glass" style="padding: 12px; overflow-x: auto;">
+                    <table class="standings-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; min-width: 320px;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid var(--border-glass); color: var(--text-muted); font-size: 10px; text-transform: uppercase;">
+                                <th style="padding: 8px 4px;">#</th>
+                                <th style="padding: 8px 4px;">Takım</th>
+                                <th style="padding: 8px 4px; text-align: center;">OM</th>
+                                <th style="padding: 8px 4px; text-align: center;">G</th>
+                                <th style="padding: 8px 4px; text-align: center;">B</th>
+                                <th style="padding: 8px 4px; text-align: center;">M</th>
+                                <th style="padding: 8px 4px; text-align: center;">AV</th>
+                                <th style="padding: 8px 4px; text-align: center; font-weight: bold;">P</th>
+                            </tr>
+                        </thead>
+                        <tbody id="standings-body">
+                            <!-- Standings simulated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- PANEL 3: TRAINING -->
+            <section id="panel-training" class="view-panel">
+                <div class="panel-header">
+                    <h2>Antrenman Sahası</h2>
+                    <p>Antrenman yapmak 20% Kondisyon harcar.</p>
+                </div>
+
+                <div class="training-list">
+                    <div class="training-card glass">
+                        <div class="details">
+                            <h3>Şut Gücü & Bitiricilik</h3>
+                            <p>Mevcut Seviye: <strong id="skill-shooting">50</strong></p>
+                        </div>
+                        <button class="btn btn-secondary" onclick="GAME.train('shooting')">Çalış (-20% Ene)</button>
+                    </div>
+                    
+                    <div class="training-card glass">
+                        <div class="details">
+                            <h3>Pas Vizyonu & Kısa Pas</h3>
+                            <p>Mevcut Seviye: <strong id="skill-passing">48</strong></p>
+                        </div>
+                        <button class="btn btn-secondary" onclick="GAME.train('passing')">Çalış (-20% Ene)</button>
+                    </div>
+
+                    <div class="training-card glass">
+                        <div class="details">
+                            <h3>Hız & Dripling Hızı</h3>
+                            <p>Mevcut Seviye: <strong id="skill-speed">52</strong></p>
+                        </div>
+                        <button class="btn btn-secondary" onclick="GAME.train('speed')">Çalış (-20% Ene)</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PANEL 4: LIFESTYLE / SHOP -->
+            <section id="panel-shop" class="view-panel">
+                <div class="panel-header">
+                    <h2>Yaşam Tarzı & Yatırım</h2>
+                    <p>Kazandığın haftalık maaşla lifestyle ögeleri satın al.</p>
+                </div>
+                <div class="shop-list" id="shop-items-container">
+                    <!-- Dynamic rendering via main app -->
+                </div>
+            </section>
+
+            <!-- PANEL 5: TRANSFERS / OFFERS -->
+            <section id="panel-transfers" class="view-panel">
+                <div class="panel-header">
+                    <h2>Gelen Transfer Teklifleri</h2>
+                    <p>Performansın arttıkça büyük kulüpler teklif gönderecek.</p>
+                </div>
+                <div class="offers-list" id="offers-container">
+                    <div class="empty-state glass">
+                        Şu an aktif bir teklifiniz yok. Performansınızı artırın!
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Navigation Tabs (Mobile Bottom Bar Style) -->
+        <nav class="bottom-nav glass">
+            <button class="nav-tab active" data-target="panel-career">Kariyer</button>
+            <button class="nav-tab" data-target="panel-standings">Puan Durumu</button>
+            <button class="nav-tab" data-target="panel-training">Antrenman</button>
+            <button class="nav-tab" data-target="panel-shop">Mağaza</button>
+            <button class="nav-tab" data-target="panel-transfers">Teklifler</button>
+        </nav>
+
+        <!-- MATCH DAY VIEW (Fullscreen overlay during matches) -->
+        <section class="match-overlay" id="match-view">
+            <div class="match-header glass">
+                <div class="team player-team">
+                    <span class="team-name" id="match-player-team">Galatasaray</span>
+                    <span class="color-badge" id="player-badge"></span>
+                </div>
+                <div class="score" id="match-score">0 - 0</div>
+                <div class="team opponent-team">
+                    <span class="color-badge" id="opponent-badge"></span>
+                    <span class="team-name" id="match-opponent-team">Fenerbahçe</span>
+                </div>
+                <button id="btn-match-speed" class="btn btn-secondary" style="padding: 6px 10px; font-size: 11px; margin-left: 10px; height: fit-content; min-width: 65px;">Hız: 1x</button>
+            </div>
+
+            <!-- Score time ticker header -->
+            <div style="text-align: center; margin-top: 5px;">
+                <div class="game-time" id="match-time" style="font-size: 36px; line-height: 1; font-weight: 800;">0'</div>
+            </div>
+
+            <!-- Match Timeline Terminal -->
+            <div class="match-terminal glass" id="match-terminal" style="display: flex; flex: 1; flex-direction: column; margin: 15px 0; padding: 14px; overflow-y: auto; gap: 8px; font-family: 'Outfit', sans-serif; max-height: calc(100% - 240px);">
+                <div style="color: var(--primary); font-weight: 800; border-bottom: 1px solid var(--border-glass); padding-bottom: 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">CANLI MAÇ ANLATIMI</div>
+                <div id="match-log-timeline" style="display: flex; flex-direction: column; gap: 10px; flex: 1; overflow-y: auto; padding-right: 4px; font-size: 13px; scroll-behavior: smooth;">
+                    <!-- Timeline lines will append here -->
+                </div>
+            </div>
+
+            <!-- Match Decision Card (Pops up inside match overlay when choice is triggered) -->
+            <div id="match-decision-card" class="glass" style="display: none; padding: 16px; margin-bottom: 10px; border: 2px solid var(--accent-yellow); box-shadow: 0 0 15px rgba(255, 214, 0, 0.2); animation: fadeIn 0.3s ease;">
+                <div style="background: var(--accent-yellow); color: black; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; width: fit-content;" id="decision-title">KRİTİK POZİSYON!</div>
+                <p id="decision-desc" style="font-size: 14px; font-weight: 600; margin: 10px 0; line-height: 1.4; color: #FFF;"></p>
+                <div id="decision-options-container" style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
+                    <!-- Option buttons will render here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- RANDOM RPG EVENT MODAL -->
+        <div class="event-modal-overlay" id="event-modal">
+            <div class="event-card glass">
+                <h3 class="event-tag" id="event-tag">Süper Lig</h3>
+                <h2 id="event-title">Canlı Yayın Daveti</h2>
+                <p class="event-desc" id="event-desc">Buraya açıklama gelecek...</p>
+                
+                <div class="event-choices">
+                    <button class="btn btn-event" id="event-btn-a">
+                        <span class="choice-text" id="event-text-a">Seçenek A</span>
+                        <span class="choice-effect" id="event-effect-a">+10 Moral, -10 Kondisyon</span>
+                    </button>
+                    <button class="btn btn-event" id="event-btn-b">
+                        <span class="choice-text" id="event-text-b">Seçenek B</span>
+                        <span class="choice-effect" id="event-effect-b">Gitmeyi Reddet</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TRANSFER NEGOTIATION MODAL -->
+        <div class="event-modal-overlay" id="negotiation-modal">
+            <div class="event-card glass">
+                <h3 class="event-tag" style="background: var(--primary); color: black; font-weight: 800;">Pazarlık Masası</h3>
+                <h2 id="neg-team-name">Galatasaray A.Ş.</h2>
+                <p class="event-desc" id="neg-desc">Mevcut teklif haftalık 5,000 €.</p>
+                
+                <div class="event-choices" style="margin-bottom: 12px;">
+                    <button class="btn btn-event" id="neg-btn-accept">
+                        <span class="choice-text" style="font-weight: bold; color: var(--primary);">Teklifi Doğrudan Kabul Et</span>
+                        <span class="choice-effect" id="neg-effect-accept">Kulübün sunduğu şartlarla doğrudan sözleşme imzala.</span>
+                    </button>
+                    <button class="btn btn-event" id="neg-btn-negotiate">
+                        <span class="choice-text" style="font-weight: bold; color: var(--accent-yellow);">Daha Yüksek Maaş İste (%20 Zam)</span>
+                        <span class="choice-effect" id="neg-effect-negotiate">Başarı şansı reytingine bağlıdır.</span>
+                    </button>
+                    <button class="btn btn-event" id="neg-btn-bonus">
+                        <span class="choice-text" style="font-weight: bold; color: var(--accent-blue);">İmza Parası Talep Et</span>
+                        <span class="choice-effect" id="neg-effect-bonus">Tek seferlik nakit al ama Hoca Güveni azalır.</span>
+                    </button>
+                </div>
+                <button class="btn btn-secondary" id="neg-btn-cancel" style="padding: 10px; font-size: 12px; width: 100%;">Masadan Kalk</button>
+            </div>
+        </div>
+
+        <!-- SETTINGS MODAL -->
+        <div class="event-modal-overlay" id="settings-modal">
+            <div class="event-card glass" style="max-width: 320px; text-align: center;">
+                <h3 class="event-tag" style="background: var(--accent-blue); color: white; font-weight: 800; padding: 4px 10px; border-radius: 6px; font-size: 10px; width: fit-content; margin: 0 auto 12px auto; text-transform: uppercase;">⚙️ Ayarlar</h3>
+                <h2 style="color: white; margin-bottom: 20px;">Oyun Ayarları</h2>
+                
+                <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; text-align: left;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); padding-bottom: 10px;">
+                        <div>
+                            <span style="font-weight: bold; font-size: 13px; color: white;">Ses Efektleri</span><br>
+                            <span style="font-size: 10px; color: var(--text-muted);">Gol ve yuhalama sesleri.</span>
+                        </div>
+                        <label class="switch" style="position: relative; display: inline-block; width: 44px; height: 22px;">
+                            <input type="checkbox" id="settings-sound-toggle" checked style="opacity: 0; width: 0; height: 0;">
+                            <span class="slider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); transition: .4s; border-radius: 22px; border: 1px solid var(--border-glass);"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="btn" id="settings-reset-career" style="background: rgba(255, 23, 68, 0.15); color: var(--accent-red); border: 1px solid rgba(255, 23, 68, 0.25); width: 100%; padding: 12px; font-size: 12px; font-weight: bold;">Kariyeri Sıfırla & Baştan Başla</button>
+                    <button class="btn btn-secondary" id="settings-close" style="width: 100%; padding: 10px; font-size: 12px;">Kapat</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- INTERVIEW MODAL -->
+        <div class="event-modal-overlay" id="interview-modal">
+            <div class="event-card glass" style="max-width: 420px; text-align: center;">
+                <h3 class="event-tag" style="background: var(--accent-purple); color: white; font-weight: 800; padding: 4px 10px; border-radius: 6px; font-size: 10px; width: fit-content; margin: 0 auto 12px auto; text-transform: uppercase;">🎤 Maç Sonu Röportajı</h3>
+                <h2 style="color: white; margin-bottom: 15px;">Mikrofonlar Sende!</h2>
+                
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass); border-radius: 12px; padding: 15px; margin-bottom: 20px; text-align: left;">
+                    <p style="font-size: 12px; color: var(--accent-purple); font-weight: bold; margin-bottom: 6px;">🎤 Spor Muhabiri:</p>
+                    <p id="interview-question" style="font-size: 14px; color: white; line-height: 1.5; font-style: italic;">
+                        "Bugün sahada adeta fırtına gibi estiniz ve Maçın Oyuncusu seçildiniz. Bu harika performansınız hakkında neler söyleyeceksiniz?"
+                    </p>
+                </div>
+
+                <div class="event-choices" style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="btn btn-event" id="interview-opt-1" style="text-align: left; padding: 12px;">
+                        <span class="choice-text" style="font-weight: bold; color: var(--primary); display: block; margin-bottom: 2px;">"Takım arkadaşlarım olmasaydı başaramazdım, bu zafer hepimizin." (Alçakgönüllü)</span>
+                        <span class="choice-effect" style="font-size: 10px; color: var(--text-muted);">+5 Hoca Güveni, +5 Moral, +200 Takipçi</span>
+                    </button>
+                    <button class="btn btn-event" id="interview-opt-2" style="text-align: left; padding: 12px;">
+                        <span class="choice-text" style="font-weight: bold; color: var(--accent-yellow); display: block; margin-bottom: 2px;">"Kendi kalitemi biliyorum, bu performanslar benim için normal." (Özgüvenli)</span>
+                        <span class="choice-effect" style="font-size: 10px; color: var(--text-muted);">-5 Hoca Güveni, +10 Moral, +1,500 Takipçi (Medya bayılır)</span>
+                    </button>
+                    <button class="btn btn-event" id="interview-opt-3" style="text-align: left; padding: 12px;">
+                        <span class="choice-text" style="font-weight: bold; color: var(--accent-blue); display: block; margin-bottom: 2px;">"Bu maçı Şile'de zor günler geçiren babama ve aileme armağan ediyorum." (Duygusal)</span>
+                        <span class="choice-effect" style="font-size: 10px; color: var(--text-muted);">+15 Moral, +600 Takipçi, Sosyal Medyada Büyük Sempati</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- INTRO & TRIAL MODAL -->
+        <div class="event-modal-overlay" id="intro-modal" style="background: rgba(0,0,0,0.92); z-index: 10000;">
+            <div class="event-card glass" id="intro-card" style="max-width: 500px; text-align: center; border: 1.5px solid var(--primary); box-shadow: 0 0 30px rgba(0, 230, 118, 0.2);">
+                <!-- Step 1: Welcome & Name Input -->
+                <div id="intro-step-1">
+                    <h3 class="event-tag" style="background: var(--primary); color: #000; font-weight: 900; padding: 4px 10px; border-radius: 6px; font-size: 11px; width: fit-content; margin: 0 auto 12px auto; text-transform: uppercase;">🎮 YENİ EFSANE BAŞLIYOR</h3>
+                    <h2 style="color: white; margin-bottom: 20px; font-size: 24px;">Kariyerine Adım At</h2>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5;">
+                        Şile'nin en yetenekli genci olarak Türk futbolunun zirvesine tırmanmaya hazır mısın? Öncelikle ismini belirle:
+                    </p>
+                    <input type="text" id="intro-name-input" value="Ahmet Eren Demirci" style="width: 100%; padding: 12px 16px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass); color: white; font-size: 16px; font-weight: bold; text-align: center; margin-bottom: 20px;">
+                    <button class="btn btn-primary" id="intro-btn-next-1" style="width: 100%; padding: 14px; font-size: 14px; font-weight: bold;">HİKAYEYİ BAŞLAT</button>
+                </div>
+
+                <!-- Step 2: Cinematic Storytelling -->
+                <div id="intro-step-2" style="display: none;">
+                    <h3 class="event-tag" style="background: var(--accent-yellow); color: #000; font-weight: 900; padding: 4px 10px; border-radius: 6px; font-size: 11px; width: fit-content; margin: 0 auto 12px auto; text-transform: uppercase;">🏠 Aile Hikayesi</h3>
+                    <h2 style="color: white; margin-bottom: 15px; font-size: 22px;">Şile'den Zirveye</h2>
+                    <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-glass); border-radius: 12px; padding: 18px; text-align: left; max-height: 250px; overflow-y: auto; margin-bottom: 20px;">
+                        <p id="intro-story-text" style="font-size: 13px; color: white; line-height: 1.6; font-family: 'Courier New', monospace;"></p>
+                    </div>
+                    <button class="btn btn-primary" id="intro-btn-next-2" style="width: 100%; padding: 14px; font-size: 14px; font-weight: bold; display: none;">SEÇMELERE KATIL</button>
+                </div>
+
+                <!-- Step 3: Trial Training Game -->
+                <div id="intro-step-3" style="display: none; text-align: left;">
+                    <h3 class="event-tag" style="background: var(--accent-purple); color: white; font-weight: 800; padding: 4px 10px; border-radius: 6px; font-size: 10px; width: fit-content; margin-bottom: 12px; text-transform: uppercase;">⚽ ALTYAPI SEÇMELERİ</h3>
+                    <h2 style="color: white; margin-bottom: 10px; font-size: 20px;" id="trial-title">Aşama 1: Şut Seçmesi</h2>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;" id="trial-desc">
+                        Ceza sahasında topla buluştun. Kaleci kalesini terk ediyor! Nasıl bir vuruş yapacaksın?
+                    </p>
+
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-glass); border-radius: 10px; padding: 12px; font-size: 12px; color: var(--accent-blue); line-height: 1.4; margin-bottom: 15px; font-style: italic;" id="trial-commentary">
+                        Antrenörler kenardan dikkatle izliyor...
+                    </div>
+
+                    <div class="event-choices" id="trial-choices-container" style="display: flex; flex-direction: column; gap: 8px;">
+                        <!-- Options render dynamically here -->
+                    </div>
+                </div>
+
+                <!-- Step 4: Trial Result & Signed League -->
+                <div id="intro-step-4" style="display: none;">
+                    <h3 class="event-tag" id="result-tag" style="background: var(--primary); color: #000; font-weight: 900; padding: 4px 10px; border-radius: 6px; font-size: 11px; width: fit-content; margin: 0 auto 12px auto; text-transform: uppercase;">📝 SÖZLEŞME İMZALANDI</h3>
+                    <h2 style="color: white; margin-bottom: 15px; font-size: 22px;">Seçmeler Tamamlandı!</h2>
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass); border-radius: 12px; padding: 18px; margin-bottom: 20px;">
+                        <p style="font-size: 24px; margin-bottom: 10px;" id="result-emoji">🏆</p>
+                        <p style="font-size: 14px; color: white; font-weight: bold; line-height: 1.6;" id="result-text">
+                            Harika bir seçme çıkardın! TFF 2. Lig ekiplerinden Yıldız Gençlikspor seninle sözleşme imzaladı.
+                        </p>
+                    </div>
+                    <button class="btn btn-primary" id="intro-btn-start" style="width: 100%; padding: 14px; font-size: 14px; font-weight: bold;">OYUNA BAŞLA</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- WHATSAPP CHAT DIALOGUE MODAL -->
+        <div class="event-modal-overlay" id="chat-modal">
+            <div class="chat-phone glass" style="width: 100%; max-width: 380px; display: flex; flex-direction: column; border: 1px solid var(--border-glass); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.6);">
+                <div class="chat-header" style="background: #075E54; padding: 12px 16px; display: flex; align-items: center; gap: 10px; color: white;">
+                    <span style="font-size: 14px; cursor: pointer;">◀</span>
+                    <div id="chat-avatar-face" style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; justify-content: center; align-items: center; font-size: 20px;">💬</div>
+                    <div style="display: flex; flex-direction: column; flex: 1;">
+                        <span id="chat-contact-name" style="font-size: 14px; font-weight: 800;">Kişi Adı</span>
+                        <span style="font-size: 10px; opacity: 0.85;">çevrimiçi</span>
+                    </div>
+                    <span style="font-size: 16px; opacity: 0.85;">📞</span>
+                </div>
+                
+                <div class="chat-messages-area" id="chat-messages-container" style="flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 12px; background: rgba(0,0,0,0.4); min-height: 180px; overflow-y: auto;">
+                    <div class="chat-bubble left" id="chat-incoming-text" style="background: #262D31; color: #FFF; padding: 10px 14px; border-radius: 0 12px 12px 12px; font-size: 13px; max-width: 85%; align-self: flex-start; line-height: 1.4; border: 1px solid rgba(255,255,255,0.03);">
+                        Gelen mesaj kutusu...
+                    </div>
+                </div>
+                
+                <div class="chat-choices-area" id="chat-reply-container" style="padding: 14px; display: flex; flex-direction: column; gap: 8px; background: #1E2428; border-top: 1px solid var(--border-glass);">
+                    <!-- Choices append here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- SEASON SUMMARY CELEBRATION MODAL -->
+        <div class="event-modal-overlay" id="season-summary-modal">
+            <div class="event-card glass" style="border: 2px solid var(--accent-yellow); box-shadow: 0 0 30px rgba(255, 214, 0, 0.3); text-align: center; max-width: 380px;">
+                <h3 class="event-tag" style="background: var(--accent-yellow); color: black; font-weight: 800; padding: 4px 10px; border-radius: 6px; font-size: 10px; width: fit-content; margin: 0 auto 12px auto; text-transform: uppercase;">EFSANE SEZON SONU</h3>
+                <h2 id="season-title" style="font-size: 20px; font-weight: 800; margin-bottom: 12px; color: white;">Yeni Sezon Başlıyor!</h2>
+                <p class="event-desc" id="season-desc" style="text-align: left; max-height: 220px; overflow-y: auto; font-size: 13px; line-height: 1.6; color: var(--text-muted); margin-bottom: 20px;"></p>
+                <button class="btn btn-primary" id="btn-season-summary-close" style="width: 100%; padding: 12px; font-weight: 800;">Yeni Sezona Başla! ⚽</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script Loads (Database first, logic next) -->
+    <script src="database.js"></script>
+    <script src="events.js"></script>
+    <script src="game.js"></script>
+    <script src="matchEngine.js"></script>
+    
+    <!-- MAIN CONTROLLER (Mounts everything) -->
+    <script>
+        // --- SOUND MANAGER (Uses Web Audio API to synthesize sounds directly in browser) ---
+        const SoundManager = {
+            enabled: true,
+
+            playGoal: function() {
+                if (!this.enabled) return;
+                try {
+                    let ctx = new (window.AudioContext || window.webkitAudioContext)();
+                    this.playWhistle(ctx, () => {
+                        this.playCrowdCheer(ctx);
+                    });
+                } catch(e) {
+                    console.error("Audio error:", e);
+                }
+            },
+
+            playConceded: function() {
+                if (!this.enabled) return;
+                try {
+                    let ctx = new (window.AudioContext || window.webkitAudioContext)();
+                    this.playWhistle(ctx, () => {
+                        this.playCrowdBoo(ctx);
+                    });
+                } catch(e) {
+                    console.error("Audio error:", e);
+                }
+            },
+
+            playWhistle: function(ctx, callback) {
+                let osc = ctx.createOscillator();
+                let gain = ctx.createGain();
+                osc.type = "sine";
+                osc.frequency.setValueAtTime(900, ctx.currentTime);
+                osc.frequency.linearRampToValueAtTime(1100, ctx.currentTime + 0.12);
+                osc.frequency.linearRampToValueAtTime(900, ctx.currentTime + 0.25);
+                
+                gain.gain.setValueAtTime(0.2, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.35);
+
+                if (callback) {
+                    setTimeout(callback, 150);
+                }
+            },
+
+            playCrowdCheer: function(ctx) {
+                let bufferSize = ctx.sampleRate * 2.0; 
+                let buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                let data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+
+                let noise = ctx.createBufferSource();
+                noise.buffer = buffer;
+
+                let filter = ctx.createBiquadFilter();
+                filter.type = "bandpass";
+                filter.frequency.value = 600;
+                filter.Q.value = 1.0;
+
+                filter.frequency.setValueAtTime(300, ctx.currentTime);
+                filter.frequency.exponentialRampToValueAtTime(1000, ctx.currentTime + 0.4);
+                filter.frequency.exponentialRampToValueAtTime(500, ctx.currentTime + 1.0);
+                filter.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 2.0);
+
+                let gain = ctx.createGain();
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.4);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 2.0);
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(ctx.destination);
+
+                noise.start();
+                noise.stop(ctx.currentTime + 2.0);
+            },
+
+            playCrowdBoo: function(ctx) {
+                let bufferSize = ctx.sampleRate * 2.2;
+                let buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                let data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+
+                let noise = ctx.createBufferSource();
+                noise.buffer = buffer;
+
+                let filter = ctx.createBiquadFilter();
+                filter.type = "lowpass";
+                filter.frequency.value = 160; 
+
+                let gain = ctx.createGain();
+                gain.gain.setValueAtTime(0.4, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 2.2);
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(ctx.destination);
+
+                noise.start();
+                noise.stop(ctx.currentTime + 2.2);
+            }
+        };
+
+        // Tab system logic
+        const tabs = document.querySelectorAll(".nav-tab");
+        const panels = document.querySelectorAll(".view-panel");
+
+        tabs.forEach(tab => {
+            tab.addEventListener("click", () => {
+                tabs.forEach(t => t.classList.remove("active"));
+                panels.forEach(p => p.classList.remove("active"));
+
+                tab.classList.add("active");
+                const target = tab.getAttribute("data-target");
+                document.getElementById(target).classList.add("active");
+
+                // Update tab items
+                if (target === "panel-shop") renderShopItems();
+                if (target === "panel-transfers") renderTransferOffers();
+                if (target === "panel-standings") renderLeagueTable();
+            });
+        });
+
+        // --- NARRATIVE INTRO & TRIAL SELECTION SYSTEM ---
+        const TRIALS = [
+            {
+                title: "Aşama 1: Şut Seçmesi",
+                desc: "Ceza sahasında topla buluştun, kaleci açıyı daraltmak için kalesini terk ediyor! Nasıl bir vuruş yapacaksın?",
+                options: [
+                    {
+                        text: "Köşeye sert plase bırak.",
+                        commentarySuccess: "MUHTEŞEM PLASE! Top kalecinin uzanamayacağı köşeden ağlarla buluştu! Antrenörler notlarını alıyor.",
+                        commentaryFail: "Şutun zayıf kaldı, kaleci rahatlıkla topu kontrol etti. Antrenörler kafasını sallıyor.",
+                        successChance: 0.70
+                    },
+                    {
+                        text: "Aşırtma vuruşla kaleciyi avla.",
+                        commentarySuccess: "KAPAK OLSUN! Mükemmel bir aşırtma vuruş! Top süzülerek ağlara gitti! İzleyenler alkışlıyor!",
+                        commentaryFail: "Aşırtma vuruşun ayarını kaçırdın, top doğrudan auta gitti.",
+                        successChance: 0.50
+                    }
+                ]
+            },
+            {
+                title: "Aşama 2: Pas Seçmesi",
+                desc: "Sol kanatta bindiren takım arkadaşını gördün, önünde iki savunma oyuncusu var!",
+                options: [
+                    {
+                        text: "Yerden ince bir ara pası yolla.",
+                        commentarySuccess: "İNANILMAZ VİZYON! Defansın arasından geçen top arkadaşını kaleciyle karşı karşıya bıraktı! Asist!",
+                        commentaryFail: "Pasın çok yavaş kaldı, defans araya kolayca ayak koydu.",
+                        successChance: 0.65
+                    },
+                    {
+                        text: "Uzun havadan bir orta kes.",
+                        commentarySuccess: "MILIMETRIK ORTA! Arka direkteki arkadaşın kafayla topu ağlara yolladı! Harika orta!",
+                        commentaryFail: "Orta çok yüksek gitti, stoperler topu kafayla uzaklaştırdı.",
+                        successChance: 0.55
+                    }
+                ]
+            },
+            {
+                title: "Aşama 3: Hız & Çalım Seçmesi",
+                desc: "Son stoperle karşı karşıyasın, arkadan bir başka stoper de hızla yetişiyor!",
+                options: [
+                    {
+                        text: "Hızını kullanıp dış kulvardan sıyrıl.",
+                        commentarySuccess: "ADETA RÜZGAR! Hız patlamasıyla stoperi geride bıraktın ve çizgiden içeri sokuldun!",
+                        commentaryFail: "Omuz omuza mücadelede stoper seni dışarı itti ve topu kazandı.",
+                        successChance: 0.60
+                    },
+                    {
+                        text: "Mükemmel bir bilek hareketiyle bacak arası at.",
+                        commentarySuccess: "BİR BEBEK GİBİ! Mükemmel bacak arası! Stoper adeta donakaldı, seyircilerden uğultu yükseldi!",
+                        commentaryFail: "Çalım denerken stoper dengesini kaybetmedi ve topu söküp aldı.",
+                        successChance: 0.40
+                    }
+                ]
+            }
+        ];
+
+        let trialScore = 0;
+        let trialStage = 0;
+
+        function runTrial() {
+            const container = document.getElementById("trial-choices-container");
+            const titleEl = document.getElementById("trial-title");
+            const descEl = document.getElementById("trial-desc");
+            const commEl = document.getElementById("trial-commentary");
+
+            if (trialStage < 3) {
+                const currentTrial = TRIALS[trialStage];
+                titleEl.innerText = currentTrial.title;
+                descEl.innerText = currentTrial.desc;
+                container.innerHTML = "";
+
+                currentTrial.options.forEach((opt, idx) => {
+                    const btn = document.createElement("button");
+                    btn.className = "btn btn-event";
+                    btn.style.textAlign = "left";
+                    btn.innerHTML = `<span class="choice-text" style="font-weight: bold; color: var(--primary);">${opt.text}</span>`;
+                    
+                    btn.addEventListener("click", () => {
+                        container.querySelectorAll("button").forEach(b => b.disabled = true);
+                        
+                        const success = Math.random() < opt.successChance;
+                        if (success) {
+                            trialScore++;
+                            commEl.innerText = opt.commentarySuccess;
+                            commEl.style.color = "var(--primary)";
+                        } else {
+                            commEl.innerText = opt.commentaryFail;
+                            commEl.style.color = "var(--accent-red)";
+                        }
+
+                        setTimeout(() => {
+                            trialStage++;
+                            runTrial();
+                        }, 2200);
+                    });
+                    
+                    container.appendChild(btn);
+                });
+            } else {
+                document.getElementById("intro-step-3").style.display = "none";
+                document.getElementById("intro-step-4").style.display = "block";
+
+                const resText = document.getElementById("result-text");
+                const resEmoji = document.getElementById("result-emoji");
+                const resTag = document.getElementById("result-tag");
+
+                let name = document.getElementById("intro-name-input").value.trim() || "Ahmet Eren Demirci";
+
+                if (trialScore === 3) {
+                    resEmoji.innerText = "🏆🔥";
+                    resTag.innerText = "👑 EFSANE UYANIYOR";
+                    resTag.style.backgroundColor = "var(--primary)";
+                    resText.innerHTML = `MÜKEMMEL SEÇMELER! Gözlemciler sana hayran kaldı.<br><br><strong>TFF 2. Lig</strong> ekiplerinden <strong>Yıldız Gençlikspor</strong> seni kadrosuna kattı! Ailenin Şile'deki arazisini geri alma hedefine büyük bir adım attın.<br><br><strong>Başlangıç Maaşı:</strong> 350 €/Hafta<br><strong>Ekstra Takipçi:</strong> +1,000`;
+                } else if (trialScore >= 1) {
+                    resEmoji.innerText = "⚽👍";
+                    resTag.innerText = "📝 LİSANS ALINDI";
+                    resTag.style.backgroundColor = "var(--accent-blue)";
+                    resText.innerHTML = `İYİ PERFORMANS! Antrenörler sende büyük bir ışık gördü.<br><br><strong>TFF 3. Lig</strong> ekiplerinden <strong>Yıldız Gençlikspor</strong> ile ilk profesyonel sözleşmeni imzaladın!<br><br><strong>Başlangıç Maaşı:</strong> 150 €/Hafta`;
+                } else {
+                    resEmoji.innerText = "🥺💪";
+                    resTag.innerText = "⚠️ YEDEK BAŞLANGIÇ";
+                    resTag.style.backgroundColor = "var(--accent-yellow)";
+                    resText.innerHTML = `ZOR BAŞLANGIÇ! Seçmelerde heyecanına yenik düştün ama sendeki potansiyel yeteneği hissettiler.<br><br><strong>TFF 3. Lig</strong> ekibi <strong>Yıldız Gençlikspor</strong> seni yedek kadroya kattı. Kendini antrenmanlarda kanıtlaman gerekecek!<br><br><strong>Başlangıç Maaşı:</strong> 100 €/Hafta<br><strong>Hoca Güveni:</strong> Düşük (%20)`;
+                }
+            }
+        }
+
+        function typeWriter(text, elementId, speed, callback) {
+            let i = 0;
+            const el = document.getElementById(elementId);
+            el.innerHTML = "";
+            const parent = el.parentNode;
+            
+            function type() {
+                if (i < text.length) {
+                    el.innerHTML += text.charAt(i);
+                    i++;
+                    parent.scrollTop = parent.scrollHeight;
+                    setTimeout(type, speed);
+                } else {
+                    if (callback) callback();
+                }
+            }
+            type();
+        }
+
+        // Initialize state
+        window.addEventListener("DOMContentLoaded", () => {
+            if(!localStorage.getItem(GAME.saveKey)) {
+                const introModal = document.getElementById("intro-modal");
+                introModal.classList.add("active");
+
+                const nextBtn1 = document.getElementById("intro-btn-next-1");
+                const nextBtn2 = document.getElementById("intro-btn-next-2");
+                const startBtn = document.getElementById("intro-btn-start");
+
+                nextBtn1.addEventListener("click", () => {
+                    const name = document.getElementById("intro-name-input").value.trim() || "Ahmet Eren Demirci";
+                    document.getElementById("intro-step-1").style.display = "none";
+                    document.getElementById("intro-step-2").style.display = "block";
+                    
+                    const story = `Eskiden Şile'nin en zengin, en nüfuzlu ailesiydiniz... Paranız çok fazlaydı, her istediğiniz gerçekleşiyordu. Ancak babanın işleri yolunda gitmedi. Büyük bir dolandırıcılık şebekesinin kurbanı oldunuz ve her şeyinizi kaybettiniz, iflas ettiniz...\n\nŞimdi eski şaşaalı günlerden geriye sadece tek bir şey kaldı: Senin zehir gibi futbol zekan ve kıvrak ayakların! \n\nHepinizin tek bir umudu var: Altyapı seçmelerinde kendini gösterip profesyonel bir sözleşme kapmak, para kazanmak ve Şile'deki tapumuzu (150.000 €) geri alarak ailenin gururunu kurtarmak!\n\nYıldız Gençlikspor altyapı seçmeleri başlıyor. Hazır mısın ${name}?`;
+                    
+                    typeWriter(story, "intro-story-text", 25, () => {
+                        nextBtn2.style.display = "block";
+                    });
+                });
+
+                nextBtn2.addEventListener("click", () => {
+                    document.getElementById("intro-step-2").style.display = "none";
+                    document.getElementById("intro-step-3").style.display = "block";
+                    trialScore = 0;
+                    trialStage = 0;
+                    runTrial();
+                });
+
+                startBtn.addEventListener("click", () => {
+                    let name = document.getElementById("intro-name-input").value.trim() || "Ahmet Eren Demirci";
+                    
+                    let startingLeague = "3. Lig";
+                    let startingSalary = 150;
+                    let startingTrust = 40;
+
+                    if (trialScore === 3) {
+                        startingLeague = "2. Lig";
+                        startingSalary = 350;
+                        startingTrust = 50;
+                    } else if (trialScore === 0) {
+                        startingLeague = "3. Lig";
+                        startingSalary = 100;
+                        startingTrust = 20;
+                    }
+
+                    GAME.resetGame(name, startingLeague, startingSalary, startingTrust);
+                    introModal.classList.remove("active");
+                    determineNextOpponent();
+                    renderLeagueTable();
+                    renderSocialFeed();
+                });
+            } else {
+                GAME.init();
+                determineNextOpponent();
+                renderLeagueTable();
+                renderSocialFeed();
+            }
+        });
+
+        let nextOpponent = null;
+
+        function proceedPostMatch() {
+            GAME.advanceWeek();
+            determineNextOpponent();
+
+            if (!checkForWhatsAppEvents()) {
+                if (Math.random() < 0.4) {
+                    triggerRandomEvent();
+                }
+            }
+        }
+
+        function triggerInterview(rating, goals, assists) {
+            if (rating >= 8.2 || goals >= 2 || (goals + assists >= 3)) {
+                const interviewModal = document.getElementById("interview-modal");
+                interviewModal.classList.add("active");
+
+                const opt1 = document.getElementById("interview-opt-1");
+                const opt2 = document.getElementById("interview-opt-2");
+                const opt3 = document.getElementById("interview-opt-3");
+
+                // Clear existing listeners by replacing elements with clones
+                const newOpt1 = opt1.cloneNode(true);
+                const newOpt2 = opt2.cloneNode(true);
+                const newOpt3 = opt3.cloneNode(true);
+
+                opt1.parentNode.replaceChild(newOpt1, opt1);
+                opt2.parentNode.replaceChild(newOpt2, opt2);
+                opt3.parentNode.replaceChild(newOpt3, opt3);
+
+                newOpt1.addEventListener("click", () => {
+                    GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 5);
+                    GAME.state.moral = Math.min(100, GAME.state.moral + 5);
+                    GAME.state.followers += 200;
+                    GAME.addSocialPost("@tribun_sessiz", "Tribün Akustiği", `Semih'in röportajdaki efendiliği... İşte aradığımız Türk genci! Helal olsun. 👏👏`);
+                    GAME.saveGame();
+                    GAME.updateUI();
+                    interviewModal.classList.remove("active");
+                    proceedPostMatch();
+                });
+
+                newOpt2.addEventListener("click", () => {
+                    GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 5);
+                    GAME.state.moral = Math.min(100, GAME.state.moral + 10);
+                    GAME.state.followers += 1500;
+                    GAME.addSocialPost("@spor_manset", "Spor Manşetleri", `Semih Şentürk: "Ben buraya yedek kalmaya gelmedim, kalitem ortada." Medyada manşetler alev alev! 🔥🎤`);
+                    GAME.saveGame();
+                    GAME.updateUI();
+                    interviewModal.classList.remove("active");
+                    proceedPostMatch();
+                });
+
+                newOpt3.addEventListener("click", () => {
+                    GAME.state.moral = Math.min(100, GAME.state.moral + 15);
+                    GAME.state.followers += 600;
+                    GAME.addSocialPost("@semih_haber", "Semih Şentürk Fan", `Semih bugünkü golünü ailesine armağan etti. Şile'deki zor günleri atlatacaklar inşallah! Dualarımız seninle çocuk! ❤️🥺`);
+                    GAME.saveGame();
+                    GAME.updateUI();
+                    interviewModal.classList.remove("active");
+                    proceedPostMatch();
+                });
+            } else {
+                proceedPostMatch();
+            }
+        }
+
+        function determineNextOpponent() {
+            let league = DATABASE.LEAGUES[GAME.state.currentLeague];
+            if (!league) return;
+
+            // If we already have nextOpponentName saved, load it
+            if (GAME.state.nextOpponentName) {
+                nextOpponent = league.teams.find(t => t.name === GAME.state.nextOpponentName);
+                if (nextOpponent && nextOpponent.name !== GAME.state.currentClub) {
+                    displayNextOpponent();
+                    return;
+                }
+            }
+
+            // Otherwise, determine a new one (excluding our own club and last opponent)
+            let eligibleTeams = league.teams.filter(t => t.name !== GAME.state.currentClub);
+            if (GAME.state.lastOpponentName) {
+                let tempTeams = eligibleTeams.filter(t => t.name !== GAME.state.lastOpponentName);
+                if (tempTeams.length > 0) {
+                    eligibleTeams = tempTeams;
+                }
+            }
+
+            nextOpponent = eligibleTeams[Math.floor(Math.random() * eligibleTeams.length)];
+            GAME.state.nextOpponentName = nextOpponent.name;
+            GAME.saveGame();
+
+            displayNextOpponent();
+        }
+
+        function displayNextOpponent() {
+            if (!nextOpponent) return;
+            document.getElementById("next-opponent-text").innerHTML = `
+                <strong style="color:${nextOpponent.color}">${nextOpponent.name}</strong> 
+                (A:${nextOpponent.att} O:${nextOpponent.mid} D:${nextOpponent.def})
+            `;
+        }
+
+        // Render Shop Items
+        function renderShopItems() {
+            const container = document.getElementById("shop-items-container");
+            container.innerHTML = "";
+
+            DATABASE.LIFESTYLE_ITEMS.forEach(item => {
+                let isOwned = GAME.state.ownedItems.includes(item.id);
+                let buttonText = isOwned ? "Sahipsiniz" : `${item.cost.toLocaleString()} € Satın Al`;
+                let btnClass = isOwned ? "btn-disabled" : "btn-secondary";
+
+                container.innerHTML += `
+                    <div class="shop-card glass">
+                        <div class="details">
+                            <h3>${item.name}</h3>
+                            <p class="desc">${item.desc}</p>
+                            <span class="cost-tag">${item.isWeekly ? "Haftalık Kiralama" : "Tek Seferlik"}</span>
+                        </div>
+                        <button class="btn ${btnClass}" ${isOwned ? "disabled" : ""} onclick="GAME.buyItem('${item.id}'); renderShopItems();">${buttonText}</button>
+                    </div>
+                `;
+            });
+        }
+
+        // Render Transfer Offers
+        function renderTransferOffers() {
+            const container = document.getElementById("offers-container");
+            container.innerHTML = "";
+
+            let offers = GAME.checkForTransferOffers();
+            if (offers.length === 0) {
+                container.innerHTML = `<div class="empty-state glass">Şu an sizi transfer etmek isteyen kulüp bulunmuyor. Derecenizi yükseltin!</div>`;
+                return;
+            }
+
+            offers.forEach(offer => {
+                container.innerHTML += `
+                    <div class="offer-card glass" style="border-left: 6px solid ${offer.teamColor}">
+                        <div class="details">
+                            <h3>${offer.teamName}</h3>
+                            <p>${offer.leagueName} | Başlangıç Teklifi</p>
+                            <span class="salary-tag">${offer.salary.toLocaleString()} € / Hafta</span>
+                        </div>
+                        <button class="btn btn-primary" onclick="openNegotiation('${offer.teamName}', '${offer.leagueName}', ${offer.salary}, '${offer.teamColor}')">Görüşmeye Başla</button>
+                    </div>
+                `;
+            });
+        }
+
+        // Negotiation modal
+        let activeOffer = null;
+
+        function openNegotiation(teamName, leagueName, salary, teamColor) {
+            activeOffer = { teamName, leagueName, salary, teamColor };
+            
+            const negModal = document.getElementById("negotiation-modal");
+            document.getElementById("neg-team-name").innerText = teamName;
+            document.getElementById("neg-team-name").style.color = teamColor;
+            document.getElementById("neg-desc").innerHTML = `
+                ${leagueName} temsilcisi <strong>${teamName}</strong> transfer masasında.<br>
+                Sunulan başlangıç maaşı: <strong>${salary.toLocaleString()} € / Hafta</strong>.
+            `;
+            
+            let negotiatedSalary = Math.round(salary * 1.20);
+            let signBonus = Math.round(salary * 20); 
+            
+            document.getElementById("neg-effect-negotiate").innerText = `Başarı şansı yeteneğine bağlıdır. Başarılı olursa ${negotiatedSalary.toLocaleString()} € / Hafta alırsın. Başarısız olursa teklif geri çekilebilir.`;
+            document.getElementById("neg-effect-bonus").innerText = `Tek seferlik ${signBonus.toLocaleString()} € imza parası alırsın, ancak Hoca Güveni -15 azalır.`;
+
+            // Bind click buttons
+            document.getElementById("neg-btn-accept").onclick = () => {
+                acceptTransfer(teamName, leagueName, salary);
+                negModal.classList.remove("active");
+            };
+
+            document.getElementById("neg-btn-negotiate").onclick = () => {
+                let teamAvg = GAME.getTeamAverageRating(teamName);
+                let chance = 0.45 + (GAME.state.rating - teamAvg) * 0.02;
+                chance = Math.max(0.15, Math.min(0.85, chance));
+
+                if (Math.random() < chance) {
+                    alert(`Pazarlık Başarılı! Kulüp zam talebini kabul etti.\nYeni Maaş: ${negotiatedSalary.toLocaleString()} € / Hafta`);
+                    acceptTransfer(teamName, leagueName, negotiatedSalary);
+                } else {
+                    alert(`Pazarlık Başarısız! Kulüp yetkilileri zam talebine kızdı ve teklifini geri çekerek masadan kalktı.`);
+                }
+                negModal.classList.remove("active");
+            };
+
+            document.getElementById("neg-btn-bonus").onclick = () => {
+                alert(`Pazarlık Başarılı! Kulüp tek seferlik ${signBonus.toLocaleString()} € imza parasını kabul etti.\nMoralin arttı ancak Hoca Güveni azaldı.`);
+                GAME.state.money += signBonus;
+                GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 15);
+                GAME.state.moral = Math.min(100, GAME.state.moral + 15);
+                acceptTransfer(teamName, leagueName, salary);
+                negModal.classList.remove("active");
+            };
+
+            document.getElementById("neg-btn-cancel").onclick = () => {
+                negModal.classList.remove("active");
+            };
+
+            negModal.classList.add("active");
+        }
+
+        function acceptTransfer(teamName, leagueName, salary) {
+            GAME.state.currentClub = teamName;
+            GAME.state.currentLeague = leagueName;
+            GAME.state.weeklySalary = salary;
+            GAME.initLeagueTable();
+            GAME.saveGame();
+            GAME.updateUI();
+            alert(`${teamName} kulübüne transferiniz tamamlandı! Başarılar!`);
+            
+            document.querySelector("[data-target='panel-career']").click();
+            determineNextOpponent();
+        }
+
+        // Render standings table
+        function renderLeagueTable() {
+            const tbody = document.getElementById("standings-body");
+            if (!tbody) return;
+            tbody.innerHTML = "";
+
+            if (!GAME.state.leagueTable || GAME.state.leagueTable.length === 0) {
+                GAME.initLeagueTable();
+            }
+
+            GAME.state.leagueTable.forEach((row, idx) => {
+                let isPlayerClub = (row.name === GAME.state.currentClub);
+                let rowStyle = isPlayerClub ? "background: rgba(0, 230, 118, 0.08); font-weight: bold; border-left: 3px solid var(--primary);" : "";
+                
+                tbody.innerHTML += `
+                    <tr style="border-bottom: 1px solid var(--border-glass); ${rowStyle}">
+                        <td style="padding: 8px 4px; color: ${isPlayerClub ? 'var(--primary)' : 'var(--text-muted)'};">${idx + 1}</td>
+                        <td style="padding: 8px 4px;">${row.name}</td>
+                        <td style="padding: 8px 4px; text-align: center;">${row.played}</td>
+                        <td style="padding: 8px 4px; text-align: center;">${row.won}</td>
+                        <td style="padding: 8px 4px; text-align: center;">${row.drawn}</td>
+                        <td style="padding: 8px 4px; text-align: center;">${row.lost}</td>
+                        <td style="padding: 8px 4px; text-align: center; color: ${row.gf-row.ga >= 0 ? 'var(--primary)' : 'var(--accent-red)'};">${row.gf - row.ga}</td>
+                        <td style="padding: 8px 4px; text-align: center; font-weight: bold; color: ${isPlayerClub ? 'var(--primary)' : 'white'};">${row.points}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Render Social Feed
+        function renderSocialFeed() {
+            const container = document.getElementById("social-feed-container");
+            if (!container) return;
+            container.innerHTML = "";
+
+            if (!GAME.state.socialFeed || GAME.state.socialFeed.length === 0) {
+                container.innerHTML = `<div style="font-size:12px; color: var(--text-muted); text-align:center; padding:10px;">Henüz bir paylaşım yok.</div>`;
+                return;
+            }
+
+            GAME.state.socialFeed.slice(0, 3).forEach(post => {
+                container.innerHTML += `
+                    <div class="glass" style="padding: 10px; display: flex; flex-direction: column; gap: 4px; border: 1px solid rgba(255,255,255,0.04); background: rgba(255,255,255,0.01); border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; font-size: 11px;">
+                            <span style="font-weight: bold; color: white;">${post.name} <span style="font-weight:normal; color:var(--text-muted);">${post.handle}</span></span>
+                            <span style="color: var(--text-muted); font-size:10px;">${post.time}</span>
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-main); line-height: 1.4;">${post.text}</div>
+                    </div>
+                `;
+            });
+        }
+
+        // Play Match Trigger
+        const playBtn = document.getElementById("btn-play-match");
+        playBtn.addEventListener("click", () => {
+            if (GAME.state.kondisyon < 20) {
+                alert("Oynamak için yeterli enerjiniz yok. Lütfen dinlenin.");
+                return;
+            }
+            startMatch();
+        });
+
+        // Fast Simulate Trigger
+        const simulateBtn = document.getElementById("btn-simulate-match");
+        simulateBtn.addEventListener("click", () => {
+            simulateMatchFast();
+        });
+
+        function simulateMatchFast() {
+            if (GAME.state.kondisyon < 20) {
+                alert("Simüle etmek için yeterli enerjiniz yok. Lütfen dinlenin.");
+                return;
+            }
+
+            let playerTeamObj = GAME.getPlayerTeamObject();
+
+            // Calculate match outcomes instantly based on team rating comparisons
+            let myRating = (playerTeamObj.att + playerTeamObj.mid + playerTeamObj.def) / 3 + (GAME.state.rating * 0.15);
+            let oppRating = (nextOpponent.att + nextOpponent.mid + nextOpponent.def) / 3;
+
+            let myPossession = myRating / (myRating + oppRating);
+            
+            // Random goals generated
+            let myGoals = 0;
+            let oppGoals = 0;
+
+            for (let i = 0; i < 4; i++) {
+                if (Math.random() < myPossession * 0.5) myGoals++;
+                if (Math.random() < (1 - myPossession) * 0.5) oppGoals++;
+            }
+
+            // Calculate player goals/assists
+            let playerGoalsThisMatch = 0;
+            let playerAssistsThisMatch = 0;
+
+            if (myGoals > 0) {
+                let shootProb = GAME.state.shooting / 140; 
+                for (let g = 0; g < myGoals; g++) {
+                    if (Math.random() < shootProb && playerGoalsThisMatch < myGoals) {
+                        playerGoalsThisMatch++;
+                    } else if (Math.random() < 0.3 && (playerGoalsThisMatch + playerAssistsThisMatch) < myGoals) {
+                        playerAssistsThisMatch++;
+                    }
+                }
+            }
+
+            // Final performance rating
+            let rating = 6.0 + (playerGoalsThisMatch * 1.5) + (playerAssistsThisMatch * 1.0) + (Math.random() * 1.5 - 0.5);
+            rating = Math.max(3.0, Math.min(10.0, parseFloat(rating.toFixed(1))));
+
+            // Show result
+            alert(`HIZLI SİMÜLASYON SONUCU\n\nMaç Skoru: ${playerTeamObj.name} ${myGoals} - ${oppGoals} ${nextOpponent.name}\n\nGollerin: ${playerGoalsThisMatch}\nAsistlerin: ${playerAssistsThisMatch}\nMaç Puanın: ${rating}`);
+
+            // Update stats
+            GAME.state.careerApps++;
+            GAME.state.careerGoals += playerGoalsThisMatch;
+            GAME.state.careerAssists += playerAssistsThisMatch;
+            GAME.state.seasonGoals += playerGoalsThisMatch;
+            GAME.state.seasonAssists += playerAssistsThisMatch;
+
+            // Stamina reduction
+            GAME.state.kondisyon = Math.max(10, GAME.state.kondisyon - 30);
+
+            // Update trust and morale
+            let scoreDiff = myGoals - oppGoals;
+            if (scoreDiff > 0) {
+                GAME.state.moral = Math.min(100, GAME.state.moral + 12);
+                GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 8);
+                GAME.state.followers += Math.round(400 * rating * 0.4);
+                GAME.addSocialPost(`@${GAME.state.playerName.toLowerCase().replace(/\s/g, '_')}_fan`, `${GAME.state.playerName} Fan`, `${GAME.state.playerName} bu maçta da kalitesini konuşturdu! Takım kazandı, biz gururlandık! 👏⚽`);
+                SoundManager.playGoal();
+            } else if (scoreDiff < 0) {
+                GAME.state.moral = Math.max(20, GAME.state.moral - 8);
+                GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 4);
+                GAME.addSocialPost("@tribun_yazar", "Tribün Yazarı", `${GAME.state.playerName} ve takımının bu mağlubiyetten ders çıkarması gerekiyor. Defans hatalarla doluydu.`);
+                SoundManager.playConceded();
+            } else {
+                GAME.state.moral = Math.min(100, GAME.state.moral + 4);
+                GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 2);
+                GAME.addSocialPost("@futbol_fanatik", "Futbol Fanatiği", `Kıran kırana beraberlik! İki taraf da kazanabilirdi, ${GAME.state.playerName} elinden geleni yaptı.`);
+            }
+
+            // Simulate player's match in league standings
+            GAME.matchSimulatedThisWeek = true;
+            GAME.simulateLeagueWeek(myGoals, oppGoals);
+
+            // Trigger interview (which eventually proceeds post match)
+            triggerInterview(rating, playerGoalsThisMatch, playerAssistsThisMatch);
+        }
+
+        // Rest Trigger
+        const restBtn = document.getElementById("btn-rest");
+        restBtn.addEventListener("click", () => {
+            GAME.state.kondisyon = Math.min(100, GAME.state.kondisyon + 25);
+            GAME.state.moral = Math.min(100, GAME.state.moral + 5);
+
+            GAME.advanceWeek();
+            determineNextOpponent();
+
+            alert(`Haftayı dinlenerek geçirdin. Dinlenme sayesinde kondisyonun ve moralin arttı!\n\nYeni Kondisyon: %${GAME.state.kondisyon}\nYeni Moral: %${GAME.state.moral}`);
+
+            if (!checkForWhatsAppEvents()) {
+                if (Math.random() < 0.4) {
+                    triggerRandomEvent();
+                }
+            }
+        });
+
+        // Settings panel bindings
+        const btnSettingsOpen = document.getElementById("btn-settings-open");
+        const settingsModal = document.getElementById("settings-modal");
+        const settingsClose = document.getElementById("settings-close");
+        const soundToggle = document.getElementById("settings-sound-toggle");
+        const settingsResetCareer = document.getElementById("settings-reset-career");
+
+        btnSettingsOpen.addEventListener("click", () => {
+            soundToggle.checked = SoundManager.enabled;
+            settingsModal.classList.add("active");
+        });
+
+        settingsClose.addEventListener("click", () => {
+            settingsModal.classList.remove("active");
+        });
+
+        soundToggle.addEventListener("change", () => {
+            SoundManager.enabled = soundToggle.checked;
+        });
+
+        settingsResetCareer.addEventListener("click", () => {
+            if (confirm("Kariyerinizi sıfırlamak ve en baştan başlamak istediğinize emin misiniz? Tüm birikimleriniz, puan durumunuz ve istatistikleriniz silinecektir.")) {
+                localStorage.removeItem(GAME.saveKey);
+                settingsModal.classList.remove("active");
+                location.reload();
+            }
+        });
+
+        // Match Logic integration
+        let currentMatchSpeed = 1;
+
+        function startMatch() {
+            const matchView = document.getElementById("match-view");
+            matchView.classList.add("active");
+
+            currentMatchSpeed = 1;
+            const speedBtn = document.getElementById("btn-match-speed");
+            speedBtn.innerText = "Hız: 1x";
+
+            let playerTeamObj = GAME.getPlayerTeamObject();
+
+            document.getElementById("match-player-team").innerText = playerTeamObj.name;
+            document.getElementById("player-badge").style.backgroundColor = playerTeamObj.color;
+
+            document.getElementById("match-opponent-team").innerText = nextOpponent.name;
+            document.getElementById("opponent-badge").style.backgroundColor = nextOpponent.color;
+
+            document.getElementById("match-score").innerText = "0 - 0";
+            document.getElementById("match-time").innerText = "0'";
+            
+            const timelineLog = document.getElementById("match-log-timeline");
+            timelineLog.innerHTML = `<div style="color: var(--text-muted);">Maç başlamak üzere, hakem son kontrolleri yapıyor...</div>`;
+
+            document.getElementById("match-decision-card").style.display = "none";
+
+            speedBtn.onclick = () => {
+                if (currentMatchSpeed === 1) currentMatchSpeed = 2;
+                else if (currentMatchSpeed === 2) currentMatchSpeed = 4;
+                else currentMatchSpeed = 1;
+                speedBtn.innerText = `Hız: ${currentMatchSpeed}x`;
+                MatchEngine.setSpeed(currentMatchSpeed);
+            };
+
+            // Run Simulator
+            MatchEngine.simulate(playerTeamObj, nextOpponent, GAME.state, {
+                onMinuteUpdate: function(min, score, comment) {
+                    document.getElementById("match-time").innerText = min + "'";
+                    document.getElementById("match-score").innerText = `${score.player} - ${score.opponent}`;
+                    
+                    if (comment) {
+                        let colorClass = "var(--text-muted)";
+                        let prefix = "";
+                        if (comment.includes("GOOOL")) {
+                            colorClass = "var(--primary)";
+                            prefix = "⚽ ";
+                            SoundManager.playGoal();
+                        } else if (comment.includes("MAALESEF GOL")) {
+                            colorClass = "var(--accent-red)";
+                            prefix = "❌ ";
+                            SoundManager.playConceded();
+                        } else if (comment.includes("SARI KART")) {
+                            colorClass = "var(--accent-yellow)";
+                            prefix = "🟨 ";
+                        }
+
+                        timelineLog.innerHTML += `
+                            <div style="border-left: 2.5px solid ${colorClass}; padding-left: 8px; margin: 4px 0; color: white;">
+                                <strong style="color: var(--text-muted);">${min}'</strong> ${prefix}${comment}
+                            </div>
+                        `;
+                        timelineLog.scrollTop = timelineLog.scrollHeight;
+                    }
+                },
+                onMatchChoice: function(minute, choiceData) {
+                    const decCard = document.getElementById("match-decision-card");
+                    document.getElementById("decision-title").innerText = `${minute}' DA KRİTİK POZİSYON!`;
+                    document.getElementById("decision-desc").innerText = choiceData.description;
+                    
+                    const optionsContainer = document.getElementById("decision-options-container");
+                    optionsContainer.innerHTML = "";
+
+                    choiceData.options.forEach((opt, idx) => {
+                        let statDisplay = "";
+                        if (opt.statUsed) {
+                            let statVal = GAME.state[opt.statUsed];
+                            statDisplay = ` (Yetenek: ${statVal})`;
+                        }
+                        optionsContainer.innerHTML += `
+                            <button class="btn btn-event" style="text-align: left; width: 100%;" onclick="chooseMatchOption(${idx})">
+                                <span class="choice-text" style="font-weight: bold; color: var(--primary);">${opt.text}</span>
+                                <span class="choice-effect" style="font-size: 11px; color: var(--text-muted);">${opt.effect}${statDisplay}</span>
+                            </button>
+                        `;
+                    });
+
+                    decCard.style.display = "block";
+                    timelineLog.scrollTop = timelineLog.scrollHeight;
+                },
+                onMatchFinish: function(result) {
+                    alert(`Maç Sona Erdi! Skor: ${result.score.player} - ${result.score.opponent}\nPerformans Puanın: ${result.playerStats.rating}\nAttığın Gol: ${result.playerStats.goals} | Asist: ${result.playerStats.assists}`);
+                    
+                    GAME.state.careerApps++;
+                    GAME.state.careerGoals += result.playerStats.goals;
+                    GAME.state.careerAssists += result.playerStats.assists;
+                    GAME.state.seasonGoals += result.playerStats.goals;
+                    GAME.state.seasonAssists += result.playerStats.assists;
+
+                    GAME.state.kondisyon = Math.max(10, GAME.state.kondisyon - 30);
+                    
+                    let scoreDiff = result.score.player - result.score.opponent;
+                    if (scoreDiff > 0) {
+                        GAME.state.moral = Math.min(100, GAME.state.moral + 15);
+                        GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 10);
+                        GAME.state.followers += Math.round(500 * result.playerStats.rating * 0.5);
+                        GAME.addSocialPost("@superlig_troll", "Süper Lig Trolleri", `${GAME.state.playerName} bu gol sevincini Şile'ye hediye etmiş diyorlar. Helal olsun aslan parçası! 🏠🦁`);
+                    } else if (scoreDiff < 0) {
+                        GAME.state.moral = Math.max(20, GAME.state.moral - 10);
+                        GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 5);
+                        GAME.addSocialPost("@spor_manset", "Spor Manşetleri", `${GAME.state.playerName}'in çabası mağlubiyeti engellemeye yetmedi. Hoca faturayı defansa kesiyor.`);
+                    } else {
+                        GAME.state.moral = Math.min(100, GAME.state.moral + 5);
+                        GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 2);
+                        GAME.addSocialPost("@tribun_org", "Tribün Org", `${GAME.state.playerName} maç sonu açıklamasında: "Önümüzdeki maçlara bakacağız" dedi. Taraftar desteği sürüyor.`);
+                    }
+
+                    matchView.classList.remove("active");
+                    triggerInterview(result.playerStats.rating, result.playerStats.goals, result.playerStats.assists);
+                }
+            });
+        }
+
+        function chooseMatchOption(optionIdx) {
+            document.getElementById("match-decision-card").style.display = "none";
+            MatchEngine.makeChoice(optionIdx);
+        }
+
+        // WhatsApp dialogue modals triggers
+        function triggerWhatsAppChat(scenario) {
+            const chatModal = document.getElementById("chat-modal");
+            document.getElementById("chat-contact-name").innerText = scenario.name;
+            document.getElementById("chat-avatar-face").innerText = scenario.avatar;
+            document.getElementById("chat-incoming-text").innerText = scenario.message;
+
+            const replyContainer = document.getElementById("chat-reply-container");
+            replyContainer.innerHTML = "";
+
+            scenario.options.forEach((opt, idx) => {
+                replyContainer.innerHTML += `
+                    <button class="btn btn-event" style="text-align: left; width: 100%;" onclick="chooseChatOption(${idx})">
+                        <span class="choice-text" style="font-weight: bold; color: var(--primary);">${opt.text}</span>
+                        <span class="choice-effect" style="font-size: 11px; color: var(--text-muted);">${opt.effect}</span>
+                    </button>
+                `;
+            });
+
+            activeChatOptions = scenario.options;
+            chatModal.classList.add("active");
+        }
+
+        let activeChatOptions = null;
+
+        function chooseChatOption(idx) {
+            if (activeChatOptions && activeChatOptions[idx]) {
+                activeChatOptions[idx].apply();
+                GAME.saveGame();
+                GAME.updateUI();
+            }
+            document.getElementById("chat-modal").classList.remove("active");
+            activeChatOptions = null;
+        }
+
+        function checkForWhatsAppEvents() {
+            if (GAME.state.money >= 150000 && !GAME.state.familyEstateReclaimed) {
+                triggerWhatsAppChat({
+                    name: "Babam",
+                    avatar: "👨‍🦳",
+                    message: `Oğlum... İnanılmaz bir haber aldım. Şile'deki arazimizin borçlarını kapatıp tapuyu geri almak için tam 150,000 € gerekiyormuş. Kulüpteki ilk büyük birikiminle bunu bizim için yapar mısın?`,
+                    options: [
+                        {
+                            text: "Evi geri alıyoruz baba! Parayı gönderiyorum.",
+                            effect: "Cüzdandan 150,000 € düşer. Şile'deki tapuyu geri alırsınız!",
+                            apply: () => {
+                                GAME.state.money -= 150000;
+                                GAME.state.familyEstateReclaimed = true;
+                                GAME.state.moral = 100;
+                                GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 30);
+                                GAME.state.followers += 25000;
+                                GAME.addSocialPost("@semih_haber", "Semih Haber", `BÜYÜK VEFA! Genç Semih, kazandığı ilk büyük para ile ailesinin Şile'de iflas nedeniyle kaybedilen eski mülklerini geri satın alıp babasına hediye etti! 🏠❤️👏`);
+                                GAME.saveGame();
+                                GAME.updateUI();
+                                setTimeout(() => {
+                                    alert("Tebrikler! Ailenin itibarını ve Şile'deki mülklerinizi geri kazandın! Bu hikayeyi tamamlayarak kariyerinin en büyük zaferini elde ettin. Artık gerçek bir efsanesin!");
+                                }, 1000);
+                            }
+                        },
+                        {
+                            text: "Şu an hazır değilim baba, parayı biriktirmeliyim.",
+                            effect: "Para cüzdanda kalır.",
+                            apply: () => {
+                                GAME.saveGame();
+                                GAME.updateUI();
+                            }
+                        }
+                    ]
+                });
+                return true; 
+            }
+
+            if (Math.random() < 0.20) {
+                let scenarios = [
+                    {
+                        name: "Hoca",
+                        avatar: "🧔",
+                        message: "Semih, son antrenmanlarda kondisyonunun çok düştüğünü görüyorum. Kendini toparlamazsan yedek kulübesine çekileceksin.",
+                        options: [
+                            {
+                                text: "Haklısınız hocam, bu hafta ekstra çalışacağım.",
+                                effect: "Hoca Güveni +15, Kondisyon -15 (Ekstra idman)",
+                                apply: () => {
+                                    GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 15);
+                                    GAME.state.kondisyon = Math.max(10, GAME.state.kondisyon - 15);
+                                    GAME.addSocialPost("@semih_fan", "Semih Fan", `Semih idmanlarda vites artırmış diyorlar. Hırslı çocuk, formayı bırakmak istemiyor! 💪`);
+                                }
+                            },
+                            {
+                                text: "Hocam özel sorunlarım var, saha dışı kafam dolu.",
+                                effect: "Moral +15, Hoca Güveni -10",
+                                apply: () => {
+                                    GAME.state.moral = Math.min(100, GAME.state.moral + 15);
+                                    GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 10);
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        name: "Ali (Takım Arkadaşı)",
+                        avatar: "👦",
+                        message: "Kanka geçen maç ceza sahasında bomboştum, pas atmak yerine kaleye vurdun. Hırslı olmanı anlıyorum ama takımı düşünmeliyiz.",
+                        options: [
+                            {
+                                text: "Kusura bakma kanka, heyecana kapıldım. Söz haftaya ilk sana pas vereceğim.",
+                                effect: "Hoca Güveni +10, Moral +5 (Takım oyuncusu)",
+                                apply: () => {
+                                    GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 10);
+                                    GAME.state.moral = Math.min(100, GAME.state.moral + 5);
+                                }
+                            },
+                            {
+                                text: "Kanka ben forvetim, pozisyon gelirse yine vururum.",
+                                effect: "Moral +15, Hoca Güveni -5 (Bireysel ego)",
+                                apply: () => {
+                                    GAME.state.moral = Math.min(100, GAME.state.moral + 15);
+                                    GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 5);
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        name: "Menajer",
+                        avatar: "👨‍💼",
+                        message: "Dostum, Şile'deki arazinizi kurtarma hedefine odaklanmak için reklam gelirlerimizi artırmalıyız. Lüks bir spor giyim markası çekim teklif etti.",
+                        options: [
+                            {
+                                text: "Çekimlere katıl, bütçeyi doldur.",
+                                effect: "Bütçe +8,000 €, Takipçi +5,000, Hoca Güveni -15 (İdman çakışması)",
+                                apply: () => {
+                                    GAME.state.money += 8000;
+                                    GAME.state.followers += 5000;
+                                    GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 15);
+                                    GAME.addSocialPost("@modamag", "Moda & Spor", `Genç yıldız Semih, yeni reklam kampanyasında markanın yüzü oldu! Yakışmış! 😎👕`);
+                                }
+                            },
+                            {
+                                text: "Teklifi reddet, taktik antrenmanda kal.",
+                                effect: "Hoca Güveni +15, Kondisyon +10",
+                                apply: () => {
+                                    GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 15);
+                                    GAME.state.kondisyon = Math.min(100, GAME.state.kondisyon + 10);
+                                }
+                            }
+                        ]
+                    }
+                ];
+                let chosen = scenarios[Math.floor(Math.random() * scenarios.length)];
+                triggerWhatsAppChat(chosen);
+                return true;
+            }
+            return false;
+        }
+
+        // Season summary window helper
+        window.showSeasonSummaryModal = function(title, message) {
+            const modal = document.getElementById("season-summary-modal");
+            document.getElementById("season-title").innerText = title;
+            document.getElementById("season-desc").innerHTML = message;
+            
+            document.getElementById("btn-season-summary-close").onclick = () => {
+                modal.classList.remove("active");
+            };
+
+            modal.classList.add("active");
+        };
+
+        // Random Event triggers
+        function triggerRandomEvent() {
+            let eligibleEvents = RANDOM_EVENTS.filter(e => e.scope === "global" || e.scope === GAME.state.currentLeague);
+            if (eligibleEvents.length === 0) return;
+
+            let event = eligibleEvents[Math.floor(Math.random() * eligibleEvents.length)];
+            
+            const eventModal = document.getElementById("event-modal");
+            document.getElementById("event-tag").innerText = event.scope.toUpperCase();
+            document.getElementById("event-title").innerText = event.title;
+            document.getElementById("event-desc").innerText = event.description;
+
+            document.getElementById("event-text-a").innerText = event.optionA.text;
+            document.getElementById("event-effect-a").innerText = event.optionA.effectText;
+
+            document.getElementById("event-text-b").innerText = event.optionB.text;
+            document.getElementById("event-effect-b").innerText = event.optionB.effectText;
+
+            document.getElementById("event-btn-a").onclick = () => {
+                event.optionA.apply(GAME.state);
+                GAME.saveGame();
+                GAME.updateUI();
+                eventModal.classList.remove("active");
+                alert("Kararınız istatistiklerinizi etkiledi!");
+            };
+
+            document.getElementById("event-btn-b").onclick = () => {
+                event.optionB.apply(GAME.state);
+                GAME.saveGame();
+                GAME.updateUI();
+                eventModal.classList.remove("active");
+                alert("Kararınız istatistiklerinizi etkiledi!");
+            };
+
+            eventModal.classList.add("active");
+        }
+    </script>
+</body>
+</html>
