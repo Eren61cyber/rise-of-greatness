@@ -16,6 +16,19 @@ Bu güncelleme, "Futbol Atlası: Kariyer Efsanesi" oyununu tamamen interaktif ve
 5.  **Şut ve Pas Kontrolleri:** Parmağını sağ yarada sürükleyip bıraktığında sapan (slingshot) mekanizmasıyla kaleye şut atabilirsin. Takım arkadaşlarına dokunarak doğrudan pas gönderebilirsin.
 6.  **Hızlandırıcı Kontrolü (1x / 2x / 4x):** Maç ekranının sağ üstündeki butonla maç hızını (fizik ve zaman döngüsünü) 2 kat veya 4 kat hızlandırarak maçları saniyeler içinde tamamlayabilirsin.
 
+### 5. 💸 Ekonomi Rebalance: Maaşla Orantılı Dynamic Enerji Fiyatları & Maaş Sınırları (Salary Cap)
+- Yeteneklerin hemen 100 olmasını engellemek ve kariyer boyu rekabeti korumak için kondisyon içecekleri ve masaj fiyatları **haftalık maaşla doğru orantılı (dynamic)** hale getirilmiştir:
+  - **Enerji İçeceği (+35):** Haftalık maaşın %80'i (Min 100 €) - Başlangıçta 120 €, Süper Lig'de ~96.000 €
+  - **NRG İçeceği (+50):** Haftalık maaşın 1.5 katı (Min 250 €) - Başlangıçta 250 €, Süper Lig'de ~180.000 €
+  - **Vitamin Takviyesi (+60):** Haftalık maaşın 1.2 katı (Min 200 €) - Başlangıçta 200 €, Süper Lig'de ~144.000 €
+  - **Masaj & Fizyoterapi (%100):** Haftalık maaşın 3.5 katı (Min 500 €) - Başlangıçta 525 €, Süper Lig'de ~420.000 €
+- Haftalık maaşların kontrolsüz bir şekilde milyon eurolara tırmanması engellenmiştir. Lig bazlı tavan sınırlar (Salary Caps) getirilmiştir:
+  - 3. Lig: Maksimum 2.500 € / Hafta
+  - 2. Lig: Maksimum 6.000 € / Hafta
+  - 1. Lig: Maksimum 15.000 € / Hafta
+  - Süper Lig: Maksimum 120.000 € / Hafta
+  - Avrupa Ligleri (Avrupa devleri dahil): Maksimum **300.000 € / Hafta**
+
 ---
 
 ## Bağlantı ve Test Adımları
@@ -33,3 +46,17 @@ Yerel TCP sunucusu bilgisayarında arka planda başarıyla yeniden başlatıldı
 - [x] Üst köşedeki "Hız: 1x" butonuna basarak hızı 2x ve 4x modlarına alma.
 - [x] Gol atıldığında veya yenildiğinde skorun güncellenmesi ve oyunun santradan devam etmesi.
 - [x] 90. dakika bittiğinde performans puanının hesaplanması ve kariyer moduna dönülmesi.
+
+---
+
+## Son Eklenen Finansal & Veritabanı Güncellemeleri
+
+### 1. Kripto Borsası Maliyet & Kar/Zarar Takibi:
+*   **Ağırlıklı Ortalama Alış Maliyeti:** Birden fazla alım yapıldığında maliyet borsa usulüne göre (`((Eski Miktar * Eski Maliyet) + (Yeni Miktar * Alış Fiyatı)) / Toplam Miktar`) hesaplanır.
+*   **Dinamik Kâr/Zarar Göstergesi:** Coinin anlık fiyatı ile maliyetini kıyaslayıp kâr durumuna göre neon yeşil (`+X%`) veya zarar durumuna göre neon kırmızı (`-Y%`) olarak yüzdenizi gösterir.
+*   **Portföy Dönüştürücü:** Eski kayıtlı oyunlardaki kripto verilerini hatasız çalışacak şekilde otomatik nesne formatına dönüştürür.
+
+### 2. Canlı Verilerle Eşitlenmiş Lig Kadroları (2024-2025):
+*   Süper Lig, 1. Lig, 2. Lig ve 3. Lig'deki tüm takım listeleri, renk kombinasyonları ve güçleri (att, mid, def) **2024/2025 sezonunun gerçek puan durumuna ve performanslarına göre** doğrudan kaynak koda (hafızaya) işlendi.
+*   Yeni başlayan tüm oyuncular, Wikipedia üzerinden canlı veri eşitlemesi yapmalarına gerek kalmadan en güncel ve gerçekçi güç seviyeleriyle oyuna başlarlar.
+

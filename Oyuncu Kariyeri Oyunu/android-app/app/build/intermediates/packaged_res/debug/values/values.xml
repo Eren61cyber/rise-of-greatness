@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Rise Of Greatness</string>
+    <style name="Theme.FutbolAtlasi" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">#050608</item>
+        <item name="android:statusBarColor">#050608</item>
+        <item name="android:navigationBarColor">#050608</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+</resources>

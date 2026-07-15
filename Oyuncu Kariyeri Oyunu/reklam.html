@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Süper Lig Atlası – Reklam</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #000;
+    font-family: 'Outfit', sans-serif;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #stage {
+    width: 1280px;
+    height: 720px;
+    position: relative;
+    overflow: hidden;
+    background: #000;
+    transform-origin: center;
+  }
+
+  /* ── SCENE BASE ── */
+  .scene {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+  }
+  .scene.active { opacity: 1; pointer-events: all; }
+
+  /* ── PARTICLES ── */
+  #particles {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    animation: float linear infinite;
+    opacity: 0;
+  }
+  @keyframes float {
+    0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 0.6; }
+    100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+  }
+
+  /* ── SCENE 1: INTRO ── */
+  #scene-intro {
+    background: radial-gradient(ellipse at 50% 60%, #1a0033 0%, #000 70%);
+    z-index: 1;
+  }
+  .intro-logo {
+    text-align: center;
+    z-index: 2;
+    animation: logoPulse 1s ease forwards;
+    animation-delay: 0.3s;
+    opacity: 0;
+  }
+  @keyframes logoPulse {
+    0%   { opacity: 0; transform: scale(0.7) translateY(30px); }
+    60%  { transform: scale(1.05) translateY(-5px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .intro-emoji {
+    font-size: 100px;
+    display: block;
+    animation: spin 6s linear infinite;
+    filter: drop-shadow(0 0 30px #f5a623);
+  }
+  @keyframes spin {
+    0%   { transform: rotate(-5deg); }
+    50%  { transform: rotate(5deg); }
+    100% { transform: rotate(-5deg); }
+  }
+  .intro-title {
+    font-size: 72px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #f5a623, #fff, #f5a623);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-top: 12px;
+    text-shadow: none;
+  }
+  .intro-sub {
+    font-size: 22px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-top: 12px;
+  }
+  .intro-cta {
+    margin-top: 32px;
+    display: inline-block;
+    padding: 14px 40px;
+    background: linear-gradient(135deg, #f5a623, #e8870a);
+    border-radius: 50px;
+    color: #000;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    box-shadow: 0 0 40px rgba(245,166,35,0.5);
+    animation: ctaPulse 1.5s ease-in-out infinite;
+    animation-delay: 1.5s;
+  }
+  @keyframes ctaPulse {
+    0%, 100% { box-shadow: 0 0 40px rgba(245,166,35,0.5); }
+    50%       { box-shadow: 0 0 70px rgba(245,166,35,0.9); }
+  }
+
+  /* ── SCENE 2: KARIYER ── */
+  #scene-career {
+    background: linear-gradient(135deg, #0d1b2a 0%, #1a2a3a 50%, #0a0f1a 100%);
+    z-index: 1;
+  }
+  .career-left {
+    flex: 1;
+    padding: 60px;
+    z-index: 2;
+  }
+  .career-badge {
+    display: inline-block;
+    background: rgba(245,166,35,0.2);
+    border: 1px solid #f5a623;
+    color: #f5a623;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .career-heading {
+    font-size: 52px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .career-heading span { color: #f5a623; }
+  .career-desc {
+    font-size: 18px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.7;
+    max-width: 420px;
+  }
+  .stat-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .stat-label {
+    width: 90px;
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .stat-bar-bg {
+    flex: 1;
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .stat-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #f5a623, #ffe080);
+    width: 0%;
+    transition: width 1.5s ease;
+  }
+  .stat-val {
+    width: 36px;
+    text-align: right;
+    color: #f5a623;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .career-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    z-index: 2;
+  }
+  .player-card {
+    width: 280px;
+    height: 380px;
+    background: linear-gradient(145deg, rgba(245,166,35,0.15), rgba(255,255,255,0.05));
+    border: 1px solid rgba(245,166,35,0.4);
+    border-radius: 24px;
+    padding: 24px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 60px rgba(245,166,35,0.2), inset 0 0 40px rgba(245,166,35,0.03);
+    transform: rotate(3deg);
+    animation: cardFloat 3s ease-in-out infinite;
+  }
+  @keyframes cardFloat {
+    0%, 100% { transform: rotate(3deg) translateY(0); }
+    50%       { transform: rotate(3deg) translateY(-10px); }
+  }
+  .card-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f5a623, #e8870a);
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    box-shadow: 0 0 30px rgba(245,166,35,0.5);
+  }
+  .card-name { font-size: 22px; font-weight: 800; color: #fff; }
+  .card-team { font-size: 13px; color: #f5a623; margin-bottom: 16px; letter-spacing: 2px; }
+  .card-rating {
+    font-size: 56px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #f5a623, #fff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .card-pos { font-size: 13px; color: rgba(255,255,255,0.5); letter-spacing: 3px; }
+  .card-salary { margin-top: 12px; font-size: 15px; color: rgba(255,255,255,0.7); }
+  .card-salary span { color: #4ade80; font-weight: 700; }
+
+  /* ── SCENE 3: MAÇ ── */
+  #scene-match {
+    z-index: 1;
+    overflow: hidden;
+  }
+  .match-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, #0a2a0a 0%, #0f3d0f 40%, #1a5c1a 70%, #0d2d0d 100%);
+  }
+  .pitch-lines {
+    position: absolute;
+    inset: 0;
+    opacity: 0.15;
+    background-image: 
+      repeating-linear-gradient(90deg, transparent, transparent 63px, rgba(255,255,255,0.5) 63px, rgba(255,255,255,0.5) 64px),
+      linear-gradient(180deg, transparent 48%, rgba(255,255,255,0.5) 48%, rgba(255,255,255,0.5) 52%, transparent 52%);
+  }
+  .match-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
+  }
+  .match-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    width: 100%;
+  }
+  .score-board {
+    background: rgba(0,0,0,0.7);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 16px;
+    padding: 20px 40px;
+    display: inline-flex;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 40px;
+    backdrop-filter: blur(10px);
+  }
+  .score-team { font-size: 20px; font-weight: 700; color: #fff; }
+  .score-num {
+    font-size: 64px;
+    font-weight: 900;
+    color: #f5a623;
+    line-height: 1;
+    animation: scorePop 0.5s cubic-bezier(0.175,0.885,0.32,1.275);
+  }
+  @keyframes scorePop {
+    0%   { transform: scale(0.5); }
+    100% { transform: scale(1); }
+  }
+  .score-sep { font-size: 36px; color: rgba(255,255,255,0.4); font-weight: 300; }
+  .match-event {
+    background: rgba(245,166,35,0.15);
+    border-left: 4px solid #f5a623;
+    border-radius: 12px;
+    padding: 14px 24px;
+    display: inline-block;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    animation: slideUp 0.5s ease forwards;
+  }
+  @keyframes slideUp {
+    0%   { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .match-headline {
+    font-size: 48px;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+  }
+  .match-headline span { color: #f5a623; }
+  .match-sub { font-size: 20px; color: rgba(255,255,255,0.7); margin-top: 10px; }
+
+  /* ── SCENE 4: TRANSFER ── */
+  #scene-transfer {
+    background: linear-gradient(135deg, #1a0a2e 0%, #0d0d1a 100%);
+    z-index: 1;
+  }
+  .transfer-content {
+    width: 100%;
+    padding: 60px 80px;
+    z-index: 2;
+    display: flex;
+    gap: 60px;
+    align-items: center;
+  }
+  .transfer-left { flex: 1; }
+  .transfer-heading {
+    font-size: 56px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 24px;
+  }
+  .transfer-heading span { 
+    background: linear-gradient(135deg, #f5a623, #ff6b6b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .chat-box {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 20px;
+    max-width: 380px;
+  }
+  .chat-msg {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 14px;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.4s ease;
+  }
+  .chat-msg.shown { opacity: 1; transform: translateX(0); }
+  .chat-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f5a623, #e8870a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .chat-bubble {
+    background: rgba(255,255,255,0.1);
+    border-radius: 12px 12px 12px 2px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: #fff;
+    line-height: 1.4;
+  }
+  .chat-bubble strong { color: #f5a623; }
+  .transfer-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .offer-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    opacity: 0;
+    transform: translateX(30px);
+    transition: all 0.5s ease;
+  }
+  .offer-card.shown { opacity: 1; transform: translateX(0); }
+  .offer-card.highlight {
+    background: rgba(245,166,35,0.1);
+    border-color: rgba(245,166,35,0.4);
+    box-shadow: 0 0 30px rgba(245,166,35,0.15);
+  }
+  .offer-flag { font-size: 32px; }
+  .offer-info { flex: 1; }
+  .offer-team { font-size: 18px; font-weight: 700; color: #fff; }
+  .offer-money { font-size: 14px; color: rgba(255,255,255,0.6); }
+  .offer-money span { color: #4ade80; font-weight: 700; font-size: 16px; }
+  .offer-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .badge-red { background: rgba(239,68,68,0.2); color: #ef4444; border: 1px solid rgba(239,68,68,0.4); }
+  .badge-gold { background: rgba(245,166,35,0.2); color: #f5a623; border: 1px solid rgba(245,166,35,0.4); }
+
+  /* ── SCENE 5: SOSYAL ── */
+  #scene-social {
+    background: linear-gradient(135deg, #001a2e 0%, #0a0014 100%);
+    z-index: 1;
+  }
+  .social-content {
+    z-index: 2;
+    display: flex;
+    width: 100%;
+    padding: 60px;
+    gap: 60px;
+    align-items: center;
+  }
+  .social-left {
+    flex: 1;
+  }
+  .social-heading {
+    font-size: 52px;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+  .social-heading span { color: #1d9bf0; }
+  .social-desc { font-size: 18px; color: rgba(255,255,255,0.6); line-height: 1.7; }
+  .follower-count {
+    margin-top: 30px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .follower-num {
+    font-size: 72px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #1d9bf0, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+  .follower-label { font-size: 24px; color: rgba(255,255,255,0.5); }
+  .social-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .tweet-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 16px 20px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s ease;
+  }
+  .tweet-card.shown { opacity: 1; transform: translateY(0); }
+  .tweet-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .tweet-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .tweet-user { font-size: 14px; font-weight: 700; color: #fff; }
+  .tweet-handle { font-size: 12px; color: rgba(255,255,255,0.4); }
+  .tweet-text { font-size: 15px; color: rgba(255,255,255,0.85); line-height: 1.5; }
+  .tweet-heart { color: #ef4444; font-size: 13px; margin-top: 8px; }
+
+  /* ── SCENE 6: OUTRO ── */
+  #scene-outro {
+    background: radial-gradient(ellipse at 50% 50%, #1a0a00 0%, #000 70%);
+    z-index: 1;
+    flex-direction: column;
+    gap: 0;
+  }
+  .outro-content {
+    text-align: center;
+    z-index: 2;
+    animation: outroIn 1s ease forwards;
+  }
+  @keyframes outroIn {
+    0%   { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  .outro-emoji { font-size: 80px; display: block; margin-bottom: 16px; }
+  .outro-title {
+    font-size: 80px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #f5a623, #fff 50%, #f5a623);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -3px;
+  }
+  .outro-tagline {
+    font-size: 24px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 3px;
+    margin-top: 8px;
+    text-transform: uppercase;
+  }
+  .outro-cta-row {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 40px;
+  }
+  .btn-primary {
+    padding: 16px 48px;
+    background: linear-gradient(135deg, #f5a623, #e8870a);
+    border-radius: 50px;
+    color: #000;
+    font-size: 20px;
+    font-weight: 800;
+    box-shadow: 0 0 50px rgba(245,166,35,0.6);
+    animation: glow 2s ease-in-out infinite;
+  }
+  @keyframes glow {
+    0%, 100% { box-shadow: 0 0 50px rgba(245,166,35,0.6); }
+    50%       { box-shadow: 0 0 80px rgba(245,166,35,0.9), 0 0 120px rgba(245,166,35,0.4); }
+  }
+  .btn-secondary {
+    padding: 16px 48px;
+    background: transparent;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .outro-stores {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 28px;
+  }
+  .store-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    color: rgba(255,255,255,0.8);
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .store-badge span { font-size: 22px; }
+
+  /* ── PROGRESS BAR ── */
+  #progress-bar {
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #f5a623, #ffe080);
+    width: 0%;
+    z-index: 100;
+    transition: width linear;
+    box-shadow: 0 0 10px rgba(245,166,35,0.7);
+  }
+
+  /* ── FLASH EFFECT ── */
+  #flash {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    opacity: 0;
+    z-index: 50;
+    pointer-events: none;
+  }
+
+  /* ── CINEMATIC BARS ── */
+  .cinema-bar {
+    position: absolute;
+    left: 0; right: 0;
+    height: 60px;
+    background: #000;
+    z-index: 20;
+  }
+  #bar-top { top: 0; }
+  #bar-bottom { bottom: 0; }
+
+  /* ── PLAY BUTTON ── */
+  #play-btn {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(4px);
+    cursor: pointer;
+    transition: opacity 0.4s ease;
+  }
+  #play-btn:hover .play-circle { transform: scale(1.1); }
+  .play-circle {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f5a623, #e8870a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 60px rgba(245,166,35,0.5);
+    transition: transform 0.3s ease;
+  }
+  #play-btn p { color: rgba(255,255,255,0.7); font-size: 16px; letter-spacing: 2px; text-transform: uppercase; }
+  #play-btn h2 { color: #fff; font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+
+  /* SCENE LABEL */
+  #scene-label {
+    position: absolute;
+    top: 70px;
+    left: 40px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    z-index: 30;
+    transition: opacity 0.3s ease;
+  }
+
+  /* SKIP */
+  #skip-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 30px;
+    color: rgba(255,255,255,0.3);
+    font-size: 13px;
+    cursor: pointer;
+    z-index: 100;
+    letter-spacing: 2px;
+  }
+  #skip-btn:hover { color: rgba(255,255,255,0.7); }
+
+  /* SCENE number dots */
+  #dots {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 100;
+  }
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+  }
+  .dot.active { background: #f5a623; width: 20px; border-radius: 3px; }
+
+  /* SCALE TO FIT VIEWPORT */
+  @media (max-aspect-ratio: 16/9) {
+    #stage { width: 100vw; height: calc(100vw * 9 / 16); }
+  }
+  @media (min-aspect-ratio: 16/9) {
+    #stage { height: 100vh; width: calc(100vh * 16 / 9); }
+  }
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <!-- CINEMATIC BARS -->
+  <div class="cinema-bar" id="bar-top"></div>
+  <div class="cinema-bar" id="bar-bottom"></div>
+
+  <!-- PARTICLES -->
+  <div id="particles"></div>
+
+  <!-- PROGRESS -->
+  <div id="progress-bar"></div>
+
+  <!-- FLASH -->
+  <div id="flash"></div>
+
+  <!-- SCENE LABEL -->
+  <div id="scene-label">SÜP LİG ATLASI</div>
+
+  <!-- DOTS -->
+  <div id="dots">
+    <div class="dot active" id="dot-0"></div>
+    <div class="dot" id="dot-1"></div>
+    <div class="dot" id="dot-2"></div>
+    <div class="dot" id="dot-3"></div>
+    <div class="dot" id="dot-4"></div>
+    <div class="dot" id="dot-5"></div>
+  </div>
+
+  <!-- SKIP -->
+  <div id="skip-btn" onclick="goToScene(5)">ATLA ›</div>
+
+  <!-- PLAY BUTTON -->
+  <div id="play-btn" onclick="startShow()">
+    <div class="play-circle">▶</div>
+    <h2>Süper Lig Atlası</h2>
+    <p>Reklamı oynatmak için tıkla • Sesi aç</p>
+  </div>
+
+  <!-- ── SCENE 0: INTRO ── -->
+  <div class="scene active" id="scene-intro">
+    <div class="intro-logo">
+      <span class="intro-emoji">⚽</span>
+      <div class="intro-title">SÜPER LİG<br>ATLASI</div>
+      <div class="intro-sub">Kariyerini Yönet</div>
+      <div class="intro-cta">🎮 ŞİMDİ OYNA</div>
+    </div>
+  </div>
+
+  <!-- ── SCENE 1: KARİYER ── -->
+  <div class="scene" id="scene-career">
+    <div class="career-left">
+      <div class="career-badge">⚡ KARİYER MODU</div>
+      <div class="career-heading">
+        Yeteneklerini<br><span>Geliştir</span>,<br>Dünyaya<br>Hükmet
+      </div>
+      <div class="stat-row"><div class="stat-label">Şut Gücü</div><div class="stat-bar-bg"><div class="stat-bar-fill" id="bar-shoot" data-val="87"></div></div><div class="stat-val">87</div></div>
+      <div class="stat-row"><div class="stat-label">Pas</div><div class="stat-bar-bg"><div class="stat-bar-fill" id="bar-pass" data-val="92"></div></div><div class="stat-val">92</div></div>
+      <div class="stat-row"><div class="stat-label">Hız</div><div class="stat-bar-bg"><div class="stat-bar-fill" id="bar-speed" data-val="85"></div></div><div class="stat-val">85</div></div>
+      <div class="stat-row"><div class="stat-label">Driple</div><div class="stat-bar-bg"><div class="stat-bar-fill" id="bar-drib" data-val="79"></div></div><div class="stat-val">79</div></div>
+    </div>
+    <div class="career-right">
+      <div class="player-card">
+        <div class="card-avatar">⚽</div>
+        <div class="card-name">Ahmet Eren</div>
+        <div class="card-team">⭐ GALATASARAy SK</div>
+        <div class="card-rating">88</div>
+        <div class="card-pos">MİDFİLDER</div>
+        <div class="card-salary">Maaş: <span>€45.000</span>/hafta</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SCENE 2: MAÇ ── -->
+  <div class="scene" id="scene-match">
+    <div class="match-bg"></div>
+    <div class="pitch-lines"></div>
+    <div class="match-overlay"></div>
+    <div class="match-content">
+      <div class="score-board">
+        <div class="score-team">Galatasaray</div>
+        <div class="score-num" id="score-home">2</div>
+        <div class="score-sep">–</div>
+        <div class="score-num" id="score-away">1</div>
+        <div class="score-team">Fenerbahçe</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+        <div class="match-event">⚡ 87' GOL! Ahmet Eren şut çekti!</div>
+        <div class="match-headline">Her Maçta<br><span>Sen Karar Ver</span></div>
+        <div class="match-sub">Hücum et. Pas ver. Ya da şut çek.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SCENE 3: TRANSFER ── -->
+  <div class="scene" id="scene-transfer">
+    <div class="transfer-content">
+      <div class="transfer-left">
+        <div class="career-badge">💼 TRANSFER</div>
+        <div class="transfer-heading">
+          Avrupa'nın<br>Kapıları<br><span>Seni Bekliyor</span>
+        </div>
+        <div class="chat-box">
+          <div class="chat-msg" id="chat1">
+            <div class="chat-avatar">🕴️</div>
+            <div class="chat-bubble">Kanka <strong>Real Madrid</strong> seni istiyor! Teklifi kabul ediyor musun?</div>
+          </div>
+          <div class="chat-msg" id="chat2">
+            <div class="chat-avatar">🕴️</div>
+            <div class="chat-bubble">Söyleyebilir misin, <strong>€85M</strong> teklif ettiler! Bu inanılmaz bir rakam!</div>
+          </div>
+          <div class="chat-msg" id="chat3">
+            <div class="chat-avatar">🕴️</div>
+            <div class="chat-bubble">Cevabını bekliyorum... Karar senin! ⚽</div>
+          </div>
+        </div>
+      </div>
+      <div class="transfer-right">
+        <div class="offer-card" id="offer1">
+          <div class="offer-flag">🇪🇸</div>
+          <div class="offer-info">
+            <div class="offer-team">Real Madrid CF</div>
+            <div class="offer-money">Teklif: <span>€85.000.000</span></div>
+          </div>
+          <div class="offer-badge badge-gold">HOT 🔥</div>
+        </div>
+        <div class="offer-card" id="offer2">
+          <div class="offer-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</div>
+          <div class="offer-info">
+            <div class="offer-team">Manchester City</div>
+            <div class="offer-money">Teklif: <span>€72.000.000</span></div>
+          </div>
+          <div class="offer-badge badge-gold">YENİ</div>
+        </div>
+        <div class="offer-card" id="offer3">
+          <div class="offer-flag">🇩🇪</div>
+          <div class="offer-info">
+            <div class="offer-team">Bayern München</div>
+            <div class="offer-money">Teklif: <span>€58.000.000</span></div>
+          </div>
+          <div class="offer-badge badge-red">Son Gün</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SCENE 4: SOSYAL ── -->
+  <div class="scene" id="scene-social">
+    <div class="social-content">
+      <div class="social-left">
+        <div class="career-badge">📱 SOSYAL MEDYA</div>
+        <div class="social-heading">
+          Bir Yıldız Doğuyor<br><span>Dünya Seyrediyor</span>
+        </div>
+        <div class="social-desc">
+          Sosyal medyanda büyü, röportajlar ver, hayat tarzını seç. Her karar kariyerini şekillendirir.
+        </div>
+        <div class="follower-count">
+          <div class="follower-num" id="follower-num">0</div>
+          <div class="follower-label">TAKİPÇİ</div>
+        </div>
+      </div>
+      <div class="social-right">
+        <div class="tweet-card" id="tweet1">
+          <div class="tweet-header">
+            <div class="tweet-avatar" style="background:linear-gradient(135deg,#1d9bf0,#7c3aed)">📰</div>
+            <div><div class="tweet-user">Spor Manşetleri</div><div class="tweet-handle">@spor_manset</div></div>
+          </div>
+          <div class="tweet-text">Ahmet Eren bu sezon 28 gol, 19 asist! Süper Lig'in en iyisi tartışmasız! 🔥⚽</div>
+          <div class="tweet-heart">❤️ 24.3K</div>
+        </div>
+        <div class="tweet-card" id="tweet2">
+          <div class="tweet-header">
+            <div class="tweet-avatar" style="background:linear-gradient(135deg,#f5a623,#e8870a)">⚽</div>
+            <div><div class="tweet-user">TaraftarTV</div><div class="tweet-handle">@taraftartv</div></div>
+          </div>
+          <div class="tweet-text">TRANSFER BOMBA! Real Madrid Eren için 85 milyon Euro teklif etti! İspanya onu bekliyor 🇪🇸</div>
+          <div class="tweet-heart">❤️ 51.2K</div>
+        </div>
+        <div class="tweet-card" id="tweet3">
+          <div class="tweet-header">
+            <div class="tweet-avatar" style="background:linear-gradient(135deg,#4ade80,#22d3ee)">🏆</div>
+            <div><div class="tweet-user">Transfermarkt TR</div><div class="tweet-handle">@tmtürkiye</div></div>
+          </div>
+          <div class="tweet-text">Yılın Oyuncusu: Ahmet Eren! Süper Lig tarihine adını yazdırdı! 🏅</div>
+          <div class="tweet-heart">❤️ 88.9K</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SCENE 5: OUTRO ── -->
+  <div class="scene" id="scene-outro">
+    <div class="outro-content">
+      <span class="outro-emoji">🏆</span>
+      <div class="outro-title">SÜPER LİG<br>ATLASI</div>
+      <div class="outro-tagline">Kariyerin. Seçimlerin. Efsanen.</div>
+      <div class="outro-cta-row">
+        <div class="btn-primary">🎮 ŞİMDİ OYNA</div>
+      </div>
+      <div class="outro-stores">
+        <div class="store-badge"><span>🤖</span> Google Play</div>
+        <div class="store-badge"><span>🍎</span> App Store</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────
+//  WEB AUDIO – MUSIC + SFX
+// ─────────────────────────────────────────
+let audioCtx = null;
+let masterGain = null;
+let musicNodes = [];
+
+function initAudio() {
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  masterGain = audioCtx.createGain();
+  masterGain.gain.value = 0.5;
+  masterGain.connect(audioCtx.destination);
+}
+
+function playNote(freq, startTime, duration, type='sine', vol=0.15) {
+  const osc = audioCtx.createOscillator();
+  const env = audioCtx.createGain();
+  osc.type = type;
+  osc.frequency.value = freq;
+  env.gain.setValueAtTime(0, startTime);
+  env.gain.linearRampToValueAtTime(vol, startTime + 0.01);
+  env.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+  osc.connect(env);
+  env.connect(masterGain);
+  osc.start(startTime);
+  osc.stop(startTime + duration + 0.05);
+  return osc;
+}
+
+function playDrum(startTime, vol=0.4) {
+  const buf = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.2, audioCtx.sampleRate);
+  const data = buf.getChannelData(0);
+  for(let i=0; i<data.length; i++) data[i] = (Math.random()*2-1) * Math.exp(-i/(audioCtx.sampleRate*0.05));
+  const src = audioCtx.createBufferSource();
+  const env = audioCtx.createGain();
+  const f = audioCtx.createBiquadFilter();
+  f.type = 'lowpass'; f.frequency.value = 200;
+  src.buffer = buf;
+  src.connect(f); f.connect(env); env.connect(masterGain);
+  env.gain.setValueAtTime(vol, startTime);
+  env.gain.exponentialRampToValueAtTime(0.001, startTime + 0.2);
+  src.start(startTime);
+}
+
+function playHiHat(startTime, vol=0.06) {
+  const buf = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.05, audioCtx.sampleRate);
+  const data = buf.getChannelData(0);
+  for(let i=0; i<data.length; i++) data[i] = (Math.random()*2-1) * Math.exp(-i/(audioCtx.sampleRate*0.02));
+  const src = audioCtx.createBufferSource();
+  const f = audioCtx.createBiquadFilter();
+  f.type = 'highpass'; f.frequency.value = 6000;
+  const env = audioCtx.createGain();
+  src.buffer = buf;
+  src.connect(f); f.connect(env); env.connect(masterGain);
+  env.gain.setValueAtTime(vol, startTime);
+  env.gain.exponentialRampToValueAtTime(0.001, startTime+0.05);
+  src.start(startTime);
+}
+
+// Epic cinematic melody + beat
+function startMusic() {
+  const t = audioCtx.currentTime + 0.1;
+  const bpm = 128;
+  const beat = 60/bpm;
+
+  // Melody notes (pentatonic epic scale)
+  const melody = [
+    [392,0],[440,0.5],[523,1],[587,1.5],[659,2],[587,2.5],[523,3],[440,3.5],
+    [523,4],[587,4.5],[659,5],[784,5.5],[880,6],[784,6.5],[659,7],[587,7.5],
+    [659,8],[784,8.5],[880,9],[988,9.5],[1047,10],[988,10.5],[880,11],[784,11.5],
+    [659,12],[587,12.5],[523,13],[440,13.5],[392,14],[440,15],
+    [523,16],[659,16.5],[784,17],[880,17.5],[988,18],[1047,18.5],[988,19],[880,19.5],
+    [784,20],[659,20.5],[523,21],[440,21.5],[392,22],[440,22.5],[523,23],[392,23.5],
+  ];
+
+  // Bass line
+  const bass = [
+    [98,0],[98,2],[110,4],[110,6],[123,8],[123,10],[98,12],[110,14],[98,16],[110,18],[123,20],[98,22]
+  ];
+
+  // Chord pads
+  const chords = [
+    [[261,329,392],0,2],[[293,370,440],2,2],[[329,415,523],4,2],[[293,370,440],6,2],
+    [[261,329,392],8,2],[[293,370,440],10,2],[[329,415,523],12,2],[[261,329,392],14,2],
+    [[261,329,392],16,2],[[293,370,440],18,2],[[329,415,523],20,2],[[293,370,440],22,2],
+  ];
+
+  melody.forEach(([f,offset]) => playNote(f, t+offset*beat, 0.45*beat, 'triangle', 0.12));
+  bass.forEach(([f,offset]) => playNote(f, t+offset*beat, 2*beat, 'sawtooth', 0.08));
+  chords.forEach(([notes,offset,dur]) => notes.forEach(f => playNote(f, t+offset*beat, dur*beat, 'sine', 0.04)));
+
+  // Drums 32 beats
+  for(let i=0; i<32; i++) {
+    playDrum(t + i*beat);
+    playHiHat(t + i*beat*0.5);
+    if(i%2===1) playNote(164, t+i*beat, beat*0.5, 'sawtooth', 0.07);
+  }
+}
+
+function playSfx(type) {
+  if(!audioCtx) return;
+  const t = audioCtx.currentTime;
+  if(type==='swoosh') {
+    const osc = audioCtx.createOscillator();
+    const env = audioCtx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(800, t);
+    osc.frequency.exponentialRampToValueAtTime(200, t+0.3);
+    env.gain.setValueAtTime(0.3, t);
+    env.gain.exponentialRampToValueAtTime(0.001, t+0.3);
+    osc.connect(env); env.connect(masterGain);
+    osc.start(t); osc.stop(t+0.35);
+  } else if(type==='goal') {
+    [523,659,784,1047].forEach((f,i)=>{
+      playNote(f, t+i*0.08, 0.3, 'triangle', 0.2);
+    });
+  } else if(type==='ding') {
+    playNote(1047, t, 0.5, 'sine', 0.15);
+    playNote(1319, t+0.1, 0.4, 'sine', 0.1);
+  }
+}
+
+// ─────────────────────────────────────────
+//  PARTICLES
+// ─────────────────────────────────────────
+function createParticles() {
+  const container = document.getElementById('particles');
+  const colors = ['#f5a623','#fff','#4ade80','#1d9bf0','#7c3aed'];
+  for(let i=0; i<30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random()*4+2;
+    p.style.cssText = `
+      width:${size}px;height:${size}px;
+      left:${Math.random()*100}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-duration:${Math.random()*8+6}s;
+      animation-delay:${Math.random()*6}s;
+    `;
+    container.appendChild(p);
+  }
+}
+
+// ─────────────────────────────────────────
+//  SCENE ENGINE
+// ─────────────────────────────────────────
+const SCENE_DURATION = [3800, 5000, 4500, 5500, 5000, 99999];
+const SCENE_IDS = ['scene-intro','scene-career','scene-match','scene-transfer','scene-social','scene-outro'];
+const SCENE_LABELS = ['INTRO','KARİYER MODU','MAÇ SİSTEMİ','TRANSFER','SOSYAL MEDYA','SÜPER LİG ATLASI'];
+
+let currentScene = 0;
+let sceneTimer = null;
+let progressTimer = null;
+let isPlaying = false;
+
+function flash(cb) {
+  const el = document.getElementById('flash');
+  el.style.opacity = '1';
+  el.style.transition = 'opacity 0.08s ease';
+  setTimeout(()=>{
+    el.style.transition = 'opacity 0.35s ease';
+    el.style.opacity = '0';
+    if(cb) cb();
+  }, 80);
+}
+
+function goToScene(idx) {
+  if(idx >= SCENE_IDS.length) return;
+  playSfx('swoosh');
+  flash(()=>{
+    // Deactivate current
+    document.getElementById(SCENE_IDS[currentScene]).classList.remove('active');
+    document.getElementById('dot-'+currentScene).classList.remove('active');
+    currentScene = idx;
+    // Activate new
+    document.getElementById(SCENE_IDS[currentScene]).classList.add('active');
+    document.getElementById('dot-'+currentScene).classList.add('active');
+    document.getElementById('scene-label').textContent = SCENE_LABELS[currentScene];
+    onSceneEnter(currentScene);
+    startSceneProgress();
+  });
+}
+
+function nextScene() {
+  if(currentScene < SCENE_IDS.length - 1) goToScene(currentScene+1);
+}
+
+function startSceneProgress() {
+  clearInterval(progressTimer);
+  const bar = document.getElementById('progress-bar');
+  const total = SCENE_IDS.length - 1;
+  const baseProgress = (currentScene / total) * 100;
+  const segProgress = (1 / total) * 100;
+  const dur = SCENE_DURATION[currentScene];
+
+  if(currentScene === SCENE_IDS.length-1) {
+    bar.style.transition = 'none';
+    bar.style.width = '100%';
+    return;
+  }
+
+  bar.style.transition = 'none';
+  bar.style.width = baseProgress + '%';
+  setTimeout(()=>{
+    bar.style.transition = `width ${dur}ms linear`;
+    bar.style.width = (baseProgress + segProgress) + '%';
+  }, 50);
+
+  clearTimeout(sceneTimer);
+  sceneTimer = setTimeout(nextScene, dur);
+}
+
+// Scene-specific animations
+function onSceneEnter(idx) {
+  if(idx === 1) {
+    // Animate stat bars
+    setTimeout(()=>{
+      ['shoot','pass','speed','drib'].forEach(id=>{
+        const el = document.getElementById('bar-'+id);
+        if(el) el.style.width = el.dataset.val + '%';
+      });
+    }, 300);
+  }
+  if(idx === 2) {
+    playSfx('goal');
+  }
+  if(idx === 3) {
+    // Animate chat messages
+    ['chat1','chat2','chat3'].forEach((id,i)=>{
+      setTimeout(()=>{ const el=document.getElementById(id); if(el) el.classList.add('shown'); playSfx('ding'); }, 400+i*700);
+    });
+    // Animate offer cards
+    ['offer1','offer2','offer3'].forEach((id,i)=>{
+      setTimeout(()=>{ const el=document.getElementById(id); if(el) el.classList.add('shown'); }, 600+i*500);
+    });
+  }
+  if(idx === 4) {
+    // Animate tweets
+    ['tweet1','tweet2','tweet3'].forEach((id,i)=>{
+      setTimeout(()=>{ const el=document.getElementById(id); if(el) el.classList.add('shown'); }, 300+i*500);
+    });
+    // Animate follower count
+    animateCount('follower-num', 0, 2300000, 2500);
+  }
+  if(idx === 5) {
+    playSfx('goal');
+  }
+}
+
+function animateCount(id, from, to, duration) {
+  const el = document.getElementById(id);
+  if(!el) return;
+  const start = performance.now();
+  function tick(now) {
+    const progress = Math.min((now-start)/duration, 1);
+    const eased = 1 - Math.pow(1-progress, 3);
+    const val = Math.floor(from + (to-from)*eased);
+    el.textContent = val >= 1000000 ? (val/1000000).toFixed(1)+'M' : val >= 1000 ? (val/1000).toFixed(0)+'B' : val;
+    if(progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+function startShow() {
+  if(isPlaying) return;
+  isPlaying = true;
+  initAudio();
+  startMusic();
+  document.getElementById('play-btn').style.opacity = '0';
+  setTimeout(()=>{ document.getElementById('play-btn').style.display='none'; }, 400);
+  createParticles();
+  onSceneEnter(0);
+  startSceneProgress();
+
+  // Click to advance
+  document.getElementById('stage').addEventListener('click', function(e){
+    if(e.target.id==='skip-btn') return;
+    if(currentScene < SCENE_IDS.length-1) nextScene();
+  });
+}
+
+// Auto-scale stage to viewport
+function scaleStage() {
+  const stage = document.getElementById('stage');
+  const ww = window.innerWidth, wh = window.innerHeight;
+  const sw = 1280, sh = 720;
+  const scale = Math.min(ww/sw, wh/sh);
+  stage.style.transform = `scale(${scale})`;
+  stage.style.width = sw+'px';
+  stage.style.height = sh+'px';
+}
+window.addEventListener('resize', scaleStage);
+scaleStage();
+</script>
+</body>
+</html>

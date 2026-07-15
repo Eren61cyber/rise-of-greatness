@@ -1,0 +1,34 @@
+[
+    {
+        "merged": "com.futbolatlasi.kariyer.app-merged_res-21:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.futbolatlasi.kariyer.app-main-23:/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.futbolatlasi.kariyer.app-merged_res-21:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.futbolatlasi.kariyer.app-main-23:/mipmap-xxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.futbolatlasi.kariyer.app-merged_res-21:/mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "com.futbolatlasi.kariyer.app-main-23:/mipmap-hdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.futbolatlasi.kariyer.app-merged_res-21:/mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "com.futbolatlasi.kariyer.app-main-23:/mipmap-xhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.futbolatlasi.kariyer.app-merged_res-21:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.futbolatlasi.kariyer.app-main-23:/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.futbolatlasi.kariyer.app-merged_res-21:/mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "com.futbolatlasi.kariyer.app-main-23:/mipmap-xxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.futbolatlasi.kariyer.app-merged_res-21:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.futbolatlasi.kariyer.app-main-23:/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.futbolatlasi.kariyer.app-merged_res-21:/mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "com.futbolatlasi.kariyer.app-main-23:/mipmap-mdpi/ic_launcher_round.png"
+    }
+]

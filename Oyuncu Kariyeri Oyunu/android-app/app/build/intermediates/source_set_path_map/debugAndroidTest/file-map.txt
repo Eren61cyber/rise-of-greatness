@@ -1,0 +1,4 @@
+com.futbolatlasi.kariyer.test.app-androidTest-0 C:\Users\Eren\Documents\GitHub\superlig-atlasi\Oyuncu Kariyeri Oyunu\android-app\app\build\generated\res\resValues\androidTest\debug
+com.futbolatlasi.kariyer.test.app-mergeDebugAndroidTestResources-1 C:\Users\Eren\Documents\GitHub\superlig-atlasi\Oyuncu Kariyeri Oyunu\android-app\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
+com.futbolatlasi.kariyer.test.app-mergeDebugAndroidTestResources-2 C:\Users\Eren\Documents\GitHub\superlig-atlasi\Oyuncu Kariyeri Oyunu\android-app\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
+com.futbolatlasi.kariyer.test.app-merged_res-3 C:\Users\Eren\Documents\GitHub\superlig-atlasi\Oyuncu Kariyeri Oyunu\android-app\app\build\intermediates\merged_res\debugAndroidTest
