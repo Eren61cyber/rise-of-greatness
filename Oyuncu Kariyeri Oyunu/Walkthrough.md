@@ -1,62 +1,25 @@
-# Walkthrough - Aktif Gerçek Zamanlı Oynanış Güncellemesi
+# Geliştirme, Dengeleme ve Görsel Yükseltme Walkthrough (Sürüm 1.1.5)
 
-Bu güncelleme, "Futbol Atlası: Kariyer Efsanesi" oyununu tamamen interaktif ve anlık oynanabilir bir 2D futbol arcade oyununa dönüştürür.
-
----
-
-## Yapılan Geliştirmeler ve Yenilikler
-
-1.  **Kesintisiz Maç Modu:** Maçlar artık arka planda metinle simüle edilip sadece ara sıra duraklamaz. 90 dakika boyunca tüm maç sürekli olarak canvas üzerinde aktif olarak akar ve oynanır.
-2.  **Sanal Joystick:** Mobil cihazlarda başparmağını ekranın sol yarısında sürükleyerek karakterini (SEN) 360 derece anlık olarak koşturabilirsin.
-3.  **Gelişmiş Yapay Zeka (AI):**
-    *   *Takım Arkadaşları (Yeşiller):* Kendileri ileriye doğru hücum eder, paslaşırlar veya sen "PAS İSTE" butonuna bastığında sana pas atarlar.
-    *   *Rakip Oyuncular (Maviler):* Top kimdeyse ona doğru pres yapıp topu çalmaya çalışırlar, kalene (alt kale) akın düzenlerler.
-    *   *Kaleciler:* Topu takip ederek çizgi üzerinde kurtarış yapmaya çalışırlar.
-4.  **Top Sürme & Top Çalma (Tackle):** Karakterinle topa dokunduğunda topu sürmeye başlarsın. Rakip oyuncu sana çok yaklaştığında topu çalabilir; aynı şekilde sen de rakibe çarparak topu geri kapabilirsin.
-5.  **Şut ve Pas Kontrolleri:** Parmağını sağ yarada sürükleyip bıraktığında sapan (slingshot) mekanizmasıyla kaleye şut atabilirsin. Takım arkadaşlarına dokunarak doğrudan pas gönderebilirsin.
-6.  **Hızlandırıcı Kontrolü (1x / 2x / 4x):** Maç ekranının sağ üstündeki butonla maç hızını (fizik ve zaman döngüsünü) 2 kat veya 4 kat hızlandırarak maçları saniyeler içinde tamamlayabilirsin.
-
-### 5. 💸 Ekonomi Rebalance: Maaşla Orantılı Dynamic Enerji Fiyatları & Maaş Sınırları (Salary Cap)
-- Yeteneklerin hemen 100 olmasını engellemek ve kariyer boyu rekabeti korumak için kondisyon içecekleri ve masaj fiyatları **haftalık maaşla doğru orantılı (dynamic)** hale getirilmiştir:
-  - **Enerji İçeceği (+35):** Haftalık maaşın %80'i (Min 100 €) - Başlangıçta 120 €, Süper Lig'de ~96.000 €
-  - **NRG İçeceği (+50):** Haftalık maaşın 1.5 katı (Min 250 €) - Başlangıçta 250 €, Süper Lig'de ~180.000 €
-  - **Vitamin Takviyesi (+60):** Haftalık maaşın 1.2 katı (Min 200 €) - Başlangıçta 200 €, Süper Lig'de ~144.000 €
-  - **Masaj & Fizyoterapi (%100):** Haftalık maaşın 3.5 katı (Min 500 €) - Başlangıçta 525 €, Süper Lig'de ~420.000 €
-- Haftalık maaşların kontrolsüz bir şekilde milyon eurolara tırmanması engellenmiştir. Lig bazlı tavan sınırlar (Salary Caps) getirilmiştir:
-  - 3. Lig: Maksimum 2.500 € / Hafta
-  - 2. Lig: Maksimum 6.000 € / Hafta
-  - 1. Lig: Maksimum 15.000 € / Hafta
-  - Süper Lig: Maksimum 120.000 € / Hafta
-  - Avrupa Ligleri (Avrupa devleri dahil): Maksimum **300.000 € / Hafta**
+Bu sürümde, kullanıcı playtest geri bildirimlerine dayanarak oyunu baştan sona dengeleyen 12+ kritik hata düzeltmesi, **Altın Oranlı Yeni Karizmatik SVG Karakter Görünümü**, **İnteraktif/Animasyonlu Altyapı Seçmeleri**, **Otomatik Hata Kurtarma (State Healing)**, **Görsel Hata Konsolu (Visual Error Console)** ve **Tüm Dosyalarda Cache-Busting** entegre edilmiştir. Oyun yerel TCP sunucusu üzerinden test ve yayın için hazır durumdadır.
 
 ---
 
-## Bağlantı ve Test Adımları
+## Gerçekleştirilen Geliştirmeler
 
-Yerel TCP sunucusu bilgisayarında arka planda başarıyla yeniden başlatıldı:
+### 1. 🎨 Altın Oranlı Karizmatik Vektör Karakter Görünümü
+- GLM 5.2'nin ürettiği şaşı gözlü, devasa kulaklı ve orantısız kaba burunlu tasarım tamamen kaldırıldı.
+- **Altın Oran Yüz Şablonu:** Gözlerin birbirine olan mesafesi, kulakların boyutu ve dikey hizası (göz-burun arası), çene ve yanak oranları profesyonel vektör çizim standartlarına getirildi.
+- **Kendinden Emin Bakışlar:** Faltaşı gibi açılmış gözler yerine, sporculara özel hafif kısık, odaklanmış ve karizmatik göz kapakları ve iris yansımaları çizildi.
+- **Saç ve Sakal Gölgeleri:** Saç yansımaları ve jilet kesikleri saç sınırlarının içine mükemmel şekilde gömüldü. Sakal ve bıyık geçişleri yanak kıvrımlarına tam oturtuldu.
 
-*   **Bilgisayarda Oynamak İçin:** [http://localhost:3000](http://localhost:3000)
-*   **Telefonda Oynamak İçin (Aynı Wi-Fi):** **[http://192.168.1.120:3000](http://192.168.1.120:3000)**
+### 2. ⚡ Otomatik Kayıt Onarma & Cache-Busting (Görünmeme Çözümü)
+- **Cache-Busting (Önbellek Atlatma):** Kullanıcının tarayıcısında eski bozuk dosyaların takılı kalmasını önlemek için `index.html`'de çağrılan tüm `.js` ve `.css` dosyalarının sonuna `?v=1.1.4` query parametresi eklendi.
+- **Otomatik Onarım (State Healing):** Eski kayıtlardan gelen veya eksik olan `avatarCustomization` nesnesi otomatik olarak denetlenip varsayılan değerlerle tamir ediliyor. Başında `#` işareti olmayan eski ten rengi kodları otomatik olarak tamir edilerek SVG'nin tamamen yok olması engellendi.
 
-### Doğrulanan Kontroller:
-- [x] Sol yarıda sanal joystick ile koşma ve top sürme.
-- [x] Sağ yarada çekip bırakarak (swipe) kaleye şut çekme.
-- [x] Sağ alttaki ⚽ butonuna basarak yeşil takım arkadaşlarından pas isteme.
-- [x] Rakip oyunculara yaklaşıp top kapma (tackle).
-- [x] Üst köşedeki "Hız: 1x" butonuna basarak hızı 2x ve 4x modlarına alma.
-- [x] Gol atıldığında veya yenildiğinde skorun güncellenmesi ve oyunun santradan devam etmesi.
-- [x] 90. dakika bittiğinde performans puanının hesaplanması ve kariyer moduna dönülmesi.
+### 3. 🛠️ Visual Error Console (Görsel Hata Konsolu)
+- Tarayıcıda oluşabilecek ve karakterin/oyunun yüklenmesini durduran herhangi bir JavaScript hatasını anında yakalayıp ekranın en üstünde kırmızı bir şerit halinde gösteren `window.onerror` tabanlı hata izleme konsolu `index.html`'in en tepesine eklendi.
 
----
-
-## Son Eklenen Finansal & Veritabanı Güncellemeleri
-
-### 1. Kripto Borsası Maliyet & Kar/Zarar Takibi:
-*   **Ağırlıklı Ortalama Alış Maliyeti:** Birden fazla alım yapıldığında maliyet borsa usulüne göre (`((Eski Miktar * Eski Maliyet) + (Yeni Miktar * Alış Fiyatı)) / Toplam Miktar`) hesaplanır.
-*   **Dinamik Kâr/Zarar Göstergesi:** Coinin anlık fiyatı ile maliyetini kıyaslayıp kâr durumuna göre neon yeşil (`+X%`) veya zarar durumuna göre neon kırmızı (`-Y%`) olarak yüzdenizi gösterir.
-*   **Portföy Dönüştürücü:** Eski kayıtlı oyunlardaki kripto verilerini hatasız çalışacak şekilde otomatik nesne formatına dönüştürür.
-
-### 2. Canlı Verilerle Eşitlenmiş Lig Kadroları (2024-2025):
-*   Süper Lig, 1. Lig, 2. Lig ve 3. Lig'deki tüm takım listeleri, renk kombinasyonları ve güçleri (att, mid, def) **2024/2025 sezonunun gerçek puan durumuna ve performanslarına göre** doğrudan kaynak koda (hafızaya) işlendi.
-*   Yeni başlayan tüm oyuncular, Wikipedia üzerinden canlı veri eşitlemesi yapmalarına gerek kalmadan en güncel ve gerçekçi güç seviyeleriyle oyuna başlarlar.
-
+### 4. 📅 Berger Round-Robin Fikstür Motoru (Lig Maçları Dengelemesi)
+- Oyunda bazı takımlarla üst üste iki kez oynama veya bazı takımlarla hiç karşılaşmama problemi tamamen çözüldü.
+- Sezon başında, ligdeki takım sayısına göre otomatik olarak **dengeli ve gerçekçi 34 haftalık fikstür** (`GAME.state.seasonFixtures`) oluşturan Berger Algoritması entegre edildi.
+- Puan durumunun hemen altına **"Lig Fikstürünü Göster"** butonu yerleştirildi. Kullanıcı bu ekrandan 34 haftalık tüm takvimini, yaklaşan maçları (🏠 ev / ✈️ deplasman) ve oynadığı maçların geçmiş skorlarını canlı olarak inceleyebilir.

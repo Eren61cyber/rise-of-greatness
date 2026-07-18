@@ -730,6 +730,7 @@ const MatchEngine = {
             this.activeChoice = null;
             setTimeout(() => {
                 alert("🟥 İKİNCİ SARI KART! Zaten sarı kartınız vardı. Hakem 2. sarı karttan Kırmızı Kartı gösterdi ve oyundan atıldınız!");
+                this.resumeTick();
             }, 500);
             return;
         }
