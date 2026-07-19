@@ -650,7 +650,7 @@ const GAME = {
         }
 
         // Season End check at week 34
-        if (this.state.currentWeek > 34) {
+        if (this.state.currentWeek > 37) {
             this.handleSeasonEnd();
             return;
         }
@@ -1005,8 +1005,8 @@ const GAME = {
     isTransferWindowActive: function() {
         const w = this.state.currentWeek;
         // Ara Transfer Dönemi: 14 - 21. haftalar arası
-        // Yaz Transfer Dönemi: 34. hafta (sezon sonu)
-        return ((w >= 14 && w <= 21) || w === 34);
+        // Yaz Transfer Dönemi: 37. hafta (sezon sonu)
+        return ((w >= 14 && w <= 21) || w === 37);
     },
 
 
@@ -2711,7 +2711,7 @@ const GAME = {
             return Number(b.gf) - Number(a.gf);
         });
         
-        // Save the simulated scores into our persistent 34-week seasonFixtures array
+        // Save the simulated scores into our persistent 37-week seasonFixtures array
         if (this.state.seasonFixtures && this.state.seasonFixtures.length > 0) {
             let week = this.state.currentWeek;
             let fixtureIndex = week - 1;

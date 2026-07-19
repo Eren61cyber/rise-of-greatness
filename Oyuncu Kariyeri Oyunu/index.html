@@ -16,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=1.1">
+    <link rel="stylesheet" href="styles.css?v=1.2">
     <script>
         window.onerror = function(message, source, lineno, colno, error) {
             let errDiv = document.getElementById("visual-error-console");
@@ -1763,10 +1763,10 @@
     </div>
 
     <!-- Script Loads (Database first, logic next) -->
-    <script src="database.js?v=1.1"></script>
-    <script src="events.js?v=1.1"></script>
-    <script src="game.js?v=1.1"></script>
-    <script src="matchEngine.js?v=1.1"></script>
+    <script src="database.js?v=1.2"></script>
+    <script src="events.js?v=1.2"></script>
+    <script src="game.js?v=1.2"></script>
+    <script src="matchEngine.js?v=1.2"></script>
     
     <!-- MAIN CONTROLLER (Mounts everything) -->
     <script>
@@ -4688,6 +4688,9 @@
                         GAME.state.nextOpponentName = nextOpponent.name;
                     }
                 }
+            } else {
+                GAME.state.nextOpponentName = "Lig Bitti";
+                nextOpponent = null;
             }
 
             GAME.generateWeeklyFixtures();
@@ -7291,6 +7294,15 @@
                 GAME.state.kondisyon = Math.min(100, GAME.state.kondisyon + 35);
                 GAME.state.moral = Math.min(100, GAME.state.moral + 10);
                 alert("Bu haftayı fikstür gereği BAY geçerek dinlenerek değerlendirdiniz! Enerjiniz ve moraliniz tazelendi! (+35 Kondisyon, +10 Moral)");
+                GAME.advanceWeek();
+                determineNextOpponent();
+                return;
+            }
+
+            if (GAME.state.nextOpponentName === "Lig Bitti") {
+                GAME.state.kondisyon = Math.min(100, GAME.state.kondisyon + 35);
+                GAME.state.moral = Math.min(100, GAME.state.moral + 10);
+                alert("Tüm lig maçlarınız tamamlandı! Sezonun bitmesini bekleyerek dinleniyorsunuz. (+35 Kondisyon, +10 Moral)");
                 GAME.advanceWeek();
                 determineNextOpponent();
                 return;
