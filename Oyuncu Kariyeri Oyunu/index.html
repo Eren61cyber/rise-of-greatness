@@ -1217,62 +1217,44 @@
                     <h3 class="event-tag" style="background: var(--accent-purple); color: #fff; font-weight: 900; padding: 4px 10px; border-radius: 6px; font-size: 11px; width: fit-content; margin: 0 auto 12px auto; text-transform: uppercase;">💇‍♂️ KARAKTERİNİ TASARLA</h3>
                     <h2 style="color: white; margin-bottom: 12px; font-size: 22px;">Oyuncunu Özelleştir</h2>
                     
-                    <!-- Real-time Avatar Preview -->
+                    <!-- Real-time Avatar Preview (Selected) -->
                     <div style="display: flex; justify-content: center; margin-bottom: 15px;">
-                        <div id="intro-avatar-preview" style="width: 110px; height: 110px; border-radius: 50%; background: rgba(255,255,255,0.03); border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; overflow: hidden; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));">
-                        </div>
+                        <img id="intro-avatar-preview" src="avatars/avatar_1.png" style="width: 110px; height: 110px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));">
                     </div>
 
-                    <!-- Customize Selectors -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: left; margin-bottom: 20px;">
-                        <div>
-                            <label style="font-size: 10.5px; color: var(--text-muted); font-weight: bold; display: block; margin-bottom: 4px;">Ten Rengi (Skin)</label>
-                            <select id="cust-skin" style="width: 100%; padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.08); border: 1px solid var(--border-glass); color: white; font-weight: bold;" onchange="updateIntroAvatarPreview()">
-                                <option value="#FFD1A9">Açık Ten</option>
-                                <option value="#E2B28B" selected>Buğday</option>
-                                <option value="#C48E66">Esmer</option>
-                                <option value="#805435">Koyu Esmer</option>
-                                <option value="#4F301F">Çok Koyu</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label style="font-size: 10.5px; color: var(--text-muted); font-weight: bold; display: block; margin-bottom: 4px;">Saç Stili (Hair)</label>
-                            <select id="cust-hair-style" style="width: 100%; padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.08); border: 1px solid var(--border-glass); color: white; font-weight: bold;" onchange="updateIntroAvatarPreview()">
-                                <option value="short" selected>Kısa Spor</option>
-                                <option value="buzz">Buzzcut (3 Numara)</option>
-                                <option value="curly">Kıvırcık Dağınık</option>
-                                <option value="long">Uzun Topuz</option>
-                                <option value="none">Kel</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label style="font-size: 10.5px; color: var(--text-muted); font-weight: bold; display: block; margin-bottom: 4px;">Saç Rengi</label>
-                            <select id="cust-hair-color" style="width: 100%; padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.08); border: 1px solid var(--border-glass); color: white; font-weight: bold;" onchange="updateIntroAvatarPreview()">
-                                <option value="#1A1A1A" selected>Siyah</option>
-                                <option value="#4E3629">Kahverengi</option>
-                                <option value="#D8B168">Sarışın</option>
-                                <option value="#C15C3D">Kızıl</option>
-                                <option value="#B3B3B3">Kır Saç</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label style="font-size: 10.5px; color: var(--text-muted); font-weight: bold; display: block; margin-bottom: 4px;">Sakal (Beard)</label>
-                            <select id="cust-beard" style="width: 100%; padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.08); border: 1px solid var(--border-glass); color: white; font-weight: bold;" onchange="updateIntroAvatarPreview()">
-                                <option value="none" selected>Sinek Kaydı</option>
-                                <option value="stubble">Kirli Sakal</option>
-                                <option value="full">Yoğun Sakal</option>
-                                <option value="mustache">Bıyık</option>
-                            </select>
-                        </div>
-                        <div style="grid-column: span 2;">
-                            <label style="font-size: 10.5px; color: var(--text-muted); font-weight: bold; display: block; margin-bottom: 4px;">Göz Rengi (Eyes)</label>
-                            <select id="cust-eyes" style="width: 100%; padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.08); border: 1px solid var(--border-glass); color: white; font-weight: bold;" onchange="updateIntroAvatarPreview()">
-                                <option value="#5A3D28" selected>Kahverengi</option>
-                                <option value="#3D7DCA">Mavi</option>
-                                <option value="#4CA64C">Yeşil</option>
-                                <option value="#1F1F1F">Koyu Siyah</option>
-                            </select>
-                        </div>
+                    <!-- Customize Selectors (Grid) -->
+                    <style>
+                    .avatar-option {
+                        width: 100%;
+                        aspect-ratio: 1;
+                        object-fit: cover;
+                        border-radius: 8px;
+                        border: 2px solid transparent;
+                        cursor: pointer;
+                        transition: all 0.2s;
+                        opacity: 0.6;
+                    }
+                    .avatar-option:hover {
+                        opacity: 0.8;
+                    }
+                    .avatar-option.selected {
+                        border-color: var(--primary);
+                        opacity: 1;
+                        box-shadow: 0 0 10px rgba(245, 166, 35, 0.5);
+                        transform: scale(1.05);
+                    }
+                    </style>
+                    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 20px;" id="avatar-grid">
+                        <img src="avatars/avatar_1.png" class="avatar-option selected" onclick="selectAvatar(1)">
+                        <img src="avatars/avatar_2.png" class="avatar-option" onclick="selectAvatar(2)">
+                        <img src="avatars/avatar_3.png" class="avatar-option" onclick="selectAvatar(3)">
+                        <img src="avatars/avatar_4.png" class="avatar-option" onclick="selectAvatar(4)">
+                        <img src="avatars/avatar_5.png" class="avatar-option" onclick="selectAvatar(5)">
+                        <img src="avatars/avatar_6.png" class="avatar-option" onclick="selectAvatar(6)">
+                        <img src="avatars/avatar_7.png" class="avatar-option" onclick="selectAvatar(7)">
+                        <img src="avatars/avatar_8.png" class="avatar-option" onclick="selectAvatar(8)">
+                        <img src="avatars/avatar_9.png" class="avatar-option" onclick="selectAvatar(9)">
+                        <img src="avatars/avatar_10.png" class="avatar-option" onclick="selectAvatar(10)">
                     </div>
 
                     <button class="btn btn-primary" id="intro-btn-custom-save" style="width: 100%; padding: 14px; font-size: 14px; font-weight: bold;">GÖRÜNÜMÜ KAYDET VE DEVAM ET</button>
@@ -2822,35 +2804,18 @@
             type();
         }
 
-        let tempAvatarCustomization = {
-            skinColor: "#E2B28B",
-            eyeColor: "#5A3D28",
-            hairColor: "#1A1A1A",
-            hairStyle: "short",
-            beardStyle: "none"
-        };
+        let selectedAvatarNum = 1;
 
-        function updateIntroAvatarPreview() {
-            const skinColor = document.getElementById("cust-skin").value;
-            const hairStyle = document.getElementById("cust-hair-style").value;
-            const hairColor = document.getElementById("cust-hair-color").value;
-            const beardStyle = document.getElementById("cust-beard").value;
-            const eyeColor = document.getElementById("cust-eyes").value;
-
-            tempAvatarCustomization = {
-                skinColor,
-                hairStyle,
-                hairColor,
-                beardStyle,
-                eyeColor
-            };
-
-            const previewContainer = document.getElementById("intro-avatar-preview");
-            if (previewContainer) {
-                if (!GAME.state) GAME.state = {};
-                GAME.state.avatarCustomization = tempAvatarCustomization;
-                previewContainer.innerHTML = GAME.generateAvatar(17);
-            }
+        function selectAvatar(num) {
+            selectedAvatarNum = num;
+            document.getElementById("intro-avatar-preview").src = `avatars/avatar_${num}.png`;
+            document.querySelectorAll(".avatar-option").forEach((el, i) => {
+                if(i + 1 === num) {
+                    el.classList.add("selected");
+                } else {
+                    el.classList.remove("selected");
+                }
+            });
         }
 
         function init3dFutCardEffects() {
@@ -3207,7 +3172,7 @@
                 nextBtn1.addEventListener("click", () => {
                     document.getElementById("intro-step-1").style.display = "none";
                     document.getElementById("intro-step-custom").style.display = "block";
-                    updateIntroAvatarPreview();
+                    selectAvatar(1); // Initialize
                 });
 
                 const saveCustomBtn = document.getElementById("intro-btn-custom-save");
@@ -3254,7 +3219,7 @@
                     }
 
                     GAME.resetGame(name, startingLeague, startingSalary, startingTrust, city, district, selectedStartingClub);
-                    GAME.state.avatarCustomization = tempAvatarCustomization;
+                    GAME.state.avatarImage = `avatars/avatar_${selectedAvatarNum}.png`;
                     GAME.saveGame();
                     GAME.updateUI();
 

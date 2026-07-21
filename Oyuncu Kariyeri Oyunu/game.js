@@ -5,7 +5,7 @@
 
 const GAME = {
     state: {
-        playerName: "Genç Semih",
+        playerName: "GenÃƒÂ§ Semih",
         age: 17,
         rating: 50,
         position: "Forvet",
@@ -28,8 +28,8 @@ const GAME = {
         ownedItems: [],
 
         // Career history
-        currentLeague: "Süper Lig",
-        currentClub: "Amatör Kulüp", // Starts at amateur
+        currentLeague: "SÃƒÂ¼per Lig",
+        currentClub: "AmatÃƒÂ¶r KulÃƒÂ¼p", // Starts at amateur
 
         currentWeek: 1,
         seasonGoals: 0,
@@ -143,9 +143,9 @@ const GAME = {
             socialFeed: [
                 {
                     handle: "@turk_futbol",
-                    name: "Türk Futbol Günlüğü",
-                    text: `TFF ${sLeague} ekiplerinden ${startingClub.name}, altyapısından yetiştirdiği 17 yaşındaki genç yetenek ${pName}'ye profesyonel lisans çıkardı! Haydi hayırlısı. 🇹🇷⚽`,
-                    time: "1s önce"
+                    name: "TÃƒÂ¼rk Futbol GÃƒÂ¼nlÃƒÂ¼Ã„Å¸ÃƒÂ¼",
+                    text: `TFF ${sLeague} ekiplerinden ${startingClub.name}, altyapÃ„Â±sÃ„Â±ndan yetiÃ…Å¸tirdiÃ„Å¸i 17 yaÃ…Å¸Ã„Â±ndaki genÃƒÂ§ yetenek ${pName}'ye profesyonel lisans ÃƒÂ§Ã„Â±kardÃ„Â±! Haydi hayÃ„Â±rlÃ„Â±sÃ„Â±. ÄŸÅ¸â€¡Â¹ÄŸÅ¸â€¡Â·Ã¢Å¡Â½`,
+                    time: "1s ÃƒÂ¶nce"
                 }
             ]
         };
@@ -169,23 +169,23 @@ const GAME = {
                  // Save data migration for fictional team names
                  const nameMap = {
                      "Galatasaray": "Galatastar",
-                     "Fenerbahçe": "Fenerbaçe FK",
+                     "FenerbahÃƒÂ§e": "FenerbaÃƒÂ§e FK",
                      "Trabzonspor": "Trabzon FK",
-                     "Beşiktaş": "Kartal FK",
-                     "Başakşehir": "Başakşehir FK",
-                     "Göztepe": "Göztepe FK",
+                     "BeÃ…Å¸iktaÃ…Å¸": "Kartal FK",
+                     "BaÃ…Å¸akÃ…Å¸ehir": "BaÃ…Å¸akÃ…Å¸ehir FK",
+                     "GÃƒÂ¶ztepe": "GÃƒÂ¶ztepe FK",
                      "Samsunspor": "Samsun FK",
                      "Konyaspor": "Konya FK",
                      "Kocaelispor": "Kocaeli FK",
                      "Alanyaspor": "Alanya FK",
-                     "Kasımpaşa": "Kaşımpaşa FK",
-                     "Eyüpspor": "Eyüpspor FK",
+                     "KasÃ„Â±mpaÃ…Å¸a": "KaÃ…Å¸Ã„Â±mpaÃ…Å¸a FK",
+                     "EyÃƒÂ¼pspor": "EyÃƒÂ¼pspor FK",
                      "Antalyaspor": "Antalya FK",
                      "Kayserispor": "Kayseri FK",
                      "Sivasspor": "Sivas FK",
                      "Hatayspor": "Hatay FK",
                      "Adana Demirspor": "Adana Demir FK",
-                     "Çaykur Rizespor": "Rize FK"
+                     "Ãƒâ€¡aykur Rizespor": "Rize FK"
                  };
                  let migrated = false;
                  if (this.state.currentClub && nameMap[this.state.currentClub]) {
@@ -459,7 +459,7 @@ const GAME = {
 
     train: function(statType) {
         if (this.state.injuryWeeks > 0) {
-            alert(`Sakatlığınız devam ediyor! Antrenman yapamazsınız. İyileşmenize ${this.state.injuryWeeks} hafta kaldı.`);
+            alert(`SakatlÃ„Â±Ã„Å¸Ã„Â±nÃ„Â±z devam ediyor! Antrenman yapamazsÃ„Â±nÃ„Â±z. Ã„Â°yileÃ…Å¸menize ${this.state.injuryWeeks} hafta kaldÃ„Â±.`);
             return;
         }
 
@@ -468,18 +468,18 @@ const GAME = {
             return;
         }
 
-        // Haftalık 4 antrenman sınırı
+        // HaftalÃ„Â±k 4 antrenman sÃ„Â±nÃ„Â±rÃ„Â±
         if (typeof this.state.weeklyTrainingCount === "undefined") {
             this.state.weeklyTrainingCount = 0;
         }
         if (this.state.weeklyTrainingCount >= 4) {
-            alert("Bu hafta zaten 4 kez antrenman yaptınız! Kaslarınızı aşırı yormamalısınız. Haftayı ilerletip yeni haftaya geçerek antrenmanlara devam edebilirsiniz.");
+            alert("Bu hafta zaten 4 kez antrenman yaptÃ„Â±nÃ„Â±z! KaslarÃ„Â±nÃ„Â±zÃ„Â± aÃ…Å¸Ã„Â±rÃ„Â± yormamalÃ„Â±sÃ„Â±nÃ„Â±z. HaftayÃ„Â± ilerletip yeni haftaya geÃƒÂ§erek antrenmanlara devam edebilirsiniz.");
             return;
         }
 
         let energyCost = this.state.ownedItems.includes("doc_ahmet") ? 15 : 20;
         if (this.state.kondisyon < energyCost) {
-            alert(`Antrenman yapmak için en az %${energyCost} kondisyon gereklidir! Dinlenmelisin.`);
+            alert(`Antrenman yapmak iÃƒÂ§in en az %${energyCost} kondisyon gereklidir! Dinlenmelisin.`);
             return;
         }
 
@@ -528,12 +528,12 @@ const GAME = {
         if (!item) return;
 
         if (this.state.ownedItems.includes(itemId)) {
-            alert("Bu eşyaya zaten sahipsiniz!");
+            alert("Bu eÃ…Å¸yaya zaten sahipsiniz!");
             return;
         }
 
         if (this.state.money < item.cost) {
-            alert("Bunu satın almak için yeterli paranız yok!");
+            alert("Bunu satÃ„Â±n almak iÃƒÂ§in yeterli paranÃ„Â±z yok!");
             return;
         }
 
@@ -548,12 +548,12 @@ const GAME = {
         if (itemId === "gerze_fc") {
             let locationName = this.state.hometownDistrict || this.state.hometown || "Gerze";
             locationName = locationName.charAt(0).toUpperCase() + locationName.slice(1);
-            displayName = `👑 ${locationName} Belediyespor Kulübü`;
+            displayName = `ÄŸÅ¸â€˜â€˜ ${locationName} Belediyespor KulÃƒÂ¼bÃƒÂ¼`;
         }
 
         this.saveGame();
         this.updateUI();
-        alert(`${displayName} başarıyla satın alındı!`);
+        alert(`${displayName} baÃ…Å¸arÃ„Â±yla satÃ„Â±n alÃ„Â±ndÃ„Â±!`);
     },
 
     buyConsumable: function(itemId) {
@@ -561,7 +561,7 @@ const GAME = {
         if (!item) return false;
         
         if (this.state.money < item.cost) {
-            alert(`Bunu satın almak için yeterli paranız yok! Gerekli: ${item.cost.toLocaleString()} €`);
+            alert(`Bunu satÃ„Â±n almak iÃƒÂ§in yeterli paranÃ„Â±z yok! Gerekli: ${item.cost.toLocaleString()} Ã¢â€šÂ¬`);
             return false;
         }
         
@@ -571,7 +571,7 @@ const GAME = {
         
         this.saveGame();
         this.updateUI();
-        alert(`${item.name} başarıyla tüketildi! Enerjiniz tazelendi.`);
+        alert(`${item.name} baÃ…Å¸arÃ„Â±yla tÃƒÂ¼ketildi! Enerjiniz tazelendi.`);
         return true;
     },
 
@@ -586,7 +586,7 @@ const GAME = {
 
         if (agent.cost > 0) {
             if (this.state.money < agent.cost) {
-                alert(`Bu menajeri kiralamak için yeterli paranız yok! Gerekli: ${agent.cost.toLocaleString()} €`);
+                alert(`Bu menajeri kiralamak iÃƒÂ§in yeterli paranÃ„Â±z yok! Gerekli: ${agent.cost.toLocaleString()} Ã¢â€šÂ¬`);
                 return false;
             }
             this.state.money -= agent.cost;
@@ -596,7 +596,7 @@ const GAME = {
         if (this.state.agentId) {
             const oldAgent = DATABASE.AGENTS.find(a => a.id === this.state.agentId);
             if (oldAgent) {
-                oldAgentMsg = `${oldAgent.name} ile yollar ayrıldı. `;
+                oldAgentMsg = `${oldAgent.name} ile yollar ayrÃ„Â±ldÃ„Â±. `;
             }
         }
 
@@ -604,7 +604,7 @@ const GAME = {
         this.saveGame();
         this.updateUI();
         
-        alert(`${oldAgentMsg}${agent.name} artık yeni menajeriniz! Haftalık komisyonu: %${agent.commissionRate * 100}`);
+        alert(`${oldAgentMsg}${agent.name} artÃ„Â±k yeni menajeriniz! HaftalÃ„Â±k komisyonu: %${agent.commissionRate * 100}`);
         return true;
     },
 
@@ -612,18 +612,18 @@ const GAME = {
     advanceWeek: function() {
         this.state.currentWeek++;
 
-        // Transfer penceresi kapandıysa aktif teklifleri sıfırla
+        // Transfer penceresi kapandÃ„Â±ysa aktif teklifleri sÃ„Â±fÃ„Â±rla
         if (!this.isTransferWindowActive()) {
             this.state.activeTransferOffers = [];
         }
 
-        // Haftalık antrenman sayacını sıfırla
+        // HaftalÃ„Â±k antrenman sayacÃ„Â±nÃ„Â± sÃ„Â±fÃ„Â±rla
         this.state.weeklyTrainingCount = 0;
 
         if (typeof this.state.weeksSinceLastTraining === "undefined") this.state.weeksSinceLastTraining = 0;
         if (typeof this.state.weeksSinceLastPurchase === "undefined") this.state.weeksSinceLastPurchase = 0;
 
-        // Eğer tüm yetenekler ful ise antrenman yapmama sayacını artırma
+        // EÃ„Å¸er tÃƒÂ¼m yetenekler ful ise antrenman yapmama sayacÃ„Â±nÃ„Â± artÃ„Â±rma
         let isAllMaxed = (this.state.shooting >= 100 && this.state.passing >= 100 && this.state.speed >= 100 && (this.state.dribbling || 50) >= 100 && (this.state.defense || 50) >= 100 && (this.state.physical || 50) >= 100);
         if (!isAllMaxed) {
             this.state.weeksSinceLastTraining++;
@@ -639,9 +639,9 @@ const GAME = {
         if (this.state.injuryWeeks && this.state.injuryWeeks > 0) {
             this.state.injuryWeeks--;
             if (this.state.injuryWeeks === 0) {
-                alert("🎉 Müjde! Sakatlığınız tamamen geçti. Sahalara ve antrenmanlara dönmeye hazırsınız! 💪⚽");
+                alert("ÄŸÅ¸Ââ€° MÃƒÂ¼jde! SakatlÃ„Â±Ã„Å¸Ã„Â±nÃ„Â±z tamamen geÃƒÂ§ti. Sahalara ve antrenmanlara dÃƒÂ¶nmeye hazÃ„Â±rsÃ„Â±nÃ„Â±z! ÄŸÅ¸â€™ÂªÃ¢Å¡Â½");
             } else {
-                alert(`🚑 Tedaviniz devam ediyor. İyileşmenize ${this.state.injuryWeeks} hafta kaldı.`);
+                alert(`ÄŸÅ¸Å¡â€˜ Tedaviniz devam ediyor. Ã„Â°yileÃ…Å¸menize ${this.state.injuryWeeks} hafta kaldÃ„Â±.`);
             }
         }
 
@@ -705,7 +705,7 @@ const GAME = {
 
         this.state.money += salary;
 
-        // Krampon eskime payı
+        // Krampon eskime payÃ„Â±
         if (this.state.activeBootSponsor || this.state.activePurchasedBoot) {
             if (typeof this.state.bootDurability === "undefined") {
                 this.state.bootDurability = 100;
@@ -737,7 +737,7 @@ const GAME = {
                     this.state.activePurchasedBoot = null;
                 }
                 this.state.rating = Math.round((this.state.shooting + this.state.passing + this.state.speed) / 3);
-                this.addSocialPost("@spor_manset", "Ekipman Raporu", `⚠️ Kötü haber! ${this.state.playerName}'nin giydiği ${bootName} kramponunun ömrü tükendi ve parçalandı! Yıldız oyuncu yeni bir krampon arayışında.`);
+                this.addSocialPost("@spor_manset", "Ekipman Raporu", `Ã¢Å¡Â Ã¯Â¸Â KÃƒÂ¶tÃƒÂ¼ haber! ${this.state.playerName}'nin giydiÃ„Å¸i ${bootName} kramponunun ÃƒÂ¶mrÃƒÂ¼ tÃƒÂ¼kendi ve parÃƒÂ§alandÃ„Â±! YÃ„Â±ldÃ„Â±z oyuncu yeni bir krampon arayÃ„Â±Ã…Å¸Ã„Â±nda.`);
             }
         }
 
@@ -817,7 +817,7 @@ const GAME = {
         
         this.state.money = Math.max(0, this.state.money - weeklyDeduction);
 
-        // Tefeci Borç Geri Ödemesi
+        // Tefeci BorÃƒÂ§ Geri Ãƒâ€“demesi
         if (this.state.tefeciBorc > 0) {
             let payment = this.state.tefeciHaftalikGeriOdeme;
             if (this.state.money >= payment) {
@@ -832,15 +832,15 @@ const GAME = {
                     this.state.mafiaPaidThisWeek = payment;
                 }
             } else {
-                // Borç ödenemedi - Darp ve Eşyaya Çökme Eventi!
+                // BorÃƒÂ§ ÃƒÂ¶denemedi - Darp ve EÃ…Å¸yaya Ãƒâ€¡ÃƒÂ¶kme Eventi!
                 this.state.money = 0;
                 this.state.kondisyon = 5;
                 this.state.moral = 5;
-                this.state.tefeciBorc = Math.round(this.state.tefeciBorc * 1.25); // Borç %25 faizle katlanır!
+                this.state.tefeciBorc = Math.round(this.state.tefeciBorc * 1.25); // BorÃƒÂ§ %25 faizle katlanÃ„Â±r!
                 this.state.tefeciHaftalikGeriOdeme = Math.round(this.state.tefeciHaftalikGeriOdeme * 1.20);
                 this.state.mafiaBeating = true;
 
-                // Tefeci mal varlığına çöker!
+                // Tefeci mal varlÃ„Â±Ã„Å¸Ã„Â±na ÃƒÂ§ÃƒÂ¶ker!
                 let seizableItems = ["penthouse", "sports_car", "yacht", "jet", "mansion", "gerze_fc"].filter(id => this.state.ownedItems.includes(id));
                 if (seizableItems.length > 0) {
                     let seizedId = seizableItems[Math.floor(Math.random() * seizableItems.length)];
@@ -848,12 +848,12 @@ const GAME = {
                     
                     let itemVal = 0;
                     let itemName = "";
-                    if (seizedId === "penthouse") { itemVal = 500000; itemName = "Boğaz Manzaralı Rezidans"; }
-                    else if (seizedId === "sports_car") { itemVal = 120000; itemName = "Lüks Spor Araba"; }
-                    else if (seizedId === "yacht") { itemVal = 1000000; itemName = "Ultra Lüks Yat"; }
-                    else if (seizedId === "jet") { itemVal = 3000000; itemName = "Özel Jet"; }
-                    else if (seizedId === "mansion") { itemVal = 2000000; itemName = "Tarihi Boğaz Yalısı"; }
-                    else if (seizedId === "gerze_fc") { itemVal = 6000000; itemName = "Gerze Belediyespor Kulübü"; }
+                    if (seizedId === "penthouse") { itemVal = 500000; itemName = "BoÃ„Å¸az ManzaralÃ„Â± Rezidans"; }
+                    else if (seizedId === "sports_car") { itemVal = 120000; itemName = "LÃƒÂ¼ks Spor Araba"; }
+                    else if (seizedId === "yacht") { itemVal = 1000000; itemName = "Ultra LÃƒÂ¼ks Yat"; }
+                    else if (seizedId === "jet") { itemVal = 3000000; itemName = "Ãƒâ€“zel Jet"; }
+                    else if (seizedId === "mansion") { itemVal = 2000000; itemName = "Tarihi BoÃ„Å¸az YalÃ„Â±sÃ„Â±"; }
+                    else if (seizedId === "gerze_fc") { itemVal = 6000000; itemName = "Gerze Belediyespor KulÃƒÂ¼bÃƒÂ¼"; }
                     
                     this.state.tefeciBorc = Math.max(0, this.state.tefeciBorc - itemVal);
                     this.state.tefeciHaftalikGeriOdeme = Math.round(this.state.tefeciBorc * 0.15);
@@ -862,14 +862,14 @@ const GAME = {
             }
         }
 
-        // Haraç Talebi (Extortion) Kontrolü
+        // HaraÃƒÂ§ Talebi (Extortion) KontrolÃƒÂ¼
         if (this.state.money >= 50000 || this.state.followers >= 80000) {
-            if (Math.random() < 0.15) { // %15 şansla haraç mafyası kapıya dayanır
+            if (Math.random() < 0.15) { // %15 Ã…Å¸ansla haraÃƒÂ§ mafyasÃ„Â± kapÃ„Â±ya dayanÃ„Â±r
                 let hasBodyguard = this.state.ownedItems.includes("bodyguard");
                 if (hasBodyguard) {
                     this.state.mafiaExtortionDefended = true;
                 } else {
-                    // Haraç miktarı: nakit paranın %4'ü + 800 €
+                    // HaraÃƒÂ§ miktarÃ„Â±: nakit paranÃ„Â±n %4'ÃƒÂ¼ + 800 Ã¢â€šÂ¬
                     let demand = Math.round(this.state.money * 0.04 + 800);
                     if (this.state.money >= demand) {
                         this.state.money -= demand;
@@ -878,7 +878,7 @@ const GAME = {
                         // Para yetmedi - Vandalizm!
                         this.state.moral = Math.max(0, this.state.moral - 40);
                         
-                        // Lüks araba veya evi var mı? Varsa birini sil
+                        // LÃƒÂ¼ks araba veya evi var mÃ„Â±? Varsa birini sil
                         let targets = ["sports_car", "penthouse"];
                         let destroyedItem = null;
                         for (let t of targets) {
@@ -933,7 +933,7 @@ const GAME = {
 
         if (this.state.isSuspended) {
             this.state.isSuspended = false;
-            this.addSocialPost("@spor_manset", "Spor Manşetleri", `Cezası bitti! Kırmızı kart cezası sona eren genç yetenek ${this.state.playerName} yeniden formasına kavuşuyor.`);
+            this.addSocialPost("@spor_manset", "Spor ManÃ…Å¸etleri", `CezasÃ„Â± bitti! KÃ„Â±rmÃ„Â±zÃ„Â± kart cezasÃ„Â± sona eren genÃƒÂ§ yetenek ${this.state.playerName} yeniden formasÃ„Â±na kavuÃ…Å¸uyor.`);
         }
 
         // Transition opponent states centrally here
@@ -951,10 +951,10 @@ const GAME = {
             if (typeof window.showNewspaperModal !== "undefined") {
                 setTimeout(() => {
                     window.showNewspaperModal(
-                        "FLAŞ HABER 📰",
-                        `${this.state.playerName.toUpperCase()} KAYIPLARA KARIŞTI!`,
-                        "Antrenman Sahasında Tembellik İddiaları!",
-                        `Son <b>4 haftadır</b> antrenman tesislerinde neredeyse hiç görülmeyen genç yıldız adayı <b>${this.state.playerName}</b> için spor basını kazan kaldırıyor! <br><br>Taraftarlar sosyal medyada oyuncunun disiplinsizliğine isyan ederken, teknik direktörün de bu durumdan son derece rahatsız olduğu ve böyle devam ederse oyuncuyu <b>kadro dışı</b> bırakabileceği konuşuluyor. Acilen antrenman yapıp kendini göstermelisin!`
+                        "FLAÃ…Â HABER ÄŸÅ¸â€œÂ°",
+                        `${this.state.playerName.toUpperCase()} KAYIPLARA KARIÃ…ÂTI!`,
+                        "Antrenman SahasÃ„Â±nda Tembellik Ã„Â°ddialarÃ„Â±!",
+                        `Son <b>4 haftadÃ„Â±r</b> antrenman tesislerinde neredeyse hiÃƒÂ§ gÃƒÂ¶rÃƒÂ¼lmeyen genÃƒÂ§ yÃ„Â±ldÃ„Â±z adayÃ„Â± <b>${this.state.playerName}</b> iÃƒÂ§in spor basÃ„Â±nÃ„Â± kazan kaldÃ„Â±rÃ„Â±yor! <br><br>Taraftarlar sosyal medyada oyuncunun disiplinsizliÃ„Å¸ine isyan ederken, teknik direktÃƒÂ¶rÃƒÂ¼n de bu durumdan son derece rahatsÃ„Â±z olduÃ„Å¸u ve bÃƒÂ¶yle devam ederse oyuncuyu <b>kadro dÃ„Â±Ã…Å¸Ã„Â±</b> bÃ„Â±rakabileceÃ„Å¸i konuÃ…Å¸uluyor. Acilen antrenman yapÃ„Â±p kendini gÃƒÂ¶stermelisin!`
                     );
                 }, 1800);
             }
@@ -967,10 +967,10 @@ const GAME = {
             if (typeof window.showNewspaperModal !== "undefined") {
                 setTimeout(() => {
                     window.showNewspaperModal(
-                        "KRİZ RAPORU 🚨",
-                        `DİSİPLİNSİZLİK FATURASI KESİLDİ!`,
-                        "Hoca Güveni ve Moral Dip Yaptı!",
-                        `Tam <b>${this.state.weeksSinceLastTraining} haftadır</b> antrenman yapmayan <b>${this.state.playerName}</b>, kulüpte adeta krize neden oldu! <br><br>Teknik direktör oyuncuya olan inancını tamamen kaybetti. Kulüpten sızan bilgilere göre oyuncunun antrenman yapmayı reddetmesi sebebiyle hoca güveni ve moral yerle bir oldu (-8 Hoca Güveni, -10 Moral). Kariyerini kurtarmak için hemen antrenman sekmesine gitmelisin!`
+                        "KRÃ„Â°Z RAPORU ÄŸÅ¸Å¡Â¨",
+                        `DÃ„Â°SÃ„Â°PLÃ„Â°NSÃ„Â°ZLÃ„Â°K FATURASI KESÃ„Â°LDÃ„Â°!`,
+                        "Hoca GÃƒÂ¼veni ve Moral Dip YaptÃ„Â±!",
+                        `Tam <b>${this.state.weeksSinceLastTraining} haftadÃ„Â±r</b> antrenman yapmayan <b>${this.state.playerName}</b>, kulÃƒÂ¼pte adeta krize neden oldu! <br><br>Teknik direktÃƒÂ¶r oyuncuya olan inancÃ„Â±nÃ„Â± tamamen kaybetti. KulÃƒÂ¼pten sÃ„Â±zan bilgilere gÃƒÂ¶re oyuncunun antrenman yapmayÃ„Â± reddetmesi sebebiyle hoca gÃƒÂ¼veni ve moral yerle bir oldu (-8 Hoca GÃƒÂ¼veni, -10 Moral). Kariyerini kurtarmak iÃƒÂ§in hemen antrenman sekmesine gitmelisin!`
                     );
                 }, 1800);
             }
@@ -979,14 +979,14 @@ const GAME = {
         // Check for lack of shopping warning (6 weeks without purchases)
         if (this.state.weeksSinceLastPurchase === 6) {
             if (typeof window.showNewspaperModal !== "undefined") {
-                const agentName = this.state.agentId === "izi" ? "İzim" : "Bedirhan Abi";
-                const agentIcon = this.state.agentId === "izi" ? "👩🏼‍💼" : "👨🏻‍💼";
+                const agentName = this.state.agentId === "izi" ? "Ã„Â°zim" : "Bedirhan Abi";
+                const agentIcon = this.state.agentId === "izi" ? "ÄŸÅ¸â€˜Â©ÄŸÅ¸ÂÂ¼Ã¢â‚¬ÂÄŸÅ¸â€™Â¼" : "ÄŸÅ¸â€˜Â¨ÄŸÅ¸ÂÂ»Ã¢â‚¬ÂÄŸÅ¸â€™Â¼";
                 setTimeout(() => {
                     window.showNewspaperModal(
-                        "SOSYETİK MAGAZİN 📸",
-                        `CÜZDANININ AĞZINI AÇMIYOR!`,
-                        `${this.state.playerName.toUpperCase()} PARALARI MEZARA MI GÖTÜRECEK?`,
-                        `Milyon euroluk sözleşmelere imza atan, kulübünden ve sponsorlarından sürekli para kazanan yıldız futbolcu <b>${this.state.playerName}</b>'nin son <b>6 haftadır</b> tek bir kuruş bile harcamadığı ortaya çıktı! <br><br>Menajeri ${agentIcon} <b>${agentName}</b> oyuncuyu uyardı: <em>"Nakit biriktirmek güzel ama markanı ve yaşam kaliteni artırmak için mağazadan yeni kramponlar, lüks arabalar, mülkler veya borsa yatırımları almalısın. Biraz hayatın tadını çıkar aslanım!"</em>`
+                        "SOSYETÃ„Â°K MAGAZÃ„Â°N ÄŸÅ¸â€œÂ¸",
+                        `CÃƒÅ“ZDANININ AÃ„ÂZINI AÃƒâ€¡MIYOR!`,
+                        `${this.state.playerName.toUpperCase()} PARALARI MEZARA MI GÃƒâ€“TÃƒÅ“RECEK?`,
+                        `Milyon euroluk sÃƒÂ¶zleÃ…Å¸melere imza atan, kulÃƒÂ¼bÃƒÂ¼nden ve sponsorlarÃ„Â±ndan sÃƒÂ¼rekli para kazanan yÃ„Â±ldÃ„Â±z futbolcu <b>${this.state.playerName}</b>'nin son <b>6 haftadÃ„Â±r</b> tek bir kuruÃ…Å¸ bile harcamadÃ„Â±Ã„Å¸Ã„Â± ortaya ÃƒÂ§Ã„Â±ktÃ„Â±! <br><br>Menajeri ${agentIcon} <b>${agentName}</b> oyuncuyu uyardÃ„Â±: <em>"Nakit biriktirmek gÃƒÂ¼zel ama markanÃ„Â± ve yaÃ…Å¸am kaliteni artÃ„Â±rmak iÃƒÂ§in maÃ„Å¸azadan yeni kramponlar, lÃƒÂ¼ks arabalar, mÃƒÂ¼lkler veya borsa yatÃ„Â±rÃ„Â±mlarÃ„Â± almalÃ„Â±sÃ„Â±n. Biraz hayatÃ„Â±n tadÃ„Â±nÃ„Â± ÃƒÂ§Ã„Â±kar aslanÃ„Â±m!"</em>`
                     );
                 }, 2800);
             }
@@ -1004,8 +1004,8 @@ const GAME = {
 
     isTransferWindowActive: function() {
         const w = this.state.currentWeek;
-        // Ara Transfer Dönemi: 14 - 21. haftalar arası
-        // Yaz Transfer Dönemi: 37. hafta (sezon sonu)
+        // Ara Transfer DÃƒÂ¶nemi: 14 - 21. haftalar arasÃ„Â±
+        // Yaz Transfer DÃƒÂ¶nemi: 37. hafta (sezon sonu)
         return ((w >= 14 && w <= 21) || w === 37);
     },
 
@@ -1034,9 +1034,9 @@ const GAME = {
                 this.state.hocaGuveni = Math.max(0, this.state.hocaGuveni - penalty);
                 this.state.moral = Math.max(10, this.state.moral - penalty);
             }
-            coachMsg = `\n\n🗣️ Teknik Direktör: "Yeterli katkıyı veremiyorsun ${this.state.playerName}. Git antrenman yap, yoksa değişiklik yaparım!"`;
+            coachMsg = `\n\nÄŸÅ¸â€”Â£Ã¯Â¸Â Teknik DirektÃƒÂ¶r: "Yeterli katkÃ„Â±yÃ„Â± veremiyorsun ${this.state.playerName}. Git antrenman yap, yoksa deÃ„Å¸iÃ…Å¸iklik yaparÃ„Â±m!"`;
             if (this.state.consecutivePoorMatches >= 2) {
-                coachMsg += `\n⚠️ (${this.state.consecutivePoorMatches} maçtır etkisizsin! Antrenman yapmazsan daha da zorlaşacak.)`;
+                coachMsg += `\nÃ¢Å¡Â Ã¯Â¸Â (${this.state.consecutivePoorMatches} maÃƒÂ§tÃ„Â±r etkisizsin! Antrenman yapmazsan daha da zorlaÃ…Å¸acak.)`;
             }
         } else {
             this.state.consecutivePoorMatches = 0;
@@ -1052,7 +1052,7 @@ const GAME = {
             return [];
         }
 
-        // Eğer halihazırda bu transfer dönemi için teklifler oluşturulmuşsa onları döndür
+        // EÃ„Å¸er halihazÃ„Â±rda bu transfer dÃƒÂ¶nemi iÃƒÂ§in teklifler oluÃ…Å¸turulmuÃ…Å¸sa onlarÃ„Â± dÃƒÂ¶ndÃƒÂ¼r
         if (this.state.activeTransferOffers && this.state.activeTransferOffers.length > 0) {
             return this.state.activeTransferOffers;
         }
@@ -1095,11 +1095,11 @@ const GAME = {
             }
         }
         
-        // Karıştır, elit teklifleri başa al ve tam olarak 5 teklif seç
+        // KarÃ„Â±Ã…Å¸tÃ„Â±r, elit teklifleri baÃ…Å¸a al ve tam olarak 5 teklif seÃƒÂ§
         offers.sort((a,b) => (b.isElite ? 1 : 0) - (a.isElite ? 1 : 0) || Math.random() - 0.5);
         let finalOffers = offers.slice(0, 5);
 
-        // Eğer 5'ten az teklif çıktıysa, oyuncunun seviyesine en yakın diğer takımlardan doldurma yap
+        // EÃ„Å¸er 5'ten az teklif ÃƒÂ§Ã„Â±ktÃ„Â±ysa, oyuncunun seviyesine en yakÃ„Â±n diÃ„Å¸er takÃ„Â±mlardan doldurma yap
         if (finalOffers.length < 5) {
             let fallbackTeams = [];
             for (let leagueName in DATABASE.LEAGUES) {
@@ -1135,13 +1135,13 @@ const GAME = {
         if (!gf) return false;
         
         if (this.state.relationship && this.state.relationship.active) {
-            alert("Zaten bir ilişkiniz var! Başka bir teklif yapmadan önce mevcut ilişkinizi sonlandırmalısınız.");
+            alert("Zaten bir iliÃ…Å¸kiniz var! BaÃ…Å¸ka bir teklif yapmadan ÃƒÂ¶nce mevcut iliÃ…Å¸kinizi sonlandÃ„Â±rmalÃ„Â±sÃ„Â±nÃ„Â±z.");
             return false;
         }
         
         // Check requirements
         if (this.state.rating < gf.reqs.rating || this.state.followers < gf.reqs.followers) {
-            alert("Bu teklif için gereksinimleri karşılamıyorsunuz!");
+            alert("Bu teklif iÃƒÂ§in gereksinimleri karÃ…Å¸Ã„Â±lamÃ„Â±yorsunuz!");
             return false;
         }
         
@@ -1154,11 +1154,11 @@ const GAME = {
         // Apply initial moral boost
         this.state.moral = Math.min(100, this.state.moral + 20);
         
-        this.addSocialPost(`@${this.state.playerName.toLowerCase().replace(/\s/g, '_')}_hayat`, `${this.state.playerName} Magazin`, `Genç futbolcu ${this.state.playerName}, ${gf.name} ile yeni bir ilişkiye başladığını duyurdu! Çiftimize mutluluklar dileriz. ❤️🥂`);
+        this.addSocialPost(`@${this.state.playerName.toLowerCase().replace(/\s/g, '_')}_hayat`, `${this.state.playerName} Magazin`, `GenÃƒÂ§ futbolcu ${this.state.playerName}, ${gf.name} ile yeni bir iliÃ…Å¸kiye baÃ…Å¸ladÃ„Â±Ã„Å¸Ã„Â±nÃ„Â± duyurdu! Ãƒâ€¡iftimize mutluluklar dileriz. Ã¢ÂÂ¤Ã¯Â¸ÂÄŸÅ¸Â¥â€š`);
         
         this.saveGame();
         this.updateUI();
-        alert(`${gf.name} ile ilişkiniz başladı! Mutluluklar!`);
+        alert(`${gf.name} ile iliÃ…Å¸kiniz baÃ…Å¸ladÃ„Â±! Mutluluklar!`);
         return true;
     },
 
@@ -1171,11 +1171,11 @@ const GAME = {
         const dateCost = Math.round(gf.cost * 0.8 + 100);
         
         if (this.state.money < dateCost) {
-            alert("Buluşmaya çıkmak için yeterli paranız yok!");
+            alert("BuluÃ…Å¸maya ÃƒÂ§Ã„Â±kmak iÃƒÂ§in yeterli paranÃ„Â±z yok!");
             return false;
         }
         if (this.state.kondisyon < 20) {
-            alert("Buluşmaya çıkmak için çok yorgunsunuz! Dinlenin.");
+            alert("BuluÃ…Å¸maya ÃƒÂ§Ã„Â±kmak iÃƒÂ§in ÃƒÂ§ok yorgunsunuz! Dinlenin.");
             return false;
         }
         
@@ -1186,7 +1186,7 @@ const GAME = {
         
         this.saveGame();
         this.updateUI();
-        alert(`${gf.name} ile harika bir akşam geçirdiniz! İlişki bağı güçlendi.\nHarcanan Para: ${dateCost} €\nKondisyon: -20% | Moral: +15%`);
+        alert(`${gf.name} ile harika bir akÃ…Å¸am geÃƒÂ§irdiniz! Ã„Â°liÃ…Å¸ki baÃ„Å¸Ã„Â± gÃƒÂ¼ÃƒÂ§lendi.\nHarcanan Para: ${dateCost} Ã¢â€šÂ¬\nKondisyon: -20% | Moral: +15%`);
         return true;
     },
 
@@ -1194,18 +1194,18 @@ const GAME = {
         if (!this.state.relationship || !this.state.relationship.active) return false;
         
         const gf = DATABASE.GIRLFRIENDS.find(g => g.id === this.state.relationship.id);
-        const name = gf ? gf.name : "kız arkadaşınız";
+        const name = gf ? gf.name : "kÃ„Â±z arkadaÃ…Å¸Ã„Â±nÃ„Â±z";
         
-        if (!confirm(`${name} ile ayrılmak istediğinizden emin misiniz?`)) return false;
+        if (!confirm(`${name} ile ayrÃ„Â±lmak istediÃ„Å¸inizden emin misiniz?`)) return false;
         
         this.state.relationship = { active: false, id: null, level: 0 };
         this.state.moral = Math.max(10, this.state.moral - 25);
         
-        this.addSocialPost("@magazin_gundem", "Magazin Gündemi", `Şok ayrılık! ${this.state.playerName} ile ${name} ilişkilerini sonlandırdıklarını açıkladı. Ayrılık sonrası genç futbolcunun morali bozuk görünüyor. 💔`);
+        this.addSocialPost("@magazin_gundem", "Magazin GÃƒÂ¼ndemi", `Ã…Âok ayrÃ„Â±lÃ„Â±k! ${this.state.playerName} ile ${name} iliÃ…Å¸kilerini sonlandÃ„Â±rdÃ„Â±klarÃ„Â±nÃ„Â± aÃƒÂ§Ã„Â±kladÃ„Â±. AyrÃ„Â±lÃ„Â±k sonrasÃ„Â± genÃƒÂ§ futbolcunun morali bozuk gÃƒÂ¶rÃƒÂ¼nÃƒÂ¼yor. ÄŸÅ¸â€™â€`);
         
         this.saveGame();
         this.updateUI();
-        alert(`${name} ile yollarınızı ayırdınız. Moralin düştü.`);
+        alert(`${name} ile yollarÃ„Â±nÃ„Â±zÃ„Â± ayÃ„Â±rdÃ„Â±nÃ„Â±z. Moralin dÃƒÂ¼Ã…Å¸tÃƒÂ¼.`);
         return true;
     },
 
@@ -1214,7 +1214,7 @@ const GAME = {
         if (!boot) return false;
         
         if (this.state.rating < boot.reqRating || this.state.followers < boot.reqFollowers) {
-            alert("Bu sponsorluk için gereksinimleri karşılamıyorsunuz.");
+            alert("Bu sponsorluk iÃƒÂ§in gereksinimleri karÃ…Å¸Ã„Â±lamÃ„Â±yorsunuz.");
             return false;
         }
         
@@ -1245,11 +1245,11 @@ const GAME = {
         
         this.state.rating = Math.round((this.state.shooting + this.state.passing + this.state.speed) / 3);
         
-        this.addSocialPost("@transfer_kulisi", "Transfer Kulisi", `${this.state.playerName}, ünlü spor markası ${boot.brand} ile resmi krampon sponsorluğu imzaladı! Sahada ${boot.model} modelini giyecek! 🥾🔥`);
+        this.addSocialPost("@transfer_kulisi", "Transfer Kulisi", `${this.state.playerName}, ÃƒÂ¼nlÃƒÂ¼ spor markasÃ„Â± ${boot.brand} ile resmi krampon sponsorluÃ„Å¸u imzaladÃ„Â±! Sahada ${boot.model} modelini giyecek! ÄŸÅ¸Â¥Â¾ÄŸÅ¸â€Â¥`);
         
         this.saveGame();
         this.updateUI();
-        alert(`Tebrikler! ${boot.brand} ile sponsorluk imzaladınız!\nYeni Krampon: ${boot.model}\nYetenekleriniz güncellendi ve haftalık +${boot.weeklyPay} € prim eklendi.`);
+        alert(`Tebrikler! ${boot.brand} ile sponsorluk imzaladÃ„Â±nÃ„Â±z!\nYeni Krampon: ${boot.model}\nYetenekleriniz gÃƒÂ¼ncellendi ve haftalÃ„Â±k +${boot.weeklyPay} Ã¢â€šÂ¬ prim eklendi.`);
         return true;
     },
 
@@ -1258,7 +1258,7 @@ const GAME = {
         if (!boot) return false;
         
         if (this.state.money < boot.cost) {
-            alert("Bu kramponu satın almak için yeterli paranız yok.");
+            alert("Bu kramponu satÃ„Â±n almak iÃƒÂ§in yeterli paranÃ„Â±z yok.");
             return false;
         }
         
@@ -1270,7 +1270,7 @@ const GAME = {
                 this.state.passing = Math.max(30, this.state.passing - oldBoot.bonus.passing);
             }
             this.state.activeBootSponsor = null;
-            alert("Sponsorluk anlaşmanız kendi aldığınız kramponu giydiğiniz için feshedildi! (Haftalık sponsorluk priminiz durduruldu)");
+            alert("Sponsorluk anlaÃ…Å¸manÃ„Â±z kendi aldÃ„Â±Ã„Å¸Ã„Â±nÃ„Â±z kramponu giydiÃ„Å¸iniz iÃƒÂ§in feshedildi! (HaftalÃ„Â±k sponsorluk priminiz durduruldu)");
         }
         
         if (this.state.activePurchasedBoot) {
@@ -1294,7 +1294,7 @@ const GAME = {
         
         this.saveGame();
         this.updateUI();
-        alert(`Tebrikler! ${boot.brand} ${boot.model} kramponunu satın aldınız ve giydiniz!\nYetenekleriniz güncellendi.`);
+        alert(`Tebrikler! ${boot.brand} ${boot.model} kramponunu satÃ„Â±n aldÃ„Â±nÃ„Â±z ve giydiniz!\nYetenekleriniz gÃƒÂ¼ncellendi.`);
         return true;
     },
 
@@ -1303,7 +1303,7 @@ const GAME = {
         if (!coin) return false;
         
         if (this.state.money < moneyAmount) {
-            alert("Bunun için yeterli bakiyeniz bulunmuyor.");
+            alert("Bunun iÃƒÂ§in yeterli bakiyeniz bulunmuyor.");
             return false;
         }
         
@@ -1336,7 +1336,7 @@ const GAME = {
         this.state.weeksSinceLastPurchase = 0;
         this.saveGame();
         this.updateUI();
-        alert(`${moneyAmount.toLocaleString()} € değerinde ${amount.toFixed(4)} adet ${coin.symbol} satın alındı!`);
+        alert(`${moneyAmount.toLocaleString()} Ã¢â€šÂ¬ deÃ„Å¸erinde ${amount.toFixed(4)} adet ${coin.symbol} satÃ„Â±n alÃ„Â±ndÃ„Â±!`);
         return true;
     },
 
@@ -1344,7 +1344,7 @@ const GAME = {
         const portfolioEntry = this.state.cryptoPortfolio ? this.state.cryptoPortfolio[coinId] : null;
         const amount = portfolioEntry ? (portfolioEntry.amount || 0) : 0;
         if (amount <= 0) {
-            alert("Portföyünüzde satacak bu coinden bulunmuyor.");
+            alert("PortfÃƒÂ¶yÃƒÂ¼nÃƒÂ¼zde satacak bu coinden bulunmuyor.");
             return false;
         }
         return this.sellCryptoAmount(coinId, amount);
@@ -1359,7 +1359,7 @@ const GAME = {
         const avgPrice = portfolioEntry ? (portfolioEntry.avgPrice || 0) : 0;
         
         if (amount <= 0 || amount > owned + 0.0001) {
-            alert("Portföyünüzde satacak bu miktarda coin bulunmuyor.");
+            alert("PortfÃƒÂ¶yÃƒÂ¼nÃƒÂ¼zde satacak bu miktarda coin bulunmuyor.");
             return false;
         }
         
@@ -1381,7 +1381,7 @@ const GAME = {
         
         this.saveGame();
         this.updateUI();
-        alert(`${actualAmount.toFixed(4)} adet ${coin.symbol} satılarak ${Math.round(revenue).toLocaleString()} € nakit elde edildi!`);
+        alert(`${actualAmount.toFixed(4)} adet ${coin.symbol} satÃ„Â±larak ${Math.round(revenue).toLocaleString()} Ã¢â€šÂ¬ nakit elde edildi!`);
         return true;
     },
 
@@ -1393,12 +1393,12 @@ const GAME = {
         
         if (!this.state.ownedInvestments) this.state.ownedInvestments = [];
         if (this.state.ownedInvestments.includes(itemId)) {
-            alert("Bu yatırımı zaten gerçekleştirdiniz.");
+            alert("Bu yatÃ„Â±rÃ„Â±mÃ„Â± zaten gerÃƒÂ§ekleÃ…Å¸tirdiniz.");
             return false;
         }
         
         if (this.state.money < inv.cost) {
-            alert("Bu yatırımı gerçekleştirmek için bütçeniz yetersiz.");
+            alert("Bu yatÃ„Â±rÃ„Â±mÃ„Â± gerÃƒÂ§ekleÃ…Å¸tirmek iÃƒÂ§in bÃƒÂ¼tÃƒÂ§eniz yetersiz.");
             return false;
         }
         
@@ -1416,13 +1416,13 @@ const GAME = {
         let newsText = "";
         
         if (itemId === "tea_garden") {
-            newsText = `Flaş Haber! ${this.state.playerName}, memleketi ${hometown}'a yatırım yaptı ve şirin bir sahil çay bahçesi açtı! ☕`;
+            newsText = `FlaÃ…Å¸ Haber! ${this.state.playerName}, memleketi ${hometown}'a yatÃ„Â±rÃ„Â±m yaptÃ„Â± ve Ã…Å¸irin bir sahil ÃƒÂ§ay bahÃƒÂ§esi aÃƒÂ§tÃ„Â±! Ã¢Ëœâ€¢`;
         } else if (itemId === "orchard") {
-            newsText = `Girişimci Futbolcu! ${this.state.playerName}, ${hometown} (${district}) sınırlarında tarım arazisi satın alarak tarıma destek verdi! 🌳`;
+            newsText = `GiriÃ…Å¸imci Futbolcu! ${this.state.playerName}, ${hometown} (${district}) sÃ„Â±nÃ„Â±rlarÃ„Â±nda tarÃ„Â±m arazisi satÃ„Â±n alarak tarÃ„Â±ma destek verdi! ÄŸÅ¸Å’Â³`;
         } else if (itemId === "local_sponsor") {
-            newsText = `Büyük Destek! ${this.state.playerName}, memleketinin kulübüne ana sponsor oldu. Taraftarlar çılgına döndü! ⚽`;
+            newsText = `BÃƒÂ¼yÃƒÂ¼k Destek! ${this.state.playerName}, memleketinin kulÃƒÂ¼bÃƒÂ¼ne ana sponsor oldu. Taraftarlar ÃƒÂ§Ã„Â±lgÃ„Â±na dÃƒÂ¶ndÃƒÂ¼! Ã¢Å¡Â½`;
         } else if (itemId === "textile_factory") {
-            newsText = `İstihdam Hamlesi! Yıldız futbolcu ${this.state.playerName}, ${hometown}'da yeni bir fabrika kurarak yüzlerce gence ekmek kapısı sağladı! Helal olsun! 🏭`;
+            newsText = `Ã„Â°stihdam Hamlesi! YÃ„Â±ldÃ„Â±z futbolcu ${this.state.playerName}, ${hometown}'da yeni bir fabrika kurarak yÃƒÂ¼zlerce gence ekmek kapÃ„Â±sÃ„Â± saÃ„Å¸ladÃ„Â±! Helal olsun! ÄŸÅ¸ÂÂ­`;
         }
         
         this.addSocialPost("@memleket_havadis", "Memleket Havadis", newsText);
@@ -1431,7 +1431,7 @@ const GAME = {
         this.saveGame();
         this.updateUI();
         
-        alert(`Tebrikler! ${inv.name} yatırımı başarıyla yapıldı. Memlekete hayırlı olsun!`);
+        alert(`Tebrikler! ${inv.name} yatÃ„Â±rÃ„Â±mÃ„Â± baÃ…Å¸arÃ„Â±yla yapÃ„Â±ldÃ„Â±. Memlekete hayÃ„Â±rlÃ„Â± olsun!`);
         return true;
     },
 
@@ -1448,7 +1448,7 @@ const GAME = {
             } else {
                 const club = this.state.currentClub;
                     if (club === "Galatastar") theme = "galatastar";
-                    else if (club === "Fenerbaçe FK") theme = "fenerbace";
+                    else if (club === "FenerbaÃƒÂ§e FK") theme = "fenerbace";
                     else if (club === "Kartal FK") theme = "kartalfk";
                     else if (club === "Trabzon FK") theme = "trabzonfk";
                 else theme = "cyberpunk";
@@ -1503,7 +1503,7 @@ const GAME = {
             "stat-morale": this.state.moral + "%",
             "stat-trust": this.state.hocaGuveni + "%",
             "stat-followers": this.state.followers.toLocaleString(),
-            "stat-money": this.state.money.toLocaleString() + " €",
+            "stat-money": this.state.money.toLocaleString() + " Ã¢â€šÂ¬",
             "skill-shooting": this.state.shooting,
             "skill-passing": this.state.passing,
             "skill-speed": this.state.speed,
@@ -1518,11 +1518,11 @@ const GAME = {
             "career-rel-team": (this.state.takimUyumu || 50) + "%",
             "career-rel-fans": (this.state.taraftarSevgisi || 50) + "%",
             "weekly-salary-text": (function(state) {
-                let txt = state.weeklySalary + " €/Hafta";
+                let txt = state.weeklySalary + " Ã¢â€šÂ¬/Hafta";
                 if (state.activeBootSponsor) {
                     const boot = DATABASE.BOOT_SPONSORS.find(b => b.id === state.activeBootSponsor);
                     if (boot) {
-                        txt += ` (+${boot.weeklyPay} € Sponsor)`;
+                        txt += ` (+${boot.weeklyPay} Ã¢â€šÂ¬ Sponsor)`;
                     }
                 }
                 return txt;
@@ -1571,23 +1571,29 @@ const GAME = {
             renderSocialFeed();
         }
 
-        // Render dynamic SVG avatar
+        // Render HD PNG avatar
+        const avatarUrl = this.state.avatarImage || "avatars/avatar_1.png";
+        const imgTag = `<img src="${avatarUrl}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+        const futCardImgTag = `<img src="${avatarUrl}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 6px;">`;
+
         const avatarContainer = document.getElementById("player-avatar-container");
         if (avatarContainer) {
-            const svgContent = this.generateAvatar(this.state.age);
-            avatarContainer.innerHTML = svgContent;
-            
-            // Clone to FUT card container
-            const avatarClone = document.getElementById("fut-card-avatar-container-clone");
-            if (avatarClone) {
-                avatarClone.innerHTML = svgContent;
-            }
+            avatarContainer.innerHTML = imgTag;
+        }
+        
+        // Clone to FUT card container
+        const avatarClone = document.getElementById("fut-card-avatar-container-clone");
+        if (avatarClone) {
+            avatarClone.innerHTML = futCardImgTag;
+            // Also update any other static image in fut card if it exists
+            const ecePortrait = document.querySelector(".fut-card img[src='ece_portrait.png']");
+            if (ecePortrait) ecePortrait.src = avatarUrl;
         }
 
         // Render club initials in FUT card
         const initialsBadge = document.getElementById("fut-club-initials");
         if (initialsBadge) {
-            let club = this.state.currentClub || "Yıldız Gençlikspor";
+            let club = this.state.currentClub || "YÃ„Â±ldÃ„Â±z GenÃƒÂ§likspor";
             let words = club.split(" ");
             let initials = "";
             if (words.length >= 2) {
@@ -1623,7 +1629,8 @@ const GAME = {
             // Update Left Sidebar Avatar
             const sidebarAvatar = document.getElementById("sidebar-avatar-container");
             if (sidebarAvatar) {
-                sidebarAvatar.innerHTML = this.generateAvatar(this.state.age);
+                const avatarUrl = this.state.avatarImage || "avatars/avatar_1.png";
+                sidebarAvatar.innerHTML = `<img src="${avatarUrl}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; box-shadow: 0 0 10px rgba(0,0,0,0.5);">`;
             }
             
             const sidebarPlayerName = document.getElementById("sidebar-player-name");
@@ -1679,22 +1686,22 @@ const GAME = {
             const valEl = document.getElementById("sidebar-career-val");
             if (valEl) {
                 let val = DATABASE.calculateValue(this.state.rating, this.state.age);
-                valEl.innerText = val.toLocaleString() + " €";
+                valEl.innerText = val.toLocaleString() + " Ã¢â€šÂ¬";
             }
             
             // Update Right Sidebar - Crypto Markets
             if (this.state.cryptoPrices) {
                 const btcEl = document.getElementById("sidebar-crypto-btc");
-                if (btcEl) btcEl.innerText = this.state.cryptoPrices.btc.toLocaleString() + " €";
+                if (btcEl) btcEl.innerText = this.state.cryptoPrices.btc.toLocaleString() + " Ã¢â€šÂ¬";
                 
                 const ethEl = document.getElementById("sidebar-crypto-eth");
-                if (ethEl) ethEl.innerText = this.state.cryptoPrices.eth.toLocaleString() + " €";
+                if (ethEl) ethEl.innerText = this.state.cryptoPrices.eth.toLocaleString() + " Ã¢â€šÂ¬";
                 
                 const dogeEl = document.getElementById("sidebar-crypto-doge");
-                if (dogeEl) dogeEl.innerText = this.state.cryptoPrices.doge.toFixed(4) + " €";
+                if (dogeEl) dogeEl.innerText = this.state.cryptoPrices.doge.toFixed(4) + " Ã¢â€šÂ¬";
                 
                 const atlEl = document.getElementById("sidebar-crypto-atl");
-                if (atlEl) atlEl.innerText = this.state.cryptoPrices.atl.toFixed(4) + " €";
+                if (atlEl) atlEl.innerText = this.state.cryptoPrices.atl.toFixed(4) + " Ã¢â€šÂ¬";
             }
             
             // Update Right Sidebar - Social Feed Widget
@@ -1736,8 +1743,8 @@ const GAME = {
     },
 
     updateTeammateName: function() {
-        const curLeague = this.state.currentLeague || "Süper Lig";
-        let pool = ["Ali", "Semih", "Kerem", "Barış", "İrfan", "Cenk", "Yusuf", "Umut", "Arda"];
+        const curLeague = this.state.currentLeague || "SÃƒÂ¼per Lig";
+        let pool = ["Ali", "Semih", "Kerem", "BarÃ„Â±Ã…Å¸", "Ã„Â°rfan", "Cenk", "Yusuf", "Umut", "Arda"];
 
         if (curLeague === "Premier League") {
             pool = ["Kusskaa", "Jack", "Harry", "Oliver", "Connor", "Mason", "Jude", "Declan"];
@@ -1768,16 +1775,16 @@ const GAME = {
             
             if (age === 33 || age === 34) {
                 speedDecline = 2;
-                ageDeclineMsg = `⚠️ <strong>Yaşlanma Etkisi (Yaş ${age}):</strong> Yaşınız ilerledikçe hızınız ve fiziksel kapasiteniz yavaş yavaş azalıyor. (<span style="color: var(--accent-red); font-weight: bold;">-2 Hız</span>)<br><br>`;
+                ageDeclineMsg = `Ã¢Å¡Â Ã¯Â¸Â <strong>YaÃ…Å¸lanma Etkisi (YaÃ…Å¸ ${age}):</strong> YaÃ…Å¸Ã„Â±nÃ„Â±z ilerledikÃƒÂ§e hÃ„Â±zÃ„Â±nÃ„Â±z ve fiziksel kapasiteniz yavaÃ…Å¸ yavaÃ…Å¸ azalÃ„Â±yor. (<span style="color: var(--accent-red); font-weight: bold;">-2 HÃ„Â±z</span>)<br><br>`;
             } else if (age === 35 || age === 36) {
                 speedDecline = 3;
                 shootDecline = 2;
-                ageDeclineMsg = `⚠️ <strong>Yaşlanma Etkisi (Yaş ${age}):</strong> Kaslarınız eski gücünü kaybediyor. Hızınız ve şut gücünüz düşmeye başladı. (<span style="color: var(--accent-red); font-weight: bold;">-3 Hız, -2 Şut</span>)<br><br>`;
+                ageDeclineMsg = `Ã¢Å¡Â Ã¯Â¸Â <strong>YaÃ…Å¸lanma Etkisi (YaÃ…Å¸ ${age}):</strong> KaslarÃ„Â±nÃ„Â±z eski gÃƒÂ¼cÃƒÂ¼nÃƒÂ¼ kaybediyor. HÃ„Â±zÃ„Â±nÃ„Â±z ve Ã…Å¸ut gÃƒÂ¼cÃƒÂ¼nÃƒÂ¼z dÃƒÂ¼Ã…Å¸meye baÃ…Å¸ladÃ„Â±. (<span style="color: var(--accent-red); font-weight: bold;">-3 HÃ„Â±z, -2 Ã…Âut</span>)<br><br>`;
             } else if (age >= 37) {
                 speedDecline = 4;
                 shootDecline = 3;
                 passDecline = 2;
-                ageDeclineMsg = `⚠️ <strong>Yaşlanma Etkisi (Yaş ${age}):</strong> Vücudunuz artık elit seviyedeki temponuza ayak uyduramıyor. Fiziksel yeteneklerinizde ciddi kayıplar var. (<span style="color: var(--accent-red); font-weight: bold;">-4 Hız, -3 Şut, -2 Pas</span>)<br><br>`;
+                ageDeclineMsg = `Ã¢Å¡Â Ã¯Â¸Â <strong>YaÃ…Å¸lanma Etkisi (YaÃ…Å¸ ${age}):</strong> VÃƒÂ¼cudunuz artÃ„Â±k elit seviyedeki temponuza ayak uyduramÃ„Â±yor. Fiziksel yeteneklerinizde ciddi kayÃ„Â±plar var. (<span style="color: var(--accent-red); font-weight: bold;">-4 HÃ„Â±z, -3 Ã…Âut, -2 Pas</span>)<br><br>`;
             }
             
             this.state.speed = Math.max(30, this.state.speed - speedDecline);
@@ -1791,8 +1798,8 @@ const GAME = {
             rank = this.state.leagueTable.findIndex(t => t.name === this.state.currentClub) + 1;
         }
 
-        let title = "Sezon Sonu Özeti";
-        let message = `Sezon Sona Erdi! Takımın <strong>${this.state.currentClub}</strong>, ligi <strong>${rank}. sırada</strong> tamamladı.<br><br>`;
+        let title = "Sezon Sonu Ãƒâ€“zeti";
+        let message = `Sezon Sona Erdi! TakÃ„Â±mÃ„Â±n <strong>${this.state.currentClub}</strong>, ligi <strong>${rank}. sÃ„Â±rada</strong> tamamladÃ„Â±.<br><br>`;
         if (ageDeclineMsg) {
             message += ageDeclineMsg;
         }
@@ -1808,7 +1815,7 @@ const GAME = {
             if (rank === 1) {
                 if (!this.state.trophies) this.state.trophies = [];
                 const year = 2026 + (this.state.age - 17);
-                this.state.trophies.push({ id: "3_lig", name: `TFF 3. Lig Şampiyonluğu (${year})`, icon: "🏆" });
+                this.state.trophies.push({ id: "3_lig", name: `TFF 3. Lig Ã…ÂampiyonluÃ„Å¸u (${year})`, icon: "ÄŸÅ¸Ââ€ " });
             }
             if (rank <= 3) {
                 // Promotion to 2. Lig
@@ -1816,13 +1823,13 @@ const GAME = {
                 this.state.weeklySalary = Math.round(this.state.weeklySalary * 1.35); // 35% zam
                 bonus += 15000;
                 followerGain += 8000;
-                promotionMsg = `🎉 <strong>KÜME YÜKSELDİNİZ!</strong> Takımınız ilk 3'te yer alarak <strong>2. Lig</strong>'e yükseldi! Haftalık maaşınız %35 artırıldı ve 15,000 € yükselme ödülü aldınız!`;
+                promotionMsg = `ÄŸÅ¸Ââ€° <strong>KÃƒÅ“ME YÃƒÅ“KSELDÃ„Â°NÃ„Â°Z!</strong> TakÃ„Â±mÃ„Â±nÃ„Â±z ilk 3'te yer alarak <strong>2. Lig</strong>'e yÃƒÂ¼kseldi! HaftalÃ„Â±k maaÃ…Å¸Ã„Â±nÃ„Â±z %35 artÃ„Â±rÃ„Â±ldÃ„Â± ve 15,000 Ã¢â€šÂ¬ yÃƒÂ¼kselme ÃƒÂ¶dÃƒÂ¼lÃƒÂ¼ aldÃ„Â±nÃ„Â±z!`;
                 if (rank === 1) {
-                    promotionMsg = `🏆 <strong>TFF 3. LİG ŞAMPİYONLUĞU!</strong> Ligi zirvede tamamlayıp şampiyon olarak <strong>2. Lig</strong>'e yükseldiniz! 15,000 € şampiyonluk ödülü aldınız!`;
+                    promotionMsg = `ÄŸÅ¸Ââ€  <strong>TFF 3. LÃ„Â°G Ã…ÂAMPÃ„Â°YONLUÃ„ÂU!</strong> Ligi zirvede tamamlayÃ„Â±p Ã…Å¸ampiyon olarak <strong>2. Lig</strong>'e yÃƒÂ¼kseldiniz! 15,000 Ã¢â€šÂ¬ Ã…Å¸ampiyonluk ÃƒÂ¶dÃƒÂ¼lÃƒÂ¼ aldÃ„Â±nÃ„Â±z!`;
                 }
             } else if (rank >= 14) {
-                // Relegation to Amatör
-                relegationMsg = `⚠️ <strong>KÜME DÜŞTÜNÜZ!</strong> Takımınız son 3'te kalarak Amatör Lig'e düştü. Kulüp sizinle olan sözleşmesini feshetti! Başka bir 3. Lig kulübünde sıfırdan başlamak zorundasınız. (-5 Yetenek, -15 Hoca Güveni)`;
+                // Relegation to AmatÃƒÂ¶r
+                relegationMsg = `Ã¢Å¡Â Ã¯Â¸Â <strong>KÃƒÅ“ME DÃƒÅ“Ã…ÂTÃƒÅ“NÃƒÅ“Z!</strong> TakÃ„Â±mÃ„Â±nÃ„Â±z son 3'te kalarak AmatÃƒÂ¶r Lig'e dÃƒÂ¼Ã…Å¸tÃƒÂ¼. KulÃƒÂ¼p sizinle olan sÃƒÂ¶zleÃ…Å¸mesini feshetti! BaÃ…Å¸ka bir 3. Lig kulÃƒÂ¼bÃƒÂ¼nde sÃ„Â±fÃ„Â±rdan baÃ…Å¸lamak zorundasÃ„Â±nÃ„Â±z. (-5 Yetenek, -15 Hoca GÃƒÂ¼veni)`;
                 // Reset to a new random 3. Lig club
                 const nextLeagues = DATABASE.LEAGUES["3. Lig"].teams;
                 let newClub = nextLeagues[Math.floor(Math.random() * nextLeagues.length)].name;
@@ -1838,7 +1845,7 @@ const GAME = {
             if (rank === 1) {
                 if (!this.state.trophies) this.state.trophies = [];
                 const year = 2026 + (this.state.age - 17);
-                this.state.trophies.push({ id: "2_lig", name: `TFF 2. Lig Şampiyonluğu (${year})`, icon: "🏆" });
+                this.state.trophies.push({ id: "2_lig", name: `TFF 2. Lig Ã…ÂampiyonluÃ„Å¸u (${year})`, icon: "ÄŸÅ¸Ââ€ " });
             }
             if (rank <= 3) {
                 // Promotion to 1. Lig
@@ -1846,44 +1853,44 @@ const GAME = {
                 this.state.weeklySalary = Math.round(this.state.weeklySalary * 1.4); // 40% zam
                 bonus += 30000;
                 followerGain += 15000;
-                promotionMsg = `🎉 <strong>KÜME YÜKSELDİNİZ!</strong> Takımınız üstün başarı göstererek <strong>1. Lig</strong>'e yükseldi! Haftalık maaşınız %40 artırıldı ve 30,000 € yükselme ödülü aldınız!`;
+                promotionMsg = `ÄŸÅ¸Ââ€° <strong>KÃƒÅ“ME YÃƒÅ“KSELDÃ„Â°NÃ„Â°Z!</strong> TakÃ„Â±mÃ„Â±nÃ„Â±z ÃƒÂ¼stÃƒÂ¼n baÃ…Å¸arÃ„Â± gÃƒÂ¶stererek <strong>1. Lig</strong>'e yÃƒÂ¼kseldi! HaftalÃ„Â±k maaÃ…Å¸Ã„Â±nÃ„Â±z %40 artÃ„Â±rÃ„Â±ldÃ„Â± ve 30,000 Ã¢â€šÂ¬ yÃƒÂ¼kselme ÃƒÂ¶dÃƒÂ¼lÃƒÂ¼ aldÃ„Â±nÃ„Â±z!`;
                 if (rank === 1) {
-                    promotionMsg = `🏆 <strong>TFF 2. LİG ŞAMPİYONLUĞU!</strong> Ligi zirvede tamamlayıp şampiyon olarak <strong>1. Lig</strong>'e yükseldiniz! 30,000 € şampiyonluk ödülü aldınız!`;
+                    promotionMsg = `ÄŸÅ¸Ââ€  <strong>TFF 2. LÃ„Â°G Ã…ÂAMPÃ„Â°YONLUÃ„ÂU!</strong> Ligi zirvede tamamlayÃ„Â±p Ã…Å¸ampiyon olarak <strong>1. Lig</strong>'e yÃƒÂ¼kseldiniz! 30,000 Ã¢â€šÂ¬ Ã…Å¸ampiyonluk ÃƒÂ¶dÃƒÂ¼lÃƒÂ¼ aldÃ„Â±nÃ„Â±z!`;
                 }
             } else if (rank >= 12) {
                 // Relegation to 3. Lig
                 this.state.currentLeague = "3. Lig";
                 this.state.weeklySalary = Math.round(this.state.weeklySalary * 0.75); // %25 indirim
-                relegationMsg = `📉 <strong>KÜME DÜŞTÜNÜZ!</strong> Takımınız ligi son 3 sırada tamamladı ve <strong>3. Lig</strong>'e düştü. Maaşınız %25 düşürüldü ve taraftar desteği azaldı.`;
+                relegationMsg = `ÄŸÅ¸â€œâ€° <strong>KÃƒÅ“ME DÃƒÅ“Ã…ÂTÃƒÅ“NÃƒÅ“Z!</strong> TakÃ„Â±mÃ„Â±nÃ„Â±z ligi son 3 sÃ„Â±rada tamamladÃ„Â± ve <strong>3. Lig</strong>'e dÃƒÂ¼Ã…Å¸tÃƒÂ¼. MaaÃ…Å¸Ã„Â±nÃ„Â±z %25 dÃƒÂ¼Ã…Å¸ÃƒÂ¼rÃƒÂ¼ldÃƒÂ¼ ve taraftar desteÃ„Å¸i azaldÃ„Â±.`;
             }
         } else if (curLeague === "1. Lig") {
             if (rank === 1) {
                 if (!this.state.trophies) this.state.trophies = [];
                 const year = 2026 + (this.state.age - 17);
-                this.state.trophies.push({ id: "1_lig", name: `TFF 1. Lig Şampiyonluğu (${year})`, icon: "🏆" });
+                this.state.trophies.push({ id: "1_lig", name: `TFF 1. Lig Ã…ÂampiyonluÃ„Å¸u (${year})`, icon: "ÄŸÅ¸Ââ€ " });
             }
             if (rank <= 3) {
-                // Promotion to Süper Lig
-                this.state.currentLeague = "Süper Lig";
+                // Promotion to SÃƒÂ¼per Lig
+                this.state.currentLeague = "SÃƒÂ¼per Lig";
                 this.state.weeklySalary = Math.round(this.state.weeklySalary * 1.5); // 50% zam
                 bonus += 50000;
                 followerGain += 30000;
-                promotionMsg = `🔥 <strong>SÜPER LİG'E YÜKSELDİNİZ!</strong> Takımınız devlerin arasına, <strong>Süper Lig</strong>'e yükseldi! Haftalık maaşınız %50 artırıldı ve 50,000 € yükselme ödülü kazandınız!`;
+                promotionMsg = `ÄŸÅ¸â€Â¥ <strong>SÃƒÅ“PER LÃ„Â°G'E YÃƒÅ“KSELDÃ„Â°NÃ„Â°Z!</strong> TakÃ„Â±mÃ„Â±nÃ„Â±z devlerin arasÃ„Â±na, <strong>SÃƒÂ¼per Lig</strong>'e yÃƒÂ¼kseldi! HaftalÃ„Â±k maaÃ…Å¸Ã„Â±nÃ„Â±z %50 artÃ„Â±rÃ„Â±ldÃ„Â± ve 50,000 Ã¢â€šÂ¬ yÃƒÂ¼kselme ÃƒÂ¶dÃƒÂ¼lÃƒÂ¼ kazandÃ„Â±nÃ„Â±z!`;
                 if (rank === 1) {
-                    promotionMsg = `🏆 <strong>TFF 1. LİG ŞAMPİYONLUĞU!</strong> Ligi zirvede tamamlayıp şampiyon olarak <strong>Süper Lig</strong>'e yükseldiniz! 50,000 € şampiyonluk ödülü kazandınız!`;
+                    promotionMsg = `ÄŸÅ¸Ââ€  <strong>TFF 1. LÃ„Â°G Ã…ÂAMPÃ„Â°YONLUÃ„ÂU!</strong> Ligi zirvede tamamlayÃ„Â±p Ã…Å¸ampiyon olarak <strong>SÃƒÂ¼per Lig</strong>'e yÃƒÂ¼kseldiniz! 50,000 Ã¢â€šÂ¬ Ã…Å¸ampiyonluk ÃƒÂ¶dÃƒÂ¼lÃƒÂ¼ kazandÃ„Â±nÃ„Â±z!`;
                 }
             } else if (rank >= 14) {
                 // Relegation to 2. Lig
                 this.state.currentLeague = "2. Lig";
                 this.state.weeklySalary = Math.round(this.state.weeklySalary * 0.75); // 25% indirim
-                relegationMsg = `📉 <strong>KÜME DÜŞTÜNÜZ!</strong> Takımınız ligi son 3 sırada tamamladı ve <strong>2. Lig</strong>'e düştü. Maaşınız %25 azaltıldı.`;
+                relegationMsg = `ÄŸÅ¸â€œâ€° <strong>KÃƒÅ“ME DÃƒÅ“Ã…ÂTÃƒÅ“NÃƒÅ“Z!</strong> TakÃ„Â±mÃ„Â±nÃ„Â±z ligi son 3 sÃ„Â±rada tamamladÃ„Â± ve <strong>2. Lig</strong>'e dÃƒÂ¼Ã…Å¸tÃƒÂ¼. MaaÃ…Å¸Ã„Â±nÃ„Â±z %25 azaltÃ„Â±ldÃ„Â±.`;
             }
-        } else if (curLeague === "Süper Lig") {
+        } else if (curLeague === "SÃƒÂ¼per Lig") {
             if (rank === 1) {
                 bonus += 100000;
                 followerGain += 50000;
-                promotionMsg = `🏆 <strong>SÜPER LİG ŞAMPİYONLUĞU!</strong> Ligi zirvede tamamlayarak Türkiye'nin en büyüğü oldunuz! 100,000 € şampiyonluk primi kazandınız!`;
-                this.addSocialPost("@tff_resmi", "Türkiye Futbol Federasyonu", `Tebrikler Şampiyon! Süper Lig 1.si olan ${this.state.currentClub} kulübünü ve sezonun yıldızı ${this.state.playerName}'yi kutlarız! 🏆👑`);
+                promotionMsg = `ÄŸÅ¸Ââ€  <strong>SÃƒÅ“PER LÃ„Â°G Ã…ÂAMPÃ„Â°YONLUÃ„ÂU!</strong> Ligi zirvede tamamlayarak TÃƒÂ¼rkiye'nin en bÃƒÂ¼yÃƒÂ¼Ã„Å¸ÃƒÂ¼ oldunuz! 100,000 Ã¢â€šÂ¬ Ã…Å¸ampiyonluk primi kazandÃ„Â±nÃ„Â±z!`;
+                this.addSocialPost("@tff_resmi", "TÃƒÂ¼rkiye Futbol Federasyonu", `Tebrikler Ã…Âampiyon! SÃƒÂ¼per Lig 1.si olan ${this.state.currentClub} kulÃƒÂ¼bÃƒÂ¼nÃƒÂ¼ ve sezonun yÃ„Â±ldÃ„Â±zÃ„Â± ${this.state.playerName}'yi kutlarÃ„Â±z! ÄŸÅ¸Ââ€ ÄŸÅ¸â€˜â€˜`);
                 
                 this.state.qualifiedForEurope = "ChampionsLeague";
                 this.state.europeanCupStage = 1;
@@ -1891,21 +1898,21 @@ const GAME = {
                 
                 if (!this.state.trophies) this.state.trophies = [];
                 const year = 2026 + (this.state.age - 17);
-                this.state.trophies.push({ id: "super_lig", name: `Süper Lig Şampiyonluğu (${year})`, icon: "🏆" });
+                this.state.trophies.push({ id: "super_lig", name: `SÃƒÂ¼per Lig Ã…ÂampiyonluÃ„Å¸u (${year})`, icon: "ÄŸÅ¸Ââ€ " });
             } else if (rank === 2) {
                 this.state.qualifiedForEurope = "ChampionsLeague";
                 this.state.europeanCupStage = 1;
                 this.state.wonLeagueLastSeason = false;
-                promotionMsg = `🥈 Ligi 2. sırada tamamlayarak gelecek sezon <strong>Şampiyonlar Ligi</strong>'ne katılmaya hak kazandınız!`;
+                promotionMsg = `ÄŸÅ¸Â¥Ë† Ligi 2. sÃ„Â±rada tamamlayarak gelecek sezon <strong>Ã…Âampiyonlar Ligi</strong>'ne katÃ„Â±lmaya hak kazandÃ„Â±nÃ„Â±z!`;
             } else if (rank === 3 || rank === 4) {
                 this.state.qualifiedForEurope = "EuropaLeague";
                 this.state.europeanCupStage = 1;
                 this.state.wonLeagueLastSeason = false;
-                promotionMsg = `🥉 Ligi ${rank}. sırada tamamlayarak gelecek sezon <strong>Avrupa Ligi</strong>'ne katılmaya hak kazandınız!`;
+                promotionMsg = `ÄŸÅ¸Â¥â€° Ligi ${rank}. sÃ„Â±rada tamamlayarak gelecek sezon <strong>Avrupa Ligi</strong>'ne katÃ„Â±lmaya hak kazandÃ„Â±nÃ„Â±z!`;
             } else if (rank >= 15) {
                 this.state.currentLeague = "1. Lig";
                 this.state.weeklySalary = Math.round(this.state.weeklySalary * 0.75); // 25% indirim
-                relegationMsg = `📉 <strong>KÜME DÜŞTÜNÜZ!</strong> Devler ligine tutunamadınız ve <strong>1. Lig</strong>'e düştünüz. Maaşınız %25 azaltıldı.`;
+                relegationMsg = `ÄŸÅ¸â€œâ€° <strong>KÃƒÅ“ME DÃƒÅ“Ã…ÂTÃƒÅ“NÃƒÅ“Z!</strong> Devler ligine tutunamadÃ„Â±nÃ„Â±z ve <strong>1. Lig</strong>'e dÃƒÂ¼Ã…Å¸tÃƒÂ¼nÃƒÂ¼z. MaaÃ…Å¸Ã„Â±nÃ„Â±z %25 azaltÃ„Â±ldÃ„Â±.`;
                 this.state.qualifiedForEurope = null;
                 this.state.europeanCupStage = 0;
                 this.state.wonLeagueLastSeason = false;
@@ -1927,11 +1934,11 @@ const GAME = {
             wonBallonOr = true;
             if (!this.state.trophies) this.state.trophies = [];
             const year = 2026 + (this.state.age - 17);
-        this.state.trophies.push({ id: "ballon_or", name: `Ballon d'Or (Altın Top) (${year})`, icon: "👑" });
+        this.state.trophies.push({ id: "ballon_or", name: `Ballon d'Or (AltÃ„Â±n Top) (${year})`, icon: "ÄŸÅ¸â€˜â€˜" });
             this.state.followers += 75000;
             this.state.money += 50000;
-            message += `👑 <strong>BALLON D'OR KAZANDINIZ!</strong> Yılın en iyi futbolcusu seçilerek <strong>Altın Top (Ballon d'Or)</strong> ödülünü kazandınız! Medya çıldırıyor! (+75,000 Takipçi, +50,000 €)<br><br>`;
-            this.addSocialPost("@ballondor_news", "Ballon d'Or France Football", `WINNER: ${this.state.playerName.toUpperCase()}! The young Turkish sensation has officially claimed the prestigious Ballon d'Or trophy! Absolute masterclass! 👑⚽🇫🇷`);
+            message += `ÄŸÅ¸â€˜â€˜ <strong>BALLON D'OR KAZANDINIZ!</strong> YÃ„Â±lÃ„Â±n en iyi futbolcusu seÃƒÂ§ilerek <strong>AltÃ„Â±n Top (Ballon d'Or)</strong> ÃƒÂ¶dÃƒÂ¼lÃƒÂ¼nÃƒÂ¼ kazandÃ„Â±nÃ„Â±z! Medya ÃƒÂ§Ã„Â±ldÃ„Â±rÃ„Â±yor! (+75,000 TakipÃƒÂ§i, +50,000 Ã¢â€šÂ¬)<br><br>`;
+            this.addSocialPost("@ballondor_news", "Ballon d'Or France Football", `WINNER: ${this.state.playerName.toUpperCase()}! The young Turkish sensation has officially claimed the prestigious Ballon d'Or trophy! Absolute masterclass! ÄŸÅ¸â€˜â€˜Ã¢Å¡Â½ÄŸÅ¸â€¡Â«ÄŸÅ¸â€¡Â·`);
             this.state.triggerBallonOrNewspaper = true;
         }
 
@@ -1961,289 +1968,11 @@ const GAME = {
         if (window.showSeasonSummaryModal) {
             window.showSeasonSummaryModal(title, message);
         } else {
-            alert(`Sezon sona erdi! Yaşın ${this.state.age} oldu. Ligi ${rank}. sırada tamamladın.`);
+            alert(`Sezon sona erdi! YaÃ…Å¸Ã„Â±n ${this.state.age} oldu. Ligi ${rank}. sÃ„Â±rada tamamladÃ„Â±n.`);
         }
     },
 
-    generateAvatar: function(age) {
-        let cust = this.state.avatarCustomization || {};
-        
-        let skinColor = cust.skinColor || "#E2B28B";
-        let eyeColor = cust.eyeColor || "#5A3D28";
-        let hairColor = cust.hairColor || "#1A1A1A";
-        let hairStyle = cust.hairStyle || "short";
-        let beardStyle = cust.beardStyle || "none";
-        
-        let primaryColor = "#455A64";
-        let secondaryColor = "#ffffff";
-        const clubName = this.state ? this.state.currentClub : null;
-        if (clubName && typeof DATABASE !== "undefined") {
-            let foundClub = null;
-            for (let l in DATABASE.LEAGUES) {
-                let c = DATABASE.LEAGUES[l].teams.find(x => x.name === clubName);
-                if (c) { foundClub = c; break; }
-            }
-            if (!foundClub && DATABASE.AMATEUR_CLUBS) {
-                foundClub = DATABASE.AMATEUR_CLUBS.find(x => x.name === clubName);
-            }
-            if (foundClub) {
-                primaryColor = foundClub.color;
-                secondaryColor = foundClub.colorSec || "#ffffff";
-            }
-        }
-        
-        let skinNorm = skinColor.toUpperCase();
-        let palette = {
-            base: "#E2B28B",
-            highlight: "#F5D2B8",
-            shadow: "#C89572",
-            deepShadow: "#A77553",
-            blush: "rgba(224, 130, 110, 0.18)",
-            lip: "#C86B67",
-            lipShadow: "#984747",
-            ears: "#D9A481"
-        };
-
-        if (skinNorm === "#FFD1A9") {
-            palette = {
-                base: "#FFD1A9",
-                highlight: "#FFEAD8",
-                shadow: "#E4B48D",
-                deepShadow: "#C6936C",
-                blush: "rgba(240, 140, 130, 0.2)",
-                lip: "#D57A77",
-                lipShadow: "#A85350",
-                ears: "#F2C098"
-            };
-        } else if (skinNorm === "#C48E66") {
-            palette = {
-                base: "#C48E66",
-                highlight: "#DBAA82",
-                shadow: "#A6724C",
-                deepShadow: "#895632",
-                blush: "rgba(190, 95, 80, 0.16)",
-                lip: "#A85856",
-                lipShadow: "#783B39",
-                ears: "#B8835B"
-            };
-        } else if (skinNorm === "#805435") {
-            palette = {
-                base: "#805435",
-                highlight: "#986C4B",
-                shadow: "#623D24",
-                deepShadow: "#482813",
-                blush: "rgba(140, 60, 50, 0.2)",
-                lip: "#823A39",
-                lipShadow: "#5A2221",
-                ears: "#754C2F"
-            };
-        } else if (skinNorm === "#4F301F") {
-            palette = {
-                base: "#4F301F",
-                highlight: "#66412D",
-                shadow: "#3B2112",
-                deepShadow: "#271206",
-                blush: "rgba(90, 30, 20, 0.2)",
-                lip: "#5E2524",
-                lipShadow: "#3C1211",
-                ears: "#462919"
-            };
-        }
-
-        let hairHighlight = "rgba(255, 255, 255, 0.15)";
-        if (hairColor === "#4E3629") hairHighlight = "rgba(224, 186, 120, 0.25)";
-        else if (hairColor === "#D8B168") hairHighlight = "rgba(255, 255, 255, 0.5)";
-        else if (hairColor === "#C15C3D") hairHighlight = "rgba(255, 220, 100, 0.35)";
-        else if (hairColor === "#B3B3B3") hairHighlight = "rgba(255, 255, 255, 0.6)";
-
-        let hairPath = "";
-        let beardPath = "";
-        let wrinklePath = "";
-
-        if (age >= 30) {
-            wrinklePath += `
-                <path d="M48 43 Q64 41 80 43" stroke="${palette.deepShadow}" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.45" />
-            `;
-            if (age >= 35) {
-                wrinklePath += `
-                    <path d="M48 40 Q64 38 80 40" stroke="${palette.deepShadow}" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.45" />
-                    <path d="M34 60 Q30 61 28 60 M94 60 Q98 61 100 60" stroke="${palette.deepShadow}" stroke-width="0.8" fill="none" opacity="0.4" />
-                    <path d="M48 76 Q45 84 52 87 M80 76 Q83 84 76 87" stroke="${palette.deepShadow}" stroke-width="1.1" fill="none" opacity="0.4" />
-                `;
-            }
-        }
-
-        if (hairStyle === "short") {
-            hairPath = `
-                <path d="M36 50 L38 64 L42 63 L41 48 Z" fill="${hairColor}" opacity="0.4" />
-                <path d="M92 50 L90 64 L86 63 L87 48 Z" fill="${hairColor}" opacity="0.4" />
-                <path d="M36 48 C32 40, 96 40, 92 48 C94 58, 92 68, 92 70 C88 64, 88 56, 88 50 Z" fill="${hairColor}" />
-                <path d="M34 46 C34 22, 94 22, 94 46 C94 38, 86 28, 64 28 C42 28, 34 38, 34 46 Z" fill="${hairColor}" />
-                <path d="M36 44 Q50 30 64 34 Q78 30 92 44 Q64 38 36 44 Z" fill="${hairColor}" />
-                <path d="M44 40 Q64 30 84 40" stroke="${hairHighlight}" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.65" />
-                <path d="M50 35 Q64 26 78 35" stroke="${hairHighlight}" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.45" />
-            `;
-            if (age >= 35) {
-                hairPath += `
-                    <path d="M36 46 L40 38 M92 46 L88 38" stroke="rgba(240,240,240,0.6)" stroke-width="2" stroke-linecap="round" />
-                `;
-            }
-        } else if (hairStyle === "buzz") {
-            hairPath = `
-                <path d="M37 47 C37 25, 91 25, 91 47 C88 34, 64 32, 64 32 C64 32, 40 34, 37 47 Z" fill="${hairColor}" opacity="0.95" />
-                <path d="M39 45 C41 28, 87 28, 89 45 C85 36, 64 35, 64 35 C64 35, 43 36, 39 45 Z" fill="${hairColor}" opacity="0.5" />
-                <path d="M36 50 L39 62 L42 60 L40 48 Z" fill="${hairColor}" opacity="0.5" />
-                <path d="M92 50 L89 62 L86 60 L87 48 Z" fill="${hairColor}" opacity="0.5" />
-                <path d="M42 41 L48 37" stroke="${palette.base}" stroke-width="2.2" stroke-linecap="round" />
-                <path d="M45 46 L51 42" stroke="${palette.base}" stroke-width="2.2" stroke-linecap="round" />
-            `;
-        } else if (hairStyle === "curly") {
-            hairPath = `
-                <path d="M36 48 C34 26, 94 26, 92 48 Z" fill="${hairColor}" />
-                <g fill="${hairColor}">
-                    <circle cx="44" cy="38" r="9"/>
-                    <circle cx="56" cy="31" r="10"/>
-                    <circle cx="72" cy="31" r="10"/>
-                    <circle cx="84" cy="38" r="9"/>
-                    <circle cx="64" cy="28" r="11"/>
-                    <circle cx="50" cy="42" r="8"/>
-                    <circle cx="78" cy="42" r="8"/>
-                    <circle cx="64" cy="38" r="10"/>
-                </g>
-                <g fill="${hairHighlight}" opacity="0.7">
-                    <circle cx="54" cy="29" r="3"/>
-                    <circle cx="74" cy="29" r="3"/>
-                    <circle cx="64" cy="26" r="3.5"/>
-                    <circle cx="44" cy="36" r="2.5"/>
-                    <circle cx="84" cy="36" r="2.5"/>
-                </g>
-                <path d="M36 49 L39 63 L43 62 L41 48 Z" fill="${hairColor}" opacity="0.45" />
-                <path d="M92 49 L89 63 L85 62 L87 48 Z" fill="${hairColor}" opacity="0.45" />
-            `;
-        } else if (hairStyle === "long") {
-            hairPath = `
-                <path d="M35 48 C32 18, 96 18, 93 48 C97 62, 94 80, 90 90 C84 76, 85 54, 85 46 Z" fill="${hairColor}" />
-                <path d="M35 48 C31 62, 34 80, 38 90 C44 76, 43 54, 43 46 Z" fill="${hairColor}" />
-                <circle cx="64" cy="22" r="13" fill="${hairColor}" />
-                <circle cx="64" cy="22" r="8" fill="${hairHighlight}" opacity="0.4" />
-                <circle cx="64" cy="22" r="3.5" fill="#000000" opacity="0.5" />
-                <path d="M44 38 Q64 28 84 38" stroke="${hairHighlight}" stroke-width="2.8" stroke-linecap="round" fill="none" opacity="0.6" />
-                <path d="M37 56 Q41 72 39 84 M91 56 Q87 72 89 84" stroke="${hairHighlight}" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.4" />
-            `;
-        }
-
-        if (beardStyle === "stubble") {
-            beardPath = `
-                <path d="M36 60 C36 82, 46 94, 64 97.5 C82 94, 92 82, 92 60 C92 72, 80 84, 64 85.5 C48 84, 36 72, 36 60 Z" fill="${hairColor}" opacity="0.25" />
-                <path d="M50 74 Q64 71 78 74 Q64 77 50 74 Z" fill="${hairColor}" opacity="0.3" />
-            `;
-        } else if (beardStyle === "full") {
-            beardPath = `
-                <path d="M35 58 C35 88, 48 97.5, 64 98 C80 97.5, 93 88, 93 58 C90 76, 80 85, 75 83 C71 88, 64 89, 64 89 C64 89, 57 88, 53 83 C48 85, 38 76, 35 58 Z" fill="${hairColor}" />
-                <path d="M48 70 Q64 63 80 70 C83 75, 76 81, 64 80 C52 81, 45 75, 48 70 Z" fill="${hairColor}" />
-                <path d="M52 70.5 Q64 66.5 76 70.5" stroke="${hairHighlight}" stroke-width="2" fill="none" opacity="0.55" />
-                <path d="M57 77 L64 77 L64 84 L57 77 Z" fill="${hairColor}" />
-            `;
-        } else if (beardStyle === "mustache") {
-            beardPath = `
-                <path d="M48 70 Q64 64 80 70 C84 75, 78 79, 64 78 C50 79, 44 75, 48 70 Z" fill="${hairColor}" />
-                <path d="M52 70.5 Q64 66.5 76 70.5" stroke="${hairHighlight}" stroke-width="2" fill="none" opacity="0.5" />
-                <path d="M48 70 Q45 72 47 75 M80 70 Q83 72 81 75" stroke="${hairColor}" stroke-width="2" stroke-linecap="round" fill="none" />
-            `;
-        }
-
-        let svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" style="width: 100%; height: 100%; display: block;">
-            <defs>
-                <radialGradient id="skin-base-grad" cx="50%" cy="40%" r="60%">
-                    <stop offset="0%" stop-color="${palette.highlight}" />
-                    <stop offset="50%" stop-color="${palette.base}" />
-                    <stop offset="100%" stop-color="${palette.shadow}" />
-                </radialGradient>
-                <radialGradient id="left-eye-blush" cx="30%" cy="50%" r="50%">
-                    <stop offset="0%" stop-color="${palette.blush}" />
-                    <stop offset="100%" stop-color="${palette.blush}" stop-opacity="0" />
-                </radialGradient>
-                <radialGradient id="right-eye-blush" cx="70%" cy="50%" r="50%">
-                    <stop offset="0%" stop-color="${palette.blush}" />
-                    <stop offset="100%" stop-color="${palette.blush}" stop-opacity="0" />
-                </radialGradient>
-                <linearGradient id="jersey-base-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="${primaryColor}" />
-                    <stop offset="100%" stop-color="${primaryColor}" stop-opacity="0.8" />
-                </linearGradient>
-            </defs>
-
-            <!-- 1. shoulders & jersey -->
-            <path d="M16 128 C24 102, 104 102, 112 128 Z" fill="url(#jersey-base-grad)" />
-            <path d="M46 108 L44 128 M82 108 L84 128 M64 109 L64 128" stroke="${secondaryColor}" stroke-width="4.5" opacity="0.25" stroke-linecap="round" />
-            <path d="M44 105 C52 109, 76 109, 84 105" fill="none" stroke="rgba(0,0,0,0.22)" stroke-width="5" stroke-linecap="round" />
-            <path d="M46 102 L64 115 L82 102" stroke="${secondaryColor}" stroke-width="3" fill="none" />
-
-            <!-- 2. Neck and Neck shading -->
-            <path d="M52 86 L52 104 C58 111, 70 111, 76 104 L 76 86 Z" fill="url(#skin-base-grad)" />
-            <path d="M52 86 C58 93, 70 93, 76 86 C70 91, 58 91, 52 86 Z" fill="${palette.deepShadow}" opacity="0.5" />
-
-            <!-- 3. Ears (Proportionate, placed at eye-nose bounds) -->
-            <path d="M37 57 C31 57, 29 66, 33 73 C35 77, 39 76, 41 72 Z" fill="${palette.ears}" />
-            <path d="M36 61 C34 61, 33 69, 36 69" stroke="${palette.deepShadow}" stroke-width="1.2" fill="none" stroke-linecap="round" />
-            <path d="M91 57 C97 57, 99 66, 95 73 C93 77, 89 76, 87 72 Z" fill="${palette.ears}" />
-            <path d="M92 61 C94 61, 95 69, 92 69" stroke="${palette.deepShadow}" stroke-width="1.2" fill="none" stroke-linecap="round" />
-
-            <!-- 4. Head and Jawline (Golden-ratio oval grid) -->
-            <path d="M38 56 C38 35, 90 35, 90 56 C90 77, 78 92.5, 64 95 C50 92.5, 38 77, 38 56 Z" fill="url(#skin-base-grad)" />
-            <path d="M38 56 C38 77, 50 92.5, 64 95 L64 35 C50 35, 38 41, 38 56 Z" fill="rgba(0,0,0,0.04)" />
-            <ellipse cx="48" cy="68" rx="6" ry="3.5" fill="url(#left-eye-blush)" />
-            <ellipse cx="80" cy="68" rx="6" ry="3.5" fill="url(#right-eye-blush)" />
-
-            <!-- 5. Eyes (Focused, handsome athletic look with cx=52, cx=76) -->
-            <!-- Left Eye -->
-            <ellipse cx="51.5" cy="55.5" rx="7.5" ry="3.0" fill="#ffffff" />
-            <circle cx="51.5" cy="55.5" r="2.4" fill="${eyeColor}" />
-            <circle cx="51.5" cy="55.5" r="1.1" fill="#1A1A1A" />
-            <circle cx="52.6" cy="54.4" r="0.6" fill="#ffffff" /> <!-- Glint -->
-            <!-- Eyelids / Lashes overlay -->
-            <path d="M43.5 55.5 Q51.5 51.5 59.5 55.5" stroke="rgba(0,0,0,0.65)" stroke-width="1.8" fill="none" stroke-linecap="round" />
-            <path d="M43.5 55.5 Q51.5 58.5 59.5 55.5" stroke="rgba(0,0,0,0.25)" stroke-width="0.8" fill="none" stroke-linecap="round" />
-            <!-- Eyebrow -->
-            <path d="M42 49 Q51.5 45.5 60 48.5" stroke="${hairColor}" stroke-width="2.6" stroke-linecap="round" fill="none" />
-
-            <!-- Right Eye -->
-            <ellipse cx="76.5" cy="55.5" rx="7.5" ry="3.0" fill="#ffffff" />
-            <circle cx="76.5" cy="55.5" r="2.4" fill="${eyeColor}" />
-            <circle cx="76.5" cy="55.5" r="1.1" fill="#1A1A1A" />
-            <circle cx="77.6" cy="54.4" r="0.6" fill="#ffffff" /> <!-- Glint -->
-            <!-- Eyelids / Lashes overlay -->
-            <path d="M68.5 55.5 Q76.5 51.5 84.5 55.5" stroke="rgba(0,0,0,0.65)" stroke-width="1.8" fill="none" stroke-linecap="round" />
-            <path d="M68.5 55.5 Q76.5 58.5 84.5 55.5" stroke="rgba(0,0,0,0.25)" stroke-width="0.8" fill="none" stroke-linecap="round" />
-            <!-- Eyebrow -->
-            <path d="M68 48.5 Q76.5 45.5 86 49" stroke="${hairColor}" stroke-width="2.6" stroke-linecap="round" fill="none" />
-
-            <!-- 6. Nose (Realistic subtle shadow lines y=55 to y=71) -->
-            <path d="M61 54 L61 70 Q64 72 67 70" stroke="${palette.deepShadow}" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.65" />
-            <circle cx="59.5" cy="70" r="1.2" fill="rgba(0,0,0,0.12)" />
-            <circle cx="68.5" cy="70" r="1.2" fill="rgba(0,0,0,0.06)" />
-
-            <!-- 7. Lips / Mouth (Proportionate, centered at y=80) -->
-            <path d="M54 80 Q64 78.2 74 80 C70 82.5 58 82.5 54 80 Z" fill="${palette.lipShadow}" />
-            <path d="M54.5 80.5 C58 85.5, 70 85.5, 73.5 80.5 Z" fill="${palette.lip}" />
-            <path d="M53 80 Q64 81.8 75 80" stroke="rgba(0,0,0,0.36)" stroke-width="1.5" fill="none" stroke-linecap="round" />
-            <path d="M58 82 Q64 84.2 70 82" stroke="rgba(255,255,255,0.22)" stroke-width="1.2" fill="none" stroke-linecap="round" />
-
-            <!-- Chin dimple shadow -->
-            <path d="M61 88.5 Q64 89.5 67 88.5" stroke="${palette.deepShadow}" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.5" />
-
-            ${wrinklePath}
-            ${beardPath}
-            ${hairPath}
-
-            <!-- 3D Head Glow highlights -->
-            <path d="M44 57 Q51.5 53 59 54" fill="none" stroke="${palette.highlight}" stroke-width="0.8" opacity="0.25" />
-            <path d="M70 54 Q76.5 53 84 57" fill="none" stroke="${palette.highlight}" stroke-width="0.8" opacity="0.25" />
-        </svg>
-        `;
-        return svg;
-    },
+    generateAvatar: function(age) { const avatarUrl = this.state.avatarImage || "avatars/avatar_1.png"; return `<img src="${avatarUrl}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`; },
 
     // --- LEAGUE STANDINGS SIMULATION METHODS ---
     initLeagueTable: function() {
@@ -2285,7 +2014,7 @@ const GAME = {
             }
         }
 
-        // Eger sezon ortasindaysak (hafta > 1), yeni ligdeki diger takimlarin maclarini gercekci simule et ki sıfırlanma hissi olmasın!
+        // Eger sezon ortasindaysak (hafta > 1), yeni ligdeki diger takimlarin maclarini gercekci simule et ki sÃ„Â±fÃ„Â±rlanma hissi olmasÃ„Â±n!
         if (this.state.currentWeek > 1) {
             const weeksPlayed = Math.min(this.state.currentWeek - 1, 33);
             this.state.leagueTable.forEach(team => {
@@ -2425,7 +2154,7 @@ const GAME = {
         // Initialize tournament state if not present
         if (!team.tournament) {
             team.tournament = {
-                name: "Türkiye E-Spor Ligi",
+                name: "TÃƒÂ¼rkiye E-Spor Ligi",
                 stage: 1, // 1 to 10
                 wins: 0,
                 losses: 0,
@@ -2457,12 +2186,12 @@ const GAME = {
 
         // Select opponent based on tournament
         let opponents = [];
-        if (t.name === "Türkiye E-Spor Ligi") {
-            opponents = ["Fenerbahçe Esports", "Galatasaray Esports", "Beşiktaş Esports", "BBL Esports", "FUT Esports", "Papara SuperMassive", "Fire Flux Esports", "Eternal Fire", "Dark Passage", "IW Wildcats"];
+        if (t.name === "TÃƒÂ¼rkiye E-Spor Ligi") {
+            opponents = ["FenerbahÃƒÂ§e Esports", "Galatasaray Esports", "BeÃ…Å¸iktaÃ…Å¸ Esports", "BBL Esports", "FUT Esports", "Papara SuperMassive", "Fire Flux Esports", "Eternal Fire", "Dark Passage", "IW Wildcats"];
         } else if (t.name === "EMEA Pro Championship") {
             opponents = ["Fnatic", "G2 Esports", "Natus Navis (NaVi)", "Team Vitality", "Karmine Corp", "Team Liquid", "Team Heretics", "KOI Esports", "FUT Esports", "BBL Esports"];
-        } else { // Dünya Şampiyonası
-            opponents = ["T1 (Kore)", "Sentinels (ABD)", "Gen.G (Kore)", "EDward Gaming (Çin)", "Paper Rex (Singapur)", "Leviatán (Amerika)", "Fnatic (Avrupa)", "G2 Esports (Avrupa)", "LOUD (Brezilya)", "NRG (ABD)"];
+        } else { // DÃƒÂ¼nya Ã…ÂampiyonasÃ„Â±
+            opponents = ["T1 (Kore)", "Sentinels (ABD)", "Gen.G (Kore)", "EDward Gaming (Ãƒâ€¡in)", "Paper Rex (Singapur)", "LeviatÃƒÂ¡n (Amerika)", "Fnatic (Avrupa)", "G2 Esports (Avrupa)", "LOUD (Brezilya)", "NRG (ABD)"];
         }
         
         const opp = opponents[Math.floor(Math.random() * opponents.length)];
@@ -2494,7 +2223,7 @@ const GAME = {
         }
 
         // Post regular match result
-        let postMsg = `🎮 ${t.name} (Hafta ${t.stage}/10): ${team.name}, rakibi ${opp} karşısında ${result === "win" ? "muazzam bir galibiyet alarak " + score + " kazandı!" : (result === "draw" ? "dengeli bir oyunla " + score + " berabere kaldı." : "şanssız bir " + score + " mağlubiyet aldı.")}`;
+        let postMsg = `ÄŸÅ¸ÂÂ® ${t.name} (Hafta ${t.stage}/10): ${team.name}, rakibi ${opp} karÃ…Å¸Ã„Â±sÃ„Â±nda ${result === "win" ? "muazzam bir galibiyet alarak " + score + " kazandÃ„Â±!" : (result === "draw" ? "dengeli bir oyunla " + score + " berabere kaldÃ„Â±." : "Ã…Å¸anssÃ„Â±z bir " + score + " maÃ„Å¸lubiyet aldÃ„Â±.")}`;
         this.addSocialPost("@atlas_esports", team.name, postMsg);
 
         // Check if tournament is finished (10 weeks)
@@ -2505,7 +2234,7 @@ const GAME = {
             let wonTrophy = false;
             let oldName = t.name;
 
-            if (t.name === "Türkiye E-Spor Ligi") {
+            if (t.name === "TÃƒÂ¼rkiye E-Spor Ligi") {
                 neededPoints = 22;
                 if (points >= neededPoints) {
                     prizeMoney = 150000;
@@ -2521,9 +2250,9 @@ const GAME = {
                     wonTrophy = true;
                     team.stats.trophies = (team.stats.trophies || 0) + 1;
                     team.followers = (team.followers || 0) + 50000;
-                    t.name = "Dünya Şampiyonası";
+                    t.name = "DÃƒÂ¼nya Ã…ÂampiyonasÃ„Â±";
                 }
-            } else { // Dünya Şampiyonası
+            } else { // DÃƒÂ¼nya Ã…ÂampiyonasÃ„Â±
                 neededPoints = 26;
                 if (points >= neededPoints) {
                     prizeMoney = 1500000;
@@ -2537,22 +2266,22 @@ const GAME = {
                 this.state.money += prizeMoney;
                 
                 if (!this.state.trophies) this.state.trophies = [];
-                this.state.trophies.push(`🎮 ${oldName} Şampiyonu (${team.name})`);
+                this.state.trophies.push(`ÄŸÅ¸ÂÂ® ${oldName} Ã…Âampiyonu (${team.name})`);
 
-                const winPost = `🏆 ŞAMPİYON! E-Spor kulübümüz ${team.name}, ${oldName} turnuvasını zirvede bitirerek şampiyon oldu! Hesabımıza ${prizeMoney.toLocaleString()} € ödül yatırıldı! 🎮🔥`;
+                const winPost = `ÄŸÅ¸Ââ€  Ã…ÂAMPÃ„Â°YON! E-Spor kulÃƒÂ¼bÃƒÂ¼mÃƒÂ¼z ${team.name}, ${oldName} turnuvasÃ„Â±nÃ„Â± zirvede bitirerek Ã…Å¸ampiyon oldu! HesabÃ„Â±mÃ„Â±za ${prizeMoney.toLocaleString()} Ã¢â€šÂ¬ ÃƒÂ¶dÃƒÂ¼l yatÃ„Â±rÃ„Â±ldÃ„Â±! ÄŸÅ¸ÂÂ®ÄŸÅ¸â€Â¥`;
                 this.addSocialPost("@spor_manset", "Son Dakika", winPost);
                 
-                alert(`🏆 TEBRİKLER! E-Spor kulübünüz ${team.name}, ${oldName} turnuvasında ŞAMPİYON oldu!\n💰 Ödül: ${prizeMoney.toLocaleString()} € hesabınıza yatırıldı.\n${t.name !== oldName ? "🚀 Bir üst lig olan " + t.name + " turnuvasına yükseldiniz!" : ""}`);
+                alert(`ÄŸÅ¸Ââ€  TEBRÃ„Â°KLER! E-Spor kulÃƒÂ¼bÃƒÂ¼nÃƒÂ¼z ${team.name}, ${oldName} turnuvasÃ„Â±nda Ã…ÂAMPÃ„Â°YON oldu!\nÄŸÅ¸â€™Â° Ãƒâ€“dÃƒÂ¼l: ${prizeMoney.toLocaleString()} Ã¢â€šÂ¬ hesabÃ„Â±nÃ„Â±za yatÃ„Â±rÃ„Â±ldÃ„Â±.\n${t.name !== oldName ? "ÄŸÅ¸Å¡â‚¬ Bir ÃƒÂ¼st lig olan " + t.name + " turnuvasÃ„Â±na yÃƒÂ¼kseldiniz!" : ""}`);
             } else {
                 let consolidationPrize = 20000;
                 if (oldName === "EMEA Pro Championship") consolidationPrize = 50000;
-                else if (oldName === "Dünya Şampiyonası") consolidationPrize = 100000;
+                else if (oldName === "DÃƒÂ¼nya Ã…ÂampiyonasÃ„Â±") consolidationPrize = 100000;
 
                 this.state.money += consolidationPrize;
-                const failPost = `📢 E-Spor Raporu: ${team.name}, ${oldName} turnuvasını ${points} puanla tamamladı. Şampiyon olamasak da ${consolidationPrize.toLocaleString()} € katılım ödülü kazandık.`;
+                const failPost = `ÄŸÅ¸â€œÂ¢ E-Spor Raporu: ${team.name}, ${oldName} turnuvasÃ„Â±nÃ„Â± ${points} puanla tamamladÃ„Â±. Ã…Âampiyon olamasak da ${consolidationPrize.toLocaleString()} Ã¢â€šÂ¬ katÃ„Â±lÃ„Â±m ÃƒÂ¶dÃƒÂ¼lÃƒÂ¼ kazandÃ„Â±k.`;
                 this.addSocialPost("@atlas_esports", team.name, failPost);
                 
-                alert(`📢 Turnuva Bitti! E-Spor kulübünüz ${team.name}, ${oldName} turnuvasını ${points} puanla tamamladı. Şampiyonluk için en az ${neededPoints} puan gerekiyordu.\n💰 Katılım Ödülü: ${consolidationPrize.toLocaleString()} € hesabınıza yatırıldı.\n🔄 Aynı ligde tekrar mücadele edeceksiniz.`);
+                alert(`ÄŸÅ¸â€œÂ¢ Turnuva Bitti! E-Spor kulÃƒÂ¼bÃƒÂ¼nÃƒÂ¼z ${team.name}, ${oldName} turnuvasÃ„Â±nÃ„Â± ${points} puanla tamamladÃ„Â±. Ã…Âampiyonluk iÃƒÂ§in en az ${neededPoints} puan gerekiyordu.\nÄŸÅ¸â€™Â° KatÃ„Â±lÃ„Â±m Ãƒâ€“dÃƒÂ¼lÃƒÂ¼: ${consolidationPrize.toLocaleString()} Ã¢â€šÂ¬ hesabÃ„Â±nÃ„Â±za yatÃ„Â±rÃ„Â±ldÃ„Â±.\nÄŸÅ¸â€â€ AynÃ„Â± ligde tekrar mÃƒÂ¼cadele edeceksiniz.`);
             }
 
             // Reset tournament statistics for next season
@@ -2845,7 +2574,7 @@ const GAME = {
                     case "Alt":
                         win = ((scoreSelHome + scoreSelAway) < 2.5);
                         break;
-                    case "Üst":
+                    case "ÃƒÅ“st":
                         win = ((scoreSelHome + scoreSelAway) > 2.5);
                         break;
                     case "KG_Var":
@@ -2881,13 +2610,13 @@ const GAME = {
             
             // Add a social media post celebrating the win!
             const handles = ["@iddaa_guru", "@vurgun_medya", "@tuttur_com", "@kupon_tavsiyeleri"];
-            const names = ["İddaa Gurusu", "Vurgun Medya", "Kupon Tuttur", "Kupon Paylaşım"];
+            const names = ["Ã„Â°ddaa Gurusu", "Vurgun Medya", "Kupon Tuttur", "Kupon PaylaÃ…Å¸Ã„Â±m"];
             const idx = Math.floor(Math.random() * handles.length);
             
             this.addSocialPost(
                 handles[idx],
                 names[idx],
-                `🚨 BÜYÜK VURGUN! Genç yetenek ${this.state.playerName}, bu hafta oynadığı iddaa kuponuyla tam ${totalWonCoins.toLocaleString()} € kazandı! Servetine servet katıyor! 🤑💸📈`
+                `ÄŸÅ¸Å¡Â¨ BÃƒÅ“YÃƒÅ“K VURGUN! GenÃƒÂ§ yetenek ${this.state.playerName}, bu hafta oynadÃ„Â±Ã„Å¸Ã„Â± iddaa kuponuyla tam ${totalWonCoins.toLocaleString()} Ã¢â€šÂ¬ kazandÃ„Â±! Servetine servet katÃ„Â±yor! ÄŸÅ¸Â¤â€˜ÄŸÅ¸â€™Â¸ÄŸÅ¸â€œË†`
             );
 
             // Save win info to display a beautiful modal after UI updates
@@ -2904,10 +2633,10 @@ const GAME = {
         }
 
         if (caught) {
-            let fine = Math.round(this.state.money * 0.25 + 2500); // 25% of cash + 2500 € fine
+            let fine = Math.round(this.state.money * 0.25 + 2500); // 25% of cash + 2500 Ã¢â€šÂ¬ fine
             let lostFollowers = Math.round(this.state.followers * 0.22 + 2000); // 22% of followers unfollow
             let lostFans = 35; // Taraftar sevgisi -35
-            let lostTrust = 25; // Hoca güveni -25
+            let lostTrust = 25; // Hoca gÃƒÂ¼veni -25
 
             this.state.money = Math.max(0, this.state.money - fine);
             this.state.followers = Math.max(0, this.state.followers - lostFollowers);
@@ -2929,7 +2658,7 @@ const GAME = {
             this.addSocialPost(
                 "@tff_resmi", 
                 "TFF Resmi", 
-                `🚨 TFF Duyurusu: ${this.state.playerName}'in kendi ligindeki karşılaşmalara yasa dışı bahis oynadığı saptanmış olup, sporcuya ${fine.toLocaleString()} € para cezası ve 15 resmi müsabakadan men cezası verilmiştir.`
+                `ÄŸÅ¸Å¡Â¨ TFF Duyurusu: ${this.state.playerName}'in kendi ligindeki karÃ…Å¸Ã„Â±laÃ…Å¸malara yasa dÃ„Â±Ã…Å¸Ã„Â± bahis oynadÃ„Â±Ã„Å¸Ã„Â± saptanmÃ„Â±Ã…Å¸ olup, sporcuya ${fine.toLocaleString()} Ã¢â€šÂ¬ para cezasÃ„Â± ve 15 resmi mÃƒÂ¼sabakadan men cezasÃ„Â± verilmiÃ…Å¸tir.`
             );
         }
 
@@ -3025,3 +2754,4 @@ const GAME = {
 if (typeof module !== "undefined" && module.exports) {
     module.exports = GAME;
 }
+
