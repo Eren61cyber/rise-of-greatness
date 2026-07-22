@@ -386,6 +386,10 @@ const GAME = {
                     this.state.suspendedWeeks = 0;
                     this.saveGame();
                 }
+                if (this.state.avatarImage) {
+                    delete this.state.avatarImage;
+                    this.saveGame();
+                }
                 if (typeof this.state.agentId === "undefined") {
                     this.state.agentId = null;
                     this.saveGame();
