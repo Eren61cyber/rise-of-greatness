@@ -934,27 +934,10 @@ const GAME = {
         if (this.state.suspendedWeeks > 0) {
             this.state.suspendedWeeks--;
             if (this.state.suspendedWeeks === 0) {
-                this.addSocialPost("@spor_manset", "Spor Man
-ş
-etleri", `Cezas
-ı
- bitti! K
-ı
-rm
-ı
-z
-ı
- kart cezas
-ı
- sona eren gen
-ç
- yetenek ${this.state.playerName} yeniden formas
-ı
-na kavu
-ş
-uyor.`);
+                this.addSocialPost("@spor_manset", "Spor Mansetleri", `Cezasi bitti! Kirmizi kart cezasi sona eren genc yetenek ${this.state.playerName} yeniden formasina kavusuyor.`);
             }
         }
+
 
         // Transition opponent states centrally here
         this.state.lastOpponentName = this.state.nextOpponentName;
