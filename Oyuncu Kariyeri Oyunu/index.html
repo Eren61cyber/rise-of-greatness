@@ -4676,7 +4676,7 @@
             const simulateBtn = document.getElementById("btn-simulate-match");
             const week = GAME.state.currentWeek;
             
-            if (GAME.state.isSuspended) {
+            if (GAME.state.suspendedWeeks > 0) {
                 document.getElementById("next-opponent-text").innerHTML = `
                     <div style="color: var(--accent-red); font-size: 13px; font-weight: bold;">🔴 CEZALISINIZ!</div>
                     <div style="font-size: 11.5px; color: #ccc; line-height: 1.5; margin-top: 4px;">Kırmızı kart cezanız nedeniyle bu hafta maça çıkamazsınız. Dinlenin, antrenman yapın ve haftayı geçirin.</div>
@@ -7152,7 +7152,7 @@
                     GAME.state.money -= fine;
                     GAME.state.hocaGuveni = 0;
                     GAME.state.nationalBanWeeks = 20; // 20 matches ban from national team
-                    GAME.state.isSuspended = true; // Suspended from playing matches this season
+                    GAME.state.suspendedWeeks = 34; // Suspended from playing matches this season
                     
                     GAME.state.shikeCaught = { fine: fine };
                 } else {
@@ -7248,7 +7248,7 @@
                 alert(`Sakatlığınız devam ediyor! Maça çıkamazsınız. İyileşmenize ${GAME.state.injuryWeeks} hafta kaldı.`);
                 return;
             }
-            if (GAME.state.isSuspended) {
+            if (GAME.state.suspendedWeeks > 0) {
                 if (confirm("Kırmızı kart cezalısınız. Bu haftayı maça çıkmadan geçmek ve cezanızı tamamlamak istiyor musunuz? (Takımınız maçı simüle edecek ve cezanız sona erecektir)")) {
                     GAME.advanceWeek();
                     determineNextOpponent();
@@ -7333,7 +7333,7 @@
                 alert(`Sakatlığınız devam ediyor! Maçı simüle edemezsiniz. İyileşmenize ${GAME.state.injuryWeeks} hafta kaldı.`);
                 return;
             }
-            if (GAME.state.isSuspended) {
+            if (GAME.state.suspendedWeeks > 0) {
                 alert("Cezalısınız! Kırmızı kart cezanız nedeniyle bu haftaki maçı kaçırıyorsunuz. Lütfen antrenman yapın ve haftayı ilerleterek cezanızı tamamlayın.");
                 return;
             }
@@ -7838,7 +7838,7 @@
                                 
                                 if (MatchEngine.hasYellowCard) {
                                     MatchEngine.isSentOff = true;
-                                    GAME.state.isSuspended = true;
+                                    GAME.state.suspendedWeeks = 2;
                                     return `formasını çıkarıp sallıyor! Ama o da ne? Zaten sarı kartı vardı! Hakem ikinci sarıdan kırmızı kartı çıkarıyor! Oyundan ihraç edildin ama tribünler çılgınlar gibi ismini haykırıyor!`;
                                 } else {
                                     MatchEngine.hasYellowCard = true;
@@ -7916,7 +7916,7 @@
                     checkMatchInjury();
 
                     // Check if player got a red card and lost the match
-                    if (GAME.state.isSuspended && scoreDiff < 0) {
+                    if (GAME.state.suspendedWeeks > 0 && scoreDiff < 0) {
                         GAME.state.hocaGuveni = Math.max(5, GAME.state.hocaGuveni - 30);
                         GAME.state.moral = Math.max(10, GAME.state.moral - 25);
                         setTimeout(() => {

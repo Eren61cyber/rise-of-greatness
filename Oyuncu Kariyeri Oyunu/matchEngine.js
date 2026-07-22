@@ -511,7 +511,8 @@ const MatchEngine = {
                         onFail: () => {
                             if (this.hasYellowCard) {
                                 this.isSentOff = true;
-                                GAME.state.isSuspended = true;
+                                GAME.state.suspendedWeeks = 2;
+                                
                                 this.hasYellowCard = false;
                                 this.playerState.moral = Math.max(10, (this.playerState.moral || 100) - 20);
                                 this.playerState.hocaGuveni = Math.max(10, (this.playerState.hocaGuveni || 40) - 15);
@@ -721,9 +722,10 @@ const MatchEngine = {
         if (this.hasYellowCard) {
             // Zaten sarı kartı var -> 2. Sarıdan Kırmızı!
             this.isSentOff = true;
+                                GAME.state.suspendedWeeks = 2;
             this.playerState.moral = Math.max(10, (this.playerState.moral || 100) - 20);
             this.playerState.hocaGuveni = Math.max(10, (this.playerState.hocaGuveni || 40) - 15);
-            GAME.state.isSuspended = true;
+            
             this.hasYellowCard = false; // Kırmızı yendiği için sarı kart silindi
             
             this.isPausedForChoice = false;
@@ -767,10 +769,11 @@ const MatchEngine = {
                     },
                     onFail: () => {
                         this.isSentOff = true;
+                                GAME.state.suspendedWeeks = 2;
                         this.hasYellowCard = false;
                         this.playerState.moral = Math.max(10, (this.playerState.moral || 100) - 20);
                         this.playerState.hocaGuveni = Math.max(10, (this.playerState.hocaGuveni || 40) - 15);
-                        GAME.state.isSuspended = true;
+                        
                         return "KART: KIRMIZI 🟥 | Hakem itirazlarına dayanamadı ve doğrudan KIRMIZI KARTI çıkardı! Oyundan atıldın ve haftaya cezalı duruma düştün!";
                     }
                 },
@@ -785,10 +788,11 @@ const MatchEngine = {
                     },
                     onFail: () => {
                         this.isSentOff = true;
+                                GAME.state.suspendedWeeks = 2;
                         this.hasYellowCard = false;
                         this.playerState.moral = Math.max(10, (this.playerState.moral || 100) - 20);
                         this.playerState.hocaGuveni = Math.max(10, (this.playerState.hocaGuveni || 40) - 15);
-                        GAME.state.isSuspended = true;
+                        
                         return "KART: KIRMIZI 🟥 | Hakem bu hareketi alaycı bularak doğrudan KIRMIZI KART gösterdi! Oyundan atıldın ve cezalı duruma düştün!";
                     }
                 },

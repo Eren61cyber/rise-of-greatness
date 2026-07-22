@@ -106,7 +106,7 @@ const GAME = {
             weeklyFixturesWeek: 0,
             activeBets: [],
             betHistory: [],
-            isSuspended: false,
+            suspendedWeeks: 0,
             themeSetting: "auto",
             tefeciBorc: 0,
             tefeciFaiz: 0,
@@ -382,8 +382,8 @@ const GAME = {
                     this.state.activePurchasedBoot = null;
                     this.saveGame();
                 }
-                if (typeof this.state.isSuspended === "undefined") {
-                    this.state.isSuspended = false;
+                if (typeof this.state.suspendedWeeks === "undefined") {
+                    this.state.suspendedWeeks = 0;
                     this.saveGame();
                 }
                 if (typeof this.state.agentId === "undefined") {
@@ -931,9 +931,29 @@ const GAME = {
         }
         this.matchSimulatedThisWeek = false;
 
-        if (this.state.isSuspended) {
-            this.state.isSuspended = false;
-            this.addSocialPost("@spor_manset", "Spor ManÃ…Å¸etleri", `CezasÃ„Â± bitti! KÃ„Â±rmÃ„Â±zÃ„Â± kart cezasÃ„Â± sona eren genÃƒÂ§ yetenek ${this.state.playerName} yeniden formasÃ„Â±na kavuÃ…Å¸uyor.`);
+        if (this.state.suspendedWeeks > 0) {
+            this.state.suspendedWeeks--;
+            if (this.state.suspendedWeeks === 0) {
+                this.addSocialPost("@spor_manset", "Spor Man
+ş
+etleri", `Cezas
+ı
+ bitti! K
+ı
+rm
+ı
+z
+ı
+ kart cezas
+ı
+ sona eren gen
+ç
+ yetenek ${this.state.playerName} yeniden formas
+ı
+na kavu
+ş
+uyor.`);
+            }
         }
 
         // Transition opponent states centrally here
@@ -1572,7 +1592,7 @@ const GAME = {
         }
 
         // Render HD PNG avatar
-        const avatarUrl = this.state.avatarImage || "avatars/avatar_1.png";
+        const avatarUrl = this.state.avatarImage || "avatars/avatar_main.png";
         const imgTag = `<img src="${avatarUrl}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
         const futCardImgTag = `<img src="${avatarUrl}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 6px;">`;
 
@@ -1629,7 +1649,7 @@ const GAME = {
             // Update Left Sidebar Avatar
             const sidebarAvatar = document.getElementById("sidebar-avatar-container");
             if (sidebarAvatar) {
-                const avatarUrl = this.state.avatarImage || "avatars/avatar_1.png";
+                const avatarUrl = this.state.avatarImage || "avatars/avatar_main.png";
                 sidebarAvatar.innerHTML = `<img src="${avatarUrl}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; box-shadow: 0 0 10px rgba(0,0,0,0.5);">`;
             }
             
@@ -1972,7 +1992,7 @@ const GAME = {
         }
     },
 
-    generateAvatar: function(age) { const avatarUrl = this.state.avatarImage || "avatars/avatar_1.png"; return `<img src="${avatarUrl}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`; },
+    generateAvatar: function(age) { const avatarUrl = this.state.avatarImage || "avatars/avatar_main.png"; return `<img src="${avatarUrl}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`; },
 
     // --- LEAGUE STANDINGS SIMULATION METHODS ---
     initLeagueTable: function() {
