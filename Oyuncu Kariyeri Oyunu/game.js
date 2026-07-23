@@ -1536,6 +1536,18 @@ const GAME = {
             "training-count-indicator": (4 - (this.state.weeklyTrainingCount || 0)) + " / 4"
         };
 
+        // 4 Category Aggregation Stats (Matching competitor layout: TEKNİK, FİZİKSEL, ZİHİNSEL, SAVUNMA)
+        const tekVal = Math.round(((this.state.shooting || 50) + (this.state.dribbling || 50) + (this.state.passing || 50)) / 3);
+        const fizVal = Math.round(((this.state.speed || 50) + (this.state.physical || 50) + (this.state.kondisyon || 100)) / 3);
+        const zihVal = Math.round(((this.state.hocaGuveni || 40) + (this.state.takimUyumu || 50) + (this.state.moral || 75)) / 3);
+        const savVal = Math.round(this.state.defense || 50);
+
+        bindings["cat-teknik"] = tekVal;
+        bindings["cat-fiziksel"] = fizVal;
+        bindings["cat-zihinsel"] = zihVal;
+        bindings["cat-savunma"] = savVal;
+        bindings["stat-fame"] = Math.floor((this.state.followers || 0) / 1000);
+
         for (let id in bindings) {
             const el = document.getElementById(id);
             if (el) {
@@ -1545,6 +1557,24 @@ const GAME = {
             elements.forEach(item => {
                 item.innerText = bindings[id];
             });
+        }
+
+        // Render Diamond Radar Chart Points
+        const radarPolygon = document.getElementById("radar-chart-polygon");
+        if (radarPolygon) {
+            // Radar center = (50, 50), max radius = 40
+            // Top: TEK, Right: FİZ, Bottom: ZİH, Left: SAV
+            const topR = (tekVal / 100) * 40;
+            const rightR = (fizVal / 100) * 40;
+            const bottomR = (zihVal / 100) * 40;
+            const leftR = (savVal / 100) * 40;
+
+            const pTop = `50,${50 - topR}`;
+            const pRight = `${50 + rightR},50`;
+            const pBottom = `50,${50 + bottomR}`;
+            const pLeft = `${50 - leftR},50`;
+
+            radarPolygon.setAttribute("points", `${pTop} ${pRight} ${pBottom} ${pLeft}`);
         }
 
         const progressFills = {

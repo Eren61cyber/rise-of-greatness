@@ -4,16 +4,20 @@
  */
 
 :root {
-    --bg-dark: #0f172a;
-    --bg-card: rgba(30, 41, 59, 0.7);
+    --bg-dark: #0a0e17;
+    --bg-card: #131926;
+    --bg-card-glass: rgba(19, 25, 38, 0.85);
     --border-glass: rgba(255, 255, 255, 0.08);
-    --primary: #10b981;
-    --secondary: #8b5cf6;
-    --accent-purple: #a855f7;
-    --accent-yellow: #eab308;
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --primary: #00e5b7;
+    --primary-glow: rgba(0, 229, 183, 0.25);
+    --secondary: #10b981;
+    --accent-teal: #00e5b7;
+    --accent-purple: #8b5cf6;
+    --accent-yellow: #f59e0b;
     --accent-red: #ef4444;
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
+    --text-main: #f1f5f9;
+    --text-muted: #8a99ad;
 }
 
 /* Global Reset */
@@ -2232,10 +2236,269 @@ input[type="text"]:focus, select:focus {
     box-shadow: 0 0 14px rgba(0, 230, 118, 0.2) !important;
 }
 
-.intro-input-field::placeholder {
-    color: rgba(255, 255, 255, 0.2) !important;
-    font-weight: 400 !important;
+
+/* ==========================================================================
+   PREMIUM DARK TEAL UI OVERHAUL (COMPETITOR MATCHED REDESIGN)
+   ========================================================================== */
+
+/* OVR & Diamond Radar Chart Card */
+.ovr-radar-card {
+    background: #131926;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
+
+.ovr-radar-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, rgba(0, 229, 183, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.ovr-left-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.ovr-left-block .subtitle {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #7b8ba1;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+.ovr-left-block .ovr-display {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.ovr-left-block .ovr-number {
+    font-size: 42px;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1;
+    letter-spacing: -1px;
+}
+
+.ovr-left-block .ovr-tag {
+    font-size: 14px;
+    font-weight: 800;
+    color: #00e5b7;
+    letter-spacing: 0.5px;
+}
+
+/* SVG Diamond Radar Chart */
+.radar-chart-wrapper {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.radar-chart-svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+/* 2x2 Stat Cards Grid */
+.stat-grid-2x2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.stat-box-item {
+    background: #131926;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 16px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 105px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.stat-box-item:hover {
+    transform: translateY(-2px);
+    border-color: rgba(0, 229, 183, 0.3);
+    box-shadow: 0 8px 24px rgba(0, 229, 183, 0.1);
+}
+
+.stat-box-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-box-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.stat-box-arrow {
+    color: #4f5d73;
+    font-size: 14px;
+    font-weight: 700;
+    transition: color 0.2s ease;
+}
+
+.stat-box-item:hover .stat-box-arrow {
+    color: #00e5b7;
+}
+
+.stat-box-bottom {
+    margin-top: 10px;
+}
+
+.stat-box-value {
+    font-size: 26px;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1;
+}
+
+.stat-box-label {
+    font-size: 10.5px;
+    font-weight: 800;
+    color: #7b8ba1;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-top: 4px;
+}
+
+/* Redesigned Telemetry Top Bar */
+.telemetry-bar-v2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #131926;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 8px 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.telemetry-v2-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.telemetry-v2-label {
+    font-size: 8.5px;
+    font-weight: 800;
+    color: #7b8ba1;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.telemetry-v2-value {
+    font-size: 13px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.val-money { color: #00e5b7; }
+.val-energy { color: #10b981; }
+.val-morale { color: #22c55e; }
+.val-fame { color: #f59e0b; }
+
+/* Ulusal Lig & Standings Table Card */
+.ulusal-card-v2 {
+    background: #131926;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.ulusal-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ulusal-card-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 800;
+    color: #f1f5f9;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+.ulusal-card-badge {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #7b8ba1;
+}
+
+/* Bottom Nav 5-Tab Bar */
+.bottom-nav-5tabs {
+    background: #0d121f !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.8) !important;
+}
+
+.bottom-nav-5tabs .nav-tab {
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.bottom-nav-5tabs .nav-tab.active {
+    color: #00e5b7 !important;
+    background: transparent !important;
+}
+
+.bottom-nav-5tabs .nav-tab.active svg {
+    stroke: #00e5b7 !important;
+}
+
 
 
 

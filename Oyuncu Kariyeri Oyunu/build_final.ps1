@@ -24,11 +24,11 @@ if (Test-Path (Join-Path $src "sounds")) {
 # index.html icindeki ?v=1.4 parametrelerini kaldir
 $indexPath = Join-Path $dest "index.html"
 $htmlContent = [System.IO.File]::ReadAllText($indexPath)
-$htmlContent = $htmlContent.Replace('database.js?v=1.7', 'database.js?v=1.8')
-$htmlContent = $htmlContent.Replace('events.js?v=1.7', 'events.js?v=1.8')
-$htmlContent = $htmlContent.Replace('game.js?v=1.7', 'game.js?v=1.8')
-$htmlContent = $htmlContent.Replace('matchEngine.js?v=1.7', 'matchEngine.js?v=1.8')
-$htmlContent = $htmlContent.Replace('styles.css?v=1.7', 'styles.css?v=1.8')
+$htmlContent = $htmlContent.Replace('database.js?v=1.8', 'database.js?v=2.0')
+$htmlContent = $htmlContent.Replace('events.js?v=1.8', 'events.js?v=2.0')
+$htmlContent = $htmlContent.Replace('game.js?v=1.8', 'game.js?v=2.0')
+$htmlContent = $htmlContent.Replace('matchEngine.js?v=1.8', 'matchEngine.js?v=2.0')
+$htmlContent = $htmlContent.Replace('styles.css?v=1.8', 'styles.css?v=2.0')
 [System.IO.File]::WriteAllText($indexPath, $htmlContent, $utf8NoBom)
 
 # Tum JS ve HTML dosyalarinin BOM karakterlerini temizle

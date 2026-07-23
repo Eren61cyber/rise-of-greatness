@@ -528,38 +528,38 @@
         <div class="app-container">
         
         <!-- Header Profile Summary -->
-        <header class="main-header glass" style="background: linear-gradient(135deg, rgba(20,23,34,0.98) 0%, rgba(14,16,24,0.98) 100%); border-bottom: 1px solid rgba(255,255,255,0.06); box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
-            <div class="player-profile" style="display: flex; align-items: center; gap: 10px;">
-                <!-- Dynamic SVG avatar container -->
-                <div id="player-avatar-container" style="width: 46px; height: 46px; display: flex; justify-content: center; align-items: center; border-radius: 50%; overflow: hidden; background: rgba(255,255,255,0.04); border: 2px solid rgba(245,166,35,0.4); box-shadow: 0 0 12px rgba(245,166,35,0.2);"></div>
-                <div class="rating-badge" id="player-rating">50</div>
+        <header class="main-header glass" style="background: #131926; border-bottom: 1px solid rgba(255,255,255,0.08); box-shadow: 0 4px 20px rgba(0,0,0,0.5); padding: 12px 16px; border-radius: 16px; margin-bottom: 10px;">
+            <div class="player-profile" style="display: flex; align-items: center; gap: 12px;">
+                <!-- Avatar with Age Badge -->
+                <div style="position: relative;">
+                    <div id="player-avatar-container" style="width: 44px; height: 44px; display: flex; justify-content: center; align-items: center; border-radius: 50%; overflow: hidden; background: rgba(255,255,255,0.06); border: 2px solid #00e5b7; box-shadow: 0 0 12px rgba(0,229,183,0.25);"></div>
+                    <div style="position: absolute; bottom: -2px; right: -2px; background: #0a0e17; border: 1.5px solid #00e5b7; color: #00e5b7; font-size: 8.5px; font-weight: 900; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center;" id="player-age">17</div>
+                </div>
                 <div class="player-info">
-                    <h1 id="player-name" style="font-size: 14px; letter-spacing: 0.2px;">Semih Şentürk</h1>
-                    <p style="font-size: 10.5px;"><span id="player-club">Yıldız Gençlikspor</span> · <span id="player-position">Forvet</span> · <span id="player-age">17</span> yaş</p>
+                    <h1 id="player-name" style="font-size: 14px; font-weight: 800; color: #ffffff; letter-spacing: 0.3px; margin: 0;">AHMET EREN DEMİRCİ</h1>
+                    <p style="font-size: 10px; font-weight: 700; color: #7b8ba1; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px;"><span id="player-position">FORVET</span> · <span id="player-age-text">16 YAŞINDA</span> · <span id="player-club" style="color: #00e5b7;">KULÜPSÜZ</span></p>
                 </div>
             </div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <div class="weekly-salary" id="weekly-salary-text" style="background: rgba(0,200,120,0.1); border: 1px solid rgba(0,200,120,0.25); box-shadow: 0 0 10px rgba(0,200,120,0.1);">150 €/Hafta</div>
-                <button id="btn-settings-open" class="btn" style="padding: 7px 10px; font-size: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; cursor: pointer; color: white; transition: all 0.2s ease;">⚙️</button>
-            </div>
+            <button id="btn-settings-open" class="btn" style="padding: 8px 10px; font-size: 15px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; cursor: pointer; color: white;">☰</button>
         </header>
 
-        <!-- Telemetry Status Bar (Premium sports telemetry bar) -->
-        <section class="telemetry-bar" style="display: flex; gap: 6px; overflow-x: auto; padding: 4px 0; margin-bottom: 12px; scrollbar-width: none;">
-            <div class="telemetry-item" style="background: linear-gradient(135deg, rgba(255,51,102,0.12), rgba(255,51,102,0.06)); border: 1px solid rgba(255,51,102,0.2); padding: 6px 11px; border-radius: 10px; font-size: 11px; font-weight: 700; color: white; display: flex; align-items: center; gap: 5px; white-space: nowrap;">
-                <span style="color: #ff3366;">🔋</span> KND: <span id="stat-fitness" style="color: #ff6b8a; font-weight: 800;">100%</span>
+        <!-- Redesigned Telemetry Status Bar -->
+        <section class="telemetry-bar-v2">
+            <div class="telemetry-v2-item">
+                <span class="telemetry-v2-label">BAKİYE</span>
+                <span class="telemetry-v2-value val-money">$ <span id="stat-money">0</span></span>
             </div>
-            <div class="telemetry-item" style="background: linear-gradient(135deg, rgba(33,150,243,0.12), rgba(33,150,243,0.06)); border: 1px solid rgba(33,150,243,0.2); padding: 6px 11px; border-radius: 10px; font-size: 11px; font-weight: 700; color: white; display: flex; align-items: center; gap: 5px; white-space: nowrap;">
-                <span style="color: #2196f3;">🧠</span> MRL: <span id="stat-morale" style="color: #64b5f6; font-weight: 800;">100%</span>
+            <div class="telemetry-v2-item">
+                <span class="telemetry-v2-label">ENERJİ</span>
+                <span class="telemetry-v2-value val-energy">⚡ <span id="stat-fitness">100%</span></span>
             </div>
-            <div class="telemetry-item" style="background: linear-gradient(135deg, rgba(245,166,35,0.12), rgba(245,166,35,0.06)); border: 1px solid rgba(245,166,35,0.2); padding: 6px 11px; border-radius: 10px; font-size: 11px; font-weight: 700; color: white; display: flex; align-items: center; gap: 5px; white-space: nowrap;">
-                <span style="color: #f5a623;">👔</span> HCG: <span id="stat-trust" style="color: #ffd740; font-weight: 800;">40%</span>
+            <div class="telemetry-v2-item">
+                <span class="telemetry-v2-label">MORAL</span>
+                <span class="telemetry-v2-value val-morale">❤️ <span id="stat-morale">75</span></span>
             </div>
-            <div class="telemetry-item" style="background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,152,0,0.08)); border: 1px solid rgba(255,215,0,0.3); padding: 6px 12px; border-radius: 10px; font-size: 11px; font-weight: 800; color: #ffd700; display: flex; align-items: center; gap: 5px; white-space: nowrap; margin-left: auto; box-shadow: 0 0 12px rgba(255,215,0,0.1);">
-                <span>🪙</span> <span id="stat-money">1,000 €</span>
-            </div>
-            <div class="telemetry-item" style="background: linear-gradient(135deg, rgba(112,161,255,0.12), rgba(112,161,255,0.06)); border: 1px solid rgba(112,161,255,0.2); padding: 6px 11px; border-radius: 10px; font-size: 11px; font-weight: 700; color: #9ab4ff; display: flex; align-items: center; gap: 5px; white-space: nowrap;">
-                <span>👥</span> <span id="stat-followers">2,500</span>
+            <div class="telemetry-v2-item">
+                <span class="telemetry-v2-label">ŞÖHRET</span>
+                <span class="telemetry-v2-value val-fame">⭐ <span id="stat-fame">0</span></span>
             </div>
         </section>
 
@@ -568,9 +568,81 @@
             
             <!-- PANEL 1: CAREER DASHBOARD -->
             <section id="panel-career" class="view-panel active">
-                <!-- League Hafta info -->
-                <div style="text-align: center; font-size: 11px; color: var(--text-muted); margin-bottom: 8px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase;">
-                    ⚽ <span id="player-league">Süper Lig</span> — Hafta <span id="current-week">1</span>/34
+                
+                <!-- MEVCUT SEVİYE & DIAMOND RADAR CHART CARD -->
+                <div class="ovr-radar-card">
+                    <div class="ovr-left-block">
+                        <span class="subtitle">MEVCUT SEVİYE</span>
+                        <div class="ovr-display">
+                            <span class="ovr-number bind-player-rating">16</span>
+                            <span class="ovr-tag">OVR</span>
+                        </div>
+                    </div>
+
+                    <!-- SVG Diamond Radar Chart -->
+                    <div class="radar-chart-wrapper">
+                        <svg class="radar-chart-svg" viewBox="0 0 100 100">
+                            <!-- Background Diamond Grid Lines -->
+                            <polygon points="50,10 90,50 50,90 10,50" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1.5" />
+                            <polygon points="50,25 75,50 50,75 25,50" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <line x1="50" y1="10" x2="50" y2="90" stroke="rgba(255,255,255,0.05)" stroke-dasharray="2,2" />
+                            <line x1="10" y1="50" x2="90" y2="50" stroke="rgba(255,255,255,0.05)" stroke-dasharray="2,2" />
+                            <!-- Dynamic Polygon Fill -->
+                            <polygon id="radar-chart-polygon" points="50,30 70,50 50,70 30,50" fill="rgba(0, 229, 183, 0.2)" stroke="#00e5b7" stroke-width="2" />
+                            <!-- Radar Labels -->
+                            <text x="50" y="7" fill="#7b8ba1" font-size="6.5" font-weight="900" text-anchor="middle">TEK</text>
+                            <text x="94" y="52" fill="#7b8ba1" font-size="6.5" font-weight="900" text-anchor="start">FİZ</text>
+                            <text x="50" y="98" fill="#7b8ba1" font-size="6.5" font-weight="900" text-anchor="middle">ZIH</text>
+                            <text x="6" y="52" fill="#7b8ba1" font-size="6.5" font-weight="900" text-anchor="end">SAV</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- 2x2 STAT CARDS GRID -->
+                <div class="stat-grid-2x2">
+                    <div class="stat-box-item" onclick="if(window.GAME) GAME.switchTab('panel-training');">
+                        <div class="stat-box-top">
+                            <div class="stat-box-icon">⚽</div>
+                            <span class="stat-box-arrow">↗</span>
+                        </div>
+                        <div class="stat-box-bottom">
+                            <div class="stat-box-value bind-cat-teknik">18</div>
+                            <div class="stat-box-label">TEKNİK</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-box-item" onclick="if(window.GAME) GAME.switchTab('panel-training');">
+                        <div class="stat-box-top">
+                            <div class="stat-box-icon">⚡</div>
+                            <span class="stat-box-arrow">↗</span>
+                        </div>
+                        <div class="stat-box-bottom">
+                            <div class="stat-box-value bind-cat-fiziksel">15</div>
+                            <div class="stat-box-label">FİZİKSEL</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-box-item" onclick="if(window.GAME) GAME.switchTab('panel-training');">
+                        <div class="stat-box-top">
+                            <div class="stat-box-icon">👁️</div>
+                            <span class="stat-box-arrow">↗</span>
+                        </div>
+                        <div class="stat-box-bottom">
+                            <div class="stat-box-value bind-cat-zihinsel">15</div>
+                            <div class="stat-box-label">ZİHİNSEL</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-box-item" onclick="if(window.GAME) GAME.switchTab('panel-training');">
+                        <div class="stat-box-top">
+                            <div class="stat-box-icon">🛡️</div>
+                            <span class="stat-box-arrow">↗</span>
+                        </div>
+                        <div class="stat-box-bottom">
+                            <div class="stat-box-value bind-cat-savunma">15</div>
+                            <div class="stat-box-label">SAVUNMA</div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- ⚽ FUT PLAYER CARD (FIFA ULTIMATE TEAM STYLED) -->
@@ -919,31 +991,27 @@
 
         </main>
 
-        <!-- Navigation Tabs (Mobile Bottom Bar Style) -->
-        <nav class="bottom-nav glass">
+        <!-- Navigation Tabs (Competitor Matched 5-Tab Bar) -->
+        <nav class="bottom-nav bottom-nav-5tabs glass">
             <button class="nav-tab active" data-target="panel-career">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 2px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                Kariyer
-            </button>
-            <button class="nav-tab" data-target="panel-standings">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 2px;"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.45 1-1 1H4v2h16v-2h-5c-.55 0-1-.45-1-1v-2.34"/><path d="M12 2a6 6 0 0 0-6 6v5a6 6 0 0 0 6 6 6 6 0 0 0 6-6V8a6 6 0 0 0-6-6z"/></svg>
-                Lig
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Profil
             </button>
             <button class="nav-tab" data-target="panel-training">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 2px;"><path d="M6.5 6.5h11"/><path d="M6.5 17.5h11"/><path d="M3 10h2v4H3z"/><path d="M19 10h2v4h-2z"/><path d="M5 12h14"/><path d="M8 8v8"/><path d="M16 8v8"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5h11"/><path d="M6.5 17.5h11"/><path d="M3 10h2v4H3z"/><path d="M19 10h2v4h-2z"/><path d="M5 12h14"/><path d="M8 8v8"/><path d="M16 8v8"/></svg>
                 Antrenman
             </button>
-            <button class="nav-tab" data-target="panel-shop">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 2px;"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                Mağaza
-            </button>
-            <button class="nav-tab" data-target="panel-social">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 2px;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                Sosyal
+            <button class="nav-tab" data-target="panel-standings">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                Maç
             </button>
             <button class="nav-tab" data-target="panel-transfers">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 2px;"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                Teklifler
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Kulüp
+            </button>
+            <button class="nav-tab" data-target="panel-social">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Hayat
             </button>
         </nav>
 
@@ -1763,10 +1831,10 @@
     </div>
 
     <!-- Script Loads (Database first, logic next) -->
-    <script src="database.js?v=1.8"></script>
-    <script src="events.js?v=1.8"></script>
-    <script src="game.js?v=1.8"></script>
-    <script src="matchEngine.js?v=1.8"></script>
+    <script src="database.js?v=2.0"></script>
+    <script src="events.js?v=2.0"></script>
+    <script src="game.js?v=2.0"></script>
+    <script src="matchEngine.js?v=2.0"></script>
     
     <!-- MAIN CONTROLLER (Mounts everything) -->
     <script>
