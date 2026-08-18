@@ -341,7 +341,7 @@ const DATABASE = {
     GIRLFRIENDS: [
         {
             id: "ecrin",
-            name: "Ecrin",
+            name: "Nisa",
             role: "Sadık Sevgili",
             desc: "Her zaman seninle gurur duyan ve kariyerinde en büyük destekçin olan sadık sevgilin.",
             avatar: "💄",
@@ -357,7 +357,7 @@ const DATABASE = {
         },
         {
             id: "sweetheart",
-            name: "Beyza",
+            name: "Ecrin",
             role: "Sınıf Arkadaşı / Lise Aşkı",
             desc: "Sınıfından lise aşkın. Gösterişi sevmez, her zaman senin yanındadır ve manevi olarak seni destekler.",
             avatar: "❤️",
@@ -371,7 +371,7 @@ const DATABASE = {
         },
         {
             id: "influencer",
-            name: "Dilara",
+            name: "Melike",
             role: "Sosyal Medya Fenomeni",
             desc: "Maçlardaki performansın ve yeteneğinle ona hayran kalan popüler bir spor ve yaşam influencer'ı. Alışverişi sever.",
             avatar: "💋",
@@ -387,7 +387,7 @@ const DATABASE = {
         },
         {
             id: "model",
-            name: "Kübra",
+            name: "Derin",
             role: "Ünlü Model",
             desc: "Onunla görünmek prestijdir ama pahalıdır. Lüks tatil, pırlanta, özel jet ve bitmeyen istekleri vardır.",
             avatar: "💖",
@@ -403,7 +403,7 @@ const DATABASE = {
         },
         {
             id: "ece",
-            name: "Ece",
+            name: "Hülya",
             role: "Cemiyet Güzeli (22 Yaşında)",
             desc: "Hafif sarı saçlı, dolgun dudaklı ve büyüleyici güzellikte bir cemiyet ikonu. Onunla sevgili olmak seni en üst düzey elitlerin arasına sokar.",
             avatar: "👑",
