@@ -613,12 +613,13 @@ body {
     border-radius: 14px;
     background: var(--bg-card);
     border: 1px solid var(--border-glass);
-    transition: transform 0.2s ease, border-color 0.2s ease;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .training-card:hover, .shop-card:hover, .offer-card:hover {
-    transform: translateY(-1px);
-    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    border-color: var(--primary);
+    box-shadow: 0 4px 15px rgba(45, 212, 191, 0.1);
 }
 
 .training-card h3, .shop-card h3, .offer-card h3 {
@@ -635,12 +636,12 @@ body {
 
 .shop-card .cost-tag {
     font-size: 10px;
-    color: var(--accent-yellow);
-    background: rgba(255, 214, 0, 0.08);
-    padding: 2px 6px;
-    border-radius: 4px;
+    color: var(--primary);
+    background: rgba(45, 212, 191, 0.1);
+    padding: 3px 8px;
+    border-radius: 6px;
     font-weight: 700;
-    border: 1px solid rgba(255, 214, 0, 0.15);
+    border: 1px solid rgba(45, 212, 191, 0.2);
 }
 
 .offer-card .salary-tag {
@@ -1288,7 +1289,7 @@ body {
 
 .bet-odds-btn:hover {
     background: rgba(255,255,255,0.08);
-    border-color: rgba(255,255,255,0.15);
+    border-color: rgba(255, 255, 255, 0.15);
 }
 
 .bet-odds-btn.selected {
@@ -1760,27 +1761,27 @@ body {
 .fut-card-footer strong {
     color: #FFF;
 }
-/* 🏆 FOOTBALL MANAGER STYLE LEAGUE TABLE */
+
 .standings-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 11.5px;
+    font-size: 12px;
 }
 
 .standings-table th {
-    background: #191b24 !important;
-    color: var(--text-muted);
+    background: rgba(45, 212, 191, 0.05) !important;
+    color: var(--primary);
     font-weight: 800;
     text-transform: uppercase;
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.5px;
+    border-bottom: 2px solid rgba(45, 212, 191, 0.2);
     padding: 10px 8px;
-    border-bottom: 2px solid #282c3c;
 }
 
 .standings-table td {
-    padding: 11px 8px;
-    border-bottom: 1px solid #1c1e28;
+    padding: 12px 8px;
+    border-bottom: 1px solid var(--border-glass);
     color: #e5e9f0;
 }
 
@@ -1789,11 +1790,11 @@ body {
 }
 
 .standings-table tr:hover {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(45, 212, 191, 0.05);
 }
 
 .standings-table tr.highlight-row {
-    background: rgba(245, 166, 35, 0.09) !important;
+    background: rgba(45, 212, 191, 0.1) !important;
     border-left: 3px solid var(--primary);
     font-weight: bold;
 }

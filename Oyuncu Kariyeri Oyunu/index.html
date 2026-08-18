@@ -435,34 +435,7 @@
                     <div style="font-family: 'Inter',sans-serif;font-size:9.5px;color:rgba(245,166,35,0.5);letter-spacing:2px;margin-top:2px;">ANALYST BOARD</div>
                 </div>
 
-                <!-- FIFA Style Player Card in Left Sidebar -->
-                <div style="display: flex; justify-content: center; margin-bottom: 20px;">
-                    <div class="fut-card" style="width: 150px; height: 210px; transform: scale(1.0); box-shadow: 0 10px 25px rgba(0,0,0,0.5); background: linear-gradient(135deg, rgba(20,23,34,0.98), rgba(10,12,18,0.98)); position: relative; border-radius: 10px; overflow: hidden; border: 1.5px solid #FFD54F;">
-                        <!-- Top left: Rating & Position -->
-                        <div class="fut-card-top-left" style="top: 10px; left: 10px; position: absolute; display: flex; flex-direction: column; align-items: center;">
-                            <div class="rating bind-player-rating" style="font-size: 20px; font-weight: 900; line-height: 1.0; color: #FFD54F;">50</div>
-                            <div class="pos bind-player-position" style="font-size: 8px; font-weight: 800; color: #fff;">FOR</div>
-                            <div class="nation-flag" style="font-size: 11px; margin-top: 2px;">🇹🇷</div>
-                        </div>
-                        <!-- Face Graphic -->
-                        <div id="sidebar-avatar-container" style="width: 70px; height: 70px; position: absolute; top: 15px; right: 10px; display: flex; align-items: center; justify-content: center;"></div>
-                        <!-- Player Name -->
-                        <div class="fut-card-name" id="sidebar-player-name" style="position: absolute; font-size: 11px; font-weight: 900; color: white; top: 98px; letter-spacing: 0.5px; width: 100%; text-align: center; font-family: 'Inter', sans-serif;">Ahmet Eren</div>
-                        <!-- Player attributes summary -->
-                        <div class="fut-card-stats" style="position: absolute; top: 122px; font-size: 9px; width: 110px; left: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 4px; display: flex; justify-content: space-between;">
-                            <div class="col" style="display: flex; flex-direction: column; gap: 1px; align-items: flex-start; color: #bbb;">
-                                <span><strong id="sidebar-stat-sho" style="color: white; font-weight: bold;">50</strong> ŞUT</span>
-                                <span><strong id="sidebar-stat-pas" style="color: white; font-weight: bold;">50</strong> PAS</span>
-                                <span><strong id="sidebar-stat-spd" style="color: white; font-weight: bold;">50</strong> HIZ</span>
-                            </div>
-                            <div class="col" style="display: flex; flex-direction: column; gap: 1px; align-items: flex-start; color: #bbb;">
-                                <span><strong id="sidebar-stat-dri" style="color: white; font-weight: bold;">50</strong> GÇS</span>
-                                <span><strong id="sidebar-stat-def" style="color: white; font-weight: bold;">50</strong> DEF</span>
-                                <span><strong id="sidebar-stat-phy" style="color: white; font-weight: bold;">50</strong> FİZ</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- FUT Card removed, replaced by Radar Chart in main panel -->
 
                 <!-- Skill progression bar tracking -->
                 <div class="sidebar-widget">
@@ -645,66 +618,7 @@
                     </div>
                 </div>
 
-                <!-- ⚽ FUT PLAYER CARD (FIFA ULTIMATE TEAM STYLED) -->
-                <div class="fut-card-wrapper" style="margin-bottom: 12px; display: flex; justify-content: center;">
-                    <div class="fut-card">
-                        <!-- Top left: Rating & Position -->
-                        <div class="fut-card-top-left">
-                            <div class="rating bind-player-rating">50</div>
-                            <div class="pos bind-player-position">FOR</div>
-                            <div class="nation-flag">🇹🇷</div>
-                            <div class="club-initials-badge" id="fut-club-initials">YG</div>
-                        </div>
-                        
-                        <!-- Top right: Dynamic Avatar SVG container -->
-                        <div class="fut-card-avatar" id="fut-card-avatar-container-clone"></div>
-                        
-                        <!-- Middle: Player Name -->
-                        <div class="fut-card-name bind-player-name">Semih Şentürk</div>
-                        
-                        <div class="fut-card-divider"></div>
-                        
-                        <!-- Bottom: Stats Grid -->
-                        <div class="fut-card-stats-grid">
-                            <div class="stat-col">
-                                <div class="stat-row">
-                                    <span class="val bind-skill-speed">50</span>
-                                    <span class="lbl">HIZ</span>
-                                </div>
-                                <div class="stat-row">
-                                    <span class="val bind-skill-shooting">50</span>
-                                    <span class="lbl">ŞUT</span>
-                                </div>
-                                <div class="stat-row">
-                                    <span class="val bind-skill-passing">50</span>
-                                    <span class="lbl">PAS</span>
-                                </div>
-                            </div>
-                            <div class="stat-col line-divider"></div>
-                            <div class="stat-col">
-                                <div class="stat-row">
-                                    <span class="val bind-skill-dribbling">50</span>
-                                    <span class="lbl">DRB</span>
-                                </div>
-                                <div class="stat-row">
-                                    <span class="val bind-skill-defense">50</span>
-                                    <span class="lbl">DEF</span>
-                                </div>
-                                <div class="stat-row">
-                                    <span class="val bind-skill-physical">50</span>
-                                    <span class="lbl">FZK</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Mini matches / goals stats footer -->
-                        <div class="fut-card-footer">
-                            <span>Maç: <strong class="bind-career-apps">0</strong></span>
-                            <span>Gol: <strong class="bind-career-goals">0</strong></span>
-                            <span>Asist: <strong class="bind-career-assists">0</strong></span>
-                        </div>
-                    </div>
-                </div>
+                <!-- FUT Card removed, now relying on Diamond Radar Chart and Grid Stats above -->
 
                 <!-- NSS Relationships Card -->
                 <div class="card glass" style="margin-top: 10px; padding: 14px;">

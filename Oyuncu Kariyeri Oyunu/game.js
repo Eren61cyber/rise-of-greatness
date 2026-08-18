@@ -1613,25 +1613,6 @@ const GAME = {
             const svgContent = this.generateAvatar(this.state.age);
             avatarContainer.innerHTML = svgContent;
             
-            // Clone to FUT card container
-            const avatarClone = document.getElementById("fut-card-avatar-container-clone");
-            if (avatarClone) {
-                avatarClone.innerHTML = svgContent;
-            }
-        }
-
-        // Render club initials in FUT card
-        const initialsBadge = document.getElementById("fut-club-initials");
-        if (initialsBadge) {
-            let club = this.state.currentClub || "Yıldız Gençlikspor";
-            let words = club.split(" ");
-            let initials = "";
-            if (words.length >= 2) {
-                initials = (words[0][0] + words[1][0]).toUpperCase();
-            } else {
-                initials = club.substring(0, 2).toUpperCase();
-            }
-            initialsBadge.innerText = initials;
         }
 
         // Update betting UI badges if available
@@ -1644,9 +1625,7 @@ const GAME = {
         if (typeof updateTrophyShowcase === "function") {
             updateTrophyShowcase();
         }
-        if (typeof init3dFutCardEffects === "function") {
-            init3dFutCardEffects();
-        }
+        
         if (typeof renderEsportsPanel === "function") {
             const container = document.getElementById("shop-esports-container");
             if (container && container.style.display !== "none") {
