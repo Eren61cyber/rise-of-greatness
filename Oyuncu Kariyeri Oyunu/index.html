@@ -1508,7 +1508,7 @@
                 
                 <!-- Player Profile Header -->
                 <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 14px; border: 1px solid var(--border-glass); margin-bottom: 16px;">
-                    <h3 style="color: white; margin: 0; font-size: 17px;" id="ret-player-name">EREN CYBER</h3>
+                    <h3 style="color: white; margin: 0; font-size: 17px;" id="ret-player-name">YÜKLENİYOR...</h3>
                     <p style="font-size: 12px; color: var(--accent-yellow); font-weight: 800; margin: 3px 0 0 0;" id="ret-career-title">👑 FUTBOL EFSANESİ</p>
                 </div>
 
@@ -2761,7 +2761,7 @@
                 const resEmoji = document.getElementById("result-emoji");
                 const resTag = document.getElementById("result-tag");
 
-                let name = document.getElementById("intro-name-input").value.trim() || "Ahmet Eren";
+                let name = document.getElementById("intro-name-input").value.trim() || "Genç Yetenek";
                 let city = document.getElementById("intro-city-input").value.trim() || "Sinop";
                 let district = document.getElementById("intro-district-input").value.trim() || "Gerze";
 
@@ -3198,6 +3198,11 @@
 
                 const saveCustomBtn = document.getElementById("intro-btn-custom-save");
                 saveCustomBtn.addEventListener("click", () => {
+                    const nameInput = document.getElementById("intro-name-input").value.trim();
+                    if (!nameInput) {
+                        alert("Lütfen kariyerine başlamadan önce adını ve soyadını gir!");
+                        return;
+                    }
                     const city = document.getElementById("intro-city-input").value.trim() || "Sinop";
                     const district = document.getElementById("intro-district-input").value.trim() || "Gerze";
                     
@@ -3221,7 +3226,7 @@
                 });
 
                 startBtn.addEventListener("click", () => {
-                    let name = document.getElementById("intro-name-input").value.trim() || "Ahmet Eren";
+                    let name = document.getElementById("intro-name-input").value.trim() || "Genç Yetenek";
                     let city = document.getElementById("intro-city-input").value.trim() || "Sinop";
                     let district = document.getElementById("intro-district-input").value.trim() || "Gerze";
                     

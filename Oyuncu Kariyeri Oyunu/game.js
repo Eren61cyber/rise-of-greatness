@@ -49,7 +49,7 @@ const GAME = {
 
     resetGame: function(customName, startingLeague, startingSalary, startingTrust, hometownCity, hometownDistrict, startingClubName) {
         const startingClub = startingClubName ? DATABASE.AMATEUR_CLUBS.find(c => c.name === startingClubName) : DATABASE.getRandomAmateurClub();
-        const pName = customName || "Ahmet Eren Demirci";
+        const pName = customName || "Genç Yetenek";
         const sLeague = startingLeague || "3. Lig";
 
         this.state = {
