@@ -1612,7 +1612,6 @@ const GAME = {
         if (avatarContainer) {
             const svgContent = this.generateAvatar(this.state.age);
             avatarContainer.innerHTML = svgContent;
-            
         }
 
         // Update betting UI badges if available
@@ -1625,7 +1624,6 @@ const GAME = {
         if (typeof updateTrophyShowcase === "function") {
             updateTrophyShowcase();
         }
-        
         if (typeof renderEsportsPanel === "function") {
             const container = document.getElementById("shop-esports-container");
             if (container && container.style.display !== "none") {
