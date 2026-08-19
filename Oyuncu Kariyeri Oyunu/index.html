@@ -670,6 +670,40 @@
                     </div>
                 </div>
 
+                <!-- 📰 RISEUP NEWS CARD -->
+                <div class="card glass" style="
+                    margin-top: 10px; 
+                    padding: 10px 14px; 
+                    background: linear-gradient(135deg, rgba(0, 229, 255, 0.1), rgba(239, 68, 68, 0.06));
+                    border: 1px solid rgba(0, 229, 255, 0.35);
+                    cursor: pointer;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    border-radius: 10px;
+                    transition: all 0.2s ease-in-out;
+                    box-shadow: 0 4px 15px rgba(0, 229, 255, 0.08);
+                " onclick="openRiseUpNewsModal()" onmouseover="this.style.transform='translateY(-1px)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(0, 229, 255, 0.35)';">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(0, 229, 255, 0.15); border: 1px solid rgba(0, 229, 255, 0.3); display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                            📰
+                        </div>
+                        <div style="text-align: left;">
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <h4 style="margin: 0; font-size: 13px; font-weight: 900; color: #ffffff; letter-spacing: 0.5px;">RISEUP NEWS</h4>
+                                <span style="background: var(--accent-red); color: white; font-size: 8.5px; font-weight: 800; padding: 1px 6px; border-radius: 4px; text-transform: uppercase;">GÜNCEL BASIN</span>
+                            </div>
+                            <p id="home-news-headline-preview" style="margin: 2px 0 0 0; font-size: 10.5px; color: #cfd8dc; line-height: 1.25; max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                Haftanın spor, ekonomi ve magazin manşetleri çıktı!
+                            </p>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 4px;">
+                        <span style="font-size: 11px; font-weight: 800; color: var(--primary);">OKU</span>
+                        <span style="font-size: 14px; color: var(--primary);">➔</span>
+                    </div>
+                </div>
+
                 <!-- 🎰 İDDAA BAYİİ CARD -->
                 <div class="card glass" style="
                     margin-top: 8px; 
@@ -1502,23 +1536,71 @@
             </div>
         </div>
 
-        <!-- NEWSPAPER MODAL -->
-        <div class="event-modal-overlay" id="newspaper-modal">
-            <div class="newspaper-card glass" style="max-width: 440px; padding: 22px; border: 3px double var(--primary); border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); text-align: center; background: rgba(18, 22, 25, 0.95);">
-                <div style="border-bottom: 2px solid var(--primary); padding-bottom: 8px; margin-bottom: 12px;">
-                    <div style="font-size: 22px; font-weight: 900; letter-spacing: 2px; color: var(--primary); font-family: Georgia, serif;">TÜRKİYE SPOR GAZETESİ</div>
-                    <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); margin-top: 4px;">
-                        <span>SAYI: 9142</span>
-                        <span id="news-date">HAFTA 14</span>
-                        <span>FİYAT: 10 TL</span>
+        <!-- RISEUP NEWS NEWSPAPER MODAL -->
+        <div class="event-modal-overlay" id="newspaper-modal" style="background: rgba(0,0,0,0.9); z-index: 10020; display: none; align-items: center; justify-content: center; padding: 15px;">
+            <div class="newspaper-card glass" style="max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 20px; border: 2px solid var(--primary); border-radius: 14px; box-shadow: 0 10px 45px rgba(0, 229, 255, 0.25); background: #0f1418; color: #fff;">
+                
+                <!-- Newspaper Masthead -->
+                <div style="border-bottom: 2px solid rgba(255,255,255,0.15); padding-bottom: 10px; margin-bottom: 14px; text-align: center;">
+                    <div style="font-size: 26px; font-weight: 900; letter-spacing: 3px; color: #ffffff; font-family: 'Cinzel', Georgia, serif; text-transform: uppercase; text-shadow: 0 2px 10px rgba(0, 229, 255, 0.4);">
+                        📰 RISEUP NEWS
+                    </div>
+                    <div style="font-size: 9.5px; color: var(--accent-yellow); font-weight: bold; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px;">
+                        TÜRKİYE VE DÜNYA SPOR & EKONOMİ GÜNDEMİ
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); margin-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 5px;">
+                        <span id="news-issue-no">SAYI: 1024</span>
+                        <span id="news-date" style="color: var(--primary); font-weight: bold;">HAFTA 1</span>
+                        <span>FİYAT: 20 ₺</span>
                     </div>
                 </div>
-                <h1 id="news-title" style="font-family: Georgia, serif; font-size: 24px; font-weight: 800; line-height: 1.25; margin: 14px 0; color: white; text-transform: uppercase; letter-spacing: -0.5px;">FUTBOLCULAR DAHA SIK ÇALIŞMALI!</h1>
-                <div style="border-top: 1px solid var(--border-glass); border-bottom: 1px solid var(--border-glass); padding: 10px 0; margin-bottom: 18px; text-align: left;">
-                    <h3 id="news-subtitle" style="font-size: 13px; font-weight: bold; color: var(--accent-yellow); margin-bottom: 6px; text-align: center;">Transfer Sezonu Yaklaşıyor, Gözlemciler Tribünde!</h3>
-                    <p id="news-desc" style="font-size: 12.5px; line-height: 1.55; color: var(--text-muted); text-align: justify; margin: 0; text-indent: 12px;"></p>
+
+                <!-- 1. SECTION: SPOR & FUTBOL MANŞETİ -->
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 10px; padding: 14px; margin-bottom: 12px; text-align: left; position: relative;">
+                    <div style="display: inline-block; background: var(--accent-red); color: white; font-size: 9px; font-weight: 900; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
+                        ⚽ SPOR & FUTBOL MANŞETİ
+                    </div>
+                    <h2 id="news-title" style="font-family: Georgia, serif; font-size: 18px; font-weight: 800; line-height: 1.3; margin: 0 0 6px 0; color: #ffffff; text-transform: uppercase;">
+                        LİG HEYECANI BAŞLADI!
+                    </h2>
+                    <h4 id="news-subtitle" style="font-size: 12px; font-weight: 700; color: var(--accent-yellow); margin: 0 0 8px 0; line-height: 1.35;">
+                        Gözler genç yıldızların ve şampiyonluk adaylarının üstünde.
+                    </h4>
+                    <p id="news-desc" style="font-size: 12px; line-height: 1.55; color: #d0d7de; margin: 0; text-align: justify;"></p>
                 </div>
-                <button class="btn btn-primary" id="btn-news-close" style="width: 100%; padding: 12px; font-weight: bold; font-size: 13px;">Gazeteyi Kapat</button>
+
+                <!-- 2. SECTION: EKONOMİ & PİYASALAR -->
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(0, 229, 183, 0.3); border-radius: 10px; padding: 14px; margin-bottom: 12px; text-align: left;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="background: var(--accent-green); color: black; font-size: 9px; font-weight: 900; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px;">
+                            📈 EKONOMİ & PİYASALAR
+                        </span>
+                        <span id="news-eco-ticker" style="font-size: 9.5px; color: var(--accent-green); font-weight: bold;">BIST Spor: +%3.8 ↗</span>
+                    </div>
+                    <h3 id="news-eco-title" style="font-size: 14px; font-weight: 800; color: #ffffff; margin: 0 0 6px 0;">
+                        Gayrimenkul ve Arsa Değerleri Yükselişte!
+                    </h3>
+                    <p id="news-eco-desc" style="font-size: 11.5px; line-height: 1.5; color: #c4ccd4; margin: 0; text-align: justify;">
+                        Piyasalarda sıcak para hareketliliği sürerken, futbol kulüplerinin sponsorluk gelirleri artıyor. Yatırım uzmanları gayrimenkul ve arsa yatırımlarını öneriyor.
+                    </p>
+                </div>
+
+                <!-- 3. SECTION: ÜLKE GÜNDEMİ & MAGAZİN -->
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 10px; padding: 14px; margin-bottom: 18px; text-align: left;">
+                    <div style="display: inline-block; background: var(--accent-purple); color: white; font-size: 9px; font-weight: 900; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
+                        🇹🇷 ÜLKE GÜNDEMİ & MAGAZİN
+                    </div>
+                    <h3 id="news-mag-title" style="font-size: 14px; font-weight: 800; color: #ffffff; margin: 0 0 6px 0;">
+                        Sosyal Medyada Futbol Tartışmaları Viral Oldu
+                    </h3>
+                    <p id="news-mag-desc" style="font-size: 11.5px; line-height: 1.5; color: #c4ccd4; margin: 0; text-align: justify;">
+                        Haftanın en çok konuşulan olayları sosyal medyayı salladı. Maç günleri sokaklarda ve kafelerde futbol coşkusu hakim.
+                    </p>
+                </div>
+
+                <button class="btn btn-primary" id="btn-news-close" style="width: 100%; padding: 12px; font-weight: 800; font-size: 13px; letter-spacing: 0.5px;">
+                    🗞️ GAZETEYİ KATLA VE DEVAM ET
+                </button>
             </div>
         </div>
 
@@ -3501,61 +3583,219 @@
 
         let nextOpponent = null;
 
-        function afterWeekAdvanced() {
-            // Gazete Manşet Kontrolü (Hafta 14 veya 30)
-            if (checkForNewspaperAlert()) {
-                return;
+        // ==========================================================================
+        // 📰 RISEUP NEWS - HAFTALIK DİNAMİK GAZETE SİSTEMİ
+        // ==========================================================================
+        function generateRiseUpNews(week) {
+            const pName = (GAME && GAME.state && GAME.state.playerName) ? GAME.state.playerName : "Genç Yıldız";
+            const club = (GAME && GAME.state && GAME.state.currentClub) ? GAME.state.currentClub : "Kulübümüz";
+            const league = (GAME && GAME.state && GAME.state.currentLeague) ? GAME.state.currentLeague : "Süper Lig";
+            const hometown = (GAME && GAME.state && GAME.state.hometownCity) ? GAME.state.hometownCity : "Memleket";
+            const district = (GAME && GAME.state && GAME.state.hometownDistrict) ? GAME.state.hometownDistrict : "Merkez";
+            const goals = (GAME && GAME.state && GAME.state.seasonGoals) ? GAME.state.seasonGoals : 0;
+            const rating = (GAME && GAME.state && GAME.state.rating) ? GAME.state.rating : 65;
+
+            // 1. ⚽ SPOR & FUTBOL MANŞETİ
+            let sportNews = {};
+            if (week === 1) {
+                sportNews = {
+                    title: `YENİ SEZON HEYECANI BAŞLADI: ${club.toUpperCase()} SAHADA!`,
+                    subtitle: `Tribünler doldu, ${pName} sezona damga vurmak istiyor.`,
+                    desc: `2026 sezonunun açılış düdüğü çaldı! ${league} ekipleri yeni transferleri ve genç yetenekleriyle şampiyonluk yarışına girişti. ${club} taraftarları ${pName}'in bu sezon yapacağı patlamayı merakla bekliyor.`
+                };
+            } else if (week === 14) {
+                sportNews = {
+                    title: `ARA TRANSFER ATEŞİ! GÖZLEMCİLER TRİBÜNLERİ DOLDURDU`,
+                    subtitle: `Büyük kulüpler ${pName} ve ligin parlayan yıldızlarını izliyor.`,
+                    desc: `Ara transfer dönemine 1 hafta kala Süper Lig ve Avrupa devlerinin scout ekipleri statlarda yerini aldı. Formunu koruyan ve istikrarlı oynayan genç yeteneklerin astronomik bonservislerle transfer olabileceği konuşuluyor.`
+                };
+            } else if (week === 30) {
+                sportNews = {
+                    title: `ŞAMPİYONLUK VE KÜME DÜŞME HATTINDA BÜYÜK SAVAŞ!`,
+                    subtitle: `Son viraja girildi: Her puan altın değerinde.`,
+                    desc: `Ligin 30. haftasında nefesler tutuldu. Şampiyonluk adayları ve ligde kalma mücadelesi veren takımlar son kozlarını oynuyor. ${pName}'in takımı ${club} kritik maçlar öncesi kenetlendi.`
+                };
+            } else if (goals >= 10 && (week % 3 === 0)) {
+                sportNews = {
+                    title: `GOL MAKİNESİ ${pName.toUpperCase()} DURDURULAMIYOR!`,
+                    subtitle: `${goals} gole ulaşan genç yıldız Süper Lig krallık yarışında zirveye oynuyor!`,
+                    desc: `${club} formasıyla bu sezon ${goals} kez fileleri havalandıran ${pName}, spor medyasının bir numaralı gündem maddesi haline geldi. Usta yorumcular: "Bu çocukta dünya çapında bir bitiricilik var" yorumunu yaptı.`
+                };
+            } else if (rating >= 78 && (week % 4 === 0)) {
+                sportNews = {
+                    title: `AVRUPA DEVLERİ ${pName.toUpperCase()}'İN PEŞİNDE!`,
+                    subtitle: `Real Madrid, City ve PSG gözlemcilerinin radarında.`,
+                    desc: `Gelişimiyle dudak ısırtan ${pName}, ${rating} OVR seviyesine ulaşarak Avrupa devlerinin transfer listesinin en başına yerleşti. Menajerlik ofisinde telefonların susmadığı belirtiliyor.`
+                };
+            } else {
+                const sportPool = [
+                    {
+                        title: `DERBİLER VE HAKEM KARARLARI GÜNDEMDE!`,
+                        subtitle: `VAR kararları ve tartışmalı pozisyonlar haftaya damga vurdu.`,
+                        desc: `${league} karşılaşmalarında tansiyon bir an olsun düşmüyor. Teknik direktörler hakem kararlarına tepki gösterirken, futbolseverler kıran kırana geçen maçların keyfini çıkarıyor.`
+                    },
+                    {
+                        title: `OSIMHEN VE SÜPER LİG YILDIZLARI ŞOV YAPIYOR!`,
+                        subtitle: `Hücum hatlarındaki rekabet ligin marka değerini katladı.`,
+                        desc: `Süper Lig devlerinin yıldız golcüleri haftalık gol krallığı tablosunda kıyasıya çekişiyor. Genç yerli futbolcuların da bu rekabette ön plana çıkması milli takım teknik heyetini sevindiriyor.`
+                    },
+                    {
+                        title: `${club.toUpperCase()} TARAFTARINDAN BÜYÜK DESTEK!`,
+                        subtitle: `Hafta sonu oynanacak kritik karşılaşma kapalı gişe.`,
+                        desc: `Takımın sergilediği istekli mücadele tribünleri coşturdu. Taraftarlar ${pName} ve takım arkadaşlarını antrenman tesislerinde meşalelerle karşılayarak moral depoladı.`
+                    },
+                    {
+                        title: `MİLLİ TAKIM SEÇİCİLERİ GENÇLERİ YAKIN TAKİBE ALDI!`,
+                        subtitle: `A Milli Takım kapıları performans gösteren her yeteneğe açık.`,
+                        desc: `Milli Takım teknik heyeti, liglerde çıkış yakalayan genç oyuncuların form durumlarını haftalık olarak raporluyor. Başarı merdivenlerini tırmanan gençler için ay-yıldızlı forma çok yakın.`
+                    }
+                ];
+                sportNews = sportPool[(week + goals) % sportPool.length];
             }
 
-            // Normal olay akışı
-            if (!checkForWhatsAppEvents()) {
-                if (Math.random() < 0.4) {
-                    triggerRandomEvent();
+            // 2. 📈 EKONOMİ & PİYASALAR BÜLTENİ
+            const ecoPool = [
+                {
+                    ticker: "BIST Spor: +%4.2 ↗",
+                    title: `Borsa İstanbul'da Spor ve Teknoloji Hisseleri Uçuşta!`,
+                    desc: `Kulüplerin artan reklam gelirleri ve başarı primleri BIST Spor Endeksi'ni yukarı taşıdı. Finans uzmanları futbolculara ve yatırımcılara borsa ve gayrimenkul fonlarını tavsiye ediyor.`
+                },
+                {
+                    ticker: `Arsa Endeksi (${hometown}): +%8.5 ↗`,
+                    title: `${hometown} ve ${district} Çevresinde Arsa Fiyatları Rekor Kırdı!`,
+                    desc: `Yeni altyapı ve kentsel yatırımlar sebebiyle ${hometown} bölgesindeki arazilerin metrekare fiyatı fırladı. Bölgede arazisi veya gayrimenkulü olan vatandaşlar ve aileler büyük kazanç elde ediyor.`
+                },
+                {
+                    ticker: "Döviz Kuru: €/₺ Yükselişte",
+                    title: `Kulüplerden Astronomik Sponsorluk Anlaşmaları!`,
+                    desc: `Lüks markalar ve teknoloji devleri Süper Lig futbolcularıyla bireysel reklam anlaşmaları imzalamak için sıraya girdi. Profesyonel futbolcuların sponsorluk gelirleri maaşlarını geride bıraktı.`
+                },
+                {
+                    ticker: "Altın & Fon: +%2.1 ↗",
+                    title: `Futbol Dünyasında Yatırım Trendi: Gayrimenkul ve Lüks Koleksiyon`,
+                    desc: `Maaşlarını doğru değerlendiren futbolcular lüks otomobiller, villa ve arsa yatırımlarıyla geleceklerini garanti altına alıyor. Harcamalarına dikkat etmeyenlerin ise tefecilerin ağına düşme riski sürüyor.`
                 }
+            ];
+            const ecoNews = ecoPool[week % ecoPool.length];
+
+            // 3. 🇹🇷 ÜLKE GÜNDEMİ & MAGAZİN / SOSYAL YAŞAM
+            const magPool = [
+                {
+                    title: `Meteoroloji Uyardı: Ağır Çim Zeminler Kondisyonları Zorlayacak!`,
+                    desc: `Yurt genelinde beklenen yağışlı hava sebebiyle stadyum zeminlerinde kayganlık uyarısı yapıldı. Uzmanlar futbolcuların sakatlık riskine karşı antrenman ve dinlenme dengesini koruması gerektiğini belirtti.`
+                },
+                {
+                    title: `Gece Kulübü Çıkışı Görüntülenen Yıldız Futbolcu: 'Sadece Maden Suyu İçtim!'`,
+                    desc: `İstanbul Boğazı'ndaki popüler bir eğlence mekanında sabaha karşı görüntülenen futbolcu flaşların patlamasıyla şaşkınlık yaşadı. Teknik direktörlerin oyuncuların gece hayatına karşı sıkı denetim getireceği iddia edildi.`
+                },
+                {
+                    title: `Sosyal Medyada 'Genç Yıldızlar' Akımı Milyonlarca İzlenmeye Ulaştı`,
+                    desc: `Futbolseverlerin genç yeteneklerin çalımlarını ve gollerini paylaştığı video editleri TikTok ve Instagram'da trend oldu. Taraftarlar genç oyuncuları milli takımda ilk 11'de görmek istiyor.`
+                },
+                {
+                    title: `Kahvehanelerde ve Kafelerde Tek Gündem: 'Bu Hafta Kupon Tutar Mı?'`,
+                    desc: `Hafta sonu fikstürü öncesinde iddaa bayilerinde ve kahvehanelerde futbol sohbetleri alevlendi. Taraftarlar favori takımlarının maçlarını heyecanla bekliyor.`
+                }
+            ];
+            const magNews = magPool[(week + 2) % magPool.length];
+
+            return {
+                issueNo: 1000 + week,
+                weekStr: `HAFTA ${week}`,
+                sport: sportNews,
+                eco: ecoNews,
+                mag: magNews
+            };
+        }
+
+        function updateHomeNewsPreview() {
+            const week = (GAME && GAME.state && GAME.state.currentWeek) ? GAME.state.currentWeek : 1;
+            const news = generateRiseUpNews(week);
+            const previewEl = document.getElementById("home-news-headline-preview");
+            if (previewEl && news && news.sport) {
+                previewEl.innerText = `${news.sport.title}`;
             }
+        }
+
+        function openRiseUpNewsModal(customSportData) {
+            const week = (GAME && GAME.state && GAME.state.currentWeek) ? GAME.state.currentWeek : 1;
+            const news = generateRiseUpNews(week);
+            
+            // Allow overriding sport section if triggered as an alert/award
+            if (customSportData) {
+                if (customSportData.title) news.sport.title = customSportData.title;
+                if (customSportData.subtitle) news.sport.subtitle = customSportData.subtitle;
+                if (customSportData.desc) news.sport.desc = customSportData.desc;
+                if (customSportData.dateStr) news.weekStr = customSportData.dateStr;
+            }
+
+            const issueEl = document.getElementById("news-issue-no");
+            if (issueEl) issueEl.innerText = `SAYI: ${news.issueNo}`;
+            const dateEl = document.getElementById("news-date");
+            if (dateEl) dateEl.innerText = news.weekStr;
+            
+            // Sport Section
+            const titleEl = document.getElementById("news-title");
+            if (titleEl) titleEl.innerText = news.sport.title;
+            const subEl = document.getElementById("news-subtitle");
+            if (subEl) subEl.innerText = news.sport.subtitle;
+            const descEl = document.getElementById("news-desc");
+            if (descEl) descEl.innerHTML = news.sport.desc;
+            
+            // Economy Section
+            const tickerEl = document.getElementById("news-eco-ticker");
+            if (tickerEl) tickerEl.innerText = news.eco.ticker;
+            const ecoTitleEl = document.getElementById("news-eco-title");
+            if (ecoTitleEl) ecoTitleEl.innerText = news.eco.title;
+            const ecoDescEl = document.getElementById("news-eco-desc");
+            if (ecoDescEl) ecoDescEl.innerHTML = news.eco.desc;
+            
+            // Magazine Section
+            const magTitleEl = document.getElementById("news-mag-title");
+            if (magTitleEl) magTitleEl.innerText = news.mag.title;
+            const magDescEl = document.getElementById("news-mag-desc");
+            if (magDescEl) magDescEl.innerHTML = news.mag.desc;
+
+            const modal = document.getElementById("newspaper-modal");
+            if (modal) {
+                document.getElementById("btn-news-close").onclick = () => {
+                    modal.style.display = "none";
+                    modal.classList.remove("active");
+                    if (typeof checkForWhatsAppEvents === "function" && !checkForWhatsAppEvents()) {
+                        if (Math.random() < 0.4 && typeof triggerRandomEvent === "function") {
+                            triggerRandomEvent();
+                        }
+                    }
+                };
+
+                modal.style.display = "flex";
+                modal.classList.add("active");
+            }
+            
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playClick === "function") {
+                SoundManager.playClick();
+            }
+        }
+
+        window.openRiseUpNewsModal = openRiseUpNewsModal;
+        window.updateHomeNewsPreview = updateHomeNewsPreview;
+
+        function showNewspaperModal(dateStr, title, subtitle, desc) {
+            openRiseUpNewsModal({
+                dateStr: dateStr,
+                title: title,
+                subtitle: subtitle,
+                desc: desc
+            });
         }
 
         function checkForNewspaperAlert() {
             let week = GAME.state.currentWeek;
-            if (week === 14) {
-                showNewspaperModal(
-                    "HAFTA 14",
-                    "FUTBOLCULAR DAHA SIK ÇALIŞMALI!",
-                    "Ara Transfer Sezonuna Gözlemciler Geliyor!",
-                    "Ara transfer dönemine sadece 1 hafta kaldı! TFF kulüplerinin gözlemcileri genç yetenekleri izlemek üzere tribünlerdeki yerlerini almaya başladı. Uzmanlar, son 5 haftadır istikrarlı bir şekilde yüksek performans sergileyen ve antrenman sahasını aksatmayan futbolcuların çok daha büyük kulüplerden teklif alabileceğini belirtiyor. Antrenman yapıp kendinizi gösterin, transfer döneminde rüya teklifler kapın!"
-                );
-                return true;
-
-            } else if (week === 30) {
-                showNewspaperModal(
-                    "HAFTA 30",
-                    "FUTBOLCULAR DAHA SIK ÇALIŞMALI!",
-                    "Yaz Transfer Dönemi Yaklaşıyor, Büyük Yarış Kapıda!",
-                    "Sezonun sonuna doğru yaklaşırken yaz transfer dönemi heyecanı şimdiden başladı! Gazetelerin manşetlerinde genç yeteneklerin transfer dedikoduları yer alıyor. Büyük kulüplerin gözlemcileri sezonun son virajında oyuncuları mercek altına aldı. Son 5 maçta istikrarlı oynayıp antrenmanlarını sıkı tutan futbolcuların Süper Lig devlerinin radarına gireceği söyleniyor."
-                );
+            if (week === 14 || week === 30) {
+                openRiseUpNewsModal();
                 return true;
             }
             return false;
-        }
-
-        function showNewspaperModal(dateStr, title, subtitle, desc) {
-            document.getElementById("news-date").innerText = dateStr;
-            document.getElementById("news-title").innerText = title;
-            document.getElementById("news-subtitle").innerText = subtitle;
-            document.getElementById("news-desc").innerHTML = desc;
-            
-            const modal = document.getElementById("newspaper-modal");
-            
-            document.getElementById("btn-news-close").onclick = () => {
-                modal.classList.remove("active");
-                if (!checkForWhatsAppEvents()) {
-                    if (Math.random() < 0.4) {
-                        triggerRandomEvent();
-                    }
-                }
-            };
-            
-            modal.classList.add("active");
         }
 
         function resolvePendingDailyReward() {

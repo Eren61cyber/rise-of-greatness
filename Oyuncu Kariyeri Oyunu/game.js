@@ -1686,6 +1686,9 @@ const GAME = {
                 renderEsportsPanel();
             }
         }
+        if (typeof updateHomeNewsPreview === "function") {
+            updateHomeNewsPreview();
+        }
 
         // Update Desktop Sidebar Elements
         try {
