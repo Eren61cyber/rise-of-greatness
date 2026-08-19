@@ -711,6 +711,65 @@
                 </div>
             </section>
 
+            <!-- PANEL: MY CAREER (KARİYERİM) -->
+            <section id="panel-my-career" class="view-panel">
+                <div class="panel-header" style="margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <h2>Kariyerim</h2>
+                        <p style="color: var(--accent-green); font-weight: bold;" class="bind-player-name">Genç Yetenek</p>
+                    </div>
+                </div>
+
+                <div class="stat-grid-2x2">
+                    <div class="stat-box-item glass" style="background: linear-gradient(145deg, rgba(0, 229, 183, 0.1), rgba(0, 0, 0, 0.4));">
+                        <div class="stat-box-top">
+                            <div class="stat-box-icon">⚽</div>
+                        </div>
+                        <div class="stat-box-bottom">
+                            <div class="stat-box-value" id="career-total-goals">0</div>
+                            <div class="stat-box-label">TOPLAM GOL</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-box-item glass" style="background: linear-gradient(145deg, rgba(253, 185, 19, 0.1), rgba(0, 0, 0, 0.4));">
+                        <div class="stat-box-top">
+                            <div class="stat-box-icon">👟</div>
+                        </div>
+                        <div class="stat-box-bottom">
+                            <div class="stat-box-value" id="career-total-assists">0</div>
+                            <div class="stat-box-label">TOPLAM ASİST</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card glass" style="margin-top: 12px; padding: 14px;">
+                    <div style="font-size: 11px; font-weight: 800; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 12px;">💸 FİNANSAL DURUM</div>
+                    <div style="font-size: 24px; font-weight: 900; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.2);">
+                        €<span id="career-total-earnings">0</span>
+                    </div>
+                    <div style="font-size: 11px; color: #aaa; margin-top: 4px;">Kariyer Boyunca Kazanılan Toplam Para</div>
+                </div>
+
+                <div class="card glass" style="margin-top: 12px; padding: 14px;">
+                    <div style="font-size: 11px; font-weight: 800; color: var(--accent-red); text-transform: uppercase; margin-bottom: 12px;">🔥 UNUTULMAZ ANLAR</div>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <div style="font-size: 10px; color: #888; text-transform: uppercase;">En Farklı Galibiyet</div>
+                        <div style="font-size: 16px; font-weight: bold; color: var(--accent-green);" id="career-biggest-win">Yok</div>
+                    </div>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <div style="font-size: 10px; color: #888; text-transform: uppercase;">En Farklı Mağlubiyet</div>
+                        <div style="font-size: 16px; font-weight: bold; color: var(--accent-red);" id="career-biggest-loss">Yok</div>
+                    </div>
+
+                    <div>
+                        <div style="font-size: 10px; color: #888; text-transform: uppercase;">En Duygusal An</div>
+                        <div style="font-size: 13px; font-weight: normal; color: #ddd; font-style: italic; border-left: 2px solid var(--accent-yellow); padding-left: 8px; margin-top: 4px;" id="career-emotional-match">Kariyerinde henüz unutulmaz bir dram yaşanmadı.</div>
+                    </div>
+                </div>
+            </section>
+
             <section id="panel-standings" class="view-panel">
                 <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
                     <div>
@@ -746,6 +805,28 @@
                     <button class="btn btn-secondary" onclick="showFixturesModal()" style="font-size: 11.5px; padding: 8px 16px; width: 80%; max-width: 220px; font-weight: bold;">
                         📅 Lig Fikstürünü Göster
                     </button>
+                </div>
+
+                <!-- Lig Krallıkları (Gol & Asist) -->
+                <div class="card glass" style="margin-top: 16px; padding: 12px;">
+                    <div style="font-size: 12px; font-weight: 800; color: var(--accent-yellow); text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+                        <span>👑 LİG KRALLIKLARI</span>
+                        <div style="display:flex; gap:4px;">
+                            <button class="btn btn-primary" style="padding:4px 8px; font-size:10px;" onclick="document.getElementById('scorers-table').style.display=''; document.getElementById('assists-table').style.display='none';">GOL</button>
+                            <button class="btn btn-secondary" style="padding:4px 8px; font-size:10px;" onclick="document.getElementById('scorers-table').style.display='none'; document.getElementById('assists-table').style.display='';">ASİST</button>
+                        </div>
+                    </div>
+                    
+                    <div style="overflow-x: auto;">
+                        <table id="scorers-table" class="standings-table" style="min-width: 250px;">
+                            <thead><tr><th style="width:30px; text-align:center;">#</th><th style="text-align:left">Oyuncu</th><th style="text-align:center">Gol</th></tr></thead>
+                            <tbody id="top-scorers-body"></tbody>
+                        </table>
+                        <table id="assists-table" class="standings-table" style="min-width: 250px; display: none;">
+                            <thead><tr><th style="width:30px; text-align:center;">#</th><th style="text-align:left">Oyuncu</th><th style="text-align:center">Asist</th></tr></thead>
+                            <tbody id="top-assists-body"></tbody>
+                        </table>
+                    </div>
                 </div>
             </section>
 
@@ -827,6 +908,7 @@
                     <button class="shop-sub-tab" id="shop-sub-tefeci-btn" onclick="switchShopSubTab('tefeci')" style="padding:6px 14px; border-radius:20px; border:1px solid var(--border-glass); background:transparent; color:var(--text-muted); font-size:12px; cursor:pointer; transition:0.2s;">Tefeci (Borç)</button>
                     <button class="shop-sub-tab" id="shop-sub-packs-btn" onclick="switchShopSubTab('packs')" style="padding:6px 14px; border-radius:20px; border:1px solid var(--border-glass); background:transparent; color:var(--text-muted); font-size:12px; cursor:pointer; transition:0.2s; border-color: var(--accent-yellow); color: var(--accent-yellow);">🌟 Paket Açılımı</button>
                     <button class="shop-sub-tab" id="shop-sub-esports-btn" onclick="switchShopSubTab('esports')" style="padding:6px 14px; border-radius:20px; border:1px solid var(--border-glass); background:transparent; color:var(--text-muted); font-size:12px; cursor:pointer; transition:0.2s; border-color: #00E676; color: #00E676;">🎮 E-Spor Kulübü</button>
+                    <button class="shop-sub-tab" id="shop-sub-propass-btn" onclick="switchShopSubTab('propass')" style="padding:6px 14px; border-radius:20px; border:1px solid var(--border-glass); background:transparent; color:var(--text-muted); font-size:12px; cursor:pointer; transition:0.2s; border-color: #9c27b0; color: #9c27b0;">👑 Pro Pass</button>
                 </div>
 
                 <div class="shop-list" id="shop-items-container">
@@ -848,13 +930,20 @@
                 <div class="shop-list" id="shop-tefeci-container" style="display: none; flex-direction: column; gap: 12px;">
                     <!-- Dynamic tefeci borrowing panel rendering -->
                 </div>
-
                 <div class="shop-list" id="shop-packs-container" style="display: none; flex-direction: column; gap: 12px;">
                     <!-- Dynamic pack store & collection list rendering -->
                 </div>
 
                 <div class="shop-list" id="shop-esports-container" style="display: none; flex-direction: column; gap: 12px;">
                     <!-- Dynamic esports management rendering -->
+                </div>
+
+                <div class="shop-list" id="shop-propass-container" style="display: none; flex-direction: column; gap: 12px;">
+                    <div class="card glass" style="border: 2px solid #9c27b0; text-align: center; padding: 20px;">
+                        <h2 style="color: #9c27b0; margin-bottom: 10px;">👑 PRO PASS SATIN AL</h2>
+                        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Özel altın kaplama arayüz, isim yanında "PRO" rozeti ve maçlardan ekstra gelir kazanma şansı!</p>
+                        <button class="btn btn-primary" onclick="window.buyProPass()" style="background: linear-gradient(135deg, #9c27b0, #6a1b9a); border: none; padding: 12px 24px; font-weight: bold;">💎 150.000 € ile Satın Al</button>
+                    </div>
                 </div>
 
             </section>
@@ -906,10 +995,15 @@
         </main>
 
         <!-- Navigation Tabs (6-Tab Bar with Mağaza) -->
-        <nav class="bottom-nav bottom-nav-5tabs glass">
+        <nav class="bottom-nav glass">
             <button class="nav-tab active" data-target="panel-career">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Ana Sayfa
+            </button>
+            <button class="nav-tab" data-target="panel-my-career">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                Profil
+                Kariyer
+
             </button>
             <button class="nav-tab" data-target="panel-training">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5h11"/><path d="M6.5 17.5h11"/><path d="M3 10h2v4H3z"/><path d="M19 10h2v4h-2z"/><path d="M5 12h14"/><path d="M8 8v8"/><path d="M16 8v8"/></svg>
@@ -1426,6 +1520,57 @@
         </div>
 
         <!-- LIG FIXTURES MODAL -->
+        <!-- SEASON SUMMARY MODAL -->
+        <div class="event-modal-overlay" id="season-summary-modal" style="background: rgba(0,0,0,0.85); z-index: 10015; display: none; align-items: center; justify-content: center;">
+            <div class="event-card glass" style="max-width: 440px; text-align: center; border: 2px solid var(--primary); box-shadow: 0 0 30px rgba(0, 229, 255, 0.3); padding: 24px; border-radius: 12px; margin: 15px;">
+                <h3 class="event-tag" style="background: var(--primary); color: black; font-weight: 800; padding: 4px 10px; border-radius: 6px; font-size: 12px; width: fit-content; margin: 0 auto 12px auto; text-transform: uppercase;">🏆 SEZON SONA ERDİ</h3>
+                <h2 style="color: white; margin-bottom: 8px; font-size: 22px; font-family: 'Inter', sans-serif; font-weight: 800;" id="ss-modal-title">Sezon Özeti</h2>
+                <p style="color: #eee; font-size: 13.5px; margin-bottom: 20px; line-height: 1.5;" id="ss-modal-desc">Ligi tamamladın!</p>
+                
+                <div style="background: rgba(0,0,0,0.4); border-radius: 8px; padding: 15px; margin-bottom: 20px; border: 1px solid var(--border-glass);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                        <span style="color: var(--text-muted); font-size: 13px;">Oynanan Maç:</span>
+                        <span style="color: white; font-weight: bold; font-size: 14px;" id="ss-modal-apps">0</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                        <span style="color: var(--text-muted); font-size: 13px;">Sezon Golleri:</span>
+                        <span style="color: var(--accent-green); font-weight: bold; font-size: 14px;" id="ss-modal-goals">0</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                        <span style="color: var(--text-muted); font-size: 13px;">Sezon Asistleri:</span>
+                        <span style="color: var(--accent-yellow); font-weight: bold; font-size: 14px;" id="ss-modal-assists">0</span>
+                    </div>
+                    <div style="text-align: left; margin-top: 15px;">
+                        <span style="display: block; color: var(--primary); font-size: 12px; font-weight: bold; margin-bottom: 6px; text-transform: uppercase;">🔥 Sezonun En Unutulmaz Anı:</span>
+                        <span style="color: #ccc; font-size: 12.5px; font-style: italic; line-height: 1.4; display: block;" id="ss-modal-emotional">"Bu sezon pek bir olay olmadı."</span>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 14px; font-weight: bold;" onclick="closeSeasonSummaryModal()">DEVAM ET</button>
+            </div>
+        </div>
+
+        <!-- REWARDED AD MODAL -->
+        <div class="event-modal-overlay" id="ad-modal" style="background: rgba(0,0,0,0.9); z-index: 10010; display: none; align-items: center; justify-content: center;">
+            <div class="event-card glass" style="max-width: 400px; text-align: center; border: 2px solid var(--accent-green); box-shadow: 0 0 25px rgba(0, 229, 183, 0.25); padding: 24px; border-radius: 12px; margin: 15px;">
+                <h3 class="event-tag" style="background: var(--accent-green); color: black; font-weight: 800; padding: 4px 10px; border-radius: 6px; font-size: 11px; width: fit-content; margin: 0 auto 12px auto; text-transform: uppercase;">📺 SPONSOR VİDEOSU</h3>
+                <h2 style="color: white; margin-bottom: 8px; font-size: 20px; font-family: 'Inter', sans-serif; font-weight: 800;">Enerji İçeceği Reklamı</h2>
+                <p style="color: var(--text-muted); font-size: 12.5px; margin-bottom: 20px; line-height: 1.45;">Kondisyonun bitmek üzere! Bu reklamı izleyerek +50 Kondisyon kazanabilirsin.</p>
+                
+                <div id="ad-progress-container" style="display: none; flex-direction: column; gap: 8px; margin-bottom: 16px;">
+                    <div style="font-size: 11px; color: var(--accent-green); font-weight: bold;" id="ad-timer-text">Reklam Yükleniyor...</div>
+                    <div class="progress-bar" style="height: 10px; background: rgba(255,255,255,0.1); border-radius: 5px; overflow: hidden;">
+                        <div class="fill" id="ad-progress-bar" style="width: 0%; height: 100%; border-radius: 5px; background: var(--accent-green); transition: width 1s linear;"></div>
+                    </div>
+                </div>
+
+                <div id="ad-buttons-container" style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="btn btn-primary" id="btn-start-ad" style="width: 100%; padding: 12px; font-size: 13px; font-weight: bold;" onclick="startRewardedAd()">📺 İZLE VE KAZAN</button>
+                    <button class="btn btn-secondary" id="btn-close-ad" style="width: 100%; padding: 12px; font-size: 13px;" onclick="document.getElementById('ad-modal').style.display='none'">İPTAL</button>
+                </div>
+            </div>
+        </div>
+
         <div class="event-modal-overlay" id="fixtures-modal" style="z-index: 10006; display: none; align-items: center; justify-content: center;">
             <div class="event-card glass" style="max-width: 440px; padding: 20px; border-radius: 12px; max-height: 80vh; display: flex; flex-direction: column; overflow: hidden; width: 90%;">
                 <h3 class="event-tag" style="background: var(--primary); color: black; font-weight: 800; padding: 4px 10px; border-radius: 6px; font-size: 11px; width: fit-content; margin: 0 auto 12px auto; text-transform: uppercase;">📅 LİG SEZON FİKSTÜRÜ</h3>
@@ -4521,9 +4666,20 @@
             const pBtn = document.getElementById("btn-play-match");
             const sBtn = document.getElementById("btn-simulate-match");
             const rBtn = document.getElementById("btn-rest");
+            const adBtn = document.getElementById("btn-watch-ad");
+
             if (pBtn) pBtn.disabled = false;
             if (sBtn) sBtn.disabled = false;
             if (rBtn) rBtn.disabled = false;
+
+            if (adBtn) {
+                if (GAME && GAME.state && GAME.state.kondisyon < 30) {
+                    adBtn.style.display = "block";
+                } else {
+                    adBtn.style.display = "none";
+                }
+            }
+
 
             let week = GAME.state.currentWeek;
             
@@ -4946,6 +5102,7 @@
             const btnTefeci = document.getElementById("shop-sub-tefeci-btn");
             const btnPacks = document.getElementById("shop-sub-packs-btn");
             const btnEsports = document.getElementById("shop-sub-esports-btn");
+            const btnPropass = document.getElementById("shop-sub-propass-btn");
             
             const containerLifestyle = document.getElementById("shop-items-container");
             const containerConsumables = document.getElementById("shop-consumables-container");
@@ -4954,6 +5111,7 @@
             const containerTefeci = document.getElementById("shop-tefeci-container");
             const containerPacks = document.getElementById("shop-packs-container");
             const containerEsports = document.getElementById("shop-esports-container");
+            const containerPropass = document.getElementById("shop-propass-container");
             
             const setTabStyle = (btn, isActive) => {
                 if (!btn) return;
@@ -4987,6 +5145,7 @@
             if (containerTefeci) containerTefeci.style.display = (tabName === 'tefeci') ? 'flex' : 'none';
             if (containerPacks) containerPacks.style.display = (tabName === 'packs') ? 'flex' : 'none';
             if (containerEsports) containerEsports.style.display = (tabName === 'esports') ? 'flex' : 'none';
+            if (containerPropass) containerPropass.style.display = (tabName === 'propass') ? 'flex' : 'none';
             
             if (tabName === 'lifestyle') {
                 renderShopItems();
@@ -6933,7 +7092,150 @@
 
         }
 
+        // Gol ve Asist Krallığını Çiz
+        function renderLeagueScorers() {
+            if (!GAME || !GAME.state || !GAME.state.leagueScorers) return;
+
+            const scorersBody = document.getElementById("top-scorers-body");
+            const assistsBody = document.getElementById("top-assists-body");
+            if (!scorersBody || !assistsBody) return;
+
+            // Player'i krallıklara dahil et
+            let playerGoalObj = { name: GAME.state.playerName, club: GAME.state.currentClub, goals: GAME.state.seasonGoals, assists: GAME.state.seasonAssists, isPlayer: true };
+            
+            let allScorers = [...GAME.state.leagueScorers, playerGoalObj];
+            
+            // Gol Krallığı Sıralaması
+            allScorers.sort((a, b) => b.goals - a.goals);
+            scorersBody.innerHTML = "";
+            allScorers.forEach((s, idx) => {
+                if(idx > 9) return; // Top 10
+                let style = s.isPlayer ? "background: rgba(0,229,183,0.1); font-weight:bold;" : "";
+                let noStyle = idx === 0 ? "color: var(--accent-yellow); font-weight: bold;" : "";
+                scorersBody.innerHTML += `
+                    <tr style="${style}">
+                        <td style="text-align:center; ${noStyle}">${idx + 1}</td>
+                        <td>${s.name} <br><span style="font-size:9px; color:#888;">${s.club}</span></td>
+                        <td style="text-align:center; font-weight:bold; color:var(--primary); font-size:16px;">${s.goals}</td>
+                    </tr>
+                `;
+            });
+
+            // Asist Krallığı Sıralaması
+            allScorers.sort((a, b) => b.assists - a.assists);
+            assistsBody.innerHTML = "";
+            allScorers.forEach((s, idx) => {
+                if(idx > 9) return; // Top 10
+                let style = s.isPlayer ? "background: rgba(0,229,183,0.1); font-weight:bold;" : "";
+                let noStyle = idx === 0 ? "color: var(--accent-yellow); font-weight: bold;" : "";
+                assistsBody.innerHTML += `
+                    <tr style="${style}">
+                        <td style="text-align:center; ${noStyle}">${idx + 1}</td>
+                        <td>${s.name} <br><span style="font-size:9px; color:#888;">${s.club}</span></td>
+                        <td style="text-align:center; font-weight:bold; color:var(--secondary); font-size:16px;">${s.assists}</td>
+                    </tr>
+                `;
+            });
+        }
+
         // Fikstür modalını göster
+        // Ad Functions
+        // Season Summary Functions
+        window.showSeasonSummaryModal = function(title, message, stats) {
+            const modal = document.getElementById("season-summary-modal");
+            if (!modal) return;
+            
+            document.getElementById("ss-modal-title").innerText = title || "Sezon Özeti";
+            document.getElementById("ss-modal-desc").innerHTML = message || "Bir sezon daha bitti.";
+            
+            if (stats) {
+                document.getElementById("ss-modal-apps").innerText = `${stats.apps} Maç`;
+                document.getElementById("ss-modal-goals").innerText = `${stats.goals} Gol`;
+                document.getElementById("ss-modal-assists").innerText = `${stats.assists} Asist`;
+                document.getElementById("ss-modal-emotional").innerText = stats.emotionalMatch || "Sıradan bir sezondu...";
+            }
+            
+            modal.style.display = "flex";
+        };
+
+        window.closeSeasonSummaryModal = function() {
+            const modal = document.getElementById("season-summary-modal");
+            if (modal) modal.style.display = "none";
+        };
+
+        window.showAdModal = function() {
+            const modal = document.getElementById("ad-modal");
+            if (modal) {
+                modal.style.display = "flex";
+                document.getElementById("ad-progress-container").style.display = "none";
+                document.getElementById("ad-buttons-container").style.display = "flex";
+                document.getElementById("ad-progress-bar").style.width = "0%";
+            }
+        };
+
+        window.startRewardedAd = function() {
+            const progressContainer = document.getElementById("ad-progress-container");
+            const buttonsContainer = document.getElementById("ad-buttons-container");
+            const progressBar = document.getElementById("ad-progress-bar");
+            const timerText = document.getElementById("ad-timer-text");
+            
+            buttonsContainer.style.display = "none";
+            progressContainer.style.display = "flex";
+            
+            let timeLeft = 15;
+            timerText.innerText = `Reklam Yükleniyor... ${timeLeft}s`;
+            
+            // Start progress animation
+            setTimeout(() => {
+                progressBar.style.transition = "width 15s linear";
+                progressBar.style.width = "100%";
+            }, 100);
+
+            const interval = setInterval(() => {
+                timeLeft--;
+                timerText.innerText = `Reklam Yükleniyor... ${timeLeft}s`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    document.getElementById("ad-modal").style.display = "none";
+                    
+                    if (GAME && GAME.state) {
+                        GAME.state.kondisyon = Math.min(100, GAME.state.kondisyon + 50);
+                        GAME.updateUI();
+                        GAME.saveGame();
+                        alert("Tebrikler! Reklamı izlediniz ve +50 Kondisyon kazandınız!");
+                        determineNextOpponent(); // Refresh button state
+                    }
+                }
+            }, 1000);
+        };
+
+        window.buyProPass = function() {
+            if (!GAME || !GAME.state) return;
+            
+            if (GAME.state.proPassActive) {
+                alert("Zaten Pro Pass sahibisiniz!");
+                return;
+            }
+
+            const cost = 150000;
+            if (GAME.state.money >= cost) {
+                GAME.state.money -= cost;
+                GAME.state.proPassActive = true;
+                GAME.updateUI();
+                GAME.saveGame();
+                alert("👑 Tebrikler! Pro Pass satın aldınız. İsmine PRO rozeti eklenecek ve artık ekstra maç geliri kazanacaksınız!");
+                
+                // Add visual badge to player name across the app
+                const nameElements = document.querySelectorAll('.bind-player-name');
+                nameElements.forEach(el => {
+                    el.innerHTML = `${GAME.state.playerName} <span style="background:var(--accent-yellow); color:black; font-size:10px; padding:2px 4px; border-radius:4px; font-weight:bold;">PRO</span>`;
+                });
+            } else {
+                alert(`Yetersiz bakiye! Pro Pass almak için ${cost.toLocaleString()} € gerekiyor.`);
+            }
+        };
+
         window.showFixturesModal = function() {
             const modal = document.getElementById("fixtures-modal");
             const container = document.getElementById("fixtures-list-container");
@@ -7446,6 +7748,7 @@
 
                 // Update stats
                 GAME.state.careerApps++;
+                GAME.state.seasonApps = (GAME.state.seasonApps || 0) + 1;
                 GAME.state.careerGoals += playerGoalsThisMatch;
                 GAME.state.careerAssists += playerAssistsThisMatch;
                 GAME.state.seasonGoals += playerGoalsThisMatch;
@@ -7924,6 +8227,7 @@
                     }
 
                     GAME.state.careerApps++;
+                    GAME.state.seasonApps = (GAME.state.seasonApps || 0) + 1;
                     GAME.state.careerGoals += pGoals;
                     GAME.state.careerAssists += pAssists;
                     GAME.state.seasonGoals += pGoals;
@@ -7931,6 +8235,55 @@
                     GAME.state.kondisyon = Math.max(10, GAME.state.kondisyon - 30);
 
                     let scoreDiff = result.score.player - result.score.opponent;
+                    let scoreStr = `${result.score.player}-${result.score.opponent}`;
+
+                    // En farklı skorları kaydet
+                    if (scoreDiff > 0) {
+                        let currentMaxDiff = GAME.state.biggestWin ? (parseInt(GAME.state.biggestWin.split("-")[0]) - parseInt(GAME.state.biggestWin.split("-")[1])) : 0;
+                        if (scoreDiff > currentMaxDiff) {
+                            GAME.state.biggestWin = scoreStr;
+                        }
+                    } else if (scoreDiff < 0) {
+                        let currentMinDiff = GAME.state.biggestLoss ? (parseInt(GAME.state.biggestLoss.split("-")[0]) - parseInt(GAME.state.biggestLoss.split("-")[1])) : 0;
+                        if (scoreDiff < currentMinDiff) {
+                            GAME.state.biggestLoss = scoreStr;
+                        }
+                    }
+
+                    // En duygusal maçı simüle et (Daha fazla çeşitlendirilmiş spiker tepkileri)
+                    const winQuotes = [
+                        `"90+4'te iğne deliğinden geçirdi! Şampiyonluk habercisi gol!"`,
+                        `"Stadyum yıkılıyor! Son saniyede gelen bu gol tarihe geçer!"`,
+                        `"Adeta yerçekimine meydan okudu! Mükemmel bir son dakika zaferi!"`,
+                        `"Kim derdi ki bu maç böyle bitecek! İnanılmaz bir geri dönüş, inanılmaz bir karakter!"`,
+                        `"Kalecinin yapabileceği hiçbir şey yok! 90+5'te şapkadan tavşan çıkardı!"`
+                    ];
+                    
+                    const loseDrawQuotes = [
+                        `"90+4'te kaleciyle karşı karşıya... Okyanusu geçti derede boğuldu! Kaçan bu akılalmaz golle takım kahroldu..."`,
+                        `"Son saniyede o direk nasıl geçit vermez?! Spikerin bile nefesi kesildi!"`,
+                        `"Herkes gol diye ayağa kalktı... Top çizgiyi yalayarak dışarı çıktı. Yürek dayanmaz bu anlara!"`,
+                        `"Bomboş kale! Nasıl kaçar bu pozisyon! Tüm sezonun emeği bu vuruşta yatıyordu..."`,
+                        `"Kaleci 90+6'da uzadı, adeta bir ahtapot gibi çıkardı o topu! Stadyumda ölüm sessizliği..."`
+                    ];
+
+                    let isDramatic = false;
+                    let selectedQuote = "";
+
+                    if (scoreDiff > 0 && pGoals > 0 && Math.random() < 0.25) {
+                        isDramatic = true;
+                        selectedQuote = winQuotes[Math.floor(Math.random() * winQuotes.length)];
+                    } else if (scoreDiff <= 0 && pGoals === 0 && Math.random() < 0.25) {
+                        isDramatic = true;
+                        selectedQuote = loseDrawQuotes[Math.floor(Math.random() * loseDrawQuotes.length)];
+                    }
+
+                    if (isDramatic) {
+                        if (!GAME.state.mostEmotionalMatch || Math.random() < 0.3) {
+                            GAME.state.mostEmotionalMatch = `vs ${nextOpponent.name} (${scoreStr}) | ${selectedQuote}`;
+                        }
+                    }
+
 
                     // Resolve shike for interactive match
                     resolveMatchShike(scoreDiff, pGoals);

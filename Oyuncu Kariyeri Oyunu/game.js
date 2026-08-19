@@ -36,7 +36,13 @@ const GAME = {
         seasonAssists: 0,
         careerGoals: 0,
         careerAssists: 0,
-        careerApps: 0
+        careerApps: 0,
+        totalEarnings: 0,
+        biggestWin: null,
+        biggestLoss: null,
+        mostEmotionalMatch: null,
+        proPassActive: false,
+        leagueScorers: []
     },
 
     saveKey: "soccer_atlas_career_save",
@@ -87,6 +93,21 @@ const GAME = {
             careerGoals: 0,
             careerAssists: 0,
             careerApps: 0,
+            totalEarnings: 0,
+            biggestWin: null,
+            biggestLoss: null,
+            mostEmotionalMatch: null,
+            proPassActive: false,
+            leagueScorers: [
+                { name: "V. Osimhen", club: "Galatasaray", goals: 0, assists: 0 },
+                { name: "A. Talisca", club: "Fenerbahçe", goals: 0, assists: 0 },
+                { name: "P. Onuachu", club: "Trabzonspor", goals: 0, assists: 0 },
+                { name: "E. Shomurodov", club: "Başakşehir", goals: 0, assists: 0 },
+                { name: "M. Icardi", club: "Galatasaray", goals: 0, assists: 0 },
+                { name: "M. Bayo", club: "Gaziantep", goals: 0, assists: 0 },
+                { name: "R. Silva", club: "Beşiktaş", goals: 0, assists: 0 },
+                { name: "K. Aktürkoğlu", club: "Galatasaray", goals: 0, assists: 0 }
+            ],
             leagueTable: [],
             lastOpponentName: null,
             nextOpponentName: null,
@@ -998,8 +1019,25 @@ const GAME = {
             }
         }
 
+        // Krallık Simülasyonu
+        this.simulateLeagueScorers();
+
         this.saveGame();
         this.updateUI();
+    },
+
+    simulateLeagueScorers: function() {
+        if (!this.state.leagueScorers) return;
+        this.state.leagueScorers.forEach(scorer => {
+            // Random chance to score 0, 1, or 2 goals/assists each week
+            let rG = Math.random();
+            if (rG > 0.90) scorer.goals += 2;
+            else if (rG > 0.50) scorer.goals += 1;
+
+            let rA = Math.random();
+            if (rA > 0.95) scorer.assists += 2;
+            else if (rA > 0.65) scorer.assists += 1;
+        });
     },
 
     getClubSalaryAndVal: function() {
@@ -1498,8 +1536,14 @@ const GAME = {
 
     updateUI: function() {
         this.applyTheme();
+        
+        let pNameStr = this.state.playerName;
+        if (this.state.proPassActive) {
+            pNameStr += ` <span style="background:var(--accent-yellow); color:black; font-size:10px; padding:2px 4px; border-radius:4px; font-weight:bold;">PRO</span>`;
+        }
+
         const bindings = {
-            "player-name": this.state.playerName,
+            "player-name": pNameStr,
             "player-age": this.state.age,
             "player-rating": this.state.rating,
             "player-position": this.state.position,
@@ -1519,6 +1563,12 @@ const GAME = {
             "career-goals": this.state.careerGoals,
             "career-assists": this.state.careerAssists,
             "career-apps": this.state.careerApps,
+            "career-total-goals": this.state.careerGoals,
+            "career-total-assists": this.state.careerAssists,
+            "career-total-earnings": this.state.totalEarnings ? this.state.totalEarnings.toLocaleString() : "0",
+            "career-biggest-win": this.state.biggestWin || "Yok",
+            "career-biggest-loss": this.state.biggestLoss || "Yok",
+            "career-emotional-match": this.state.mostEmotionalMatch || "Kariyerinde henüz unutulmaz bir dram yaşanmadı.",
             "current-week": this.state.currentWeek,
             "career-rel-trust": (this.state.hocaGuveni || 50) + "%",
             "career-rel-team": (this.state.takimUyumu || 50) + "%",
@@ -1551,11 +1601,13 @@ const GAME = {
         for (let id in bindings) {
             const el = document.getElementById(id);
             if (el) {
-                el.innerText = bindings[id];
+                if (id === "player-name") el.innerHTML = bindings[id];
+                else el.innerText = bindings[id];
             }
             const elements = document.querySelectorAll(".bind-" + id);
             elements.forEach(item => {
-                item.innerText = bindings[id];
+                if (id === "player-name") item.innerHTML = bindings[id];
+                else item.innerText = bindings[id];
             });
         }
 
@@ -1600,6 +1652,10 @@ const GAME = {
         // Render current league standings in UI if container exists
         if (typeof renderLeagueTable === "function") {
             renderLeagueTable();
+        }
+
+        if (typeof renderLeagueScorers === "function") {
+            renderLeagueScorers();
         }
 
         // Render current social feed in UI if container exists
@@ -1959,9 +2015,19 @@ const GAME = {
             message += relegationMsg + "<br><br>";
         }
 
+        // Stats for the modal before reset
+        const seasonStats = {
+            goals: this.state.seasonGoals,
+            assists: this.state.seasonAssists,
+            apps: this.state.seasonApps || Math.round((this.state.seasonGoals + this.state.seasonAssists) * 1.5) || 34,
+            emotionalMatch: this.state.mostEmotionalMatch || "Bu sezon olağanüstü bir dram yaşanmadı."
+        };
+
         // Reset season stats
         this.state.seasonGoals = 0;
         this.state.seasonAssists = 0;
+        this.state.seasonApps = 0;
+        this.state.mostEmotionalMatch = null;
         this.state.currentWeek = 1;
         
         // Reset league table
@@ -1972,7 +2038,7 @@ const GAME = {
         this.updateUI();
 
         if (window.showSeasonSummaryModal) {
-            window.showSeasonSummaryModal(title, message);
+            window.showSeasonSummaryModal(title, message, seasonStats);
         } else {
             alert(`Sezon sona erdi! Yaşın ${this.state.age} oldu. Ligi ${rank}. sırada tamamladın.`);
         }
