@@ -1355,7 +1355,10 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-primary" id="intro-btn-custom-save" style="width: 100%; padding: 14px; font-size: 14px; font-weight: bold;">GÖRÜNÜMÜ KAYDET VE DEVAM ET</button>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-secondary" id="intro-btn-custom-back" style="flex: 1; padding: 14px; font-size: 14px; font-weight: bold;">GERİ</button>
+                        <button class="btn btn-primary" id="intro-btn-custom-save" style="flex: 2; padding: 14px; font-size: 14px; font-weight: bold;">KAYDET VE DEVAM ET</button>
+                    </div>
                 </div>
 
                 <!-- Step 2: Cinematic Storytelling -->
@@ -3336,20 +3339,33 @@
                 const startBtn = document.getElementById("intro-btn-start");
 
                 nextBtn1.addEventListener("click", () => {
+                    const nameInput = document.getElementById("intro-name-input").value.trim();
+                    const cityInput = document.getElementById("intro-city-input").value.trim();
+                    const districtInput = document.getElementById("intro-district-input").value.trim();
+                    
+                    if (!nameInput || !cityInput || !districtInput) {
+                        alert("Lütfen kariyerine başlamadan önce adını, doğduğun şehri ve ilçeyi eksiksiz gir!");
+                        return;
+                    }
+
                     document.getElementById("intro-step-1").style.display = "none";
                     document.getElementById("intro-step-custom").style.display = "block";
                     updateIntroAvatarPreview();
                 });
 
+                const backCustomBtn = document.getElementById("intro-btn-custom-back");
+                if (backCustomBtn) {
+                    backCustomBtn.addEventListener("click", () => {
+                        document.getElementById("intro-step-custom").style.display = "none";
+                        document.getElementById("intro-step-1").style.display = "block";
+                    });
+                }
+
                 const saveCustomBtn = document.getElementById("intro-btn-custom-save");
                 saveCustomBtn.addEventListener("click", () => {
                     const nameInput = document.getElementById("intro-name-input").value.trim();
-                    if (!nameInput) {
-                        alert("Lütfen kariyerine başlamadan önce adını ve soyadını gir!");
-                        return;
-                    }
-                    const city = document.getElementById("intro-city-input").value.trim() || "Sinop";
-                    const district = document.getElementById("intro-district-input").value.trim() || "Gerze";
+                    const city = document.getElementById("intro-city-input").value.trim();
+                    const district = document.getElementById("intro-district-input").value.trim();
                     
                     document.getElementById("intro-step-custom").style.display = "none";
                     document.getElementById("intro-step-2").style.display = "block";
