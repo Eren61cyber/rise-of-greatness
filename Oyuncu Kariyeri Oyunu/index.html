@@ -16,6 +16,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <script>
+        // Fix relative resource loading on Vercel if opened without trailing slash
+        if (window.location.pathname.endsWith('/Oyuncu%20Kariyeri%20Oyunu') || window.location.pathname.endsWith('/Oyuncu Kariyeri Oyunu')) {
+            window.location.replace(window.location.pathname + '/' + window.location.search + window.location.hash);
+        }
+    </script>
+    <base href="./">
     <link rel="stylesheet" href="styles.css?v=1.4">
     <script>
         window.onerror = function(message, source, lineno, colno, error) {
@@ -3411,7 +3418,8 @@
                 }
             } catch(e){}
 
-            if(!localStorage.getItem(GAME.saveKey)) {
+            const saveKey = (typeof GAME !== "undefined" && GAME.saveKey) ? GAME.saveKey : "soccer_atlas_career_save";
+            if(!localStorage.getItem(saveKey)) {
 
                 const introModal = document.getElementById("intro-modal");
                 introModal.classList.add("active");
@@ -3587,13 +3595,14 @@
         // 📰 RISEUP NEWS - HAFTALIK DİNAMİK GAZETE SİSTEMİ
         // ==========================================================================
         function generateRiseUpNews(week) {
-            const pName = (GAME && GAME.state && GAME.state.playerName) ? GAME.state.playerName : "Genç Yıldız";
-            const club = (GAME && GAME.state && GAME.state.currentClub) ? GAME.state.currentClub : "Kulübümüz";
-            const league = (GAME && GAME.state && GAME.state.currentLeague) ? GAME.state.currentLeague : "Süper Lig";
-            const hometown = (GAME && GAME.state && GAME.state.hometownCity) ? GAME.state.hometownCity : "Memleket";
-            const district = (GAME && GAME.state && GAME.state.hometownDistrict) ? GAME.state.hometownDistrict : "Merkez";
-            const goals = (GAME && GAME.state && GAME.state.seasonGoals) ? GAME.state.seasonGoals : 0;
-            const rating = (GAME && GAME.state && GAME.state.rating) ? GAME.state.rating : 65;
+            const hasGame = (typeof GAME !== "undefined" && GAME && GAME.state);
+            const pName = (hasGame && GAME.state.playerName) ? GAME.state.playerName : "Genç Yıldız";
+            const club = (hasGame && GAME.state.currentClub) ? GAME.state.currentClub : "Kulübümüz";
+            const league = (hasGame && GAME.state.currentLeague) ? GAME.state.currentLeague : "Süper Lig";
+            const hometown = (hasGame && GAME.state.hometownCity) ? GAME.state.hometownCity : "Memleket";
+            const district = (hasGame && GAME.state.hometownDistrict) ? GAME.state.hometownDistrict : "Merkez";
+            const goals = (hasGame && GAME.state.seasonGoals) ? GAME.state.seasonGoals : 0;
+            const rating = (hasGame && GAME.state.rating) ? GAME.state.rating : 65;
 
             // 1. ⚽ SPOR & FUTBOL MANŞETİ
             let sportNews = {};
@@ -3709,7 +3718,7 @@
         }
 
         function updateHomeNewsPreview() {
-            const week = (GAME && GAME.state && GAME.state.currentWeek) ? GAME.state.currentWeek : 1;
+            const week = (typeof GAME !== "undefined" && GAME && GAME.state && GAME.state.currentWeek) ? GAME.state.currentWeek : 1;
             const news = generateRiseUpNews(week);
             const previewEl = document.getElementById("home-news-headline-preview");
             if (previewEl && news && news.sport) {
@@ -3718,7 +3727,7 @@
         }
 
         function openRiseUpNewsModal(customSportData) {
-            const week = (GAME && GAME.state && GAME.state.currentWeek) ? GAME.state.currentWeek : 1;
+            const week = (typeof GAME !== "undefined" && GAME && GAME.state && GAME.state.currentWeek) ? GAME.state.currentWeek : 1;
             const news = generateRiseUpNews(week);
             
             // Allow overriding sport section if triggered as an alert/award
