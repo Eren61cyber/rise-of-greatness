@@ -1236,11 +1236,11 @@
         <!-- INTERVIEW MODAL -->
         <div class="event-modal-overlay" id="interview-modal">
             <div class="event-card glass" style="max-width: 420px; text-align: center;">
-                <h3 class="event-tag" style="background: var(--accent-purple); color: white; font-weight: 800; padding: 4px 10px; border-radius: 6px; font-size: 10px; width: fit-content; margin: 0 auto 12px auto; text-transform: uppercase;">🎤 Maç Sonu Röportajı</h3>
+                <h3 id="interview-tag" class="event-tag" style="background: var(--accent-purple); color: white; font-weight: 800; padding: 4px 10px; border-radius: 6px; font-size: 10px; width: fit-content; margin: 0 auto 12px auto; text-transform: uppercase;">🎤 Maç Sonu Röportajı</h3>
                 <h2 style="color: white; margin-bottom: 15px;">Mikrofonlar Sende!</h2>
                 
                 <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass); border-radius: 12px; padding: 15px; margin-bottom: 20px; text-align: left;">
-                    <p style="font-size: 12px; color: var(--accent-purple); font-weight: bold; margin-bottom: 6px;">🎤 Spor Muhabiri:</p>
+                    <p id="interview-reporter" style="font-size: 12px; color: var(--accent-purple); font-weight: bold; margin-bottom: 6px;">🎙️ Spor Muhabiri:</p>
                     <p id="interview-question" style="font-size: 14px; color: white; line-height: 1.5; font-style: italic;">
                         "Bugün sahada adeta fırtına gibi estiniz ve Maçın Oyuncusu seçildiniz. Bu harika performansınız hakkında neler söyleyeceksiniz?"
                     </p>
@@ -3765,6 +3765,80 @@
                 }
                 GAME.addSocialPost(eceHandle, eceName, ecePost);
             }
+        }
+
+        function openPreMatchInterview(opponentName, callback) {
+            const interviewModal = document.getElementById("interview-modal");
+            document.getElementById("interview-tag").innerText = "🔥 DERBİ ÖNCESİ BASIN TOPLANTISI";
+            document.getElementById("interview-tag").style.background = "var(--accent-red)";
+            document.getElementById("interview-reporter").innerText = "🎙️ Derbi Özel Muhabiri:";
+            
+            const qEl = document.getElementById("interview-question");
+            qEl.innerText = `"Bu hafta ${opponentName} ile çok kritik bir derbi maçına çıkıyorsunuz. Şehirde nefesler tutuldu! Rakibiniz çok formda, maça nasıl hazırlandınız?"`;
+
+            const opt1 = document.getElementById("interview-opt-1");
+            const opt2 = document.getElementById("interview-opt-2");
+            const opt3 = document.getElementById("interview-opt-3");
+
+            // Clone and replace to strip old event listeners
+            const newOpt1 = opt1.cloneNode(true);
+            const newOpt2 = opt2.cloneNode(true);
+            const newOpt3 = opt3.cloneNode(true);
+            opt1.parentNode.replaceChild(newOpt1, opt1);
+            opt2.parentNode.replaceChild(newOpt2, opt2);
+            opt3.parentNode.replaceChild(newOpt3, opt3);
+
+            newOpt1.innerHTML = `
+                <span class="choice-text" style="font-weight: bold; color: var(--primary); display: block; margin-bottom: 2px;">"Zor bir maç olacak ama kendi oyunumuza odaklandık, kazanmak istiyoruz." (Saygılı)</span>
+                <span class="choice-effect" style="font-size: 10px; color: var(--text-muted);">+5 Moral, +500 Takipçi</span>
+            `;
+            
+            newOpt2.innerHTML = `
+                <span class="choice-text" style="font-weight: bold; color: var(--accent-yellow); display: block; margin-bottom: 2px;">"Rakibin kim olduğu umrumda değil, çıkıp eze eze yeneceğiz!" (Agresif)</span>
+                <span class="choice-effect" style="font-size: 10px; color: var(--text-muted);">-10 Hoca Güveni, Rakip Agresifleşir, +3000 Takipçi</span>
+            `;
+            
+            newOpt3.innerHTML = `
+                <span class="choice-text" style="font-weight: bold; color: var(--accent-purple); display: block; margin-bottom: 2px;">"Ben sahada konuşurum, gazetecilere değil. (Röportajı terk et)" (Soğuk)</span>
+                <span class="choice-effect" style="font-size: 10px; color: var(--text-muted);">-5 Moral, Medya ile zıtlaşma</span>
+            `;
+
+            newOpt1.addEventListener("click", () => {
+                GAME.state.moral = Math.min(100, GAME.state.moral + 5);
+                GAME.state.followers += 500;
+                finishPreMatch();
+            });
+
+            newOpt2.addEventListener("click", () => {
+                GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 10);
+                GAME.state.followers += 3000;
+                // Agresif cevap rakibi güçlendirebilir
+                if(nextOpponent) {
+                    nextOpponent.att = Math.min(99, nextOpponent.att + 3);
+                    nextOpponent.def = Math.min(99, nextOpponent.def + 3);
+                }
+                GAME.addSocialPost("@derbi_atesi", "Derbi Ateşi", `${GAME.state.playerName}: "Çıkıp eze eze yeneceğiz!" açıklaması ortalığı karıştırdı. Rakip takım taraftarları sosyal medyada ayaklandı! 🔥😡`);
+                finishPreMatch();
+            });
+
+            newOpt3.addEventListener("click", () => {
+                GAME.state.moral = Math.max(0, GAME.state.moral - 5);
+                GAME.addSocialPost("@spor_manset", "Spor Manşetleri", `${GAME.state.playerName} soruyu bile dinlemeden toplantıyı terk etti. Bu kibirin sonu ne olacak? 🥶`);
+                finishPreMatch();
+            });
+
+            function finishPreMatch() {
+                interviewModal.classList.remove("active");
+                GAME.saveGame();
+                GAME.updateUI();
+                // Reset styling for future post-match interviews
+                document.getElementById("interview-tag").innerText = "🎤 Maç Sonu Röportajı";
+                document.getElementById("interview-tag").style.background = "var(--accent-purple)";
+                document.getElementById("interview-reporter").innerText = "🎙️ Spor Muhabiri:";
+                if (callback) callback();
+            }
+
+            interviewModal.classList.add("active");
         }
 
         function proceedPostMatch() {
@@ -7693,8 +7767,23 @@
             if (pBtn) pBtn.disabled = true;
             if (sBtn) sBtn.disabled = true;
 
+            // PRE MATCH DERBY INTERVIEW LOGIC
+            const derbyTeams = ["Galatastar", "Kartal FK", "Trabzonstar", "Bahçeşehir"];
+            if (nextOpponent && derbyTeams.includes(nextOpponent.name)) {
+                let wKey = `preMatchInterviewDone_w${GAME.state.currentWeek}`;
+                if (!GAME.state[wKey]) {
+                    GAME.state[wKey] = true;
+                    openPreMatchInterview(nextOpponent.name, () => {
+                        simulateMatchFast(); // recursively call after interview
+                    });
+                    return; // Stop current execution
+                }
+            }
+
             if (GAME.state.kondisyon < 20) {
                 alert("Simüle etmek için yeterli enerjiniz yok. Lütfen dinlenin.");
+                if (pBtn) pBtn.disabled = false;
+                if (sBtn) sBtn.disabled = false;
                 return;
             }
 
