@@ -2049,281 +2049,273 @@ const GAME = {
 
     generateAvatar: function(age) {
         let cust = this.state.avatarCustomization || {};
-        
-        let skinColor = cust.skinColor || "#E2B28B";
-        let eyeColor = cust.eyeColor || "#5A3D28";
-        let hairColor = cust.hairColor || "#1A1A1A";
-        let hairStyle = cust.hairStyle || "short";
-        let beardStyle = cust.beardStyle || "none";
-        
-        let primaryColor = "#455A64";
-        let secondaryColor = "#ffffff";
+
+        let skinColor  = cust.skinColor  || "#E8B98A";
+        let eyeColor   = cust.eyeColor   || "#4A3020";
+        let hairColor  = cust.hairColor  || "#1C1C1C";
+        let hairStyle  = cust.hairStyle  || "short";
+        let beardStyle = cust.beardStyle || "stubble";
+
+        // ── Club Kit Colours ───────────────────────────────────────
+        let kitPrimary   = "#1A3A6B";
+        let kitSecondary = "#FFFFFF";
         const clubName = this.state ? this.state.currentClub : null;
         if (clubName && typeof DATABASE !== "undefined") {
-            let foundClub = null;
+            let found = null;
             for (let l in DATABASE.LEAGUES) {
                 let c = DATABASE.LEAGUES[l].teams.find(x => x.name === clubName);
-                if (c) { foundClub = c; break; }
+                if (c) { found = c; break; }
             }
-            if (!foundClub && DATABASE.AMATEUR_CLUBS) {
-                foundClub = DATABASE.AMATEUR_CLUBS.find(x => x.name === clubName);
-            }
-            if (foundClub) {
-                primaryColor = foundClub.color;
-                secondaryColor = foundClub.colorSec || "#ffffff";
+            if (!found && DATABASE.AMATEUR_CLUBS)
+                found = DATABASE.AMATEUR_CLUBS.find(x => x.name === clubName);
+            if (found) {
+                kitPrimary   = found.color;
+                kitSecondary = found.colorSec || "#FFFFFF";
             }
         }
-        
-        let skinNorm = skinColor.toUpperCase();
-        let palette = {
-            base: "#E2B28B",
-            highlight: "#F5D2B8",
-            shadow: "#C89572",
-            deepShadow: "#A77553",
-            blush: "rgba(224, 130, 110, 0.18)",
-            lip: "#C86B67",
-            lipShadow: "#984747",
-            ears: "#D9A481"
+
+        // ── Skin Palette ───────────────────────────────────────────
+        const skinPalettes = {
+            "#FFD1A9": { hi:"#FFF0E0", mid:"#FFD1A9", sh:"#E8B380", dsh:"#C8924F", lip:"#D87070", earSh:"#E8A070" },
+            "#E8B98A": { hi:"#F8D8B0", mid:"#E8B98A", sh:"#C89060", dsh:"#A87040", lip:"#C86060", earSh:"#D8A060" },
+            "#C48E66": { hi:"#D8AA82", mid:"#C48E66", sh:"#A87048", dsh:"#885030", lip:"#A85050", earSh:"#B88060" },
+            "#805435": { hi:"#9A6E4A", mid:"#805435", sh:"#603C22", dsh:"#422412", lip:"#803838", earSh:"#704030" },
+            "#4F301F": { hi:"#62402A", mid:"#4F301F", sh:"#38200E", dsh:"#221006", lip:"#5A2828", earSh:"#452818" },
         };
+        const P = skinPalettes[skinColor] || skinPalettes["#E8B98A"];
 
-        if (skinNorm === "#FFD1A9") {
-            palette = {
-                base: "#FFD1A9",
-                highlight: "#FFEAD8",
-                shadow: "#E4B48D",
-                deepShadow: "#C6936C",
-                blush: "rgba(240, 140, 130, 0.2)",
-                lip: "#D57A77",
-                lipShadow: "#A85350",
-                ears: "#F2C098"
-            };
-        } else if (skinNorm === "#C48E66") {
-            palette = {
-                base: "#C48E66",
-                highlight: "#DBAA82",
-                shadow: "#A6724C",
-                deepShadow: "#895632",
-                blush: "rgba(190, 95, 80, 0.16)",
-                lip: "#A85856",
-                lipShadow: "#783B39",
-                ears: "#B8835B"
-            };
-        } else if (skinNorm === "#805435") {
-            palette = {
-                base: "#805435",
-                highlight: "#986C4B",
-                shadow: "#623D24",
-                deepShadow: "#482813",
-                blush: "rgba(140, 60, 50, 0.2)",
-                lip: "#823A39",
-                lipShadow: "#5A2221",
-                ears: "#754C2F"
-            };
-        } else if (skinNorm === "#4F301F") {
-            palette = {
-                base: "#4F301F",
-                highlight: "#66412D",
-                shadow: "#3B2112",
-                deepShadow: "#271206",
-                blush: "rgba(90, 30, 20, 0.2)",
-                lip: "#5E2524",
-                lipShadow: "#3C1211",
-                ears: "#462919"
-            };
-        }
+        // ── Hair highlight ─────────────────────────────────────────
+        const hairHi = hairColor === "#D8B168" ? "rgba(255,255,220,0.55)"
+                     : hairColor === "#B3B3B3" ? "rgba(255,255,255,0.65)"
+                     : hairColor === "#C15C3D" ? "rgba(255,200,80,0.4)"
+                     : "rgba(255,255,255,0.18)";
 
-        let hairHighlight = "rgba(255, 255, 255, 0.15)";
-        if (hairColor === "#4E3629") hairHighlight = "rgba(224, 186, 120, 0.25)";
-        else if (hairColor === "#D8B168") hairHighlight = "rgba(255, 255, 255, 0.5)";
-        else if (hairColor === "#C15C3D") hairHighlight = "rgba(255, 220, 100, 0.35)";
-        else if (hairColor === "#B3B3B3") hairHighlight = "rgba(255, 255, 255, 0.6)";
+        // ── Age wrinkles ───────────────────────────────────────────
+        let wrinkles = "";
+        if (age >= 30) wrinkles += `<path d="M50 46 Q64 44 78 46" stroke="${P.dsh}" stroke-width="0.9" fill="none" opacity="0.4" stroke-linecap="round"/>`;
+        if (age >= 35) wrinkles += `
+            <path d="M50 43 Q64 41 78 43" stroke="${P.dsh}" stroke-width="0.8" fill="none" opacity="0.38" stroke-linecap="round"/>
+            <path d="M37 63 Q33 62 31 63 M95 63 Q99 62 101 63" stroke="${P.dsh}" stroke-width="0.7" fill="none" opacity="0.35"/>
+            <path d="M49 78 Q46 87 53 90 M79 78 Q82 87 75 90" stroke="${P.dsh}" stroke-width="0.9" fill="none" opacity="0.35"/>`;
 
-        let hairPath = "";
-        let beardPath = "";
-        let wrinklePath = "";
-
-        if (age >= 30) {
-            wrinklePath += `
-                <path d="M48 43 Q64 41 80 43" stroke="${palette.deepShadow}" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.45" />
-            `;
-            if (age >= 35) {
-                wrinklePath += `
-                    <path d="M48 40 Q64 38 80 40" stroke="${palette.deepShadow}" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.45" />
-                    <path d="M34 60 Q30 61 28 60 M94 60 Q98 61 100 60" stroke="${palette.deepShadow}" stroke-width="0.8" fill="none" opacity="0.4" />
-                    <path d="M48 76 Q45 84 52 87 M80 76 Q83 84 76 87" stroke="${palette.deepShadow}" stroke-width="1.1" fill="none" opacity="0.4" />
-                `;
-            }
-        }
-
+        // ── Hair styles ────────────────────────────────────────────
+        let hair = "";
         if (hairStyle === "short") {
-            hairPath = `
-                <path d="M36 50 L38 64 L42 63 L41 48 Z" fill="${hairColor}" opacity="0.4" />
-                <path d="M92 50 L90 64 L86 63 L87 48 Z" fill="${hairColor}" opacity="0.4" />
-                <path d="M36 48 C32 40, 96 40, 92 48 C94 58, 92 68, 92 70 C88 64, 88 56, 88 50 Z" fill="${hairColor}" />
-                <path d="M34 46 C34 22, 94 22, 94 46 C94 38, 86 28, 64 28 C42 28, 34 38, 34 46 Z" fill="${hairColor}" />
-                <path d="M36 44 Q50 30 64 34 Q78 30 92 44 Q64 38 36 44 Z" fill="${hairColor}" />
-                <path d="M44 40 Q64 30 84 40" stroke="${hairHighlight}" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.65" />
-                <path d="M50 35 Q64 26 78 35" stroke="${hairHighlight}" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.45" />
-            `;
-            if (age >= 35) {
-                hairPath += `
-                    <path d="M36 46 L40 38 M92 46 L88 38" stroke="rgba(240,240,240,0.6)" stroke-width="2" stroke-linecap="round" />
-                `;
-            }
+            hair = `
+            <!-- short fade sides + textured top -->
+            <path d="M38 54 C36 38, 92 38, 90 54 C88 44 80 34 64 34 C48 34 40 44 38 54Z" fill="${hairColor}"/>
+            <path d="M38 54 L40 66 L43 65 L41 52Z" fill="${hairColor}" opacity="0.45"/>
+            <path d="M90 54 L88 66 L85 65 L87 52Z" fill="${hairColor}" opacity="0.45"/>
+            <!-- textured top grooves -->
+            <path d="M48 44 Q64 36 80 44" stroke="${hairHi}" stroke-width="2.2" fill="none" opacity="0.55" stroke-linecap="round"/>
+            <path d="M54 38 Q64 32 74 38" stroke="${hairHi}" stroke-width="1.4" fill="none" opacity="0.4" stroke-linecap="round"/>
+            <path d="M52 47 Q64 41 76 47" stroke="rgba(0,0,0,0.2)" stroke-width="1.0" fill="none" opacity="0.6" stroke-linecap="round"/>
+            ${age>=35?`<path d="M38 52 L41 43 M90 52 L87 43" stroke="rgba(220,220,220,0.55)" stroke-width="1.8" stroke-linecap="round"/>`:``}`;
         } else if (hairStyle === "buzz") {
-            hairPath = `
-                <path d="M37 47 C37 25, 91 25, 91 47 C88 34, 64 32, 64 32 C64 32, 40 34, 37 47 Z" fill="${hairColor}" opacity="0.95" />
-                <path d="M39 45 C41 28, 87 28, 89 45 C85 36, 64 35, 64 35 C64 35, 43 36, 39 45 Z" fill="${hairColor}" opacity="0.5" />
-                <path d="M36 50 L39 62 L42 60 L40 48 Z" fill="${hairColor}" opacity="0.5" />
-                <path d="M92 50 L89 62 L86 60 L87 48 Z" fill="${hairColor}" opacity="0.5" />
-                <path d="M42 41 L48 37" stroke="${palette.base}" stroke-width="2.2" stroke-linecap="round" />
-                <path d="M45 46 L51 42" stroke="${palette.base}" stroke-width="2.2" stroke-linecap="round" />
-            `;
+            hair = `
+            <path d="M38 53 C38 28 90 28 90 53 C87 38 64 36 64 36 C64 36 41 38 38 53Z" fill="${hairColor}" opacity="0.92"/>
+            <!-- buzz grain dots -->
+            <path d="M40 47 L45 41 M48 43 L53 37 M58 40 L63 34 M68 40 L73 37 M78 43 L83 41 M85 47 L88 43"
+                  stroke="${P.mid}" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M38 53 L41 63 L44 62 L42 52Z" fill="${hairColor}" opacity="0.42"/>
+            <path d="M90 53 L87 63 L84 62 L86 52Z" fill="${hairColor}" opacity="0.42"/>`;
         } else if (hairStyle === "curly") {
-            hairPath = `
-                <path d="M36 48 C34 26, 94 26, 92 48 Z" fill="${hairColor}" />
-                <g fill="${hairColor}">
-                    <circle cx="44" cy="38" r="9"/>
-                    <circle cx="56" cy="31" r="10"/>
-                    <circle cx="72" cy="31" r="10"/>
-                    <circle cx="84" cy="38" r="9"/>
-                    <circle cx="64" cy="28" r="11"/>
-                    <circle cx="50" cy="42" r="8"/>
-                    <circle cx="78" cy="42" r="8"/>
-                    <circle cx="64" cy="38" r="10"/>
-                </g>
-                <g fill="${hairHighlight}" opacity="0.7">
-                    <circle cx="54" cy="29" r="3"/>
-                    <circle cx="74" cy="29" r="3"/>
-                    <circle cx="64" cy="26" r="3.5"/>
-                    <circle cx="44" cy="36" r="2.5"/>
-                    <circle cx="84" cy="36" r="2.5"/>
-                </g>
-                <path d="M36 49 L39 63 L43 62 L41 48 Z" fill="${hairColor}" opacity="0.45" />
-                <path d="M92 49 L89 63 L85 62 L87 48 Z" fill="${hairColor}" opacity="0.45" />
-            `;
+            hair = `
+            <path d="M38 52 C36 28 92 28 90 52Z" fill="${hairColor}"/>
+            <g fill="${hairColor}"><circle cx="46" cy="40" r="9"/><circle cx="58" cy="32" r="10"/>
+            <circle cx="70" cy="32" r="10"/><circle cx="82" cy="40" r="9"/><circle cx="64" cy="29" r="11"/>
+            <circle cx="52" cy="44" r="7.5"/><circle cx="76" cy="44" r="7.5"/></g>
+            <g fill="${hairHi}" opacity="0.65"><circle cx="56" cy="30" r="3.5"/><circle cx="72" cy="30" r="3.5"/>
+            <circle cx="64" cy="27" r="4"/><circle cx="46" cy="38" r="3"/><circle cx="82" cy="38" r="3"/></g>
+            <path d="M38 52 L40 64 L43 63 L41 52Z" fill="${hairColor}" opacity="0.42"/>
+            <path d="M90 52 L88 64 L85 63 L87 52Z" fill="${hairColor}" opacity="0.42"/>`;
         } else if (hairStyle === "long") {
-            hairPath = `
-                <path d="M35 48 C32 18, 96 18, 93 48 C97 62, 94 80, 90 90 C84 76, 85 54, 85 46 Z" fill="${hairColor}" />
-                <path d="M35 48 C31 62, 34 80, 38 90 C44 76, 43 54, 43 46 Z" fill="${hairColor}" />
-                <circle cx="64" cy="22" r="13" fill="${hairColor}" />
-                <circle cx="64" cy="22" r="8" fill="${hairHighlight}" opacity="0.4" />
-                <circle cx="64" cy="22" r="3.5" fill="#000000" opacity="0.5" />
-                <path d="M44 38 Q64 28 84 38" stroke="${hairHighlight}" stroke-width="2.8" stroke-linecap="round" fill="none" opacity="0.6" />
-                <path d="M37 56 Q41 72 39 84 M91 56 Q87 72 89 84" stroke="${hairHighlight}" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.4" />
-            `;
+            hair = `
+            <path d="M37 52 C33 20 95 20 91 52 C95 65 92 82 88 94 C82 78 84 56 83 48Z" fill="${hairColor}"/>
+            <path d="M37 52 C33 65 35 82 39 94 C45 78 44 56 45 48Z" fill="${hairColor}"/>
+            <circle cx="64" cy="25" r="14" fill="${hairColor}"/>
+            <path d="M46 40 Q64 30 82 40" stroke="${hairHi}" stroke-width="2.5" fill="none" opacity="0.55" stroke-linecap="round"/>
+            <path d="M38 58 Q42 74 40 86 M90 58 Q86 74 88 86" stroke="${hairHi}" stroke-width="1.6" fill="none" opacity="0.38" stroke-linecap="round"/>`;
         }
 
+        // ── Beard styles ───────────────────────────────────────────
+        let beard = "";
         if (beardStyle === "stubble") {
-            beardPath = `
-                <path d="M36 60 C36 82, 46 94, 64 97.5 C82 94, 92 82, 92 60 C92 72, 80 84, 64 85.5 C48 84, 36 72, 36 60 Z" fill="${hairColor}" opacity="0.25" />
-                <path d="M50 74 Q64 71 78 74 Q64 77 50 74 Z" fill="${hairColor}" opacity="0.3" />
-            `;
+            beard = `
+            <!-- realistic stubble shading -->
+            <path d="M38 62 C38 86 50 97 64 99 C78 97 90 86 90 62 C90 75 80 87 64 88 C48 87 38 75 38 62Z"
+                  fill="${hairColor}" opacity="0.18"/>
+            <path d="M50 76 Q64 73 78 76 Q64 79 50 76Z" fill="${hairColor}" opacity="0.22"/>
+            <!-- stubble dots texture -->
+            <g fill="${P.dsh}" opacity="0.55">
+                <circle cx="52" cy="71" r="0.8"/><circle cx="56" cy="74" r="0.8"/><circle cx="60" cy="72" r="0.8"/>
+                <circle cx="64" cy="75" r="0.8"/><circle cx="68" cy="72" r="0.8"/><circle cx="72" cy="74" r="0.8"/>
+                <circle cx="76" cy="71" r="0.8"/><circle cx="54" cy="78" r="0.8"/><circle cx="58" cy="80" r="0.7"/>
+                <circle cx="64" cy="82" r="0.8"/><circle cx="70" cy="80" r="0.7"/><circle cx="74" cy="78" r="0.8"/>
+                <circle cx="48" cy="68" r="0.7"/><circle cx="80" cy="68" r="0.7"/>
+            </g>`;
         } else if (beardStyle === "full") {
-            beardPath = `
-                <path d="M35 58 C35 88, 48 97.5, 64 98 C80 97.5, 93 88, 93 58 C90 76, 80 85, 75 83 C71 88, 64 89, 64 89 C64 89, 57 88, 53 83 C48 85, 38 76, 35 58 Z" fill="${hairColor}" />
-                <path d="M48 70 Q64 63 80 70 C83 75, 76 81, 64 80 C52 81, 45 75, 48 70 Z" fill="${hairColor}" />
-                <path d="M52 70.5 Q64 66.5 76 70.5" stroke="${hairHighlight}" stroke-width="2" fill="none" opacity="0.55" />
-                <path d="M57 77 L64 77 L64 84 L57 77 Z" fill="${hairColor}" />
-            `;
+            beard = `
+            <path d="M36 60 C36 92 50 100 64 101 C78 100 92 92 92 60 C90 78 82 88 78 86 C73 92 64 92 64 92
+                     C64 92 55 92 50 86 C46 88 38 78 36 60Z" fill="${hairColor}"/>
+            <path d="M50 72 Q64 66 78 72 C81 77 74 84 64 83 C54 84 47 77 50 72Z" fill="${hairColor}"/>
+            <path d="M54 72 Q64 68 74 72" stroke="${hairHi}" stroke-width="1.8" fill="none" opacity="0.45" stroke-linecap="round"/>
+            <path d="M59 79 L64 79 L64 86 L59 79Z" fill="${hairColor}"/>`;
         } else if (beardStyle === "mustache") {
-            beardPath = `
-                <path d="M48 70 Q64 64 80 70 C84 75, 78 79, 64 78 C50 79, 44 75, 48 70 Z" fill="${hairColor}" />
-                <path d="M52 70.5 Q64 66.5 76 70.5" stroke="${hairHighlight}" stroke-width="2" fill="none" opacity="0.5" />
-                <path d="M48 70 Q45 72 47 75 M80 70 Q83 72 81 75" stroke="${hairColor}" stroke-width="2" stroke-linecap="round" fill="none" />
-            `;
+            beard = `
+            <path d="M49 72 Q64 66 79 72 C83 77 77 81 64 80 C51 81 45 77 49 72Z" fill="${hairColor}"/>
+            <path d="M54 72 Q64 68 74 72" stroke="${hairHi}" stroke-width="1.8" fill="none" opacity="0.45" stroke-linecap="round"/>
+            <path d="M49 72 Q46 74 47 77 M79 72 Q82 74 81 77" stroke="${hairColor}" stroke-width="1.8" stroke-linecap="round" fill="none"/>`;
         }
 
-        let svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" style="width: 100%; height: 100%; display: block;">
-            <defs>
-                <radialGradient id="skin-base-grad" cx="50%" cy="40%" r="60%">
-                    <stop offset="0%" stop-color="${palette.highlight}" />
-                    <stop offset="50%" stop-color="${palette.base}" />
-                    <stop offset="100%" stop-color="${palette.shadow}" />
-                </radialGradient>
-                <radialGradient id="left-eye-blush" cx="30%" cy="50%" r="50%">
-                    <stop offset="0%" stop-color="${palette.blush}" />
-                    <stop offset="100%" stop-color="${palette.blush}" stop-opacity="0" />
-                </radialGradient>
-                <radialGradient id="right-eye-blush" cx="70%" cy="50%" r="50%">
-                    <stop offset="0%" stop-color="${palette.blush}" />
-                    <stop offset="100%" stop-color="${palette.blush}" stop-opacity="0" />
-                </radialGradient>
-                <linearGradient id="jersey-base-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="${primaryColor}" />
-                    <stop offset="100%" stop-color="${primaryColor}" stop-opacity="0.8" />
-                </linearGradient>
-            </defs>
+        // ── Jersey: V-neck with secondary trim (like competitor screenshot) ─
+        const jersey = `
+        <defs>
+          <linearGradient id="kit-grad" x1="0%" y1="0%" x2="20%" y2="100%">
+            <stop offset="0%" stop-color="${kitPrimary}" stop-opacity="0.95"/>
+            <stop offset="100%" stop-color="${kitPrimary}" stop-opacity="0.75"/>
+          </linearGradient>
+          <linearGradient id="kit-grad-sec" x1="0%" y1="0%" x2="20%" y2="100%">
+            <stop offset="0%" stop-color="${kitSecondary}" stop-opacity="1"/>
+            <stop offset="100%" stop-color="${kitSecondary}" stop-opacity="0.8"/>
+          </linearGradient>
+          <linearGradient id="neck-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="${P.hi}"/>
+            <stop offset="60%" stop-color="${P.mid}"/>
+            <stop offset="100%" stop-color="${P.sh}"/>
+          </linearGradient>
+          <linearGradient id="skin-grad" cx="50%" cy="35%" r="62%" fx="45%" fy="30%"
+                          gradientUnits="objectBoundingBox">
+            <stop offset="0%" stop-color="${P.hi}"/>
+            <stop offset="55%" stop-color="${P.mid}"/>
+            <stop offset="100%" stop-color="${P.sh}"/>
+          </linearGradient>
+          <radialGradient id="skin-rg" cx="48%" cy="35%" r="62%">
+            <stop offset="0%" stop-color="${P.hi}"/>
+            <stop offset="55%" stop-color="${P.mid}"/>
+            <stop offset="100%" stop-color="${P.sh}"/>
+          </radialGradient>
+          <radialGradient id="blush-l" cx="30%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(220,120,100,0.22)"/>
+            <stop offset="100%" stop-color="rgba(220,120,100,0)" />
+          </radialGradient>
+          <radialGradient id="blush-r" cx="70%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(220,120,100,0.22)"/>
+            <stop offset="100%" stop-color="rgba(220,120,100,0)" />
+          </radialGradient>
+          <!-- Photo-card shadow underneath -->
+          <filter id="drop-shadow" x="-5%" y="-5%" width="110%" height="115%">
+            <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="rgba(0,0,0,0.4)"/>
+          </filter>
+        </defs>
 
-            <!-- 1. shoulders & jersey -->
-            <path d="M16 128 C24 102, 104 102, 112 128 Z" fill="url(#jersey-base-grad)" />
-            <path d="M46 108 L44 128 M82 108 L84 128 M64 109 L64 128" stroke="${secondaryColor}" stroke-width="4.5" opacity="0.25" stroke-linecap="round" />
-            <path d="M44 105 C52 109, 76 109, 84 105" fill="none" stroke="rgba(0,0,0,0.22)" stroke-width="5" stroke-linecap="round" />
-            <path d="M46 102 L64 115 L82 102" stroke="${secondaryColor}" stroke-width="3" fill="none" />
+        <!-- background gradient dark photo studio -->
+        <defs><linearGradient id="bg-grad" x1="0%" y1="0%" x2="60%" y2="100%">
+          <stop offset="0%" stop-color="#1A2030"/><stop offset="100%" stop-color="#0A0C10"/>
+        </linearGradient></defs>
+        <rect width="128" height="128" fill="url(#bg-grad)" rx="10"/>
 
-            <!-- 2. Neck and Neck shading -->
-            <path d="M52 86 L52 104 C58 111, 70 111, 76 104 L 76 86 Z" fill="url(#skin-base-grad)" />
-            <path d="M52 86 C58 93, 70 93, 76 86 C70 91, 58 91, 52 86 Z" fill="${palette.deepShadow}" opacity="0.5" />
-
-            <!-- 3. Ears (Proportionate, placed at eye-nose bounds) -->
-            <path d="M37 57 C31 57, 29 66, 33 73 C35 77, 39 76, 41 72 Z" fill="${palette.ears}" />
-            <path d="M36 61 C34 61, 33 69, 36 69" stroke="${palette.deepShadow}" stroke-width="1.2" fill="none" stroke-linecap="round" />
-            <path d="M91 57 C97 57, 99 66, 95 73 C93 77, 89 76, 87 72 Z" fill="${palette.ears}" />
-            <path d="M92 61 C94 61, 95 69, 92 69" stroke="${palette.deepShadow}" stroke-width="1.2" fill="none" stroke-linecap="round" />
-
-            <!-- 4. Head and Jawline (Golden-ratio oval grid) -->
-            <path d="M38 56 C38 35, 90 35, 90 56 C90 77, 78 92.5, 64 95 C50 92.5, 38 77, 38 56 Z" fill="url(#skin-base-grad)" />
-            <path d="M38 56 C38 77, 50 92.5, 64 95 L64 35 C50 35, 38 41, 38 56 Z" fill="rgba(0,0,0,0.04)" />
-            <ellipse cx="48" cy="68" rx="6" ry="3.5" fill="url(#left-eye-blush)" />
-            <ellipse cx="80" cy="68" rx="6" ry="3.5" fill="url(#right-eye-blush)" />
-
-            <!-- 5. Eyes (Focused, handsome athletic look with cx=52, cx=76) -->
-            <!-- Left Eye -->
-            <ellipse cx="51.5" cy="55.5" rx="7.5" ry="3.0" fill="#ffffff" />
-            <circle cx="51.5" cy="55.5" r="2.4" fill="${eyeColor}" />
-            <circle cx="51.5" cy="55.5" r="1.1" fill="#1A1A1A" />
-            <circle cx="52.6" cy="54.4" r="0.6" fill="#ffffff" /> <!-- Glint -->
-            <!-- Eyelids / Lashes overlay -->
-            <path d="M43.5 55.5 Q51.5 51.5 59.5 55.5" stroke="rgba(0,0,0,0.65)" stroke-width="1.8" fill="none" stroke-linecap="round" />
-            <path d="M43.5 55.5 Q51.5 58.5 59.5 55.5" stroke="rgba(0,0,0,0.25)" stroke-width="0.8" fill="none" stroke-linecap="round" />
-            <!-- Eyebrow -->
-            <path d="M42 49 Q51.5 45.5 60 48.5" stroke="${hairColor}" stroke-width="2.6" stroke-linecap="round" fill="none" />
-
-            <!-- Right Eye -->
-            <ellipse cx="76.5" cy="55.5" rx="7.5" ry="3.0" fill="#ffffff" />
-            <circle cx="76.5" cy="55.5" r="2.4" fill="${eyeColor}" />
-            <circle cx="76.5" cy="55.5" r="1.1" fill="#1A1A1A" />
-            <circle cx="77.6" cy="54.4" r="0.6" fill="#ffffff" /> <!-- Glint -->
-            <!-- Eyelids / Lashes overlay -->
-            <path d="M68.5 55.5 Q76.5 51.5 84.5 55.5" stroke="rgba(0,0,0,0.65)" stroke-width="1.8" fill="none" stroke-linecap="round" />
-            <path d="M68.5 55.5 Q76.5 58.5 84.5 55.5" stroke="rgba(0,0,0,0.25)" stroke-width="0.8" fill="none" stroke-linecap="round" />
-            <!-- Eyebrow -->
-            <path d="M68 48.5 Q76.5 45.5 86 49" stroke="${hairColor}" stroke-width="2.6" stroke-linecap="round" fill="none" />
-
-            <!-- 6. Nose (Realistic subtle shadow lines y=55 to y=71) -->
-            <path d="M61 54 L61 70 Q64 72 67 70" stroke="${palette.deepShadow}" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.65" />
-            <circle cx="59.5" cy="70" r="1.2" fill="rgba(0,0,0,0.12)" />
-            <circle cx="68.5" cy="70" r="1.2" fill="rgba(0,0,0,0.06)" />
-
-            <!-- 7. Lips / Mouth (Proportionate, centered at y=80) -->
-            <path d="M54 80 Q64 78.2 74 80 C70 82.5 58 82.5 54 80 Z" fill="${palette.lipShadow}" />
-            <path d="M54.5 80.5 C58 85.5, 70 85.5, 73.5 80.5 Z" fill="${palette.lip}" />
-            <path d="M53 80 Q64 81.8 75 80" stroke="rgba(0,0,0,0.36)" stroke-width="1.5" fill="none" stroke-linecap="round" />
-            <path d="M58 82 Q64 84.2 70 82" stroke="rgba(255,255,255,0.22)" stroke-width="1.2" fill="none" stroke-linecap="round" />
-
-            <!-- Chin dimple shadow -->
-            <path d="M61 88.5 Q64 89.5 67 88.5" stroke="${palette.deepShadow}" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.5" />
-
-            ${wrinklePath}
-            ${beardPath}
-            ${hairPath}
-
-            <!-- 3D Head Glow highlights -->
-            <path d="M44 57 Q51.5 53 59 54" fill="none" stroke="${palette.highlight}" stroke-width="0.8" opacity="0.25" />
-            <path d="M70 54 Q76.5 53 84 57" fill="none" stroke="${palette.highlight}" stroke-width="0.8" opacity="0.25" />
-        </svg>
+        <!-- jersey body — wide shoulder cut like photo style -->
+        <path d="M0 128 C10 92, 46 88, 52 95 L64 110 L76 95 C82 88, 118 92, 128 128Z"
+              fill="url(#kit-grad)"/>
+        <!-- secondary collar trim stripes -->
+        <path d="M47 90 C52 98, 76 98, 81 90" stroke="${kitSecondary}" stroke-width="4.5" fill="none" stroke-linecap="round" opacity="0.9"/>
+        <!-- V-neck collar -->
+        <path d="M51 94 L64 110 L77 94" stroke="${kitSecondary}" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- jersey fabric shadow lines -->
+        <path d="M20 128 L38 100 M108 128 L90 100" stroke="rgba(0,0,0,0.2)" stroke-width="3" stroke-linecap="round"/>
         `;
+
+        // ── Full SVG ───────────────────────────────────────────────
+        const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" style="width:100%;height:100%;display:block;border-radius:10px;">
+          ${jersey}
+
+          <!-- Neck -->
+          <path d="M53 88 L53 100 C58 108 70 108 75 100 L75 88Z" fill="url(#skin-rg)"/>
+          <path d="M53 88 C58 95 70 95 75 88 C70 93 58 93 53 88Z" fill="${P.dsh}" opacity="0.45"/>
+
+          <!-- Ears -->
+          <path d="M38 60 C31 60 29 70 33 77 C35 81 40 80 42 75Z" fill="${P.earSh}"/>
+          <path d="M37 64 C34 64 33 73 36 73" stroke="${P.dsh}" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+          <path d="M90 60 C97 60 99 70 95 77 C93 81 88 80 86 75Z" fill="${P.earSh}"/>
+          <path d="M91 64 C94 64 95 73 92 73" stroke="${P.dsh}" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+
+          <!-- Head shape — slightly wider than oval for masculine look -->
+          <path d="M38 60 C38 38 90 38 90 60 C90 80 79 97 64 99 C49 97 38 80 38 60Z"
+                fill="url(#skin-rg)"/>
+          <!-- subtle side shadow -->
+          <path d="M38 60 C38 80 49 97 64 99 L64 38 C50 38 38 44 38 60Z"
+                fill="rgba(0,0,0,0.05)"/>
+          <!-- cheek blush -->
+          <ellipse cx="48" cy="70" rx="8" ry="5" fill="url(#blush-l)"/>
+          <ellipse cx="80" cy="70" rx="8" ry="5" fill="url(#blush-r)"/>
+
+          <!-- Forehead highlight (3D sphere effect) -->
+          <ellipse cx="64" cy="48" rx="18" ry="10" fill="${P.hi}" opacity="0.2"/>
+
+          <!-- ── LEFT EYE ── -->
+          <!-- socket shadow -->
+          <ellipse cx="51" cy="59" rx="9" ry="5.5" fill="${P.dsh}" opacity="0.18"/>
+          <!-- white -->
+          <ellipse cx="51" cy="59" rx="7.8" ry="3.8" fill="#FAFAFA"/>
+          <!-- iris -->
+          <circle cx="51" cy="59" r="2.8" fill="${eyeColor}"/>
+          <!-- pupil -->
+          <circle cx="51" cy="59" r="1.5" fill="#0D0D0D"/>
+          <!-- glint x2 -->
+          <circle cx="52.2" cy="57.8" r="0.75" fill="white"/>
+          <circle cx="50.0" cy="60.0" r="0.35" fill="rgba(255,255,255,0.6)"/>
+          <!-- upper lid -->
+          <path d="M43 59 Q51 54.5 59 59" stroke="#1A1A1A" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+          <!-- lower lid subtle -->
+          <path d="M43.5 59 Q51 62 58.5 59" stroke="${P.dsh}" stroke-width="0.6" fill="none" stroke-linecap="round" opacity="0.55"/>
+          <!-- eyebrow — bold athletic -->
+          <path d="M42 52 Q51 48 61 51.5" stroke="${hairColor}" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+          <path d="M43 52 Q51 48.5 60 51.8" stroke="${hairHi}" stroke-width="0.8" fill="none" opacity="0.35" stroke-linecap="round"/>
+
+          <!-- ── RIGHT EYE ── -->
+          <ellipse cx="77" cy="59" rx="9" ry="5.5" fill="${P.dsh}" opacity="0.18"/>
+          <ellipse cx="77" cy="59" rx="7.8" ry="3.8" fill="#FAFAFA"/>
+          <circle cx="77" cy="59" r="2.8" fill="${eyeColor}"/>
+          <circle cx="77" cy="59" r="1.5" fill="#0D0D0D"/>
+          <circle cx="78.2" cy="57.8" r="0.75" fill="white"/>
+          <circle cx="76.0" cy="60.0" r="0.35" fill="rgba(255,255,255,0.6)"/>
+          <path d="M69 59 Q77 54.5 85 59" stroke="#1A1A1A" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+          <path d="M69.5 59 Q77 62 84.5 59" stroke="${P.dsh}" stroke-width="0.6" fill="none" stroke-linecap="round" opacity="0.55"/>
+          <path d="M67 51.5 Q77 48 86 52" stroke="${hairColor}" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+          <path d="M68 51.8 Q77 48.5 85 52" stroke="${hairHi}" stroke-width="0.8" fill="none" opacity="0.35" stroke-linecap="round"/>
+
+          <!-- ── NOSE ── (sharp masculine bridge) -->
+          <path d="M62 57 L61 73 Q64 76 67 73" stroke="${P.dsh}" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+          <!-- nostrils -->
+          <ellipse cx="60" cy="73.5" rx="2" ry="1.2" fill="${P.dsh}" opacity="0.5"/>
+          <ellipse cx="68" cy="73.5" rx="2" ry="1.2" fill="${P.dsh}" opacity="0.3"/>
+          <!-- nose bridge highlight -->
+          <path d="M63 59 L63 70" stroke="${P.hi}" stroke-width="1.2" fill="none" opacity="0.3" stroke-linecap="round"/>
+
+          <!-- ── MOUTH ── -->
+          <!-- upper lip -->
+          <path d="M53 82 Q58 79.5 64 81.5 Q70 79.5 75 82 C71 84.5 57 84.5 53 82Z"
+                fill="${P.dsh}" opacity="0.85"/>
+          <!-- lower lip -->
+          <path d="M53.5 82.5 C57 89 71 89 74.5 82.5Z" fill="${P.lip}" opacity="0.8"/>
+          <!-- lip line -->
+          <path d="M53 82 Q64 83.5 75 82" stroke="rgba(0,0,0,0.38)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+          <!-- lip highlight -->
+          <path d="M58 85 Q64 87 70 85" stroke="rgba(255,255,255,0.28)" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+
+          <!-- chin dimple -->
+          <path d="M62 92 Q64 93.5 66 92" stroke="${P.dsh}" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.45"/>
+
+          ${wrinkles}
+          ${beard}
+          ${hair}
+
+          <!-- final 3D forehead specular shine -->
+          <ellipse cx="60" cy="45" rx="10" ry="6" fill="${P.hi}" opacity="0.12"/>
+        </svg>`;
+
         return svg;
     },
 
