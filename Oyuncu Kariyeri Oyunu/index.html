@@ -12,10 +12,10 @@
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
     <link rel="shortcut icon" href="logo.png">
-    <!-- Google Fonts for premium typography -->
+    <!-- Google Fonts for premium sports typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Rajdhani:wght@600;700;800&display=swap" rel="stylesheet">
     <script>
         // Fix relative resource loading on Vercel if opened without trailing slash
         if (window.location.pathname.endsWith('/Oyuncu%20Kariyeri%20Oyunu') || window.location.pathname.endsWith('/Oyuncu Kariyeri Oyunu')) {
@@ -23,7 +23,7 @@
         }
     </script>
     <base href="./">
-    <link rel="stylesheet" href="styles.css?v=5.4">
+    <link rel="stylesheet" href="styles.css?v=5.5">
     <script>
         window.onerror = function(message, source, lineno, colno, error) {
             let errDiv = document.getElementById("visual-error-console");
@@ -1972,10 +1972,10 @@
     </div>
 
     <!-- Script Loads (Database first, logic next) -->
-    <script src="database.js?v=5.4"></script>
-    <script src="events.js?v=5.4"></script>
-    <script src="game.js?v=5.4"></script>
-    <script src="matchEngine.js?v=5.4"></script>
+    <script src="database.js?v=5.5"></script>
+    <script src="events.js?v=5.5"></script>
+    <script src="game.js?v=5.5"></script>
+    <script src="matchEngine.js?v=5.5"></script>
     
     <!-- MAIN CONTROLLER (Mounts everything) -->
     <script>
@@ -6435,7 +6435,7 @@
                 const isOwned = ownedInvs.includes(inv.id);
                 const canAfford = (GAME.state.money >= inv.cost);
                 
-                let btnText = "Yatırım Yap";
+                let btnText = `${inv.cost.toLocaleString()} € Satın Al`;
                 let btnClass = "btn-secondary";
                 let badgeText = "";
                 let badgeStyle = "";
@@ -6443,34 +6443,29 @@
                 if (isOwned) {
                     btnText = "Yatırım Yapıldı";
                     btnClass = "btn-disabled";
-                    badgeText = "✅ YATIRILDI";
-                    badgeStyle = "background: rgba(0,229,255,0.15); color: var(--secondary); border: 1px solid var(--secondary);";
+                    badgeText = "✅ SAHİPSİN";
+                    badgeStyle = "background: rgba(16,185,129,0.12); color: var(--primary); border: 1px solid rgba(16,185,129,0.3);";
                 } else if (!canAfford) {
-                    btnText = "Bakiye Yetersiz";
+                    btnText = `${inv.cost.toLocaleString()} € Satın Al`;
                     btnClass = "btn-disabled";
-                    badgeText = "❌ YETERSİZ BAKİYE";
-                    badgeStyle = "background: rgba(244,67,54,0.15); color: var(--accent-red); border: 1px solid var(--accent-red);";
-                } else {
-                    badgeText = "💰 YATIRIMA UYGUN";
-                    badgeStyle = "background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.15);";
                 }
 
                 container.innerHTML += `
-                    <div class="shop-card glass" style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 12px; border: 1px solid var(--border-glass); background: rgba(255,255,255,0.02); box-shadow: none; margin-bottom: 8px;">
+                    <div class="shop-card glass" style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 12px; border: 1px solid var(--border-glass); background: var(--bg-card); box-shadow: none; margin-bottom: 8px;">
                         <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 6px;">
                             <div>
-                                <h3 style="color: white; margin: 0; font-size: 15px; font-weight: bold; border: none; padding: 0;">${inv.name}</h3>
-                                <p style="font-size: 11.5px; color: var(--text-muted); margin: 4px 0 0 0; line-height: 1.4;">${inv.desc}</p>
+                                <h3 style="color: white; margin: 0; font-size: 15px; font-weight: bold; border: none; padding: 0; font-family: var(--font-heading);">${inv.name}</h3>
+                                <p style="font-size: 12px; color: var(--text-muted); margin: 4px 0 0 0; line-height: 1.4;">${inv.desc}</p>
                             </div>
-                            <span style="font-size: 9px; padding: 3px 6px; border-radius: 4px; font-weight: 700; ${badgeStyle}">${badgeText}</span>
+                            ${badgeText ? `<span style="font-size: 9.5px; padding: 3px 6px; border-radius: 4px; font-weight: 700; ${badgeStyle}">${badgeText}</span>` : ''}
                         </div>
                         
-                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; margin-top: 4px; font-size: 11.5px; color: #ddd; flex-wrap: wrap; gap: 6px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-glass); padding-top: 8px; margin-top: 4px; font-size: 12px; color: #cbd5e1; flex-wrap: wrap; gap: 6px;">
                             <div>
-                                <span>💰 Yatırım Bedeli: <strong style="color: var(--primary);">${inv.cost.toLocaleString()} €</strong></span><br>
-                                <span>📈 Haftalık Getiri: <strong style="color: var(--secondary);">${inv.weeklyYield > 0 ? `+${inv.weeklyYield} €` : 'Yok (Takipçi Odaklı)'}</strong></span>
+                                <span>💰 Yatırım Bedeli: <strong style="color: #f8fafc;">${inv.cost.toLocaleString()} €</strong></span><br>
+                                <span>📈 Haftalık Getiri: <strong style="color: var(--primary);">${inv.weeklyYield > 0 ? `+${inv.weeklyYield} €` : 'Takipçi Odaklı'}</strong></span>
                             </div>
-                            <button class="btn ${btnClass}" ${(!canAfford || isOwned) ? 'disabled' : ''} onclick="GAME.buyInvestment('${inv.id}'); renderInvestmentsAndCrypto();" style="padding: 6px 12px; font-size: 11px; border-radius: 6px; cursor: pointer; height: auto;">
+                            <button class="btn ${btnClass}" ${(!canAfford || isOwned) ? 'disabled' : ''} onclick="GAME.buyInvestment('${inv.id}'); renderInvestmentsAndCrypto();" style="padding: 7px 14px; font-size: 12px; border-radius: 6px; cursor: ${(!canAfford || isOwned) ? 'not-allowed' : 'pointer'}; ${!canAfford && !isOwned ? 'opacity: 0.45;' : ''}">
                                 ${btnText}
                             </button>
                         </div>
@@ -6661,7 +6656,7 @@
                 const isActive = (GAME.state.activePurchasedBoot === boot.id);
                 const canAfford = (GAME.state.money >= boot.cost);
                 
-                let btnText = "Satın Al & Giy";
+                let btnText = `${boot.cost.toLocaleString()} € Satın Al`;
                 let btnClass = "btn-secondary";
                 let badgeText = "";
                 let badgeStyle = "";
@@ -6670,33 +6665,28 @@
                     btnText = "Giyiliyor";
                     btnClass = "btn-disabled";
                     badgeText = "✅ GİYİLİYOR";
-                    badgeStyle = "background: rgba(0,229,255,0.15); color: var(--secondary); border: 1px solid var(--secondary);";
+                    badgeStyle = "background: rgba(16,185,129,0.12); color: var(--primary); border: 1px solid rgba(16,185,129,0.3);";
                 } else if (!canAfford) {
-                    btnText = "Yetersiz Bakiye";
+                    btnText = `${boot.cost.toLocaleString()} € Satın Al`;
                     btnClass = "btn-disabled";
-                    badgeText = "❌ YETERSİZ BAKİYE";
-                    badgeStyle = "background: rgba(244,67,54,0.15); color: var(--accent-red); border: 1px solid var(--accent-red);";
-                } else {
-                    badgeText = "🛒 SATIN ALINABİLİR";
-                    badgeStyle = "background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.15);";
                 }
 
                 container.innerHTML += `
-                    <div class="shop-card glass" style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 12px; border: 1px solid var(--border-glass); background: rgba(255,255,255,0.02); box-shadow: none; margin-bottom: 8px;">
+                    <div class="shop-card glass" style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 12px; border: 1px solid var(--border-glass); background: var(--bg-card); box-shadow: none; margin-bottom: 8px;">
                         <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 6px;">
                             <div>
-                                <h3 style="color: white; margin: 0; font-size: 15px; font-weight: bold; border: none; padding: 0;">${boot.brand} - ${boot.model}</h3>
-                                <p style="font-size: 11.5px; color: var(--text-muted); margin: 4px 0 0 0; line-height: 1.4;">${boot.desc}</p>
+                                <h3 style="color: white; margin: 0; font-size: 15px; font-weight: bold; border: none; padding: 0; font-family: var(--font-heading);">${boot.brand} - ${boot.model}</h3>
+                                <p style="font-size: 12px; color: var(--text-muted); margin: 4px 0 0 0; line-height: 1.4;">${boot.desc}</p>
                             </div>
-                            <span style="font-size: 9px; padding: 3px 6px; border-radius: 4px; font-weight: 700; ${badgeStyle}">${badgeText}</span>
+                            ${badgeText ? `<span style="font-size: 9.5px; padding: 3px 6px; border-radius: 4px; font-weight: 700; ${badgeStyle}">${badgeText}</span>` : ''}
                         </div>
                         
-                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; margin-top: 4px; font-size: 11.5px; color: #ddd; flex-wrap: wrap; gap: 6px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-glass); padding-top: 8px; margin-top: 4px; font-size: 12px; color: #cbd5e1; flex-wrap: wrap; gap: 6px;">
                             <div>
-                                <span>💰 Fiyat: <strong style="color: var(--primary);">${boot.cost.toLocaleString()} €</strong></span><br>
-                                <span>⚡ Yetenek: <strong style="color: var(--secondary);">+${boot.bonus.speed} Hız, +${boot.bonus.shooting} Şut, +${boot.bonus.passing} Pas</strong></span>
+                                <span>💰 Fiyat: <strong style="color: #f8fafc;">${boot.cost.toLocaleString()} €</strong></span><br>
+                                <span>⚡ Yetenek: <strong style="color: var(--primary);">+${boot.bonus.speed} Hız, +${boot.bonus.shooting} Şut, +${boot.bonus.passing} Pas</strong></span>
                             </div>
-                            <button class="btn ${btnClass}" ${(!canAfford || isActive) ? 'disabled' : ''} onclick="GAME.buyBoot('${boot.id}'); renderBootSponsors();" style="padding: 6px 12px; font-size: 11px; border-radius: 6px; cursor: pointer; height: auto;">
+                            <button class="btn ${btnClass}" ${(!canAfford || isActive) ? 'disabled' : ''} onclick="GAME.buyBoot('${boot.id}'); renderBootSponsors();" style="padding: 7px 14px; font-size: 12px; border-radius: 6px; cursor: ${(!canAfford || isActive) ? 'not-allowed' : 'pointer'}; ${!canAfford && !isActive ? 'opacity: 0.45;' : ''}">
                                 ${btnText}
                             </button>
                         </div>
@@ -6806,6 +6796,12 @@
             });
         }
 
+        function getGirlfriendIconSVG(gfId) {
+            return `<div style="width:38px; height:38px; border-radius:10px; background:#181f2a; border:1px solid #2a3547; display:flex; align-items:center; justify-content:center; color:#ec4899; flex-shrink:0;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </div>`;
+        }
+
         function renderSocialPanel() {
             // Sevgili durumu alani
             const statusContainer = document.getElementById("social-status-container");
@@ -6818,39 +6814,41 @@
                 if (activeGf) {
                     const dateCost = Math.round(activeGf.cost * 0.8 + 100);
                     statusContainer.innerHTML = `
-                        <div class="glass" style="padding: 16px; border-radius: 12px; border-left: 5px solid var(--accent-purple); display: flex; flex-direction: column; gap: 10px;">
+                        <div class="glass" style="padding: 16px; border-radius: 12px; border-left: 4px solid var(--accent-purple); display: flex; flex-direction: column; gap: 10px;">
                             <div style="display: flex; align-items: center; justify-content: space-between;">
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <span style="font-size: 32px;">${activeGf.avatar}</span>
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    ${getGirlfriendIconSVG(activeGf.id)}
                                     <div>
-                                        <h3 style="color: white; margin: 0; font-size: 16px;">${activeGf.name}</h3>
+                                        <h3 style="color: white; margin: 0; font-size: 16px; font-family: var(--font-heading);">${activeGf.name}</h3>
                                         <p style="font-size: 11.5px; color: var(--accent-purple); margin: 0; font-weight: bold;">${activeGf.role}</p>
                                     </div>
                                 </div>
                                 <div style="text-align: right;">
-                                    <span style="font-size: 12px; color: var(--text-muted);">İlişki Bağı:</span>
-                                    <div style="color: var(--accent-purple); font-weight: 800; font-size: 15px;">%${GAME.state.relationship.level}</div>
+                                    <span style="font-size: 11.5px; color: var(--text-muted);">İlişki Bağı</span>
+                                    <div style="color: var(--accent-purple); font-weight: 800; font-size: 16px; font-family: var(--font-heading);">%${GAME.state.relationship.level}</div>
                                 </div>
                             </div>
-                            <p style="font-size: 12.5px; color: #ddd; margin: 0; line-height: 1.4;">${activeGf.desc}</p>
-                            <div style="border-top: 1px dashed var(--border-glass); padding-top: 8px; margin-top: 4px; font-size: 11.5px; color: #bbb;">
+                            <p style="font-size: 12.5px; color: #cbd5e1; margin: 0; line-height: 1.4;">${activeGf.desc}</p>
+                            <div style="border-top: 1px solid var(--border-glass); padding-top: 8px; margin-top: 4px; font-size: 12px; color: #94a3b8;">
                                 <strong>Haftalık Etkiler:</strong><br>
                                 • Gider: <strong style="color: var(--accent-red);">${activeGf.cost} €</strong> / Hafta<br>
                                 • Faydalar: <strong style="color: var(--primary);">${activeGf.weeklyEffectText}</strong>
                             </div>
                             <div style="display: flex; gap: 10px; margin-top: 5px;">
                                 <button class="btn btn-primary" style="flex: 1; padding: 10px; font-size: 12px;" onclick="GAME.goOnDate(); renderSocialPanel();">Buluşmaya Git (${dateCost} €, -%20 Kondisyon)</button>
-                                <button class="btn" style="padding: 10px; font-size: 12px; background: rgba(255, 23, 68, 0.15); color: var(--accent-red); border: 1px solid rgba(255, 23, 68, 0.25);" onclick="GAME.breakUp(); renderSocialPanel();">İlişkiyi Bitir</button>
+                                <button class="btn" style="padding: 10px; font-size: 12px; background: rgba(239, 68, 68, 0.12); color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.25);" onclick="GAME.breakUp(); renderSocialPanel();">İlişkiyi Bitir</button>
                             </div>
                         </div>
                     `;
                 }
             } else {
                 statusContainer.innerHTML = `
-                    <div class="empty-state glass" style="padding: 18px; text-align: center;">
-                        <span style="font-size: 32px; display: block; margin-bottom: 6px;">💔</span>
-                        <h4 style="color: white; margin: 0 0 4px 0; font-size: 14px;">Bekar</h4>
-                        <p style="font-size: 12px; color: var(--text-muted); margin: 0;">Şu an hayatında kimse yok. Sevgili adaylarından birine çıkma teklifi edebilirsin!</p>
+                    <div class="empty-state glass" style="padding: 18px; text-align: center; border: 1px dashed var(--border-glass);">
+                        <div style="width:40px; height:40px; border-radius:50%; background:#181f2a; border:1px solid #2a3547; display:flex; align-items:center; justify-content:center; color:#64748b; margin:0 auto 8px auto;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                        </div>
+                        <h4 style="color: white; margin: 0 0 4px 0; font-size: 14px; font-family: var(--font-heading);">Bekar</h4>
+                        <p style="font-size: 12px; color: var(--text-muted); margin: 0;">Şu an hayatında kimse yok. Adaylardan birine çıkma teklifi edebilirsin.</p>
                     </div>
                 `;
             }
@@ -6868,27 +6866,27 @@
                 let disabledAttr = "";
 
                 if (isOwned) {
-                    btnText = "Zaten Birlikte";
+                    btnText = "Birlikte";
                     btnClass = "btn-primary";
                     disabledAttr = "disabled";
                 } else if (!canUnlock) {
                     btnText = "Gereksinimler Yetersiz";
-                    btnClass = "btn-event";
+                    btnClass = "btn-disabled";
                     disabledAttr = "disabled";
                 }
 
                 girlsContainer.innerHTML += `
-                    <div class="shop-card glass" style="display: flex; justify-content: space-between; align-items: center; padding: 14px; gap: 12px; border-radius: 12px; ${isOwned ? 'border: 1.5px solid var(--accent-purple); box-shadow: 0 0 10px rgba(156, 39, 176, 0.25);' : ''}">
-                        <div style="font-size: 32px; flex-shrink: 0;">${gf.avatar}</div>
+                    <div class="shop-card glass" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; gap: 12px; border-radius: 12px; ${isOwned ? 'border: 1px solid var(--accent-purple); background: rgba(139, 92, 246, 0.05);' : ''}">
+                        ${getGirlfriendIconSVG(gf.id)}
                         <div class="details" style="flex: 1; text-align: left;">
-                            <h3 style="margin: 0; font-size: 14.5px; color: white;">${gf.name} <span style="font-size: 10px; font-weight: normal; color: var(--text-muted);">(${gf.role})</span></h3>
+                            <h3 style="margin: 0; font-size: 15px; color: white; font-family: var(--font-heading); font-weight: 700;">${gf.name} <span style="font-size: 11px; font-weight: normal; color: var(--text-muted);">(${gf.role})</span></h3>
                             <p class="desc" style="margin: 3px 0; font-size: 12px; line-height: 1.35; color: var(--text-muted);">${gf.desc}</p>
-                            <div style="font-size: 10.5px; color: #ccc; display: flex; gap: 8px; flex-wrap: wrap;">
+                            <div style="font-size: 11px; color: #cbd5e1; display: flex; gap: 10px; flex-wrap: wrap;">
                                 <span>Gider: <strong style="color: var(--accent-red);">${gf.cost} €/Hafta</strong></span>
                                 <span>Gereksinim: <strong style="color: var(--accent-yellow);">${gf.reqsText}</strong></span>
                             </div>
                         </div>
-                        <button class="btn ${btnClass}" ${disabledAttr} style="padding: 8px 12px; font-size: 11.5px;" onclick="GAME.startRelationship('${gf.id}'); renderSocialPanel();">${btnText}</button>
+                        <button class="btn ${btnClass}" ${disabledAttr} style="padding: 8px 12px; font-size: 12px; flex-shrink: 0;" onclick="GAME.startRelationship('${gf.id}'); renderSocialPanel();">${btnText}</button>
                     </div>
                 `;
             });
@@ -7166,6 +7164,26 @@
             determineNextOpponent();
         }
 
+        function getAgentIconSVG(agentId) {
+            if (agentId === "mino") {
+                return `<div style="width:38px; height:38px; border-radius:10px; background:#181f2a; border:1px solid #2a3547; display:flex; align-items:center; justify-content:center; color:#f59e0b; flex-shrink:0;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>`;
+            } else if (agentId === "izi") {
+                return `<div style="width:38px; height:38px; border-radius:10px; background:#181f2a; border:1px solid #2a3547; display:flex; align-items:center; justify-content:center; color:#8b5cf6; flex-shrink:0;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>`;
+            } else if (agentId === "mert") {
+                return `<div style="width:38px; height:38px; border-radius:10px; background:#181f2a; border:1px solid #2a3547; display:flex; align-items:center; justify-content:center; color:#3b82f6; flex-shrink:0;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                </div>`;
+            } else {
+                return `<div style="width:38px; height:38px; border-radius:10px; background:#181f2a; border:1px solid #2a3547; display:flex; align-items:center; justify-content:center; color:#10b981; flex-shrink:0;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>`;
+            }
+        }
+
         function renderAgents() {
             const container = document.getElementById("agents-container");
             if (!container) return;
@@ -7178,20 +7196,20 @@
                 let buttonHTML = "";
                 
                 if (isActive) {
-                    buttonHTML = `<span class="event-tag" style="background: var(--primary); color: black; font-weight: 800; padding: 6px 12px; border-radius: 12px; font-size: 11px;">🟢 AKTİF</span>`;
+                    buttonHTML = `<span class="event-tag" style="background: var(--primary); color: #04140e; font-weight: 800; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-family: var(--font-heading);">AKTİF</span>`;
                 } else {
                     const costText = agent.cost > 0 ? `${agent.cost.toLocaleString()} €` : 'Bedava';
-                    buttonHTML = `<button class="btn btn-secondary" style="padding: 6px 12px; font-size: 11px;" onclick="hireAgentClicked('${agent.id}')">Kirala (${costText})</button>`;
+                    buttonHTML = `<button class="btn btn-secondary" style="padding: 6px 12px; font-size: 11.5px;" onclick="hireAgentClicked('${agent.id}')">Kirala (${costText})</button>`;
                 }
 
                 container.innerHTML += `
-                    <div class="glass" style="padding: 12px; border-radius: 8px; border: 1px solid ${isActive ? 'var(--primary)' : 'var(--border-glass)'}; display: flex; align-items: center; justify-content: space-between; gap: 10px; background: ${isActive ? 'rgba(0, 230, 118, 0.05)' : 'rgba(255, 255, 255, 0.01)'};">
-                        <div style="display: flex; align-items: center; gap: 10px; flex: 1;">
-                            <span style="font-size: 28px; flex-shrink: 0;">${agent.avatar}</span>
+                    <div class="glass" style="padding: 12px; border-radius: 10px; border: 1px solid ${isActive ? 'var(--primary)' : 'var(--border-glass)'}; display: flex; align-items: center; justify-content: space-between; gap: 10px; background: ${isActive ? 'rgba(16, 185, 129, 0.05)' : 'var(--bg-card)'};">
+                        <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
+                            ${getAgentIconSVG(agent.id)}
                             <div style="text-align: left;">
-                                <h4 style="margin: 0; color: white; font-size: 13px; font-weight: 800;">${agent.name} <span style="font-size: 10px; color: var(--text-muted); font-weight: normal;">(${agent.title})</span></h4>
-                                <p style="margin: 3px 0 0 0; font-size: 11px; color: #bbb; line-height: 1.3;">${agent.desc}</p>
-                                <p style="margin: 3px 0 0 0; font-size: 10px; color: var(--accent-yellow);">Komisyon: %${agent.commissionRate * 100} | Zam Şansı: +%${agent.negotiationBonus * 100}</p>
+                                <h4 style="margin: 0; color: white; font-size: 14px; font-weight: 800; font-family: var(--font-heading);">${agent.name} <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">(${agent.title})</span></h4>
+                                <p style="margin: 3px 0 0 0; font-size: 11.5px; color: #cbd5e1; line-height: 1.35;">${agent.desc}</p>
+                                <p style="margin: 3px 0 0 0; font-size: 10.5px; color: var(--accent-yellow); font-weight: 600;">Komisyon: %${agent.commissionRate * 100} | Zam Şansı: +%${agent.negotiationBonus * 100}</p>
                             </div>
                         </div>
                         <div style="flex-shrink: 0;">
