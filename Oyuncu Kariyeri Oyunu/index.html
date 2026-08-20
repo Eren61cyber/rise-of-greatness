@@ -23,7 +23,7 @@
         }
     </script>
     <base href="./">
-    <link rel="stylesheet" href="styles.css?v=5.3">
+    <link rel="stylesheet" href="styles.css?v=5.4">
     <script>
         window.onerror = function(message, source, lineno, colno, error) {
             let errDiv = document.getElementById("visual-error-console");
@@ -851,7 +851,7 @@
                 <!-- Lig Krallıkları (Gol & Asist) -->
                 <div class="card glass" style="margin-top: 16px; padding: 12px;">
                     <div style="font-size: 12px; font-weight: 800; color: var(--accent-yellow); text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
-                        <span>👑 LİG KRALLIKLARI</span>
+                        <span id="league-scorers-title">👑 LİG KRALLIKLARI</span>
                         <div style="display:flex; gap:4px;">
                             <button class="btn btn-primary" style="padding:4px 8px; font-size:10px;" onclick="document.getElementById('scorers-table').style.display=''; document.getElementById('assists-table').style.display='none';">GOL</button>
                             <button class="btn btn-secondary" style="padding:4px 8px; font-size:10px;" onclick="document.getElementById('scorers-table').style.display='none'; document.getElementById('assists-table').style.display='';">ASİST</button>
@@ -1972,10 +1972,10 @@
     </div>
 
     <!-- Script Loads (Database first, logic next) -->
-    <script src="database.js?v=5.3"></script>
-    <script src="events.js?v=5.3"></script>
-    <script src="game.js?v=5.3"></script>
-    <script src="matchEngine.js?v=5.3"></script>
+    <script src="database.js?v=5.4"></script>
+    <script src="events.js?v=5.4"></script>
+    <script src="game.js?v=5.4"></script>
+    <script src="matchEngine.js?v=5.4"></script>
     
     <!-- MAIN CONTROLLER (Mounts everything) -->
     <script>
@@ -7539,6 +7539,11 @@
         // Gol ve Asist Krallığını Çiz
         function renderLeagueScorers() {
             if (!GAME || !GAME.state || !GAME.state.leagueScorers) return;
+
+            const titleEl = document.getElementById("league-scorers-title");
+            if (titleEl && GAME.state.currentLeague) {
+                titleEl.innerText = `👑 ${GAME.state.currentLeague.toUpperCase()} KRALLIKLARI`;
+            }
 
             const scorersBody = document.getElementById("top-scorers-body");
             const assistsBody = document.getElementById("top-assists-body");

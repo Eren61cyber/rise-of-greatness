@@ -200,6 +200,7 @@ const GAME = {
         };
         this.updateTeammateName();
         this.initLeagueTable();
+        this.initLeagueScorers(true);
         this.saveGame();
         this.updateUI();
     },
@@ -318,98 +319,18 @@ const GAME = {
                  if (typeof this.state.familyBondsSevered === "undefined") {
                      this.state.familyBondsSevered = false;
                  }
-                 if (typeof this.state.familyStoryWeeks === "undefined") {
-                     this.state.familyStoryWeeks = 0;
-                 }
                  if (typeof this.state.familyStoryStage === "undefined") {
-                     this.state.familyStoryStage = 0;
-                 }
-                 if (!this.state.leagueTable || this.state.leagueTable.length === 0) {
-                     this.initLeagueTable();
-                     this.saveGame();
-                 }
-                 if (!this.state.leagueScorers || !Array.isArray(this.state.leagueScorers) || this.state.leagueScorers.length < 10) {
-                      this.state.leagueScorers = [
-                          // 🔴🔵 TRABZONSPOR (2026/27 Süper Transferler)
-                          { name: "M. Salah", club: "Trabzonspor", goals: 0, assists: 0, goalRate: 0.58, assistRate: 0.64 },
-                          { name: "R. Malinovskyi", club: "Trabzonspor", goals: 0, assists: 0, goalRate: 0.38, assistRate: 0.56 },
-                          { name: "E. Muçi", club: "Trabzonspor", goals: 0, assists: 0, goalRate: 0.44, assistRate: 0.52 },
-                          { name: "A. Şimşir", club: "Trabzonspor", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.54 },
-                          { name: "P. Onuachu", club: "Trabzonspor", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.20 },
-                          { name: "E. Vişça", club: "Trabzonspor", goals: 0, assists: 0, goalRate: 0.30, assistRate: 0.55 },
-
-                          // 🦅 BEŞİKTAŞ (2026/27 Yıldız Takviyeleri)
-                          { name: "O. Kökçü", club: "Beşiktaş", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.66 },
-                          { name: "L. Trossard", club: "Beşiktaş", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.58 },
-                          { name: "R. Silva", club: "Beşiktaş", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.60 },
-                          { name: "C. Immobile", club: "Beşiktaş", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.20 },
-                          { name: "Gedson Fernandes", club: "Beşiktaş", goals: 0, assists: 0, goalRate: 0.32, assistRate: 0.48 },
-
-                          // 🟡🔵 FENERBAHÇE (2026/27 Yeni Hücum Hattı)
-                          { name: "M. Greenwood", club: "Fenerbahçe", goals: 0, assists: 0, goalRate: 0.56, assistRate: 0.52 },
-                          { name: "D. Tadic", club: "Fenerbahçe", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.68 },
-                          { name: "V. Muriqi", club: "Fenerbahçe", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.22 },
-                          { name: "A. Talisca", club: "Fenerbahçe", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.44 },
-                          { name: "Y. En-Nesyri", club: "Fenerbahçe", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.20 },
-                          { name: "S. Szymanski", club: "Fenerbahçe", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.48 },
-
-                          // 🟡🔴 GALATASARAY (2026/27 Şampiyon Kadro)
-                          { name: "V. Osimhen", club: "Galatasaray", goals: 0, assists: 0, goalRate: 0.62, assistRate: 0.26 },
-                          { name: "G. Sara", club: "Galatasaray", goals: 0, assists: 0, goalRate: 0.32, assistRate: 0.65 },
-                          { name: "M. Icardi", club: "Galatasaray", goals: 0, assists: 0, goalRate: 0.56, assistRate: 0.22 },
-                          { name: "D. Mertens", club: "Galatasaray", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.52 },
-                          { name: "B. A. Yılmaz", club: "Galatasaray", goals: 0, assists: 0, goalRate: 0.42, assistRate: 0.46 },
-
-                          // 🟠 DİĞER SÜPER LİG YILDIZLARI (2026/27)
-                          { name: "K. Piatek", club: "Başakşehir", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.18 },
-                          { name: "Deniz Türüç", club: "Başakşehir", goals: 0, assists: 0, goalRate: 0.28, assistRate: 0.54 },
-                          { name: "O. Ntcham", club: "Samsunspor", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.48 },
-                          { name: "Rômulo", club: "Göztepe", goals: 0, assists: 0, goalRate: 0.46, assistRate: 0.38 },
-                          { name: "Mame Thiam", club: "Eyüpspor", goals: 0, assists: 0, goalRate: 0.44, assistRate: 0.30 },
-                          { name: "Emre Akbaba", club: "Eyüpspor", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.46 }
-                      ];
-                      this.saveGame();
-                  } else {
-                      const requiredStars = [
-                          { name: "M. Salah", club: "Trabzonspor", goalRate: 0.58, assistRate: 0.64 },
-                          { name: "R. Malinovskyi", club: "Trabzonspor", goalRate: 0.38, assistRate: 0.56 },
-                          { name: "E. Muçi", club: "Trabzonspor", goalRate: 0.44, assistRate: 0.52 },
-                          { name: "A. Şimşir", club: "Trabzonspor", goalRate: 0.36, assistRate: 0.54 },
-                          { name: "O. Kökçü", club: "Beşiktaş", goalRate: 0.34, assistRate: 0.66 },
-                          { name: "L. Trossard", club: "Beşiktaş", goalRate: 0.52, assistRate: 0.58 },
-                          { name: "M. Greenwood", club: "Fenerbahçe", goalRate: 0.56, assistRate: 0.52 },
-                          { name: "V. Muriqi", club: "Fenerbahçe", goalRate: 0.52, assistRate: 0.22 },
-                          { name: "G. Sara", club: "Galatasaray", goalRate: 0.32, assistRate: 0.65 },
-                          { name: "D. Tadic", club: "Fenerbahçe", goalRate: 0.34, assistRate: 0.68 },
-                          { name: "R. Silva", club: "Beşiktaş", goalRate: 0.48, assistRate: 0.60 },
-                          { name: "E. Vişça", club: "Trabzonspor", goalRate: 0.30, assistRate: 0.55 },
-                          { name: "Deniz Türüç", club: "Başakşehir", goalRate: 0.28, assistRate: 0.54 }
-                      ];
-                      let starChanged = false;
-                      const curW = this.state.currentWeek || 1;
-                      requiredStars.forEach(star => {
-                          let found = this.state.leagueScorers.find(x => x.name === star.name);
-                          if (!found) {
-                              const estG = Math.max(0, Math.floor((curW - 1) * star.goalRate * 0.4));
-                              const estA = Math.max(0, Math.floor((curW - 1) * star.assistRate * 0.45));
-                              this.state.leagueScorers.push({
-                                  name: star.name,
-                                  club: star.club,
-                                  goals: estG,
-                                  assists: estA,
-                                  goalRate: star.goalRate,
-                                  assistRate: star.assistRate
-                              });
-                              starChanged = true;
-                          } else {
-                              if (!found.goalRate) { found.goalRate = star.goalRate; starChanged = true; }
-                              if (!found.assistRate) { found.assistRate = star.assistRate; starChanged = true; }
-                              if (found.club !== star.club) { found.club = star.club; starChanged = true; }
-                          }
-                      });
-                      if (starChanged) this.saveGame();
+                      this.state.familyStoryStage = 0;
                   }
-                 if (!this.state.socialFeed) {
+                  if (!this.state.leagueTable || this.state.leagueTable.length === 0) {
+                      this.initLeagueTable();
+                      this.saveGame();
+                  }
+
+                  // Automatically match scorers to the current active league
+                  this.initLeagueScorers(false);
+                  
+                  if (!this.state.socialFeed) {
                     this.state.socialFeed = [];
                     this.saveGame();
                 }
@@ -2152,8 +2073,9 @@ const GAME = {
         this.state.mostEmotionalMatch = null;
         this.state.currentWeek = 1;
         
-        // Reset league table
+        // Reset league table & scorers for the current league
         this.initLeagueTable();
+        this.initLeagueScorers(true);
         this.state.nextOpponentName = null; 
         
         this.saveGame();
@@ -2163,6 +2085,113 @@ const GAME = {
             window.showSeasonSummaryModal(title, message, seasonStats);
         } else {
             alert(`Sezon sona erdi! Yaşın ${this.state.age} oldu. Ligi ${rank}. sırada tamamladın.`);
+        }
+    },
+
+    LEAGUE_SCORERS_POOLS: {
+        "3. Lig": [
+            { name: "Batuhan Doğrukartal", club: "İnegöl Kafkasspor", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.22 },
+            { name: "Semih Akyıldız", club: "İnegöl Kafkasspor", goals: 0, assists: 0, goalRate: 0.28, assistRate: 0.52 },
+            { name: "Can M. Vural", club: "Kütahyaspor", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.20 },
+            { name: "H. İ. Pekşen", club: "Kütahyaspor", goals: 0, assists: 0, goalRate: 0.30, assistRate: 0.54 },
+            { name: "Ercan Kuruçay", club: "Eskişehirspor", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.24 },
+            { name: "Barış Memiş", club: "Eskişehirspor", goals: 0, assists: 0, goalRate: 0.32, assistRate: 0.58 },
+            { name: "İshak Kurt", club: "Karşıyaka", goals: 0, assists: 0, goalRate: 0.56, assistRate: 0.20 },
+            { name: "Enes Nalbantoğlu", club: "Karşıyaka", goals: 0, assists: 0, goalRate: 0.35, assistRate: 0.55 },
+            { name: "Cenk Ahmet", club: "Karşıyaka", goals: 0, assists: 0, goalRate: 0.28, assistRate: 0.50 },
+            { name: "Yasin Abdioğlu", club: "Çorlu Spor 1947", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.22 },
+            { name: "Ali Habeşoğlu", club: "Ayvalıkgücü", goals: 0, assists: 0, goalRate: 0.46, assistRate: 0.32 },
+            { name: "Tugay Keleş", club: "Ayvalıkgücü", goals: 0, assists: 0, goalRate: 0.30, assistRate: 0.48 },
+            { name: "Artun Akçakın", club: "Balıkesirspor", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.25 },
+            { name: "Sedat Y. Kurnaz", club: "Balıkesirspor", goals: 0, assists: 0, goalRate: 0.28, assistRate: 0.50 }
+        ],
+        "2. Lig": [
+            { name: "Atabey Çiçek", club: "Batman Petrolspor", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.20 },
+            { name: "Mert Çapar", club: "Batman Petrolspor", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.56 },
+            { name: "Beykan Şimşek", club: "Elazığspor", goals: 0, assists: 0, goalRate: 0.45, assistRate: 0.58 },
+            { name: "Bahattin Köse", club: "Elazığspor", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.22 },
+            { name: "Kerim Frei", club: "Elazığspor", goals: 0, assists: 0, goalRate: 0.38, assistRate: 0.55 },
+            { name: "İlker Avşar", club: "Muğlaspor", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.24 },
+            { name: "Yakup Alkan", club: "Muşspor", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.20 },
+            { name: "Serdar Deliktaş", club: "Mardin 1969", goals: 0, assists: 0, goalRate: 0.46, assistRate: 0.30 },
+            { name: "Samet Bulut", club: "Aliağa", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.25 },
+            { name: "Ali Han Tunçer", club: "Aliağa", goals: 0, assists: 0, goalRate: 0.30, assistRate: 0.52 },
+            { name: "Mehmet Gürkan", club: "Adana 01 FK", goals: 0, assists: 0, goalRate: 0.46, assistRate: 0.28 },
+            { name: "Enes Karakuş", club: "1461 Trabzon", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.22 },
+            { name: "Buğrahan Karslı", club: "1461 Trabzon", goals: 0, assists: 0, goalRate: 0.28, assistRate: 0.54 }
+        ],
+        "1. Lig": [
+            { name: "Ryan Mendes", club: "Kocaeli FK", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.58 },
+            { name: "M. Beridze", club: "Kocaeli FK", goals: 0, assists: 0, goalRate: 0.42, assistRate: 0.50 },
+            { name: "Eren Tozlu", club: "Erzurumspor", goals: 0, assists: 0, goalRate: 0.56, assistRate: 0.22 },
+            { name: "G. Rosheuvel", club: "Erzurumspor", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.56 },
+            { name: "B. Assombalonga", club: "Amed", goals: 0, assists: 0, goalRate: 0.55, assistRate: 0.20 },
+            { name: "Max Gradel", club: "Amed", goals: 0, assists: 0, goalRate: 0.38, assistRate: 0.62 },
+            { name: "Çekdar Orhan", club: "Amed", goals: 0, assists: 0, goalRate: 0.32, assistRate: 0.58 },
+            { name: "Thomas Verheydt", club: "Çorum", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.18 },
+            { name: "Geraldo", club: "Çorum", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.55 },
+            { name: "Gökdeniz Bayrakdar", club: "Bodrum", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.35 },
+            { name: "Yonathan Del Valle", club: "Pendikspor", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.45 },
+            { name: "Emeka Eze", club: "Pendikspor", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.20 },
+            { name: "Adrien Regattin", club: "Iğdır FK", goals: 0, assists: 0, goalRate: 0.40, assistRate: 0.64 }
+        ],
+        "Süper Lig": [
+            // 🔴🔵 TRABZONSPOR (2026/27)
+            { name: "M. Salah", club: "Trabzon FK", goals: 0, assists: 0, goalRate: 0.58, assistRate: 0.64 },
+            { name: "R. Malinovskyi", club: "Trabzon FK", goals: 0, assists: 0, goalRate: 0.38, assistRate: 0.56 },
+            { name: "E. Muçi", club: "Trabzon FK", goals: 0, assists: 0, goalRate: 0.44, assistRate: 0.52 },
+            { name: "A. Şimşir", club: "Trabzon FK", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.54 },
+            { name: "P. Onuachu", club: "Trabzon FK", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.20 },
+            { name: "E. Vişça", club: "Trabzon FK", goals: 0, assists: 0, goalRate: 0.30, assistRate: 0.55 },
+
+            // 🦅 BEŞİKTAŞ (2026/27)
+            { name: "O. Kökçü", club: "Kartal FK", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.66 },
+            { name: "L. Trossard", club: "Kartal FK", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.58 },
+            { name: "R. Silva", club: "Kartal FK", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.60 },
+            { name: "C. Immobile", club: "Kartal FK", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.20 },
+            { name: "Gedson Fernandes", club: "Kartal FK", goals: 0, assists: 0, goalRate: 0.32,技术: 0.48 },
+
+            // 🟡🔵 FENERBAHÇE (2026/27)
+            { name: "M. Greenwood", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.56, assistRate: 0.52 },
+            { name: "D. Tadic", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.68 },
+            { name: "V. Muriqi", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.22 },
+            { name: "A. Talisca", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.44 },
+            { name: "Y. En-Nesyri", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.20 },
+            { name: "S. Szymanski", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.48 },
+
+            // 🟡🔴 GALATASARAY (2026/27)
+            { name: "V. Osimhen", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.62, assistRate: 0.26 },
+            { name: "G. Sara", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.32, assistRate: 0.65 },
+            { name: "M. Icardi", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.56, assistRate: 0.22 },
+            { name: "D. Mertens", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.52 },
+            { name: "B. A. Yılmaz", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.42, assistRate: 0.46 },
+
+            // 🟠 DİĞER SÜPER LİG YILDIZLARI (2026/27)
+            { name: "K. Piatek", club: "Başakşehir FK", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.18 },
+            { name: "Deniz Türüç", club: "Başakşehir FK", goals: 0, assists: 0, goalRate: 0.28, assistRate: 0.54 },
+            { name: "O. Ntcham", club: "Samsun FK", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.48 },
+            { name: "Rômulo", club: "Göztepe FK", goals: 0, assists: 0, goalRate: 0.46, assistRate: 0.38 },
+            { name: "Mame Thiam", club: "Eyüpspor FK", goals: 0, assists: 0, goalRate: 0.44, assistRate: 0.30 },
+            { name: "Emre Akbaba", club: "Eyüpspor FK", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.46 }
+        ]
+    },
+
+    initLeagueScorers: function(forceReset = false) {
+        const curLeague = (this.state && this.state.currentLeague) ? this.state.currentLeague : "3. Lig";
+        const pool = this.LEAGUE_SCORERS_POOLS[curLeague] || this.LEAGUE_SCORERS_POOLS["Süper Lig"];
+        
+        if (forceReset || !this.state.leagueScorers || this.state.leagueScorersLeague !== curLeague) {
+            this.state.leagueScorersLeague = curLeague;
+            const w = (this.state && this.state.currentWeek && !forceReset) ? this.state.currentWeek : 1;
+            this.state.leagueScorers = pool.map(item => {
+                const estG = Math.max(0, Math.floor((w - 1) * (item.goalRate * 0.45)));
+                const estA = Math.max(0, Math.floor((w - 1) * (item.assistRate * 0.45)));
+                return {
+                    ...item,
+                    goals: forceReset ? 0 : estG,
+                    assists: forceReset ? 0 : estA
+                };
+            });
         }
     },
 
