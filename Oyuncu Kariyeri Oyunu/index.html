@@ -23,7 +23,7 @@
         }
     </script>
     <base href="./">
-    <link rel="stylesheet" href="styles.css?v=5.1">
+    <link rel="stylesheet" href="styles.css?v=5.2">
     <script>
         window.onerror = function(message, source, lineno, colno, error) {
             let errDiv = document.getElementById("visual-error-console");
@@ -1972,10 +1972,10 @@
     </div>
 
     <!-- Script Loads (Database first, logic next) -->
-    <script src="database.js?v=5.1"></script>
-    <script src="events.js?v=5.1"></script>
-    <script src="game.js?v=5.1"></script>
-    <script src="matchEngine.js?v=5.1"></script>
+    <script src="database.js?v=5.2"></script>
+    <script src="events.js?v=5.2"></script>
+    <script src="game.js?v=5.2"></script>
+    <script src="matchEngine.js?v=5.2"></script>
     
     <!-- MAIN CONTROLLER (Mounts everything) -->
     <script>
@@ -7545,38 +7545,40 @@
             if (!scorersBody || !assistsBody) return;
 
             // Player'i krallıklara dahil et
-            let playerGoalObj = { name: GAME.state.playerName, club: GAME.state.currentClub, goals: GAME.state.seasonGoals, assists: GAME.state.seasonAssists, isPlayer: true };
+            let playerGoalObj = { name: GAME.state.playerName, club: GAME.state.currentClub, goals: GAME.state.seasonGoals || 0, assists: GAME.state.seasonAssists || 0, isPlayer: true };
             
             let allScorers = [...GAME.state.leagueScorers, playerGoalObj];
             
             // Gol Krallığı Sıralaması
-            allScorers.sort((a, b) => b.goals - a.goals);
+            allScorers.sort((a, b) => b.goals - a.goals || b.assists - a.assists);
             scorersBody.innerHTML = "";
             allScorers.forEach((s, idx) => {
-                if(idx > 9) return; // Top 10
-                let style = s.isPlayer ? "background: rgba(0,229,183,0.1); font-weight:bold;" : "";
-                let noStyle = idx === 0 ? "color: var(--accent-yellow); font-weight: bold;" : "";
+                if(idx > 14) return; // Top 15
+                let style = s.isPlayer ? "background: rgba(0,229,183,0.15); font-weight:bold; border-left: 3px solid #00e5b7;" : "";
+                let noStyle = idx === 0 ? "color: var(--accent-yellow); font-weight: 900;" : (idx === 1 ? "color: #e0e0e0; font-weight: bold;" : (idx === 2 ? "color: #cd7f32; font-weight: bold;" : ""));
+                let medal = idx === 0 ? "🥇 " : (idx === 1 ? "🥈 " : (idx === 2 ? "🥉 " : ""));
                 scorersBody.innerHTML += `
                     <tr style="${style}">
-                        <td style="text-align:center; ${noStyle}">${idx + 1}</td>
-                        <td>${s.name} <br><span style="font-size:9px; color:#888;">${s.club}</span></td>
-                        <td style="text-align:center; font-weight:bold; color:var(--primary); font-size:16px;">${s.goals}</td>
+                        <td style="text-align:center; ${noStyle}">${medal}${idx + 1}</td>
+                        <td><strong style="color: ${s.isPlayer ? '#00e5b7' : '#fff'};">${s.name}</strong> <br><span style="font-size:9.5px; color:#90a4ae;">${s.club}</span></td>
+                        <td style="text-align:center; font-weight:900; color:var(--primary); font-size:16px;">${s.goals}</td>
                     </tr>
                 `;
             });
 
             // Asist Krallığı Sıralaması
-            allScorers.sort((a, b) => b.assists - a.assists);
+            allScorers.sort((a, b) => b.assists - a.assists || b.goals - a.goals);
             assistsBody.innerHTML = "";
             allScorers.forEach((s, idx) => {
-                if(idx > 9) return; // Top 10
-                let style = s.isPlayer ? "background: rgba(0,229,183,0.1); font-weight:bold;" : "";
-                let noStyle = idx === 0 ? "color: var(--accent-yellow); font-weight: bold;" : "";
+                if(idx > 14) return; // Top 15
+                let style = s.isPlayer ? "background: rgba(0,229,183,0.15); font-weight:bold; border-left: 3px solid #00e5b7;" : "";
+                let noStyle = idx === 0 ? "color: var(--accent-yellow); font-weight: 900;" : (idx === 1 ? "color: #e0e0e0; font-weight: bold;" : (idx === 2 ? "color: #cd7f32; font-weight: bold;" : ""));
+                let medal = idx === 0 ? "🥇 " : (idx === 1 ? "🥈 " : (idx === 2 ? "🥉 " : ""));
                 assistsBody.innerHTML += `
                     <tr style="${style}">
-                        <td style="text-align:center; ${noStyle}">${idx + 1}</td>
-                        <td>${s.name} <br><span style="font-size:9px; color:#888;">${s.club}</span></td>
-                        <td style="text-align:center; font-weight:bold; color:var(--secondary); font-size:16px;">${s.assists}</td>
+                        <td style="text-align:center; ${noStyle}">${medal}${idx + 1}</td>
+                        <td><strong style="color: ${s.isPlayer ? '#00e5b7' : '#fff'};">${s.name}</strong> <br><span style="font-size:9.5px; color:#90a4ae;">${s.club}</span></td>
+                        <td style="text-align:center; font-weight:900; color:var(--accent-yellow); font-size:16px;">${s.assists}</td>
                     </tr>
                 `;
             });

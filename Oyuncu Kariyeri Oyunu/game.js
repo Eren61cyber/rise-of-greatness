@@ -97,16 +97,39 @@ const GAME = {
             biggestWin: null,
             biggestLoss: null,
             mostEmotionalMatch: null,
-            proPassActive: false,
             leagueScorers: [
-                { name: "V. Osimhen", club: "Galatasaray", goals: 0, assists: 0 },
-                { name: "A. Talisca", club: "Fenerbahçe", goals: 0, assists: 0 },
-                { name: "P. Onuachu", club: "Trabzonspor", goals: 0, assists: 0 },
-                { name: "E. Shomurodov", club: "Başakşehir", goals: 0, assists: 0 },
-                { name: "M. Icardi", club: "Galatasaray", goals: 0, assists: 0 },
-                { name: "M. Bayo", club: "Gaziantep", goals: 0, assists: 0 },
-                { name: "R. Silva", club: "Beşiktaş", goals: 0, assists: 0 },
-                { name: "K. Aktürkoğlu", club: "Galatasaray", goals: 0, assists: 0 }
+                // Trabzonspor (Salah, Onuachu, Vişça, Cham)
+                { name: "M. Salah", club: "Trabzonspor", goals: 0, assists: 0, goalRate: 0.55, assistRate: 0.60 },
+                { name: "P. Onuachu", club: "Trabzonspor", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.22 },
+                { name: "E. Vişça", club: "Trabzonspor", goals: 0, assists: 0, goalRate: 0.32, assistRate: 0.56 },
+                { name: "M. Cham", club: "Trabzonspor", goals: 0, assists: 0, goalRate: 0.28, assistRate: 0.50 },
+                
+                // Galatasaray (Osimhen, Sara, Mertens, Icardi, Barış Alper)
+                { name: "V. Osimhen", club: "Galatasaray", goals: 0, assists: 0, goalRate: 0.60, assistRate: 0.26 },
+                { name: "G. Sara", club: "Galatasaray", goals: 0, assists: 0, goalRate: 0.30, assistRate: 0.62 },
+                { name: "D. Mertens", club: "Galatasaray", goals: 0, assists: 0, goalRate: 0.38, assistRate: 0.52 },
+                { name: "M. Icardi", club: "Galatasaray", goals: 0, assists: 0, goalRate: 0.55, assistRate: 0.22 },
+                { name: "B. A. Yılmaz", club: "Galatasaray", goals: 0, assists: 0, goalRate: 0.40, assistRate: 0.44 },
+
+                // Fenerbahçe (Tadic, Talisca, En-Nesyri, Szymanski, Saint-Maximin)
+                { name: "D. Tadic", club: "Fenerbahçe", goals: 0, assists: 0, goalRate: 0.35, assistRate: 0.65 },
+                { name: "A. Talisca", club: "Fenerbahçe", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.42 },
+                { name: "Y. En-Nesyri", club: "Fenerbahçe", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.20 },
+                { name: "S. Szymanski", club: "Fenerbahçe", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.48 },
+                { name: "A. Saint-Maximin", club: "Fenerbahçe", goals: 0, assists: 0, goalRate: 0.30, assistRate: 0.52 },
+
+                // Beşiktaş (Rafa Silva, Immobile, Gedson, Rashica)
+                { name: "R. Silva", club: "Beşiktaş", goals: 0, assists: 0, goalRate: 0.46, assistRate: 0.58 },
+                { name: "C. Immobile", club: "Beşiktaş", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.20 },
+                { name: "Gedson Fernandes", club: "Beşiktaş", goals: 0, assists: 0, goalRate: 0.30, assistRate: 0.46 },
+                { name: "M. Rashica", club: "Beşiktaş", goals: 0, assists: 0, goalRate: 0.26, assistRate: 0.50 },
+
+                // Başakşehir & Ligin Diğer Yıldızları
+                { name: "K. Piatek", club: "Başakşehir", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.18 },
+                { name: "Deniz Türüç", club: "Başakşehir", goals: 0, assists: 0, goalRate: 0.28, assistRate: 0.54 },
+                { name: "O. Ntcham", club: "Samsunspor", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.46 },
+                { name: "Emre Akbaba", club: "Eyüpspor", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.46 },
+                { name: "Rômulo", club: "Göztepe", goals: 0, assists: 0, goalRate: 0.46, assistRate: 0.36 }
             ],
             leagueTable: [],
             lastOpponentName: null,
@@ -299,6 +322,66 @@ const GAME = {
                  if (!this.state.leagueTable || this.state.leagueTable.length === 0) {
                      this.initLeagueTable();
                      this.saveGame();
+                 }
+                 if (!this.state.leagueScorers || !Array.isArray(this.state.leagueScorers) || this.state.leagueScorers.length < 10) {
+                     this.state.leagueScorers = [
+                         { name: "M. Salah", club: "Trabzonspor", goals: 0, assists: 0, goalRate: 0.55, assistRate: 0.60 },
+                         { name: "P. Onuachu", club: "Trabzonspor", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.22 },
+                         { name: "E. Vişça", club: "Trabzonspor", goals: 0, assists: 0, goalRate: 0.32, assistRate: 0.56 },
+                         { name: "M. Cham", club: "Trabzonspor", goals: 0, assists: 0, goalRate: 0.28, assistRate: 0.50 },
+                         { name: "V. Osimhen", club: "Galatasaray", goals: 0, assists: 0, goalRate: 0.60, assistRate: 0.26 },
+                         { name: "G. Sara", club: "Galatasaray", goals: 0, assists: 0, goalRate: 0.30, assistRate: 0.62 },
+                         { name: "D. Mertens", club: "Galatasaray", goals: 0, assists: 0, goalRate: 0.38, assistRate: 0.52 },
+                         { name: "M. Icardi", club: "Galatasaray", goals: 0, assists: 0, goalRate: 0.55, assistRate: 0.22 },
+                         { name: "B. A. Yılmaz", club: "Galatasaray", goals: 0, assists: 0, goalRate: 0.40, assistRate: 0.44 },
+                         { name: "D. Tadic", club: "Fenerbahçe", goals: 0, assists: 0, goalRate: 0.35, assistRate: 0.65 },
+                         { name: "A. Talisca", club: "Fenerbahçe", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.42 },
+                         { name: "Y. En-Nesyri", club: "Fenerbahçe", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.20 },
+                         { name: "S. Szymanski", club: "Fenerbahçe", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.48 },
+                         { name: "A. Saint-Maximin", club: "Fenerbahçe", goals: 0, assists: 0, goalRate: 0.30, assistRate: 0.52 },
+                         { name: "R. Silva", club: "Beşiktaş", goals: 0, assists: 0, goalRate: 0.46, assistRate: 0.58 },
+                         { name: "C. Immobile", club: "Beşiktaş", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.20 },
+                         { name: "Gedson Fernandes", club: "Beşiktaş", goals: 0, assists: 0, goalRate: 0.30, assistRate: 0.46 },
+                         { name: "M. Rashica", club: "Beşiktaş", goals: 0, assists: 0, goalRate: 0.26, assistRate: 0.50 },
+                         { name: "K. Piatek", club: "Başakşehir", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.18 },
+                         { name: "Deniz Türüç", club: "Başakşehir", goals: 0, assists: 0, goalRate: 0.28, assistRate: 0.54 },
+                         { name: "O. Ntcham", club: "Samsunspor", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.46 },
+                         { name: "Emre Akbaba", club: "Eyüpspor", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.46 },
+                         { name: "Rômulo", club: "Göztepe", goals: 0, assists: 0, goalRate: 0.46, assistRate: 0.36 }
+                     ];
+                     this.saveGame();
+                 } else {
+                     const requiredStars = [
+                         { name: "M. Salah", club: "Trabzonspor", goalRate: 0.55, assistRate: 0.60 },
+                         { name: "G. Sara", club: "Galatasaray", goalRate: 0.30, assistRate: 0.62 },
+                         { name: "D. Tadic", club: "Fenerbahçe", goalRate: 0.35, assistRate: 0.65 },
+                         { name: "E. Vişça", club: "Trabzonspor", goalRate: 0.32, assistRate: 0.56 },
+                         { name: "M. Cham", club: "Trabzonspor", goalRate: 0.28, assistRate: 0.50 },
+                         { name: "R. Silva", club: "Beşiktaş", goalRate: 0.46, assistRate: 0.58 },
+                         { name: "Deniz Türüç", club: "Başakşehir", goalRate: 0.28, assistRate: 0.54 }
+                     ];
+                     let starChanged = false;
+                     const curW = this.state.currentWeek || 1;
+                     requiredStars.forEach(star => {
+                         let found = this.state.leagueScorers.find(x => x.name === star.name);
+                         if (!found) {
+                             const estG = Math.max(0, Math.floor((curW - 1) * star.goalRate * 0.4));
+                             const estA = Math.max(0, Math.floor((curW - 1) * star.assistRate * 0.45));
+                             this.state.leagueScorers.push({
+                                 name: star.name,
+                                 club: star.club,
+                                 goals: estG,
+                                 assists: estA,
+                                 goalRate: star.goalRate,
+                                 assistRate: star.assistRate
+                             });
+                             starChanged = true;
+                         } else {
+                             if (!found.goalRate) { found.goalRate = star.goalRate; starChanged = true; }
+                             if (!found.assistRate) { found.assistRate = star.assistRate; starChanged = true; }
+                         }
+                     });
+                     if (starChanged) this.saveGame();
                  }
                  if (!this.state.socialFeed) {
                     this.state.socialFeed = [];
@@ -1027,16 +1110,26 @@ const GAME = {
     },
 
     simulateLeagueScorers: function() {
-        if (!this.state.leagueScorers) return;
+        if (!this.state.leagueScorers || !Array.isArray(this.state.leagueScorers)) return;
         this.state.leagueScorers.forEach(scorer => {
-            // Random chance to score 0, 1, or 2 goals/assists each week
-            let rG = Math.random();
-            if (rG > 0.90) scorer.goals += 2;
-            else if (rG > 0.50) scorer.goals += 1;
+            const gRate = scorer.goalRate || 0.40;
+            const aRate = scorer.assistRate || 0.35;
 
+            // Realistic weekly goal chance
+            let rG = Math.random();
+            if (rG < (gRate * 0.15)) {
+                scorer.goals += 2; // Brace
+            } else if (rG < (gRate * 0.75)) {
+                scorer.goals += 1;
+            }
+
+            // Realistic weekly assist chance
             let rA = Math.random();
-            if (rA > 0.95) scorer.assists += 2;
-            else if (rA > 0.65) scorer.assists += 1;
+            if (rA < (aRate * 0.16)) {
+                scorer.assists += 2; // Double assist masterclass
+            } else if (rA < (aRate * 0.78)) {
+                scorer.assists += 1;
+            }
         });
     },
 
