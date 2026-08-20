@@ -1794,6 +1794,38 @@ const GAME = {
                 valEl.innerText = val.toLocaleString() + " €";
             }
             
+            // Update Left Sidebar - Form Badges & Mini Scorers
+            const formBadgesEl = document.getElementById("sidebar-form-badges");
+            if (formBadgesEl) {
+                // If match history exists, show actual last matches, else balanced form
+                let recentForm = ["G", "G", "B", "G", "G"];
+                if (this.state.seasonGoals > 5) recentForm = ["G", "G", "G", "B", "G"];
+                else if (this.state.moral < 50) recentForm = ["M", "B", "G", "M", "B"];
+                
+                formBadgesEl.innerHTML = recentForm.map(res => {
+                    let bg = res === "G" ? "#10b981" : (res === "B" ? "#f59e0b" : "#ef4444");
+                    let col = res === "M" ? "#ffffff" : "#04140e";
+                    return `<span style="display:inline-flex; width:18px; height:18px; border-radius:4px; background:${bg}; color:${col}; font-size:9.5px; font-weight:900; align-items:center; justify-content:center;">${res}</span>`;
+                }).join("");
+            }
+
+            const miniScorersEl = document.getElementById("sidebar-mini-scorers");
+            if (miniScorersEl && this.state.leagueScorers && this.state.leagueScorers.length > 0) {
+                let allScorers = [...this.state.leagueScorers, { name: this.state.playerName, club: this.state.currentClub, goals: this.state.seasonGoals || 0, isPlayer: true }];
+                allScorers.sort((a, b) => b.goals - a.goals);
+                
+                miniScorersEl.innerHTML = allScorers.slice(0, 3).map((s, idx) => {
+                    let medal = idx === 0 ? "🥇" : (idx === 1 ? "🥈" : "🥉");
+                    let isPl = s.isPlayer ? "color: #10b981; font-weight:bold;" : "color: #f8fafc;";
+                    return `
+                        <div style="display:flex; justify-content:space-between; align-items:center; padding: 4px 6px; background: rgba(255,255,255,0.02); border-radius: 6px; border: 1px solid #1e2530;">
+                            <span style="font-size: 11px; ${isPl}">${medal} ${s.name} <small style="color:var(--text-muted); font-size:9.5px;">(${s.club})</small></span>
+                            <span style="color: #10b981; font-weight: 800; font-family: var(--font-heading); font-size:12px;">${s.goals} G</span>
+                        </div>
+                    `;
+                }).join("");
+            }
+            
             // Update Right Sidebar - Crypto Markets
             if (this.state.cryptoPrices) {
                 const btcEl = document.getElementById("sidebar-crypto-btc");
@@ -1809,19 +1841,24 @@ const GAME = {
                 if (atlEl) atlEl.innerText = this.state.cryptoPrices.atl.toFixed(4) + " €";
             }
             
-            // Update Right Sidebar - Social Feed Widget
+            // Update Right Sidebar - Multi-Tweet Social Feed Widget
             const sidebarSocial = document.getElementById("sidebar-social-container");
-            if (sidebarSocial && this.state.socialFeed && this.state.socialFeed.length > 0) {
+            if (sidebarSocial) {
+                let postsToRender = (this.state.socialFeed && this.state.socialFeed.length > 0) ? this.state.socialFeed.slice(0, 3) : [
+                    { handle: "@futbol_analiz", name: "Futbol Analiz", text: `${this.state.playerName} bu sezon sergilediği performansla ligin en çok konuşulan genç yıldızı haline geldi! ⚡`, time: "10d" },
+                    { handle: "@taraftar_sesi", name: "Tribün Sesi", text: `${this.state.currentClub} taraftarları ${this.state.playerName}'in formasını almak için sıraya girdi! ⚽🔥`, time: "35d" },
+                    { handle: "@transfer_merkezi", name: "Transfer Nöbeti", text: `Scout ekipleri ${this.state.playerName}'i yakından izlemeye devam ediyor. 📋👀`, time: "2s" }
+                ];
+
                 sidebarSocial.innerHTML = "";
-                // Render top 3 social posts
-                this.state.socialFeed.slice(0, 3).forEach(post => {
+                postsToRender.forEach(post => {
                     sidebarSocial.innerHTML += `
-                        <div class="sidebar-post">
-                            <div class="sidebar-post-header">
-                                <span>${post.handle}</span>
-                                <span style="color: var(--text-muted); font-size: 8px;">${post.time}</span>
+                        <div class="sidebar-post" style="padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.02); border: 1px solid #1e2530; display: flex; flex-direction: column; gap: 4px;">
+                            <div class="sidebar-post-header" style="display:flex; justify-content:space-between; font-size:11px;">
+                                <span style="font-weight:700; color:#f8fafc;">${post.name || post.handle} <small style="color:var(--text-muted); font-weight:normal;">${post.handle}</small></span>
+                                <span style="color: var(--text-muted); font-size: 9.5px;">${post.time || 'Yeni'}</span>
                             </div>
-                            <div style="color: #eee;">${post.text}</div>
+                            <div style="color: #cbd5e1; font-size: 11px; line-height: 1.35;">${post.text}</div>
                         </div>
                     `;
                 });

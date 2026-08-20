@@ -23,7 +23,7 @@
         }
     </script>
     <base href="./">
-    <link rel="stylesheet" href="styles.css?v=5.5">
+    <link rel="stylesheet" href="styles.css?v=5.6">
     <script>
         window.onerror = function(message, source, lineno, colno, error) {
             let errDiv = document.getElementById("visual-error-console");
@@ -476,11 +476,32 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Team Form & Top Scorers Widget -->
+                <div class="sidebar-widget">
+                    <h3 class="sidebar-header" style="border-left-color: #10b981;">SON FORM & GOLCÜLER</h3>
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; background: rgba(0,0,0,0.25); padding: 8px 10px; border-radius: 8px; border: 1px solid #1e2530;">
+                        <span style="font-size: 10px; color: var(--text-muted); font-weight: 700; letter-spacing: 0.5px;">SON MAÇLAR</span>
+                        <div id="sidebar-form-badges" style="display: flex; gap: 4px;">
+                            <span style="display:inline-flex; width:18px; height:18px; border-radius:4px; background:#10b981; color:#04140e; font-size:9.5px; font-weight:900; align-items:center; justify-content:center;">G</span>
+                            <span style="display:inline-flex; width:18px; height:18px; border-radius:4px; background:#10b981; color:#04140e; font-size:9.5px; font-weight:900; align-items:center; justify-content:center;">G</span>
+                            <span style="display:inline-flex; width:18px; height:18px; border-radius:4px; background:#f59e0b; color:#04140e; font-size:9.5px; font-weight:900; align-items:center; justify-content:center;">B</span>
+                            <span style="display:inline-flex; width:18px; height:18px; border-radius:4px; background:#10b981; color:#04140e; font-size:9.5px; font-weight:900; align-items:center; justify-content:center;">G</span>
+                            <span style="display:inline-flex; width:18px; height:18px; border-radius:4px; background:#10b981; color:#04140e; font-size:9.5px; font-weight:900; align-items:center; justify-content:center;">G</span>
+                        </div>
+                    </div>
+                    <div id="sidebar-mini-scorers" style="display: flex; flex-direction: column; gap: 6px; font-size: 11px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; padding: 4px 6px; background: rgba(255,255,255,0.02); border-radius: 6px;">
+                            <span style="color: #f8fafc; font-weight: 600;">👑 1. Lig Golcüsü</span>
+                            <span style="color: #10b981; font-weight: 800; font-family: var(--font-heading);">--</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Career Statistics Widget -->
             <div class="sidebar-widget" style="margin-bottom: 0;">
-                <h3 class="sidebar-header" style="border-left-color: #2196f3; color: #2196f3;">KARİYER</h3>
+                <h3 class="sidebar-header" style="border-left-color: #3b82f6;">KARİYER</h3>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11px;">
                     <div style="background: rgba(0,0,0,0.15); padding: 8px; border-radius: 8px; text-align: center;">
                         <span style="color: var(--text-muted); display: block; font-size: 9px; text-transform: uppercase;">Toplam Maç</span>
@@ -1972,10 +1993,10 @@
     </div>
 
     <!-- Script Loads (Database first, logic next) -->
-    <script src="database.js?v=5.5"></script>
-    <script src="events.js?v=5.5"></script>
-    <script src="game.js?v=5.5"></script>
-    <script src="matchEngine.js?v=5.5"></script>
+    <script src="database.js?v=5.6"></script>
+    <script src="events.js?v=5.6"></script>
+    <script src="game.js?v=5.6"></script>
+    <script src="matchEngine.js?v=5.6"></script>
     
     <!-- MAIN CONTROLLER (Mounts everything) -->
     <script>
@@ -7521,32 +7542,34 @@
                     }
                 }
                 
-                let ratingStr = "";
                 let att = 70, mid = 70, def = 70;
+                let teamColor = "#3b82f6";
                 if (teamObj) {
                     att = teamObj.att;
                     mid = teamObj.mid;
                     def = teamObj.def;
+                    teamColor = teamObj.color || "#3b82f6";
                 } else {
-                    // Realistic fallback ratings based on league tier
                     if (leagueName === "Süper Lig") { att = 71; mid = 70; def = 70; }
                     else if (leagueName === "1. Lig") { att = 61; mid = 60; def = 60; }
                     else if (leagueName === "2. Lig") { att = 51; mid = 50; def = 50; }
                     else { att = 43; mid = 42; def = 42; }
                 }
                 
-                ratingStr = `<span style="font-size: 10.5px; color: var(--text-muted); margin-left: 6px; font-weight: normal;">(H:${att} O:${mid} D:${def})</span>`;
+                const avgOvr = Math.round((att + mid + def) / 3);
+                const teamBadge = `<span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:${teamColor}; margin-right:6px; vertical-align:middle; box-shadow: 0 0 4px ${teamColor}66;"></span>`;
+                const powerTag = `<span style="font-size: 10px; color: #64748b; margin-left: 5px; font-weight: 600;">⚡${avgOvr}</span>`;
 
                 tbody.innerHTML += `
                     <tr class="${highlightClass}">
-                        <td style="${zoneStyle}">${idx + 1}${zoneIndicator}</td>
-                        <td>${row.name}${isPlayerClub ? ' ⭐' : ''}${ratingStr}</td>
-                        <td style="text-align: center;">${row.played}</td>
-                        <td style="text-align: center;">${row.won}</td>
-                        <td style="text-align: center;">${row.drawn}</td>
-                        <td style="text-align: center;">${row.lost}</td>
-                        <td style="text-align: center; font-weight: bold; color: ${row.gf-row.ga >= 0 ? 'var(--primary)' : 'var(--accent-red)'};">${row.gf - row.ga}</td>
-                        <td style="text-align: center; font-weight: 800; color: #fff;">${row.points}</td>
+                        <td style="${zoneStyle}; text-align: center; width: 32px;">${idx + 1}${zoneIndicator}</td>
+                        <td class="standings-team-name">${teamBadge}${row.name}${isPlayerClub ? ' ⭐' : ''}${powerTag}</td>
+                        <td style="text-align: center; color: #9ca1a6;">${row.played}</td>
+                        <td style="text-align: center; color: #9ca1a6;">${row.won}</td>
+                        <td style="text-align: center; color: #9ca1a6;">${row.drawn}</td>
+                        <td style="text-align: center; color: #9ca1a6;">${row.lost}</td>
+                        <td style="text-align: center; color: #9ca1a6;">${row.gf - row.ga > 0 ? `+${row.gf - row.ga}` : row.gf - row.ga}</td>
+                        <td class="standings-points" style="text-align: center;">${row.points}</td>
                     </tr>
                 `;
             });
