@@ -1,0 +1,11 @@
+﻿# Android build artifacts
+**/build/
+**/.gradle/
+**/local.properties
+*.apk
+*.aab
+
+# Temporary scripts & logs
+*.log
+*.tmp
+*.bak
