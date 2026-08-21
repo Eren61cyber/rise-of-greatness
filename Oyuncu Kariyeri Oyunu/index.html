@@ -1557,6 +1557,20 @@
             </div>
         </div>
 
+        <!-- 🚨 CUSTOM GENERIC ALERT MODAL -->
+        <div class="event-modal-overlay" id="custom-alert-modal" onclick="if(event.target===this) document.getElementById('custom-alert-modal').style.display='none';" style="display:none; align-items:center; justify-content:center; padding:15px; background:rgba(0,0,0,0.85); z-index:10050;">
+            <div class="glass" style="max-width:380px; width:100%; border-radius:18px; border:1.5px solid rgba(16,185,129,0.3); background:#0f1418; overflow:hidden; box-shadow:0 15px 50px rgba(0,0,0,0.6); text-align:center;">
+                <div style="background:linear-gradient(135deg, rgba(16,185,129,0.1), rgba(0,0,0,0)); padding:20px 20px 15px;">
+                    <div id="custom-alert-icon" style="font-size:36px; margin-bottom:8px;">🔔</div>
+                    <div id="custom-alert-title" style="font-size:16px; font-weight:900; color:#10b981; letter-spacing:1px; text-transform:uppercase;">BİLGİLENDİRME</div>
+                </div>
+                <div id="custom-alert-msg" style="padding:0 20px 20px; font-size:13.5px; color:#cbd5e1; line-height:1.6; white-space:pre-wrap;">Mesajınız buraya gelecek...</div>
+                <div style="padding:15px 20px; background:rgba(0,0,0,0.2); border-top:1px solid rgba(255,255,255,0.05);">
+                    <button onclick="document.getElementById('custom-alert-modal').style.display='none'" class="btn" style="width:100%; padding:10px; border-radius:10px; font-weight:800; background:var(--primary); color:#0a0e17;">TAMAM</button>
+                </div>
+            </div>
+        </div>
+
         <!-- 🎯 HAFTALIK GÖREVLER MODAL -->
         <div class="event-modal-overlay" id="missions-modal" onclick="if(event.target===this) closeMissionsModal()" style="display:none; align-items:center; justify-content:center; padding:15px; background:rgba(0,0,0,0.90); z-index:10025;">
             <div class="glass" style="max-width:420px; width:100%; border-radius:18px; border:1.5px solid rgba(245,166,35,0.5); background:#0f1418; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.7);">
@@ -2038,6 +2052,62 @@
     
     <!-- MAIN CONTROLLER (Mounts everything) -->
     <script>
+        // 🚨 CUSTOM ALERT SYSTEM (Replaces default browser alerts)
+        function showCustomAlert(msg, title = "BİLGİLENDİRME", icon = "🔔", type = "info") {
+            const modal = document.getElementById("custom-alert-modal");
+            if (!modal) return window.originalAlert ? window.originalAlert(msg) : null;
+            
+            const titleEl = document.getElementById("custom-alert-title");
+            const msgEl = document.getElementById("custom-alert-msg");
+            const iconEl = document.getElementById("custom-alert-icon");
+            
+            msgEl.innerText = msg;
+            titleEl.innerText = title;
+            iconEl.innerText = icon;
+            
+            let color = "#10b981"; 
+            if (type === "error" || type === "danger" || type === "warning") color = "#ef4444";
+            else if (type === "info") color = "#00e5b7";
+            
+            if (msg.includes("Sakatlığınız") || msg.includes("dinlenin") || msg.includes("yetersiz") || msg.includes("Krizde") || msg.includes("Cezalı")) {
+                titleEl.style.color = "#ef4444";
+                modal.querySelector('.glass').style.borderColor = "rgba(239, 68, 68, 0.4)";
+                iconEl.innerText = "⚠️";
+                titleEl.innerText = "UYARI";
+            } else {
+                titleEl.style.color = color;
+                modal.querySelector('.glass').style.borderColor = `rgba(${color === '#00e5b7' ? '0,229,183' : '16,185,129'}, 0.4)`;
+            }
+
+            modal.style.display = "flex";
+            
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playClick === "function") {
+                try { SoundManager.playClick(); } catch(e){}
+            }
+        }
+        
+        window.originalAlert = window.alert;
+        window.alert = function(msg) {
+            let title = "BİLGİLENDİRME";
+            let icon = "🔔";
+            let type = "info";
+            
+            if (msg.includes("Sakatlığınız") || msg.includes("Cezalısınız") || msg.includes("yetersiz") || msg.includes("hata") || msg.includes("yorgun")) {
+                title = "UYARI";
+                icon = "⚠️";
+                type = "warning";
+            } else if (msg.includes("Tebrikler") || msg.includes("başarıyla") || msg.includes("ŞAMPİYON")) {
+                title = "BAŞARILI";
+                icon = "🎉";
+                type = "info";
+            } else if (msg.includes("Milli Maç Sona") || msg.includes("Maç Sona Erdi") || msg.includes("HIZLI SİMÜLASYON")) {
+                title = "MAÇ SONUCU";
+                icon = "⚽";
+                type = "info";
+            }
+            
+            showCustomAlert(msg, title, icon, type);
+        };
         const SoundManager = {
             enabled: true,
             musicEnabled: true,
