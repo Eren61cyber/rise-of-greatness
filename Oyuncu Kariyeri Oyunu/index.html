@@ -23,7 +23,7 @@
         }
     </script>
     <base href="./">
-    <link rel="stylesheet" href="styles.css?v=5.8">
+    <link rel="stylesheet" href="styles.css?v=5.8.1">
     <script>
         window.onerror = function(message, source, lineno, colno, error) {
             let errDiv = document.getElementById("visual-error-console");
@@ -1990,10 +1990,10 @@
     </div>
 
     <!-- Script Loads (Database first, logic next) -->
-    <script src="database.js?v=5.8"></script>
-    <script src="events.js?v=5.8"></script>
-    <script src="game.js?v=5.8"></script>
-    <script src="matchEngine.js?v=5.8"></script>
+    <script src="database.js?v=5.8.1"></script>
+    <script src="events.js?v=5.8.1"></script>
+    <script src="game.js?v=5.8.1"></script>
+    <script src="matchEngine.js?v=5.8.1"></script>
     
     <!-- MAIN CONTROLLER (Mounts everything) -->
     <script>
@@ -5535,8 +5535,6 @@
         }
 
 
-        // Render Shop Items
-        function renderShopItems() {
         // Render Shop Items
         function renderShopItems() {
             const container = document.getElementById("shop-items-container");
