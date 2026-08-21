@@ -741,6 +741,40 @@
                     </div>
                 </div>
 
+                <!-- 🎖️ JÜBİLE TÖRENİ KARTI -->
+                <div class="card glass" style="
+                    margin-top: 10px; 
+                    padding: 10px 14px; 
+                    background: linear-gradient(135deg, rgba(253, 185, 19, 0.12), rgba(255, 215, 0, 0.04));
+                    border: 1px solid rgba(253, 185, 19, 0.4);
+                    cursor: pointer;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    border-radius: 10px;
+                    transition: all 0.2s ease-in-out;
+                    box-shadow: 0 4px 15px rgba(253, 185, 19, 0.1);
+                " onclick="triggerManualJubilee()" onmouseover="this.style.transform='translateY(-1px)'; this.style.borderColor='#ffd700';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(253, 185, 19, 0.4)';">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(253, 185, 19, 0.2); border: 1px solid rgba(253, 185, 19, 0.5); display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                            🎖️
+                        </div>
+                        <div style="text-align: left;">
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <h4 style="margin: 0; font-size: 13px; font-weight: 900; color: #ffd700; letter-spacing: 0.5px;">EFSANEVİ JÜBİLE</h4>
+                                <span style="background: linear-gradient(135deg, #fdb913, #ffd700); color: black; font-size: 8.5px; font-weight: 900; padding: 1px 6px; border-radius: 4px; text-transform: uppercase;">VEDA TÖRENİ</span>
+                            </div>
+                            <p style="margin: 2px 0 0 0; font-size: 10.5px; color: #cfd8dc; line-height: 1.25;">
+                                Kramponları as, başarı plaketini al ve jübile maçı yap!
+                            </p>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 4px;">
+                        <span style="font-size: 11px; font-weight: 800; color: #ffd700;">JÜBİLE YAP</span>
+                        <span style="font-size: 14px; color: #ffd700;">➔</span>
+                    </div>
+                </div>
+
                 <div class="action-zone" style="margin-top: 10px;">
                     <div class="next-match-card glass">
                         <h3>Sıradaki Rakip</h3>
@@ -813,6 +847,10 @@
                         <div style="font-size: 13px; font-weight: normal; color: #ddd; font-style: italic; border-left: 2px solid var(--accent-yellow); padding-left: 8px; margin-top: 4px;" id="career-emotional-match">Kariyerinde henüz unutulmaz bir dram yaşanmadı.</div>
                     </div>
                 </div>
+
+                <button class="btn" onclick="triggerManualJubilee()" style="width: 100%; margin-top: 12px; padding: 14px; background: linear-gradient(135deg, #fdb913 0%, #ff8f00 100%); color: #000; font-weight: 900; font-size: 13px; border-radius: 10px; border: none; box-shadow: 0 4px 15px rgba(253, 185, 19, 0.3); cursor: pointer;">
+                    🎖️ EFSANEVİ JÜBİLE YAP & EMEKLİ OL
+                </button>
             </section>
 
             <section id="panel-standings" class="view-panel">
