@@ -36,7 +36,13 @@ const GAME = {
         seasonAssists: 0,
         careerGoals: 0,
         careerAssists: 0,
-        careerApps: 0
+        careerApps: 0,
+        totalEarnings: 0,
+        biggestWin: null,
+        biggestLoss: null,
+        mostEmotionalMatch: null,
+        proPassActive: false,
+        leagueScorers: []
     },
 
     saveKey: "soccer_atlas_career_save",
@@ -49,7 +55,7 @@ const GAME = {
 
     resetGame: function(customName, startingLeague, startingSalary, startingTrust, hometownCity, hometownDistrict, startingClubName) {
         const startingClub = startingClubName ? DATABASE.AMATEUR_CLUBS.find(c => c.name === startingClubName) : DATABASE.getRandomAmateurClub();
-        const pName = customName || "Ahmet Eren Demirci";
+        const pName = customName || "Genç Yetenek";
         const sLeague = startingLeague || "3. Lig";
 
         this.state = {
@@ -87,6 +93,49 @@ const GAME = {
             careerGoals: 0,
             careerAssists: 0,
             careerApps: 0,
+            totalEarnings: 0,
+            biggestWin: null,
+            biggestLoss: null,
+            mostEmotionalMatch: null,
+            leagueScorers: [
+                // 🔴🔵 TRABZONSPOR (2026/27 Süper Transferler)
+                { name: "M. Salah", club: "Trabzonspor", goals: 0, assists: 0, goalRate: 0.58, assistRate: 0.64 },
+                { name: "R. Malinovskyi", club: "Trabzonspor", goals: 0, assists: 0, goalRate: 0.38, assistRate: 0.56 },
+                { name: "E. Muçi", club: "Trabzonspor", goals: 0, assists: 0, goalRate: 0.44, assistRate: 0.52 },
+                { name: "A. Şimşir", club: "Trabzonspor", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.54 },
+                { name: "P. Onuachu", club: "Trabzonspor", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.20 },
+                { name: "E. Vişça", club: "Trabzonspor", goals: 0, assists: 0, goalRate: 0.30, assistRate: 0.55 },
+
+                // 🦅 BEŞİKTAŞ (2026/27 Yıldız Takviyeleri)
+                { name: "O. Kökçü", club: "Beşiktaş", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.66 },
+                { name: "L. Trossard", club: "Beşiktaş", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.58 },
+                { name: "R. Silva", club: "Beşiktaş", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.60 },
+                { name: "C. Immobile", club: "Beşiktaş", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.20 },
+                { name: "Gedson Fernandes", club: "Beşiktaş", goals: 0, assists: 0, goalRate: 0.32, assistRate: 0.48 },
+
+                // 🟡🔵 FENERBAHÇE (2026/27 Yeni Hücum Hattı)
+                { name: "M. Greenwood", club: "Fenerbahçe", goals: 0, assists: 0, goalRate: 0.56, assistRate: 0.52 },
+                { name: "D. Tadic", club: "Fenerbahçe", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.68 },
+                { name: "V. Muriqi", club: "Fenerbahçe", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.22 },
+                { name: "A. Talisca", club: "Fenerbahçe", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.44 },
+                { name: "Y. En-Nesyri", club: "Fenerbahçe", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.20 },
+                { name: "S. Szymanski", club: "Fenerbahçe", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.48 },
+
+                // 🟡🔴 GALATASARAY (2026/27 Şampiyon Kadro)
+                { name: "V. Osimhen", club: "Galatasaray", goals: 0, assists: 0, goalRate: 0.62, assistRate: 0.26 },
+                { name: "G. Sara", club: "Galatasaray", goals: 0, assists: 0, goalRate: 0.32, assistRate: 0.65 },
+                { name: "M. Icardi", club: "Galatasaray", goals: 0, assists: 0, goalRate: 0.56, assistRate: 0.22 },
+                { name: "D. Mertens", club: "Galatasaray", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.52 },
+                { name: "B. A. Yılmaz", club: "Galatasaray", goals: 0, assists: 0, goalRate: 0.42, assistRate: 0.46 },
+
+                // 🟠 DİĞER SÜPER LİG YILDIZLARI (2026/27)
+                { name: "K. Piatek", club: "Başakşehir", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.18 },
+                { name: "Deniz Türüç", club: "Başakşehir", goals: 0, assists: 0, goalRate: 0.28, assistRate: 0.54 },
+                { name: "O. Ntcham", club: "Samsunspor", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.48 },
+                { name: "Rômulo", club: "Göztepe", goals: 0, assists: 0, goalRate: 0.46, assistRate: 0.38 },
+                { name: "Mame Thiam", club: "Eyüpspor", goals: 0, assists: 0, goalRate: 0.44, assistRate: 0.30 },
+                { name: "Emre Akbaba", club: "Eyüpspor", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.46 }
+            ],
             leagueTable: [],
             lastOpponentName: null,
             nextOpponentName: null,
@@ -106,7 +155,7 @@ const GAME = {
             weeklyFixturesWeek: 0,
             activeBets: [],
             betHistory: [],
-            isSuspended: false,
+            suspendedWeeks: 0,
             themeSetting: "auto",
             tefeciBorc: 0,
             tefeciFaiz: 0,
@@ -139,6 +188,11 @@ const GAME = {
                 beardStyle: "none"
             },
 
+            // 🔥 Hot Streak & Weekly Missions
+            hotStreak: 0,           // +1 per 7.0+ rated match; reset on poor match
+            hotStreakBadRun: 0,     // +1 per <5.5 rated match; reset on good match
+            weeklyMissions: [],     // Array of {id, desc, target, progress, done, reward}
+            weeklyMissionsWeek: 0,  // Which week missions were generated for
 
             socialFeed: [
                 {
@@ -151,6 +205,7 @@ const GAME = {
         };
         this.updateTeammateName();
         this.initLeagueTable();
+        this.initLeagueScorers(true);
         this.saveGame();
         this.updateUI();
     },
@@ -158,6 +213,82 @@ const GAME = {
     saveGame: function() {
         localStorage.setItem(this.saveKey, JSON.stringify(this.state));
         console.log("Game state successfully saved!");
+    },
+
+    // ═══════════════════════════════════════════════════════
+    // 🎯 HAFTALIK GÖREVLER (Weekly Mission System)
+    // ═══════════════════════════════════════════════════════
+    generateWeeklyMissions: function() {
+        const s = this.state;
+        const week = s.currentWeek;
+        if (s.weeklyMissionsWeek === week) return; // Already generated this week
+        s.weeklyMissionsWeek = week;
+
+        const allMissions = [
+            { id: "score1",    desc: "Bu hafta en az 1 gol at",           type: "goals",   target: 1, reward: { money: 25000, followers: 2000 }, rewardText: "+25.000 € + 2.000 Takipçi" },
+            { id: "score2",    desc: "Bu hafta en az 2 gol at",           type: "goals",   target: 2, reward: { money: 50000, followers: 5000 }, rewardText: "+50.000 € + 5.000 Takipçi" },
+            { id: "hattrick",  desc: "Hat-trick yap (3 gol)!",            type: "goals",   target: 3, reward: { money: 100000, followers: 15000 }, rewardText: "+100.000 € + 15.000 Takipçi" },
+            { id: "assist1",   desc: "Bu hafta en az 1 asist yap",        type: "assists", target: 1, reward: { money: 20000, followers: 1500 }, rewardText: "+20.000 € + 1.500 Takipçi" },
+            { id: "assist2",   desc: "Bu hafta en az 2 asist yap",        type: "assists", target: 2, reward: { money: 40000, followers: 4000 }, rewardText: "+40.000 € + 4.000 Takipçi" },
+            { id: "rating8",   desc: "Maçtan 8.0+ puan al",              type: "rating",  target: 8.0, reward: { money: 30000, followers: 3000 }, rewardText: "+30.000 € + 3.000 Takipçi" },
+            { id: "rating9",   desc: "Maçtan 9.0+ puan al",              type: "rating",  target: 9.0, reward: { money: 80000, followers: 10000 }, rewardText: "+80.000 € + 10.000 Takipçi" },
+            { id: "winmatch",  desc: "Bu hafta galip gel",                type: "win",     target: 1, reward: { money: 15000, followers: 1000 }, rewardText: "+15.000 € + 1.000 Takipçi" },
+            { id: "kondisyon", desc: "Kondisyonunu %70 üzerinde tut",    type: "kondisyon", target: 70, reward: { money: 10000 }, rewardText: "+10.000 €" },
+            { id: "goal_assist", desc: "Aynı maçta gol + asist yap",     type: "goalAssist", target: 1, reward: { money: 60000, followers: 8000 }, rewardText: "+60.000 € + 8.000 Takipçi" },
+        ];
+
+        // Pick 3 random unique missions (weighted toward easier ones early on)
+        const shuffled = allMissions.sort(() => Math.random() - 0.5);
+        s.weeklyMissions = shuffled.slice(0, 3).map(m => ({
+            ...m,
+            progress: 0,
+            done: false
+        }));
+    },
+
+    // ═══════════════════════════════════════════════════════
+    // 🔄 UPDATE MISSIONS & HOT STREAK AFTER MATCH
+    // ═══════════════════════════════════════════════════════
+    updateMissionsAfterMatch: function(goals, assists, rating, won) {
+        const s = this.state;
+
+        // Update hot streak
+        if (rating >= 7.0) {
+            s.hotStreak = (s.hotStreak || 0) + 1;
+            s.hotStreakBadRun = 0;
+        } else if (rating < 5.5) {
+            s.hotStreakBadRun = (s.hotStreakBadRun || 0) + 1;
+            if (s.hotStreakBadRun >= 2) {
+                s.hotStreak = 0;
+            }
+        } else {
+            // Mediocre - don't break streak but don't extend it
+        }
+
+        // Update weekly missions progress
+        if (!s.weeklyMissions || s.weeklyMissions.length === 0) {
+            this.generateWeeklyMissions();
+        }
+        let missionCompleted = false;
+        s.weeklyMissions.forEach(m => {
+            if (m.done) return;
+            switch (m.type) {
+                case "goals":       m.progress = Math.min(m.target, (m.progress || 0) + goals); break;
+                case "assists":     m.progress = Math.min(m.target, (m.progress || 0) + assists); break;
+                case "rating":      if (rating >= m.target) m.progress = m.target; break;
+                case "win":         if (won) m.progress = m.target; break;
+                case "kondisyon":   if (s.kondisyon >= m.target) m.progress = m.target; break;
+                case "goalAssist":  if (goals >= 1 && assists >= 1) m.progress = m.target; break;
+            }
+            if (m.progress >= m.target && !m.done) {
+                m.done = true;
+                missionCompleted = true;
+                // Grant reward
+                if (m.reward.money) s.money += m.reward.money;
+                if (m.reward.followers) s.followers += m.reward.followers;
+            }
+        });
+        return missionCompleted;
     },
 
     loadGame: function() {
@@ -215,6 +346,32 @@ const GAME = {
                  if (migrated) {
                      this.saveGame();
                  }
+                 
+                 // Validate and repair avatarCustomization state (healing/migration)
+                 if (!this.state.avatarCustomization || typeof this.state.avatarCustomization !== "object") {
+                     this.state.avatarCustomization = {};
+                 }
+                 let repaired = false;
+                 let cust = this.state.avatarCustomization;
+                 const defaultCustom = {
+                     skinColor: "#E2B28B",
+                     eyeColor: "#5A3D28",
+                     hairColor: "#1A1A1A",
+                     hairStyle: "short",
+                     beardStyle: "none"
+                 };
+                 for (let key in defaultCustom) {
+                     if (!cust[key]) {
+                         cust[key] = defaultCustom[key];
+                         repaired = true;
+                     } else if (key.endsWith("Color") && typeof cust[key] === "string" && !cust[key].startsWith("#")) {
+                         cust[key] = "#" + cust[key];
+                         repaired = true;
+                     }
+                 }
+                 if (repaired) {
+                     this.saveGame();
+                 }
 
                 if (typeof this.state.careerGoals === "undefined" || isNaN(this.state.careerGoals)) {
                     this.state.careerGoals = 0;
@@ -243,17 +400,18 @@ const GAME = {
                  if (typeof this.state.familyBondsSevered === "undefined") {
                      this.state.familyBondsSevered = false;
                  }
-                 if (typeof this.state.familyStoryWeeks === "undefined") {
-                     this.state.familyStoryWeeks = 0;
-                 }
                  if (typeof this.state.familyStoryStage === "undefined") {
-                     this.state.familyStoryStage = 0;
-                 }
-                 if (!this.state.leagueTable || this.state.leagueTable.length === 0) {
-                     this.initLeagueTable();
-                     this.saveGame();
-                 }
-                 if (!this.state.socialFeed) {
+                      this.state.familyStoryStage = 0;
+                  }
+                  if (!this.state.leagueTable || this.state.leagueTable.length === 0) {
+                      this.initLeagueTable();
+                      this.saveGame();
+                  }
+
+                  // Automatically match scorers to the current active league
+                  this.initLeagueScorers(false);
+                  
+                  if (!this.state.socialFeed) {
                     this.state.socialFeed = [];
                     this.saveGame();
                 }
@@ -356,8 +514,12 @@ const GAME = {
                     this.state.activePurchasedBoot = null;
                     this.saveGame();
                 }
-                if (typeof this.state.isSuspended === "undefined") {
-                    this.state.isSuspended = false;
+                if (typeof this.state.suspendedWeeks === "undefined") {
+                    this.state.suspendedWeeks = 0;
+                    this.saveGame();
+                }
+                if (this.state.avatarImage) {
+                    delete this.state.avatarImage;
                     this.saveGame();
                 }
                 if (typeof this.state.agentId === "undefined") {
@@ -624,7 +786,7 @@ const GAME = {
         }
 
         // Season End check at week 34
-        if (this.state.currentWeek > 34) {
+        if (this.state.currentWeek > 37) {
             this.handleSeasonEnd();
             return;
         }
@@ -905,9 +1067,11 @@ const GAME = {
         }
         this.matchSimulatedThisWeek = false;
 
-        if (this.state.isSuspended) {
-            this.state.isSuspended = false;
-            this.addSocialPost("@spor_manset", "Spor Manşetleri", `Cezası bitti! Kırmızı kart cezası sona eren genç yetenek ${this.state.playerName} yeniden formasına kavuşuyor.`);
+        if (this.state.suspendedWeeks > 0) {
+            this.state.suspendedWeeks--;
+            if (this.state.suspendedWeeks === 0) {
+                this.addSocialPost("@spor_manset", "Spor Mansetleri", `Cezasi bitti! Kirmizi kart cezasi sona eren genc yetenek ${this.state.playerName} yeniden formasina kavusuyor.`);
+            }
         }
 
         // Transition opponent states centrally here
@@ -966,8 +1130,35 @@ const GAME = {
             }
         }
 
+        // Krallık Simülasyonu
+        this.simulateLeagueScorers();
+
         this.saveGame();
         this.updateUI();
+    },
+
+    simulateLeagueScorers: function() {
+        if (!this.state.leagueScorers || !Array.isArray(this.state.leagueScorers)) return;
+        this.state.leagueScorers.forEach(scorer => {
+            const gRate = scorer.goalRate || 0.40;
+            const aRate = scorer.assistRate || 0.35;
+
+            // Realistic weekly goal chance
+            let rG = Math.random();
+            if (rG < (gRate * 0.15)) {
+                scorer.goals += 2; // Brace
+            } else if (rG < (gRate * 0.75)) {
+                scorer.goals += 1;
+            }
+
+            // Realistic weekly assist chance
+            let rA = Math.random();
+            if (rA < (aRate * 0.16)) {
+                scorer.assists += 2; // Double assist masterclass
+            } else if (rA < (aRate * 0.78)) {
+                scorer.assists += 1;
+            }
+        });
     },
 
     getClubSalaryAndVal: function() {
@@ -979,8 +1170,8 @@ const GAME = {
     isTransferWindowActive: function() {
         const w = this.state.currentWeek;
         // Ara Transfer Dönemi: 14 - 21. haftalar arası
-        // Yaz Transfer Dönemi: 34. hafta (sezon sonu)
-        return ((w >= 14 && w <= 21) || w === 34);
+        // Yaz Transfer Dönemi: 37. hafta (sezon sonu)
+        return ((w >= 14 && w <= 21) || w === 37);
     },
 
 
@@ -1466,8 +1657,14 @@ const GAME = {
 
     updateUI: function() {
         this.applyTheme();
+        
+        let pNameStr = this.state.playerName;
+        if (this.state.proPassActive) {
+            pNameStr += ` <span style="background:var(--accent-yellow); color:black; font-size:10px; padding:2px 4px; border-radius:4px; font-weight:bold;">PRO</span>`;
+        }
+
         const bindings = {
-            "player-name": this.state.playerName,
+            "player-name": pNameStr,
             "player-age": this.state.age,
             "player-rating": this.state.rating,
             "player-position": this.state.position,
@@ -1487,6 +1684,12 @@ const GAME = {
             "career-goals": this.state.careerGoals,
             "career-assists": this.state.careerAssists,
             "career-apps": this.state.careerApps,
+            "career-total-goals": this.state.careerGoals,
+            "career-total-assists": this.state.careerAssists,
+            "career-total-earnings": this.state.totalEarnings ? this.state.totalEarnings.toLocaleString() : "0",
+            "career-biggest-win": this.state.biggestWin || "Yok",
+            "career-biggest-loss": this.state.biggestLoss || "Yok",
+            "career-emotional-match": this.state.mostEmotionalMatch || "Kariyerinde henüz unutulmaz bir dram yaşanmadı.",
             "current-week": this.state.currentWeek,
             "career-rel-trust": (this.state.hocaGuveni || 50) + "%",
             "career-rel-team": (this.state.takimUyumu || 50) + "%",
@@ -1504,15 +1707,47 @@ const GAME = {
             "training-count-indicator": (4 - (this.state.weeklyTrainingCount || 0)) + " / 4"
         };
 
+        // 4 Category Aggregation Stats (Matching competitor layout: TEKNİK, FİZİKSEL, ZİHİNSEL, SAVUNMA)
+        const tekVal = Math.round(((this.state.shooting || 50) + (this.state.dribbling || 50) + (this.state.passing || 50)) / 3);
+        const fizVal = Math.round(((this.state.speed || 50) + (this.state.physical || 50) + (this.state.kondisyon || 100)) / 3);
+        const zihVal = Math.round(((this.state.hocaGuveni || 40) + (this.state.takimUyumu || 50) + (this.state.moral || 75)) / 3);
+        const savVal = Math.round(this.state.defense || 50);
+
+        bindings["cat-teknik"] = tekVal;
+        bindings["cat-fiziksel"] = fizVal;
+        bindings["cat-zihinsel"] = zihVal;
+        bindings["cat-savunma"] = savVal;
+        bindings["stat-fame"] = Math.floor((this.state.followers || 0) / 1000);
+
         for (let id in bindings) {
             const el = document.getElementById(id);
             if (el) {
-                el.innerText = bindings[id];
+                if (id === "player-name") el.innerHTML = bindings[id];
+                else el.innerText = bindings[id];
             }
             const elements = document.querySelectorAll(".bind-" + id);
             elements.forEach(item => {
-                item.innerText = bindings[id];
+                if (id === "player-name") item.innerHTML = bindings[id];
+                else item.innerText = bindings[id];
             });
+        }
+
+        // Render Diamond Radar Chart Points
+        const radarPolygon = document.getElementById("radar-chart-polygon");
+        if (radarPolygon) {
+            // Radar center = (50, 50), max radius = 40
+            // Top: TEK, Right: FİZ, Bottom: ZİH, Left: SAV
+            const topR = (tekVal / 100) * 40;
+            const rightR = (fizVal / 100) * 40;
+            const bottomR = (zihVal / 100) * 40;
+            const leftR = (savVal / 100) * 40;
+
+            const pTop = `50,${50 - topR}`;
+            const pRight = `${50 + rightR},50`;
+            const pBottom = `50,${50 + bottomR}`;
+            const pLeft = `${50 - leftR},50`;
+
+            radarPolygon.setAttribute("points", `${pTop} ${pRight} ${pBottom} ${pLeft}`);
         }
 
         const progressFills = {
@@ -1540,6 +1775,10 @@ const GAME = {
             renderLeagueTable();
         }
 
+        if (typeof renderLeagueScorers === "function") {
+            renderLeagueScorers();
+        }
+
         // Render current social feed in UI if container exists
         if (typeof renderSocialFeed === "function") {
             renderSocialFeed();
@@ -1550,26 +1789,6 @@ const GAME = {
         if (avatarContainer) {
             const svgContent = this.generateAvatar(this.state.age);
             avatarContainer.innerHTML = svgContent;
-            
-            // Clone to FUT card container
-            const avatarClone = document.getElementById("fut-card-avatar-container-clone");
-            if (avatarClone) {
-                avatarClone.innerHTML = svgContent;
-            }
-        }
-
-        // Render club initials in FUT card
-        const initialsBadge = document.getElementById("fut-club-initials");
-        if (initialsBadge) {
-            let club = this.state.currentClub || "Yıldız Gençlikspor";
-            let words = club.split(" ");
-            let initials = "";
-            if (words.length >= 2) {
-                initials = (words[0][0] + words[1][0]).toUpperCase();
-            } else {
-                initials = club.substring(0, 2).toUpperCase();
-            }
-            initialsBadge.innerText = initials;
         }
 
         // Update betting UI badges if available
@@ -1582,14 +1801,14 @@ const GAME = {
         if (typeof updateTrophyShowcase === "function") {
             updateTrophyShowcase();
         }
-        if (typeof init3dFutCardEffects === "function") {
-            init3dFutCardEffects();
-        }
         if (typeof renderEsportsPanel === "function") {
             const container = document.getElementById("shop-esports-container");
             if (container && container.style.display !== "none") {
                 renderEsportsPanel();
             }
+        }
+        if (typeof updateHomeNewsPreview === "function") {
+            updateHomeNewsPreview();
         }
 
         // Update Desktop Sidebar Elements
@@ -1656,6 +1875,38 @@ const GAME = {
                 valEl.innerText = val.toLocaleString() + " €";
             }
             
+            // Update Left Sidebar - Form Badges & Mini Scorers
+            const formBadgesEl = document.getElementById("sidebar-form-badges");
+            if (formBadgesEl) {
+                // If match history exists, show actual last matches, else balanced form
+                let recentForm = ["G", "G", "B", "G", "G"];
+                if (this.state.seasonGoals > 5) recentForm = ["G", "G", "G", "B", "G"];
+                else if (this.state.moral < 50) recentForm = ["M", "B", "G", "M", "B"];
+                
+                formBadgesEl.innerHTML = recentForm.map(res => {
+                    let bg = res === "G" ? "#10b981" : (res === "B" ? "#f59e0b" : "#ef4444");
+                    let col = res === "M" ? "#ffffff" : "#04140e";
+                    return `<span style="display:inline-flex; width:18px; height:18px; border-radius:4px; background:${bg}; color:${col}; font-size:9.5px; font-weight:900; align-items:center; justify-content:center;">${res}</span>`;
+                }).join("");
+            }
+
+            const miniScorersEl = document.getElementById("sidebar-mini-scorers");
+            if (miniScorersEl && this.state.leagueScorers && this.state.leagueScorers.length > 0) {
+                let allScorers = [...this.state.leagueScorers, { name: this.state.playerName, club: this.state.currentClub, goals: this.state.seasonGoals || 0, isPlayer: true }];
+                allScorers.sort((a, b) => b.goals - a.goals);
+                
+                miniScorersEl.innerHTML = allScorers.slice(0, 3).map((s, idx) => {
+                    let medal = idx === 0 ? "🥇" : (idx === 1 ? "🥈" : "🥉");
+                    let isPl = s.isPlayer ? "color: #10b981; font-weight:bold;" : "color: #f8fafc;";
+                    return `
+                        <div style="display:flex; justify-content:space-between; align-items:center; padding: 4px 6px; background: rgba(255,255,255,0.02); border-radius: 6px; border: 1px solid #1e2530;">
+                            <span style="font-size: 11px; ${isPl}">${medal} ${s.name} <small style="color:var(--text-muted); font-size:9.5px;">(${s.club})</small></span>
+                            <span style="color: #10b981; font-weight: 800; font-family: var(--font-heading); font-size:12px;">${s.goals} G</span>
+                        </div>
+                    `;
+                }).join("");
+            }
+            
             // Update Right Sidebar - Crypto Markets
             if (this.state.cryptoPrices) {
                 const btcEl = document.getElementById("sidebar-crypto-btc");
@@ -1671,19 +1922,24 @@ const GAME = {
                 if (atlEl) atlEl.innerText = this.state.cryptoPrices.atl.toFixed(4) + " €";
             }
             
-            // Update Right Sidebar - Social Feed Widget
+            // Update Right Sidebar - Multi-Tweet Social Feed Widget
             const sidebarSocial = document.getElementById("sidebar-social-container");
-            if (sidebarSocial && this.state.socialFeed && this.state.socialFeed.length > 0) {
+            if (sidebarSocial) {
+                let postsToRender = (this.state.socialFeed && this.state.socialFeed.length > 0) ? this.state.socialFeed.slice(0, 3) : [
+                    { handle: "@futbol_analiz", name: "Futbol Analiz", text: `${this.state.playerName} bu sezon sergilediği performansla ligin en çok konuşulan genç yıldızı haline geldi! ⚡`, time: "10d" },
+                    { handle: "@taraftar_sesi", name: "Tribün Sesi", text: `${this.state.currentClub} taraftarları ${this.state.playerName}'in formasını almak için sıraya girdi! ⚽🔥`, time: "35d" },
+                    { handle: "@transfer_merkezi", name: "Transfer Nöbeti", text: `Scout ekipleri ${this.state.playerName}'i yakından izlemeye devam ediyor. 📋👀`, time: "2s" }
+                ];
+
                 sidebarSocial.innerHTML = "";
-                // Render top 3 social posts
-                this.state.socialFeed.slice(0, 3).forEach(post => {
+                postsToRender.forEach(post => {
                     sidebarSocial.innerHTML += `
-                        <div class="sidebar-post">
-                            <div class="sidebar-post-header">
-                                <span>${post.handle}</span>
-                                <span style="color: var(--text-muted); font-size: 8px;">${post.time}</span>
+                        <div class="sidebar-post" style="padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.02); border: 1px solid #1e2530; display: flex; flex-direction: column; gap: 4px;">
+                            <div class="sidebar-post-header" style="display:flex; justify-content:space-between; font-size:11px;">
+                                <span style="font-weight:700; color:#f8fafc;">${post.name || post.handle} <small style="color:var(--text-muted); font-weight:normal;">${post.handle}</small></span>
+                                <span style="color: var(--text-muted); font-size: 9.5px;">${post.time || 'Yeni'}</span>
                             </div>
-                            <div style="color: #eee;">${post.text}</div>
+                            <div style="color: #cbd5e1; font-size: 11px; line-height: 1.35;">${post.text}</div>
                         </div>
                     `;
                 });
@@ -1901,7 +2157,7 @@ const GAME = {
             wonBallonOr = true;
             if (!this.state.trophies) this.state.trophies = [];
             const year = 2026 + (this.state.age - 17);
-            this.state.trophies.push({ id: "ballon_or", name: `Ballon d'Or (Altın Top) (${year})`, icon: "👑" });
+        this.state.trophies.push({ id: "ballon_or", name: `Ballon d'Or (Altın Top) (${year})`, icon: "👑" });
             this.state.followers += 75000;
             this.state.money += 50000;
             message += `👑 <strong>BALLON D'OR KAZANDINIZ!</strong> Yılın en iyi futbolcusu seçilerek <strong>Altın Top (Ballon d'Or)</strong> ödülünü kazandınız! Medya çıldırıyor! (+75,000 Takipçi, +50,000 €)<br><br>`;
@@ -1920,379 +2176,235 @@ const GAME = {
             message += relegationMsg + "<br><br>";
         }
 
+        // Stats for the modal before reset
+        const seasonStats = {
+            goals: this.state.seasonGoals,
+            assists: this.state.seasonAssists,
+            apps: this.state.seasonApps || Math.round((this.state.seasonGoals + this.state.seasonAssists) * 1.5) || 34,
+            emotionalMatch: this.state.mostEmotionalMatch || "Bu sezon olağanüstü bir dram yaşanmadı."
+        };
+
         // Reset season stats
         this.state.seasonGoals = 0;
         this.state.seasonAssists = 0;
+        this.state.seasonApps = 0;
+        this.state.mostEmotionalMatch = null;
         this.state.currentWeek = 1;
         
-        // Reset league table
+        // Reset league table & scorers for the current league
         this.initLeagueTable();
+        this.initLeagueScorers(true);
         this.state.nextOpponentName = null; 
         
         this.saveGame();
         this.updateUI();
 
         if (window.showSeasonSummaryModal) {
-            window.showSeasonSummaryModal(title, message);
+            window.showSeasonSummaryModal(title, message, seasonStats);
         } else {
             alert(`Sezon sona erdi! Yaşın ${this.state.age} oldu. Ligi ${rank}. sırada tamamladın.`);
         }
     },
 
-    generateAvatar: function(age) {
-        let cust = this.state.avatarCustomization || {};
-        
-        let skinColor = cust.skinColor || "#E2B28B";
-        let eyeColor = cust.eyeColor || "#5A3D28";
-        let hairColor = cust.hairColor || "#1A1A1A";
-        let hairStyle = cust.hairStyle || "short";
-        let beardStyle = cust.beardStyle || "none";
-        
-        let primaryColor = "#455A64";
-        let secondaryColor = "#ffffff";
-        const clubName = this.state ? this.state.currentClub : null;
-        if (clubName && typeof DATABASE !== "undefined") {
-            let foundClub = null;
-            for (let l in DATABASE.LEAGUES) {
-                let c = DATABASE.LEAGUES[l].teams.find(x => x.name === clubName);
-                if (c) { foundClub = c; break; }
-            }
-            if (!foundClub && DATABASE.AMATEUR_CLUBS) {
-                foundClub = DATABASE.AMATEUR_CLUBS.find(x => x.name === clubName);
-            }
-            if (foundClub) {
-                primaryColor = foundClub.color;
-                secondaryColor = foundClub.colorSec || "#ffffff";
-            }
-        }
-        
-        // Advanced dynamic palette mapping for ultra-real vector skin shading
-        let palette = {
-            base: "#E2B28B",
-            highlight: "#F3CDB0",
-            shadow: "#c29471",
-            deepShadow: "#9e704d",
-            blush: "rgba(229,158,135,0.25)",
-            lip: "#c6706f",
-            lipShadow: "#984747"
-        };
+    LEAGUE_SCORERS_POOLS: {
+        "3. Lig": [
+            { name: "Batuhan Doğrukartal", club: "İnegöl Kafkasspor", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.22 },
+            { name: "Semih Akyıldız", club: "İnegöl Kafkasspor", goals: 0, assists: 0, goalRate: 0.28, assistRate: 0.52 },
+            { name: "Can M. Vural", club: "Kütahyaspor", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.20 },
+            { name: "H. İ. Pekşen", club: "Kütahyaspor", goals: 0, assists: 0, goalRate: 0.30, assistRate: 0.54 },
+            { name: "Ercan Kuruçay", club: "Eskişehirspor", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.24 },
+            { name: "Barış Memiş", club: "Eskişehirspor", goals: 0, assists: 0, goalRate: 0.32, assistRate: 0.58 },
+            { name: "İshak Kurt", club: "Karşıyaka", goals: 0, assists: 0, goalRate: 0.56, assistRate: 0.20 },
+            { name: "Enes Nalbantoğlu", club: "Karşıyaka", goals: 0, assists: 0, goalRate: 0.35, assistRate: 0.55 },
+            { name: "Cenk Ahmet", club: "Karşıyaka", goals: 0, assists: 0, goalRate: 0.28, assistRate: 0.50 },
+            { name: "Yasin Abdioğlu", club: "Çorlu Spor 1947", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.22 },
+            { name: "Ali Habeşoğlu", club: "Ayvalıkgücü", goals: 0, assists: 0, goalRate: 0.46, assistRate: 0.32 },
+            { name: "Tugay Keleş", club: "Ayvalıkgücü", goals: 0, assists: 0, goalRate: 0.30, assistRate: 0.48 },
+            { name: "Artun Akçakın", club: "Balıkesirspor", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.25 },
+            { name: "Sedat Y. Kurnaz", club: "Balıkesirspor", goals: 0, assists: 0, goalRate: 0.28, assistRate: 0.50 }
+        ],
+        "2. Lig": [
+            { name: "Atabey Çiçek", club: "Batman Petrolspor", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.20 },
+            { name: "Mert Çapar", club: "Batman Petrolspor", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.56 },
+            { name: "Beykan Şimşek", club: "Elazığspor", goals: 0, assists: 0, goalRate: 0.45, assistRate: 0.58 },
+            { name: "Bahattin Köse", club: "Elazığspor", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.22 },
+            { name: "Kerim Frei", club: "Elazığspor", goals: 0, assists: 0, goalRate: 0.38, assistRate: 0.55 },
+            { name: "İlker Avşar", club: "Muğlaspor", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.24 },
+            { name: "Yakup Alkan", club: "Muşspor", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.20 },
+            { name: "Serdar Deliktaş", club: "Mardin 1969", goals: 0, assists: 0, goalRate: 0.46, assistRate: 0.30 },
+            { name: "Samet Bulut", club: "Aliağa", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.25 },
+            { name: "Ali Han Tunçer", club: "Aliağa", goals: 0, assists: 0, goalRate: 0.30, assistRate: 0.52 },
+            { name: "Mehmet Gürkan", club: "Adana 01 FK", goals: 0, assists: 0, goalRate: 0.46, assistRate: 0.28 },
+            { name: "Enes Karakuş", club: "1461 Trabzon", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.22 },
+            { name: "Buğrahan Karslı", club: "1461 Trabzon", goals: 0, assists: 0, goalRate: 0.28, assistRate: 0.54 }
+        ],
+        "1. Lig": [
+            { name: "Ryan Mendes", club: "Kocaeli FK", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.58 },
+            { name: "M. Beridze", club: "Kocaeli FK", goals: 0, assists: 0, goalRate: 0.42, assistRate: 0.50 },
+            { name: "Eren Tozlu", club: "Erzurumspor", goals: 0, assists: 0, goalRate: 0.56, assistRate: 0.22 },
+            { name: "G. Rosheuvel", club: "Erzurumspor", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.56 },
+            { name: "B. Assombalonga", club: "Amed", goals: 0, assists: 0, goalRate: 0.55, assistRate: 0.20 },
+            { name: "Max Gradel", club: "Amed", goals: 0, assists: 0, goalRate: 0.38, assistRate: 0.62 },
+            { name: "Çekdar Orhan", club: "Amed", goals: 0, assists: 0, goalRate: 0.32, assistRate: 0.58 },
+            { name: "Thomas Verheydt", club: "Çorum", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.18 },
+            { name: "Geraldo", club: "Çorum", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.55 },
+            { name: "Gökdeniz Bayrakdar", club: "Bodrum", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.35 },
+            { name: "Yonathan Del Valle", club: "Pendikspor", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.45 },
+            { name: "Emeka Eze", club: "Pendikspor", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.20 },
+            { name: "Adrien Regattin", club: "Iğdır FK", goals: 0, assists: 0, goalRate: 0.40, assistRate: 0.64 }
+        ],
+        "Süper Lig": [
+            // 🔴🔵 TRABZONSPOR (2026/27)
+            { name: "M. Salah", club: "Trabzon FK", goals: 0, assists: 0, goalRate: 0.62, assistRate: 0.65 },
+            { name: "R. Malinovskyi", club: "Trabzon FK", goals: 0, assists: 0, goalRate: 0.42, assistRate: 0.58 },
+            { name: "E. Muçi", club: "Trabzon FK", goals: 0, assists: 0, goalRate: 0.46, assistRate: 0.54 },
+            { name: "P. Onuachu", club: "Trabzon FK", goals: 0, assists: 0, goalRate: 0.56, assistRate: 0.20 },
+            { name: "A. Şimşir", club: "Trabzon FK", goals: 0, assists: 0, goalRate: 0.38, assistRate: 0.50 },
 
-        if (skinColor === "#FFD1A9") {
-            palette = {
-                base: "#FFD1A9",
-                highlight: "#FFE8D6",
-                shadow: "#e0ab82",
-                deepShadow: "#c98d60",
-                blush: "rgba(255,170,166,0.3)",
-                lip: "#e08585",
-                lipShadow: "#a85050"
-            };
-        } else if (skinColor === "#E2B28B") {
-            palette = {
-                base: "#E2B28B",
-                highlight: "#F3CDB0",
-                shadow: "#c29471",
-                deepShadow: "#9e704d",
-                blush: "rgba(229,158,135,0.25)",
-                lip: "#c6706f",
-                lipShadow: "#984747"
-            };
-        } else if (skinColor === "#C48E66") {
-            palette = {
-                base: "#C48E66",
-                highlight: "#DEAA84",
-                shadow: "#a2704a",
-                deepShadow: "#83532f",
-                blush: "rgba(201,122,99,0.25)",
-                lip: "#aa5354",
-                lipShadow: "#803536"
-            };
-        } else if (skinColor === "#805435") {
-            palette = {
-                base: "#805435",
-                highlight: "#9e6e4d",
-                shadow: "#5d3921",
-                deepShadow: "#432612",
-                blush: "rgba(133,64,50,0.3)",
-                lip: "#6f2f2d",
-                lipShadow: "#4a1917"
-            };
-        } else if (skinColor === "#4F301F") {
-            palette = {
-                base: "#4F301F",
-                highlight: "#6a4632",
-                shadow: "#351f12",
-                deepShadow: "#231208",
-                blush: "rgba(82,33,26,0.3)",
-                lip: "#431a18",
-                lipShadow: "#280b0a"
-            };
-        }
+            // 🦅 BEŞİKTAŞ (2026/27)
+            { name: "L. Trossard", club: "Kartal FK", goals: 0, assists: 0, goalRate: 0.58, assistRate: 0.55 },
+            { name: "Semih Kılıçsoy", club: "Kartal FK", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.35 },
+            { name: "O. Kökçü", club: "Kartal FK", goals: 0, assists: 0, goalRate: 0.38, assistRate: 0.68 },
+            { name: "Gedson Fernandes", club: "Kartal FK", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.52 },
+            { name: "Salih Özcan", club: "Kartal FK", goals: 0, assists: 0, goalRate: 0.28, assistRate: 0.50 },
 
-        // Hair color styling with highlights
-        let hairHighlight = "rgba(255,255,255,0.08)";
-        if (hairColor === "#4E3629") hairHighlight = "rgba(216,177,104,0.15)";
-        else if (hairColor === "#D8B168") hairHighlight = "rgba(255,255,255,0.45)";
-        else if (hairColor === "#C15C3D") hairHighlight = "rgba(255,215,0,0.3)";
-        else if (hairColor === "#B3B3B3") hairHighlight = "rgba(255,255,255,0.6)";
+            // 🟡🔵 FENERBAHÇE (2026/27)
+            { name: "M. Greenwood", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.60, assistRate: 0.54 },
+            { name: "A. Talisca", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.55, assistRate: 0.48 },
+            { name: "V. Muriqi", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.22 },
+            { name: "S. Szymanski", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.38, assistRate: 0.52 },
+            { name: "Fred", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.32, assistRate: 0.60 },
+            { name: "İrfan Can Kahveci", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.40, assistRate: 0.56 },
 
-        let hairPath = "";
-        let beardPath = "";
-        let wrinklePath = "";
+            // 🟡🔴 GALATASARAY (2026/27)
+            { name: "V. Osimhen", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.68, assistRate: 0.28 },
+            { name: "M. Icardi", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.58, assistRate: 0.24 },
+            { name: "G. Sara", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.68 },
+            { name: "İlkay Gündoğan", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.35, assistRate: 0.65 },
+            { name: "B. A. Yılmaz", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.48 },
+            { name: "R. Sallai", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.40, assistRate: 0.45 },
+            { name: "M. Batshuayi", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.20 },
 
-        // Hair Styles (Highly realistic vector layers with strand flows)
-        if (hairStyle === "short") {
-            hairPath = `
-                <!-- Main Hair Base Volume -->
-                <path d="M13.5 25.5 C 11.5 11, 52.5 11, 50.5 25.5 C 47.5 15, 16.5 15, 13.5 25.5 Z" fill="${hairColor}" />
-                <!-- Sideburns -->
-                <path d="M13.8 24 L 15.6 32.5 C 15.6 32.5, 18.5 32.5, 18.5 30 L 16.8 21.5 Z" fill="${hairColor}" />
-                <path d="M50.2 24 L 48.4 32.5 C 48.4 32.5, 45.5 32.5, 45.5 30 L 47.2 21.5 Z" fill="${hairColor}" />
-                <!-- Textured Fringe Spikes -->
-                <path d="M16 23 Q 23 15 32 17 Q 41 15 48 23 Q 32 19 16 23 Z" fill="${hairColor}" />
-                <path d="M22 17 Q 26 9 32 11 Q 38 8 42 17 Q 32 13 22 17 Z" fill="${hairColor}" />
-                <!-- Hair highlights / strands reflection -->
-                <path d="M20 18 Q 28 12 36 14 Q 44 12 46 18" stroke="${hairHighlight}" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.8" />
-                <path d="M15 22.5 Q 32 16.5 49 22.5" stroke="rgba(0,0,0,0.3)" stroke-width="1.8" fill="none" />
-            `;
-        } else if (hairStyle === "buzz") {
-            hairPath = `
-                <!-- Buzz cut with skull contouring and fade texture -->
-                <path d="M13.5 27 C 12 11, 52 11, 50.5 27 C 49 15.5, 15 15.5, 13.5 27 Z" fill="${hairColor}" opacity="0.85" />
-                <path d="M14.5 25.5 C 13.2 13.5, 50.8 13.5, 49.5 25.5 Z" fill="${hairColor}" opacity="0.4" />
-                <!-- Fade sideburn texture -->
-                <path d="M13.8 24.5 L 15.5 32 L 17.5 31 L 16.5 22 Z" fill="${hairColor}" opacity="0.55" />
-                <path d="M50.2 24.5 L 48.5 32 L 46.5 31 L 47.5 22 Z" fill="${hairColor}" opacity="0.55" />
-            `;
-        } else if (hairStyle === "curly") {
-            hairPath = `
-                <!-- Volumetric Curly Hair with individual curls and overlapping shadow paths -->
-                <path d="M12 27 C 11.5 10.5, 52.5 10.5, 52 27 Z" fill="${hairColor}" />
-                <!-- Curly bumps -->
-                <circle cx="15.5" cy="18" r="5" fill="${hairColor}" />
-                <circle cx="21.5" cy="14" r="5.5" fill="${hairColor}" />
-                <circle cx="28.5" cy="11.5" r="6" fill="${hairColor}" />
-                <circle cx="36.5" cy="11.5" r="6" fill="${hairColor}" />
-                <circle cx="43.5" cy="14" r="5.5" fill="${hairColor}" />
-                <circle cx="48.5" cy="18" r="5" fill="${hairColor}" />
-                <circle cx="25.5" cy="16.5" r="5" fill="${hairColor}" />
-                <circle cx="32.5" cy="15.5" r="5.5" fill="${hairColor}" />
-                <circle cx="39.5" cy="16.5" r="5" fill="${hairColor}" />
-                <!-- 3D Curls Shimmering highlights -->
-                <circle cx="21" cy="13.5" r="1.8" fill="${hairHighlight}" opacity="0.6" />
-                <circle cx="28" cy="10.5" r="2.2" fill="${hairHighlight}" opacity="0.6" />
-                <circle cx="36" cy="10.5" r="2.2" fill="${hairHighlight}" opacity="0.6" />
-                <circle cx="43" cy="13.5" r="1.8" fill="${hairHighlight}" opacity="0.6" />
-                <circle cx="32" cy="14" r="2" fill="${hairHighlight}" opacity="0.6" />
-                <!-- Side curls -->
-                <circle cx="13.5" cy="24" r="3.8" fill="${hairColor}" />
-                <circle cx="50.5" cy="24" r="3.8" fill="${hairColor}" />
-            `;
-        } else if (hairStyle === "long") {
-            hairPath = `
-                <!-- Volumetric long hair with detailed strand shading -->
-                <path d="M12 28 C 10.5 9, 53.5 9, 52 28 C 53.5 37, 51.5 46.5, 49.5 50.5 C 47.5 42, 47.5 29.5, 46.5 21.5 Z" fill="${hairColor}" />
-                <path d="M12 28 C 10.5 37, 12.5 46.5, 14.5 50.5 C 16.5 42, 16.5 29.5, 17.5 21.5 Z" fill="${hairColor}" />
-                <!-- Man bun/tie -->
-                <circle cx="32" cy="8.5" r="6.8" fill="${hairColor}" />
-                <circle cx="32" cy="8.5" r="4.8" fill="${hairHighlight}" opacity="0.4" />
-                <circle cx="32" cy="8.5" r="2" fill="#000000" opacity="0.4" />
-                <!-- Hair strand lines -->
-                <path d="M21 16 Q 32 9.5 43 16" stroke="${hairHighlight}" stroke-width="1.8" fill="none" opacity="0.5" />
-                <path d="M15 28 Q 18.5 42.5 16.5 48.5" stroke="${hairHighlight}" stroke-width="1.2" fill="none" opacity="0.3" />
-                <path d="M49 28 Q 45.5 42.5 47.5 48.5" stroke="${hairHighlight}" stroke-width="1.2" fill="none" opacity="0.3" />
-            `;
-        } else if (hairStyle === "none") {
-            hairPath = ""; // Bald
-        }
-
-        // Beard Styles (Textured vector shapes)
-        if (beardStyle === "stubble") {
-            beardPath = `
-                <!-- High-definition stubble mask with gradient feel -->
-                <path d="M15.5 34 C 15.5 50, 48.5 50, 48.5 34 C 48.5 41.5, 42.5 48, 32 48.5 C 21.5 48, 15.5 41.5, 15.5 34 Z" fill="${hairColor}" opacity="0.28" />
-                <path d="M25 39.2 Q 32 37.8 39 39.2" stroke="${hairColor}" stroke-width="4.5" stroke-linecap="round" fill="none" opacity="0.20" />
-            `;
-        } else if (beardStyle === "full") {
-            beardPath = `
-                <!-- Full beard vector shape with overlapping layers -->
-                <path d="M13.5 33.5 C 13.5 53.5, 50.5 53.5, 50.5 33.5 C 47.2 47.5, 41.2 53, 32 53.5 C 22.8 53, 16.8 47.5, 13.5 33.5 Z" fill="${hairColor}" />
-                <!-- Mustache overlay -->
-                <path d="M22 39 C 23.5 36.5, 40.5 36.5, 42 39 C 43.5 41.5, 40.5 44.5, 32 44.5 C 23.5 44.5, 20.5 41.5, 22 39 Z" fill="${hairColor}" />
-                <!-- Mustache highlight lines -->
-                <path d="M24 39.2 Q 32 36.8 40 39.2" stroke="${hairHighlight}" stroke-width="1.5" fill="none" opacity="0.6" />
-                <!-- Chin dip shadow -->
-                <path d="M27.5 45.5 Q 32 47 36.5 45.5" stroke="rgba(0,0,0,0.45)" stroke-width="2.2" fill="none" />
-            `;
-        } else if (beardStyle === "mustache") {
-            beardPath = `
-                <!-- Detailed thick mustache -->
-                <path d="M21 40 Q 32 36.5 43 40 C 45 42, 42.5 44.2 32 43.8 C 21.5 44.2 19 42 21 40 Z" fill="${hairColor}" />
-                <!-- Mustache highlight and styling -->
-                <path d="M22.5 40 Q 32 37.8 41.5 40" stroke="${hairHighlight}" stroke-width="1.5" fill="none" opacity="0.6" />
-                <path d="M21 40 C 18.5 40.2 18.2 38.5 19.5 37.8 M43 40 C 45.5 40.2 45.8 38.5 44.5 37.8" stroke="${hairColor}" stroke-width="1.8" fill="none" />
-            `;
-        }
-
-        // Add wrinkles as player ages (with realistic transparent crease lines)
-        if (age >= 30 && age < 35) {
-            wrinklePath = `
-                <path d="M22 22 H 26 M38 22 H 42" stroke="rgba(0,0,0,0.15)" stroke-width="0.8" stroke-linecap="round" />
-                <path d="M17.5 31.2 Q 20.5 30.5 22.5 31.2" stroke="rgba(0,0,0,0.12)" stroke-width="0.8" fill="none" />
-                <path d="M46.5 31.2 Q 43.5 30.5 41.5 31.2" stroke="rgba(0,0,0,0.12)" stroke-width="0.8" fill="none" />
-            `;
-        } else if (age >= 35) {
-            wrinklePath = `
-                <!-- Double forehead lines -->
-                <path d="M22 20 Q 32 18 42 20" stroke="rgba(0,0,0,0.16)" fill="none" stroke-width="0.8" stroke-linecap="round" />
-                <path d="M24 23 Q 32 21 40 23" stroke="rgba(0,0,0,0.16)" fill="none" stroke-width="0.8" stroke-linecap="round" />
-                <!-- Crow's feet under eyes -->
-                <path d="M15.5 31.8 C 17.5 32 18.5 33 18.5 34 M15.5 32.5 C 17 33 17.5 34 17.5 35" stroke="rgba(0,0,0,0.18)" fill="none" stroke-width="0.8" />
-                <path d="M48.5 31.8 C 46.5 32 45.5 33 45.5 34 M48.5 32.5 C 47 33 46.5 34 46.5 35" stroke="rgba(0,0,0,0.18)" fill="none" stroke-width="0.8" />
-                <!-- Nassolabial folds (laugh lines) -->
-                <path d="M22.5 37.5 Q 24.5 42.5 27.5 45 M41.5 37.5 Q 39.5 42.5 36.5 45" stroke="rgba(0,0,0,0.18)" fill="none" stroke-width="0.8" />
-            `;
-            if (hairStyle !== "none") {
-                // Gray hair locks at temples
-                hairPath += `
-                    <path d="M15 24 L 17 19.5 M49 24 L 47 19.5" stroke="#F5F5F5" stroke-width="1.5" stroke-linecap="round" opacity="0.85" />
-                    <path d="M14 26 L 15.5 29 M50 26 L 48.5 29" stroke="#E0E0E0" stroke-width="1.2" stroke-linecap="round" opacity="0.7" />
-                `;
-            }
-        }
-
-        let svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="100%" height="100%">
-            <defs>
-                <!-- Background Gradient -->
-                <linearGradient id="avatar-bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="rgba(255,255,255,0.06)" />
-                    <stop offset="100%" stop-color="rgba(255,255,255,0.01)" />
-                </linearGradient>
-                
-                <!-- Skin 3D Gradients -->
-                <linearGradient id="skin-main-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="${palette.highlight}" />
-                    <stop offset="45%" stop-color="${palette.base}" />
-                    <stop offset="100%" stop-color="${palette.shadow}" />
-                </linearGradient>
-                <radialGradient id="cheek-blush-left" cx="30%" cy="50%" r="50%">
-                    <stop offset="0%" stop-color="${palette.blush}" />
-                    <stop offset="100%" stop-color="transparent" stop-opacity="0" />
-                </radialGradient>
-                <radialGradient id="cheek-blush-right" cx="70%" cy="50%" r="50%">
-                    <stop offset="0%" stop-color="${palette.blush}" />
-                    <stop offset="100%" stop-color="transparent" stop-opacity="0" />
-                </radialGradient>
-
-                <!-- Eye Sclera (White) Gradient for depth -->
-                <radialGradient id="sclera-grad" cx="50%" cy="50%" r="50%">
-                    <stop offset="70%" stop-color="#ffffff" />
-                    <stop offset="100%" stop-color="#e0e0e0" />
-                </radialGradient>
-
-                <!-- Eye Iris Radial Gradient -->
-                <radialGradient id="iris-grad" cx="45%" cy="45%" r="50%">
-                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.5" />
-                    <stop offset="30%" stop-color="${eyeColor}" />
-                    <stop offset="100%" stop-color="#050505" />
-                </radialGradient>
-
-                <!-- Jersey Shader -->
-                <linearGradient id="jersey-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="${primaryColor}" />
-                    <stop offset="50%" stop-color="${primaryColor}" stop-opacity="0.85" />
-                    <stop offset="100%" stop-color="${primaryColor}" />
-                </linearGradient>
-            </defs>
-
-            <!-- Background circle -->
-            <circle cx="32" cy="32" r="30" fill="url(#avatar-bg-grad)" stroke="var(--border-glass)" stroke-width="1.5" />
-            
-            <!-- Shoulders & Jersey with Realistic Curves and Collarbone shadow -->
-            <path d="M12 58 C 16 48, 48 48, 52 58 L 55 64 H 9 Z" fill="url(#jersey-grad)" />
-            
-            <!-- Jersey vertical stripes details -->
-            <path d="M22 51 L 20 64 M42 51 L 44 64 M32 52 L 32 64" stroke="${secondaryColor}" stroke-width="2.5" opacity="0.22" stroke-linecap="round" />
-            
-            <!-- Collarbone / Neck recess shadow -->
-            <path d="M22 50 C 26 53, 38 53, 42 50" fill="none" stroke="rgba(0,0,0,0.18)" stroke-width="3" stroke-linecap="round" />
-
-            <!-- Dual V-Collar -->
-            <path d="M23 48.5 L 32 55.5 L 41 48.5" stroke="rgba(0,0,0,0.22)" stroke-width="3" fill="none" />
-            <path d="M23 48.5 L 32 55.5 L 41 48.5" stroke="${secondaryColor}" stroke-width="1.8" fill="none" />
-            
-            <!-- Neck & Neck Shadows -->
-            <rect x="27" y="41" width="10" height="11" rx="1" fill="${palette.shadow}" />
-            <rect x="27" y="41" width="10" height="10" rx="1" fill="url(#skin-main-grad)" />
-            <!-- Shadow under the chin -->
-            <path d="M27 41 C 29 44.5, 35 44.5, 37 41 Z" fill="rgba(0,0,0,0.2)" />
-            
-            <!-- Ears with Real Fold Lines -->
-            <!-- Left Ear -->
-            <path d="M16.5 31.5 C 13.2 31.5, 13.2 38.5, 16.5 38.5 Z" fill="url(#skin-main-grad)" />
-            <path d="M16.2 33 C 15 33, 15 37, 16.2 37" stroke="${palette.deepShadow}" stroke-width="1" fill="none" stroke-linecap="round" />
-            <!-- Right Ear -->
-            <path d="M47.5 31.5 C 50.8 31.5, 50.8 38.5, 47.5 38.5 Z" fill="url(#skin-main-grad)" />
-            <path d="M47.8 33 C 49 33, 49 37, 47.8 37" stroke="${palette.deepShadow}" stroke-width="1" fill="none" stroke-linecap="round" />
-            
-            <!-- Head Shape (Realistic Jawline rather than a simple circle) -->
-            <path d="M16 28 C 16 18.5, 48 18.5, 48 28 C 48 37, 43 45.2, 32 47.5 C 21 45.2, 16 37, 16 28 Z" fill="url(#skin-main-grad)" />
-            
-            <!-- Face 3D Side Shadows (Provides real bone structure feel) -->
-            <!-- Jawline and cheek hollows shadow -->
-            <path d="M16 28 C 16 37, 21 45.2, 32 47.5 L 32 17 C 21 17, 16 21, 16 28 Z" fill="rgba(0,0,0,0.04)" />
-            <!-- Nose and upper brow ridge shadow -->
-            <path d="M30 25 L 32 25 L 32 37 L 30 35 Z" fill="rgba(0,0,0,0.06)" />
-            
-            <!-- Blush / Cheek highlight for life-like skin texture -->
-            <ellipse cx="21" cy="35" rx="4" ry="2.2" fill="url(#cheek-blush-left)" />
-            <ellipse cx="43" cy="35" rx="4" ry="2.2" fill="url(#cheek-blush-right)" />
-            
-            <!-- Eyes (Realistic Sclera, Iris, Pupil, and Reflections) -->
-            <!-- Left Eye -->
-            <ellipse cx="24.5" cy="31" rx="4" ry="2.5" fill="url(#sclera-grad)" />
-            <circle cx="24.5" cy="31" r="2.2" fill="url(#iris-grad)" />
-            <circle cx="24.5" cy="31" r="1.1" fill="#020202" />
-            <circle cx="25.4" cy="30.2" r="0.6" fill="#ffffff" /> <!-- Highlight -->
-            <path d="M20.5 31 Q 24.5 28.5 28.5 31" stroke="rgba(0,0,0,0.4)" stroke-width="1.2" fill="none" />
-            <!-- Right Eye -->
-            <ellipse cx="39.5" cy="31" rx="4" ry="2.5" fill="url(#sclera-grad)" />
-            <circle cx="39.5" cy="31" r="2.2" fill="url(#iris-grad)" />
-            <circle cx="39.5" cy="31" r="1.1" fill="#020202" />
-            <circle cx="40.4" cy="30.2" r="0.6" fill="#ffffff" /> <!-- Highlight -->
-            <path d="M35.5 31 Q 39.5 28.5 43.5 31" stroke="rgba(0,0,0,0.4)" stroke-width="1.2" fill="none" />
-            
-            <!-- Eyebrows (Dynamic curved and thick) -->
-            <path d="M19.5 26.8 C 22.5 24.8, 26 26, 28 28" stroke="${hairColor}" stroke-width="2" fill="none" stroke-linecap="round" />
-            <path d="M44.5 26.8 C 41.5 24.8, 38 26, 36 28" stroke="${hairColor}" stroke-width="2" fill="none" stroke-linecap="round" />
-            
-            <!-- Nose (Shaded with bridge and nostril definition) -->
-            <path d="M30 26.5 L 30 33.5 Q 32.5 35 34.5 33.5" stroke="${palette.deepShadow}" stroke-width="1.4" fill="none" stroke-linecap="round" />
-            <!-- Soft nostril shade -->
-            <circle cx="29" cy="33.2" r="0.8" fill="rgba(0,0,0,0.15)" />
-            <circle cx="35" cy="33.2" r="0.8" fill="rgba(0,0,0,0.08)" />
-
-            <!-- Mouth / Lips (Realistic 3D vector lips structure) -->
-            <!-- Upper Lip -->
-            <path d="M26 39.8 Q 32 38.5 38 39.8 C 36 41 28 41 26 39.8 Z" fill="${palette.lipShadow}" />
-            <!-- Lower Lip -->
-            <path d="M26.2 40.2 C 28.5 43.2, 35.5 43.2, 37.8 40.2 Z" fill="${palette.lip}" />
-            <!-- Crease line -->
-            <path d="M25.5 40 Q 32 41.2 38.5 40" stroke="rgba(0,0,0,0.32)" stroke-width="1" fill="none" stroke-linecap="round" />
-            <!-- Lower Lip reflection shine -->
-            <path d="M28.5 41.5 Q 32 42.5 35.5 41.5" stroke="rgba(255,255,255,0.22)" stroke-width="0.8" fill="none" stroke-linecap="round" />
-            
-            <!-- Chin Cleft / Dimple -->
-            <path d="M30.5 44.5 Q 32 45.2 33.5 44.5" stroke="${palette.deepShadow}" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.6" />
-            
-            ${beardPath}
-            ${hairPath}
-            ${wrinklePath}
-        </svg>
-        `;
-        return svg;
+            // 🟠 DİĞER SÜPER LİG YILDIZLARI (2026/27)
+            { name: "K. Piatek", club: "Başakşehir FK", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.18 },
+            { name: "Deniz Türüç", club: "Başakşehir FK", goals: 0, assists: 0, goalRate: 0.30, assistRate: 0.56 },
+            { name: "O. Ntcham", club: "Samsun FK", goals: 0, assists: 0, goalRate: 0.38, assistRate: 0.50 },
+            { name: "Rômulo", club: "Göztepe FK", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.38 },
+            { name: "Mame Thiam", club: "Eyüpspor FK", goals: 0, assists: 0, goalRate: 0.46, assistRate: 0.30 },
+            { name: "Emre Akbaba", club: "Eyüpspor FK", goals: 0, assists: 0, goalRate: 0.35, assistRate: 0.48 }
+        ],
+        "Premier League": [
+            { name: "E. Haaland", club: "Manchester City", goals: 0, assists: 0, goalRate: 0.72, assistRate: 0.22 },
+            { name: "K. De Bruyne", club: "Manchester City", goals: 0, assists: 0, goalRate: 0.32, assistRate: 0.75 },
+            { name: "P. Foden", club: "Manchester City", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.56 },
+            { name: "B. Saka", club: "Arsenal", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.62 },
+            { name: "Darwin Núñez", club: "Liverpool", goals: 0, assists: 0, goalRate: 0.58, assistRate: 0.35 },
+            { name: "Cody Gakpo", club: "Liverpool", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.48 },
+            { name: "L. Diaz", club: "Liverpool", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.45 },
+            { name: "C. Palmer", club: "Chelsea", goals: 0, assists: 0, goalRate: 0.58, assistRate: 0.60 },
+            { name: "N. Jackson", club: "Chelsea", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.25 },
+            { name: "A. Isak", club: "Newcastle", goals: 0, assists: 0, goalRate: 0.58, assistRate: 0.20 },
+            { name: "H. Son", club: "Tottenham", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.48 },
+            { name: "B. Fernandes", club: "Manchester United", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.66 },
+            { name: "O. Watkins", club: "Aston Villa", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.44 }
+        ],
+        "La Liga": [
+            { name: "K. Mbappé", club: "Real Madrid", goals: 0, assists: 0, goalRate: 0.74, assistRate: 0.42 },
+            { name: "Vinícius Jr.", club: "Real Madrid", goals: 0, assists: 0, goalRate: 0.60, assistRate: 0.64 },
+            { name: "J. Bellingham", club: "Real Madrid", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.56 },
+            { name: "Rodrygo", club: "Real Madrid", goals: 0, assists: 0, goalRate: 0.46, assistRate: 0.50 },
+            { name: "R. Lewandowski", club: "Barcelona", goals: 0, assists: 0, goalRate: 0.65, assistRate: 0.22 },
+            { name: "L. Yamal", club: "Barcelona", goals: 0, assists: 0, goalRate: 0.44, assistRate: 0.72 },
+            { name: "Raphinha", club: "Barcelona", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.60 },
+            { name: "Dani Olmo", club: "Barcelona", goals: 0, assists: 0, goalRate: 0.45, assistRate: 0.54 },
+            { name: "A. Griezmann", club: "Atletico Madrid", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.58 },
+            { name: "J. Álvarez", club: "Atletico Madrid", goals: 0, assists: 0, goalRate: 0.55, assistRate: 0.35 },
+            { name: "N. Williams", club: "Athletic Club", goals: 0, assists: 0, goalRate: 0.42, assistRate: 0.60 },
+            { name: "A. Perez", club: "Villarreal", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.25 }
+        ],
+        "Serie A": [
+            { name: "L. Martínez", club: "Inter Milan", goals: 0, assists: 0, goalRate: 0.64, assistRate: 0.32 },
+            { name: "M. Thuram", club: "Inter Milan", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.48 },
+            { name: "H. Çalhanoğlu", club: "Inter Milan", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.65 },
+            { name: "R. Leão", club: "AC Milan", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.58 },
+            { name: "C. Pulisic", club: "AC Milan", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.46 },
+            { name: "D. Vlahović", club: "Juventus", goals: 0, assists: 0, goalRate: 0.58, assistRate: 0.18 },
+            { name: "K. Kvaratskhelia", club: "Napoli", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.60 },
+            { name: "R. Lukaku", club: "Napoli", goals: 0, assists: 0, goalRate: 0.56, assistRate: 0.30 },
+            { name: "A. Lookman", club: "Atalanta", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.46 },
+            { name: "M. Retegui", club: "Atalanta", goals: 0, assists: 0, goalRate: 0.58, assistRate: 0.20 },
+            { name: "P. Dybala", club: "Roma", goals: 0, assists: 0, goalRate: 0.46, assistRate: 0.54 }
+        ],
+        "Bundesliga": [
+            { name: "H. Kane", club: "Bayern Münih", goals: 0, assists: 0, goalRate: 0.74, assistRate: 0.42 },
+            { name: "J. Musiala", club: "Bayern Münih", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.60 },
+            { name: "M. Olise", club: "Bayern Münih", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.58 },
+            { name: "F. Wirtz", club: "Bayer Leverkusen", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.70 },
+            { name: "V. Boniface", club: "Bayer Leverkusen", goals: 0, assists: 0, goalRate: 0.58, assistRate: 0.24 },
+            { name: "J. Frimpong", club: "Bayer Leverkusen", goals: 0, assists: 0, goalRate: 0.38, assistRate: 0.58 },
+            { name: "S. Guirassy", club: "Borussia Dortmund", goals: 0, assists: 0, goalRate: 0.62, assistRate: 0.20 },
+            { name: "J. Brandt", club: "Borussia Dortmund", goals: 0, assists: 0, goalRate: 0.35, assistRate: 0.64 },
+            { name: "L. Openda", club: "RB Leipzig", goals: 0, assists: 0, goalRate: 0.58, assistRate: 0.28 },
+            { name: "X. Simons", club: "RB Leipzig", goals: 0, assists: 0, goalRate: 0.44, assistRate: 0.64 },
+            { name: "D. Undav", club: "Stuttgart", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.36 },
+            { name: "E. Demirović", club: "Stuttgart", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.22 },
+            { name: "O. Marmoush", club: "Eintracht Frankfurt", goals: 0, assists: 0, goalRate: 0.60, assistRate: 0.50 }
+        ],
+        "Ligue 1": [
+            { name: "O. Dembélé", club: "PSG", goals: 0, assists: 0, goalRate: 0.40, assistRate: 0.72 },
+            { name: "B. Barcola", club: "PSG", goals: 0, assists: 0, goalRate: 0.56, assistRate: 0.50 },
+            { name: "Vitinha", club: "PSG", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.60 },
+            { name: "R. Kolo Muani", club: "PSG", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.26 },
+            { name: "J. David", club: "Lille", goals: 0, assists: 0, goalRate: 0.60, assistRate: 0.24 },
+            { name: "M. Greenwood", club: "Marseille", goals: 0, assists: 0, goalRate: 0.58, assistRate: 0.46 },
+            { name: "E. Wahi", club: "Marseille", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.20 },
+            { name: "A. Lacazette", club: "Lyon", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.28 },
+            { name: "F. Balogun", club: "Monaco", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.24 },
+            { name: "T. Minamino", club: "Monaco", goals: 0, assists: 0, goalRate: 0.44, assistRate: 0.48 }
+        ]
     },
+
+    initLeagueScorers: function(forceReset = false) {
+        const curLeague = (this.state && this.state.currentLeague) ? this.state.currentLeague : "3. Lig";
+        const pool = this.LEAGUE_SCORERS_POOLS[curLeague] || this.LEAGUE_SCORERS_POOLS["Süper Lig"];
+        
+        if (forceReset || !this.state.leagueScorers || this.state.leagueScorersLeague !== curLeague) {
+            this.state.leagueScorersLeague = curLeague;
+            const w = (this.state && this.state.currentWeek && !forceReset) ? this.state.currentWeek : 1;
+            this.state.leagueScorers = pool.map(item => {
+                const estG = Math.max(0, Math.floor((w - 1) * (item.goalRate * 0.45)));
+                const estA = Math.max(0, Math.floor((w - 1) * (item.assistRate * 0.45)));
+                return {
+                    ...item,
+                    goals: forceReset ? 0 : estG,
+                    assists: forceReset ? 0 : estA
+                };
+            });
+        }
+    },
+
+    AVATAR_FACES: [
+        { id: 1, name: "Akdeniz / Fade & Sakal", file: "face_1.jpg", tag: "Popüler" },
+        { id: 2, name: "İskandinav / Sarışın", file: "face_2.jpg", tag: "Klasik" },
+        { id: 3, name: "Atletik / Siyahi", file: "face_3.jpg", tag: "Dinamik" },
+        { id: 4, name: "Karizmatik / Kaptan", file: "face_4.jpg", tag: "Lider" },
+        { id: 5, name: "Genç Yetenek / Parlak", file: "face_5.jpg", tag: "Prodigy" },
+        { id: 6, name: "Latin / Yıldız", file: "face_6.jpg", tag: "Teknik" },
+        { id: 7, name: "Asya / Modern Kesim", file: "face_7.jpg", tag: "Hızlı" },
+        { id: 8, name: "Kızıl / Çilli & Atletik", file: "face_8.jpg", tag: "Savaşçı" }
+    ],
+
+    generateAvatar: function(age) {
+        let cust = (this.state && this.state.avatarCustomization) ? this.state.avatarCustomization : {};
+        let faceId = cust.faceId || 1;
+        if (typeof faceId !== "number" || faceId < 1 || faceId > 8) faceId = 1;
+
+        return `<div class="realistic-player-avatar" style="width:100%;height:100%;position:relative;border-radius:inherit;overflow:hidden;background:#0c1017;display:flex;align-items:center;justify-content:center;">
+            <img src="assets/avatars/face_${faceId}.jpg" alt="Player Portrait" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:inherit;" onerror="this.onerror=null;this.src='assets/avatars/face_1.jpg';">
+            <div style="position:absolute;inset:0;pointer-events:none;border-radius:inherit;box-shadow:inset 0 -8px 16px rgba(0,0,0,0.5);"></div>
+        </div>`;
+    },
+
 
     // --- LEAGUE STANDINGS SIMULATION METHODS ---
     initLeagueTable: function() {
@@ -2356,6 +2468,7 @@ const GAME = {
                 }
             });
         }
+        this.generateSeasonFixtures();
     },
 
     initOtherLeaguesTables: function() {
@@ -2744,9 +2857,6 @@ const GAME = {
             }
         }
 
-        // Settle active bets now that matches are simulated
-        this.settleBets();
-
         // Sort table: points -> GD -> GF (robust numerical comparison)
         this.state.leagueTable.sort((a, b) => {
             const pDiff = Number(b.points) - Number(a.points);
@@ -2758,6 +2868,31 @@ const GAME = {
             
             return Number(b.gf) - Number(a.gf);
         });
+        
+        // Save the simulated scores into our persistent 37-week seasonFixtures array
+        if (this.state.seasonFixtures && this.state.seasonFixtures.length > 0) {
+            let week = this.state.currentWeek;
+            let fixtureIndex = week - 1;
+            if (week > 32) fixtureIndex -= 3;
+            else if (week > 24) fixtureIndex -= 2;
+            else if (week > 12) fixtureIndex -= 1;
+
+            if (fixtureIndex >= 0 && fixtureIndex < this.state.seasonFixtures.length) {
+                let weeklyMatchups = this.state.seasonFixtures[fixtureIndex];
+                weeklyMatchups.forEach(m => {
+                    if (this.state.weeklyFixtures && this.state.weeklyFixtures.length > 0) {
+                        let simulatedMatch = this.state.weeklyFixtures.find(wf => 
+                            (wf.home === m.home && wf.away === m.away) ||
+                            (wf.home === m.away && wf.away === m.home)
+                        );
+                        if (simulatedMatch) {
+                            m.scoreHome = simulatedMatch.scoreHome;
+                            m.scoreAway = simulatedMatch.scoreAway;
+                        }
+                    }
+                });
+            }
+        }
 
         this.simulateOtherLeaguesWeek();
         this.saveGame();
@@ -2822,142 +2957,7 @@ const GAME = {
         this.saveGame();
     },
 
-    settleBets: function() {
-        if (!this.state.activeBets || this.state.activeBets.length === 0) return;
-        if (!this.state.weeklyFixtures || this.state.weeklyFixtures.length === 0) return;
 
-        let totalWonCoins = 0;
-        let wonBetsList = [];
-        let lostBetsList = [];
-
-        this.state.activeBets.forEach(bet => {
-            let allWon = true;
-            bet.matches.forEach(sel => {
-                // Find matching simulated fixture
-                let fix = this.state.weeklyFixtures.find(f => 
-                    (f.home === sel.home && f.away === sel.away) ||
-                    (f.home === sel.away && f.away === sel.home)
-                );
-                
-                if (!fix || !fix.played) {
-                    sel.status = "LOST"; // Can't find or not played
-                    allWon = false;
-                    return;
-                }
-
-                // Check outcome
-                let isHome = (fix.home === sel.home);
-                let scoreHome = fix.scoreHome;
-                let scoreAway = fix.scoreAway;
-                
-                // Normalize scores relative to selected home/away
-                let scoreSelHome = isHome ? scoreHome : scoreAway;
-                let scoreSelAway = isHome ? scoreAway : scoreHome;
-
-                let win = false;
-                switch (sel.betType) {
-                    case "MS1":
-                        win = (scoreSelHome > scoreSelAway);
-                        break;
-                    case "MSX":
-                        win = (scoreSelHome === scoreSelAway);
-                        break;
-                    case "MS2":
-                        win = (scoreSelHome < scoreSelAway);
-                        break;
-                    case "Alt":
-                        win = ((scoreSelHome + scoreSelAway) < 2.5);
-                        break;
-                    case "Üst":
-                        win = ((scoreSelHome + scoreSelAway) > 2.5);
-                        break;
-                    case "KG_Var":
-                        win = (scoreSelHome > 0 && scoreSelAway > 0);
-                        break;
-                    case "KG_Yok":
-                        win = (scoreSelHome === 0 || scoreSelAway === 0);
-                        break;
-                }
-
-                sel.status = win ? "WON" : "LOST";
-                if (!win) allWon = false;
-            });
-
-            bet.status = allWon ? "WON" : "LOST";
-            
-            if (allWon) {
-                totalWonCoins += bet.potentialPayout;
-                wonBetsList.push(bet);
-            } else {
-                lostBetsList.push(bet);
-            }
-            
-            // Push to history
-            this.state.betHistory.unshift(bet);
-        });
-
-        // Clear active bets
-        this.state.activeBets = [];
-
-        if (totalWonCoins > 0) {
-            this.state.money += totalWonCoins;
-            
-            // Add a social media post celebrating the win!
-            const handles = ["@iddaa_guru", "@vurgun_medya", "@tuttur_com", "@kupon_tavsiyeleri"];
-            const names = ["İddaa Gurusu", "Vurgun Medya", "Kupon Tuttur", "Kupon Paylaşım"];
-            const idx = Math.floor(Math.random() * handles.length);
-            
-            this.addSocialPost(
-                handles[idx],
-                names[idx],
-                `🚨 BÜYÜK VURGUN! Genç yetenek ${this.state.playerName}, bu hafta oynadığı iddaa kuponuyla tam ${totalWonCoins.toLocaleString()} € kazandı! Servetine servet katıyor! 🤑💸📈`
-            );
-
-            // Save win info to display a beautiful modal after UI updates
-            this.state.lastWinningBetAmount = totalWonCoins;
-        }
-
-        // Check for betting scandal (10% chance of getting caught if they played any bet)
-        let caught = false;
-        if (wonBetsList.length > 0 || lostBetsList.length > 0) {
-            // Player played a coupon
-            if (Math.random() < 0.10) { // 10% risk of TFF catching them
-                caught = true;
-            }
-        }
-
-        if (caught) {
-            let fine = Math.round(this.state.money * 0.25 + 2500); // 25% of cash + 2500 € fine
-            let lostFollowers = Math.round(this.state.followers * 0.22 + 2000); // 22% of followers unfollow
-            let lostFans = 35; // Taraftar sevgisi -35
-            let lostTrust = 25; // Hoca güveni -25
-
-            this.state.money = Math.max(0, this.state.money - fine);
-            this.state.followers = Math.max(0, this.state.followers - lostFollowers);
-            this.state.taraftarSevgisi = Math.max(0, this.state.taraftarSevgisi - lostFans);
-            this.state.hocaGuveni = Math.max(0, this.state.hocaGuveni - lostTrust);
-            
-            // Ban from national team selection for 15 weeks
-            this.state.nationalBanWeeks = 15;
-
-            // Save betting scandal state to display modal in index.html
-            this.state.bettingScandal = {
-                fine: fine,
-                lostFollowers: lostFollowers,
-                lostFans: lostFans,
-                lostTrust: lostTrust
-            };
-            
-            // Post scandal on social feed
-            this.addSocialPost(
-                "@tff_resmi", 
-                "TFF Resmi", 
-                `🚨 TFF Duyurusu: ${this.state.playerName}'in kendi ligindeki karşılaşmalara yasa dışı bahis oynadığı saptanmış olup, sporcuya ${fine.toLocaleString()} € para cezası ve 15 resmi müsabakadan men cezası verilmiştir.`
-            );
-        }
-
-        this.saveGame();
-    },
 
     getTeamAverageRating: function(teamName) {
         // Check amateur clubs pool first
@@ -2989,9 +2989,64 @@ const GAME = {
             if (found) return found;
         }
         return DATABASE.AMATEUR_CLUBS[0];
+    },
+
+    generateSeasonFixtures: function() {
+        let league = DATABASE.LEAGUES[this.state.currentLeague];
+        if (!league) return;
+        
+        let teams = this.state.leagueTable.map(t => t.name);
+        if (teams.length % 2 !== 0) {
+            teams.push("BAY");
+        }
+        
+        let numTeams = teams.length;
+        let numWeeks = numTeams - 1;
+        let halfSize = numTeams / 2;
+        
+        let seasonFixtures = [];
+        
+        // Round 1 (First Half of Season)
+        for (let week = 0; week < numWeeks; week++) {
+            let weekFixtures = [];
+            for (let i = 0; i < halfSize; i++) {
+                let home = teams[i];
+                let away = teams[numTeams - 1 - i];
+                
+                if (week % 2 === 0) {
+                    weekFixtures.push({ home: home, away: away });
+                } else {
+                    weekFixtures.push({ home: away, away: home });
+                }
+            }
+            seasonFixtures.push(weekFixtures);
+            
+            // Rotate teams (Berger tables method)
+            let newTeams = [];
+            newTeams.push(teams[0]);
+            newTeams.push(teams[numTeams - 1]);
+            for (let i = 1; i < numTeams - 1; i++) {
+                newTeams.push(teams[i]);
+            }
+            teams = newTeams;
+        }
+        
+        // Round 2 (Second Half of Season - reverse home/away)
+        let secondHalf = [];
+        for (let week = 0; week < numWeeks; week++) {
+            let weekFixtures = seasonFixtures[week].map(f => {
+                return { home: f.away, away: f.home };
+            });
+            secondHalf.push(weekFixtures);
+        }
+        
+        this.state.seasonFixtures = seasonFixtures.concat(secondHalf);
+        this.saveGame();
     }
 };
 
 if (typeof module !== "undefined" && module.exports) {
     module.exports = GAME;
 }
+
+

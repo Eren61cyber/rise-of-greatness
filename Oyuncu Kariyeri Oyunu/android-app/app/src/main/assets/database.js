@@ -10,12 +10,13 @@ const DATABASE = {
             prestige: 3,
             teams: [
                 { name: "Galatastar", att: 85, mid: 84, def: 83, color: "#A90432", colorSec: "#FDB913" },
-                { name: "Fenerbaçe FK", att: 83, mid: 84, def: 83, color: "#002F6C", colorSec: "#FED141" },
-                { name: "Trabzon FK", att: 80, mid: 80, def: 79, color: "#800020", colorSec: "#00A4E4" },
-                { name: "Kartal FK", att: 78, mid: 78, def: 77, color: "#000000", colorSec: "#FFFFFF" },
-                { name: "Başakşehir FK", att: 76, mid: 76, def: 75, color: "#FF6600", colorSec: "#002F6C" },
+                { name: "Fenerbaçe FK", att: 84, mid: 84, def: 84, color: "#002F6C", colorSec: "#FED141" },
+                { name: "Trabzon FK", att: 84, mid: 83, def: 81, color: "#800020", colorSec: "#00A4E4" },
+                { name: "Kartal FK", att: 83, mid: 83, def: 81, color: "#000000", colorSec: "#FFFFFF" },
+                { name: "Başakşehir FK", att: 77, mid: 76, def: 75, color: "#FF6600", colorSec: "#002F6C" },
                 { name: "Göztepe FK", att: 75, mid: 75, def: 74, color: "#FFD600", colorSec: "#D50000" },
-                { name: "Samsun FK", att: 74, mid: 73, def: 73, color: "#E30613", colorSec: "#FFFFFF" },
+                { name: "Samsun FK", att: 74, mid: 74, def: 73, color: "#E30613", colorSec: "#FFFFFF" },
+                { name: "Eyüpspor FK", att: 73, mid: 72, def: 71, color: "#6A1B9A", colorSec: "#FBC02D" },
                 { name: "Rize FK", att: 71, mid: 71, def: 70, color: "#1B5E20", colorSec: "#FFFFFF" },
                 { name: "Konya FK", att: 71, mid: 70, def: 70, color: "#1B5E20", colorSec: "#FFFFFF" },
                 { name: "Adana Demir FK", att: 72, mid: 71, def: 71, color: "#00E5FF", colorSec: "#0D47A1" },
@@ -23,9 +24,8 @@ const DATABASE = {
                 { name: "Gaziantep FK", att: 69, mid: 69, def: 68, color: "#D50000", colorSec: "#FFFFFF" },
                 { name: "Kaşımpaşa FK", att: 68, mid: 68, def: 67, color: "#0D47A1", colorSec: "#FFFFFF" },
                 { name: "Hatay FK", att: 70, mid: 70, def: 69, color: "#8E1E34", colorSec: "#FFFFFF" },
-                { name: "Eyüpspor FK", att: 67, mid: 67, def: 66, color: "#6A1B9A", colorSec: "#FBC02D" },
-                { name: "Antalya FK", att: 67, mid: 66, def: 66, color: "#D50000", colorSec: "#FFFFFF" },
-                { name: "Kayseri FK", att: 66, mid: 66, def: 65, color: "#FFD600", colorSec: "#D50000" },
+                { name: "Antalya FK", att: 68, mid: 67, def: 66, color: "#D50000", colorSec: "#FFFFFF" },
+                { name: "Kayseri FK", att: 67, mid: 66, def: 65, color: "#FFD600", colorSec: "#D50000" },
                 { name: "Sivas FK", att: 72, mid: 71, def: 71, color: "#D50000", colorSec: "#FFFFFF" }
             ]
         },
@@ -341,7 +341,7 @@ const DATABASE = {
     GIRLFRIENDS: [
         {
             id: "ecrin",
-            name: "Ecrin",
+            name: "Nisa",
             role: "Sadık Sevgili",
             desc: "Her zaman seninle gurur duyan ve kariyerinde en büyük destekçin olan sadık sevgilin.",
             avatar: "💄",
@@ -357,7 +357,7 @@ const DATABASE = {
         },
         {
             id: "sweetheart",
-            name: "Beyza",
+            name: "Ecrin",
             role: "Sınıf Arkadaşı / Lise Aşkı",
             desc: "Sınıfından lise aşkın. Gösterişi sevmez, her zaman senin yanındadır ve manevi olarak seni destekler.",
             avatar: "❤️",
@@ -371,7 +371,7 @@ const DATABASE = {
         },
         {
             id: "influencer",
-            name: "Dilara",
+            name: "Melike",
             role: "Sosyal Medya Fenomeni",
             desc: "Maçlardaki performansın ve yeteneğinle ona hayran kalan popüler bir spor ve yaşam influencer'ı. Alışverişi sever.",
             avatar: "💋",
@@ -387,7 +387,7 @@ const DATABASE = {
         },
         {
             id: "model",
-            name: "Kübra",
+            name: "Derin",
             role: "Ünlü Model",
             desc: "Onunla görünmek prestijdir ama pahalıdır. Lüks tatil, pırlanta, özel jet ve bitmeyen istekleri vardır.",
             avatar: "💖",
@@ -403,7 +403,7 @@ const DATABASE = {
         },
         {
             id: "ece",
-            name: "Ece",
+            name: "Hülya",
             role: "Cemiyet Güzeli (22 Yaşında)",
             desc: "Hafif sarı saçlı, dolgun dudaklı ve büyüleyici güzellikte bir cemiyet ikonu. Onunla sevgili olmak seni en üst düzey elitlerin arasına sokar.",
             avatar: "👑",

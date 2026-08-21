@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rise of Greatness - Showcase & Özellik Vitrini</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Rajdhani:wght@600;700;800&family=Cinzel:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=5.8.2">
+    <style>
+        :root {
+            --bg-body: #07090e;
+            --panel-bg: rgba(18, 24, 38, 0.85);
+            --primary: #00e5ff;
+            --accent-green: #00ff87;
+            --accent-yellow: #fdb913;
+            --accent-red: #ff3366;
+            --accent-purple: #a855f7;
+        }
+
+        body {
+            background: radial-gradient(circle at 50% 10%, #152238 0%, #07090e 100%);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .showcase-header {
+            background: rgba(10, 14, 24, 0.95);
+            border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+        }
+
+        .showcase-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .showcase-title h1 {
+            font-size: 18px;
+            font-weight: 900;
+            margin: 0;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #00e5ff, #00ff87);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .showcase-title span {
+            background: rgba(0, 229, 255, 0.12);
+            color: #00e5ff;
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            font-size: 10px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+
+        .showcase-nav {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            max-width: 60%;
+            padding-bottom: 4px;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: linear-gradient(135deg, rgba(0, 229, 255, 0.2), rgba(0, 255, 135, 0.2));
+            border-color: #00e5ff;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .showcase-main {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 24px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .category-section {
+            background: var(--panel-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 14px;
+            margin-bottom: 20px;
+        }
+
+        .category-header h2 {
+            font-size: 16px;
+            font-weight: 800;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .trigger-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 14px;
+        }
+
+        .trigger-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+            transition: all 0.2s;
+        }
+
+        .trigger-card:hover {
+            border-color: var(--primary);
+            background: rgba(0, 229, 255, 0.04);
+            transform: translateY(-2px);
+        }
+
+        .trigger-card h3 {
+            font-size: 14px;
+            font-weight: 700;
+            margin: 0;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .trigger-card p {
+            font-size: 11.5px;
+            color: #94a3b8;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .trigger-btn {
+            background: linear-gradient(135deg, #00e5ff, #00ff87);
+            color: #000;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .trigger-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(0, 229, 255, 0.4);
+        }
+
+        .trigger-btn.danger {
+            background: linear-gradient(135deg, #ff3366, #ff758c);
+            color: #fff;
+        }
+
+        .trigger-btn.gold {
+            background: linear-gradient(135deg, #fdb913, #ffd700);
+            color: #000;
+        }
+
+        .trigger-btn.purple {
+            background: linear-gradient(135deg, #a855f7, #c084fc);
+            color: #fff;
+        }
+
+        .preview-stage {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 99999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            padding: 16px;
+            box-sizing: border-box;
+        }
+
+        .preview-stage.active {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="showcase-header">
+        <div class="showcase-title">
+            <h1>⚡ RISE OF GREATNESS</h1>
+            <span>GELİŞTİRİCİ VİTRİNİ & ÖZELLİK MERKEZİ</span>
+        </div>
+        <nav class="showcase-nav">
+            <button class="nav-btn active" onclick="scrollToSection('sec-jubilee')">🎖️ Jübile & Emeklilik</button>
+            <button class="nav-btn" onclick="scrollToSection('sec-newspaper')">📰 Gazete Manşetleri</button>
+            <button class="nav-btn" onclick="scrollToSection('sec-trophies')">🏆 Kupalar & Sezon</button>
+            <button class="nav-btn" onclick="scrollToSection('sec-streak')">🔥 Alev & Görevler</button>
+            <button class="nav-btn" onclick="scrollToSection('sec-whatsapp')">💬 WhatsApp & Sosyal</button>
+            <button class="nav-btn" onclick="scrollToSection('sec-alerts')">🚨 Oyun İçi Bildirimler</button>
+            <a href="index.html" class="nav-btn" style="background: #00ff87; color: #000; text-decoration: none;">🎮 Oyuna Git</a>
+        </nav>
+    </header>
+
+    <!-- Main Container -->
+    <main class="showcase-main">
+
+        <!-- 1. JÜBİLE & EMEKLİLİK BÖLÜMÜ -->
+        <section id="sec-jubilee" class="category-section" style="border-color: rgba(253, 185, 19, 0.4); background: linear-gradient(180deg, rgba(253, 185, 19, 0.06) 0%, rgba(18, 24, 38, 0.95) 100%);">
+            <div class="category-header">
+                <h2><span style="color: #fdb913;">🎖️</span> Jübile & Kariyer Veda Sistemi (Emeklilik)</h2>
+                <span style="font-size: 11px; color: #fdb913; font-weight: bold;">YENİ BÖLÜM</span>
+            </div>
+            <p style="color: #cbd5e1; font-size: 13px; line-height: 1.5; margin-top: -10px; margin-bottom: 20px;">
+                Oyuncunun kariyerinin sonunda yaşlandığında (veya dilediği zaman) görkemli bir jübile maçıyla kariyerini sonlandırıp, başarı plaketini ve efsaneler kulübü özetini görebileceği özel veda ekranları:
+            </p>
+            <div class="trigger-grid">
+                <div class="trigger-card">
+                    <div>
+                        <h3>🏆 Efsanevi Jübile Töreni</h3>
+                        <p>Kariyer boyunca atılan toplam goller, kazanılan kupalar ve stadyumda binlerce taraftarın vedasıyla efsane jübile ekranı.</p>
+                    </div>
+                    <button class="trigger-btn gold" onclick="previewJubileeModal('legend')">🎖️ Efsane Jübilesini Aç</button>
+                </div>
+
+                <div class="trigger-card">
+                    <div>
+                        <h3>👑 Kariyer Başarı Plaketi</h3>
+                        <p>Kariyerin tüm istatistiklerini (Toplam Gol, Asist, Kupa, Servet, Piyasa Değeri) altın çerçeveli onur plaketi olarak gösterir.</p>
+                    </div>
+                    <button class="trigger-btn gold" onclick="previewCareerPlaqueModal()">📜 Başarı Plaketini Aç</button>
+                </div>
+
+                <div class="trigger-card">
+                    <div>
+                        <h3>⚽ Jübile Maçı Simülasyonu</h3>
+                        <p>Dünya karmasına karşı oynanan son 90 dakika ve efsanelerin omuzlarında sahayı terk etme sahnesi.</p>
+                    </div>
+                    <button class="trigger-btn" onclick="previewJubileeMatchEnd()">🏟️ Jübile Maçı Bitişi</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. GAZETE & BASIN MANŞETLERİ -->
+        <section id="sec-newspaper" class="category-section">
+            <div class="category-header">
+                <h2><span>📰</span> Dramatik Gazete Manşetleri (RiseUp News)</h2>
+                <span style="font-size: 11px; color: var(--primary);">CANLI TEST</span>
+            </div>
+            <div class="trigger-grid">
+                <div class="trigger-card">
+                    <div>
+                        <h3>⚽ Hat-Trick Fırtınası</h3>
+                        <p>Bir maçta 3 gol attığında basının attığı 'Durdurulamayan Canavar' manşeti.</p>
+                    </div>
+                    <button class="trigger-btn" onclick="previewNewspaper('hattrick')">🗞️ Manşeti Gör</button>
+                </div>
+
+                <div class="trigger-card">
+                    <div>
+                        <h3>⏱️ 90+ Son Dakika Zaferi</h3>
+                        <p>Uzatmalarda gelen galibiyet golü sonrası gazete ön sayfası.</p>
+                    </div>
+                    <button class="trigger-btn" onclick="previewNewspaper('lastminute')">🗞️ Manşeti Gör</button>
+                </div>
+
+                <div class="trigger-card">
+                    <div>
+                        <h3>🔥 5 Maçlık Galibiyet Serisi</h3>
+                        <p>Üst üste maç kazandıran performans manşeti.</p>
+                    </div>
+                    <button class="trigger-btn" onclick="previewNewspaper('streak')">🗞️ Manşeti Gör</button>
+                </div>
+
+                <div class="trigger-card">
+                    <div>
+                        <h3>🇹🇷 A Milli Takım Daveti</h3>
+                        <p>İlk kez milli takıma çağrıldığında atılan gurur manşeti.</p>
+                    </div>
+                    <button class="trigger-btn danger" onclick="previewNewspaper('national')">🇹🇷 Milli Manşeti Gör</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. KUPALAR & SEZON SONU -->
+        <section id="sec-trophies" class="category-section">
+            <div class="category-header">
+                <h2><span>🏆</span> Sezon Sonu, Kupalar & Ballon d'Or</h2>
+                <span style="font-size: 11px; color: var(--accent-green);">ÖDÜL TÖRENLERİ</span>
+            </div>
+            <div class="trigger-grid">
+                <div class="trigger-card">
+                    <div>
+                        <h3>🥇 Süper Lig Şampiyonluğu</h3>
+                        <p>Ligi 1. bitirdiğinde gelen dev kupa kaldırma ve kutlama ekranı.</p>
+                    </div>
+                    <button class="trigger-btn gold" onclick="previewSeasonSummary(true, 'Süper Lig')">🏆 Şampiyonluk Ekranı</button>
+                </div>
+
+                <div class="trigger-card">
+                    <div>
+                        <h3>⭐ Ballon d'Or (Yılın Futbolcusu)</h3>
+                        <p>Dünyanın en iyi oyuncusu seçildiğinde gelen tarihi ödül töreni.</p>
+                    </div>
+                    <button class="trigger-btn gold" onclick="previewBallonDorModal()">🌟 Ballon d'Or Gör</button>
+                </div>
+
+                <div class="trigger-card">
+                    <div>
+                        <h3>🥈 Normal Sezon Sonu Özeti</h3>
+                        <p>Lig bittiğinde oynanan maçlar, atılan goller ve sezon değerlendirmesi.</p>
+                    </div>
+                    <button class="trigger-btn" onclick="previewSeasonSummary(false, 'Süper Lig')">📋 Sezon Özetini Gör</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. GÖREVLER & ALEV SERİSİ -->
+        <section id="sec-streak" class="category-section">
+            <div class="category-header">
+                <h2><span>🔥</span> Haftalık Görevler & Alev Serisi (Hot Streak)</h2>
+                <span style="font-size: 11px; color: var(--accent-red);">BAĞIMLILIK MEKANİKLERİ</span>
+            </div>
+            <div class="trigger-grid">
+                <div class="trigger-card">
+                    <div>
+                        <h3>🔥 Ateş Serisi Patlaması (Streak Flash)</h3>
+                        <p>Üst üste 3 veya 5 maç 7.0+ puan aldığında ekrana gelen tam ekran alev animasyonu.</p>
+                    </div>
+                    <button class="trigger-btn danger" onclick="previewStreakFlash(5)">🔥 5'lik Ateş Serisi Efekti</button>
+                </div>
+
+                <div class="trigger-card">
+                    <div>
+                        <h3>📋 Haftalık Görevler Paneli</h3>
+                        <p>Her hafta rastgele üretilen 3 farklı maç görevi ve ödül toplama paneli.</p>
+                    </div>
+                    <button class="trigger-btn" onclick="previewMissionsModal()">📋 Görevler Penceresini Aç</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. WHATSAPP & DİYALOGLAR -->
+        <section id="sec-whatsapp" class="category-section">
+            <div class="category-header">
+                <h2><span>💬</span> WhatsApp Mesajlaşma & Sosyal Medya</h2>
+                <span style="font-size: 11px; color: #25d366;">DİYALOGLAR</span>
+            </div>
+            <div class="trigger-grid">
+                <div class="trigger-card">
+                    <div>
+                        <h3>👨‍💼 Teknik Direktör Fırçası</h3>
+                        <p>Kötü maç çıkardığında hocanın WhatsApp'tan hesap sorması ve cevap seçenekleri.</p>
+                    </div>
+                    <button class="trigger-btn" onclick="previewWhatsApp('coach')">💬 Hoca Mesajını Gör</button>
+                </div>
+
+                <div class="trigger-card">
+                    <div>
+                        <h3>👠 Kız Arkadaş Draması</h3>
+                        <p>Kız arkadaşının hediye istemesi veya tripleri içeren WhatsApp konuşması.</p>
+                    </div>
+                    <button class="trigger-btn purple" onclick="previewWhatsApp('girlfriend')">💬 Kız Arkadaş Mesajı</button>
+                </div>
+
+                <div class="trigger-card">
+                    <div>
+                        <h3>🕶️ Mafya & Şike Teklifi</h3>
+                        <p>Karanlık adamlardan gelen maç satma teklifi ve riskli seçimler.</p>
+                    </div>
+                    <button class="trigger-btn danger" onclick="previewWhatsApp('mafia')">🕶️ Mafya Mesajını Gör</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. OYUN İÇİ BİLDİRİMLER (CUSTOM ALERTS) -->
+        <section id="sec-alerts" class="category-section">
+            <div class="category-header">
+                <h2><span>🚨</span> Yeni Oyun İçi Cam (Glass) Bildirimler</h2>
+                <span style="font-size: 11px; color: var(--primary);">BROWSER ALERT YERİNE</span>
+            </div>
+            <div class="trigger-grid">
+                <div class="trigger-card">
+                    <div>
+                        <h3>🩸 Sakatlık Bildirimi</h3>
+                        <p>Maçta sakatlandığında gelen kırmızı çerçeveli oyun içi uyarı.</p>
+                    </div>
+                    <button class="trigger-btn danger" onclick="showCustomAlert('Arka adale yırtığı nedeniyle 3 hafta sahalardan uzak kalacaksın! Doktor tedavisi başlatıldı.', 'SAKATLIK RAPORU', '🩸', 'danger')">🩸 Sakatlık Uyarısı</button>
+                </div>
+
+                <div class="trigger-card">
+                    <div>
+                        <h3>🎉 Transfer & Başarı Bildirimi</h3>
+                        <p>Yeni bir takıma transfer olduğunda veya ev aldığında gelen yeşil bildirim.</p>
+                    </div>
+                    <button class="trigger-btn" onclick="showCustomAlert('Trabzonspor kulübüyle 3 yıllık resmi sözleşme imzaladın! Haftalık maaşın: 25.000 €', 'TRANSFER RESMİLEŞTİ', '✍️', 'success')">🎉 Transfer Bildirimi</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================== PREVIEW MODALS STAGE ==================== -->
+    <div id="preview-stage" class="preview-stage" onclick="closeAllModals(event)">
+
+        <!-- JUBILEE / RETIREMENT MODAL -->
+        <div id="modal-jubilee" class="event-card glass" style="display:none; max-width: 460px; text-align: center; border: 2px solid #fdb913; box-shadow: 0 0 40px rgba(253, 185, 19, 0.4); padding: 24px; border-radius: 16px;">
+            <div style="font-size: 48px; margin-bottom: 8px;">🎖️👑⚽</div>
+            <div style="background: linear-gradient(135deg, #fdb913, #ffd700); color: #000; font-weight: 900; font-size: 11px; padding: 4px 12px; border-radius: 6px; width: fit-content; margin: 0 auto 12px auto; letter-spacing: 1px;">EFSANEVİ JÜBİLE TÖRENİ</div>
+            <h2 style="font-size: 22px; font-weight: 900; color: #fff; margin: 0 0 8px 0;">KEREM YILMAZ SAHALARA VEDA ETTİ!</h2>
+            <p style="font-size: 13px; color: #cbd5e1; line-height: 1.5; margin-bottom: 20px;">
+                50.000 taraftarın ayakta alkışladığı görkemli jübile maçında son kez sahaya çıktın. Kulüp başkanı ve dünya futbolunun efsaneleri sana saygı duruşunda bulundu!
+            </p>
+
+            <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(253, 185, 19, 0.3); border-radius: 12px; padding: 14px; margin-bottom: 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; text-align: left;">
+                <div>
+                    <span style="font-size: 10px; color: #94a3b8;">Toplam Maç</span>
+                    <div style="font-size: 16px; font-weight: 900; color: #fff;">412 Maç</div>
+                </div>
+                <div>
+                    <span style="font-size: 10px; color: #94a3b8;">Kariyer Golü</span>
+                    <div style="font-size: 16px; font-weight: 900; color: #00ff87;">284 Gol</div>
+                </div>
+                <div>
+                    <span style="font-size: 10px; color: #94a3b8;">Kazanılan Kupalar</span>
+                    <div style="font-size: 16px; font-weight: 900; color: #fdb913;">9 Kupa 🏆</div>
+                </div>
+                <div>
+                    <span style="font-size: 10px; color: #94a3b8;">Kazanılan Servet</span>
+                    <div style="font-size: 16px; font-weight: 900; color: #00e5ff;">14.500.000 €</div>
+                </div>
+            </div>
+
+            <button class="trigger-btn gold" style="width: 100%;" onclick="closeStage()">👏 EFSANE OLARAK EMEKLİ OL</button>
+        </div>
+
+        <!-- CAREER PLAQUE MODAL -->
+        <div id="modal-plaque" class="event-card glass" style="display:none; max-width: 420px; text-align: center; border: 2px solid #ffd700; background: linear-gradient(145deg, #1e1b10, #0d0c07); box-shadow: 0 0 50px rgba(255, 215, 0, 0.3); padding: 26px; border-radius: 16px;">
+            <div style="border: 2px dashed rgba(255, 215, 0, 0.5); padding: 18px; border-radius: 10px;">
+                <div style="font-size: 32px; margin-bottom: 6px;">📜✨</div>
+                <h3 style="color: #ffd700; font-family: 'Cinzel', serif; font-size: 18px; margin: 0 0 4px 0; letter-spacing: 2px;">TÜRK FUTBOLU ONUR PLAKETİ</h3>
+                <div style="font-size: 10px; color: #aaa; margin-bottom: 16px;">TFF EFSANELER MÜZESİ</div>
+                <div style="font-size: 15px; font-weight: 800; color: #fff; margin-bottom: 12px;">KEREM YILMAZ</div>
+                <p style="font-size: 12px; color: #d4af37; font-style: italic; line-height: 1.5; margin-bottom: 18px;">
+                    "Süper Lig ve Milli Takım formasıyla Türk futboluna kattığın unutulmaz zaferler, tarihi goller ve centilmenliğin asla unutulmayacaktır."
+                </p>
+                <button class="trigger-btn gold" style="width: 100%;" onclick="closeStage()">Müzeye Kaldır 🏆</button>
+            </div>
+        </div>
+
+        <!-- BALLON D'OR MODAL -->
+        <div id="modal-ballondor" class="event-card glass" style="display:none; max-width: 440px; text-align: center; border: 2px solid #ffd700; box-shadow: 0 0 50px rgba(255, 215, 0, 0.5); padding: 24px; border-radius: 16px;">
+            <div style="font-size: 54px; margin-bottom: 8px;">🌟⚽👑</div>
+            <div style="background: #ffd700; color: #000; font-weight: 900; font-size: 11px; padding: 4px 12px; border-radius: 6px; width: fit-content; margin: 0 auto 12px auto;">FRANCE FOOTBALL ÖDÜL TÖRENİ</div>
+            <h2 style="font-size: 22px; font-weight: 900; color: #fff; margin: 0 0 8px 0;">BALLON D'OR KAZANDIN!</h2>
+            <p style="font-size: 13px; color: #cbd5e1; line-height: 1.5; margin-bottom: 20px;">
+                Paris'te düzenlenen görkemli gecede dünyanın en iyi futbolcusu seçilerek <strong>Ballon d'Or</strong> ödülünü kazandın! Tüm dünya seni konuşuyor. (+500.000 € | +100.000 Takipçi)
+            </p>
+            <button class="trigger-btn gold" style="width: 100%;" onclick="closeStage()">🏆 ÖDÜLÜ KALDIR VE KUTLA</button>
+        </div>
+
+        <!-- NEWSPAPER MODAL -->
+        <div id="modal-newspaper" class="event-card glass" style="display:none; max-width: 440px; text-align: center; border: 2px solid var(--primary); box-shadow: 0 0 35px rgba(0, 229, 255, 0.35); padding: 20px; border-radius: 12px;">
+            <div style="border-bottom: 2px solid rgba(255,255,255,0.15); padding-bottom: 8px; margin-bottom: 12px;">
+                <div style="font-size: 24px; font-weight: 900; letter-spacing: 2px; color: #fff; font-family: 'Cinzel', serif;">📰 RISEUP NEWS</div>
+                <div style="font-size: 9px; color: #fdb913; font-weight: bold; letter-spacing: 1px;">TÜRKİYE VE DÜNYA SPOR GÜNDEMİ</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 8px; padding: 14px; text-align: left; margin-bottom: 16px;">
+                <div style="background: #ef4444; color: white; font-size: 9px; font-weight: 900; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 6px;">⚽ SPOR MANŞETİ</div>
+                <h2 id="np-title" style="font-size: 17px; font-weight: 900; color: #fff; margin: 0 0 6px 0;">DURDURULAMAZ CANAVAR!</h2>
+                <h4 id="np-subtitle" style="font-size: 12px; color: #fdb913; margin: 0 0 8px 0;">Kerem Yılmaz Sahada Resital Sundu</h4>
+                <p id="np-desc" style="font-size: 12px; color: #cbd5e1; line-height: 1.5; margin: 0;">Muhteşem performansıyla 3 gol atarak maça damgasını vuran genç yıldız, taraftarları büyüledi.</p>
+            </div>
+            <button class="trigger-btn" style="width: 100%;" onclick="closeStage()">🗞️ Gazeteyi Kapat</button>
+        </div>
+
+        <!-- WHATSAPP MODAL -->
+        <div id="modal-whatsapp" class="event-card glass" style="display:none; max-width: 360px; background: #111b21; border: 1px solid rgba(0, 168, 132, 0.4); box-shadow: 0 0 30px rgba(0, 168, 132, 0.3); padding: 18px; border-radius: 16px;">
+            <div style="display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 10px; margin-bottom: 14px;">
+                <div id="wa-avatar" style="font-size: 24px;">👨‍💼</div>
+                <div style="text-align: left;">
+                    <div id="wa-name" style="font-weight: 800; font-size: 13px; color: #fff;">Teknik Direktör</div>
+                    <div style="font-size: 10px; color: #00a884;">çevrimiçi</div>
+                </div>
+            </div>
+            <div id="wa-bubble" style="background: #005c4b; color: #fff; padding: 10px 14px; border-radius: 10px; font-size: 12.5px; line-height: 1.4; text-align: left; margin-bottom: 16px;">
+                "Evlat dünkü maçtaki performansın kabul edilemez! Bir sonraki maçta seni yedek kulübesinde görmek istemiyorsan kendine çeki düzen ver."
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <button class="trigger-btn" style="background: rgba(255,255,255,0.08); color: #fff; font-size: 11px;" onclick="closeStage()">"Özür dilerim hocam, daha çok çalışacağım."</button>
+                <button class="trigger-btn" style="background: rgba(255,255,255,0.08); color: #fff; font-size: 11px;" onclick="closeStage()">"Ben elimden geleni yaptım, taktik yanlıştı."</button>
+            </div>
+        </div>
+
+        <!-- STREAK FLASH FULLSCREEN -->
+        <div id="modal-streak" style="display:none; text-align: center;">
+            <div style="font-size: 72px; animation: bounce 0.8s infinite alternate;">🔥🔥🔥</div>
+            <h1 style="font-size: 36px; font-weight: 900; color: #ff3366; text-shadow: 0 0 30px #ff3366; margin: 10px 0;">5 MAÇLIK ATEŞ SERİSİ!</h1>
+            <p style="font-size: 16px; color: #fff; font-weight: bold; margin-bottom: 24px;">Durdurulamaz haldesin! (+5 Geçici OVR Bonusu)</p>
+            <button class="trigger-btn danger" style="font-size: 14px; padding: 12px 24px;" onclick="closeStage()">💥 DEVAM ET</button>
+        </div>
+
+        <!-- CUSTOM ALERT MODAL -->
+        <div id="custom-alert-modal" class="event-modal-overlay" style="display:none; background: rgba(0,0,0,0.85); z-index: 100000; align-items: center; justify-content: center;">
+            <div class="event-card glass" style="max-width: 320px; text-align: center; border: 1.5px solid rgba(0, 229, 183, 0.4); box-shadow: 0 0 25px rgba(0, 229, 183, 0.2); padding: 22px; border-radius: 14px;">
+                <div id="custom-alert-icon" style="font-size: 34px; margin-bottom: 8px;">🔔</div>
+                <h3 id="custom-alert-title" style="color: #00e5b7; font-weight: 900; font-size: 15px; margin: 0 0 10px 0; letter-spacing: 0.5px; text-transform: uppercase;">BİLGİLENDİRME</h3>
+                <p id="custom-alert-msg" style="color: #cbd5e1; font-size: 12px; line-height: 1.5; margin: 0 0 18px 0;"></p>
+                <button class="trigger-btn" style="width: 100%; padding: 10px; font-size: 12px;" onclick="document.getElementById('custom-alert-modal').style.display='none'">TAMAM</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        const stage = document.getElementById('preview-stage');
+
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function closeStage() {
+            stage.classList.remove('active');
+            const modals = stage.querySelectorAll('.event-card, #modal-streak, #custom-alert-modal');
+            modals.forEach(m => m.style.display = 'none');
+        }
+
+        function closeAllModals(e) {
+            if (e.target === stage) {
+                closeStage();
+            }
+        }
+
+        function showModal(id) {
+            closeStage();
+            stage.classList.add('active');
+            const modal = document.getElementById(id);
+            if (modal) modal.style.display = 'block';
+        }
+
+        function previewJubileeModal() {
+            showModal('modal-jubilee');
+        }
+
+        function previewCareerPlaqueModal() {
+            showModal('modal-plaque');
+        }
+
+        function previewBallonDorModal() {
+            showModal('modal-ballondor');
+        }
+
+        function previewJubileeMatchEnd() {
+            showCustomAlert("50.000 taraftarın önünde Dünya Karması'na karşı oynadığın Jübile Maçı 4-3 galibiyetinle sona erdi! Maçın 85. dakikasında oyundan alkışlarla çıktın.", "JÜBİLE MAÇI BİTTİ", "🎖️", "gold");
+        }
+
+        function previewNewspaper(type) {
+            const title = document.getElementById('np-title');
+            const sub = document.getElementById('np-subtitle');
+            const desc = document.getElementById('np-desc');
+
+            if (type === 'hattrick') {
+                title.innerText = "DURDURULAMAZ CANAVAR!";
+                sub.innerText = "Kerem Yılmaz Sahada Resital Sundu";
+                desc.innerText = "Muhteşem performansıyla 3 gol atarak maça damgasını vuran genç yıldız, taraftarları büyüledi.";
+            } else if (type === 'lastminute') {
+                title.innerText = "90+4'TE TARİHİ ZAFER!";
+                sub.innerText = "Son Nefeste Gelen İnanılmaz Galibiyet Golü";
+                desc.innerText = "Uzatma dakikalarında sahneye çıkan yıldız futbolcu, akıl dolu vuruşuyla takımına 3 puanı kazandırdı.";
+            } else if (type === 'streak') {
+                title.innerText = "ALEV ALEV YANIYOR!";
+                sub.innerText = "Üst Üste 5 Maçtır Gol ve Asist Katkısı";
+                desc.innerText = "Ligde fırtına gibi esen genç yetenek, rakiplerine sahayı dar etmeye devam ediyor.";
+            } else if (type === 'national') {
+                title.innerText = "A MİLLİ TAKIMDA İLK GOL!";
+                sub.innerText = "Ay-Yıldızlı Formayla Tarih Yazdı";
+                desc.innerText = "Milli takıma ilk kez çağrılan genç yetenek, muhteşem performansıyla tüm Türkiye'yi gururlandırdı.";
+            }
+
+            showModal('modal-newspaper');
+        }
+
+        function previewStreakFlash() {
+            showModal('modal-streak');
+        }
+
+        function previewMissionsModal() {
+            showCustomAlert("Haftalık Görevler:\n1. Maçta 8.0+ reyting al (Ödül: 15.000 €)\n2. En az 2 gol at (Ödül: 20.000 €)\n3. Maçı kazan (Ödül: +10 Moral)", "📋 HAFTALIK GÖREVLER", "📋", "info");
+        }
+
+        function previewWhatsApp(type) {
+            const avatar = document.getElementById('wa-avatar');
+            const name = document.getElementById('wa-name');
+            const bubble = document.getElementById('wa-bubble');
+
+            if (type === 'coach') {
+                avatar.innerText = "👨‍💼";
+                name.innerText = "Teknik Direktör";
+                bubble.innerText = "Evlat dünkü maçtaki performansın kabul edilemez! Bir sonraki maçta seni yedek kulübesinde görmek istemiyorsan kendine çeki düzen ver.";
+            } else if (type === 'girlfriend') {
+                avatar.innerText = "👠";
+                name.innerText = "Ece (Kız Arkadaşın)";
+                bubble.innerText = "Aşkım hafta sonu Paris tatiline gidecektik hani? Biletleri aldın mı yoksa yine antrenman mı var diyeceksin? 🥺";
+            } else if (type === 'mafia') {
+                avatar.innerText = "🕶️";
+                name.innerText = "Bilinmeyen Numara";
+                bubble.innerText = "Selam delikanlı. Bu haftaki derbide 1 gol yedirirsen hesabına tam 250.000 € yatacak. Akıllı ol, kimseye de bahsetme.";
+            }
+
+            showModal('modal-whatsapp');
+        }
+
+        function previewSeasonSummary(won, league) {
+            showCustomAlert(won ? "Tebrikler! Sezonu şampiyon tamamlayarak kupayı müzenize götürdünüz!" : "Sezon tamamlandı! Gelecek sezon için transfer tekliflerini değerlendirebilirsin.", "SEZON SONU", "🏆", "gold");
+        }
+
+        function showCustomAlert(msg, title, icon, type) {
+            const modal = document.getElementById('custom-alert-modal');
+            document.getElementById('custom-alert-title').innerText = title;
+            document.getElementById('custom-alert-msg').innerText = msg;
+            document.getElementById('custom-alert-icon').innerText = icon;
+            modal.style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
