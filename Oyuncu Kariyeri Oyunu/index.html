@@ -537,8 +537,8 @@
                     <div style="position: absolute; bottom: -2px; right: -2px; background: #0a0e17; border: 1.5px solid #00e5b7; color: #00e5b7; font-size: 8.5px; font-weight: 900; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center;" id="player-age">17</div>
                 </div>
                 <div class="player-info">
-                    <h1 id="player-name" style="font-size: 14px; font-weight: 800; color: #ffffff; letter-spacing: 0.3px; margin: 0;">AHMET EREN DEMİRCİ</h1>
-                    <p style="font-size: 10px; font-weight: 700; color: #7b8ba1; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px;"><span id="player-position">FORVET</span> · <span id="player-age-text">16 YAŞINDA</span> · <span id="player-club" style="color: #00e5b7;">KULÜPSÜZ</span></p>
+                    <h1 id="player-name" style="font-size: 14px; font-weight: 800; color: #ffffff; letter-spacing: 0.3px; margin: 0;">YÜKLENİYOR...</h1>
+                    <p style="font-size: 10px; font-weight: 700; color: #7b8ba1; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px;"><span id="player-position">...</span> · <span id="player-age-text">...</span> · <span id="player-club" style="color: #00e5b7;">...</span></p>
                 </div>
             </div>
                 <!-- Missions + Settings buttons -->
@@ -762,7 +762,7 @@
                 <div class="panel-header" style="margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
                     <div>
                         <h2>Kariyerim</h2>
-                        <p style="color: var(--accent-green); font-weight: bold;" class="bind-player-name">Genç Yetenek</p>
+                        <p style="color: var(--accent-green); font-weight: bold;" class="bind-player-name">...</p>
                     </div>
                 </div>
 
@@ -1346,7 +1346,7 @@
         </div>
 
         <!-- INTRO & TRIAL MODAL -->
-        <div class="event-modal-overlay" id="intro-modal" style="background: rgba(0,0,0,0.92); z-index: 10000;">
+        <div class="event-modal-overlay" id="intro-modal" style="background: #0a0e17; z-index: 10000;">
             <div class="event-card glass" id="intro-card" style="max-width: 500px; text-align: center; border: 1.5px solid var(--primary); box-shadow: 0 0 30px rgba(0, 230, 118, 0.2);">
                 <!-- Step 1: Welcome & Name Input -->
                 <div id="intro-step-1">
@@ -3508,6 +3508,15 @@
             if(!localStorage.getItem(saveKey)) {
 
                 const introModal = document.getElementById("intro-modal");
+                // Reset inputs to prevent browser caching from autofilling previous values
+                document.getElementById("intro-name-input").value = "";
+                document.getElementById("intro-city-input").value = "";
+                document.getElementById("intro-district-input").value = "";
+                
+                document.getElementById("intro-step-1").style.display = "block";
+                document.getElementById("intro-step-custom").style.display = "none";
+                document.getElementById("intro-step-2").style.display = "none";
+                
                 introModal.classList.add("active");
 
                 const nextBtn1 = document.getElementById("intro-btn-next-1");
