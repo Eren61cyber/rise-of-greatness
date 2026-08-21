@@ -1210,62 +1210,82 @@
 
         <!-- SETTINGS MODAL -->
         <div class="event-modal-overlay" id="settings-modal">
-            <div class="event-card glass" style="max-width: 320px; text-align: center;">
-                <h3 class="event-tag" style="background: var(--accent-blue); color: white; font-weight: 800; padding: 4px 10px; border-radius: 6px; font-size: 10px; width: fit-content; margin: 0 auto 12px auto; text-transform: uppercase;">⚙️ Ayarlar</h3>
-                <h2 style="color: white; margin-bottom: 20px;">Oyun Ayarları</h2>
+            <div class="event-card glass" style="max-width: 340px; padding: 0; overflow: hidden; background: #0d1117; border: 1px solid #30363d; text-align: left;">
                 
-                <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; text-align: left;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); padding-bottom: 10px;">
-                        <div>
-                            <span style="font-weight: bold; font-size: 13px; color: white;">Ses Efektleri</span><br>
-                            <span style="font-size: 10px; color: var(--text-muted);">Gol ve yuhalama sesleri.</span>
-                        </div>
-                        <label class="switch" style="position: relative; display: inline-block; width: 44px; height: 22px;">
-                            <input type="checkbox" id="settings-sound-toggle" checked style="opacity: 0; width: 0; height: 0;">
-                            <span class="slider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); transition: .4s; border-radius: 22px; border: 1px solid var(--border-glass);"></span>
-                        </label>
-                    </div>
-
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); padding-bottom: 10px;">
-                        <div>
-                            <span style="font-weight: bold; font-size: 13px; color: white;">Müzik</span><br>
-                            <span style="font-size: 10px; color: var(--text-muted);">Menüde çalan synth melodisi.</span>
-                        </div>
-                        <label class="switch" style="position: relative; display: inline-block; width: 44px; height: 22px;">
-                            <input type="checkbox" id="settings-music-toggle" checked style="opacity: 0; width: 0; height: 0;">
-                            <span class="slider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); transition: .4s; border-radius: 22px; border: 1px solid var(--border-glass);"></span>
-                        </label>
-                    </div>
-
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); padding-bottom: 10px;">
-                        <div>
-                            <span style="font-weight: bold; font-size: 13px; color: white;">120 FPS Modu</span><br>
-                            <span style="font-size: 10px; color: var(--text-muted);">Akıcı arayüz ve sıfır lag optimizasyonu.</span>
-                        </div>
-                        <label class="switch" style="position: relative; display: inline-block; width: 44px; height: 22px;">
-                            <input type="checkbox" id="settings-fps-toggle" checked style="opacity: 0; width: 0; height: 0;">
-                            <span class="slider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); transition: .4s; border-radius: 22px; border: 1px solid var(--border-glass);"></span>
-                        </label>
-                    </div>
-
-                    <!-- Credits Card -->
-                    <div class="glass" style="padding: 12px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.04); border-radius: 8px; font-size: 11px; line-height: 1.5; color: #ccc;">
-                        <strong style="color: var(--primary); display: block; margin-bottom: 4px; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.5px;">ℹ️ Oyun Hakkında</strong>
-                        • <strong>Geliştirici:</strong> Eren (RiseUp Studios)<br>
-                        • <strong>Müzik & Sesler:</strong> RiseUp Audio Engine<br>
-                        • <strong>Sürüm:</strong> v1.0.6 (Final Professional Edition)
-                    </div>
+                <!-- Header -->
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid #21262d; background: #161b22;">
+                    <h2 style="color: white; margin: 0; font-size: 16px; font-weight: 800;">⚙️ Ayarlar</h2>
+                    <button id="settings-close" style="background: none; border: none; color: #8b949e; font-size: 22px; cursor: pointer; padding: 0; line-height: 1;">&times;</button>
                 </div>
-
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                        <button class="btn" onclick="exportCareerSave()" style="background: rgba(0, 229, 255, 0.12); color: var(--primary); border: 1px solid rgba(0, 229, 255, 0.3); padding: 10px; font-size: 11px; font-weight: bold; border-radius: 8px; cursor: pointer;">💾 Kariyeri Yedekle</button>
-                        <button class="btn" onclick="importCareerSave()" style="background: rgba(0, 255, 135, 0.12); color: #00ff87; border: 1px solid rgba(0, 255, 135, 0.3); padding: 10px; font-size: 11px; font-weight: bold; border-radius: 8px; cursor: pointer;">📥 Yedekten Yükle</button>
+                
+                <div style="padding: 20px; display: flex; flex-direction: column; gap: 20px;">
+                    
+                    <!-- Group 1: Ses & Grafik -->
+                    <div>
+                        <div style="font-size: 11px; font-weight: bold; color: #8b949e; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Ses & Grafik</div>
+                        <div style="background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 0 12px;">
+                            
+                            <!-- Ses Efektleri -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #21262d; padding: 12px 0;">
+                                <div>
+                                    <div style="font-weight: 600; font-size: 13px; color: #c9d1d9;">Ses Efektleri</div>
+                                    <div style="font-size: 10px; color: #8b949e; margin-top: 2px;">Gol ve yuhalama sesleri.</div>
+                                </div>
+                                <label class="switch" style="position: relative; display: inline-block; width: 40px; height: 20px; margin: 0;">
+                                    <input type="checkbox" id="settings-sound-toggle" checked style="opacity: 0; width: 0; height: 0;">
+                                    <span class="slider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); transition: .4s; border-radius: 20px; border: 1px solid #30363d;"></span>
+                                </label>
+                            </div>
+                            
+                            <!-- Müzik -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #21262d; padding: 12px 0;">
+                                <div>
+                                    <div style="font-weight: 600; font-size: 13px; color: #c9d1d9;">Müzik</div>
+                                    <div style="font-size: 10px; color: #8b949e; margin-top: 2px;">Menüde çalan synth melodisi.</div>
+                                </div>
+                                <label class="switch" style="position: relative; display: inline-block; width: 40px; height: 20px; margin: 0;">
+                                    <input type="checkbox" id="settings-music-toggle" checked style="opacity: 0; width: 0; height: 0;">
+                                    <span class="slider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); transition: .4s; border-radius: 20px; border: 1px solid #30363d;"></span>
+                                </label>
+                            </div>
+                            
+                            <!-- 120 FPS Modu -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0;">
+                                <div>
+                                    <div style="font-weight: 600; font-size: 13px; color: #c9d1d9;">120 FPS Modu</div>
+                                    <div style="font-size: 10px; color: #8b949e; margin-top: 2px;">Akıcı arayüz optimizasyonu.</div>
+                                </div>
+                                <label class="switch" style="position: relative; display: inline-block; width: 40px; height: 20px; margin: 0;">
+                                    <input type="checkbox" id="settings-fps-toggle" checked style="opacity: 0; width: 0; height: 0;">
+                                    <span class="slider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); transition: .4s; border-radius: 20px; border: 1px solid #30363d;"></span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
-                    <button class="btn" onclick="openAvatarChangeModal()" style="background: linear-gradient(135deg, rgba(0,229,183,0.15) 0%, rgba(0,180,216,0.15) 100%); color: #00e5b7; border: 1px solid rgba(0,229,183,0.3); width: 100%; padding: 11px; font-size: 11.5px; font-weight: bold; border-radius: 8px; cursor: pointer;">📸 Profil Fotoğrafını Değiştir</button>
-                    <button class="btn" onclick="openPrivacyPolicyModal()" style="background: rgba(255, 255, 255, 0.05); color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; padding: 9px; font-size: 11px; font-weight: 600; border-radius: 8px; cursor: pointer;">📜 Gizlilik Politikası (Privacy Policy)</button>
-                    <button class="btn" id="settings-reset-career" style="background: rgba(255, 23, 68, 0.12); color: var(--accent-red); border: 1px solid rgba(255, 23, 68, 0.25); width: 100%; padding: 10px; font-size: 11px; font-weight: bold; border-radius: 8px;">🗑️ Kariyeri Sıfırla & Baştan Başla</button>
-                    <button class="btn btn-secondary" id="settings-close" style="width: 100%; padding: 10px; font-size: 12px;">Kapat</button>
+
+                    <!-- Group 2: Veri & Hesap -->
+                    <div>
+                        <div style="font-size: 11px; font-weight: bold; color: #8b949e; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Veri & Hesap</div>
+                        <div style="background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 10px;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                <button onclick="exportCareerSave()" style="background: #21262d; color: #c9d1d9; border: 1px solid #30363d; padding: 10px; font-size: 11.5px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#30363d'" onmouseout="this.style.background='#21262d'">💾 Yedekle</button>
+                                <button onclick="importCareerSave()" style="background: #21262d; color: #c9d1d9; border: 1px solid #30363d; padding: 10px; font-size: 11.5px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#30363d'" onmouseout="this.style.background='#21262d'">📥 Yükle</button>
+                            </div>
+                            <button onclick="openAvatarChangeModal()" style="background: #21262d; color: #c9d1d9; border: 1px solid #30363d; padding: 10px; font-size: 11.5px; font-weight: 600; border-radius: 6px; cursor: pointer; width: 100%; transition: background 0.2s;" onmouseover="this.style.background='#30363d'" onmouseout="this.style.background='#21262d'">📸 Profil Fotoğrafını Değiştir</button>
+                        </div>
+                    </div>
+
+                    <!-- Group 3: Tehlikeli Bölge -->
+                    <div>
+                        <div style="font-size: 11px; font-weight: bold; color: #f85149; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Tehlikeli Bölge</div>
+                        <button id="settings-reset-career" style="background: transparent; color: #f85149; border: 1px solid rgba(248,81,73,0.4); padding: 12px; font-size: 12px; font-weight: bold; border-radius: 8px; width: 100%; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(248,81,73,0.1)'" onmouseout="this.style.background='transparent'">🗑️ Kariyeri Sıfırla & Baştan Başla</button>
+                    </div>
+                    
+                    <!-- Footer -->
+                    <div style="text-align: center; color: #6e7681; font-size: 10px; margin-top: -4px;">
+                        v1.0.6 • RiseUp Studios | <span onclick="openPrivacyPolicyModal()" style="text-decoration: underline; cursor: pointer;">Gizlilik Politikası</span>
+                    </div>
+
                 </div>
             </div>
         </div>
