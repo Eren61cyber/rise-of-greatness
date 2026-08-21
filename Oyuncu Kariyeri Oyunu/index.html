@@ -23,7 +23,7 @@
         }
     </script>
     <base href="./">
-    <link rel="stylesheet" href="styles.css?v=5.6">
+    <link rel="stylesheet" href="styles.css?v=5.8">
     <script>
         window.onerror = function(message, source, lineno, colno, error) {
             let errDiv = document.getElementById("visual-error-console");
@@ -955,22 +955,19 @@
 
             <!-- PANEL 4: LIFESTYLE / SHOP -->
             <section id="panel-shop" class="view-panel">
-                <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-                    <div>
-                        <h2>Yatırım & Yaşam Tarzı</h2>
-                        <p>Maaşınla yaşam kaliteni arttır, krampon satın al veya borsa/memleket yatırımları yap.</p>
-                    </div>
+                <div class="panel-header" style="margin-bottom: 10px;">
+                    <h2 style="font-family: var(--font-heading); font-size: 16px; font-weight: 800; letter-spacing: 0.5px; margin: 0; color: #f8fafc;">YATIRIM & MAĞAZA</h2>
                 </div>
                 
-                <div style="display:flex; gap:6px; margin-bottom:12px; flex-wrap: wrap;">
-                    <button class="shop-sub-tab active" id="shop-sub-lifestyle-btn" onclick="switchShopSubTab('lifestyle')" style="padding:6px 14px; border-radius:20px; border:1px solid var(--primary); background:var(--primary); color:#000; font-size:12px; font-weight:700; cursor:pointer; transition:0.2s;">Ev & Yaşam</button>
-                    <button class="shop-sub-tab" id="shop-sub-consumables-btn" onclick="switchShopSubTab('consumables')" style="padding:6px 14px; border-radius:20px; border:1px solid var(--border-glass); background:transparent; color:var(--text-muted); font-size:12px; cursor:pointer; transition:0.2s;">Sağlık & Enerji</button>
-                    <button class="shop-sub-tab" id="shop-sub-boots-btn" onclick="switchShopSubTab('boots')" style="padding:6px 14px; border-radius:20px; border:1px solid var(--border-glass); background:transparent; color:var(--text-muted); font-size:12px; cursor:pointer; transition:0.2s;">Krampon & Sponsorluk</button>
-                    <button class="shop-sub-tab" id="shop-sub-invest-btn" onclick="switchShopSubTab('invest')" style="padding:6px 14px; border-radius:20px; border:1px solid var(--border-glass); background:transparent; color:var(--text-muted); font-size:12px; cursor:pointer; transition:0.2s;">Borsa & Yatırım</button>
-                    <button class="shop-sub-tab" id="shop-sub-tefeci-btn" onclick="switchShopSubTab('tefeci')" style="padding:6px 14px; border-radius:20px; border:1px solid var(--border-glass); background:transparent; color:var(--text-muted); font-size:12px; cursor:pointer; transition:0.2s;">Tefeci (Borç)</button>
-                    <button class="shop-sub-tab" id="shop-sub-packs-btn" onclick="switchShopSubTab('packs')" style="padding:6px 14px; border-radius:20px; border:1px solid var(--border-glass); background:transparent; color:var(--text-muted); font-size:12px; cursor:pointer; transition:0.2s; border-color: var(--accent-yellow); color: var(--accent-yellow);">🌟 Paket Açılımı</button>
-                    <button class="shop-sub-tab" id="shop-sub-esports-btn" onclick="switchShopSubTab('esports')" style="padding:6px 14px; border-radius:20px; border:1px solid var(--border-glass); background:transparent; color:var(--text-muted); font-size:12px; cursor:pointer; transition:0.2s; border-color: #00E676; color: #00E676;">🎮 E-Spor Kulübü</button>
-                    <button class="shop-sub-tab" id="shop-sub-propass-btn" onclick="switchShopSubTab('propass')" style="padding:6px 14px; border-radius:20px; border:1px solid var(--border-glass); background:transparent; color:var(--text-muted); font-size:12px; cursor:pointer; transition:0.2s; border-color: #9c27b0; color: #9c27b0;">👑 Pro Pass</button>
+                <div class="shop-sub-tab-container" style="display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 4px;">
+                    <button class="shop-sub-tab active" id="shop-sub-lifestyle-btn" onclick="switchShopSubTab('lifestyle')">Ev & Yaşam</button>
+                    <button class="shop-sub-tab" id="shop-sub-consumables-btn" onclick="switchShopSubTab('consumables')">Sağlık & Enerji</button>
+                    <button class="shop-sub-tab" id="shop-sub-boots-btn" onclick="switchShopSubTab('boots')">Krampon & Sponsor</button>
+                    <button class="shop-sub-tab" id="shop-sub-invest-btn" onclick="switchShopSubTab('invest')">Borsa & Yatırım</button>
+                    <button class="shop-sub-tab" id="shop-sub-tefeci-btn" onclick="switchShopSubTab('tefeci')">Tefeci</button>
+                    <button class="shop-sub-tab" id="shop-sub-packs-btn" onclick="switchShopSubTab('packs')">🌟 Kart Paketi</button>
+                    <button class="shop-sub-tab" id="shop-sub-esports-btn" onclick="switchShopSubTab('esports')">🎮 E-Spor</button>
+                    <button class="shop-sub-tab" id="shop-sub-propass-btn" onclick="switchShopSubTab('propass')">👑 Pro Pass</button>
                 </div>
 
                 <div class="shop-list" id="shop-items-container">
@@ -1993,10 +1990,10 @@
     </div>
 
     <!-- Script Loads (Database first, logic next) -->
-    <script src="database.js?v=5.7"></script>
-    <script src="events.js?v=5.7"></script>
-    <script src="game.js?v=5.7"></script>
-    <script src="matchEngine.js?v=5.7"></script>
+    <script src="database.js?v=5.8"></script>
+    <script src="events.js?v=5.8"></script>
+    <script src="game.js?v=5.8"></script>
+    <script src="matchEngine.js?v=5.8"></script>
     
     <!-- MAIN CONTROLLER (Mounts everything) -->
     <script>
@@ -5540,31 +5537,37 @@
 
         // Render Shop Items
         function renderShopItems() {
+        // Render Shop Items
+        function renderShopItems() {
             const container = document.getElementById("shop-items-container");
+            if (!container) return;
             container.innerHTML = "";
 
             DATABASE.LIFESTYLE_ITEMS.forEach(item => {
                 let isOwned = GAME.state.ownedItems.includes(item.id);
-                let buttonText = isOwned ? "Sahipsiniz" : `${item.cost.toLocaleString()} € Satın Al`;
-                let btnClass = isOwned ? "btn-disabled" : "btn-secondary";
+                let canAfford = (GAME.state.money >= item.cost);
+                
+                let buttonText = isOwned ? "Sahipsiniz" : (item.isWeekly ? `${item.cost.toLocaleString()} € / Hafta` : `${item.cost.toLocaleString()} € Satın Al`);
+                let btnClass = isOwned ? "btn-disabled" : (canAfford ? "btn-primary" : "btn-disabled");
+                let disabledAttr = (isOwned || !canAfford) ? "disabled" : "";
+                let opacityStyle = (!canAfford && !isOwned) ? "opacity: 0.4; cursor: not-allowed;" : "";
 
                 let displayName = item.name;
                 let displayDesc = item.desc;
                 if (item.id === "gerze_fc") {
                     let locationName = GAME.state.hometownDistrict || GAME.state.hometown || "Gerze";
                     locationName = locationName.charAt(0).toUpperCase() + locationName.slice(1);
-                    displayName = `👑 ${locationName} Belediyespor Kulübü`;
-                    displayDesc = `10,000,000 €. Memleketinin takımını satın alıp başkan ol! Her hafta +15,000 Takipçi ve +10,000 € pasif gelir sağlar.`;
+                    displayName = `👑 ${locationName} Belediyespor`;
+                    displayDesc = `Memleketinin takımını satın alıp başkan ol! Her hafta +15.000 Takipçi ve +10.000 € pasif gelir sağlar.`;
                 }
 
                 container.innerHTML += `
-                    <div class="shop-card glass">
-                        <div class="details">
-                            <h3>${displayName}</h3>
-                            <p class="desc">${displayDesc}</p>
-                            <span class="cost-tag">${item.isWeekly ? "Haftalık Kiralama" : "Tek Seferlik"}</span>
+                    <div class="shop-card glass" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border-glass); background: #131822; margin-bottom: 8px;">
+                        <div class="details" style="flex: 1; padding-right: 12px;">
+                            <h3 style="margin: 0 0 3px 0; font-size: 13.5px; font-weight: 700; color: #f8fafc; font-family: var(--font-heading);">${displayName}</h3>
+                            <p class="desc" style="margin: 0; font-size: 11.5px; color: var(--text-muted); line-height: 1.35;">${displayDesc}</p>
                         </div>
-                        <button class="btn ${btnClass}" ${isOwned ? "disabled" : ""} onclick="GAME.buyItem('${item.id}'); renderShopItems();">${buttonText}</button>
+                        <button class="btn ${btnClass}" ${disabledAttr} onclick="GAME.buyItem('${item.id}'); renderShopItems();" style="padding: 8px 14px; font-size: 12px; border-radius: 8px; flex-shrink: 0; white-space: nowrap; ${opacityStyle}">${buttonText}</button>
                     </div>
                 `;
             });
@@ -5598,15 +5601,17 @@
                 if (isActive) {
                     btn.classList.add("active");
                     btn.style.background = 'var(--primary)';
-                    btn.style.color = '#000';
+                    btn.style.color = '#04140e';
                     btn.style.borderColor = 'var(--primary)';
-                    btn.style.fontWeight = '700';
+                    btn.style.fontWeight = '800';
+                    btn.style.boxShadow = '0 0 10px rgba(16,185,129,0.25)';
                 } else {
                     btn.classList.remove("active");
-                    btn.style.background = 'transparent';
+                    btn.style.background = '#131822';
                     btn.style.color = 'var(--text-muted)';
                     btn.style.borderColor = 'var(--border-glass)';
-                    btn.style.fontWeight = '400';
+                    btn.style.fontWeight = '600';
+                    btn.style.boxShadow = 'none';
                 }
             };
             
@@ -5617,6 +5622,7 @@
             setTabStyle(btnTefeci, tabName === 'tefeci');
             setTabStyle(btnPacks, tabName === 'packs');
             setTabStyle(btnEsports, tabName === 'esports');
+            setTabStyle(btnPropass, tabName === 'propass');
             
             if (containerLifestyle) containerLifestyle.style.display = (tabName === 'lifestyle') ? 'flex' : 'none';
             if (containerConsumables) containerConsumables.style.display = (tabName === 'consumables') ? 'flex' : 'none';
@@ -6471,48 +6477,27 @@
                 const isOwned = ownedInvs.includes(inv.id);
                 const canAfford = (GAME.state.money >= inv.cost);
                 
-                let btnText = `${inv.cost.toLocaleString()} € Satın Al`;
-                let btnClass = "btn-secondary";
-                let badgeText = "";
-                let badgeStyle = "";
-                
-                if (isOwned) {
-                    btnText = "Yatırım Yapıldı";
-                    btnClass = "btn-disabled";
-                    badgeText = "✅ SAHİPSİN";
-                    badgeStyle = "background: rgba(16,185,129,0.12); color: var(--primary); border: 1px solid rgba(16,185,129,0.3);";
-                } else if (!canAfford) {
-                    btnText = `${inv.cost.toLocaleString()} € Satın Al`;
-                    btnClass = "btn-disabled";
-                }
+                let btnText = isOwned ? "Sahipsiniz" : `${inv.cost.toLocaleString()} € Yatırım Yap`;
+                let btnClass = isOwned ? "btn-disabled" : (canAfford ? "btn-primary" : "btn-disabled");
+                let disabledAttr = (isOwned || !canAfford) ? "disabled" : "";
+                let opacityStyle = (!canAfford && !isOwned) ? "opacity: 0.4; cursor: not-allowed;" : "";
 
                 container.innerHTML += `
-                    <div class="shop-card glass" style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 12px; border: 1px solid var(--border-glass); background: var(--bg-card); box-shadow: none; margin-bottom: 8px;">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 6px;">
-                            <div>
-                                <h3 style="color: white; margin: 0; font-size: 15px; font-weight: bold; border: none; padding: 0; font-family: var(--font-heading);">${inv.name}</h3>
-                                <p style="font-size: 12px; color: var(--text-muted); margin: 4px 0 0 0; line-height: 1.4;">${inv.desc}</p>
-                            </div>
-                            ${badgeText ? `<span style="font-size: 9.5px; padding: 3px 6px; border-radius: 4px; font-weight: 700; ${badgeStyle}">${badgeText}</span>` : ''}
+                    <div class="shop-card glass" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border-glass); background: #131822; margin-bottom: 8px;">
+                        <div class="details" style="flex: 1; padding-right: 12px;">
+                            <h3 style="margin: 0 0 3px 0; font-size: 13.5px; font-weight: 700; color: #f8fafc; font-family: var(--font-heading);">${inv.name}</h3>
+                            <p class="desc" style="margin: 0; font-size: 11.5px; color: var(--text-muted); line-height: 1.35;">${inv.desc} ${inv.weeklyYield > 0 ? `(+${inv.weeklyYield.toLocaleString()} €/Hafta)` : ''}</p>
                         </div>
-                        
-                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-glass); padding-top: 8px; margin-top: 4px; font-size: 12px; color: #cbd5e1; flex-wrap: wrap; gap: 6px;">
-                            <div>
-                                <span>💰 Yatırım Bedeli: <strong style="color: #f8fafc;">${inv.cost.toLocaleString()} €</strong></span><br>
-                                <span>📈 Haftalık Getiri: <strong style="color: var(--primary);">${inv.weeklyYield > 0 ? `+${inv.weeklyYield} €` : 'Takipçi Odaklı'}</strong></span>
-                            </div>
-                            <button class="btn ${btnClass}" ${(!canAfford || isOwned) ? 'disabled' : ''} onclick="GAME.buyInvestment('${inv.id}'); renderInvestmentsAndCrypto();" style="padding: 7px 14px; font-size: 12px; border-radius: 6px; cursor: ${(!canAfford || isOwned) ? 'not-allowed' : 'pointer'}; ${!canAfford && !isOwned ? 'opacity: 0.45;' : ''}">
-                                ${btnText}
-                            </button>
-                        </div>
+                        <button class="btn ${btnClass}" ${disabledAttr} onclick="GAME.buyInvestment('${inv.id}'); renderInvestmentsAndCrypto();" style="padding: 8px 14px; font-size: 12px; border-radius: 8px; flex-shrink: 0; white-space: nowrap; ${opacityStyle}">
+                            ${btnText}
+                        </button>
                     </div>
                 `;
             });
 
             // Section 2: Crypto Exchange
             container.innerHTML += `
-                <h3 style="color: var(--primary); font-size: 14px; font-weight: 800; border-left: 3px solid var(--primary); padding-left: 8px; margin: 20px 0 4px 0; letter-spacing: 0.5px;">📈 Kripto Para Borsası</h3>
-                <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 10px 0;">Haftalık bakiye birikimlerinle kripto al-sat yap. Fiyatlar her hafta dalgalanır.</p>
+                <h3 style="color: #f8fafc; font-size: 13px; font-weight: 800; border-left: 2px solid #3b82f6; padding-left: 8px; margin: 18px 0 10px 0; font-family: var(--font-heading); letter-spacing: 0.5px;">KRİPTO PARA BORSASI</h3>
             `;
 
             DATABASE.CRYPTO_ASSETS.forEach(coin => {
@@ -6654,23 +6639,20 @@
             container.innerHTML = "";
 
             DATABASE.CONSUMABLES.forEach(item => {
+                let canAfford = (GAME.state.money >= item.cost);
+                let btnClass = canAfford ? "btn-primary" : "btn-disabled";
+                let disabledAttr = canAfford ? "" : "disabled";
+                let opacityStyle = canAfford ? "" : "opacity: 0.4; cursor: not-allowed;";
+
                 container.innerHTML += `
-                    <div class="shop-card glass" style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 12px; border: 1px solid var(--border-glass); background: rgba(255,255,255,0.02); box-shadow: none;">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 6px;">
-                            <div>
-                                <h3 style="color: white; margin: 0; font-size: 15px; font-weight: bold; border: none; padding: 0;">${item.name}</h3>
-                                <p style="font-size: 11.5px; color: var(--text-muted); margin: 4px 0 0 0; line-height: 1.4;">${item.desc}</p>
-                            </div>
+                    <div class="shop-card glass" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border-glass); background: #131822; margin-bottom: 8px;">
+                        <div class="details" style="flex: 1; padding-right: 12px;">
+                            <h3 style="margin: 0 0 3px 0; font-size: 13.5px; font-weight: 700; color: #f8fafc; font-family: var(--font-heading);">${item.name}</h3>
+                            <p class="desc" style="margin: 0; font-size: 11.5px; color: var(--text-muted); line-height: 1.35;">${item.desc}</p>
                         </div>
-                        
-                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; margin-top: 4px; font-size: 11.5px; color: #ddd; flex-wrap: wrap; gap: 6px;">
-                            <div>
-                                <span>💰 Fiyat: <strong style="color: var(--primary);">${item.cost.toLocaleString()} €</strong></span>
-                            </div>
-                            <button class="btn btn-secondary" onclick="GAME.buyConsumable('${item.id}'); renderConsumableItems();" style="padding: 6px 12px; font-size: 11px; border-radius: 6px; cursor: pointer; height: auto;">
-                                Tüket / Satın Al
-                            </button>
-                        </div>
+                        <button class="btn ${btnClass}" ${disabledAttr} onclick="GAME.buyConsumable('${item.id}'); renderConsumableItems();" style="padding: 8px 14px; font-size: 12px; border-radius: 8px; flex-shrink: 0; white-space: nowrap; ${opacityStyle}">
+                            ${item.cost.toLocaleString()} € Tüket
+                        </button>
                     </div>
                 `;
             });
@@ -6684,106 +6666,54 @@
 
             // Section 1: Purchasable Boots
             container.innerHTML += `
-                <h3 style="color: var(--secondary); font-size: 14px; font-weight: 800; border-left: 3px solid var(--secondary); padding-left: 8px; margin: 8px 0 4px 0; letter-spacing: 0.5px;">🛒 Satın Alınabilir Kramponlar (Kendi Bütçenle)</h3>
-                <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 10px 0;">Mağaza kramponları bakiye ile satın alınır. Haftalık prim ödemezler.</p>
+                <h3 style="color: #f8fafc; font-size: 13px; font-weight: 800; border-left: 2px solid var(--primary); padding-left: 8px; margin: 4px 0 10px 0; font-family: var(--font-heading); letter-spacing: 0.5px;">KRAMPON MAĞAZASI</h3>
             `;
 
             DATABASE.PURCHASABLE_BOOTS.forEach(boot => {
                 const isActive = (GAME.state.activePurchasedBoot === boot.id);
                 const canAfford = (GAME.state.money >= boot.cost);
                 
-                let btnText = `${boot.cost.toLocaleString()} € Satın Al`;
-                let btnClass = "btn-secondary";
-                let badgeText = "";
-                let badgeStyle = "";
-                
-                if (isActive) {
-                    btnText = "Giyiliyor";
-                    btnClass = "btn-disabled";
-                    badgeText = "✅ GİYİLİYOR";
-                    badgeStyle = "background: rgba(16,185,129,0.12); color: var(--primary); border: 1px solid rgba(16,185,129,0.3);";
-                } else if (!canAfford) {
-                    btnText = `${boot.cost.toLocaleString()} € Satın Al`;
-                    btnClass = "btn-disabled";
-                }
+                let btnText = isActive ? "Giyiliyor" : `${boot.cost.toLocaleString()} € Satın Al`;
+                let btnClass = isActive ? "btn-disabled" : (canAfford ? "btn-primary" : "btn-disabled");
+                let disabledAttr = (isActive || !canAfford) ? "disabled" : "";
+                let opacityStyle = (!canAfford && !isActive) ? "opacity: 0.4; cursor: not-allowed;" : "";
 
                 container.innerHTML += `
-                    <div class="shop-card glass" style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 12px; border: 1px solid var(--border-glass); background: var(--bg-card); box-shadow: none; margin-bottom: 8px;">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 6px;">
-                            <div>
-                                <h3 style="color: white; margin: 0; font-size: 15px; font-weight: bold; border: none; padding: 0; font-family: var(--font-heading);">${boot.brand} - ${boot.model}</h3>
-                                <p style="font-size: 12px; color: var(--text-muted); margin: 4px 0 0 0; line-height: 1.4;">${boot.desc}</p>
-                            </div>
-                            ${badgeText ? `<span style="font-size: 9.5px; padding: 3px 6px; border-radius: 4px; font-weight: 700; ${badgeStyle}">${badgeText}</span>` : ''}
+                    <div class="shop-card glass" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border-glass); background: #131822; margin-bottom: 8px;">
+                        <div class="details" style="flex: 1; padding-right: 12px;">
+                            <h3 style="margin: 0 0 3px 0; font-size: 13.5px; font-weight: 700; color: #f8fafc; font-family: var(--font-heading);">${boot.brand} - ${boot.model}</h3>
+                            <p class="desc" style="margin: 0; font-size: 11.5px; color: var(--text-muted); line-height: 1.35;">+${boot.bonus.speed} Hız, +${boot.bonus.shooting} Şut, +${boot.bonus.passing} Pas</p>
                         </div>
-                        
-                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-glass); padding-top: 8px; margin-top: 4px; font-size: 12px; color: #cbd5e1; flex-wrap: wrap; gap: 6px;">
-                            <div>
-                                <span>💰 Fiyat: <strong style="color: #f8fafc;">${boot.cost.toLocaleString()} €</strong></span><br>
-                                <span>⚡ Yetenek: <strong style="color: var(--primary);">+${boot.bonus.speed} Hız, +${boot.bonus.shooting} Şut, +${boot.bonus.passing} Pas</strong></span>
-                            </div>
-                            <button class="btn ${btnClass}" ${(!canAfford || isActive) ? 'disabled' : ''} onclick="GAME.buyBoot('${boot.id}'); renderBootSponsors();" style="padding: 7px 14px; font-size: 12px; border-radius: 6px; cursor: ${(!canAfford || isActive) ? 'not-allowed' : 'pointer'}; ${!canAfford && !isActive ? 'opacity: 0.45;' : ''}">
-                                ${btnText}
-                            </button>
-                        </div>
+                        <button class="btn ${btnClass}" ${disabledAttr} onclick="GAME.buyBoot('${boot.id}'); renderBootSponsors();" style="padding: 8px 14px; font-size: 12px; border-radius: 8px; flex-shrink: 0; white-space: nowrap; ${opacityStyle}">
+                            ${btnText}
+                        </button>
                     </div>
                 `;
             });
 
             // Section 2: Sponsor Boots
             container.innerHTML += `
-                <h3 style="color: var(--primary); font-size: 14px; font-weight: 800; border-left: 3px solid var(--primary); padding-left: 8px; margin: 20px 0 4px 0; letter-spacing: 0.5px;">🤝 Marka Sponsorlukları (Rating & Takipçi Odaklı)</h3>
-                <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 10px 0;">Sponsor kramponları ücretsizdir ve sana haftalık prim ödemesi yaparlar.</p>
+                <h3 style="color: #f8fafc; font-size: 13px; font-weight: 800; border-left: 2px solid #3b82f6; padding-left: 8px; margin: 18px 0 10px 0; font-family: var(--font-heading); letter-spacing: 0.5px;">MARKA SPONSORLUKLARI</h3>
             `;
 
             DATABASE.BOOT_SPONSORS.forEach(boot => {
                 const isActive = (GAME.state.activeBootSponsor === boot.id);
                 const isUnlocked = (GAME.state.rating >= boot.reqRating && GAME.state.followers >= boot.reqFollowers);
                 
-                let btnText = "Sözleşme İmzala";
-                let btnClass = "btn-secondary";
-                let badgeText = "";
-                let badgeStyle = "";
-                
-                if (isActive) {
-                    btnText = "Aktif Sponsor";
-                    btnClass = "btn-disabled";
-                    badgeText = "✅ İMZALANDI";
-                    badgeStyle = "background: rgba(0,230,118,0.15); color: var(--primary); border: 1px solid var(--primary);";
-                } else if (!isUnlocked) {
-                    btnText = "Kilitli";
-                    btnClass = "btn-disabled";
-                    badgeText = "🔒 GEREKSİNİMLER YETERSİZ";
-                    badgeStyle = "background: rgba(244,67,54,0.15); color: var(--accent-red); border: 1px solid var(--accent-red);";
-                } else {
-                    badgeText = "🔓 UYGUN";
-                    badgeStyle = "background: rgba(255,193,7,0.15); color: var(--accent-yellow); border: 1px solid var(--accent-yellow);";
-                }
+                let btnText = isActive ? "Aktif Sponsor" : (isUnlocked ? `İmzala (+${boot.weeklyPay} €/Hafta)` : "Kilitli");
+                let btnClass = isActive ? "btn-disabled" : (isUnlocked ? "btn-secondary" : "btn-disabled");
+                let disabledAttr = (!isUnlocked || isActive) ? "disabled" : "";
+                let opacityStyle = (!isUnlocked && !isActive) ? "opacity: 0.4; cursor: not-allowed;" : "";
 
                 container.innerHTML += `
-                    <div class="shop-card glass" style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 12px; border: 1px solid var(--border-glass); background: rgba(255,255,255,0.02); box-shadow: none; margin-bottom: 8px;">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 6px;">
-                            <div>
-                                <h3 style="color: white; margin: 0; font-size: 15px; font-weight: bold; border: none; padding: 0;">${boot.brand} - ${boot.model}</h3>
-                                <p style="font-size: 11.5px; color: var(--text-muted); margin: 4px 0 0 0; line-height: 1.4;">${boot.desc}</p>
-                            </div>
-                            <span style="font-size: 9px; padding: 3px 6px; border-radius: 4px; font-weight: 700; ${badgeStyle}">${badgeText}</span>
+                    <div class="shop-card glass" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border-glass); background: #131822; margin-bottom: 8px;">
+                        <div class="details" style="flex: 1; padding-right: 12px;">
+                            <h3 style="margin: 0 0 3px 0; font-size: 13.5px; font-weight: 700; color: #f8fafc; font-family: var(--font-heading);">${boot.brand} - ${boot.model}</h3>
+                            <p class="desc" style="margin: 0; font-size: 11.5px; color: var(--text-muted); line-height: 1.35;">+${boot.bonus.speed} Hız, +${boot.bonus.shooting} Şut | Gerekli: ⚡${boot.reqRating} OVR</p>
                         </div>
-                        
-                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; margin-top: 4px; font-size: 11.5px; color: #ddd; flex-wrap: wrap; gap: 6px;">
-                            <div>
-                                <span>💰 Haftalık Prim: <strong style="color: var(--primary);">+${boot.weeklyPay} €</strong></span><br>
-                                <span>⚡ Yetenek: <strong style="color: var(--secondary);">+${boot.bonus.speed} Hız, +${boot.bonus.shooting} Şut, +${boot.bonus.passing} Pas</strong></span>
-                            </div>
-                            <button class="btn ${btnClass}" ${(!isUnlocked || isActive) ? 'disabled' : ''} onclick="GAME.signBootSponsor('${boot.id}'); renderBootSponsors();" style="padding: 6px 12px; font-size: 11px; border-radius: 6px; cursor: pointer; height: auto;">
-                                ${btnText}
-                            </button>
-                        </div>
-                        
-                        <div style="font-size: 10.5px; color: var(--text-muted); display: flex; gap: 12px; margin-top: 2px;">
-                            <span>Derece: <strong style="color: ${GAME.state.rating >= boot.reqRating ? 'var(--primary)' : 'var(--accent-red)'};">${GAME.state.rating}/${boot.reqRating}</strong></span>
-                            <span>Takipçi: <strong style="color: ${GAME.state.followers >= boot.reqFollowers ? 'var(--primary)' : 'var(--accent-red)'};">${GAME.state.followers.toLocaleString()}/${boot.reqFollowers.toLocaleString()}</strong></span>
-                        </div>
+                        <button class="btn ${btnClass}" ${disabledAttr} onclick="GAME.signBootSponsor('${boot.id}'); renderBootSponsors();" style="padding: 8px 14px; font-size: 12px; border-radius: 8px; flex-shrink: 0; white-space: nowrap; ${opacityStyle}">
+                            ${btnText}
+                        </button>
                     </div>
                 `;
             });
