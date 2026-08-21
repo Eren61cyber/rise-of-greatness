@@ -1991,29 +1991,45 @@ const GAME = {
         
         let ageDeclineMsg = "";
         const age = this.state.age;
-        if (age >= 33) {
+        if (age >= 32) {
             let speedDecline = 0;
             let shootDecline = 0;
             let passDecline = 0;
+            let dribbleDecline = 0;
+            let physicalDecline = 0;
             
-            if (age === 33 || age === 34) {
-                speedDecline = 2;
-                ageDeclineMsg = `⚠️ <strong>Yaşlanma Etkisi (Yaş ${age}):</strong> Yaşınız ilerledikçe hızınız ve fiziksel kapasiteniz yavaş yavaş azalıyor. (<span style="color: var(--accent-red); font-weight: bold;">-2 Hız</span>)<br><br>`;
-            } else if (age === 35 || age === 36) {
+            if (age === 32 || age === 33) {
+                speedDecline = 1;
+                physicalDecline = 1;
+                ageDeclineMsg = `⚠️ <strong>Yaşlanma Etkisi (Yaş ${age}):</strong> Yaşınız ilerledikçe hızınız ve fiziksel kapasiteniz yavaş yavaş azalıyor. (<span style="color: var(--accent-red); font-weight: bold;">-1 Hız, -1 Fizik</span>)<br><br>`;
+            } else if (age === 34 || age === 35) {
                 speedDecline = 3;
-                shootDecline = 2;
-                ageDeclineMsg = `⚠️ <strong>Yaşlanma Etkisi (Yaş ${age}):</strong> Kaslarınız eski gücünü kaybediyor. Hızınız ve şut gücünüz düşmeye başladı. (<span style="color: var(--accent-red); font-weight: bold;">-3 Hız, -2 Şut</span>)<br><br>`;
-            } else if (age >= 37) {
+                shootDecline = 1;
+                physicalDecline = 2;
+                dribbleDecline = 1;
+                ageDeclineMsg = `⚠️ <strong>Yaşlanma Etkisi (Yaş ${age}):</strong> Kaslarınız eski gücünü kaybediyor. Temponuz düştü. (<span style="color: var(--accent-red); font-weight: bold;">-3 Hız, -2 Fizik, -1 Şut/Top Sürme</span>)<br><br>`;
+            } else if (age >= 36 && age < 39) {
                 speedDecline = 4;
                 shootDecline = 3;
                 passDecline = 2;
-                ageDeclineMsg = `⚠️ <strong>Yaşlanma Etkisi (Yaş ${age}):</strong> Vücudunuz artık elit seviyedeki temponuza ayak uyduramıyor. Fiziksel yeteneklerinizde ciddi kayıplar var. (<span style="color: var(--accent-red); font-weight: bold;">-4 Hız, -3 Şut, -2 Pas</span>)<br><br>`;
+                physicalDecline = 4;
+                dribbleDecline = 3;
+                ageDeclineMsg = `⚠️ <strong>Yaşlanma Etkisi (Yaş ${age}):</strong> Vücudunuz artık elit seviyedeki temponuza ayak uyduramıyor. Büyük kayıplar var. (<span style="color: var(--accent-red); font-weight: bold;">-4 Hız/Fizik, -3 Şut/Dribbling, -2 Pas</span>)<br><br>`;
+            } else if (age >= 39) {
+                speedDecline = 6;
+                shootDecline = 4;
+                passDecline = 3;
+                physicalDecline = 6;
+                dribbleDecline = 4;
+                ageDeclineMsg = `🚨 <strong>Ağır Yaşlanma Etkisi (Yaş ${age}):</strong> Futbolu bırakma vaktiniz geldi. Fiziksel olarak tükendiniz! (<span style="color: var(--accent-red); font-weight: bold;">-6 Hız/Fizik, -4 Şut/Dribbling</span>)<br><br>`;
             }
             
-            this.state.speed = Math.max(30, this.state.speed - speedDecline);
-            this.state.shooting = Math.max(30, this.state.shooting - shootDecline);
-            this.state.passing = Math.max(30, this.state.passing - passDecline);
-            this.state.rating = Math.round((this.state.shooting + this.state.passing + this.state.speed) / 3);
+            this.state.speed = Math.max(25, this.state.speed - speedDecline);
+            this.state.physical = Math.max(25, this.state.physical - physicalDecline);
+            this.state.shooting = Math.max(25, this.state.shooting - shootDecline);
+            this.state.passing = Math.max(25, this.state.passing - passDecline);
+            this.state.dribbling = Math.max(25, this.state.dribbling - dribbleDecline);
+            this.state.rating = Math.round(((this.state.shooting||50) + (this.state.passing||50) + (this.state.speed||50) + (this.state.dribbling||50) + (this.state.defense||50) + (this.state.physical||50)) / 6);
         }
 
         let rank = 12;
