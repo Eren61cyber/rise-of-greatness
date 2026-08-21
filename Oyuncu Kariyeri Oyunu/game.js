@@ -2857,9 +2857,6 @@ const GAME = {
             }
         }
 
-        // Settle active bets now that matches are simulated
-        this.settleBets();
-
         // Sort table: points -> GD -> GF (robust numerical comparison)
         this.state.leagueTable.sort((a, b) => {
             const pDiff = Number(b.points) - Number(a.points);
@@ -2960,142 +2957,7 @@ const GAME = {
         this.saveGame();
     },
 
-    settleBets: function() {
-        if (!this.state.activeBets || this.state.activeBets.length === 0) return;
-        if (!this.state.weeklyFixtures || this.state.weeklyFixtures.length === 0) return;
 
-        let totalWonCoins = 0;
-        let wonBetsList = [];
-        let lostBetsList = [];
-
-        this.state.activeBets.forEach(bet => {
-            let allWon = true;
-            bet.matches.forEach(sel => {
-                // Find matching simulated fixture
-                let fix = this.state.weeklyFixtures.find(f => 
-                    (f.home === sel.home && f.away === sel.away) ||
-                    (f.home === sel.away && f.away === sel.home)
-                );
-                
-                if (!fix || !fix.played) {
-                    sel.status = "LOST"; // Can't find or not played
-                    allWon = false;
-                    return;
-                }
-
-                // Check outcome
-                let isHome = (fix.home === sel.home);
-                let scoreHome = fix.scoreHome;
-                let scoreAway = fix.scoreAway;
-                
-                // Normalize scores relative to selected home/away
-                let scoreSelHome = isHome ? scoreHome : scoreAway;
-                let scoreSelAway = isHome ? scoreAway : scoreHome;
-
-                let win = false;
-                switch (sel.betType) {
-                    case "MS1":
-                        win = (scoreSelHome > scoreSelAway);
-                        break;
-                    case "MSX":
-                        win = (scoreSelHome === scoreSelAway);
-                        break;
-                    case "MS2":
-                        win = (scoreSelHome < scoreSelAway);
-                        break;
-                    case "Alt":
-                        win = ((scoreSelHome + scoreSelAway) < 2.5);
-                        break;
-                    case "Üst":
-                        win = ((scoreSelHome + scoreSelAway) > 2.5);
-                        break;
-                    case "KG_Var":
-                        win = (scoreSelHome > 0 && scoreSelAway > 0);
-                        break;
-                    case "KG_Yok":
-                        win = (scoreSelHome === 0 || scoreSelAway === 0);
-                        break;
-                }
-
-                sel.status = win ? "WON" : "LOST";
-                if (!win) allWon = false;
-            });
-
-            bet.status = allWon ? "WON" : "LOST";
-            
-            if (allWon) {
-                totalWonCoins += bet.potentialPayout;
-                wonBetsList.push(bet);
-            } else {
-                lostBetsList.push(bet);
-            }
-            
-            // Push to history
-            this.state.betHistory.unshift(bet);
-        });
-
-        // Clear active bets
-        this.state.activeBets = [];
-
-        if (totalWonCoins > 0) {
-            this.state.money += totalWonCoins;
-            
-            // Add a social media post celebrating the win!
-            const handles = ["@iddaa_guru", "@vurgun_medya", "@tuttur_com", "@kupon_tavsiyeleri"];
-            const names = ["İddaa Gurusu", "Vurgun Medya", "Kupon Tuttur", "Kupon Paylaşım"];
-            const idx = Math.floor(Math.random() * handles.length);
-            
-            this.addSocialPost(
-                handles[idx],
-                names[idx],
-                `🚨 BÜYÜK VURGUN! Genç yetenek ${this.state.playerName}, bu hafta oynadığı iddaa kuponuyla tam ${totalWonCoins.toLocaleString()} € kazandı! Servetine servet katıyor! 🤑💸📈`
-            );
-
-            // Save win info to display a beautiful modal after UI updates
-            this.state.lastWinningBetAmount = totalWonCoins;
-        }
-
-        // Check for betting scandal (10% chance of getting caught if they played any bet)
-        let caught = false;
-        if (wonBetsList.length > 0 || lostBetsList.length > 0) {
-            // Player played a coupon
-            if (Math.random() < 0.10) { // 10% risk of TFF catching them
-                caught = true;
-            }
-        }
-
-        if (caught) {
-            let fine = Math.round(this.state.money * 0.25 + 2500); // 25% of cash + 2500 € fine
-            let lostFollowers = Math.round(this.state.followers * 0.22 + 2000); // 22% of followers unfollow
-            let lostFans = 35; // Taraftar sevgisi -35
-            let lostTrust = 25; // Hoca güveni -25
-
-            this.state.money = Math.max(0, this.state.money - fine);
-            this.state.followers = Math.max(0, this.state.followers - lostFollowers);
-            this.state.taraftarSevgisi = Math.max(0, this.state.taraftarSevgisi - lostFans);
-            this.state.hocaGuveni = Math.max(0, this.state.hocaGuveni - lostTrust);
-            
-            // Ban from national team selection for 15 weeks
-            this.state.nationalBanWeeks = 15;
-
-            // Save betting scandal state to display modal in index.html
-            this.state.bettingScandal = {
-                fine: fine,
-                lostFollowers: lostFollowers,
-                lostFans: lostFans,
-                lostTrust: lostTrust
-            };
-            
-            // Post scandal on social feed
-            this.addSocialPost(
-                "@tff_resmi", 
-                "TFF Resmi", 
-                `🚨 TFF Duyurusu: ${this.state.playerName}'in kendi ligindeki karşılaşmalara yasa dışı bahis oynadığı saptanmış olup, sporcuya ${fine.toLocaleString()} € para cezası ve 15 resmi müsabakadan men cezası verilmiştir.`
-            );
-        }
-
-        this.saveGame();
-    },
 
     getTeamAverageRating: function(teamName) {
         // Check amateur clubs pool first
@@ -3186,3 +3048,5 @@ const GAME = {
 if (typeof module !== "undefined" && module.exports) {
     module.exports = GAME;
 }
+
+
