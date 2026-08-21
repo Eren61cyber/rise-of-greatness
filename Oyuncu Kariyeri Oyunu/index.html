@@ -1993,10 +1993,10 @@
     </div>
 
     <!-- Script Loads (Database first, logic next) -->
-    <script src="database.js?v=5.6"></script>
-    <script src="events.js?v=5.6"></script>
-    <script src="game.js?v=5.6"></script>
-    <script src="matchEngine.js?v=5.6"></script>
+    <script src="database.js?v=5.7"></script>
+    <script src="events.js?v=5.7"></script>
+    <script src="game.js?v=5.7"></script>
+    <script src="matchEngine.js?v=5.7"></script>
     
     <!-- MAIN CONTROLLER (Mounts everything) -->
     <script>
@@ -4214,6 +4214,21 @@
             }
 
             interviewModal.classList.add("active");
+        }
+
+        function afterWeekAdvanced() {
+            if (typeof determineNextOpponent === "function") {
+                determineNextOpponent();
+            }
+            if (typeof GAME !== "undefined" && typeof GAME.updateUI === "function") {
+                GAME.updateUI();
+            }
+            if (typeof renderLeagueTable === "function") {
+                renderLeagueTable();
+            }
+            if (typeof renderLeagueScorers === "function") {
+                renderLeagueScorers();
+            }
         }
 
         function proceedPostMatch() {
