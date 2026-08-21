@@ -533,9 +533,8 @@
             <div id="wa-bubble" style="background: #005c4b; color: #fff; padding: 10px 14px; border-radius: 10px; font-size: 12.5px; line-height: 1.4; text-align: left; margin-bottom: 16px;">
                 "Evlat dünkü maçtaki performansın kabul edilemez! Bir sonraki maçta seni yedek kulübesinde görmek istemiyorsan kendine çeki düzen ver."
             </div>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-                <button class="trigger-btn" style="background: rgba(255,255,255,0.08); color: #fff; font-size: 11px;" onclick="closeStage()">"Özür dilerim hocam, daha çok çalışacağım."</button>
-                <button class="trigger-btn" style="background: rgba(255,255,255,0.08); color: #fff; font-size: 11px;" onclick="closeStage()">"Ben elimden geleni yaptım, taktik yanlıştı."</button>
+            <div id="wa-choices" style="display: flex; flex-direction: column; gap: 8px;">
+                <!-- Dynamically populated choices -->
             </div>
         </div>
 
@@ -641,19 +640,36 @@
             const avatar = document.getElementById('wa-avatar');
             const name = document.getElementById('wa-name');
             const bubble = document.getElementById('wa-bubble');
+            const choices = document.getElementById('wa-choices');
+            choices.innerHTML = "";
 
             if (type === 'coach') {
                 avatar.innerText = "👨‍💼";
                 name.innerText = "Teknik Direktör";
                 bubble.innerText = "Evlat dünkü maçtaki performansın kabul edilemez! Bir sonraki maçta seni yedek kulübesinde görmek istemiyorsan kendine çeki düzen ver.";
+                
+                choices.innerHTML = `
+                    <button class="trigger-btn" style="background: rgba(255,255,255,0.08); color: #fff; font-size: 11px;" onclick="closeStage()">"Özür dilerim hocam, bir sonraki maç telafi edeceğim."</button>
+                    <button class="trigger-btn" style="background: rgba(255,255,255,0.08); color: #fff; font-size: 11px;" onclick="closeStage()">"Hocam ben elimden geleni yaptım, taktik yanlıştı."</button>
+                `;
             } else if (type === 'girlfriend') {
                 avatar.innerText = "👠";
                 name.innerText = "Ece (Kız Arkadaşın)";
                 bubble.innerText = "Aşkım hafta sonu Paris tatiline gidecektik hani? Biletleri aldın mı yoksa yine antrenman mı var diyeceksin? 🥺";
+                
+                choices.innerHTML = `
+                    <button class="trigger-btn purple" style="font-size: 11px;" onclick="closeStage()">"Tabii ki aşkım, biletleri hemen alıyorum! (-25.000 €)"</button>
+                    <button class="trigger-btn" style="background: rgba(255,255,255,0.08); color: #fff; font-size: 11px;" onclick="closeStage()">"Aşkım bu hafta çok kritik maçım var, gidemeyiz."</button>
+                `;
             } else if (type === 'mafia') {
                 avatar.innerText = "🕶️";
-                name.innerText = "Bilinmeyen Numara";
-                bubble.innerText = "Selam delikanlı. Bu haftaki derbide 1 gol yedirirsen hesabına tam 250.000 € yatacak. Akıllı ol, kimseye de bahsetme.";
+                name.innerText = "Bilinmeyen Numara (Dayı)";
+                bubble.innerText = "Selam delikanlı. Bu haftaki derbide 1 gol yedirirsen hesabına tam 250.000 € temiz nakit yatacak. Akıllı ol, reddedersen sokaklar tekinsizdir...";
+                
+                choices.innerHTML = `
+                    <button class="trigger-btn danger" style="font-size: 11px;" onclick="closeStage()">"🤝 Tamam anlaşalım. Sahada yürürüm, parayı hazırla."</button>
+                    <button class="trigger-btn" style="background: rgba(255,255,255,0.08); color: #fff; font-size: 11px;" onclick="closeStage()">"🛑 Ben satılık değilim! Çık git hayatımdan!"</button>
+                `;
             }
 
             showModal('modal-whatsapp');
