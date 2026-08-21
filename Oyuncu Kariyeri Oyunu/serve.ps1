@@ -1,66 +1,68 @@
 $port = 8080
+$root = $PSScriptRoot
+if (-not $root) { $root = (Get-Location).Path }
+
 $listener = New-Object System.Net.HttpListener
 $listener.Prefixes.Add("http://localhost:$port/")
 $listener.Prefixes.Add("http://127.0.0.1:$port/")
 
 try {
     $listener.Start()
-    Write-Host "Localhost sunucusu baslatildi: http://localhost:$port/showcase.html"
-    Write-Host "Ana Oyun: http://localhost:$port/index.html"
+    Write-Host "Localhost sunucusu hazir: http://localhost:$port/index.html"
+    Write-Host "Vitrini Ac: http://localhost:$port/showcase.html"
 } catch {
-    Write-Host "Port $port kullanilamadi, baska bir port deneniyor..."
     $port = 8081
     $listener = New-Object System.Net.HttpListener
     $listener.Prefixes.Add("http://localhost:$port/")
+    $listener.Prefixes.Add("http://127.0.0.1:$port/")
     $listener.Start()
-    Write-Host "Localhost sunucusu baslatildi: http://localhost:$port/showcase.html"
-}
-
-$mimeMap = @{
-    ".html" = "text/html; charset=utf-8"
-    ".css"  = "text/css; charset=utf-8"
-    ".js"   = "application/javascript; charset=utf-8"
-    ".png"  = "image/png"
-    ".jpg"  = "image/jpeg"
-    ".jpeg" = "image/jpeg"
-    ".mp4"  = "video/mp4"
-    ".json" = "application/json; charset=utf-8"
-    ".wav"  = "audio/wav"
-    ".mp3"  = "audio/mpeg"
+    Write-Host "Localhost sunucusu hazir: http://localhost:$port/index.html"
 }
 
 while ($listener.IsListening) {
     try {
         $context = $listener.GetContext()
-        $request = $context.Request
-        $response = $context.Response
+        $req = $context.Request
+        $res = $context.Response
         
-        $path = $request.Url.LocalPath.TrimStart('/')
-        if ([string]::IsNullOrEmpty($path)) {
-            $path = "showcase.html"
+        $urlPath = [System.Uri]::UnescapeDataString($req.Url.LocalPath).TrimStart('/')
+        if ([string]::IsNullOrEmpty($urlPath)) {
+            $urlPath = "index.html"
         }
         
-        $filePath = Join-Path $PSScriptRoot $path
+        $normPath = $urlPath.Replace('/', [System.IO.Path]::DirectorySeparatorChar)
+        $fullPath = [System.IO.Path]::Combine($root, $normPath)
         
-        if (Test-Path $filePath -PathType Leaf) {
-            $ext = [System.IO.Path]::GetExtension($filePath).ToLower()
+        if ([System.IO.File]::Exists($fullPath)) {
+            $ext = [System.IO.Path]::GetExtension($fullPath).ToLower()
             $mime = "application/octet-stream"
-            if ($mimeMap.ContainsKey($ext)) {
-                $mime = $mimeMap[$ext]
+            switch ($ext) {
+                ".html" { $mime = "text/html; charset=utf-8" }
+                ".css"  { $mime = "text/css; charset=utf-8" }
+                ".js"   { $mime = "application/javascript; charset=utf-8" }
+                ".png"  { $mime = "image/png" }
+                ".jpg"  { $mime = "image/jpeg" }
+                ".jpeg" { $mime = "image/jpeg" }
+                ".webp" { $mime = "image/webp" }
+                ".svg"  { $mime = "image/svg+xml" }
+                ".mp4"  { $mime = "video/mp4" }
+                ".json" { $mime = "application/json; charset=utf-8" }
+                ".wav"  { $mime = "audio/wav" }
+                ".mp3"  { $mime = "audio/mpeg" }
             }
-            $response.ContentType = $mime
+            $res.ContentType = $mime
             
-            $bytes = [System.IO.File]::ReadAllBytes($filePath)
-            $response.ContentLength64 = $bytes.Length
-            $response.OutputStream.Write($bytes, 0, $bytes.Length)
+            $fileBytes = [System.IO.File]::ReadAllBytes($fullPath)
+            $res.ContentLength64 = $fileBytes.Length
+            $res.OutputStream.Write($fileBytes, 0, $fileBytes.Length)
         } else {
-            $response.StatusCode = 404
-            $msg = [System.Text.Encoding]::UTF8.GetBytes("404 - Dosya Bulunamadi: $path")
-            $response.ContentLength64 = $msg.Length
-            $response.OutputStream.Write($msg, 0, $msg.Length)
+            $res.StatusCode = 404
+            $msg = [System.Text.Encoding]::UTF8.GetBytes("404 Bulunamadi: $urlPath")
+            $res.ContentLength64 = $msg.Length
+            $res.OutputStream.Write($msg, 0, $msg.Length)
         }
-        $response.OutputStream.Close()
+        $res.OutputStream.Close()
     } catch {
-        # continue loop
+        # ignore error and keep listening
     }
 }
