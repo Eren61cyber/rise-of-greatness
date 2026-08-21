@@ -188,6 +188,11 @@ const GAME = {
                 beardStyle: "none"
             },
 
+            // 🔥 Hot Streak & Weekly Missions
+            hotStreak: 0,           // +1 per 7.0+ rated match; reset on poor match
+            hotStreakBadRun: 0,     // +1 per <5.5 rated match; reset on good match
+            weeklyMissions: [],     // Array of {id, desc, target, progress, done, reward}
+            weeklyMissionsWeek: 0,  // Which week missions were generated for
 
             socialFeed: [
                 {
@@ -208,6 +213,82 @@ const GAME = {
     saveGame: function() {
         localStorage.setItem(this.saveKey, JSON.stringify(this.state));
         console.log("Game state successfully saved!");
+    },
+
+    // ═══════════════════════════════════════════════════════
+    // 🎯 HAFTALIK GÖREVLER (Weekly Mission System)
+    // ═══════════════════════════════════════════════════════
+    generateWeeklyMissions: function() {
+        const s = this.state;
+        const week = s.currentWeek;
+        if (s.weeklyMissionsWeek === week) return; // Already generated this week
+        s.weeklyMissionsWeek = week;
+
+        const allMissions = [
+            { id: "score1",    desc: "Bu hafta en az 1 gol at",           type: "goals",   target: 1, reward: { money: 25000, followers: 2000 }, rewardText: "+25.000 € + 2.000 Takipçi" },
+            { id: "score2",    desc: "Bu hafta en az 2 gol at",           type: "goals",   target: 2, reward: { money: 50000, followers: 5000 }, rewardText: "+50.000 € + 5.000 Takipçi" },
+            { id: "hattrick",  desc: "Hat-trick yap (3 gol)!",            type: "goals",   target: 3, reward: { money: 100000, followers: 15000 }, rewardText: "+100.000 € + 15.000 Takipçi" },
+            { id: "assist1",   desc: "Bu hafta en az 1 asist yap",        type: "assists", target: 1, reward: { money: 20000, followers: 1500 }, rewardText: "+20.000 € + 1.500 Takipçi" },
+            { id: "assist2",   desc: "Bu hafta en az 2 asist yap",        type: "assists", target: 2, reward: { money: 40000, followers: 4000 }, rewardText: "+40.000 € + 4.000 Takipçi" },
+            { id: "rating8",   desc: "Maçtan 8.0+ puan al",              type: "rating",  target: 8.0, reward: { money: 30000, followers: 3000 }, rewardText: "+30.000 € + 3.000 Takipçi" },
+            { id: "rating9",   desc: "Maçtan 9.0+ puan al",              type: "rating",  target: 9.0, reward: { money: 80000, followers: 10000 }, rewardText: "+80.000 € + 10.000 Takipçi" },
+            { id: "winmatch",  desc: "Bu hafta galip gel",                type: "win",     target: 1, reward: { money: 15000, followers: 1000 }, rewardText: "+15.000 € + 1.000 Takipçi" },
+            { id: "kondisyon", desc: "Kondisyonunu %70 üzerinde tut",    type: "kondisyon", target: 70, reward: { money: 10000 }, rewardText: "+10.000 €" },
+            { id: "goal_assist", desc: "Aynı maçta gol + asist yap",     type: "goalAssist", target: 1, reward: { money: 60000, followers: 8000 }, rewardText: "+60.000 € + 8.000 Takipçi" },
+        ];
+
+        // Pick 3 random unique missions (weighted toward easier ones early on)
+        const shuffled = allMissions.sort(() => Math.random() - 0.5);
+        s.weeklyMissions = shuffled.slice(0, 3).map(m => ({
+            ...m,
+            progress: 0,
+            done: false
+        }));
+    },
+
+    // ═══════════════════════════════════════════════════════
+    // 🔄 UPDATE MISSIONS & HOT STREAK AFTER MATCH
+    // ═══════════════════════════════════════════════════════
+    updateMissionsAfterMatch: function(goals, assists, rating, won) {
+        const s = this.state;
+
+        // Update hot streak
+        if (rating >= 7.0) {
+            s.hotStreak = (s.hotStreak || 0) + 1;
+            s.hotStreakBadRun = 0;
+        } else if (rating < 5.5) {
+            s.hotStreakBadRun = (s.hotStreakBadRun || 0) + 1;
+            if (s.hotStreakBadRun >= 2) {
+                s.hotStreak = 0;
+            }
+        } else {
+            // Mediocre - don't break streak but don't extend it
+        }
+
+        // Update weekly missions progress
+        if (!s.weeklyMissions || s.weeklyMissions.length === 0) {
+            this.generateWeeklyMissions();
+        }
+        let missionCompleted = false;
+        s.weeklyMissions.forEach(m => {
+            if (m.done) return;
+            switch (m.type) {
+                case "goals":       m.progress = Math.min(m.target, (m.progress || 0) + goals); break;
+                case "assists":     m.progress = Math.min(m.target, (m.progress || 0) + assists); break;
+                case "rating":      if (rating >= m.target) m.progress = m.target; break;
+                case "win":         if (won) m.progress = m.target; break;
+                case "kondisyon":   if (s.kondisyon >= m.target) m.progress = m.target; break;
+                case "goalAssist":  if (goals >= 1 && assists >= 1) m.progress = m.target; break;
+            }
+            if (m.progress >= m.target && !m.done) {
+                m.done = true;
+                missionCompleted = true;
+                // Grant reward
+                if (m.reward.money) s.money += m.reward.money;
+                if (m.reward.followers) s.followers += m.reward.followers;
+            }
+        });
+        return missionCompleted;
     },
 
     loadGame: function() {

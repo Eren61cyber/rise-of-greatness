@@ -541,7 +541,14 @@
                     <p style="font-size: 10px; font-weight: 700; color: #7b8ba1; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px;"><span id="player-position">FORVET</span> · <span id="player-age-text">16 YAŞINDA</span> · <span id="player-club" style="color: #00e5b7;">KULÜPSÜZ</span></p>
                 </div>
             </div>
-            <button id="btn-settings-open" class="btn" style="padding: 8px 10px; font-size: 15px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; cursor: pointer; color: white;">☰</button>
+                <!-- Missions + Settings buttons -->
+                <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+                    <button id="btn-missions-open" class="btn" onclick="openMissionsModal()" title="Haftalık Görevler" style="position:relative; padding: 8px 10px; font-size: 15px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; cursor: pointer; color: white;">
+                        📋
+                        <span id="missions-badge" style="display:none; position:absolute; top:-4px; right:-4px; background:#f5a623; color:#0a0e17; font-size:9px; font-weight:900; min-width:14px; height:14px; border-radius:99px; padding:0 3px; line-height:14px; text-align:center;">0</span>
+                    </button>
+                    <button id="btn-settings-open" class="btn" style="padding: 8px 10px; font-size: 15px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; cursor: pointer; color: white;">☰</button>
+                </div>
         </header>
 
         <!-- Redesigned Telemetry Status Bar -->
@@ -578,6 +585,8 @@
                             <span class="ovr-number bind-player-rating">16</span>
                             <span class="ovr-tag">OVR</span>
                         </div>
+                        <!-- 🔥 Hot Streak Badge -->
+                        <div id="streak-badge-container" style="margin-top:6px; min-height:20px;"></div>
                     </div>
 
                     <!-- SVG Diamond Radar Chart -->
@@ -1545,6 +1554,34 @@
                 <h2 id="season-title" style="font-size: 20px; font-weight: 800; margin-bottom: 12px; color: white;">Yeni Sezon Başlıyor!</h2>
                 <p class="event-desc" id="season-desc" style="text-align: left; max-height: 220px; overflow-y: auto; font-size: 13px; line-height: 1.6; color: var(--text-muted); margin-bottom: 20px;"></p>
                 <button class="btn btn-primary" id="btn-season-summary-close" style="width: 100%; padding: 12px; font-weight: 800;">Yeni Sezona Başla! ⚽</button>
+            </div>
+        </div>
+
+        <!-- 🎯 HAFTALIK GÖREVLER MODAL -->
+        <div class="event-modal-overlay" id="missions-modal" onclick="if(event.target===this) closeMissionsModal()" style="display:none; align-items:center; justify-content:center; padding:15px; background:rgba(0,0,0,0.90); z-index:10025;">
+            <div class="glass" style="max-width:420px; width:100%; border-radius:18px; border:1.5px solid rgba(245,166,35,0.5); background:#0f1418; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.7);">
+                <!-- Header -->
+                <div style="background:linear-gradient(135deg, rgba(245,166,35,0.18), rgba(255,215,0,0.06)); padding:18px 20px 14px; border-bottom:1px solid rgba(245,166,35,0.2); display:flex; align-items:center; justify-content:space-between;">
+                    <div>
+                        <div style="font-size:10px; font-weight:800; color:rgba(245,166,35,0.6); letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">HAFTALIK GÖREVLER</div>
+                        <div style="font-size:18px; font-weight:900; color:#f5a623;">🎯 Bu Haftanın Hedefleri</div>
+                        <div id="missions-week-label" style="font-size:10px; color:rgba(255,255,255,0.35); margin-top:2px;">Hafta 1</div>
+                    </div>
+                    <button onclick="closeMissionsModal()" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:white; width:32px; height:32px; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;">✕</button>
+                </div>
+                <!-- Mission cards -->
+                <div id="missions-list" style="padding:14px 16px; display:flex; flex-direction:column; gap:10px;"></div>
+                <!-- Streak area -->
+                <div id="missions-streak-area" style="padding:0 16px 16px;"></div>
+            </div>
+        </div>
+
+        <!-- 🔥 HOT STREAK FLASH OVERLAY -->
+        <div id="streak-flash-overlay" style="display:none; position:fixed; inset:0; z-index:10030; pointer-events:none; align-items:center; justify-content:center;">
+            <div id="streak-flash-content" style="text-align:center; animation: streakFlash 2.5s ease forwards; padding:30px;">
+                <div id="streak-flash-emoji" style="font-size:64px; line-height:1; text-shadow:0 0 40px rgba(255,100,0,0.8);">🔥</div>
+                <div id="streak-flash-title" style="font-size:28px; font-weight:900; color:#ff6420; text-shadow:0 0 30px rgba(255,100,0,0.7); margin-top:10px; letter-spacing:2px;"></div>
+                <div id="streak-flash-sub" style="font-size:13px; color:rgba(255,180,80,0.85); margin-top:6px;"></div>
             </div>
         </div>
 
@@ -3644,6 +3681,9 @@
                 resolvePendingDailyReward();
                 triggerBallonOrNewspaperCheck();
                 checkAndStartTutorial();
+                // 🎯 Init mission + streak badges
+                GAME.generateWeeklyMissions();
+                setTimeout(() => { updateMissionsBadge(); updateStreakBadge(); }, 500);
             }
         });
 
@@ -4217,6 +4257,197 @@
             interviewModal.classList.add("active");
         }
 
+        // ═══════════════════════════════════════════════════════
+        // 🎯 HAFTALIK GÖREVLER (Weekly Mission Modal)
+        // ═══════════════════════════════════════════════════════
+        function openMissionsModal() {
+            if (typeof GAME === "undefined") return;
+            GAME.generateWeeklyMissions();
+            const s = GAME.state;
+            const modal = document.getElementById("missions-modal");
+            modal.style.display = "flex";
+
+            // Week label
+            const wLabel = document.getElementById("missions-week-label");
+            if (wLabel) wLabel.innerText = `Hafta ${s.currentWeek}`;
+
+            // Render mission cards
+            const list = document.getElementById("missions-list");
+            if (list && s.weeklyMissions && s.weeklyMissions.length > 0) {
+                list.innerHTML = s.weeklyMissions.map(m => {
+                    const pct = m.target > 0 ? Math.min(100, Math.round((m.progress || 0) / m.target * 100)) : 0;
+                    const done = m.done;
+                    return `
+                    <div style="background:${done ? 'rgba(16,185,129,0.12)' : 'rgba(255,255,255,0.04)'}; border:1px solid ${done ? 'rgba(16,185,129,0.4)' : 'rgba(255,255,255,0.08)'}; border-radius:12px; padding:12px 14px;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+                            <span style="font-size:12.5px; font-weight:700; color:${done ? '#10b981' : '#f0f4f8'};">${done ? '✅' : '🎯'} ${m.desc}</span>
+                            <span style="font-size:11px; font-weight:700; color:${done ? '#10b981' : '#f5a623'};">${m.progress || 0}/${m.target}</span>
+                        </div>
+                        <div style="height:5px; background:rgba(255,255,255,0.07); border-radius:99px; overflow:hidden; margin-bottom:6px;">
+                            <div style="height:100%; width:${pct}%; background:${done ? '#10b981' : '#f5a623'}; border-radius:99px; transition:width 0.4s ease;"></div>
+                        </div>
+                        <div style="font-size:10px; color:rgba(255,255,255,0.35);">🏆 Ödül: ${m.rewardText}</div>
+                    </div>`;
+                }).join("");
+            } else {
+                list.innerHTML = `<div style="color:rgba(255,255,255,0.3); font-size:12px; text-align:center; padding:20px;">Haftalık görevler yükleniyor...</div>`;
+            }
+
+            // Streak area
+            const streakArea = document.getElementById("missions-streak-area");
+            if (streakArea) {
+                const streak = s.hotStreak || 0;
+                const badRun = s.hotStreakBadRun || 0;
+                let streakHtml = "";
+                if (streak >= 3) {
+                    streakHtml = `<div style="background:rgba(255,100,0,0.12); border:1px solid rgba(255,100,0,0.35); border-radius:12px; padding:12px 14px; display:flex; align-items:center; gap:10px;">
+                        <div style="font-size:28px;">🔥</div>
+                        <div>
+                            <div style="font-size:12px; font-weight:800; color:#ff6420;">${streak} MAÇLIK ATEŞ SERİSİ!</div>
+                            <div style="font-size:10px; color:rgba(255,180,80,0.7); margin-top:2px;">${streak >= 5 ? 'Durdurulamazsın! +5 OVR Geçici Bonus Aktif 🔥🔥' : 'Seri devam ediyor! 5 maça ulaşırsan +5 OVR bonus!'}</div>
+                        </div>
+                    </div>`;
+                } else if (badRun >= 2) {
+                    streakHtml = `<div style="background:rgba(100,150,255,0.08); border:1px solid rgba(100,150,255,0.2); border-radius:12px; padding:12px 14px; display:flex; align-items:center; gap:10px;">
+                        <div style="font-size:28px;">❄️</div>
+                        <div>
+                            <div style="font-size:12px; font-weight:800; color:#6496ff;">KRİZDE</div>
+                            <div style="font-size:10px; color:rgba(150,180,255,0.65); margin-top:2px;">Form düşük, hoca güveni azalıyor. Çalışmaya devam!</div>
+                        </div>
+                    </div>`;
+                } else if (streak > 0) {
+                    streakHtml = `<div style="font-size:11px; color:rgba(255,200,80,0.5); text-align:center; padding:8px;">🔥 ${streak} maçlık form serisi — 3 maça ulaşınca "Ateş Serisi" aktif olur!</div>`;
+                }
+                streakArea.innerHTML = streakHtml;
+            }
+        }
+        window.openMissionsModal = openMissionsModal;
+
+        function closeMissionsModal() {
+            const modal = document.getElementById("missions-modal");
+            if (modal) modal.style.display = "none";
+        }
+        window.closeMissionsModal = closeMissionsModal;
+
+        function updateMissionsBadge() {
+            if (typeof GAME === "undefined") return;
+            const s = GAME.state;
+            const badge = document.getElementById("missions-badge");
+            if (!badge) return;
+            if (!s.weeklyMissions || s.weeklyMissions.length === 0) {
+                badge.style.display = "none";
+                return;
+            }
+            const incomplete = s.weeklyMissions.filter(m => !m.done).length;
+            const done = s.weeklyMissions.filter(m => m.done).length;
+            if (done > 0 && incomplete === 0) {
+                badge.style.display = "inline-block";
+                badge.style.background = "#10b981";
+                badge.innerText = "✓";
+            } else if (incomplete > 0) {
+                badge.style.display = "inline-block";
+                badge.style.background = "#f5a623";
+                badge.innerText = incomplete;
+            } else {
+                badge.style.display = "none";
+            }
+        }
+
+        function updateStreakBadge() {
+            if (typeof GAME === "undefined") return;
+            const s = GAME.state;
+            const container = document.getElementById("streak-badge-container");
+            if (!container) return;
+            const streak = s.hotStreak || 0;
+            const badRun = s.hotStreakBadRun || 0;
+            if (streak >= 5) {
+                container.innerHTML = `<span style="display:inline-flex; align-items:center; gap:4px; background:rgba(255,80,0,0.2); border:1px solid rgba(255,80,0,0.5); border-radius:99px; padding:2px 8px; font-size:10px; font-weight:800; color:#ff6420; letter-spacing:0.5px;">🔥🔥 DURDURULAMAZ! (${streak})</span>`;
+            } else if (streak >= 3) {
+                container.innerHTML = `<span style="display:inline-flex; align-items:center; gap:4px; background:rgba(255,100,0,0.15); border:1px solid rgba(255,100,0,0.35); border-radius:99px; padding:2px 8px; font-size:10px; font-weight:800; color:#ff8040; letter-spacing:0.5px;">🔥 ATEŞ SERİSİ (${streak})</span>`;
+            } else if (badRun >= 2) {
+                container.innerHTML = `<span style="display:inline-flex; align-items:center; gap:4px; background:rgba(100,150,255,0.1); border:1px solid rgba(100,150,255,0.25); border-radius:99px; padding:2px 8px; font-size:10px; font-weight:800; color:#8ab4ff; letter-spacing:0.5px;">❄️ KRİZDE</span>`;
+            } else if (streak > 0) {
+                container.innerHTML = `<span style="display:inline-flex; align-items:center; gap:4px; background:rgba(245,166,35,0.1); border:1px solid rgba(245,166,35,0.2); border-radius:99px; padding:2px 8px; font-size:10px; font-weight:700; color:rgba(245,166,35,0.7);">🔥 ${streak} Maç Form</span>`;
+            } else {
+                container.innerHTML = "";
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════
+        // 🔥 ATEŞ SERİSİ FLASH
+        // ═══════════════════════════════════════════════════════
+        function showStreakFlash(streak) {
+            const overlay = document.getElementById("streak-flash-overlay");
+            const titleEl = document.getElementById("streak-flash-title");
+            const subEl = document.getElementById("streak-flash-sub");
+            const emojiEl = document.getElementById("streak-flash-emoji");
+            if (!overlay) return;
+
+            if (streak >= 5) {
+                emojiEl.innerText = "🔥🔥";
+                titleEl.innerText = "DURDURULAMAZ!";
+                subEl.innerText = `${streak} Üst Üste Yüksek Performans! +5 OVR Bonus!`;
+            } else {
+                emojiEl.innerText = "🔥";
+                titleEl.innerText = "ATEŞ SERİSİ!";
+                subEl.innerText = `${streak} üst üste harika performans! Seni kimse durduramaz!`;
+            }
+
+            overlay.style.display = "flex";
+            setTimeout(() => { overlay.style.display = "none"; }, 2800);
+        }
+
+        // ═══════════════════════════════════════════════════════
+        // 🗞️ DRAMATIC HEADLINE TRIGGER
+        // ═══════════════════════════════════════════════════════
+        function checkDramaticHeadline(goals, rating, scoreDiff, isLastMinute) {
+            const pName = GAME.state.playerName || "Yıldız";
+            const streak = GAME.state.hotStreak || 0;
+
+            // Hat-trick
+            if (goals >= 3) {
+                setTimeout(() => {
+                    showNewspaperModal(
+                        `HAFTA ${GAME.state.currentWeek}`,
+                        `TÜRKİYE'Yİ KASIP KAVURDUNUz! 🔥⚽⚽⚽`,
+                        `${pName.toUpperCase()} HAT-TRİCK YAPTI!`,
+                        `Sahada adeta fırtına gibi esen <b>${pName}</b>, bu sezonun en büyük bireysel performansını sergiledi! Üç golle maçı kurtaran yıldız oyuncu hakkında sosyal medya alev alev yandı. Milli Takım seçmenleri not aldı — <b>${pName}</b> dünya gündemine girdi!`
+                    );
+                    // No interview after newspaper close for this one - just proceed normally
+                }, 500);
+                return true;
+            }
+
+            // 90+ late winner / injury time goal
+            if (isLastMinute && goals >= 1 && scoreDiff > 0) {
+                setTimeout(() => {
+                    showNewspaperModal(
+                        `HAFTA ${GAME.state.currentWeek}`,
+                        `TÜRKİYE SENİ KONUŞUYOR! ⏱️🔥`,
+                        `SON DAKİKADA ${pName.toUpperCase()}!`,
+                        `İşte sahada efsane böyle doğar! <b>${pName}</b> son saniyelerde ağları havalandırarak takımını bir felaketten kurtardı! Tüm Türkiye tribünden ekrana bağlandı. Sosyal medyada bu gol günün en viral anı!`
+                    );
+                }, 500);
+                return true;
+            }
+
+            // 5+ streak milestone
+            if (streak >= 5 && streak % 5 === 0) {
+                setTimeout(() => {
+                    showNewspaperModal(
+                        `HAFTA ${GAME.state.currentWeek}`,
+                        `DURDURULAMIYOR! 🔥🔥`,
+                        `${pName.toUpperCase()} ${streak} MAÇLIK ATEŞ SERİSİNDE!`,
+                        `Üst üste <b>${streak}</b> maçta yüksek performans sergileyen <b>${pName}</b>, hem Süper Lig'in hem de Avrupa'nın radarına girdi! Büyük kulüplerin gözleri artık bu genç yıldızın üstünde. Transfer sezonu ne getirecek?`
+                    );
+                }, 500);
+                return true;
+            }
+
+            return false;
+        }
+        window.checkDramaticHeadline = checkDramaticHeadline;
+
         function afterWeekAdvanced() {
             if (typeof determineNextOpponent === "function") {
                 determineNextOpponent();
@@ -4229,6 +4460,12 @@
             }
             if (typeof renderLeagueScorers === "function") {
                 renderLeagueScorers();
+            }
+            // Generate missions for new week + refresh badges
+            if (typeof GAME !== "undefined") {
+                GAME.generateWeeklyMissions();
+                updateMissionsBadge();
+                updateStreakBadge();
             }
         }
 
@@ -8292,6 +8529,27 @@
                 GAME.matchSimulatedThisWeek = true;
                 GAME.simulateLeagueWeek(myGoals, oppGoals);
 
+                // 🎯 Update missions + streak
+                if (!isDropped) {
+                    const won = scoreDiff > 0;
+                    const missionCompleted = GAME.updateMissionsAfterMatch(playerGoalsThisMatch, playerAssistsThisMatch, rating, won);
+                    const streak = GAME.state.hotStreak || 0;
+                    // 5+ OVR bonus for hot streak
+                    if (streak >= 5) {
+                        GAME.state.rating = Math.min(99, GAME.state.rating + 5);
+                    }
+                    // Show streak flash if new 3, 5+ milestone hit
+                    if (streak === 3 || (streak >= 5 && streak % 5 === 0)) {
+                        setTimeout(() => { showStreakFlash(streak); }, 300);
+                    }
+                    // 🗞️ Check for dramatic headline (use random isLastMinute since we don't track minute in fast sim)
+                    const isLastMinute = Math.random() < 0.3 && scoreDiff === 1 && playerGoalsThisMatch >= 1;
+                    checkDramaticHeadline(playerGoalsThisMatch, rating, scoreDiff, isLastMinute);
+                    updateMissionsBadge();
+                    updateStreakBadge();
+                    GAME.saveGame();
+                }
+
                 if (isDropped) {
                     proceedPostMatch();
                 } else {
@@ -8807,7 +9065,26 @@
 
                     matchView.classList.remove("active");
                     SoundManager.stopStadiumAmbient();
-                    
+
+                    // 🎯 Update missions + streak (interactive play)
+                    if (!GAME.state.isNationalCallUp) {
+                        const won = scoreDiff > 0;
+                        GAME.updateMissionsAfterMatch(pGoals, pAssists, pRating, won);
+                        const streak = GAME.state.hotStreak || 0;
+                        if (streak >= 5) {
+                            GAME.state.rating = Math.min(99, GAME.state.rating + 5);
+                        }
+                        if (streak === 3 || (streak >= 5 && streak % 5 === 0)) {
+                            setTimeout(() => { showStreakFlash(streak); }, 400);
+                        }
+                        // Dramatic headline - interactive matches track injury time via MatchEngine
+                        const isLastMinute = (typeof MatchEngine !== "undefined" && MatchEngine.currentMinute && MatchEngine.currentMinute >= 88);
+                        checkDramaticHeadline(pGoals, pRating, scoreDiff, isLastMinute);
+                        updateMissionsBadge();
+                        updateStreakBadge();
+                        GAME.saveGame();
+                    }
+
                     if (!GAME.state.isNationalCallUp) {
                         triggerInterview(pRating, pGoals, pAssists);
                     }

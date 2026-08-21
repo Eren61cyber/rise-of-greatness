@@ -2563,5 +2563,34 @@ input[type="text"]:focus, select:focus {
 }
 
 
+/* ══════════════════════════════════════════════
+   🔥 ATEŞ SERİSİ FLASH ANIMATION
+══════════════════════════════════════════════ */
+@keyframes streakFlash {
+    0%   { opacity: 0; transform: scale(0.6) translateY(30px); }
+    15%  { opacity: 1; transform: scale(1.08) translateY(-8px); }
+    30%  { transform: scale(0.97) translateY(0); }
+    70%  { opacity: 1; transform: scale(1) translateY(0); }
+    100% { opacity: 0; transform: scale(1.1) translateY(-20px); }
+}
 
+#streak-flash-overlay {
+    background: radial-gradient(ellipse at center, rgba(255,80,0,0.18) 0%, transparent 70%);
+}
 
+#streak-flash-content {
+    animation: streakFlash 2.8s ease forwards;
+}
+
+/* ══════════════════════════════════════════════
+   🎯 HAFTALIK GÖREVLER MODAL
+══════════════════════════════════════════════ */
+#missions-modal .event-modal-overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#missions-list > div {
+    transition: border-color 0.3s ease, background 0.3s ease;
+}
