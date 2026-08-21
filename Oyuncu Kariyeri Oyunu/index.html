@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
@@ -1253,8 +1253,14 @@
                 </div>
 
                 <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <button class="btn" onclick="openAvatarChangeModal()" style="background: linear-gradient(135deg, rgba(0,229,183,0.2) 0%, rgba(0,180,216,0.2) 100%); color: #00e5b7; border: 1px solid rgba(0,229,183,0.4); width: 100%; padding: 12px; font-size: 12px; font-weight: bold; border-radius: 8px; cursor: pointer;">📸 Profil Fotoğrafını (Yüzünü) Değiştir</button>
-                    <button class="btn" id="settings-reset-career" style="background: rgba(255, 23, 68, 0.15); color: var(--accent-red); border: 1px solid rgba(255, 23, 68, 0.25); width: 100%; padding: 12px; font-size: 12px; font-weight: bold;">Kariyeri Sıfırla & Baştan Başla</button>
+                    <button class="btn" onclick="triggerManualJubilee()" style="background: linear-gradient(135deg, rgba(253, 185, 19, 0.25) 0%, rgba(255, 215, 0, 0.25) 100%); color: #ffd700; border: 1px solid rgba(253, 185, 19, 0.6); width: 100%; padding: 12px; font-size: 12.5px; font-weight: 800; border-radius: 8px; cursor: pointer; text-shadow: 0 0 10px rgba(253,185,19,0.3);">🎖️ Jübile Töreni Yap (Kariyeri Noktala)</button>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                        <button class="btn" onclick="exportCareerSave()" style="background: rgba(0, 229, 255, 0.12); color: var(--primary); border: 1px solid rgba(0, 229, 255, 0.3); padding: 10px; font-size: 11px; font-weight: bold; border-radius: 8px; cursor: pointer;">💾 Kariyeri Yedekle</button>
+                        <button class="btn" onclick="importCareerSave()" style="background: rgba(0, 255, 135, 0.12); color: #00ff87; border: 1px solid rgba(0, 255, 135, 0.3); padding: 10px; font-size: 11px; font-weight: bold; border-radius: 8px; cursor: pointer;">📥 Yedekten Yükle</button>
+                    </div>
+                    <button class="btn" onclick="openAvatarChangeModal()" style="background: linear-gradient(135deg, rgba(0,229,183,0.15) 0%, rgba(0,180,216,0.15) 100%); color: #00e5b7; border: 1px solid rgba(0,229,183,0.3); width: 100%; padding: 11px; font-size: 11.5px; font-weight: bold; border-radius: 8px; cursor: pointer;">📸 Profil Fotoğrafını Değiştir</button>
+                    <button class="btn" onclick="openPrivacyPolicyModal()" style="background: rgba(255, 255, 255, 0.05); color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; padding: 9px; font-size: 11px; font-weight: 600; border-radius: 8px; cursor: pointer;">📜 Gizlilik Politikası (Privacy Policy)</button>
+                    <button class="btn" id="settings-reset-career" style="background: rgba(255, 23, 68, 0.12); color: var(--accent-red); border: 1px solid rgba(255, 23, 68, 0.25); width: 100%; padding: 10px; font-size: 11px; font-weight: bold; border-radius: 8px;">🗑️ Kariyeri Sıfırla & Baştan Başla</button>
                     <button class="btn btn-secondary" id="settings-close" style="width: 100%; padding: 10px; font-size: 12px;">Kapat</button>
                 </div>
             </div>
@@ -1828,9 +1834,21 @@
 
                 <!-- Action Button -->
                 <button class="btn btn-primary" id="btn-ret-restart" style="width: 100%; padding: 14px; font-weight: 800; font-size: 14px; text-transform: uppercase; background: linear-gradient(135deg, var(--accent-yellow) 0%, #ff8f00 100%); color: black; border: none; box-shadow: 0 0 15px rgba(255,143,0,0.3);">Yeni Kariyere Başla! ⚽🔥</button>
+        <!-- PRIVACY POLICY MODAL (Google Play Compliance) -->
+        <div class="event-modal-overlay" id="privacy-modal" style="background: rgba(0,0,0,0.85); z-index: 10030; display: none; align-items: center; justify-content: center;">
+            <div class="event-card glass" style="max-width: 380px; text-align: left; max-height: 80vh; overflow-y: auto; padding: 20px;">
+                <h3 class="event-tag" style="background: var(--primary); color: #000; font-weight: 900; padding: 3px 10px; border-radius: 6px; font-size: 10.5px; width: fit-content; margin-bottom: 10px;">📜 GİZLİLİK POLİTİKASI</h3>
+                <h2 style="color: #fff; font-size: 17px; margin-bottom: 12px;">Gizlilik & Güvenlik</h2>
+                <div style="font-size: 11.5px; color: #cbd5e1; line-height: 1.5; display: flex; flex-direction: column; gap: 8px;">
+                    <p><strong>Rise of Greatness: Kariyer Efsanesi</strong> oyuncuların gizliliğine tam saygı duyar.</p>
+                    <p>• Oyunumuz hiçbir kişisel veriyi (ad, soyad, konum, rehber, mikrofon vb.) toplamaz ve sunuculara göndermez.</p>
+                    <p>• Tüm oyun ilerlemeniz, istatistikleriniz ve tercihleriniz yalnızca cihazınızın yerel hafızasında (Local Storage) saklanır.</p>
+                    <p>• Oyun tamamen çevrimdışı ve tek oyunculu bir simülasyondur.</p>
+                    <p style="color: var(--primary); font-weight: bold; margin-top: 6px;">İletişim & Geliştirici: RiseUp Studios</p>
+                </div>
+                <button class="btn btn-primary" onclick="document.getElementById('privacy-modal').style.display='none'" style="width: 100%; margin-top: 16px; padding: 10px; font-size: 12px; font-weight: 800;">Kapat</button>
             </div>
         </div>
-
     </div>
 
 
@@ -7946,6 +7964,65 @@
             SoundManager.toggleMusic(!isOn);
             btn.textContent = !isOn ? "🎵" : "🔇";
             btn.style.opacity = !isOn ? "1" : "0.5";
+        }
+
+        // 🎖️ MANUAL JUBILEE TRIGGER
+        function triggerManualJubilee() {
+            if (confirm("🎖️ EFSANEVİ JÜBİLE TÖRENİ\n\nKariyerinizi noktalayıp muhteşem bir jübile töreniyle emekli olmak ve tüm kariyer başarı plaketinizi görmek istiyor musunuz?")) {
+                settingsModal.classList.remove("active");
+                showRetirementSummary(false);
+            }
+        }
+
+        // 💾 CAREER SAVE EXPORT
+        function exportCareerSave() {
+            try {
+                if (!GAME || !GAME.state) {
+                    alert("Kayıtlı kariyer verisi bulunamadı!");
+                    return;
+                }
+                const saveString = JSON.stringify(GAME.state);
+                const base64Code = btoa(unescape(encodeURIComponent(saveString)));
+                
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(base64Code).then(() => {
+                        alert("✅ Kariyer yedek kodunuz panoya kopyalandı! Bu kodu bir yere not edebilir veya başka bir cihaza aktarabilirsiniz.");
+                    }).catch(() => {
+                        prompt("Kariyer Yedek Kodunuz (Kopyalayıp saklayın):", base64Code);
+                    });
+                } else {
+                    prompt("Kariyer Yedek Kodunuz (Kopyalayıp saklayın):", base64Code);
+                }
+            } catch(e) {
+                alert("Yedek kodu oluşturulurken bir hata oluştu: " + e.message);
+            }
+        }
+
+        // 📥 CAREER SAVE IMPORT
+        function importCareerSave() {
+            const inputCode = prompt("Daha önce aldığınız Kariyer Yedek Kodunu buraya yapıştırın:");
+            if (!inputCode || inputCode.trim() === "") return;
+            
+            try {
+                const jsonString = decodeURIComponent(escape(atob(inputCode.trim())));
+                const parsedState = JSON.parse(jsonString);
+                
+                if (parsedState && parsedState.playerName && parsedState.currentClub) {
+                    GAME.state = parsedState;
+                    GAME.saveGame();
+                    alert("🎉 Kariyeriniz başarıyla yüklendi! Oyun yenileniyor...");
+                    location.reload();
+                } else {
+                    alert("Geçersiz yedek kodu! Lütfen doğru kodu girdiğinizden emin olun.");
+                }
+            } catch(e) {
+                alert("Yedek kodu yüklenemedi! Kod bozuk veya hatalı: " + e.message);
+            }
+        }
+
+        // 📜 PRIVACY POLICY MODAL
+        function openPrivacyPolicyModal() {
+            document.getElementById("privacy-modal").style.display = "flex";
         }
 
         settingsResetCareer.addEventListener("click", () => {
