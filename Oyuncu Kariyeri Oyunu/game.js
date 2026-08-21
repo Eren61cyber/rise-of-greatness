@@ -2174,42 +2174,43 @@ const GAME = {
         ],
         "Süper Lig": [
             // 🔴🔵 TRABZONSPOR (2026/27)
-            { name: "M. Salah", club: "Trabzon FK", goals: 0, assists: 0, goalRate: 0.58, assistRate: 0.64 },
-            { name: "R. Malinovskyi", club: "Trabzon FK", goals: 0, assists: 0, goalRate: 0.38, assistRate: 0.56 },
-            { name: "E. Muçi", club: "Trabzon FK", goals: 0, assists: 0, goalRate: 0.44, assistRate: 0.52 },
-            { name: "A. Şimşir", club: "Trabzon FK", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.54 },
-            { name: "P. Onuachu", club: "Trabzon FK", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.20 },
-            { name: "E. Vişça", club: "Trabzon FK", goals: 0, assists: 0, goalRate: 0.30, assistRate: 0.55 },
+            { name: "M. Salah", club: "Trabzon FK", goals: 0, assists: 0, goalRate: 0.62, assistRate: 0.65 },
+            { name: "R. Malinovskyi", club: "Trabzon FK", goals: 0, assists: 0, goalRate: 0.42, assistRate: 0.58 },
+            { name: "E. Muçi", club: "Trabzon FK", goals: 0, assists: 0, goalRate: 0.46, assistRate: 0.54 },
+            { name: "P. Onuachu", club: "Trabzon FK", goals: 0, assists: 0, goalRate: 0.56, assistRate: 0.20 },
+            { name: "A. Şimşir", club: "Trabzon FK", goals: 0, assists: 0, goalRate: 0.38, assistRate: 0.50 },
 
             // 🦅 BEŞİKTAŞ (2026/27)
-            { name: "O. Kökçü", club: "Kartal FK", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.66 },
-            { name: "L. Trossard", club: "Kartal FK", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.58 },
-            { name: "R. Silva", club: "Kartal FK", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.60 },
-            { name: "C. Immobile", club: "Kartal FK", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.20 },
-            { name: "Gedson Fernandes", club: "Kartal FK", goals: 0, assists: 0, goalRate: 0.32,技术: 0.48 },
+            { name: "L. Trossard", club: "Kartal FK", goals: 0, assists: 0, goalRate: 0.58, assistRate: 0.55 },
+            { name: "Semih Kılıçsoy", club: "Kartal FK", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.35 },
+            { name: "O. Kökçü", club: "Kartal FK", goals: 0, assists: 0, goalRate: 0.38, assistRate: 0.68 },
+            { name: "Gedson Fernandes", club: "Kartal FK", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.52 },
+            { name: "Salih Özcan", club: "Kartal FK", goals: 0, assists: 0, goalRate: 0.28, assistRate: 0.50 },
 
             // 🟡🔵 FENERBAHÇE (2026/27)
-            { name: "M. Greenwood", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.56, assistRate: 0.52 },
-            { name: "D. Tadic", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.68 },
-            { name: "V. Muriqi", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.22 },
-            { name: "A. Talisca", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.44 },
-            { name: "Y. En-Nesyri", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.20 },
-            { name: "S. Szymanski", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.48 },
+            { name: "M. Greenwood", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.60, assistRate: 0.54 },
+            { name: "A. Talisca", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.55, assistRate: 0.48 },
+            { name: "V. Muriqi", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.54, assistRate: 0.22 },
+            { name: "S. Szymanski", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.38, assistRate: 0.52 },
+            { name: "Fred", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.32, assistRate: 0.60 },
+            { name: "İrfan Can Kahveci", club: "Fenerbaçe FK", goals: 0, assists: 0, goalRate: 0.40, assistRate: 0.56 },
 
             // 🟡🔴 GALATASARAY (2026/27)
-            { name: "V. Osimhen", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.62, assistRate: 0.26 },
-            { name: "G. Sara", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.32, assistRate: 0.65 },
-            { name: "M. Icardi", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.56, assistRate: 0.22 },
-            { name: "D. Mertens", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.52 },
-            { name: "B. A. Yılmaz", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.42, assistRate: 0.46 },
+            { name: "V. Osimhen", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.68, assistRate: 0.28 },
+            { name: "M. Icardi", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.58, assistRate: 0.24 },
+            { name: "G. Sara", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.68 },
+            { name: "İlkay Gündoğan", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.35, assistRate: 0.65 },
+            { name: "B. A. Yılmaz", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.48 },
+            { name: "R. Sallai", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.40, assistRate: 0.45 },
+            { name: "M. Batshuayi", club: "Galatastar", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.20 },
 
             // 🟠 DİĞER SÜPER LİG YILDIZLARI (2026/27)
-            { name: "K. Piatek", club: "Başakşehir FK", goals: 0, assists: 0, goalRate: 0.50, assistRate: 0.18 },
-            { name: "Deniz Türüç", club: "Başakşehir FK", goals: 0, assists: 0, goalRate: 0.28, assistRate: 0.54 },
-            { name: "O. Ntcham", club: "Samsun FK", goals: 0, assists: 0, goalRate: 0.36, assistRate: 0.48 },
-            { name: "Rômulo", club: "Göztepe FK", goals: 0, assists: 0, goalRate: 0.46, assistRate: 0.38 },
-            { name: "Mame Thiam", club: "Eyüpspor FK", goals: 0, assists: 0, goalRate: 0.44, assistRate: 0.30 },
-            { name: "Emre Akbaba", club: "Eyüpspor FK", goals: 0, assists: 0, goalRate: 0.34, assistRate: 0.46 }
+            { name: "K. Piatek", club: "Başakşehir FK", goals: 0, assists: 0, goalRate: 0.52, assistRate: 0.18 },
+            { name: "Deniz Türüç", club: "Başakşehir FK", goals: 0, assists: 0, goalRate: 0.30, assistRate: 0.56 },
+            { name: "O. Ntcham", club: "Samsun FK", goals: 0, assists: 0, goalRate: 0.38, assistRate: 0.50 },
+            { name: "Rômulo", club: "Göztepe FK", goals: 0, assists: 0, goalRate: 0.48, assistRate: 0.38 },
+            { name: "Mame Thiam", club: "Eyüpspor FK", goals: 0, assists: 0, goalRate: 0.46, assistRate: 0.30 },
+            { name: "Emre Akbaba", club: "Eyüpspor FK", goals: 0, assists: 0, goalRate: 0.35, assistRate: 0.48 }
         ],
         "Premier League": [
             { name: "E. Haaland", club: "Manchester City", goals: 0, assists: 0, goalRate: 0.72, assistRate: 0.22 },
