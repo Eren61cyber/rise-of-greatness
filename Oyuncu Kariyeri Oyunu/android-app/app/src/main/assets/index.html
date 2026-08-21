@@ -3615,6 +3615,7 @@
                         startingTrust = 20;
                     }
 
+                    localStorage.removeItem(GAME.saveKey);
                     GAME.resetGame(name, startingLeague, startingSalary, startingTrust, city, district, selectedStartingClub);
                     GAME.state.avatarCustomization = tempAvatarCustomization;
                     GAME.saveGame();
@@ -8944,13 +8945,8 @@
             
             document.getElementById("btn-season-summary-close").onclick = () => {
                 modal.classList.remove("active");
-                
-                // Retirement Check
-                if (GAME.state.age >= 39) {
-                    showRetirementSummary(true);
-                } else if (GAME.state.age >= 35) {
-                    showRetirementChoice();
-                }
+                determineNextOpponent();
+                GAME.updateUI();
             };
 
             modal.classList.add("active");
