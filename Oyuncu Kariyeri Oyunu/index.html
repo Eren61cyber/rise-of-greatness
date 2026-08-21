@@ -23,7 +23,7 @@
         }
     </script>
     <base href="./">
-    <link rel="stylesheet" href="styles.css?v=5.8.1">
+    <link rel="stylesheet" href="styles.css?v=5.8.2">
     <script>
         window.onerror = function(message, source, lineno, colno, error) {
             let errDiv = document.getElementById("visual-error-console");
@@ -959,15 +959,19 @@
                     <h2 style="font-family: var(--font-heading); font-size: 16px; font-weight: 800; letter-spacing: 0.5px; margin: 0; color: #f8fafc;">YATIRIM & MAĞAZA</h2>
                 </div>
                 
-                <div class="shop-sub-tab-container" style="display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 4px;">
-                    <button class="shop-sub-tab active" id="shop-sub-lifestyle-btn" onclick="switchShopSubTab('lifestyle')">Ev & Yaşam</button>
-                    <button class="shop-sub-tab" id="shop-sub-consumables-btn" onclick="switchShopSubTab('consumables')">Sağlık & Enerji</button>
-                    <button class="shop-sub-tab" id="shop-sub-boots-btn" onclick="switchShopSubTab('boots')">Krampon & Sponsor</button>
-                    <button class="shop-sub-tab" id="shop-sub-invest-btn" onclick="switchShopSubTab('invest')">Borsa & Yatırım</button>
-                    <button class="shop-sub-tab" id="shop-sub-tefeci-btn" onclick="switchShopSubTab('tefeci')">Tefeci</button>
-                    <button class="shop-sub-tab" id="shop-sub-packs-btn" onclick="switchShopSubTab('packs')">🌟 Kart Paketi</button>
-                    <button class="shop-sub-tab" id="shop-sub-esports-btn" onclick="switchShopSubTab('esports')">🎮 E-Spor</button>
-                    <button class="shop-sub-tab" id="shop-sub-propass-btn" onclick="switchShopSubTab('propass')">👑 Pro Pass</button>
+                <div class="shop-sub-tab-wrapper">
+                    <button class="shop-scroll-btn" onclick="scrollShopTabs(-120)" title="Sola Kaydır">‹</button>
+                    <div class="shop-sub-tab-container" id="shop-sub-tab-container">
+                        <button class="shop-sub-tab active" id="shop-sub-lifestyle-btn" onclick="switchShopSubTab('lifestyle')">Ev & Yaşam</button>
+                        <button class="shop-sub-tab" id="shop-sub-consumables-btn" onclick="switchShopSubTab('consumables')">Sağlık & Enerji</button>
+                        <button class="shop-sub-tab" id="shop-sub-boots-btn" onclick="switchShopSubTab('boots')">Krampon & Sponsor</button>
+                        <button class="shop-sub-tab" id="shop-sub-invest-btn" onclick="switchShopSubTab('invest')">Borsa & Yatırım</button>
+                        <button class="shop-sub-tab" id="shop-sub-tefeci-btn" onclick="switchShopSubTab('tefeci')">Tefeci</button>
+                        <button class="shop-sub-tab" id="shop-sub-packs-btn" onclick="switchShopSubTab('packs')">🌟 Kart Paketi</button>
+                        <button class="shop-sub-tab" id="shop-sub-esports-btn" onclick="switchShopSubTab('esports')">🎮 E-Spor</button>
+                        <button class="shop-sub-tab" id="shop-sub-propass-btn" onclick="switchShopSubTab('propass')">👑 Pro Pass</button>
+                    </div>
+                    <button class="shop-scroll-btn" onclick="scrollShopTabs(120)" title="Sağa Kaydır">›</button>
                 </div>
 
                 <div class="shop-list" id="shop-items-container">
@@ -1990,10 +1994,10 @@
     </div>
 
     <!-- Script Loads (Database first, logic next) -->
-    <script src="database.js?v=5.8.1"></script>
-    <script src="events.js?v=5.8.1"></script>
-    <script src="game.js?v=5.8.1"></script>
-    <script src="matchEngine.js?v=5.8.1"></script>
+    <script src="database.js?v=5.8.2"></script>
+    <script src="events.js?v=5.8.2"></script>
+    <script src="game.js?v=5.8.2"></script>
+    <script src="matchEngine.js?v=5.8.2"></script>
     
     <!-- MAIN CONTROLLER (Mounts everything) -->
     <script>
@@ -5570,6 +5574,13 @@
                 `;
             });
         }
+
+        window.scrollShopTabs = function(offset) {
+            const container = document.getElementById("shop-sub-tab-container");
+            if (container) {
+                container.scrollBy({ left: offset, behavior: 'smooth' });
+            }
+        };
 
         let activeShopSubTab = 'lifestyle';
 
