@@ -3846,6 +3846,8 @@
             }
         }
 
+        let newspaperCloseCallback = null;
+
         function closeRiseUpNewsModal() {
             const modal = document.getElementById("newspaper-modal");
             if (modal) {
@@ -3855,19 +3857,27 @@
             if (typeof SoundManager !== "undefined" && typeof SoundManager.playClick === "function") {
                 try { SoundManager.playClick(); } catch(e){}
             }
-            try {
-                if (typeof checkForWhatsAppEvents === "function" && !checkForWhatsAppEvents()) {
-                    if (Math.random() < 0.4 && typeof triggerRandomEvent === "function") {
-                        triggerRandomEvent();
+
+            if (typeof newspaperCloseCallback === "function") {
+                let cb = newspaperCloseCallback;
+                newspaperCloseCallback = null;
+                cb();
+            } else {
+                try {
+                    if (typeof checkForWhatsAppEvents === "function" && !checkForWhatsAppEvents()) {
+                        if (Math.random() < 0.4 && typeof triggerRandomEvent === "function") {
+                            triggerRandomEvent();
+                        }
                     }
+                } catch(e) {
+                    console.warn("Event check error after news close:", e);
                 }
-            } catch(e) {
-                console.warn("Event check error after news close:", e);
             }
         }
         window.closeRiseUpNewsModal = closeRiseUpNewsModal;
 
-        function openRiseUpNewsModal(customSportData) {
+        function openRiseUpNewsModal(customSportData, onCloseCallback = null) {
+            newspaperCloseCallback = onCloseCallback;
             try {
                 const week = (typeof GAME !== "undefined" && GAME && GAME.state && GAME.state.currentWeek) ? GAME.state.currentWeek : 1;
                 const news = generateRiseUpNews(week);
@@ -3924,13 +3934,13 @@
         window.openRiseUpNewsModal = openRiseUpNewsModal;
         window.updateHomeNewsPreview = updateHomeNewsPreview;
 
-        function showNewspaperModal(dateStr, title, subtitle, desc) {
+        function showNewspaperModal(dateStr, title, subtitle, desc, onCloseCallback = null) {
             openRiseUpNewsModal({
                 dateStr: dateStr,
                 title: title,
                 subtitle: subtitle,
                 desc: desc
-            });
+            }, onCloseCallback);
         }
 
         function checkForNewspaperAlert() {
@@ -4031,21 +4041,11 @@
                     `GÜNLÜK HEDİYE`,
                     `DESTEK GELDİ!`,
                     `GÜN ${r.day}/7`,
-                    `Temsilciniz ${agentIcon} <b>${agentName}</b> size bugün için şu destek paketini gönderdi:<br><br><span style="color: var(--accent-yellow); font-size: 15px; font-weight: bold; line-height: 1.6;">${rewardMsg}</span><br><br>Yarın yine bekliyoruz, 7. günde Premium Paket seni bekliyor!`
+                    `Temsilciniz ${agentIcon} <b>${agentName}</b> size bugün için şu destek paketini gönderdi:<br><br><span style="color: var(--accent-yellow); font-size: 15px; font-weight: bold; line-height: 1.6;">${rewardMsg}</span><br><br>Yarın yine bekliyoruz, 7. günde Premium Paket seni bekliyor!`,
+                    () => {
+                        // Empty callback, do not trigger random events immediately
+                    }
                 );
-                // Customize close button action to trigger UI updates without running transfer/random event checks immediately
-                document.getElementById("btn-news-close").onclick = () => {
-                    document.getElementById("newspaper-modal").classList.remove("active");
-                    // Restore standard click handler
-                    document.getElementById("btn-news-close").onclick = () => {
-                        document.getElementById("newspaper-modal").classList.remove("active");
-                        if (!checkForWhatsAppEvents()) {
-                            if (Math.random() < 0.4) {
-                                triggerRandomEvent();
-                            }
-                        }
-                    };
-                };
             }, 1000);
         }
 
@@ -4460,14 +4460,11 @@
                     `HAFTA ${GAME.state.currentWeek}`,
                     `${GAME.state.playerName.toUpperCase()} MAÇIN OYUNCUSU!`,
                     "Muhteşem Oyunuyla Gazete Manşetlerinde!",
-                    `Bugün sahada adeta devleşen genç yetenek ${GAME.state.playerName}, sergilediği olağanüstü performansla futbol severleri büyüledi. Maçın Oyuncusu seçilen ${GAME.state.playerName} için basın mensupları ve gözlemciler sıraya girdi. Karşılaşma sonrasında kameraların karşısına geçmeye hazırlanan genç futbolcunun ne diyeceği merakla bekleniyor.`
+                    `Bugün sahada adeta devleşen genç yetenek ${GAME.state.playerName}, sergilediği olağanüstü performansla futbol severleri büyüledi. Maçın Oyuncusu seçilen ${GAME.state.playerName} için basın mensupları ve gözlemciler sıraya girdi. Karşılaşma sonrasında kameraların karşısına geçmeye hazırlanan genç futbolcunun ne diyeceği merakla bekleniyor.`,
+                    () => {
+                        openInterviewModal(rating, goals, assists);
+                    }
                 );
-                
-                // Gazete kapatıldığında röportaj modalını açmak için kapatma butonunu güncelle
-                document.getElementById("btn-news-close").onclick = () => {
-                    document.getElementById("newspaper-modal").classList.remove("active");
-                    openInterviewModal(rating, goals, assists);
-                };
             } 
             // Eğer normal röportaj zamanı gelmişse (5 maçta 1)
             else if (isRegularInterviewTime) {
