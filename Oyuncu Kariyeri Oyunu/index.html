@@ -8222,6 +8222,7 @@
                     // 60. dakika: Fırsat bulamazsak teknik direktör oyundan çıkarır (Sadece ilk 11 başladıysak ve kırmızı kart yememişsek)
                     if (min === 60 && !playerSubbedOff && !MatchEngine.isSentOff && !MatchEngine.isBenched && !MatchEngine.isDropped && MatchEngine.playerStats.goals === 0 && MatchEngine.playerStats.assists === 0) {
                         playerSubbedOff = true;
+                        MatchEngine.isSubbedOff = true;
                         MatchEngine.choiceMinutes = []; // Stop generating further chances
                         timelineLog.innerHTML += `
                             <div style="border-left: 2.5px solid var(--accent-yellow); padding-left: 8px; margin: 8px 0; background: rgba(255,193,7,0.08); border-radius:4px; padding: 8px;">

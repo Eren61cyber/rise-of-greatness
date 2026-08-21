@@ -40,6 +40,7 @@ const MatchEngine = {
         this.hasTriggeredSetPiece = false;
         this.isSentOff = false;
         this.hasYellowCard = false;
+        this.isSubbedOff = false; // New flag for early substitutions
 
         // NSS Hoca Güveni & Takım Uyumu Etkileri
         this.isBenched = false;
@@ -165,15 +166,18 @@ const MatchEngine = {
                 return;
             }
 
-            // If player is red carded, run simplified simulation
-            if (self.isSentOff) {
+            // If player is red carded or subbed off, run simplified simulation
+            if (self.isSentOff || self.isSubbedOff) {
                 let ratingPlayer = (self.teamPlayer.att + self.teamPlayer.mid + self.teamPlayer.def) / 3;
                 let ratingOpponent = (self.teamOpponent.att + self.teamOpponent.mid + self.teamOpponent.def) / 3;
                 if (Math.random() < 0.025) {
                     self.score.opponent++;
-                    callbacks.onMinuteUpdate(self.min, self.score, `RAKİP GOL ATTI! 10 kişi kalmamızı fırsat bilen ${self.teamOpponent.name} farkı açıyor.`);
+                    callbacks.onMinuteUpdate(self.min, self.score, `RAKİP GOL ATTI! ${self.isSentOff ? '10 kişi kalmamızı' : 'Kenara gelmeni'} fırsat bilen ${self.teamOpponent.name} farkı açıyor.`);
+                } else if (Math.random() < 0.025) {
+                    self.score.player++;
+                    callbacks.onMinuteUpdate(self.min, self.score, `GOOOOL! ${self.isSentOff ? '10 kişi olmamıza rağmen' : 'Sen kenardayken'} takımın harika bir gol buluyor!`);
                 } else if (Math.random() < 0.15) {
-                    callbacks.onMinuteUpdate(self.min, self.score, `10 kişi mücadele ediyoruz, ${self.playerState.playerName} kırmızı kartla tribünde.`);
+                    callbacks.onMinuteUpdate(self.min, self.score, self.isSentOff ? `10 kişi mücadele ediyoruz, ${self.playerState.playerName} kırmızı kartla tribünde.` : `Takım sensiz mücadeleye devam ediyor...`);
                 } else {
                     callbacks.onMinuteUpdate(self.min, self.score, null);
                 }
