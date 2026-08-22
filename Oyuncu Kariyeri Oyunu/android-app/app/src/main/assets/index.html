@@ -815,9 +815,17 @@
                     </div>
                 </div>
 
-                <button class="btn" onclick="triggerManualJubilee()" style="width: 100%; margin-top: 12px; padding: 14px; background: linear-gradient(135deg, #fdb913 0%, #ff8f00 100%); color: #000; font-weight: 900; font-size: 13px; border-radius: 10px; border: none; box-shadow: 0 4px 15px rgba(253, 185, 19, 0.3); cursor: pointer;">
-                    🎖️ EFSANEVİ JÜBİLE YAP & EMEKLİ OL
-                </button>
+                <div style="display: flex; gap: 10px; margin-top: 12px;">
+                    <button class="btn" onclick="triggerManualJubilee()" style="flex: 1; padding: 14px; background: linear-gradient(135deg, #fdb913 0%, #ff8f00 100%); color: #000; font-weight: 900; font-size: 11px; border-radius: 10px; border: none; box-shadow: 0 4px 15px rgba(253, 185, 19, 0.3); cursor: pointer;">
+                        👞 EMEKLİ OL
+                    </button>
+                    <button class="btn" onclick="showHallOfFame()" style="flex: 1; padding: 14px; background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3); color: #ffd700; font-weight: 900; font-size: 11px; border-radius: 10px; cursor: pointer;">
+                        🏆 EFSANELER
+                    </button>
+                    <button class="btn" onclick="showAchievements()" style="flex: 1; padding: 14px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; font-weight: 900; font-size: 11px; border-radius: 10px; cursor: pointer;">
+                        🎖️ BAŞARIMLAR
+                    </button>
+                </div>
             </section>
 
             <section id="panel-standings" class="view-panel">
@@ -1208,6 +1216,32 @@
             </div>
         </div>
 
+        <!-- HALL OF FAME MODAL -->
+        <div class="event-modal-overlay" id="hof-modal" style="background: rgba(0,0,0,0.9); z-index: 10050; display: none; align-items: center; justify-content: center;">
+            <div class="event-card glass" style="max-width: 400px; width: 90%; text-align: left; max-height: 85vh; padding: 0; overflow: hidden; background: #0d1117; border: 1px solid #30363d; display: flex; flex-direction: column;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid #21262d; background: #161b22;">
+                    <h2 style="color: #ffd700; margin: 0; font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 8px;">🏆 Efsaneler Odası</h2>
+                    <button onclick="document.getElementById('hof-modal').style.display='none';" style="background: none; border: none; color: #8b949e; font-size: 22px; cursor: pointer; padding: 0; line-height: 1;">&times;</button>
+                </div>
+                <div id="hof-list" style="padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; max-height: 400px;">
+                    <!-- JS fills this -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ACHIEVEMENTS MODAL -->
+        <div class="event-modal-overlay" id="achievements-modal" style="background: rgba(0,0,0,0.9); z-index: 10050; display: none; align-items: center; justify-content: center;">
+            <div class="event-card glass" style="max-width: 400px; width: 90%; text-align: left; max-height: 85vh; padding: 0; overflow: hidden; background: #0d1117; border: 1px solid #30363d; display: flex; flex-direction: column;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid #21262d; background: #161b22;">
+                    <h2 style="color: #00e5ff; margin: 0; font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 8px;">🎖️ Başarımlar</h2>
+                    <button onclick="document.getElementById('achievements-modal').style.display='none';" style="background: none; border: none; color: #8b949e; font-size: 22px; cursor: pointer; padding: 0; line-height: 1;">&times;</button>
+                </div>
+                <div id="achievements-list" style="padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; max-height: 400px;">
+                    <!-- JS fills this -->
+                </div>
+            </div>
+        </div>
+
         <!-- SETTINGS MODAL -->
         <div class="event-modal-overlay" id="settings-modal">
             <div class="event-card glass" style="max-width: 340px; padding: 0; overflow: hidden; background: #0d1117; border: 1px solid #30363d; text-align: left;">
@@ -1392,6 +1426,7 @@
                         </div>
                     </div>
                     <button class="btn btn-primary" id="intro-btn-next-1" style="width: 100%; padding: 14px; font-size: 14px; font-weight: bold;">HİKAYEYİ BAŞLAT</button>
+                    <button class="btn btn-event" id="intro-btn-hof" style="width: 100%; padding: 14px; font-size: 13px; font-weight: bold; margin-top: 10px; background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3); color: #ffd700; display: none;">🏆 EFSANELER ODASI</button>
                 </div>
 
                 <!-- Step 1.5: Character Customization (Avatar Creator) -->
@@ -3088,6 +3123,79 @@
             renderAvatarFaceOptions();
         }
 
+        function showHallOfFame() {
+            const listEl = document.getElementById("hof-list");
+            let hof = JSON.parse(localStorage.getItem("ROG_HallOfFame") || "[]");
+            listEl.innerHTML = "";
+            
+            if (hof.length === 0) {
+                listEl.innerHTML = "<p style='color: var(--text-muted); text-align: center;'>Henüz hiç efsane yok. Kariyerini tamamla ve buraya adını yazdır!</p>";
+            } else {
+                // Sort by rating or matches descending
+                hof.sort((a, b) => b.rating - a.rating);
+                
+                hof.forEach((leg, idx) => {
+                    let trophyColor = idx === 0 ? "#ffd700" : (idx === 1 ? "#c0c0c0" : (idx === 2 ? "#cd7f32" : "#30363d"));
+                    listEl.innerHTML += `
+                        <div style="background: rgba(255,255,255,0.03); border: 1px solid ${trophyColor}; border-radius: 12px; padding: 15px; display: flex; align-items: center; gap: 15px; position: relative; overflow: hidden;">
+                            <div style="position: absolute; top: -10px; right: -10px; opacity: 0.1; font-size: 60px;">🏆</div>
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background: ${trophyColor}; color: #000; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 20px;">
+                                #${idx + 1}
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 900; color: white; font-size: 16px;">${leg.name.toUpperCase()}</div>
+                                <div style="color: var(--text-muted); font-size: 12px; margin-bottom: 6px;">Emeklilik Yaşı: ${leg.age} | Bitiş: ${leg.date}</div>
+                                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                    <span style="background: rgba(0,0,0,0.4); padding: 4px 8px; border-radius: 4px; font-size: 11px; color: #fff;">Reyting: <strong style="color: var(--accent-yellow);">${leg.rating}</strong></span>
+                                    <span style="background: rgba(0,0,0,0.4); padding: 4px 8px; border-radius: 4px; font-size: 11px; color: #fff;">Maç: <strong>${leg.matches}</strong></span>
+                                    <span style="background: rgba(0,0,0,0.4); padding: 4px 8px; border-radius: 4px; font-size: 11px; color: #fff;">Gol: <strong style="color: var(--primary);">${leg.goals}</strong></span>
+                                    <span style="background: rgba(0,0,0,0.4); padding: 4px 8px; border-radius: 4px; font-size: 11px; color: #fff;">Asist: <strong style="color: #00e5ff;">${leg.assists}</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            document.getElementById("hof-modal").style.display = "flex";
+        }
+
+        function showAchievements() {
+            const listEl = document.getElementById("achievements-list");
+            let achData = JSON.parse(localStorage.getItem("ROG_Achievements") || "[]");
+            listEl.innerHTML = "";
+            
+            const achDefs = {
+                "first_goal": { title: "Siftah!", desc: "Kariyerinin ilk golünü attın.", icon: "⚽" },
+                "hat_trick": { title: "Şovmen!", desc: "Bir maçta 3 gol attın.", icon: "🔥" },
+                "red_card": { title: "Kasap!", desc: "Kariyerindeki ilk kırmızı kartı yedin.", icon: "🟥" },
+                "ballon_dor": { title: "Dünyanın En İyisi!", desc: "Ballon d'Or ödülünü kazandın.", icon: "🌍" },
+                "rich_kid": { title: "Zengin Bebesi!", desc: "1.000.000€ servete ulaştın.", icon: "💰" }
+            };
+
+            Object.keys(achDefs).forEach(id => {
+                let unlocked = achData.includes(id);
+                let def = achDefs[id];
+                let opacity = unlocked ? "1" : "0.3";
+                let filter = unlocked ? "none" : "grayscale(100%)";
+                let colorTitle = unlocked ? "#00e5ff" : "#8b949e";
+                let dateStr = unlocked ? "<span style='color: var(--accent-green); font-size: 10px;'>AÇILDI</span>" : "<span style='color: var(--text-muted); font-size: 10px;'>KİLİTLİ</span>";
+
+                listEl.innerHTML += `
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid ${unlocked ? 'rgba(0, 229, 255, 0.3)' : 'rgba(255,255,255,0.05)'}; border-radius: 12px; padding: 12px; display: flex; align-items: center; gap: 15px; opacity: ${opacity}; filter: ${filter};">
+                        <div style="font-size: 32px; min-width: 40px; text-align: center;">${def.icon}</div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                                <div style="font-weight: 900; color: ${colorTitle}; font-size: 14px;">${def.title}</div>
+                                ${dateStr}
+                            </div>
+                            <div style="color: var(--text-muted); font-size: 11px;">${def.desc}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById("achievements-modal").style.display = "flex";
+        }
+
         function updateIntroAvatarPreview() {
             if (!tempAvatarCustomization || !tempAvatarCustomization.faceId) {
                 tempAvatarCustomization = { faceId: 1 };
@@ -3538,6 +3646,15 @@
                 document.getElementById("intro-step-2").style.display = "none";
                 
                 introModal.classList.add("active");
+
+                const hofBtn = document.getElementById("intro-btn-hof");
+                let hofData = JSON.parse(localStorage.getItem("ROG_HallOfFame") || "[]");
+                if (hofData && hofData.length > 0 && hofBtn) {
+                    hofBtn.style.display = "block";
+                    hofBtn.onclick = () => {
+                        showHallOfFame();
+                    };
+                }
 
                 const nextBtn1 = document.getElementById("intro-btn-next-1");
                 const nextBtn2 = document.getElementById("intro-btn-next-2");
@@ -9073,6 +9190,20 @@
             
             // Restart Career Binding
             document.getElementById("btn-ret-restart").onclick = () => {
+                // Save to Hall of Fame
+                let hof = JSON.parse(localStorage.getItem("ROG_HallOfFame") || "[]");
+                hof.push({
+                    name: GAME.state.playerName,
+                    age: GAME.state.age,
+                    goals: GAME.state.careerGoals,
+                    assists: GAME.state.careerAssists,
+                    matches: GAME.state.careerApps,
+                    rating: GAME.state.rating,
+                    wealth: GAME.state.money,
+                    date: new Date().toLocaleDateString()
+                });
+                localStorage.setItem("ROG_HallOfFame", JSON.stringify(hof));
+
                 modal.classList.remove("active");
                 localStorage.removeItem(GAME.saveKey);
                 GAME.resetGame();

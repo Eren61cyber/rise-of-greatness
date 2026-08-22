@@ -1180,6 +1180,13 @@ const GAME = {
         if (!this.state.consecutivePoorMatches) this.state.consecutivePoorMatches = 0;
         if (!this.state.trainingDoneAfterWarning) this.state.trainingDoneAfterWarning = false;
 
+        // Check Achievements
+        if (this.state.careerGoals > 0 || goals > 0) this.unlockAchievement("first_goal");
+        if (goals >= 3) this.unlockAchievement("hat_trick");
+        if (this.state.money >= 1000000) this.unlockAchievement("rich_kid");
+        if (this.state.suspendedWeeks > 0) this.unlockAchievement("red_card");
+        if (this.state.hasBallonDor) this.unlockAchievement("ballon_dor");
+
         const goodPerformance = (rating >= 7.2 || (goals + assists) > 0);
         const poorPerformance = (goals === 0 && assists === 0 && rating < 6.5);
 
@@ -3058,6 +3065,27 @@ const GAME = {
         
         this.state.seasonFixtures = seasonFixtures.concat(secondHalf);
         this.saveGame();
+    },
+
+    unlockAchievement: function(id) {
+        const achDefs = {
+            "first_goal": { title: "Siftah!", desc: "Kariyerinin ilk golünü attın.", icon: "⚽" },
+            "hat_trick": { title: "Şovmen!", desc: "Bir maçta 3 gol attın.", icon: "🔥" },
+            "red_card": { title: "Kasap!", desc: "Kariyerindeki ilk kırmızı kartı yedin.", icon: "🟥" },
+            "ballon_dor": { title: "Dünyanın En İyisi!", desc: "Ballon d'Or ödülünü kazandın.", icon: "🌍" },
+            "rich_kid": { title: "Zengin Bebesi!", desc: "1.000.000€ servete ulaştın.", icon: "💰" }
+        };
+        
+        let achData = JSON.parse(localStorage.getItem("ROG_Achievements") || "[]");
+        if (!achData.includes(id) && achDefs[id]) {
+            achData.push(id);
+            localStorage.setItem("ROG_Achievements", JSON.stringify(achData));
+            
+            // Show toast notification
+            if (typeof showCustomAlert === "function") {
+                showCustomAlert(`Yeni Başarım Açıldı: ${achDefs[id].title}\n${achDefs[id].desc}`, "🏆 BAŞARIM", achDefs[id].icon, "success");
+            }
+        }
     }
 };
 
