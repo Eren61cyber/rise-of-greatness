@@ -1217,11 +1217,11 @@
         </div>
 
         <!-- HALL OF FAME MODAL -->
-        <div class="event-modal-overlay" id="hof-modal" style="background: rgba(0,0,0,0.9); z-index: 10050; display: none; align-items: center; justify-content: center;">
+        <div class="event-modal-overlay" id="hof-modal" style="background: rgba(0,0,0,0.9); z-index: 10050; align-items: center; justify-content: center; display: none;">
             <div class="event-card glass" style="max-width: 400px; width: 90%; text-align: left; max-height: 85vh; padding: 0; overflow: hidden; background: #0d1117; border: 1px solid #30363d; display: flex; flex-direction: column;">
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid #21262d; background: #161b22;">
                     <h2 style="color: #ffd700; margin: 0; font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 8px;">🏆 Efsaneler Odası</h2>
-                    <button onclick="document.getElementById('hof-modal').style.display='none';" style="background: none; border: none; color: #8b949e; font-size: 22px; cursor: pointer; padding: 0; line-height: 1;">&times;</button>
+                    <button onclick="document.getElementById('hof-modal').classList.remove('active'); document.getElementById('hof-modal').style.display='none';" style="background: none; border: none; color: #8b949e; font-size: 22px; cursor: pointer; padding: 0; line-height: 1;">&times;</button>
                 </div>
                 <div id="hof-list" style="padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; max-height: 400px;">
                     <!-- JS fills this -->
@@ -1230,11 +1230,11 @@
         </div>
 
         <!-- ACHIEVEMENTS MODAL -->
-        <div class="event-modal-overlay" id="achievements-modal" style="background: rgba(0,0,0,0.9); z-index: 10050; display: none; align-items: center; justify-content: center;">
+        <div class="event-modal-overlay" id="achievements-modal" style="background: rgba(0,0,0,0.9); z-index: 10050; align-items: center; justify-content: center; display: none;">
             <div class="event-card glass" style="max-width: 400px; width: 90%; text-align: left; max-height: 85vh; padding: 0; overflow: hidden; background: #0d1117; border: 1px solid #30363d; display: flex; flex-direction: column;">
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid #21262d; background: #161b22;">
                     <h2 style="color: #00e5ff; margin: 0; font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 8px;">🎖️ Başarımlar</h2>
-                    <button onclick="document.getElementById('achievements-modal').style.display='none';" style="background: none; border: none; color: #8b949e; font-size: 22px; cursor: pointer; padding: 0; line-height: 1;">&times;</button>
+                    <button onclick="document.getElementById('achievements-modal').classList.remove('active'); document.getElementById('achievements-modal').style.display='none';" style="background: none; border: none; color: #8b949e; font-size: 22px; cursor: pointer; padding: 0; line-height: 1;">&times;</button>
                 </div>
                 <div id="achievements-list" style="padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; max-height: 400px;">
                     <!-- JS fills this -->
@@ -2061,27 +2061,69 @@
                     let ctx = this.audioCtx;
                     if (!ctx) return;
                     let now = ctx.currentTime;
+                    
                     let osc = ctx.createOscillator();
                     let gain = ctx.createGain();
 
                     osc.type = "sine";
-                    osc.frequency.setValueAtTime(600, now);
-                    osc.frequency.exponentialRampToValueAtTime(1200, now + 0.08);
+                    // Start high, drop very fast (classic modern UI pop)
+                    osc.frequency.setValueAtTime(800, now);
+                    osc.frequency.exponentialRampToValueAtTime(150, now + 0.05);
 
-                    gain.gain.setValueAtTime(0.08, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
 
                     osc.connect(gain);
                     gain.connect(ctx.destination);
                     osc.start(now);
-                    osc.stop(now + 0.08);
+                    osc.stop(now + 0.05);
                 } catch(e) {
                     console.error("Audio error in playClick:", e);
                 }
             },
 
+            playBuy: function() {
+                if (!this.enabled) return;
+                try {
+                    this.initAudio();
+                    let ctx = this.audioCtx;
+                    if (!ctx) return;
+                    let now = ctx.currentTime;
+                    
+                    // Cash register 'Cha-Ching'
+                    let osc1 = ctx.createOscillator();
+                    let gain1 = ctx.createGain();
+                    osc1.type = "square";
+                    osc1.frequency.setValueAtTime(1200, now);
+                    gain1.gain.setValueAtTime(0.05, now);
+                    gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+                    osc1.connect(gain1); gain1.connect(ctx.destination);
+                    osc1.start(now); osc1.stop(now + 0.1);
+
+                    let osc2 = ctx.createOscillator();
+                    let gain2 = ctx.createGain();
+                    osc2.type = "square";
+                    osc2.frequency.setValueAtTime(1600, now + 0.1);
+                    gain2.gain.setValueAtTime(0.05, now + 0.1);
+                    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+                    osc2.connect(gain2); gain2.connect(ctx.destination);
+                    osc2.start(now + 0.1); osc2.stop(now + 0.3);
+                } catch(e) {
+                    console.error("Audio error in playBuy:", e);
+                }
+            },
+
             playGoal: function() {
                 if (!this.enabled) return;
+                
+                // Add screen flash effect
+                if (typeof document !== "undefined") {
+                    let flash = document.createElement("div");
+                    flash.className = "goal-flash-overlay";
+                    document.body.appendChild(flash);
+                    setTimeout(() => { if (flash.parentNode) flash.parentNode.removeChild(flash); }, 800);
+                }
+
                 try {
                     this.initAudio();
                     let ctx = this.audioCtx;
@@ -2239,7 +2281,7 @@
                     let activeCtx = ctx || this.audioCtx;
                     if (!activeCtx) return;
                     let now = activeCtx.currentTime;
-                    let bufferSize = activeCtx.sampleRate * 2.5; 
+                    let bufferSize = activeCtx.sampleRate * 3.5; 
                     let buffer = activeCtx.createBuffer(1, bufferSize, activeCtx.sampleRate);
                     let data = buffer.getChannelData(0);
                     for (let i = 0; i < bufferSize; i++) {
@@ -2251,25 +2293,25 @@
 
                     let filter = activeCtx.createBiquadFilter();
                     filter.type = "bandpass";
-                    filter.frequency.value = 650;
-                    filter.Q.value = 1.0;
+                    filter.frequency.value = 800;
+                    filter.Q.value = 0.8;
 
                     filter.frequency.setValueAtTime(300, now);
-                    filter.frequency.exponentialRampToValueAtTime(1100, now + 0.5);
-                    filter.frequency.exponentialRampToValueAtTime(600, now + 1.2);
-                    filter.frequency.exponentialRampToValueAtTime(100, now + 2.5);
+                    filter.frequency.exponentialRampToValueAtTime(1200, now + 0.6);
+                    filter.frequency.exponentialRampToValueAtTime(700, now + 1.5);
+                    filter.frequency.exponentialRampToValueAtTime(200, now + 3.5);
 
                     let gain = activeCtx.createGain();
                     gain.gain.setValueAtTime(0.2, now);
-                    gain.gain.linearRampToValueAtTime(0.35, now + 0.4);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
+                    gain.gain.linearRampToValueAtTime(0.4, now + 0.5);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 3.5);
 
                     noise.connect(filter);
                     filter.connect(gain);
                     gain.connect(activeCtx.destination);
 
                     noise.start(now);
-                    noise.stop(now + 2.5);
+                    noise.stop(now + 3.5);
                 } catch(e) {
                     console.error("Audio error in playCrowdCheer:", e);
                 }
@@ -3156,7 +3198,9 @@
                     `;
                 });
             }
-            document.getElementById("hof-modal").style.display = "flex";
+            const modal = document.getElementById("hof-modal");
+            modal.style.display = ""; // clear inline
+            modal.classList.add("active");
         }
 
         function showAchievements() {
@@ -3193,7 +3237,10 @@
                     </div>
                 `;
             });
-            document.getElementById("achievements-modal").style.display = "flex";
+            
+            const modal = document.getElementById("achievements-modal");
+            modal.style.display = ""; // clear inline
+            modal.classList.add("active");
         }
 
         function updateIntroAvatarPreview() {
@@ -5519,6 +5566,7 @@
             }
 
             GAME.state.money -= cost;
+            if (window.SoundManager) window.SoundManager.playBuy();
             GAME.saveGame();
             GAME.updateUI();
 

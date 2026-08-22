@@ -677,6 +677,10 @@ const GAME = {
         this.state.ownedItems.push(itemId);
         this.state.weeksSinceLastPurchase = 0;
         
+        if (typeof window !== "undefined" && window.SoundManager) {
+            window.SoundManager.playBuy();
+        }
+        
         // Apply immediate effects
         item.effect(this.state);
 
@@ -1455,6 +1459,9 @@ const GAME = {
         }
         
         this.state.money -= boot.cost;
+        if (typeof window !== "undefined" && window.SoundManager) {
+            window.SoundManager.playBuy();
+        }
         this.state.activePurchasedBoot = boot.id;
         this.state.weeksSinceLastPurchase = 0;
         
@@ -1727,16 +1734,29 @@ const GAME = {
         bindings["stat-fame"] = Math.floor((this.state.followers || 0) / 1000);
 
         for (let id in bindings) {
+            const val = bindings[id];
+            
+            // Helper to update and animate
+            const updateAndAnimate = (node) => {
+                let currentVal = id === "player-name" ? node.innerHTML : node.innerText;
+                if (currentVal != val) {
+                    if (id === "player-name") node.innerHTML = val;
+                    else node.innerText = val;
+                    
+                    // Trigger a subtle pop animation if it's a numeric stat change
+                    if (typeof val === 'number' || (typeof val === 'string' && val.match(/^[0-9]+(%)?( \?)?$/))) {
+                        node.style.animation = 'none';
+                        node.offsetHeight; /* trigger reflow */
+                        node.style.animation = 'popUpdate 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    }
+                }
+            };
+
             const el = document.getElementById(id);
-            if (el) {
-                if (id === "player-name") el.innerHTML = bindings[id];
-                else el.innerText = bindings[id];
-            }
+            if (el) updateAndAnimate(el);
+
             const elements = document.querySelectorAll(".bind-" + id);
-            elements.forEach(item => {
-                if (id === "player-name") item.innerHTML = bindings[id];
-                else item.innerText = bindings[id];
-            });
+            elements.forEach(item => updateAndAnimate(item));
         }
 
         // Render Diamond Radar Chart Points
