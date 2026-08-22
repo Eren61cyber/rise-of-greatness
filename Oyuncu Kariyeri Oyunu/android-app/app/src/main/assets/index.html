@@ -613,10 +613,9 @@
                     <div class="stat-box-item" onclick="if(window.GAME) GAME.switchTab('panel-training');">
                         <div class="stat-box-top">
                             <div class="stat-box-icon">⚽</div>
-                            <span class="stat-box-arrow">↗</span>
                         </div>
                         <div class="stat-box-bottom">
-                            <div class="stat-box-value bind-cat-teknik">18</div>
+                            <div class="stat-box-value bind-cat-teknik" style="font-variant-numeric: tabular-nums;">18</div>
                             <div class="stat-box-label">TEKNİK</div>
                         </div>
                     </div>
@@ -624,21 +623,19 @@
                     <div class="stat-box-item" onclick="if(window.GAME) GAME.switchTab('panel-training');">
                         <div class="stat-box-top">
                             <div class="stat-box-icon">⚡</div>
-                            <span class="stat-box-arrow">↗</span>
                         </div>
                         <div class="stat-box-bottom">
-                            <div class="stat-box-value bind-cat-fiziksel">15</div>
+                            <div class="stat-box-value bind-cat-fiziksel" style="font-variant-numeric: tabular-nums;">15</div>
                             <div class="stat-box-label">FİZİKSEL</div>
                         </div>
                     </div>
 
                     <div class="stat-box-item" onclick="if(window.GAME) GAME.switchTab('panel-training');">
                         <div class="stat-box-top">
-                            <div class="stat-box-icon">👁️</div>
-                            <span class="stat-box-arrow">↗</span>
+                            <div class="stat-box-icon">🧠</div>
                         </div>
                         <div class="stat-box-bottom">
-                            <div class="stat-box-value bind-cat-zihinsel">15</div>
+                            <div class="stat-box-value bind-cat-zihinsel" style="font-variant-numeric: tabular-nums;">15</div>
                             <div class="stat-box-label">ZİHİNSEL</div>
                         </div>
                     </div>
@@ -646,43 +643,47 @@
                     <div class="stat-box-item" onclick="if(window.GAME) GAME.switchTab('panel-training');">
                         <div class="stat-box-top">
                             <div class="stat-box-icon">🛡️</div>
-                            <span class="stat-box-arrow">↗</span>
                         </div>
                         <div class="stat-box-bottom">
-                            <div class="stat-box-value bind-cat-savunma">15</div>
+                            <div class="stat-box-value bind-cat-savunma" style="font-variant-numeric: tabular-nums;">15</div>
                             <div class="stat-box-label">SAVUNMA</div>
                         </div>
                     </div>
                 </div>
+                </div>
 
-                <!-- FUT Card removed, now relying on Diamond Radar Chart and Grid Stats above -->
-
-                <!-- NSS Relationships Card -->
+                <!-- Relationships Card -->
                 <div class="card glass" style="margin-top: 10px; padding: 14px;">
                     <div style="font-size: 11px; font-weight: 800; color: var(--accent-yellow); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-yellow);"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> İlişkiler ve Sosyal Bağlar (NSS)
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-yellow);"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Kulüp & Çevre İlişkileri
                     </div>
-                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
                         <div>
-                            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #ccc; margin-bottom: 3px;">
-                                <span>👨‍💼 Teknik Direktör Güveni</span>
-                                <span id="career-rel-trust">50%</span>
+                            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #ccc; margin-bottom: 4px;">
+                                <span style="font-weight: 600;">👨‍💼 Teknik Direktör Güveni</span>
+                                <span id="career-rel-trust" style="font-weight: bold;">50%</span>
                             </div>
-                            <div class="progress-bar" style="height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden;"><div class="fill trust" id="career-bar-trust" style="width: 50%; height: 100%; border-radius: 3px; background: var(--primary);"></div></div>
+                            <div class="progress-bar" style="height: 4px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden;">
+                                <div class="fill trust" id="career-bar-trust" style="width: 50%; height: 100%; border-radius: 4px; background: #3b82f6;"></div>
+                            </div>
                         </div>
                         <div>
-                            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #ccc; margin-bottom: 3px;">
-                                <span>🤝 Takım Arkadaşları Uyum</span>
-                                <span id="career-rel-team">50%</span>
+                            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #ccc; margin-bottom: 4px;">
+                                <span style="font-weight: 600;">🤝 Takım Arkadaşları Uyum</span>
+                                <span id="career-rel-team" style="font-weight: bold;">50%</span>
                             </div>
-                            <div class="progress-bar" style="height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden;"><div class="fill" id="career-bar-team" style="width: 50%; height: 100%; border-radius: 3px; background: var(--secondary);"></div></div>
+                            <div class="progress-bar" style="height: 4px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden;">
+                                <div class="fill" id="career-bar-team" style="width: 50%; height: 100%; border-radius: 4px; background: #10b981;"></div>
+                            </div>
                         </div>
                         <div>
-                            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #ccc; margin-bottom: 3px;">
-                                <span>📣 Taraftar Sevgisi</span>
-                                <span id="career-rel-fans">50%</span>
+                            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #ccc; margin-bottom: 4px;">
+                                <span style="font-weight: 600;">🗣️ Taraftar & Medya Desteği</span>
+                                <span id="career-rel-fans" style="font-weight: bold;">50%</span>
                             </div>
-                            <div class="progress-bar" style="height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden;"><div class="fill" id="career-bar-fans" style="width: 50%; height: 100%; border-radius: 3px; background: #e040fb;"></div></div>
+                            <div class="progress-bar" style="height: 4px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden;">
+                                <div class="fill" id="career-bar-fans" style="width: 50%; height: 100%; border-radius: 4px; background: #f59e0b;"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -690,10 +691,15 @@
                 <!-- 🏆 KUPA MÜZESİ (TROPHY SHOWCASE) -->
                 <div class="card glass" style="margin-top: 10px; padding: 14px;">
                     <div style="font-size: 11px; font-weight: 800; color: var(--accent-yellow); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-yellow);"><circle cx="12" cy="8" r="7"/><path d="M4 15V9h2v6M20 15V9h-2v6M9 22h6M12 15v7"/></svg> Kupa Müzesi (Trophy Room)
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-yellow);"><circle cx="12" cy="8" r="7"/><path d="M4 15V9h2v6M20 15V9h-2v6M9 22h6M12 15v7"/></svg> Kupa Müzesi
                     </div>
                     <div id="trophy-showcase-container" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
-                        <div style="font-size: 11.5px; color: var(--text-muted); text-align: center; width: 100%; padding: 10px 0;">Henüz müzenizde kupa bulunmuyor. Süper Lig, Süper Kupa ve Avrupa Kupaları kazanarak müzeyi doldurun!</div>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 4px 0; opacity: 0.3;">
+                            <span style="font-size: 20px;">🏆</span>
+                            <span style="font-size: 20px; transform: scale(1.1);">🏆</span>
+                            <span style="font-size: 20px;">🏆</span>
+                        </div>
+                        <div style="font-size: 10px; font-weight: 800; color: #fff; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">0 Kupa</div>
                     </div>
                 </div>
 
@@ -707,52 +713,33 @@
                     </div>
                 </div>
 
-                <!-- 📰 RISEUP NEWS CARD -->
-                <div class="card glass" style="
-                    margin-top: 10px; 
-                    padding: 10px 14px; 
-                    background: linear-gradient(135deg, rgba(0, 229, 255, 0.1), rgba(239, 68, 68, 0.06));
-                    border: 1px solid rgba(0, 229, 255, 0.35);
-                    cursor: pointer;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    border-radius: 10px;
-                    transition: all 0.2s ease-in-out;
-                    box-shadow: 0 4px 15px rgba(0, 229, 255, 0.08);
-                " onclick="openRiseUpNewsModal()" onmouseover="this.style.transform='translateY(-1px)'; this.style.borderColor='var(--primary)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(0, 229, 255, 0.35)';">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(0, 229, 255, 0.15); border: 1px solid rgba(0, 229, 255, 0.3); display: flex; align-items: center; justify-content: center; font-size: 20px;">
-                            📰
-                        </div>
-                        <div style="text-align: left;">
-                            <div style="display: flex; align-items: center; gap: 6px;">
-                                <h4 style="margin: 0; font-size: 13px; font-weight: 900; color: #ffffff; letter-spacing: 0.5px;">RISEUP NEWS</h4>
-                                <span style="background: var(--accent-red); color: white; font-size: 8.5px; font-weight: 800; padding: 1px 6px; border-radius: 4px; text-transform: uppercase;">GÜNCEL BASIN</span>
-                            </div>
-                            <p id="home-news-headline-preview" style="margin: 2px 0 0 0; font-size: 10.5px; color: #cfd8dc; line-height: 1.25; max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                Haftanın spor, ekonomi ve magazin manşetleri çıktı!
-                            </p>
-                        </div>
+                <!-- 📰 RISEUP NEWS TICKER -->
+                <div class="card glass" style="margin-top: 10px; padding: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; border-radius: 8px; border-left: 3px solid var(--accent-red);" onclick="openRiseUpNewsModal()">
+                    <div style="display: flex; align-items: center; gap: 8px; overflow: hidden;">
+                        <span style="background: var(--accent-red); color: white; font-size: 9px; font-weight: 900; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; white-space: nowrap;">📰 FLAŞ HABER</span>
+                        <p id="home-news-headline-preview" style="margin: 0; font-size: 11px; color: #fff; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px;">Haftanın spor manşetleri çıktı!</p>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 4px;">
-                        <span style="font-size: 11px; font-weight: 800; color: var(--primary);">OKU</span>
-                        <span style="font-size: 14px; color: var(--primary);">➔</span>
-                    </div>
+                    <span style="font-size: 14px; color: var(--text-muted);">➔</span>
                 </div>
 
 
-                <div class="action-zone" style="margin-top: 10px;">
-                    <div class="next-match-card glass">
-                        <h3>Sıradaki Rakip</h3>
-                        <p id="next-opponent-text">Rakip Aranıyor...</p>
+                <div class="action-zone" style="margin-top: 12px;">
+                    <div class="card glass" style="padding: 16px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; text-align: center; background: linear-gradient(145deg, rgba(16, 25, 36, 0.4), rgba(5, 7, 10, 0.6)); border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 12px;">
+                        <div style="font-size: 10px; font-weight: 800; color: #8b949e; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">SIRADAKİ RAKİP</div>
+                        <div id="next-opponent-text" style="font-size: 18px; font-weight: 900; color: #fff; margin-bottom: 6px;">Rakip Aranıyor...</div>
+                        <div style="font-size: 10px; color: var(--accent-green); font-weight: 700; background: rgba(0, 230, 118, 0.1); padding: 3px 8px; border-radius: 6px;">Fikstür Maçı</div>
                     </div>
-                    <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
-                        <div style="display: flex; gap: 8px; width: 100%;">
-                            <button class="btn btn-primary btn-pulse" id="btn-play-match" style="flex: 1.2; padding: 12px 8px; font-size: 13px;">MAÇA BAŞLA</button>
-                            <button class="btn btn-secondary" id="btn-simulate-match" style="flex: 0.8; padding: 12px 8px; font-size: 13px;">SİMÜLE ET</button>
-                        </div>
-                        <button class="btn btn-warning" id="btn-rest" style="width: 100%; padding: 12px 8px; font-size: 13px;">DİNLEN (Haftayı Geçir)</button>
+                    
+                    <button class="btn btn-primary btn-pulse" id="btn-play-match" style="width: 100%; padding: 16px; font-size: 14px; font-weight: 900; border-radius: 12px; margin-bottom: 8px; background: var(--accent-green); color: #000; box-shadow: 0 4px 15px rgba(0,230,118,0.25); border: none;">
+                        ⚽ MAÇI OYNA
+                    </button>
+                    <div style="display: flex; gap: 8px; width: 100%;">
+                        <button class="btn" id="btn-simulate-match" style="flex: 1; padding: 12px; font-size: 12px; font-weight: 800; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff;">
+                            SİMÜLE ET
+                        </button>
+                        <button class="btn" id="btn-rest" style="flex: 1; padding: 12px; font-size: 12px; font-weight: 800; border-radius: 10px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: #8b949e;">
+                            DİNLEN
+                        </button>
                     </div>
                 </div>
             </section>
@@ -5194,7 +5181,14 @@
             if (!container) return;
 
             if (!GAME.state.trophies || GAME.state.trophies.length === 0) {
-                container.innerHTML = `<div style="font-size: 11.5px; color: var(--text-muted); text-align: center; width: 100%; padding: 10px 0;">Henüz müzenizde kupa bulunmuyor. Süper Lig, Süper Kupa, Ballon d'Or ve Avrupa Kupaları kazanarak müzeyi doldurun!</div>`;
+                container.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 4px 0; opacity: 0.3;">
+                        <span style="font-size: 20px;">🏆</span>
+                        <span style="font-size: 20px; transform: scale(1.1);">🏆</span>
+                        <span style="font-size: 20px;">🏆</span>
+                    </div>
+                    <div style="font-size: 10px; font-weight: 800; color: #fff; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">0 Kupa</div>
+                `;
                 return;
             }
 
