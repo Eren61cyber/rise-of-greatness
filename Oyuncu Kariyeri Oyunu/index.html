@@ -750,84 +750,81 @@
                     <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
                         <div style="display: flex; gap: 8px; width: 100%;">
                             <button class="btn btn-primary btn-pulse" id="btn-play-match" style="flex: 1.2; padding: 12px 8px; font-size: 13px;">MAÇA BAŞLA</button>
-                            <button class="btn btn-secondary" id="btn-simulate-match" style="flex: 0.8; padding: 12px 8px; font-size: 13px;">SİMÜLE ET</button>
-                        </div>
-                        <button class="btn btn-warning" id="btn-rest" style="width: 100%; padding: 12px 8px; font-size: 13px;">DİNLEN (Haftayı Geçir)</button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- PANEL: MY CAREER (KARİYERİM) -->
-            <section id="panel-my-career" class="view-panel">
+                            <button class="btn btn-secondary" id="btn-simulate-match" style="flex: 0.8; padding: 12px 8px; font-size: 13p            <section id="panel-my-career" class="view-panel">
                 <div class="panel-header" style="margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
                     <div>
                         <h2>Kariyerim</h2>
-                        <p style="color: var(--accent-green); font-weight: bold;" class="bind-player-name">...</p>
                     </div>
                 </div>
 
-                <div class="stat-grid-2x2">
-                    <div class="stat-box-item glass" style="background: linear-gradient(145deg, rgba(0, 229, 183, 0.1), rgba(0, 0, 0, 0.4));">
-                        <div class="stat-box-top">
-                            <div class="stat-box-icon">⚽</div>
-                        </div>
-                        <div class="stat-box-bottom">
-                            <div class="stat-box-value" id="career-total-goals">0</div>
-                            <div class="stat-box-label">TOPLAM GOL</div>
+                <!-- 1. İstatistik Bento Izgarası (Grid) 3'lü -->
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px;">
+                    <div class="card glass" style="padding: 12px 8px; text-align: center; border-radius: 12px; background: rgba(0, 168, 255, 0.05); border: 1px solid rgba(0, 168, 255, 0.15);">
+                        <div style="font-size: 18px; font-weight: 900; color: #00a8ff; font-variant-numeric: tabular-nums;" id="career-apps">0</div>
+                        <div style="font-size: 9px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-top: 4px;">Toplam Maç</div>
+                    </div>
+                    <div class="card glass" style="padding: 12px 8px; text-align: center; border-radius: 12px; background: rgba(0, 230, 118, 0.05); border: 1px solid rgba(0, 230, 118, 0.15);">
+                        <div style="font-size: 18px; font-weight: 900; color: #00E676; font-variant-numeric: tabular-nums;" id="career-total-goals">0</div>
+                        <div style="font-size: 9px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-top: 4px;">Toplam Gol</div>
+                    </div>
+                    <div class="card glass" style="padding: 12px 8px; text-align: center; border-radius: 12px; background: rgba(253, 185, 19, 0.05); border: 1px solid rgba(253, 185, 19, 0.15);">
+                        <div style="font-size: 18px; font-weight: 900; color: #fdb913; font-variant-numeric: tabular-nums;" id="career-total-assists">0</div>
+                        <div style="font-size: 9px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-top: 4px;">Toplam Asist</div>
+                    </div>
+                </div>
+
+                <!-- 2. Finansal Durum Kartı: Yan yana 2'li -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+                    <div class="card glass" style="padding: 14px; border-radius: 12px; display: flex; flex-direction: column; justify-content: center;">
+                        <div style="font-size: 10px; font-weight: 800; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 6px;">Toplam Kazanç</div>
+                        <div style="font-size: 16px; font-weight: 900; color: #fff; font-variant-numeric: tabular-nums;">
+                            €<span id="career-total-earnings">0</span>
                         </div>
                     </div>
-
-                    <div class="stat-box-item glass" style="background: linear-gradient(145deg, rgba(253, 185, 19, 0.1), rgba(0, 0, 0, 0.4));">
-                        <div class="stat-box-top">
-                            <div class="stat-box-icon">👟</div>
-                        </div>
-                        <div class="stat-box-bottom">
-                            <div class="stat-box-value" id="career-total-assists">0</div>
-                            <div class="stat-box-label">TOPLAM ASİST</div>
+                    <div class="card glass" style="padding: 14px; border-radius: 12px; display: flex; flex-direction: column; justify-content: center;">
+                        <div style="font-size: 10px; font-weight: 800; color: var(--accent-green); text-transform: uppercase; margin-bottom: 6px;">Güncel Maaş</div>
+                        <div style="font-size: 16px; font-weight: 900; color: #fff; font-variant-numeric: tabular-nums;">
+                            <span id="weekly-salary-text">0 €/Hafta</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="card glass" style="margin-top: 12px; padding: 14px;">
-                    <div style="font-size: 11px; font-weight: 800; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 12px;">💸 FİNANSAL DURUM</div>
-                    <div style="font-size: 24px; font-weight: 900; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.2);">
-                        €<span id="career-total-earnings">0</span>
-                    </div>
-                    <div style="font-size: 11px; color: #aaa; margin-top: 4px;">Kariyer Boyunca Kazanılan Toplam Para</div>
-                </div>
-
-                <div class="card glass" style="margin-top: 12px; padding: 14px;">
-                    <div style="font-size: 11px; font-weight: 800; color: var(--accent-red); text-transform: uppercase; margin-bottom: 12px;">🔥 UNUTULMAZ ANLAR</div>
+                <!-- 3. Unutulmaz Anlar (Milestones) Rozet Kartları -->
+                <div class="card glass" style="margin-bottom: 12px; padding: 14px; border-radius: 12px;">
+                    <div style="font-size: 11px; font-weight: 800; color: var(--accent-red); text-transform: uppercase; margin-bottom: 10px;">📸 Unutulmaz Anlar</div>
                     
-                    <div style="margin-bottom: 12px;">
-                        <div style="font-size: 10px; color: #888; text-transform: uppercase;">En Farklı Galibiyet</div>
-                        <div style="font-size: 16px; font-weight: bold; color: var(--accent-green);" id="career-biggest-win">Yok</div>
-                    </div>
-                    
-                    <div style="margin-bottom: 12px;">
-                        <div style="font-size: 10px; color: #888; text-transform: uppercase;">En Farklı Mağlubiyet</div>
-                        <div style="font-size: 16px; font-weight: bold; color: var(--accent-red);" id="career-biggest-loss">Yok</div>
-                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <div style="background: rgba(0,255,0,0.03); border: 1px solid rgba(0,255,0,0.1); border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: space-between;">
+                            <div style="font-size: 10px; color: #888; text-transform: uppercase; font-weight: 600;">En Farklı Galibiyet</div>
+                            <div style="font-size: 13px; font-weight: bold; color: var(--accent-green);" id="career-biggest-win">Yok</div>
+                        </div>
+                        
+                        <div style="background: rgba(255,0,0,0.03); border: 1px solid rgba(255,0,0,0.1); border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: space-between;">
+                            <div style="font-size: 10px; color: #888; text-transform: uppercase; font-weight: 600;">En Farklı Mağlubiyet</div>
+                            <div style="font-size: 13px; font-weight: bold; color: var(--accent-red);" id="career-biggest-loss">Yok</div>
+                        </div>
 
-                    <div>
-                        <div style="font-size: 10px; color: #888; text-transform: uppercase;">En Duygusal An</div>
-                        <div style="font-size: 13px; font-weight: normal; color: #ddd; font-style: italic; border-left: 2px solid var(--accent-yellow); padding-left: 8px; margin-top: 4px;" id="career-emotional-match">Kariyerinde henüz unutulmaz bir dram yaşanmadı.</div>
+                        <div style="background: rgba(253, 185, 19, 0.03); border: 1px solid rgba(253, 185, 19, 0.1); border-radius: 8px; padding: 10px;">
+                            <div style="font-size: 10px; color: #888; text-transform: uppercase; font-weight: 600; margin-bottom: 4px;">En Duygusal An</div>
+                            <div style="font-size: 12px; font-weight: normal; color: #ddd; font-style: italic;" id="career-emotional-match">Kariyerinde henüz unutulmaz bir dram yaşanmadı.</div>
+                        </div>
                     </div>
                 </div>
 
-                <div style="display: flex; gap: 10px; margin-top: 12px;">
-                    <button class="btn" onclick="triggerManualJubilee()" style="flex: 1; padding: 14px; background: linear-gradient(135deg, #fdb913 0%, #ff8f00 100%); color: #000; font-weight: 900; font-size: 11px; border-radius: 10px; border: none; box-shadow: 0 4px 15px rgba(253, 185, 19, 0.3); cursor: pointer;">
-                        👞 EMEKLİ OL
-                    </button>
-                    <button class="btn" onclick="showHallOfFame()" style="flex: 1; padding: 14px; background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3); color: #ffd700; font-weight: 900; font-size: 11px; border-radius: 10px; cursor: pointer;">
-                        🏆 EFSANELER
-                    </button>
-                    <button class="btn" onclick="showAchievements()" style="flex: 1; padding: 14px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; font-weight: 900; font-size: 11px; border-radius: 10px; cursor: pointer;">
+                <!-- 4. Alt Aksiyon Butonları Hiyerarşisi -->
+                <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+                    <button class="btn" onclick="showAchievements()" style="flex: 1; padding: 14px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; font-weight: 900; font-size: 12px; border-radius: 10px; cursor: pointer;">
                         🎖️ BAŞARIMLAR
                     </button>
+                    <button class="btn" onclick="showHallOfFame()" style="flex: 1; padding: 14px; background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3); color: #ffd700; font-weight: 900; font-size: 12px; border-radius: 10px; cursor: pointer;">
+                        🏆 EFSANELER
+                    </button>
                 </div>
-            </section>
 
+                <button class="btn" onclick="triggerManualJubilee()" style="width: 100%; padding: 12px; background: transparent; color: var(--accent-red); font-weight: 700; font-size: 11px; border-radius: 10px; border: 1px solid rgba(255, 71, 87, 0.3); cursor: pointer; text-transform: uppercase;">
+                    Emekli Ol & Kariyeri Sonlandır
+                </button>
+            </section>
             <section id="panel-standings" class="view-panel">
                 <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
                     <div>
