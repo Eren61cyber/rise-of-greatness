@@ -177,7 +177,8 @@ const MatchEngine = {
                     self.score.player++;
                     callbacks.onMinuteUpdate(self.min, self.score, `GOOOOL! ${self.isSentOff ? '10 kişi olmamıza rağmen' : 'Sen kenardayken'} takımın harika bir gol buluyor!`);
                 } else if (Math.random() < 0.15) {
-                    callbacks.onMinuteUpdate(self.min, self.score, self.isSentOff ? `10 kişi mücadele ediyoruz, ${self.playerState.playerName} kırmızı kartla tribünde.` : `Takım sensiz mücadeleye devam ediyor...`);
+                    const pName = (self.playerState && self.playerState.playerName) || (window.GAME && GAME.state && GAME.state.playerName) || "Oyuncumuz";
+                    callbacks.onMinuteUpdate(self.min, self.score, self.isSentOff ? `10 kişi mücadele ediyoruz, ${pName} kırmızı kartla tribünde.` : `Takım sensiz mücadeleye devam ediyor...`);
                 } else {
                     callbacks.onMinuteUpdate(self.min, self.score, null);
                 }
@@ -1044,7 +1045,8 @@ const MatchEngine = {
                     self.score.opponent++;
                     self.callbacks.onMinuteUpdate(self.min, self.score, `RAKİP GOL ATTI! 10 kişi kalmamızı fırsat bilen ${self.teamOpponent.name} farkı açıyor.`);
                 } else if (Math.random() < 0.15) {
-                    self.callbacks.onMinuteUpdate(self.min, self.score, `10 kişi mücadele ediyoruz, Ahmet Eren kırmızı kartla tribünde olduğu için hücumda eksiğiz.`);
+                    const pName = (self.playerState && self.playerState.playerName) || (window.GAME && GAME.state && GAME.state.playerName) || "Oyuncumuz";
+                    self.callbacks.onMinuteUpdate(self.min, self.score, `10 kişi mücadele ediyoruz, ${pName} kırmızı kartla tribünde olduğu için hücumda eksiğiz.`);
                 } else {
                     self.callbacks.onMinuteUpdate(self.min, self.score, null);
                 }

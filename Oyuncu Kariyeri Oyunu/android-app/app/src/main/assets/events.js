@@ -625,7 +625,7 @@ const RANDOM_EVENTS = [
         id: "derby_bet",
         title: "Sosyal Medya İddiası",
         scope: "global",
-        description: "Rakip takımdaki forvet oyuncusu Twitter'dan sana meydan okudu: 'Ahmet Eren bu hafta gol atamaz, bahse varım!'",
+        description: "Rakip takımdaki forvet oyuncusu Twitter'dan sana meydan okudu: '${state.playerName} bu hafta gol atamaz, bahse varım!'",
         optionA: {
             text: "Bahsi kabul et ve meydan oku.",
             effectText: "Moral +20, Taraftar +15k, Hoca Güveni -5",
