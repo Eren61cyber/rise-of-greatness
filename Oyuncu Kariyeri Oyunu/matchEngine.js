@@ -64,35 +64,28 @@ const MatchEngine = {
                 Math.floor(Math.random() * (88 - 70 + 1)) + 70
             ];
         } else {
-            // Normal başlangıç (3 pozisyon)
+            // Normal başlangıç (En az 3 net pozisyon garantili)
             let baseMinutes = [
-                Math.floor(Math.random() * (38 - 15 + 1)) + 15,
-                Math.floor(Math.random() * (75 - 50 + 1)) + 50,
-                Math.floor(Math.random() * (89 - 80 + 1)) + 80
+                Math.floor(Math.random() * (35 - 16 + 1)) + 16,
+                Math.floor(Math.random() * (70 - 48 + 1)) + 48,
+                Math.floor(Math.random() * (89 - 78 + 1)) + 78
             ];
             
-            // Takım Uyumu düşükse pas atmazlar (1 pozisyon elenir)
-            if (teamChem < 40 && Math.random() < 0.60) {
-                baseMinutes.shift();
-                console.log("Takım arkadaşların sana pas atmadı (Takım Uyumu düşük).");
-            } 
-            // Takım Uyumu yüksekse ekstra pozisyon (4. pozisyon)
-            else if (teamChem >= 75 && Math.random() < 0.70) {
-                baseMinutes.push(Math.floor(Math.random() * (48 - 40 + 1)) + 40);
+            // Takım Uyumu yüksekse ekstra 4. pozisyon
+            if (teamChem >= 70 && Math.random() < 0.75) {
+                baseMinutes.push(Math.floor(Math.random() * (46 - 36 + 1)) + 36);
             }
 
-            // SEVİYE / REYTİNG BONUSU: Seviye yükseldikçe ekstra fırsat ekle (User Request)
+            // SEVİYE / REYTİNG BONUSU: Seviye yükseldikçe ekstra fırsat ekle
             const rating = playerState.rating || 50;
             if (rating >= 90) {
-                // Guaranteed 2 extra positions for superstar status (up to 5 or 6 positions!)
-                baseMinutes.push(Math.floor(Math.random() * (48 - 40 + 1)) + 40);
-                baseMinutes.push(Math.floor(Math.random() * (68 - 58 + 1)) + 58);
+                // Guaranteed 2 extra positions for superstar status (5 pozisyon!)
+                baseMinutes.push(Math.floor(Math.random() * (46 - 36 + 1)) + 36);
+                baseMinutes.push(Math.floor(Math.random() * (68 - 55 + 1)) + 55);
             } else if (rating >= 80) {
-                // 1 extra position for elite status
-                baseMinutes.push(Math.floor(Math.random() * (68 - 58 + 1)) + 58);
-            } else if (rating >= 70 && Math.random() < 0.50) {
-                // 50% chance of 1 extra position for high rating
-                baseMinutes.push(Math.floor(Math.random() * (68 - 58 + 1)) + 58);
+                baseMinutes.push(Math.floor(Math.random() * (68 - 55 + 1)) + 55);
+            } else if (rating >= 70 && Math.random() < 0.60) {
+                baseMinutes.push(Math.floor(Math.random() * (68 - 55 + 1)) + 55);
             }
 
             // Deduplicate minutes to prevent multiple prompt overlaps at the same minute
@@ -315,26 +308,42 @@ const MatchEngine = {
                 "Rakip stoperi bacak arası çalımla geç!",
                 "Hızını kullanıp kanattan çizgiye in!",
                 "Topu sağa çekip rakibini ekarte et!"
-            ]
-        };
-        const pool = pools[type] || pools.shoot;
-        return pool[Math.floor(Math.random() * pool.length)];
-    },
-
-    calculateStatSuccess: function(statVal, difficulty = 55) {
+      calculateStatSuccess: function(statVal, targetType = "def") {
         const val = Math.round(statVal || 50);
-        const diff = val - difficulty;
-        let chance = 0.50 + (diff * 0.009);
-        if (val < 52) {
-            chance = Math.min(chance, 0.28); // Low stat penalty (boşa gitme riski yüksek)
-        } else if (val >= 75) {
-            chance = Math.max(chance, 0.72); // High stat mastery
+        
+        // Dynamically compute opponent strength based on actual opponent team stats & league
+        let oppStat = 60;
+        if (this.teamOpponent) {
+            if (targetType === "def") oppStat = this.teamOpponent.def || 62;
+            else if (targetType === "mid") oppStat = this.teamOpponent.mid || 62;
+            else if (targetType === "att") oppStat = this.teamOpponent.att || 62;
+            else if (typeof targetType === "number") oppStat = targetType;
+            else oppStat = Math.round((this.teamOpponent.att + this.teamOpponent.mid + this.teamOpponent.def) / 3);
+        } else if (window.GAME && GAME.state && GAME.state.currentLeague) {
+            const lId = GAME.state.currentLeague;
+            oppStat = lId.includes("1lig") ? 58 : (lId.includes("super") ? 72 : 82);
         }
-        return Math.max(0.12, Math.min(0.92, parseFloat(chance.toFixed(2))));
+
+        // Relative skill comparison against opponent:
+        // equal skills (e.g. 60 vs 60 in 1. Lig, or 78 vs 78 in Süper Lig) = 52% baseline chance
+        // 10 points higher = +13% (65% chance)
+        // 20 points higher = +26% (78% chance)
+        // 10 points lower = -13% (39% chance)
+        const diff = val - oppStat;
+        let chance = 0.52 + (diff * 0.013);
+
+        // Morale and condition effect
+        const cond = (this.playerState && this.playerState.kondisyon) ? this.playerState.kondisyon : 100;
+        const morale = (this.playerState && this.playerState.moral) ? this.playerState.moral : 100;
+        if (cond < 60) chance -= 0.08;
+        if (morale < 40) chance -= 0.06;
+        else if (morale >= 85) chance += 0.04;
+
+        return Math.max(0.15, Math.min(0.92, parseFloat(chance.toFixed(2))));
     },
 
-    calculateStatChance: function(statVal, difficulty = 55) {
-        return this.calculateStatSuccess(statVal, difficulty);
+    calculateStatChance: function(statVal, targetType = "def") {
+        return this.calculateStatSuccess(statVal, targetType);
     },
 
     triggerChoice: function(minute) {
@@ -359,7 +368,7 @@ const MatchEngine = {
         const isLastMinute = (idx === this.choiceMinutes.length - 1 && this.choiceMinutes.length > 1);
 
         if (pos === "Defans") {
-            // ==================== DEFANS (10 FARKLI SENARYO) ====================
+            // ==================== DEFANS (10 FARKLI SENARYO - HER BİRİ 3 SEÇENEKLİ) ====================
             const defScenarios = [
                 // 0: 1v1 Slide Tackle
                 {
@@ -368,21 +377,21 @@ const MatchEngine = {
                     options: [
                         {
                             text: `🦶 Zamanlamayı Ayarla ve Kayarak Müdahale Et`,
-                            effect: `Savunma (%${def}) yeteneğine bağlı. Düşükse kayma boşa gider!`,
-                            successChance: this.calculateStatSuccess(def, 55),
+                            effect: `Savunma (%${def}) vs Rakip Forvet.`,
+                            successChance: this.calculateStatSuccess(def, "att"),
                             onSuccess: () => {
                                 if (!this.playerStats.tackles) this.playerStats.tackles = 0;
                                 this.playerStats.tackles++;
                                 return `MÜKEMMEL KAYARAK MÜDAHALE! Savunma ustalığın (%${def}) sayesinde topu forvetin ayağından jilet gibi aldın! Tehlike savuşturuldu!`;
                             },
                             onFail: () => {
-                                return `Savunma yeteneğin (%${def}) bu pozisyon için yetersiz kaldı! Zamanlamayı kaçırdın ve boşa kaydın, forvet sıyrıldı!`;
+                                return `Savunma müdahalen (%${def}) rakip forvetin kalitesine karşı yetersiz kaldı! Forvet sıyrıldı ama kalecimiz şutu çeldi.`;
                             }
                         },
                         {
                             text: `💪 Omuz Omuza Girip Forveti Sindir`,
                             effect: `Fizik (%${phy}) gücüne bağlı gövde mücadelesi.`,
-                            successChance: this.calculateStatSuccess(phy, 55),
+                            successChance: this.calculateStatSuccess(phy, "att"),
                             onSuccess: () => {
                                 if (!this.playerStats.tackles) this.playerStats.tackles = 0;
                                 this.playerStats.tackles++;
@@ -395,7 +404,7 @@ const MatchEngine = {
                         {
                             text: `⚡ Kademe Alıp Şut Açısını Kapat`,
                             effect: `Hız (%${spe}) ve pozisyon alma dengesi.`,
-                            successChance: this.calculateStatSuccess(spe, 55),
+                            successChance: this.calculateStatSuccess(spe, "att"),
                             onSuccess: () => {
                                 return `HARİKA KADEME! Hızınla (%${spe}) forvetin önünü kapatıp şut açısını daralttın, kalecimiz rahatça kontrol etti!`;
                             },
@@ -413,20 +422,20 @@ const MatchEngine = {
                         {
                             text: `✈️ Havada Üstünlük Kurup Kafayla Uzaklaştır`,
                             effect: `Fizik (%${phy}) ve hava hakimiyeti yeteneğine bağlı.`,
-                            successChance: this.calculateStatSuccess(phy, 55),
+                            successChance: this.calculateStatSuccess(phy, "att"),
                             onSuccess: () => {
                                 if (!this.playerStats.tackles) this.playerStats.tackles = 0;
                                 this.playerStats.tackles++;
                                 return `HAVALARIN EFENDİSİ! Fizik gücünle (%${phy}) forvetin üzerinden müthiş sıçrayıp kafayla topu orta sahaya fırlattın!`;
                             },
                             onFail: () => {
-                                return `Hava topu yeteneğin (%${phy}) yetersiz kaldı! Forvet kafayı vurdu ama top neyse ki üst direkten auta çıktı.`;
+                                return `Hava topu mücadelesinde rakip forvet kafayı vurdu ama top neyse ki üst direkten auta çıktı.`;
                             }
                         },
                         {
                             text: `🛡️ Rakip Forvete Perde Yap, Kaleciyi Çıkar`,
                             effect: `Savunma (%${def}) zekasına bağlı perdeleme.`,
-                            successChance: this.calculateStatSuccess(def, 55),
+                            successChance: this.calculateStatSuccess(def, "att"),
                             onSuccess: () => {
                                 if (!this.playerStats.tackles) this.playerStats.tackles = 0;
                                 this.playerStats.tackles++;
@@ -439,7 +448,7 @@ const MatchEngine = {
                         {
                             text: `🎯 Kafayla İndirip Kontraya Uzun Top Çıkar`,
                             effect: `Fizik ve Pas ortalamasına (%${Math.round((phy + pas)/2)}) bağlı asist şansı.`,
-                            successChance: this.calculateStatSuccess((phy + pas) / 2, 55),
+                            successChance: this.calculateStatSuccess((phy + pas) / 2, "mid"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.assists++;
@@ -461,7 +470,7 @@ const MatchEngine = {
                         {
                             text: `💪 Gövdeni Araya Koyup Topu Auta Bırak`,
                             effect: `Fizik (%${phy}) gücüne bağlı.`,
-                            successChance: this.calculateStatSuccess(phy, 55),
+                            successChance: this.calculateStatSuccess(phy, "att"),
                             onSuccess: () => {
                                 if (!this.playerStats.tackles) this.playerStats.tackles = 0;
                                 this.playerStats.tackles++;
@@ -474,7 +483,7 @@ const MatchEngine = {
                         {
                             text: `🦶 Ayakta Müdahale ile Topu Çal`,
                             effect: `Savunma (%${def}) yeteneğine bağlı.`,
-                            successChance: this.calculateStatSuccess(def, 55),
+                            successChance: this.calculateStatSuccess(def, "att"),
                             onSuccess: () => {
                                 if (!this.playerStats.tackles) this.playerStats.tackles = 0;
                                 this.playerStats.tackles++;
@@ -482,6 +491,19 @@ const MatchEngine = {
                             },
                             onFail: () => {
                                 return `Müdahalen (%${def}) boşa gitti, rakip ortasını açtı.`;
+                            }
+                        },
+                        {
+                            text: `⚡ Kademe Alıp Kanat Ortasını Ayakla Kes`,
+                            effect: `Hız ve Savunma ortalamasına (%${Math.round((spe + def)/2)}) bağlı.`,
+                            successChance: this.calculateStatSuccess((spe + def) / 2, "att"),
+                            onSuccess: () => {
+                                if (!this.playerStats.tackles) this.playerStats.tackles = 0;
+                                this.playerStats.tackles++;
+                                return `HARİKA BLOK! Ayak uzatarak tehlikeli ortayı kornere çeldin!`;
+                            },
+                            onFail: () => {
+                                return `Ayağını uzattın ama orta üzerinden geçti.`;
                             }
                         }
                     ]
@@ -494,7 +516,7 @@ const MatchEngine = {
                         {
                             text: `⚡ 30 Metrelik Deparla Forveti Yakala`,
                             effect: `Hız (%${spe}) gücüne bağlı geri dönüş.`,
-                            successChance: this.calculateStatSuccess(spe, 55),
+                            successChance: this.calculateStatSuccess(spe, "att"),
                             onSuccess: () => {
                                 if (!this.playerStats.tackles) this.playerStats.tackles = 0;
                                 this.playerStats.tackles++;
@@ -507,7 +529,7 @@ const MatchEngine = {
                         {
                             text: `🦶 Son Anda Ayak Uzatıp Topu Kornere Çel`,
                             effect: `Hız ve Savunma ortalamasına (%${Math.round((spe + def)/2)}) bağlı.`,
-                            successChance: this.calculateStatSuccess((spe + def) / 2, 55),
+                            successChance: this.calculateStatSuccess((spe + def) / 2, "att"),
                             onSuccess: () => {
                                 if (!this.playerStats.tackles) this.playerStats.tackles = 0;
                                 this.playerStats.tackles++;
@@ -515,6 +537,17 @@ const MatchEngine = {
                             },
                             onFail: () => {
                                 return `Ayağını uzattın ama yetişemedin.`;
+                            }
+                        },
+                        {
+                            text: `💪 Arkadan Yetişip Gövdenle Şut Açısını Koru`,
+                            effect: `Fizik ve Hız ortalamasına (%${Math.round((phy + spe)/2)}) bağlı.`,
+                            successChance: this.calculateStatSuccess((phy + spe) / 2, "att"),
+                            onSuccess: () => {
+                                return `MÜKEMMEL GÖVDE TEMASI! Forvetin dengesini bozup rahat şut çekmesini engelledin!`;
+                            },
+                            onFail: () => {
+                                return `Temas kuramadın, forvet vuruşunu yaptı.`;
                             }
                         }
                     ]
@@ -526,8 +559,8 @@ const MatchEngine = {
                     options: [
                         {
                             text: `🚀 Savunma Arkasına 50 Metrelik Nokta Pas At`,
-                            effect: `Pas (%${pas}) yeteneğine bağlı asist şansı. Düşükse taça gider!`,
-                            successChance: this.calculateStatSuccess(pas, 55),
+                            effect: `Pas (%${pas}) yeteneğine bağlı asist şansı.`,
+                            successChance: this.calculateStatSuccess(pas, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.assists++;
@@ -536,13 +569,13 @@ const MatchEngine = {
                             },
                             onFail: () => {
                                 this.playerStats.passes++;
-                                return `Pas yeteneğin (%${pas}) bu uzun top için yetersiz kaldı, top doğrudan rakip kaleciye gitti.`;
+                                return `Pasın rakip savunmanın kucağına gitti.`;
                             }
                         },
                         {
                             text: `🛡️ ${teammate}'ye Garanti Yerden Pas Ver`,
                             effect: `Güvenli kısa pas (%${pas}).`,
-                            successChance: this.calculateStatSuccess(pas, 45),
+                            successChance: this.calculateStatSuccess(pas, "mid"),
                             onSuccess: () => {
                                 this.playerStats.passes++;
                                 return `TEMİZ OYUN! Tek pasla ${teammate}'yi gördün ve takım atağa güvenle çıktı.`;
@@ -550,6 +583,18 @@ const MatchEngine = {
                             onFail: () => {
                                 this.playerStats.passes++;
                                 return `Kısa pasın biraz zayıf kaldı, rakip baskı kurdu.`;
+                            }
+                        },
+                        {
+                            text: `⚽ Soğukkanlı Çalımla Forveti Geçip Orta Sahaya Çık`,
+                            effect: `Dribbling (%${dri}) yeteneğine bağlı topla çıkış.`,
+                            successChance: this.calculateStatSuccess(dri, "att"),
+                            onSuccess: () => {
+                                this.playerStats.passes++;
+                                return `BÜYÜK SOĞUKKANLILIK! Dribbling ustalığınla (%${dri}) forveti oyundan düşürüp orta sahaya pası aktardın!`;
+                            },
+                            onFail: () => {
+                                return `Çalım denerken baskı arttı, topu taca göndermek zorunda kaldın.`;
                             }
                         }
                     ]
@@ -561,14 +606,27 @@ const MatchEngine = {
                     options: [
                         {
                             text: `⚽ Klas Vücut Çalımıyla Baskıdan Sıyrıl`,
-                            effect: `Dribbling (%${dri}) ve soğukkanlılık yeteneğine bağlı. Düşükse top kaybı!`,
-                            successChance: this.calculateStatSuccess(dri, 55),
+                            effect: `Dribbling (%${dri}) yeteneğine bağlı.`,
+                            successChance: this.calculateStatSuccess(dri, "att"),
                             onSuccess: () => {
                                 this.playerStats.passes++;
                                 return `BÜYÜK SOĞUKKANLILIK! Dribbling yeteneğinle (%${dri}) forvete klas bir vücut çalımı atıp orta sahayı gördün! Tribünler alkışlıyor!`;
                             },
                             onFail: () => {
                                 return `Dribbling seviyen (%${dri}) pres altında yetersiz kaldı! Topu son anda taca vurmak zorunda kaldın.`;
+                            }
+                        },
+                        {
+                            text: `👟 Tek Pasla Maestro ${teammate}'ye Çık`,
+                            effect: `Pas (%${pas}) yeteneğine bağlı hızlı servis.`,
+                            successChance: this.calculateStatSuccess(pas, "mid"),
+                            onSuccess: () => {
+                                this.playerStats.passes++;
+                                return `TEK PASLA TEHLİKEDEN ÇIKIŞ! Pas kalitenle (%${pas}) ${teammate}'yi gördün ve presi kırdın!`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Pasın arkada kaldı.`;
                             }
                         },
                         {
@@ -592,20 +650,20 @@ const MatchEngine = {
                         {
                             text: `🧱 Gövdeni Siper Edip Şutu Engelle`,
                             effect: `Savunma ve Fizik ortalamasına (%${Math.round((def + phy)/2)}) bağlı.`,
-                            successChance: this.calculateStatSuccess((def + phy) / 2, 55),
+                            successChance: this.calculateStatSuccess((def + phy) / 2, "mid"),
                             onSuccess: () => {
                                 if (!this.playerStats.tackles) this.playerStats.tackles = 0;
                                 this.playerStats.tackles++;
                                 return `KAYA GİBİ BLOK! Vücudunu siper ederek mutlak bir gol şutunu kornere çeldin! Kalecimiz teşekkür etti!`;
                             },
                             onFail: () => {
-                                return `Blok hamlen (%${Math.round((def+phy)/2)}) yetersiz kaldı, top bacak arasından geçti ama kalecimiz kurtardı.`;
+                                return `Blok hamlen yetersiz kaldı, top bacak arasından geçti ama kalecimiz kurtardı.`;
                             }
                         },
                         {
                             text: `⚡ Ayak Uzatıp Şutun Yönünü Değiştir`,
                             effect: `Hız ve Savunma ortalamasına (%${Math.round((spe + def)/2)}) bağlı.`,
-                            successChance: this.calculateStatSuccess((spe + def) / 2, 55),
+                            successChance: this.calculateStatSuccess((spe + def) / 2, "mid"),
                             onSuccess: () => {
                                 if (!this.playerStats.tackles) this.playerStats.tackles = 0;
                                 this.playerStats.tackles++;
@@ -613,6 +671,17 @@ const MatchEngine = {
                             },
                             onFail: () => {
                                 return `Ayağını uzattın ama top çarpmadan geçti.`;
+                            }
+                        },
+                        {
+                            text: `🛡️ Kalecinin Görüşünü Kapatmadan Alan Daralt`,
+                            effect: `Savunma (%${def}) pozisyon almasına bağlı.`,
+                            successChance: this.calculateStatSuccess(def, "mid"),
+                            onSuccess: () => {
+                                return `AKIL DOLU POZİSYON ALMA! Kaleciye net açı bıraktın ve şut kollarında eridi!`;
+                            },
+                            onFail: () => {
+                                return `Şut direğin yanından auta gitti.`;
                             }
                         }
                     ]
@@ -624,24 +693,35 @@ const MatchEngine = {
                     options: [
                         {
                             text: `📐 Son Anda Öne Adım Atıp Forveti Ofsayta Düşür`,
-                            effect: `Savunma (%${def}) taktik zekasına bağlı. Düşükse forvet kaçar!`,
-                            successChance: this.calculateStatSuccess(def, 55),
+                            effect: `Savunma (%${def}) taktik zekasına bağlı.`,
+                            successChance: this.calculateStatSuccess(def, "mid"),
                             onSuccess: () => {
                                 return `KUSURSUZ OFSAYT TAKTİĞİ! Savunma bilginle (%${def}) tam zamanında öne çıktın ve yan hakem bayrağını kaldırdı!`;
                             },
                             onFail: () => {
-                                return `Savunma zamanlaman (%${def}) gecikti, forvet ofsayttan kaçtı ama şutu auta gitti.`;
+                                return `Savunma zamanlaman gecikti, forvet ofsayttan kaçtı ama şutu auta gitti.`;
                             }
                         },
                         {
                             text: `⚡ Forvetle Beraber Geriye Koş`,
                             effect: `Hız (%${spe}) gücüne bağlı.`,
-                            successChance: this.calculateStatSuccess(spe, 55),
+                            successChance: this.calculateStatSuccess(spe, "att"),
                             onSuccess: () => {
                                 return `ADIM ADIM TAKİP! Hızınla (%${spe}) forvetin peşini bırakmadın ve pozisyonu bozdun!`;
                             },
                             onFail: () => {
                                 return `Forvet bir adım önde kaldı.`;
+                            }
+                        },
+                        {
+                            text: `💪 Forveti Fiziksel Temasla Çizgide Boz`,
+                            effect: `Fizik (%${phy}) gücüne bağlı.`,
+                            successChance: this.calculateStatSuccess(phy, "att"),
+                            onSuccess: () => {
+                                return `FİZİKSEL BASKI! Forvete vücudunu hissettirip koşusunu bozdun!`;
+                            },
+                            onFail: () => {
+                                return `Forvet temas alıp sıyrıldı.`;
                             }
                         }
                     ]
@@ -654,7 +734,7 @@ const MatchEngine = {
                         {
                             text: `⚡ Uzanıp Çizgiden Kafayla Çıkar! (Fedakarlık)`,
                             effect: `Fizik (%${phy}) ve Fedakarlık gücüne bağlı takımı ipten alma.`,
-                            successChance: this.calculateStatSuccess(phy, 55),
+                            successChance: this.calculateStatSuccess(phy, "att"),
                             onSuccess: () => {
                                 if (!this.playerStats.tackles) this.playerStats.tackles = 0;
                                 this.playerStats.tackles += 2;
@@ -669,7 +749,7 @@ const MatchEngine = {
                         {
                             text: `🦶 Direk Dibinden Topu Kayarak Süpür!`,
                             effect: `Savunma (%${def}) reaksiyonuna bağlı.`,
-                            successChance: this.calculateStatSuccess(def, 55),
+                            successChance: this.calculateStatSuccess(def, "att"),
                             onSuccess: () => {
                                 if (!this.playerStats.tackles) this.playerStats.tackles = 0;
                                 this.playerStats.tackles += 2;
@@ -677,7 +757,20 @@ const MatchEngine = {
                                 return `KAHRAMANCA MÜDAHALE! Savunma sezginle (%${def}) son salisede ayağını uzatarak topu çizgiden taca gönderdin!`;
                             },
                             onFail: () => {
-                                return `Savunma hamlen (%${def}) gecikti, top filelerde.`;
+                                return `Savunma hamlen gecikti, top filelerde.`;
+                            }
+                        },
+                        {
+                            text: `🛡️ Taktik Faul Yapıp Kontrayı Kes (Sarı Kart Garantili)`,
+                            effect: `Sarı kart görürsün ama mutlak golü önlersin.`,
+                            successChance: 0.85,
+                            onSuccess: () => {
+                                this.hasYellowCard = true;
+                                this.playerState.hocaGuveni = Math.min(100, (this.playerState.hocaGuveni || 40) + 5);
+                                return `FEDAKARCA TAKTİK FAUL! Rakip forveti formasından çekerek atağı başlamadan bitirdin. Hakem sarı kart gösterdi ama golü önledin!`;
+                            },
+                            onFail: () => {
+                                return `Faul yapmaya çalıştın ama rakip sıyrılıp atağa devam etti.`;
                             }
                         }
                     ]
@@ -690,7 +783,7 @@ const MatchEngine = {
                         {
                             text: `🟨 Formadan Hafifçe Çekip Kontrayı Durdur`,
                             effect: `Savunma (%${def}) zekasına bağlı sarı kartlık taktik faul.`,
-                            successChance: this.calculateStatSuccess(def, 45),
+                            successChance: this.calculateStatSuccess(def, "att"),
                             onSuccess: () => {
                                 this.hasYellowCard = true;
                                 this.playerState.hocaGuveni = Math.min(100, (this.playerState.hocaGuveni || 40) + 5);
@@ -701,9 +794,22 @@ const MatchEngine = {
                             }
                         },
                         {
+                            text: `🦶 Temiz Kayarak Topu Söküp Almayı Dene`,
+                            effect: `Savunma (%${def}) yeteneğiyle kartsız temiz çıkış.`,
+                            successChance: this.calculateStatSuccess(def, "att"),
+                            onSuccess: () => {
+                                if (!this.playerStats.tackles) this.playerStats.tackles = 0;
+                                this.playerStats.tackles++;
+                                return `TERTEMİZ MÜDAHALE! Kartsız şekilde kayarak topu kornere gönderdin!`;
+                            },
+                            onFail: () => {
+                                return `Müdahale boşa gitti.`;
+                            }
+                        },
+                        {
                             text: `⚡ Kaleciye Güvenip Geriye Depar At`,
                             effect: `Hız (%${spe}) gücüne bağlı.`,
-                            successChance: this.calculateStatSuccess(spe, 55),
+                            successChance: this.calculateStatSuccess(spe, "att"),
                             onSuccess: () => {
                                 return `HIZLI GERİ DÖNÜŞ! Hızınla (%${spe}) kademeye girdin ve forvetin şutunu bozdun!`;
                             },
@@ -728,7 +834,7 @@ const MatchEngine = {
             choiceData = pool[chosenIndex];
 
         } else if (pos === "Orta Saha") {
-            // ==================== ORTA SAHA (10 FARKLI SENARYO) ====================
+            // ==================== ORTA SAHA (10 FARKLI SENARYO - HER BİRİ 3 SEÇENEKLİ) ====================
             const midScenarios = [
                 // 0: Through Ball Masterclass
                 {
@@ -737,8 +843,8 @@ const MatchEngine = {
                     options: [
                         {
                             text: `🎯 Savunma Bloklarının Arasından Ara Pası Bırak`,
-                            effect: `Pas (%${pas}) yeteneğine bağlı asist. Düşükse stoper keser!`,
-                            successChance: this.calculateStatSuccess(pas, 55),
+                            effect: `Pas (%${pas}) vs Rakip Defans.`,
+                            successChance: this.calculateStatSuccess(pas, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.assists++;
@@ -753,7 +859,7 @@ const MatchEngine = {
                         {
                             text: `🚀 Ceza Sahası Dışından Kaleye Füze Yolla`,
                             effect: `Şut (%${sho}) gücüne bağlı uzaktan gol şansı.`,
-                            successChance: this.calculateStatSuccess(sho, 58),
+                            successChance: this.calculateStatSuccess(sho, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.goals++;
@@ -768,7 +874,7 @@ const MatchEngine = {
                         {
                             text: `⚽ Çalımla Savunmayı Üzerine Çek`,
                             effect: `Dribbling (%${dri}) yeteneğine bağlı.`,
-                            successChance: this.calculateStatSuccess(dri, 55),
+                            successChance: this.calculateStatSuccess(dri, "mid"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.assists++;
@@ -789,7 +895,7 @@ const MatchEngine = {
                         {
                             text: `🚀 Kaleci Köşesine Sert Füze Çak!`,
                             effect: `Şut (%${sho}) gücüne bağlı gol şansı.`,
-                            successChance: this.calculateStatSuccess(sho, 58),
+                            successChance: this.calculateStatSuccess(sho, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.goals++;
@@ -802,9 +908,24 @@ const MatchEngine = {
                             }
                         },
                         {
+                            text: `💫 90'a Kavisli Plase Gönder`,
+                            effect: `Şut ve Pas ortalamasına (%${Math.round((sho+pas)/2)}) bağlı.`,
+                            successChance: this.calculateStatSuccess((sho + pas) / 2, "def"),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`MÜTHİŞ BİR PLASE! Top çataldan süzülerek içeri girdi! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Plase vuruşun az farkla dışarı gitti.`;
+                            }
+                        },
+                        {
                             text: `👟 ${teammate}'ye Pası Aktar`,
                             effect: `Pas (%${pas}) yeteneğine bağlı asist şansı.`,
-                            successChance: this.calculateStatSuccess(pas, 55),
+                            successChance: this.calculateStatSuccess(pas, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.assists++;
@@ -826,7 +947,7 @@ const MatchEngine = {
                         {
                             text: `⚽ Zidane Dönüşüyle Baskıdan Sıyrıl`,
                             effect: `Dribbling (%${dri}) yeteneğine bağlı.`,
-                            successChance: this.calculateStatSuccess(dri, 55),
+                            successChance: this.calculateStatSuccess(dri, "mid"),
                             onSuccess: () => {
                                 this.playerStats.passes++;
                                 return `FUTBOL SANATI! Dribbling yeteneğinle (%${dri}) harika bir 360 dönüşü yapıp 3 kişinin arasından tertemiz çıktın!`;
@@ -838,12 +959,25 @@ const MatchEngine = {
                         {
                             text: `💪 Vücudunu Koyup Faul Al`,
                             effect: `Fizik (%${phy}) gücüne bağlı.`,
-                            successChance: this.calculateStatSuccess(phy, 55),
+                            successChance: this.calculateStatSuccess(phy, "mid"),
                             onSuccess: () => {
                                 return `AKIL DOLU OYUN! Fizik gücünle (%${phy}) topu saklayıp rakibe faul yaptırdın, takım nefes aldı!`;
                             },
                             onFail: () => {
                                 return `Fizik gücün (%${phy}) yetmedi, dengeni kaybedip topu kaybettin.`;
+                            }
+                        },
+                        {
+                            text: `👟 Tek Dokunuşla Geriye Garanti Pas Çıkar`,
+                            effect: `Pas (%${pas}) yeteneğine bağlı emniyet.`,
+                            successChance: this.calculateStatSuccess(pas, "mid"),
+                            onSuccess: () => {
+                                this.playerStats.passes++;
+                                return `EMNİYETLİ OYUN! Tek dokunuşla geriye oynayarak takımı baskıdan kurtardın.`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Pas biraz hızlı gitti.`;
                             }
                         }
                     ]
@@ -856,7 +990,7 @@ const MatchEngine = {
                         {
                             text: `🛡️ Rakip Oyun Kurucudan Topu Söküp Al`,
                             effect: `Savunma (%${def}) yeteneğine bağlı kontra başlangıcı.`,
-                            successChance: this.calculateStatSuccess(def, 55),
+                            successChance: this.calculateStatSuccess(def, "mid"),
                             onSuccess: () => {
                                 this.playerStats.passes++;
                                 return `MÜTHİŞ TOP KAPMA! Savunma müdahalenle (%${def}) topu kapıp takımı 3'e 2 kontra atağa kaldırdın!`;
@@ -868,7 +1002,7 @@ const MatchEngine = {
                         {
                             text: `👟 Topu Kapıp Tek Pasla ${teammate}'yi Kaçır`,
                             effect: `Pas (%${pas}) ve Savunma ortalamasına (%${Math.round((def+pas)/2)}) bağlı asist.`,
-                            successChance: this.calculateStatSuccess((def + pas) / 2, 55),
+                            successChance: this.calculateStatSuccess((def + pas) / 2, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.assists++;
@@ -878,6 +1012,19 @@ const MatchEngine = {
                             onFail: () => {
                                 this.playerStats.passes++;
                                 return `Hızlı pas denemen savunmada kaldı.`;
+                            }
+                        },
+                        {
+                            text: `⚡ Çeviklikle Topu Saklayıp Oyunu Ters Kanada Aç`,
+                            effect: `Hız ve Pas ortalamasına (%${Math.round((spe+pas)/2)}) bağlı.`,
+                            successChance: this.calculateStatSuccess((spe + pas) / 2, "mid"),
+                            onSuccess: () => {
+                                this.playerStats.passes++;
+                                return `DİNAMİK OYUN! Hızın ve pasınla oyunu anında ters kanada açtın!`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Pas alçak gitti.`;
                             }
                         }
                     ]
@@ -890,7 +1037,7 @@ const MatchEngine = {
                         {
                             text: `⚡ Ters Kanattaki Boş Arkadaşa Diyagonal Pas Çıkar`,
                             effect: `Pas ve Hız ortalamasına (%${Math.round((pas+spe)/2)}) bağlı.`,
-                            successChance: this.calculateStatSuccess((pas + spe) / 2, 55),
+                            successChance: this.calculateStatSuccess((pas + spe) / 2, "def"),
                             onSuccess: () => {
                                 this.playerStats.passes++;
                                 return `MAESTRO VİZYONU! 40 metrelik milimetrik ters kanat pasınla (%${Math.round((pas+spe)/2)}) rakip savunmanın dengesini alt üst ettin!`;
@@ -903,7 +1050,7 @@ const MatchEngine = {
                         {
                             text: `🎯 Yerden Hızlı Dikine Pas Yolla`,
                             effect: `Pas (%${pas}) yeteneğine bağlı.`,
-                            successChance: this.calculateStatSuccess(pas, 55),
+                            successChance: this.calculateStatSuccess(pas, "mid"),
                             onSuccess: () => {
                                 this.playerStats.passes++;
                                 return `DİKİNE HARİKA PAS! Yerden dikine pasla forvetimizi buluşturdun!`;
@@ -911,6 +1058,18 @@ const MatchEngine = {
                             onFail: () => {
                                 this.playerStats.passes++;
                                 return `Dikine pasın kesildi.`;
+                            }
+                        },
+                        {
+                            text: `⚽ Topla Orta Sahayı Boydan Boya Katet`,
+                            effect: `Dribbling (%${dri}) yeteneğine bağlı topla ilerleme.`,
+                            successChance: this.calculateStatSuccess(dri, "mid"),
+                            onSuccess: () => {
+                                this.playerStats.passes++;
+                                return `MÜTHİŞ DRİPLİNG! Topla 30 metre mesafe kat edip tehlike bölgesine girdin!`;
+                            },
+                            onFail: () => {
+                                return `Dribbling yaparken rakip ayak koydu.`;
                             }
                         }
                     ]
@@ -923,7 +1082,7 @@ const MatchEngine = {
                         {
                             text: `💪 Dönen Topa Gelişine Vur!`,
                             effect: `Fizik ve Şut ortalamasına (%${Math.round((phy+sho)/2)}) bağlı gol şansı.`,
-                            successChance: this.calculateStatSuccess((phy + sho) / 2, 55),
+                            successChance: this.calculateStatSuccess((phy + sho) / 2, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.goals++;
@@ -938,7 +1097,7 @@ const MatchEngine = {
                         {
                             text: `👟 İkinci Dalga Hücumunda Arkadaşına Boş Pas Çıkar`,
                             effect: `Pas (%${pas}) yeteneğine bağlı asist.`,
-                            successChance: this.calculateStatSuccess(pas, 55),
+                            successChance: this.calculateStatSuccess(pas, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.assists++;
@@ -948,6 +1107,17 @@ const MatchEngine = {
                             onFail: () => {
                                 this.playerStats.passes++;
                                 return `Pasın arkada kaldı.`;
+                            }
+                        },
+                        {
+                            text: `🛡️ Savunma Emniyeti İçin Yayda Bekle`,
+                            effect: `Fizik ve Savunma ortalamasına (%${Math.round((phy+def)/2)}) bağlı.`,
+                            successChance: this.calculateStatSuccess((phy + def) / 2, "mid"),
+                            onSuccess: () => {
+                                return `DÖNEN TOPU TOPLADIN! İkinci topu kazanıp atağın devam etmesini sağladın!`;
+                            },
+                            onFail: () => {
+                                return `Dönen top rakipte kaldı.`;
                             }
                         }
                     ]
@@ -960,7 +1130,7 @@ const MatchEngine = {
                         {
                             text: `💫 Baraj Üstünden 90'a Kavisli Plase`,
                             effect: `Pas ve Şut ortalamasına (%${Math.round((pas+sho)/2)}) bağlı frikik golü.`,
-                            successChance: this.calculateStatSuccess((pas + sho) / 2, 58),
+                            successChance: this.calculateStatSuccess((pas + sho) / 2, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.goals++;
@@ -975,7 +1145,7 @@ const MatchEngine = {
                         {
                             text: `📐 Arka Direğe Kavisli Asist Ortası Kes`,
                             effect: `Pas (%${pas}) yeteneğine bağlı asist ortası.`,
-                            successChance: this.calculateStatSuccess(pas, 55),
+                            successChance: this.calculateStatSuccess(pas, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.assists++;
@@ -985,6 +1155,21 @@ const MatchEngine = {
                             onFail: () => {
                                 this.playerStats.passes++;
                                 return `Orta kalecinin ellerinde eridi.`;
+                            }
+                        },
+                        {
+                            text: `🧲 Baraj Altından Zekice Yerden Şut`,
+                            effect: `Pas ve Şut ortalamasına (%${Math.round((pas+sho)/2)}) bağlı.`,
+                            successChance: this.calculateStatSuccess((pas + sho) / 2, "def"),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`AKIL DOLU GOL! Baraj zıplarken yerden giden top direk dibinden ağlarla buluştu! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Baraj zıplamadı, top ayaklarda kaldı.`;
                             }
                         }
                     ]
@@ -997,7 +1182,7 @@ const MatchEngine = {
                         {
                             text: `👟 Hızlı Verkaçla Kaleciyle Karşı Karşıya Kal`,
                             effect: `Pas ve Dribbling ortalamasına (%${Math.round((pas+dri)/2)}) bağlı gol.`,
-                            successChance: this.calculateStatSuccess((pas + dri) / 2, 55),
+                            successChance: this.calculateStatSuccess((pas + dri) / 2, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.goals++;
@@ -1012,7 +1197,7 @@ const MatchEngine = {
                         {
                             text: `🎯 Tek Pasla Forvete Gol Pası Bırak`,
                             effect: `Pas (%${pas}) yeteneğine bağlı asist.`,
-                            successChance: this.calculateStatSuccess(pas, 55),
+                            successChance: this.calculateStatSuccess(pas, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.assists++;
@@ -1022,6 +1207,21 @@ const MatchEngine = {
                             onFail: () => {
                                 this.playerStats.passes++;
                                 return `Pas savunmada kaldı.`;
+                            }
+                        },
+                        {
+                            text: `🚀 Ceza Sahası Yayından Gelişine Sert Şut Çek`,
+                            effect: `Şut (%${sho}) yeteneğine bağlı.`,
+                            successChance: this.calculateStatSuccess(sho, "def"),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`MÜTHİŞ ŞUT VE GOL! Yaydan sert vuruşla köşeyi buldun! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Şut kalecide kaldı.`;
                             }
                         }
                     ]
@@ -1034,7 +1234,7 @@ const MatchEngine = {
                         {
                             text: `🚀 Gelişine Voleyle 90'a Çak!`,
                             effect: `Şut (%${sho}) yeteneğine bağlı son saniye galibiyet golü.`,
-                            successChance: this.calculateStatSuccess(sho, 58),
+                            successChance: this.calculateStatSuccess(sho, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.goals++;
@@ -1049,7 +1249,7 @@ const MatchEngine = {
                         {
                             text: `🎯 Ceza Sahasına ${teammate}'nin Koşusuna Aşırtma Pas At`,
                             effect: `Pas (%${pas}) yeteneğine bağlı son saniye asisti.`,
-                            successChance: this.calculateStatSuccess(pas, 55),
+                            successChance: this.calculateStatSuccess(pas, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.assists++;
@@ -1059,6 +1259,19 @@ const MatchEngine = {
                             onFail: () => {
                                 this.playerStats.passes++;
                                 return `Aşırtma pasın savunmada kaldı.`;
+                            }
+                        },
+                        {
+                            text: `⚽ Topu Bayrak Direğinde Saklayıp Zaman Geçir`,
+                            effect: `Dribbling ve Fizik ortalamasına (%${Math.round((dri+phy)/2)}) bağlı.`,
+                            successChance: this.calculateStatSuccess((dri + phy) / 2, "mid"),
+                            onSuccess: () => {
+                                this.playerState.hocaGuveni = Math.min(100, (this.playerState.hocaGuveni || 40) + 5);
+                                this.playerState.moral = Math.min(100, (this.playerState.moral || 100) + 5);
+                                return `USTACA ZAMAN GEÇİRME! Topu bayrak direğinde saklayıp maçı bitirdin!`;
+                            },
+                            onFail: () => {
+                                return `Top taca çıktı.`;
                             }
                         }
                     ]
@@ -1071,7 +1284,7 @@ const MatchEngine = {
                         {
                             text: `⏱️ Vücudunla Topu Koruyup Rakibe Faul Yaptır`,
                             effect: `Dribbling ve Fizik ortalamasına (%${Math.round((dri+phy)/2)}) bağlı.`,
-                            successChance: this.calculateStatSuccess((dri + phy) / 2, 50),
+                            successChance: this.calculateStatSuccess((dri + phy) / 2, "mid"),
                             onSuccess: () => {
                                 this.playerState.hocaGuveni = Math.min(100, (this.playerState.hocaGuveni || 40) + 5);
                                 this.playerState.moral = Math.min(100, (this.playerState.moral || 100) + 5);
@@ -1084,7 +1297,7 @@ const MatchEngine = {
                         {
                             text: `👟 Boştaki ${teammate}'ye Pas Çıkar`,
                             effect: `Pas (%${pas}) yeteneğine bağlı.`,
-                            successChance: this.calculateStatSuccess(pas, 55),
+                            successChance: this.calculateStatSuccess(pas, "mid"),
                             onSuccess: () => {
                                 this.playerStats.passes++;
                                 return `GÜVENLİ PAS! Topu geriye oynayarak süreyi erittin.`;
@@ -1092,6 +1305,21 @@ const MatchEngine = {
                             onFail: () => {
                                 this.playerStats.passes++;
                                 return `Pas taca gitti.`;
+                            }
+                        },
+                        {
+                            text: `⚡ Çalımla İçeri Kat Edip Şut Açısı Ara`,
+                            effect: `Dribbling ve Hız ortalamasına (%${Math.round((dri+spe)/2)}) bağlı.`,
+                            successChance: this.calculateStatSuccess((dri + spe) / 2, "def"),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`MÜTHİŞ ÇALIM VE GOL! Korner bayrağından içeri kat edip 90'a astın! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Çalım sırasında top dışarı çıktı.`;
                             }
                         }
                     ]
@@ -1111,7 +1339,7 @@ const MatchEngine = {
             choiceData = pool[chosenIndex];
 
         } else {
-            // ==================== FORVET (10 FARKLI SENARYO) ====================
+            // ==================== FORVET (10 FARKLI SENARYO - HER BİRİ 3 SEÇENEKLİ) ====================
             const fwdScenarios = [
                 // 0: Box Finishing
                 {
@@ -1120,8 +1348,8 @@ const MatchEngine = {
                     options: [
                         {
                             text: `🎯 Kalecinin Yanından Uzak Köşeye Plase`,
-                            effect: `Şut (%${sho}) yeteneğine bağlı. Düşükse kalecide kalır!`,
-                            successChance: this.calculateStatSuccess(sho, 55),
+                            effect: `Şut (%${sho}) vs Rakip Kaleci/Defans.`,
+                            successChance: this.calculateStatSuccess(sho, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.goals++;
@@ -1130,13 +1358,13 @@ const MatchEngine = {
                             },
                             onFail: () => {
                                 this.playerStats.shots++;
-                                return `Şut kaliten (%${sho}) bu plase için yetersiz kaldı! Kaleci uzanarak topu çeldi.`;
+                                return `Şut kaliten (%${sho}) kaleciyi geçmeye yetmedi, uzanarak topu çeldi.`;
                             }
                         },
                         {
                             text: `🚀 Tavana Sert Şut Zımbala`,
                             effect: `Şut (%${sho}) gücüne bağlı sert vuruş.`,
-                            successChance: this.calculateStatSuccess(sho, 58),
+                            successChance: this.calculateStatSuccess(sho, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.goals++;
@@ -1151,7 +1379,7 @@ const MatchEngine = {
                         {
                             text: `👟 Boş Koşan ${teammate}'ye Pas Çıkar`,
                             effect: `Pas (%${pas}) yeteneğine bağlı asist.`,
-                            successChance: this.calculateStatSuccess(pas, 55),
+                            successChance: this.calculateStatSuccess(pas, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.assists++;
@@ -1172,8 +1400,8 @@ const MatchEngine = {
                     options: [
                         {
                             text: `⚡ Stoperleri Rüzgarınla Geçip Kaleciyle Baş Başa Kal`,
-                            effect: `Hız (%${spe}) yeteneğine bağlı. Düşükse stoper yetişir!`,
-                            successChance: this.calculateStatSuccess(spe, 55),
+                            effect: `Hız (%${spe}) yeteneğine bağlı.`,
+                            successChance: this.calculateStatSuccess(spe, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.goals++;
@@ -1188,7 +1416,7 @@ const MatchEngine = {
                         {
                             text: `⚽ Kaleciyi Çalımla Geçip Boş Kaleye Yuvarla`,
                             effect: `Dribbling (%${dri}) yeteneğine bağlı gol.`,
-                            successChance: this.calculateStatSuccess(dri, 55),
+                            successChance: this.calculateStatSuccess(dri, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.goals++;
@@ -1198,6 +1426,21 @@ const MatchEngine = {
                             onFail: () => {
                                 this.playerStats.shots++;
                                 return `Çalım denerken kaleci ayağındaki topu kaptı.`;
+                            }
+                        },
+                        {
+                            text: `👟 Boş Kanat Arkadaşına Pas Çıkar`,
+                            effect: `Pas (%${pas}) yeteneğine bağlı asist.`,
+                            successChance: this.calculateStatSuccess(pas, "def"),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.assists++;
+                                this.playerStats.passes++;
+                                return `HARİKA VİZYON! Kanattaki arkadaşına çıkardığın topta gol geldi! ASİST!`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Pas savunmada kaldı.`;
                             }
                         }
                     ]
@@ -1210,7 +1453,7 @@ const MatchEngine = {
                         {
                             text: `⚽ Bacak Arası Çalımla Beki Ekarte Et`,
                             effect: `Dribbling (%${dri}) yeteneğine bağlı.`,
-                            successChance: this.calculateStatSuccess(dri, 55),
+                            successChance: this.calculateStatSuccess(dri, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.goals++;
@@ -1225,7 +1468,7 @@ const MatchEngine = {
                         {
                             text: `🎯 Çizgiye İnip Arka Direğe Orta Kes`,
                             effect: `Pas (%${pas}) yeteneğine bağlı asist.`,
-                            successChance: this.calculateStatSuccess(pas, 55),
+                            successChance: this.calculateStatSuccess(pas, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.assists++;
@@ -1235,6 +1478,21 @@ const MatchEngine = {
                             onFail: () => {
                                 this.playerStats.passes++;
                                 return `Orta doğrudan kalecide kaldı.`;
+                            }
+                        },
+                        {
+                            text: `🚀 Çaprazdan Sert Şut Çek`,
+                            effect: `Şut (%${sho}) yeteneğine bağlı.`,
+                            successChance: this.calculateStatSuccess(sho, "def"),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`ÇAPRAZDAN FÜZE! Dar açıdan harika vuruşla golü buldun! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Şut yan ağlarda kaldı.`;
                             }
                         }
                     ]
@@ -1247,7 +1505,7 @@ const MatchEngine = {
                         {
                             text: `✈️ Havada Asılı Kalıp Köşeye Kafa Vur`,
                             effect: `Fizik (%${phy}) ve hava hakimiyetine bağlı kafa golü.`,
-                            successChance: this.calculateStatSuccess(phy, 55),
+                            successChance: this.calculateStatSuccess(phy, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.goals++;
@@ -1262,7 +1520,7 @@ const MatchEngine = {
                         {
                             text: `👟 Kafayla İndirip ${teammate}'ye Servis Yap`,
                             effect: `Pas ve Fizik ortalamasına (%${Math.round((pas+phy)/2)}) bağlı asist.`,
-                            successChance: this.calculateStatSuccess((pas + phy) / 2, 55),
+                            successChance: this.calculateStatSuccess((pas + phy) / 2, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.assists++;
@@ -1272,6 +1530,21 @@ const MatchEngine = {
                             onFail: () => {
                                 this.playerStats.passes++;
                                 return `İndirdiğin top savunmada kaldı.`;
+                            }
+                        },
+                        {
+                            text: `🦶 Ayağını Uzatıp Uçarak Dokun`,
+                            effect: `Hız ve Şut ortalamasına (%${Math.round((spe+sho)/2)}) bağlı.`,
+                            successChance: this.calculateStatSuccess((spe + sho) / 2, "def"),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`UÇARAK DOKUNDUN VE GOL! Son anda ayağını uzatıp kaleciyi avladın! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Topa dokunamadın.`;
                             }
                         }
                     ]
@@ -1284,7 +1557,7 @@ const MatchEngine = {
                         {
                             text: `👟 Topu Saklayıp Kaçan ${teammate}'ye Tek Pas Bırak`,
                             effect: `Pas ve Fizik ortalamasına (%${Math.round((pas+phy)/2)}) bağlı asist.`,
-                            successChance: this.calculateStatSuccess((pas + phy) / 2, 55),
+                            successChance: this.calculateStatSuccess((pas + phy) / 2, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.assists++;
@@ -1299,7 +1572,7 @@ const MatchEngine = {
                         {
                             text: `⚽ Ani Dönüşle Stoperi Oyundan Düşür ve Vur`,
                             effect: `Dribbling ve Şut ortalamasına (%${Math.round((dri+sho)/2)}) bağlı gol.`,
-                            successChance: this.calculateStatSuccess((dri + sho) / 2, 55),
+                            successChance: this.calculateStatSuccess((dri + sho) / 2, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.goals++;
@@ -1309,6 +1582,17 @@ const MatchEngine = {
                             onFail: () => {
                                 this.playerStats.shots++;
                                 return `Dönüş sırasında stoper ayak koydu.`;
+                            }
+                        },
+                        {
+                            text: `💪 Stoperden Faul Alıp Duran Top Kazandır`,
+                            effect: `Fizik (%${phy}) gücüne bağlı.`,
+                            successChance: this.calculateStatSuccess(phy, "def"),
+                            onSuccess: () => {
+                                return `AKILLI FAUL ALMA! Topu vücudunla saklayıp tehlikeli noktadan serbest vuruş kazandırdın!`;
+                            },
+                            onFail: () => {
+                                return `Hakem devam kararı verdi.`;
                             }
                         }
                     ]
@@ -1321,7 +1605,7 @@ const MatchEngine = {
                         {
                             text: `🚀 Kalecinin Üzerinden Aşırtma Vur`,
                             effect: `Şut ve Pas ortalamasına (%${Math.round((sho+pas)/2)}) bağlı aşırtma golü.`,
-                            successChance: this.calculateStatSuccess((sho + pas) / 2, 58),
+                            successChance: this.calculateStatSuccess((sho + pas) / 2, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.goals++;
@@ -1336,7 +1620,7 @@ const MatchEngine = {
                         {
                             text: `🎯 Yerden Sert ve İsabetli Vur`,
                             effect: `Şut (%${sho}) yeteneğine bağlı.`,
-                            successChance: this.calculateStatSuccess(sho, 55),
+                            successChance: this.calculateStatSuccess(sho, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.goals++;
@@ -1346,6 +1630,21 @@ const MatchEngine = {
                             onFail: () => {
                                 this.playerStats.shots++;
                                 return `Şutun kalecide kaldı.`;
+                            }
+                        },
+                        {
+                            text: `⚽ Kaleciyi Çalımla Yatırıp Boş Kaleye Yuvarla`,
+                            effect: `Dribbling (%${dri}) yeteneğine bağlı.`,
+                            successChance: this.calculateStatSuccess(dri, "def"),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`SOĞUKKANLI ÇALIM VE GOL! Kaleciyi yere yatırıp boş kaleye yuvarladın! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Kaleci ayağını uzatıp topu kaptı.`;
                             }
                         }
                     ]
@@ -1358,7 +1657,7 @@ const MatchEngine = {
                         {
                             text: `💥 Dönen Topa Gelişine Tek Vuruş Çak!`,
                             effect: `Şut (%${sho}) ve fırsatçılık yeteneğine bağlı.`,
-                            successChance: this.calculateStatSuccess(sho, 52),
+                            successChance: this.calculateStatSuccess(sho, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.goals++;
@@ -1373,7 +1672,7 @@ const MatchEngine = {
                         {
                             text: `👟 Topuk Pasıyla ${teammate}'yi Gör`,
                             effect: `Pas (%${pas}) yeteneğine bağlı asist.`,
-                            successChance: this.calculateStatSuccess(pas, 55),
+                            successChance: this.calculateStatSuccess(pas, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.assists++;
@@ -1383,6 +1682,21 @@ const MatchEngine = {
                             onFail: () => {
                                 this.playerStats.passes++;
                                 return `Pas savunmada kaldı.`;
+                            }
+                        },
+                        {
+                            text: `⚽ Topu Dürtüp Kaleciyi Ekarte Et`,
+                            effect: `Dribbling (%${dri}) yeteneğine bağlı.`,
+                            successChance: this.calculateStatSuccess(dri, "def"),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`SERİ DOKUNUŞ! Topu kalecinin üstünden aşırtıp filelerle buluşturdun! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Kaleci topa kapandı.`;
                             }
                         }
                     ]
@@ -1395,7 +1709,7 @@ const MatchEngine = {
                         {
                             text: `🛡️ Kalecinin Ayağındaki Topa Kayıp Kap`,
                             effect: `Hız ve Savunma ortalamasına (%${Math.round((spe+def)/2)}) bağlı gol şansı.`,
-                            successChance: this.calculateStatSuccess((spe + def) / 2, 55),
+                            successChance: this.calculateStatSuccess((spe + def) / 2, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.goals++;
@@ -1407,9 +1721,9 @@ const MatchEngine = {
                             }
                         },
                         {
-                            text: `⚡ Kaleciyi Hataya Zorlayıp Pasını Kes`,
+                            text: `👟 Kaleciyi Hataya Zorlayıp Pasını Kes`,
                             effect: `Hız (%${spe}) yeteneğine bağlı.`,
-                            successChance: this.calculateStatSuccess(spe, 55),
+                            successChance: this.calculateStatSuccess(spe, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.assists++;
@@ -1418,6 +1732,17 @@ const MatchEngine = {
                             },
                             onFail: () => {
                                 return `Kaleci pasını aktardı.`;
+                            }
+                        },
+                        {
+                            text: `⚡ Kalecinin Üstüne Deparla Baskı Kur`,
+                            effect: `Hız (%${spe}) ve Fizik (%${phy}) ortalamasına bağlı.`,
+                            successChance: this.calculateStatSuccess((spe + phy) / 2, "def"),
+                            onSuccess: () => {
+                                return `PANİKLE TACA ATTI! Kaleci baskından çekinip topu panikle taca dikti!`;
+                            },
+                            onFail: () => {
+                                return `Kaleci çalımla sıyrıldı.`;
                             }
                         }
                     ]
@@ -1430,7 +1755,7 @@ const MatchEngine = {
                         {
                             text: `🎯 Yıkılma, Ayakta Kalıp Zor Pozisyonda Vur!`,
                             effect: `Şut (%${sho}) ve Fizik gücüne bağlı gol şansı.`,
-                            successChance: this.calculateStatSuccess((sho + phy) / 2, 55),
+                            successChance: this.calculateStatSuccess((sho + phy) / 2, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.goals++;
@@ -1471,7 +1796,7 @@ const MatchEngine = {
                         {
                             text: `⚽ Korner Bayrağına Gidip Zaman Geçir`,
                             effect: `Hız (%${spe}) ile maçı kilitleme.`,
-                            successChance: this.calculateStatSuccess(spe, 45),
+                            successChance: this.calculateStatSuccess(spe, "def"),
                             onSuccess: () => {
                                 this.playerState.hocaGuveni = Math.min(100, (this.playerState.hocaGuveni || 40) + 5);
                                 this.playerState.moral = Math.min(100, (this.playerState.moral || 100) + 5);
@@ -1491,7 +1816,7 @@ const MatchEngine = {
                         {
                             text: `⚡ Havaya Sıçrayıp Röveşata Çak!`,
                             effect: `Şut ve Fizik ortalamasına (%${Math.round((sho+phy)/2)}) bağlı efsane röveşata golü.`,
-                            successChance: this.calculateStatSuccess((sho + phy) / 2, 60),
+                            successChance: this.calculateStatSuccess((sho + phy) / 2, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.goals++;
@@ -1506,7 +1831,7 @@ const MatchEngine = {
                         {
                             text: `🎯 Göğsünle İndirip Plase Gönder`,
                             effect: `Şut (%${sho}) yeteneğine bağlı.`,
-                            successChance: this.calculateStatSuccess(sho, 55),
+                            successChance: this.calculateStatSuccess(sho, "def"),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.goals++;
@@ -1516,6 +1841,21 @@ const MatchEngine = {
                             onFail: () => {
                                 this.playerStats.shots++;
                                 return `Göğsünle indirirken stoper topu uzaklaştırdı.`;
+                            }
+                        },
+                        {
+                            text: `👟 Kafayla Arkana Aşırtıp ${teammate}'ye Bırak`,
+                            effect: `Pas ve Fizik ortalamasına (%${Math.round((pas+phy)/2)}) bağlı asist.`,
+                            successChance: this.calculateStatSuccess((pas + phy) / 2, "def"),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.assists++;
+                                this.playerStats.passes++;
+                                return `AKIL DOLU ASİST! Kafayla arkaya aşırdığın topta ${teammate} golü attı! ASİST!`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Aşırtılan top kalecide kaldı.`;
                             }
                         }
                     ]
