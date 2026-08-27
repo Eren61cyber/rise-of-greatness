@@ -221,23 +221,35 @@ const GAME = {
     generateWeeklyMissions: function() {
         const s = this.state;
         const week = s.currentWeek;
-        if (s.weeklyMissionsWeek === week) return; // Already generated this week
+        if (s.weeklyMissionsWeek === week && s.weeklyMissions && s.weeklyMissions.length > 0) return; // Already generated this week
         s.weeklyMissionsWeek = week;
 
+        const sal = s.weeklySalary || 350;
+        const m1 = Math.round(sal * 0.5);   // 1 gol -> ~175 € (Maaşa oranlı)
+        const m2 = Math.round(sal * 1.0);   // 2 gol -> ~350 €
+        const m3 = Math.round(sal * 2.5);   // Hat-trick -> ~875 €
+        const ma1 = Math.round(sal * 0.4);  // 1 asist -> ~140 €
+        const ma2 = Math.round(sal * 0.8);  // 2 asist -> ~280 €
+        const mr8 = Math.round(sal * 0.6);  // 8.0 puan -> ~210 €
+        const mr9 = Math.round(sal * 1.5);  // 9.0 puan -> ~525 €
+        const mw = Math.round(sal * 0.4);   // Galibiyet -> ~140 €
+        const mk = Math.round(sal * 0.3);   // Kondisyon -> ~100 €
+        const mga = Math.round(sal * 1.2);  // Gol+Asist -> ~420 €
+
         const allMissions = [
-            { id: "score1",    desc: "Bu hafta en az 1 gol at",           type: "goals",   target: 1, reward: { money: 25000, followers: 2000 }, rewardText: "+25.000 € + 2.000 Takipçi" },
-            { id: "score2",    desc: "Bu hafta en az 2 gol at",           type: "goals",   target: 2, reward: { money: 50000, followers: 5000 }, rewardText: "+50.000 € + 5.000 Takipçi" },
-            { id: "hattrick",  desc: "Hat-trick yap (3 gol)!",            type: "goals",   target: 3, reward: { money: 100000, followers: 15000 }, rewardText: "+100.000 € + 15.000 Takipçi" },
-            { id: "assist1",   desc: "Bu hafta en az 1 asist yap",        type: "assists", target: 1, reward: { money: 20000, followers: 1500 }, rewardText: "+20.000 € + 1.500 Takipçi" },
-            { id: "assist2",   desc: "Bu hafta en az 2 asist yap",        type: "assists", target: 2, reward: { money: 40000, followers: 4000 }, rewardText: "+40.000 € + 4.000 Takipçi" },
-            { id: "rating8",   desc: "Maçtan 8.0+ puan al",              type: "rating",  target: 8.0, reward: { money: 30000, followers: 3000 }, rewardText: "+30.000 € + 3.000 Takipçi" },
-            { id: "rating9",   desc: "Maçtan 9.0+ puan al",              type: "rating",  target: 9.0, reward: { money: 80000, followers: 10000 }, rewardText: "+80.000 € + 10.000 Takipçi" },
-            { id: "winmatch",  desc: "Bu hafta galip gel",                type: "win",     target: 1, reward: { money: 15000, followers: 1000 }, rewardText: "+15.000 € + 1.000 Takipçi" },
-            { id: "kondisyon", desc: "Kondisyonunu %70 üzerinde tut",    type: "kondisyon", target: 70, reward: { money: 10000 }, rewardText: "+10.000 €" },
-            { id: "goal_assist", desc: "Aynı maçta gol + asist yap",     type: "goalAssist", target: 1, reward: { money: 60000, followers: 8000 }, rewardText: "+60.000 € + 8.000 Takipçi" },
+            { id: "score1",    desc: "Bu hafta en az 1 gol at",           type: "goals",   target: 1, reward: { money: m1, followers: 500 }, rewardText: `+${m1.toLocaleString()} € + 500 Takipçi` },
+            { id: "score2",    desc: "Bu hafta en az 2 gol at",           type: "goals",   target: 2, reward: { money: m2, followers: 1000 }, rewardText: `+${m2.toLocaleString()} € + 1.000 Takipçi` },
+            { id: "hattrick",  desc: "Hat-trick yap (3 gol)!",            type: "goals",   target: 3, reward: { money: m3, followers: 2500 }, rewardText: `+${m3.toLocaleString()} € + 2.500 Takipçi` },
+            { id: "assist1",   desc: "Bu hafta en az 1 asist yap",        type: "assists", target: 1, reward: { money: ma1, followers: 400 }, rewardText: `+${ma1.toLocaleString()} € + 400 Takipçi` },
+            { id: "assist2",   desc: "Bu hafta en az 2 asist yap",        type: "assists", target: 2, reward: { money: ma2, followers: 800 }, rewardText: `+${ma2.toLocaleString()} € + 800 Takipçi` },
+            { id: "rating8",   desc: "Maçtan 8.0+ puan al",              type: "rating",  target: 8.0, reward: { money: mr8, followers: 600 }, rewardText: `+${mr8.toLocaleString()} € + 600 Takipçi` },
+            { id: "rating9",   desc: "Maçtan 9.0+ puan al",              type: "rating",  target: 9.0, reward: { money: mr9, followers: 1500 }, rewardText: `+${mr9.toLocaleString()} € + 1.500 Takipçi` },
+            { id: "winmatch",  desc: "Bu hafta galip gel",                type: "win",     target: 1, reward: { money: mw, followers: 300 }, rewardText: `+${mw.toLocaleString()} € + 300 Takipçi` },
+            { id: "kondisyon", desc: "Kondisyonunu %70 üzerinde tut",    type: "kondisyon", target: 70, reward: { money: mk }, rewardText: `+${mk.toLocaleString()} €` },
+            { id: "goal_assist", desc: "Aynı maçta gol + asist yap",     type: "goalAssist", target: 1, reward: { money: mga, followers: 1200 }, rewardText: `+${mga.toLocaleString()} € + 1.200 Takipçi` },
         ];
 
-        // Pick 3 random unique missions (weighted toward easier ones early on)
+        // Pick 3 random unique missions
         const shuffled = allMissions.sort(() => Math.random() - 0.5);
         s.weeklyMissions = shuffled.slice(0, 3).map(m => ({
             ...m,
