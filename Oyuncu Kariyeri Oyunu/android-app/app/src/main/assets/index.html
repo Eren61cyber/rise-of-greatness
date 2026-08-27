@@ -950,6 +950,7 @@
                     <button class="shop-scroll-btn" onclick="scrollShopTabs(-120)" title="Sola Kaydır">‹</button>
                     <div class="shop-sub-tab-container" id="shop-sub-tab-container">
                         <button class="shop-sub-tab active" id="shop-sub-lifestyle-btn" onclick="switchShopSubTab('lifestyle')">Ev & Yaşam</button>
+                        <button class="shop-sub-tab" id="shop-sub-nutrition-btn" onclick="switchShopSubTab('nutrition')">🥗 Sporcu Beslenmesi</button>
                         <button class="shop-sub-tab" id="shop-sub-consumables-btn" onclick="switchShopSubTab('consumables')">Sağlık & Enerji</button>
                         <button class="shop-sub-tab" id="shop-sub-boots-btn" onclick="switchShopSubTab('boots')">Krampon & Sponsor</button>
                         <button class="shop-sub-tab" id="shop-sub-invest-btn" onclick="switchShopSubTab('invest')">Borsa & Yatırım</button>
@@ -963,6 +964,10 @@
 
                 <div class="shop-list" id="shop-items-container">
                     <!-- Dynamic rendering via main app -->
+                </div>
+
+                <div class="shop-list" id="shop-nutrition-container" style="display: none; flex-direction: column; gap: 12px;">
+                    <!-- Dynamic nutrition & recovery rendering -->
                 </div>
 
                 <div class="shop-list" id="shop-consumables-container" style="display: none; flex-direction: column; gap: 12px;">
@@ -1395,12 +1400,20 @@
             <div class="event-card glass" id="intro-card" style="max-width: 500px; text-align: center; border: 1.5px solid var(--primary); box-shadow: 0 0 30px rgba(0, 230, 118, 0.2);">
                 <!-- Step 1: Welcome & Name Input -->
                 <div id="intro-step-1">
-                    <h3 class="event-tag" style="background: var(--primary); color: #000; font-weight: 900; padding: 4px 10px; border-radius: 6px; font-size: 11px; width: fit-content; margin: 0 auto 12px auto; text-transform: uppercase;">🎮 YENİ EFSANE BAŞLIYOR</h3>
-                    <h2 style="color: white; margin-bottom: 15px; font-size: 24px;">Kariyerine Adım At</h2>
-                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px; line-height: 1.5;">
-                        Kendi futbol efsaneni yaratmaya hazır mısın? Öncelikle bilgilerini doldur:
-                    </p>
-                    <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; text-align: left;">
+                    <h3 class="event-tag" style="background: var(--primary); color: #000; font-weight: 900; padding: 4px 10px; border-radius: 6px; font-size: 11px; width: fit-content; margin: 0 auto 10px auto; text-transform: uppercase;">🎮 YENİ EFSANE BAŞLIYOR</h3>
+                    <h2 style="color: white; margin-bottom: 10px; font-size: 22px;">Kariyerine Adım At</h2>
+                    
+                    <!-- Career Mission & Story Briefing Card -->
+                    <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 10px; padding: 10px 12px; margin-bottom: 14px; text-align: left;">
+                        <div style="font-size: 10.5px; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 4px; display: flex; align-items: center; gap: 4px;">
+                            <span>🎯</span> KARİYER AMACIN & HİKAYEN
+                        </div>
+                        <div style="font-size: 11.5px; color: #cbd5e1; line-height: 1.45;">
+                            <strong>17 yaşında</strong> genç bir yeteneksin. Mahalle sahalarından amatör seçmelere uzanan bu serüvende amacın; sıkı çalışmak, profesyonel sporcular gibi beslenmek, alt liglerden <strong>Süper Lig</strong> ve <strong>Avrupa Devleri</strong>ne yükselerek <strong>Ballon d'Or</strong> kazanan bir dünya efsanesi olmak!
+                        </div>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 18px; text-align: left;">
                         <div>
                             <label style="font-size: 11px; color: var(--text-muted); font-weight: bold; display: block; margin-bottom: 4px;">Ad Soyad</label>
                             <input type="text" id="intro-name-input" class="intro-input-field" placeholder="Adınızı ve soyadınızı yazın...">
@@ -1413,6 +1426,27 @@
                             <div style="flex: 1;">
                                 <label style="font-size: 11px; color: var(--text-muted); font-weight: bold; display: block; margin-bottom: 4px;">Doğduğun İlçe</label>
                                 <input type="text" id="intro-district-input" class="intro-input-field" placeholder="İlçe giriniz...">
+                            </div>
+                        </div>
+                        <!-- Position Selector -->
+                        <div>
+                            <label style="font-size: 11px; color: var(--text-muted); font-weight: bold; display: block; margin-bottom: 6px;">Oynamak İstediğin Mevki</label>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;" id="intro-position-grid">
+                                <div class="intro-pos-card active" data-pos="Forvet" onclick="selectIntroPosition('Forvet')" style="cursor: pointer; padding: 9px 6px; border-radius: 10px; border: 1.5px solid var(--primary); background: rgba(16, 185, 129, 0.12); text-align: center; transition: all 0.2s ease;">
+                                    <div style="font-size: 18px; margin-bottom: 2px;">⚽</div>
+                                    <div style="font-size: 11.5px; font-weight: 800; color: #fff;">Forvet</div>
+                                    <div style="font-size: 9.5px; color: var(--primary); font-weight: 700;">Şut & Hız</div>
+                                </div>
+                                <div class="intro-pos-card" data-pos="Orta Saha" onclick="selectIntroPosition('Orta Saha')" style="cursor: pointer; padding: 9px 6px; border-radius: 10px; border: 1.5px solid var(--border-glass); background: #131822; text-align: center; transition: all 0.2s ease;">
+                                    <div style="font-size: 18px; margin-bottom: 2px;">🧠</div>
+                                    <div style="font-size: 11.5px; font-weight: 800; color: #fff;">Orta Saha</div>
+                                    <div style="font-size: 9.5px; color: var(--text-muted); font-weight: 700;">Pas & Vizyon</div>
+                                </div>
+                                <div class="intro-pos-card" data-pos="Defans" onclick="selectIntroPosition('Defans')" style="cursor: pointer; padding: 9px 6px; border-radius: 10px; border: 1.5px solid var(--border-glass); background: #131822; text-align: center; transition: all 0.2s ease;">
+                                    <div style="font-size: 18px; margin-bottom: 2px;">🛡️</div>
+                                    <div style="font-size: 11.5px; font-weight: 800; color: #fff;">Defans</div>
+                                    <div style="font-size: 9.5px; color: var(--text-muted); font-weight: 700;">Fizik & Defans</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -3679,6 +3713,27 @@
                 document.getElementById("intro-city-input").value = "";
                 document.getElementById("intro-district-input").value = "";
                 
+                let selectedIntroPosition = "Forvet";
+                window.selectIntroPosition = function(pos) {
+                    selectedIntroPosition = pos;
+                    const cards = document.querySelectorAll(".intro-pos-card");
+                    cards.forEach(card => {
+                        if (card.getAttribute("data-pos") === pos) {
+                            card.classList.add("active");
+                            card.style.borderColor = "var(--primary)";
+                            card.style.background = "rgba(16, 185, 129, 0.12)";
+                            const sub = card.querySelector("div:last-child");
+                            if (sub) sub.style.color = "var(--primary)";
+                        } else {
+                            card.classList.remove("active");
+                            card.style.borderColor = "var(--border-glass)";
+                            card.style.background = "#131822";
+                            const sub = card.querySelector("div:last-child");
+                            if (sub) sub.style.color = "var(--text-muted)";
+                        }
+                    });
+                };
+
                 document.getElementById("intro-step-1").style.display = "block";
                 document.getElementById("intro-step-custom").style.display = "none";
                 document.getElementById("intro-step-2").style.display = "none";
@@ -3767,7 +3822,7 @@
                     }
 
                     localStorage.removeItem(GAME.saveKey);
-                    GAME.resetGame(name, startingLeague, startingSalary, startingTrust, city, district, selectedStartingClub);
+                    GAME.resetGame(name, startingLeague, startingSalary, startingTrust, city, district, selectedStartingClub, selectedIntroPosition);
                     GAME.state.avatarCustomization = tempAvatarCustomization;
                     GAME.saveGame();
                     GAME.updateUI();
@@ -5328,6 +5383,7 @@
             activeShopSubTab = tabName;
             
             const btnLifestyle = document.getElementById("shop-sub-lifestyle-btn");
+            const btnNutrition = document.getElementById("shop-sub-nutrition-btn");
             const btnConsumables = document.getElementById("shop-sub-consumables-btn");
             const btnBoots = document.getElementById("shop-sub-boots-btn");
             const btnInvest = document.getElementById("shop-sub-invest-btn");
@@ -5337,6 +5393,7 @@
             const btnPropass = document.getElementById("shop-sub-propass-btn");
             
             const containerLifestyle = document.getElementById("shop-items-container");
+            const containerNutrition = document.getElementById("shop-nutrition-container");
             const containerConsumables = document.getElementById("shop-consumables-container");
             const containerBoots = document.getElementById("shop-boots-container");
             const containerInvest = document.getElementById("shop-invest-container");
@@ -5365,6 +5422,7 @@
             };
             
             setTabStyle(btnLifestyle, tabName === 'lifestyle');
+            setTabStyle(btnNutrition, tabName === 'nutrition');
             setTabStyle(btnConsumables, tabName === 'consumables');
             setTabStyle(btnBoots, tabName === 'boots');
             setTabStyle(btnInvest, tabName === 'invest');
@@ -5374,6 +5432,7 @@
             setTabStyle(btnPropass, tabName === 'propass');
             
             if (containerLifestyle) containerLifestyle.style.display = (tabName === 'lifestyle') ? 'flex' : 'none';
+            if (containerNutrition) containerNutrition.style.display = (tabName === 'nutrition') ? 'flex' : 'none';
             if (containerConsumables) containerConsumables.style.display = (tabName === 'consumables') ? 'flex' : 'none';
             if (containerBoots) containerBoots.style.display = (tabName === 'boots') ? 'flex' : 'none';
             if (containerInvest) containerInvest.style.display = (tabName === 'invest') ? 'flex' : 'none';
@@ -5384,6 +5443,8 @@
             
             if (tabName === 'lifestyle') {
                 renderShopItems();
+            } else if (tabName === 'nutrition') {
+                renderNutritionAndRecovery();
             } else if (tabName === 'consumables') {
                 renderConsumableItems();
             } else if (tabName === 'boots') {
@@ -6406,6 +6467,75 @@
                     </div>
                 `;
             });
+        }
+
+        function renderNutritionAndRecovery() {
+            const container = document.getElementById("shop-nutrition-container");
+            if (!container) return;
+            container.innerHTML = "";
+
+            const activePlanId = GAME.state.activeNutritionPlan || "mediterranean";
+
+            let html = `
+                <div style="background: linear-gradient(135deg, rgba(16,185,129,0.12), rgba(6,78,59,0.25)); border: 1px solid rgba(16,185,129,0.3); border-radius: 12px; padding: 14px; margin-bottom: 12px;">
+                    <div style="font-size: 13px; font-weight: 800; color: var(--primary); margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+                        <span>🥗</span> PROFESYONEL SPORCU BESLENME RUTİNİ
+                    </div>
+                    <div style="font-size: 11.5px; color: #cbd5e1; line-height: 1.4;">
+                        "Yetenek maç kazandırır ama ne yediğin ve nasıl dinlendiğin bir dünya yıldızı olup olmayacağını belirler." Cristiano Ronaldo, Erling Haaland ve Arda Güler gibi elit futbolcuların bilimsel diyet ve toparlanma rutinlerini uygula.
+                    </div>
+                </div>
+
+                <h3 style="color: white; margin: 10px 0 8px 0; font-size: 13.5px; font-weight: 800; border-left: 3px solid var(--primary); padding-left: 8px;">Haftalık Diyet & Beslenme Planları</h3>
+            `;
+
+            DATABASE.NUTRITION_PLANS.forEach(plan => {
+                const isActive = activePlanId === plan.id && plan.id !== "cheat_meal";
+                const canAfford = GAME.state.money >= plan.cost;
+                const btnText = plan.id === "cheat_meal" 
+                    ? `${plan.cost} € Kaçamak Yap` 
+                    : (isActive ? "✅ Aktif Menü" : `${plan.cost} € / Hafta Seç`);
+                const btnClass = isActive ? "btn-disabled" : (canAfford ? "btn-primary" : "btn-disabled");
+                const disabledAttr = (isActive || !canAfford) ? "disabled" : "";
+
+                html += `
+                    <div class="shop-card glass" style="display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border-radius: 12px; border: 1px solid ${isActive ? 'rgba(16,185,129,0.5)' : 'var(--border-glass)'}; background: ${isActive ? 'rgba(16,185,129,0.06)' : '#131822'}; margin-bottom: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h4 style="margin: 0; font-size: 13.5px; font-weight: 700; color: #f8fafc;">${plan.name}</h4>
+                                <span style="font-size: 10.5px; color: var(--primary); font-weight: 700;">🎯 ${plan.target}</span>
+                            </div>
+                            <button class="btn ${btnClass}" ${disabledAttr} onclick="GAME.setNutritionPlan('${plan.id}'); renderNutritionAndRecovery();" style="padding: 7px 12px; font-size: 11.5px; border-radius: 8px; flex-shrink: 0;">${btnText}</button>
+                        </div>
+                        <div style="font-size: 11.5px; color: #94a3b8; line-height: 1.35;">${plan.desc}</div>
+                        <div style="font-size: 11px; color: var(--accent-yellow); font-weight: 600;">⚡ Etki: ${plan.stats}</div>
+                        <div style="background: rgba(255,255,255,0.03); border-radius: 6px; padding: 6px 8px; font-size: 10.5px; color: #38bdf8; line-height: 1.35;">${plan.proTip}</div>
+                    </div>
+                `;
+            });
+
+            html += `<h3 style="color: white; margin: 16px 0 8px 0; font-size: 13.5px; font-weight: 800; border-left: 3px solid var(--accent-blue); padding-left: 8px;">Maç & İdman Sonrası Rejenerasyon (Toparlanma)</h3>`;
+
+            DATABASE.RECOVERY_ROUTINES.forEach(routine => {
+                const canAfford = GAME.state.money >= routine.cost;
+                const btnText = routine.cost === 0 ? "Uygula (Ücretsiz)" : `${routine.cost} € Uygula`;
+                const btnClass = canAfford ? "btn-secondary" : "btn-disabled";
+                const disabledAttr = !canAfford ? "disabled" : "";
+
+                html += `
+                    <div class="shop-card glass" style="display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border-glass); background: #131822; margin-bottom: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="margin: 0; font-size: 13.5px; font-weight: 700; color: #f8fafc;">${routine.name}</h4>
+                            <button class="btn ${btnClass}" ${disabledAttr} onclick="GAME.applyRecoveryRoutine('${routine.id}'); renderNutritionAndRecovery();" style="padding: 7px 12px; font-size: 11.5px; border-radius: 8px; flex-shrink: 0;">${btnText}</button>
+                        </div>
+                        <div style="font-size: 11.5px; color: #94a3b8; line-height: 1.35;">${routine.desc}</div>
+                        <div style="font-size: 11px; color: var(--accent-green); font-weight: 600;">✨ Fayda: ${routine.stats}</div>
+                        <div style="background: rgba(255,255,255,0.03); border-radius: 6px; padding: 6px 8px; font-size: 10.5px; color: #38bdf8; line-height: 1.35;">${routine.proTip}</div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
         }
 
 
@@ -7960,24 +8090,44 @@
             let rating = 0;
 
             if (!isDropped) {
-                if (myGoals > 0) {
-                    let shootProb = GAME.state.shooting / 140; 
-                    if (isBenched) shootProb = shootProb * 0.22; // Benched player gets 22% time (late sub)
+                const pos = GAME.state.position || "Forvet";
+                let shootProb = (GAME.state.shooting || 50) / 120;
+                let assistProb = (GAME.state.passing || 50) / 160;
 
+                if (pos === "Orta Saha") {
+                    shootProb = (GAME.state.shooting || 50) / 190;
+                    assistProb = (GAME.state.passing || 50) / 110;
+                } else if (pos === "Defans") {
+                    shootProb = (GAME.state.shooting || 50) / 380;
+                    assistProb = (GAME.state.passing || 50) / 260;
+                }
+
+                if (isBenched) {
+                    shootProb *= 0.22;
+                    assistProb *= 0.22;
+                }
+
+                if (myGoals > 0) {
                     for (let g = 0; g < myGoals; g++) {
                         if (Math.random() < shootProb && playerGoalsThisMatch < myGoals) {
                             playerGoalsThisMatch++;
-                        } else if (Math.random() < (isBenched ? 0.08 : 0.3) && (playerGoalsThisMatch + playerAssistsThisMatch) < myGoals) {
+                        } else if (Math.random() < assistProb && (playerGoalsThisMatch + playerAssistsThisMatch) < myGoals) {
                             playerAssistsThisMatch++;
                         }
                     }
                 }
 
-                // Final performance rating
-                if (isBenched) {
-                    rating = 5.0 + (playerGoalsThisMatch * 1.5) + (playerAssistsThisMatch * 1.0) + (Math.random() * 1.0 - 0.2);
+                // Final performance rating tailored to position
+                let baseRating = isBenched ? 5.2 : 6.2;
+                if (pos === "Defans") {
+                    if (oppGoals === 0) baseRating += 1.6; // Clean sheet bonus!
+                    else if (oppGoals === 1) baseRating += 0.4;
+                    else if (oppGoals >= 3) baseRating -= 0.8;
+                    rating = baseRating + (playerGoalsThisMatch * 1.8) + (playerAssistsThisMatch * 1.2) + ((GAME.state.defense || 50) / 120) + (Math.random() * 1.0 - 0.5);
+                } else if (pos === "Orta Saha") {
+                    rating = baseRating + (playerGoalsThisMatch * 1.3) + (playerAssistsThisMatch * 1.5) + ((GAME.state.passing || 50) / 120) + (Math.random() * 1.0 - 0.5);
                 } else {
-                    rating = 6.0 + (playerGoalsThisMatch * 1.5) + (playerAssistsThisMatch * 1.0) + (Math.random() * 1.5 - 0.5);
+                    rating = baseRating + (playerGoalsThisMatch * 1.6) + (playerAssistsThisMatch * 1.0) + (Math.random() * 1.2 - 0.6);
                 }
                 rating = Math.max(3.0, Math.min(10.0, parseFloat(rating.toFixed(1))));
 
@@ -7994,7 +8144,12 @@
                 GAME.state.careerAssists += playerAssistsThisMatch;
                 GAME.state.seasonGoals += playerGoalsThisMatch;
                 GAME.state.seasonAssists += playerAssistsThisMatch;
-                GAME.state.kondisyon = Math.max(10, GAME.state.kondisyon - (isBenched ? 12 : 30));
+
+                let drainAmount = isBenched ? 12 : 30;
+                if (GAME.state.matchStaminaBonus) {
+                    drainAmount = Math.round(drainAmount * (1 - GAME.state.matchStaminaBonus / 100));
+                }
+                GAME.state.kondisyon = Math.max(10, GAME.state.kondisyon - drainAmount);
             } else {
                 // Dropped players don't lose energy, they recover instead!
                 GAME.state.kondisyon = Math.min(100, GAME.state.kondisyon + 15);

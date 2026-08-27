@@ -618,6 +618,105 @@ const DATABASE = {
         }
     ],
 
+    NUTRITION_PLANS: [
+        {
+            id: "mediterranean",
+            name: "🥗 Akdeniz Şampiyon Menüsü",
+            icon: "🥗",
+            cost: 90,
+            isWeekly: true,
+            target: "Denge & Sakatlık Koruması",
+            stats: "Sakatlık Riski -%40, +10 Kondisyon Direnci, +5 Moral",
+            desc: "Zeytinyağı, somon, ızgara sebzeler, ceviz ve taze avokado.",
+            proTip: "💡 Sporcu Bilgisi: Omega-3 ve doğal antioksidanlar kas iltihabını (inflamasyon) önler, tendonları ve eklemleri güçlendirir.",
+            applyWeekly: (s) => {
+                s.injuryRiskReduction = Math.max(s.injuryRiskReduction || 0, 40);
+                s.kondisyonRegenBonus = (s.kondisyonRegenBonus || 0) + 10;
+                s.moral = Math.min(100, s.moral + 5);
+            }
+        },
+        {
+            id: "high_protein",
+            name: "🍗 Yüksek Protein & Kas Kütlesi (Haaland Tarzı)",
+            icon: "🍗",
+            cost: 140,
+            isWeekly: true,
+            target: "Güç & Şut Verimi",
+            stats: "Fiziksel & Şut Gelişimi +%25 Hızlı, +5 Enerji Tasarrufu",
+            desc: "Tavuk göğsü, yumurta beyazı, kinoa, kırmızı et ve organik süzme yoğurt.",
+            proTip: "💡 Sporcu Bilgisi: Yoğun maç temposundaki futbolcuların kilo başına 1.8-2.2g protein alması mikro kas yırtıklarının 2 kat hızlı onarılmasını sağlar.",
+            applyWeekly: (s) => {
+                s.kondisyonRegenBonus = (s.kondisyonRegenBonus || 0) + 5;
+            }
+        },
+        {
+            id: "carb_loading",
+            name: "🍚 Maç Günü Karbonhidrat Yüklemesi",
+            icon: "🍚",
+            cost: 110,
+            isWeekly: true,
+            target: "90 Dakika Yüksek Dayanıklılık",
+            stats: "Maç İçi Kondisyon Kaybı -%35, +10 Hız Dayanıklılığı",
+            desc: "Basmati pirinci, yulaf ezmesi, tatlı patates, muz ve doğal bal.",
+            proTip: "💡 Sporcu Bilgisi: Maçtan 3-4 saat önce tüketilen kompleks karbonhidratlar kas içi glikojen depolarını fulleyerek 90. dakikada bile depar atabilmeni sağlar.",
+            applyWeekly: (s) => {
+                s.matchStaminaBonus = 35;
+            }
+        },
+        {
+            id: "cheat_meal",
+            name: "🍔 Serbest Kaçamak Öğünü (Fast-Food)",
+            icon: "🍔",
+            cost: 35,
+            isWeekly: false,
+            target: "Anlık Moral Patlaması",
+            stats: "+25 Moral, -15 Kondisyon",
+            desc: "Büyük boy burger, patates kızartması ve gazlı içecek.",
+            proTip: "⚠️ Sporcu Uyarısı: Doymuş yağ ve rafine şeker vücutta su tutar (ödem yapar), laktik asit birikimini artırır ve maç temposunda erken tıkanmaya yol açar.",
+            applyWeekly: (s) => {}
+        }
+    ],
+
+    RECOVERY_ROUTINES: [
+        {
+            id: "ice_bath",
+            name: "🧊 Buz Banyosu & Kriyoterapi (10°C)",
+            icon: "🧊",
+            cost: 50,
+            desc: "Maç ve ağır antrenman sonrası 10 dakika buz dolu küvete girme protokolü.",
+            stats: "Anında +25 Kondisyon, Kas Ağrılarını Sıfırlar",
+            proTip: "💡 Sporcu Bilgisi: Soğuk su kan damarlarını daraltarak laktik asidi ve metabolik atıkları kaslardan hızla tahliye eder (Vazokonstrüksiyon).",
+            effect: (s) => {
+                s.kondisyon = Math.min(100, s.kondisyon + 25);
+            }
+        },
+        {
+            id: "sleep_protocol",
+            name: "😴 8+ Saat Derin Uyku & Dijital Detoks",
+            icon: "😴",
+            cost: 0,
+            desc: "Mavi ışık filtresi, 19°C serin oda ve 9 saat kesintisiz melatonin uykusu.",
+            stats: "+15 Moral, +10 Kondisyon, Zihinsel Odaklanma",
+            proTip: "💡 Sporcu Bilgisi: Vücuttaki büyüme hormonu (HGH) ve kas sentezinin %80'i derin uykunun 3. ve 4. evrelerinde salgılanır.",
+            effect: (s) => {
+                s.moral = Math.min(100, s.moral + 15);
+                s.kondisyon = Math.min(100, s.kondisyon + 10);
+            }
+        },
+        {
+            id: "hydration_electrolytes",
+            name: "💧 Elektrolit & Hidrasyon Protokolü (3.5L)",
+            icon: "💧",
+            cost: 25,
+            desc: "Himalaya tuzu, magnezyum ve potasyumlu izotonik su dengesi.",
+            stats: "Kramp Riskini Sıfırlar, +15 Kondisyon",
+            proTip: "💡 Sporcu Bilgisi: Vücuttaki %2'lik su kaybı bile bir futbolcunun depar hızını %15, karar verme reflekslerini %20 düşürür.",
+            effect: (s) => {
+                s.kondisyon = Math.min(100, s.kondisyon + 15);
+            }
+        }
+    ],
+
     AGENTS: [
         {
             id: "bedirhan",

@@ -53,37 +53,72 @@ const GAME = {
         this.updateUI();
     },
 
-    resetGame: function(customName, startingLeague, startingSalary, startingTrust, hometownCity, hometownDistrict, startingClubName) {
+    resetGame: function(customName, startingLeague, startingSalary, startingTrust, hometownCity, hometownDistrict, startingClubName, customPosition) {
         const startingClub = startingClubName ? DATABASE.AMATEUR_CLUBS.find(c => c.name === startingClubName) : DATABASE.getRandomAmateurClub();
         const pName = customName || "Genç Yetenek";
         const sLeague = startingLeague || "3. Lig";
+        const pos = customPosition || "Forvet";
+
+        let initShooting = 54;
+        let initPassing = 46;
+        let initSpeed = 54;
+        let initDribbling = 52;
+        let initDefense = 40;
+        let initPhysical = 48;
+
+        if (pos === "Orta Saha") {
+            initShooting = 48;
+            initPassing = 58;
+            initSpeed = 48;
+            initDribbling = 54;
+            initDefense = 48;
+            initPhysical = 48;
+        } else if (pos === "Defans") {
+            initShooting = 38;
+            initPassing = 46;
+            initSpeed = 50;
+            initDribbling = 44;
+            initDefense = 58;
+            initPhysical = 56;
+        }
+
+        let calcRating = 50;
+        if (pos === "Defans") {
+            calcRating = Math.round((initDefense + initPhysical + initSpeed) / 3);
+        } else if (pos === "Orta Saha") {
+            calcRating = Math.round((initPassing + initDribbling + initShooting) / 3);
+        } else {
+            calcRating = Math.round((initShooting + initSpeed + initDribbling) / 3);
+        }
 
         this.state = {
             playerName: pName,
             hometownCity: hometownCity || "Sinop",
             hometownDistrict: hometownDistrict || "Gerze",
             age: 17,
-            rating: 50,
-            position: "Forvet",
+            rating: calcRating,
+            position: pos,
             kondisyon: 100,
             moral: 100,
             followers: sLeague === "2. Lig" ? 3500 : 2000,
             money: 1000,
             hocaGuveni: startingTrust || 40,
-            shooting: 50,
-            passing: 48,
-            speed: 52,
-            dribbling: 50,
-            defense: 50,
-            physical: 50,
+            shooting: initShooting,
+            passing: initPassing,
+            speed: initSpeed,
+            dribbling: initDribbling,
+            defense: initDefense,
+            physical: initPhysical,
+            activeNutritionPlan: "mediterranean",
+            matchStaminaBonus: 0,
             injuryWeeks: 0,
             familyBondsSevered: false,
             familyStoryWeeks: 0,
             familyStoryStage: 0,
             weeklySalary: startingSalary || 350,
             sponsorIncomeBonus: 0,
-            kondisyonRegenBonus: 0,
-            injuryRiskReduction: 0,
+            kondisyonRegenBonus: 10,
+            injuryRiskReduction: 40,
             ownedItems: [],
             currentLeague: sLeague,
             currentClub: startingClub.name,
@@ -771,6 +806,52 @@ const GAME = {
         return true;
     },
 
+    setNutritionPlan: function(planId) {
+        const plan = DATABASE.NUTRITION_PLANS.find(p => p.id === planId);
+        if (!plan) return false;
+
+        if (this.state.money < plan.cost) {
+            alert(`Bu beslenme programını başlatmak için yeterli bakiye yok! Gerekli: ${plan.cost.toLocaleString()} €`);
+            return false;
+        }
+
+        if (plan.id === "cheat_meal") {
+            if (!confirm("Hamburger ve fast-food kaçamağı yapmak istediğinden emin misin? (+25 Moral, -15 Kondisyon)")) return false;
+            this.state.money -= plan.cost;
+            plan.applyWeekly(this.state);
+            this.saveGame();
+            this.updateUI();
+            alert("🍔 Kaçamak öğün yendi! Moral tavan yaptı ama hoca duysa fena kızar! (-15 Kondisyon)");
+            return true;
+        }
+
+        this.state.activeNutritionPlan = planId;
+        this.saveGame();
+        this.updateUI();
+        alert(`🥗 ${plan.name} aktif haftalık beslenme rutininiz olarak belirlendi! (${plan.stats})`);
+        return true;
+    },
+
+    applyRecoveryRoutine: function(routineId) {
+        const routine = DATABASE.RECOVERY_ROUTINES.find(r => r.id === routineId);
+        if (!routine) return false;
+
+        if (routine.cost > 0 && this.state.money < routine.cost) {
+            alert(`Bu toparlanma protokolü için yeterli bakiye yok! Gerekli: ${routine.cost.toLocaleString()} €`);
+            return false;
+        }
+
+        if (routine.cost > 0) {
+            this.state.money -= routine.cost;
+        }
+
+        routine.effect(this.state);
+        this.saveGame();
+        this.updateUI();
+        alert(`✨ ${routine.name} uygulandı!\n\n${routine.stats}`);
+        return true;
+    },
+
     hireAgent: function(agentId) {
         const agent = DATABASE.AGENTS.find(a => a.id === agentId);
         if (!agent) return false;
@@ -1008,6 +1089,15 @@ const GAME = {
                 gf.applyWeekly(this.state);
                 // Iliski bag seviyesi her hafta hafifce duser
                 this.state.relationship.level = Math.max(0, this.state.relationship.level - 3);
+            }
+        }
+
+        // Sporcu Beslenme Rutini Haftalık Gideri & Etkileri
+        if (this.state.activeNutritionPlan) {
+            const plan = DATABASE.NUTRITION_PLANS.find(p => p.id === this.state.activeNutritionPlan);
+            if (plan && plan.isWeekly) {
+                weeklyDeduction += plan.cost;
+                plan.applyWeekly(this.state);
             }
         }
         
