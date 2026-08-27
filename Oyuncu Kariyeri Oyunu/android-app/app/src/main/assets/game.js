@@ -845,6 +845,11 @@ const GAME = {
         const routine = DATABASE.RECOVERY_ROUTINES.find(r => r.id === routineId);
         if (!routine) return false;
 
+        if (this.state.weeklyRecoveryUsed) {
+            alert("Bu hafta zaten bir toparlanma/rejenerasyon protokolü uyguladınız! Kaslarınızı aşırı şoklamamalı ve doğal dinlenmeye de izin vermelisiniz. Yeni haftaya geçtikten sonra tekrar kullanabilirsiniz.");
+            return false;
+        }
+
         if (routine.cost > 0 && this.state.money < routine.cost) {
             alert(`Bu toparlanma protokolü için yeterli bakiye yok! Gerekli: ${routine.cost.toLocaleString()} €`);
             return false;
@@ -855,8 +860,12 @@ const GAME = {
         }
 
         routine.effect(this.state);
+        this.state.weeklyRecoveryUsed = true;
         this.saveGame();
         this.updateUI();
+        if (typeof renderNutritionAndRecovery === "function") {
+            renderNutritionAndRecovery();
+        }
         alert(`✨ ${routine.name} uygulandı!\n\n${routine.stats}`);
         return true;
     },
@@ -903,8 +912,9 @@ const GAME = {
             this.state.activeTransferOffers = [];
         }
 
-        // Haftalık antrenman sayacını sıfırla
+        // Haftalık antrenman ve toparlanma sayacını sıfırla
         this.state.weeklyTrainingCount = 0;
+        this.state.weeklyRecoveryUsed = false;
 
         if (typeof this.state.weeksSinceLastTraining === "undefined") this.state.weeksSinceLastTraining = 0;
         if (typeof this.state.weeksSinceLastPurchase === "undefined") this.state.weeksSinceLastPurchase = 0;
