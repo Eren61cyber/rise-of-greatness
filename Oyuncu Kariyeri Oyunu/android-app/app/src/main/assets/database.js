@@ -802,7 +802,160 @@ const DATABASE = {
         { id: "ronaldinho", name: "Ronaldino", rating: 93, pos: "SLK", nation: "🇧🇷", stat: "dribbling", buff: 4, desc: "+4 Top Sürme (Efsane)", bg: "radial-gradient(circle at 50% 25%, #E1BEE7 0%, #8E24AA 35%, #311B92 75%, #0A0025 100%)", isLegend: true },
         { id: "zidane", name: "Z. Zidan", rating: 94, pos: "OOS", nation: "🇫🇷", stat: "passing", buff: 4, desc: "+4 Pas (Efsane)", bg: "radial-gradient(circle at 50% 25%, #E1BEE7 0%, #8E24AA 35%, #311B92 75%, #0A0025 100%)", isLegend: true },
         { id: "maldini", name: "P. Maldiny", rating: 92, pos: "STP", nation: "🇮🇹", stat: "defense", buff: 4, desc: "+4 Defans (Efsane)", bg: "radial-gradient(circle at 50% 25%, #E1BEE7 0%, #8E24AA 35%, #311B92 75%, #0A0025 100%)", isLegend: true }
-    ]
+    ],
+
+    POSITION_DRILLS: {
+        "Forvet": [
+            {
+                id: "shooting",
+                name: "🎯 Ceza Sahası İçi Bitiricilik & Plase",
+                statKey: "shooting",
+                desc: "Kaleciyle karşı karşıya soğukkanlı tek vuruşlar ve köşeye sert şutlar.",
+                badge: "Gol Tehdidi",
+                icon: "🎯"
+            },
+            {
+                id: "speed",
+                name: "⚡ Patlayıcı Hız & Kontratak Deparı",
+                statKey: "speed",
+                desc: "Savunma arkasına atılan ara paslarında stoperleri geride bırakma.",
+                badge: "Hız & Patlama",
+                icon: "⚡"
+            },
+            {
+                id: "dribbling",
+                name: "⚽ 1'e 1 Çalım & Kanat Dribblingi",
+                statKey: "dribbling",
+                desc: "Bire birde çalım atarak ceza sahasına sızma ve şut açısı yaratma.",
+                badge: "Top Hakimiyeti",
+                icon: "⚽"
+            },
+            {
+                id: "passing",
+                name: "👟 Al-Ver & Duvar Olma (Servis)",
+                statKey: "passing",
+                desc: "Sırtı dönük top saklayıp kanat veya orta sahadan gelen arkadaşa servis.",
+                badge: "Bağlantı Oyunu",
+                icon: "👟"
+            },
+            {
+                id: "physical",
+                name: "✈️ Hava Hakimiyeti & Kafa Golleri",
+                statKey: "physical",
+                desc: "Yan ortalarda stoperlerin üzerinden sıçrayarak kafa vuruşu yapma.",
+                badge: "Hava Üstünlüğü",
+                icon: "✈️"
+            },
+            {
+                id: "defense",
+                name: "🛡️ Ön Alan Presi & Savunmayı Bozma",
+                statKey: "defense",
+                desc: "Rakip kaleci ve stoperlere ilk baskıyı kurarak pas hatasına zorlama.",
+                badge: "Ön Pres",
+                icon: "🛡️"
+            }
+        ],
+        "Orta Saha": [
+            {
+                id: "passing",
+                name: "👟 Kilit Ara Pası & Maestro Vizyonu",
+                statKey: "passing",
+                desc: "Defans bloklarının arasından geçen milimetrik ölümcül ara paslar.",
+                badge: "Oyun Kurma",
+                icon: "👟"
+            },
+            {
+                id: "dribbling",
+                name: "⚽ Dar Alanda Top Saklama & Çıkış",
+                statKey: "dribbling",
+                desc: "Orta sahadaki yoğun baskıdan top kaybetmeden sıyrılıp atağa yön verme.",
+                badge: "Baskı Kırma",
+                icon: "⚽"
+            },
+            {
+                id: "shooting",
+                name: "🚀 Ceza Sahası Dışı Füze & Frikik",
+                statKey: "shooting",
+                desc: "25-30 metreden kaleciyi avlayan sert, kavisli uzaktan şutlar.",
+                badge: "Uzaktan Şut",
+                icon: "🚀"
+            },
+            {
+                id: "speed",
+                name: "⚡ Çeviklik & Hızlı Yön Değiştirme",
+                statKey: "speed",
+                desc: "Oyunun yönünü aniden ters kanada çevirme ve topsuz alana koşu.",
+                badge: "Dinamizm",
+                icon: "⚡"
+            },
+            {
+                id: "defense",
+                name: "🛡️ Şok Pres & Araya Girme (Top Kapma)",
+                statKey: "defense",
+                desc: "Orta sahada pas aralarına girerek rakip atağı başlamadan kesme.",
+                badge: "Top Kazanma",
+                icon: "🛡️"
+            },
+            {
+                id: "physical",
+                name: "💪 Box-to-Box Ciğer & Dayanıklılık",
+                statKey: "physical",
+                desc: "90 dakika boyunca iki ceza sahası arasında mekik dokuma enerjisi.",
+                badge: "Motor Gücü",
+                icon: "💪"
+            }
+        ],
+        "Defans": [
+            {
+                id: "defense",
+                name: "🛡️ Kayarak & Ayakta Temiz Müdahale",
+                statKey: "defense",
+                desc: "Ceza sahasında faul yapmadan forvetin ayağından topu söküp alma.",
+                badge: "Kritik Müdahale",
+                icon: "🛡️"
+            },
+            {
+                id: "physical",
+                name: "✈️ Hava Topu & Kafa ile Uzaklaştırma",
+                statKey: "physical",
+                desc: "Kornerlerde ve yan toplarda forvetleri havada ezerek tehlikeyi savuşturma.",
+                badge: "Hava Hakimiyeti",
+                icon: "✈️"
+            },
+            {
+                id: "physical_shield",
+                name: "💪 Omuz Omuza & Forveti Sindirme",
+                statKey: "physical",
+                desc: "İkili mücadelelerde yıkılmama, forveti kale çizgisinden uzak tutma.",
+                badge: "Kaya Gücü",
+                icon: "💪"
+            },
+            {
+                id: "speed",
+                name: "⚡ Kademe Alma & Reaksiyon Deparı",
+                statKey: "speed",
+                desc: "Arkaya kaçan hızlı kanat ve forvetleri yakalamak için geri kademe deparı.",
+                badge: "Kademe Hızı",
+                icon: "⚡"
+            },
+            {
+                id: "passing",
+                name: "🎯 Geriden Oyun Kurma & Uzun Pas",
+                statKey: "passing",
+                desc: "Savunmadan doğrudan forvete ya da boş kanada nokta uzun top atma.",
+                badge: "Oyun Kurucu Stoper",
+                icon: "🎯"
+            },
+            {
+                id: "dribbling",
+                name: "⚽ Topla Çıkış & Soğukkanlılık",
+                statKey: "dribbling",
+                desc: "Rakip forvet pres yaparken paniklemeden topla mesafe katetme.",
+                badge: "Soğukkanlı Çıkış",
+                icon: "⚽"
+            }
+        ]
+    }
 };
 
 if (typeof module !== "undefined" && module.exports) {

@@ -883,60 +883,19 @@
             <section id="panel-training" class="view-panel">
                 <div class="panel-header">
                     <h2>Antrenman Sahası</h2>
-                    <p>Antrenman yapmak 20% Kondisyon harcar.</p>
-                    <div class="glass" style="margin-top: 8px; padding: 6px 12px; border-radius: 8px; font-size: 11.5px; font-weight: 800; color: var(--primary); display: inline-block; border: 1px dashed var(--primary); box-shadow: 0 0 10px rgba(0, 230, 118, 0.1);">
-                        📋 HAFTALIK KALAN ANTRENMAN HAKKIN: <span id="training-count-indicator">4 / 4</span>
+                    <p>Mevkine özel antrenmanlar yap. Her idman %20 Kondisyon harcar.</p>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px;">
+                        <div class="glass" style="padding: 6px 12px; border-radius: 8px; font-size: 11.5px; font-weight: 800; color: var(--primary); display: inline-block; border: 1px dashed var(--primary); box-shadow: 0 0 10px rgba(0, 230, 118, 0.1);">
+                            📋 HAFTALIK KALAN ANTRENMAN HAKKIN: <span id="training-count-indicator">4 / 4</span>
+                        </div>
+                        <div class="glass" style="padding: 6px 12px; border-radius: 8px; font-size: 11.5px; font-weight: 800; color: #38bdf8; display: inline-block; border: 1px solid rgba(56, 189, 248, 0.3);">
+                            ⚽ AKTİF MEVKİ: <span id="training-position-indicator">Forvet</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="training-list" style="display: flex; flex-direction: column; gap: 10px;">
-                    <div class="training-card glass" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px;">
-                        <div class="details">
-                            <h3 style="margin: 0; font-size: 13.5px; color: white;">🎯 Şut & Bitiricilik</h3>
-                            <p style="margin: 3px 0 0 0; font-size: 11px; color: var(--text-muted);">Mevcut Seviye: <strong id="skill-shooting">50</strong></p>
-                        </div>
-                        <button class="btn btn-secondary" onclick="GAME.train('shooting')" style="padding: 6px 12px; font-size: 11px;">Çalış</button>
-                    </div>
-                    
-                    <div class="training-card glass" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px;">
-                        <div class="details">
-                            <h3 style="margin: 0; font-size: 13.5px; color: white;">👟 Pas Vizyonu & Kısa Pas</h3>
-                            <p style="margin: 3px 0 0 0; font-size: 11px; color: var(--text-muted);">Mevcut Seviye: <strong id="skill-passing">48</strong></p>
-                        </div>
-                        <button class="btn btn-secondary" onclick="GAME.train('passing')" style="padding: 6px 12px; font-size: 11px;">Çalış</button>
-                    </div>
-
-                    <div class="training-card glass" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px;">
-                        <div class="details">
-                            <h3 style="margin: 0; font-size: 13.5px; color: white;">⚡ Hız & Çeviklik</h3>
-                            <p style="margin: 3px 0 0 0; font-size: 11px; color: var(--text-muted);">Mevcut Seviye: <strong id="skill-speed">52</strong></p>
-                        </div>
-                        <button class="btn btn-secondary" onclick="GAME.train('speed')" style="padding: 6px 12px; font-size: 11px;">Çalış</button>
-                    </div>
-
-                    <div class="training-card glass" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px;">
-                        <div class="details">
-                            <h3 style="margin: 0; font-size: 13.5px; color: white;">⚽ Top Kontrolü & Dripling</h3>
-                            <p style="margin: 3px 0 0 0; font-size: 11px; color: var(--text-muted);">Mevcut Seviye: <strong id="skill-dribbling">50</strong></p>
-                        </div>
-                        <button class="btn btn-secondary" onclick="GAME.train('dribbling')" style="padding: 6px 12px; font-size: 11px;">Çalış</button>
-                    </div>
-
-                    <div class="training-card glass" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px;">
-                        <div class="details">
-                            <h3 style="margin: 0; font-size: 13.5px; color: white;">🛡️ Savunma & Pres</h3>
-                            <p style="margin: 3px 0 0 0; font-size: 11px; color: var(--text-muted);">Mevcut Seviye: <strong id="skill-defense">50</strong></p>
-                        </div>
-                        <button class="btn btn-secondary" onclick="GAME.train('defense')" style="padding: 6px 12px; font-size: 11px;">Çalış</button>
-                    </div>
-
-                    <div class="training-card glass" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px;">
-                        <div class="details">
-                            <h3 style="margin: 0; font-size: 13.5px; color: white;">💪 Fizik & İkili Mücadele</h3>
-                            <p style="margin: 3px 0 0 0; font-size: 11px; color: var(--text-muted);">Mevcut Seviye: <strong id="skill-physical">50</strong></p>
-                        </div>
-                        <button class="btn btn-secondary" onclick="GAME.train('physical')" style="padding: 6px 12px; font-size: 11px;">Çalış</button>
-                    </div>
+                <div class="training-list" id="training-drills-container" style="display: flex; flex-direction: column; gap: 10px;">
+                    <!-- Dynamically populated based on player position -->
                 </div>
             </section>
 
@@ -2653,14 +2612,16 @@
                 document.getElementById(target).classList.add("active");
 
                 // Update tab items
+                if (target === "panel-training") {
+                    renderTrainingPanel();
+                }
                 if (target === "panel-shop") {
                     if (activeShopSubTab === 'lifestyle') renderShopItems();
+                    else if (activeShopSubTab === 'nutrition') renderNutritionAndRecovery();
                     else if (activeShopSubTab === 'consumables') renderConsumableItems();
                     else if (activeShopSubTab === 'boots') renderBootSponsors();
                     else if (activeShopSubTab === 'invest') renderInvestmentsAndCrypto();
                 }
-
-
 
                 if (target === "panel-transfers") {
                     renderTransferOffers();
@@ -6538,6 +6499,49 @@
             container.innerHTML = html;
         }
 
+        function renderTrainingPanel() {
+            const container = document.getElementById("training-drills-container");
+            if (!container) return;
+
+            const pos = (GAME && GAME.state && GAME.state.position) ? GAME.state.position : "Forvet";
+            const posIndicator = document.getElementById("training-position-indicator");
+            if (posIndicator) posIndicator.innerText = pos;
+
+            const countIndicator = document.getElementById("training-count-indicator");
+            if (countIndicator && GAME && GAME.state) {
+                const used = GAME.state.weeklyTrainingCount || 0;
+                countIndicator.innerText = `${4 - used} / 4`;
+            }
+
+            const drills = (DATABASE.POSITION_DRILLS && DATABASE.POSITION_DRILLS[pos]) ? DATABASE.POSITION_DRILLS[pos] : DATABASE.POSITION_DRILLS["Forvet"];
+            
+            let html = "";
+            drills.forEach(drill => {
+                let statKey = drill.statKey;
+                if (statKey === "physical_shield") statKey = "physical";
+                let currentVal = (GAME.state && GAME.state[statKey]) ? GAME.state[statKey] : 50;
+                let isMax = currentVal >= 100;
+                let btnDisabled = isMax ? "disabled" : "";
+                let btnText = isMax ? "Maksimum (%100)" : "İdmana Başla";
+                let btnClass = isMax ? "btn-disabled" : "btn-primary";
+
+                html += `
+                    <div class="training-card glass" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border-glass); background: #131822; margin-bottom: 8px;">
+                        <div class="details" style="flex: 1; padding-right: 12px;">
+                            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 3px;">
+                                <h3 style="margin: 0; font-size: 13.5px; font-weight: 700; color: #f8fafc; font-family: var(--font-heading);">${drill.name}</h3>
+                                <span style="font-size: 9.5px; font-weight: 800; padding: 2px 6px; border-radius: 4px; background: rgba(56,189,248,0.15); color: #38bdf8; border: 1px solid rgba(56,189,248,0.3);">${drill.badge}</span>
+                            </div>
+                            <p class="desc" style="margin: 0 0 4px 0; font-size: 11px; color: var(--text-muted); line-height: 1.35;">${drill.desc}</p>
+                            <div style="font-size: 11px; color: #cbd5e1; font-weight: 600;">Mevcut Seviye: <strong style="color: var(--primary); font-weight: 800;">${currentVal}</strong> / 100</div>
+                        </div>
+                        <button class="btn ${btnClass}" ${btnDisabled} onclick="GAME.train('${drill.id}'); renderTrainingPanel();" style="padding: 8px 14px; font-size: 11.5px; border-radius: 8px; flex-shrink: 0; white-space: nowrap;">${btnText}</button>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
 
         function renderBootSponsors() {
             const container = document.getElementById("shop-boots-container");

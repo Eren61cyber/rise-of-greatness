@@ -640,13 +640,38 @@ const GAME = {
         }
     },
 
+    calculateOverallRating: function() {
+        const s = this.state;
+        const pos = s.position || "Forvet";
+        const sh = s.shooting || 50;
+        const pa = s.passing || 50;
+        const sp = s.speed || 50;
+        const dr = s.dribbling || 50;
+        const de = s.defense || 50;
+        const ph = s.physical || 50;
+
+        let ovr = 50;
+        if (pos === "Defans") {
+            ovr = Math.round((de * 0.35) + (ph * 0.30) + (sp * 0.15) + (pa * 0.10) + (dr * 0.10));
+        } else if (pos === "Orta Saha") {
+            ovr = Math.round((pa * 0.35) + (dr * 0.20) + (sh * 0.15) + (sp * 0.10) + (de * 0.10) + (ph * 0.10));
+        } else {
+            // Forvet
+            ovr = Math.round((sh * 0.35) + (sp * 0.25) + (dr * 0.20) + (pa * 0.10) + (ph * 0.10));
+        }
+        return Math.max(30, Math.min(99, ovr));
+    },
+
     train: function(statType) {
         if (this.state.injuryWeeks > 0) {
             alert(`Sakatlığınız devam ediyor! Antrenman yapamazsınız. İyileşmenize ${this.state.injuryWeeks} hafta kaldı.`);
             return;
         }
 
-        if ((this.state[statType] || 50) >= 100) {
+        let targetKey = statType;
+        if (targetKey === "physical_shield") targetKey = "physical";
+
+        if ((this.state[targetKey] || 50) >= 100) {
             alert("Bu yetenek zaten maksimum seviyede (%100)!");
             return;
         }
@@ -668,19 +693,7 @@ const GAME = {
 
         this.state.kondisyon -= energyCost;
         this.state.weeklyTrainingCount++;
-        if (statType === "shooting") {
-            this.state.shooting = Math.min(100, (this.state.shooting || 50) + 1);
-        } else if (statType === "passing") {
-            this.state.passing = Math.min(100, (this.state.passing || 50) + 1);
-        } else if (statType === "speed") {
-            this.state.speed = Math.min(100, (this.state.speed || 50) + 1);
-        } else if (statType === "dribbling") {
-            this.state.dribbling = Math.min(100, (this.state.dribbling || 50) + 1);
-        } else if (statType === "defense") {
-            this.state.defense = Math.min(100, (this.state.defense || 50) + 1);
-        } else if (statType === "physical") {
-            this.state.physical = Math.min(100, (this.state.physical || 50) + 1);
-        }
+        this.state[targetKey] = Math.min(100, (this.state[targetKey] || 50) + 1);
 
         this.state.weeksSinceLastTraining = 0;
 
@@ -689,21 +702,17 @@ const GAME = {
             this.state.trainingDoneAfterWarning = true;
             this.state.consecutivePoorMatches = 0;
             this.state.hocaGuveni = Math.min(100, (this.state.hocaGuveni || 40) + 5);
-            alert("Antrenman tamamlandi! Hoca baskisi azaldi. Bir sonraki maca daha hazir hissediyorsun.");
+            alert("Antrenman tamamlandı! Hoca baskısı azaldı. Bir sonraki maça daha hazır hissediyorsun.");
         }
 
-        // Recalculate overall rating (Average of all 6 attributes)
-        this.state.rating = Math.round(
-            ((this.state.shooting || 50) + 
-             (this.state.passing || 50) + 
-             (this.state.speed || 50) + 
-             (this.state.dribbling || 50) + 
-             (this.state.defense || 50) + 
-             (this.state.physical || 50)) / 6
-        );
+        // Recalculate position-weighted overall rating
+        this.state.rating = this.calculateOverallRating();
 
         this.saveGame();
         this.updateUI();
+        if (typeof window !== "undefined" && typeof window.renderTrainingPanel === "function") {
+            window.renderTrainingPanel();
+        }
     },
 
     buyItem: function(itemId) {
@@ -1013,7 +1022,7 @@ const GAME = {
                     }
                     this.state.activePurchasedBoot = null;
                 }
-                this.state.rating = Math.round((this.state.shooting + this.state.passing + this.state.speed) / 3);
+                this.state.rating = this.calculateOverallRating();
                 this.addSocialPost("@spor_manset", "Ekipman Raporu", `⚠️ Kötü haber! ${this.state.playerName}'nin giydiği ${bootName} kramponunun ömrü tükendi ve parçalandı! Yıldız oyuncu yeni bir krampon arayışında.`);
             }
         }
@@ -1565,7 +1574,7 @@ const GAME = {
         this.state.shooting += boot.bonus.shooting;
         this.state.passing += boot.bonus.passing;
         
-        this.state.rating = Math.round((this.state.shooting + this.state.passing + this.state.speed) / 3);
+        this.state.rating = this.calculateOverallRating();
         
         this.addSocialPost("@transfer_kulisi", "Transfer Kulisi", `${this.state.playerName}, ünlü spor markası ${boot.brand} ile resmi krampon sponsorluğu imzaladı! Sahada ${boot.model} modelini giyecek! 🥾🔥`);
         
@@ -1615,7 +1624,7 @@ const GAME = {
         this.state.shooting += boot.bonus.shooting;
         this.state.passing += boot.bonus.passing;
         
-        this.state.rating = Math.round((this.state.shooting + this.state.passing + this.state.speed) / 3);
+        this.state.rating = this.calculateOverallRating();
         
         this.saveGame();
         this.updateUI();
@@ -1979,6 +1988,9 @@ const GAME = {
             if (container && container.style.display !== "none") {
                 renderEsportsPanel();
             }
+        }
+        if (typeof renderTrainingPanel === "function") {
+            renderTrainingPanel();
         }
         if (typeof updateHomeNewsPreview === "function") {
             updateHomeNewsPreview();
