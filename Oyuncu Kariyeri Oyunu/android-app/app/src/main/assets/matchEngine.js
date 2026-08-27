@@ -102,6 +102,7 @@ const MatchEngine = {
             this.choiceMinutes = baseMinutes;
         }
 
+        this.usedScenarioIndices = [];
         this.momentumBoost = 0;
         this.momentumDuration = 0;
 
@@ -320,6 +321,18 @@ const MatchEngine = {
         return pool[Math.floor(Math.random() * pool.length)];
     },
 
+    calculateStatChance: function(statVal, difficulty = 55) {
+        const val = Math.round(statVal || 50);
+        const diff = val - difficulty;
+        let chance = 0.50 + (diff * 0.009);
+        if (val < 52) {
+            chance = Math.min(chance, 0.28); // Low stat penalty (boşa gitme riski yüksek)
+        } else if (val >= 75) {
+            chance = Math.max(chance, 0.72); // High stat mastery
+        }
+        return Math.max(0.12, Math.min(0.92, parseFloat(chance.toFixed(2))));
+    },
+
     triggerChoice: function(minute) {
         this.isPausedForChoice = true;
         
@@ -328,684 +341,1194 @@ const MatchEngine = {
         const pos = (this.playerState && this.playerState.position) || (window.GAME && GAME.state && GAME.state.position) || "Forvet";
         const teammate = (this.playerState && this.playerState.currentTeammateName) ? this.playerState.currentTeammateName : "Ali";
 
-        // Random roll for special freekick/penalty events (except for the last-minute drama or if only 1 choice)
-        let isSpecialEvent = false;
-        if (idx !== this.choiceMinutes.length - 1 && this.choiceMinutes.length > 1) {
-            let roll = Math.random();
-            if (pos === "Forvet" || pos === "Orta Saha") {
-                if (roll < 0.15) {
-                    // Penalty
-                    isSpecialEvent = true;
-                    choiceData = {
-                        title: "🎯 PENALTI KAZANILDI!",
-                        description: "Takımın kritik bir penaltı kazandı! Topun başına geçtin. Tribünler nefesini tuttu, kaleciyle karşı karşıya kaldın. Nereye vuracaksın?",
-                        options: [
-                            {
-                                text: "Sol Doksana Plase Vuruş",
-                                effect: "Şut gücüne bağlı yüksek başarı şansı.",
-                                successChance: 0.70 + ((this.playerState.shooting || 50) * 0.002),
-                                onSuccess: () => {
-                                    this.score.player++;
-                                    this.playerStats.goals++;
-                                    this.playerStats.shots++;
-                                    return this.checkGoalCommentary("MÜTHİŞ BİR PLASE! Top sol çataldan içeri süzüldü! Kaleci köşeyi bilse de yetişemedi. GOOOL!");
-                                },
-                                onFail: () => {
-                                    this.playerStats.shots++;
-                                    return "Fiyasko! Vuruşun direğin az farkla üzerinden dışarı gitti.";
-                                }
-                            },
-                            {
-                                text: "Sağ Köşeye Yerden Sert Vuruş",
-                                effect: "Şut gücüne bağlı yüksek başarı şansı.",
-                                successChance: 0.70 + ((this.playerState.shooting || 50) * 0.002),
-                                onSuccess: () => {
-                                    this.score.player++;
-                                    this.playerStats.goals++;
-                                    this.playerStats.shots++;
-                                    return this.checkGoalCommentary("YERE YAKIN VE KÖŞEYE! Kaleci köşeyi doğru tahmin etse de topun uzanamayacağı yere gitti! GOOOL!");
-                                },
-                                onFail: () => {
-                                    this.playerStats.shots++;
-                                    return "Kaleci köşeyi doğru tahmin etti ve uzanarak topu kornere çeldi!";
-                                }
-                            },
-                            {
-                                text: "Ortaya Sert Vuruş",
-                                effect: "Sabit yüksek şans, kaleci erken yatarsa gol.",
-                                successChance: 0.75,
-                                onSuccess: () => {
-                                    this.score.player++;
-                                    this.playerStats.goals++;
-                                    this.playerStats.shots++;
-                                    return this.checkGoalCommentary("MERKEZE BOMBARDIMAN! Kaleci köşeye yatarken sen topu kalenin tam ortasına fırlattın! GOOOL!");
-                                },
-                                onFail: () => {
-                                    this.playerStats.shots++;
-                                    return "Kötü karar! Kaleci yerinde sabit kaldı ve top doğrudan göğsünde eridi.";
-                                }
-                            },
-                            {
-                                text: "Panenka Vuruşu",
-                                effect: "Çok yüksek risk! Başarılı olursa moral ve hoca güvenine bonus.",
-                                successChance: 0.40 + ((this.playerState.dribbling || 50) * 0.002),
-                                onSuccess: () => {
-                                    this.score.player++;
-                                    this.playerStats.goals++;
-                                    this.playerStats.shots++;
-                                    this.playerState.moral = Math.min(100, (this.playerState.moral || 100) + 15);
-                                    this.playerState.hocaGuveni = Math.min(100, (this.playerState.hocaGuveni || 40) + 10);
-                                    return this.checkGoalCommentary("İNANILMAZ SOĞUKKANLILIK! Kaleci köşeye yatarken topu yavaşça kalenin ortasından havaya diktin! Müthiş bir Panenka golü! GOOOL!");
-                                },
-                                onFail: () => {
-                                    this.playerStats.shots++;
-                                    this.playerState.moral = Math.max(0, (this.playerState.moral || 100) - 15);
-                                    this.playerState.hocaGuveni = Math.max(0, (this.playerState.hocaGuveni || 40) - 10);
-                                    return "REZALET PANENKA! Kaleci ayakta kaldı ve üzerine yavaşça gelen topu eliyle havada kaptı. Tribünler yuhalıyor!";
-                                }
-                            }
-                        ]
-                    };
-                } else if (roll < 0.35) {
-                    // Freekick
-                    isSpecialEvent = true;
-                    choiceData = {
-                        title: "📐 CEZA SAHASI DIŞI FRİKİK",
-                        description: "Kritik bir noktadan serbest vuruş kazandık! Topun başına geçtin. Baraj kuruldu, kaleci çizgisinde bekliyor. Nasıl vuracaksın?",
-                        options: [
-                            {
-                                text: "Barajın Üstünden Kavisli Plase",
-                                effect: "Şut ve Pas ortalamasına bağlı kavisli vuruş.",
-                                successChance: 0.30 + (((this.playerState.shooting || 50) + (this.playerState.passing || 50)) / 2 * 0.004),
-                                onSuccess: () => {
-                                    this.score.player++;
-                                    this.playerStats.goals++;
-                                    this.playerStats.shots++;
-                                    return this.checkGoalCommentary("MÜTHİŞ FALSOLU FRİKİK! Barajın üzerinden falsolu süzülen top yan direğe çarpıp içeri girdi! GOOOL!");
-                                },
-                                onFail: () => {
-                                    this.playerStats.shots++;
-                                    return "Top barajdaki defans oyuncusunun kafasına çarptı, rakip tehlikeyi uzaklaştırdı.";
-                                }
-                            },
-                            {
-                                text: "Ceza Sahasına Kavisli Orta Aç",
-                                effect: "Pas gücüne bağlı asist denemesi.",
-                                successChance: 0.45 + ((this.playerState.passing || 50) * 0.005),
-                                onSuccess: () => {
-                                    this.score.player++;
-                                    this.playerStats.assists++;
-                                    this.playerStats.passes++;
-                                    return "ADRESE TESLİM ORTA! Frikikten ceza sahasına kestiğin ortaya stoper kafayı vurdu ve ağları havalandırdı! ASİST!";
-                                },
-                                onFail: () => {
-                                    this.playerStats.passes++;
-                                    return "Yaptığın orta kalabalık savunmanın arasında kaldı ve kaleci kontrol etti.";
-                                }
-                            },
-                            {
-                                text: "Kaleci Köşesine Sert Füze",
-                                effect: "Yüksek şut gücü gerektiren sert vuruş.",
-                                successChance: 0.25 + ((this.playerState.shooting || 50) * 0.005),
-                                onSuccess: () => {
-                                    this.score.player++;
-                                    this.playerStats.goals++;
-                                    this.playerStats.shots++;
-                                    return this.checkGoalCommentary("FÜZE! Kaleci köşesinden giden top havada yön değiştirip ölü yaprak gibi ağlarla buluştu! GOOOL!");
-                                },
-                                onFail: () => {
-                                    this.playerStats.shots++;
-                                    return "Çok sert ama kalecinin kucağına giden bir vuruş. Kaleci çift yumrukla uzaklaştırdı.";
-                                }
-                            }
-                        ]
-                    };
-                }
-            } else if (pos === "Defans" && roll < 0.25) {
-                // Defender Special Event: Set Piece Aerial Clearance
-                isSpecialEvent = true;
-                choiceData = {
-                    title: "✈️ KORNER SAVUNMASI: HAVA MÜCADELESİ",
-                    description: "Rakip takım tehlikeli bir korner kullandı! Top altıpas üzerine kavisli geliyor, rakip forvet kafaya yükseldi!",
+        const sho = Math.round(this.playerState.shooting || 50);
+        const pas = Math.round(this.playerState.passing || 50);
+        const spe = Math.round(this.playerState.speed || 50);
+        const dri = Math.round(this.playerState.dribbling || 50);
+        const def = Math.round(this.playerState.defense || 50);
+        const phy = Math.round(this.playerState.physical || 50);
+
+        if (!this.usedScenarioIndices) {
+            this.usedScenarioIndices = [];
+        }
+
+        const isLastMinute = (idx === this.choiceMinutes.length - 1 && this.choiceMinutes.length > 1);
+
+        if (pos === "Defans") {
+            // ==================== DEFANS (10 FARKLI SENARYO) ====================
+            const defScenarios = [
+                // 0: 1v1 Slide Tackle
+                {
+                    title: "🛡️ 1'e 1 Son Adam Kayarak Müdahale",
+                    description: "Rakip forvet defans arkasına sarktı ve kalecimizle karşı karşıya kalmak üzere! Son adam sensin, üzerine doğru geliyor. Ne yapacaksın?",
                     options: [
                         {
-                            text: "✈️ Rakibin Üzerinden Yükselip Kafayla Uzaklaştır",
-                            effect: "Fizik gücüne bağlı hava topu kazanma.",
-                            successChance: 0.45 + ((this.playerState.physical || 50) * 0.005),
-                            onSuccess: () => {
-                                this.playerStats.passes++;
-                                if (!this.playerStats.tackles) this.playerStats.tackles = 0;
-                                this.playerStats.tackles++;
-                                return "HAVALARIN EFENDİSİ! Rakip forvetin üzerinden müthiş sıçrayıp kafayla topu orta sahaya fırlattın! Tribünler stoperi alkışlıyor!";
-                            },
-                            onFail: () => {
-                                return "Hava mücadelesinde forvet kafayı vurdu ama top az farkla üstten auta gitti!";
-                            }
-                        },
-                        {
-                            text: "🛡️ Rakip Forvete Perde Yap, Kaleciye Alan Aç",
-                            effect: "Savunma zekasına bağlı kaleci koruma.",
-                            successChance: 0.55 + ((this.playerState.defense || 50) * 0.004),
+                            text: `🦶 Zamanlamayı Ayarla ve Kayarak Müdahale Et`,
+                            effect: `Savunma (%${def}) yeteneğine bağlı. Düşükse kayma boşa gider!`,
+                            successChance: this.calculateStatSuccess(def, 55),
                             onSuccess: () => {
                                 if (!this.playerStats.tackles) this.playerStats.tackles = 0;
                                 this.playerStats.tackles++;
-                                return "KUSURSUZ PERDELEME! Forveti vücudunla kilitledin, kalecimiz rahatça çıkıp topu çift eliyle kontrol etti!";
+                                return `MÜKEMMEL KAYARAK MÜDAHALE! Savunma ustalığın (%${def}) sayesinde topu forvetin ayağından jilet gibi aldın! Tehlike savuşturuldu!`;
                             },
                             onFail: () => {
-                                return "Forvet perdeden sıyrıldı ancak vuruşu yan ağlarda kaldı.";
+                                return `Savunma yeteneğin (%${def}) bu pozisyon için yetersiz kaldı! Zamanlamayı kaçırdın ve boşa kaydın, forvet sıyrıldı!`;
                             }
                         },
                         {
-                            text: "🎯 Kafayla İndirip Doğrudan Kontraya Başlat",
-                            effect: "Fizik ve Pas ortalamasına bağlı asist/kontra şansı.",
-                            successChance: 0.30 + (((this.playerState.physical || 50) + (this.playerState.passing || 50)) / 2 * 0.004),
+                            text: `💪 Omuz Omuza Girip Forveti Sindir`,
+                            effect: `Fizik (%${phy}) gücüne bağlı gövde mücadelesi.`,
+                            successChance: this.calculateStatSuccess(phy, 55),
+                            onSuccess: () => {
+                                if (!this.playerStats.tackles) this.playerStats.tackles = 0;
+                                this.playerStats.tackles++;
+                                return `KAYA GİBİ SAĞLAM! Fizik gücünle (%${phy}) forveti topla birlikte auta sürdün ve kaleyi korudun!`;
+                            },
+                            onFail: () => {
+                                return `Fizik gücün (%${phy}) yetersiz kaldı! Hakem omuz mücadelesine faul düdüğü çaldı.`;
+                            }
+                        },
+                        {
+                            text: `⚡ Kademe Alıp Şut Açısını Kapat`,
+                            effect: `Hız (%${spe}) ve pozisyon alma dengesi.`,
+                            successChance: this.calculateStatSuccess(spe, 55),
+                            onSuccess: () => {
+                                return `HARİKA KADEME! Hızınla (%${spe}) forvetin önünü kapatıp şut açısını daralttın, kalecimiz rahatça kontrol etti!`;
+                            },
+                            onFail: () => {
+                                return `Hızın (%${spe}) yetersiz kaldı! Forvet dar açıdan şutunu çekti, kalecimiz son anda kornere çeldi.`;
+                            }
+                        }
+                    ]
+                },
+                // 1: Aerial Corner Duel
+                {
+                    title: "✈️ Korner Savunmasında Kule Forvet Mücadelesi",
+                    description: "Rakip tehlikeli bir korner kullandı! Top altıpas üzerine kavisli geliyor, rakip kule forvet kafaya yükseldi!",
+                    options: [
+                        {
+                            text: `✈️ Havada Üstünlük Kurup Kafayla Uzaklaştır`,
+                            effect: `Fizik (%${phy}) ve hava hakimiyeti yeteneğine bağlı.`,
+                            successChance: this.calculateStatSuccess(phy, 55),
+                            onSuccess: () => {
+                                if (!this.playerStats.tackles) this.playerStats.tackles = 0;
+                                this.playerStats.tackles++;
+                                return `HAVALARIN EFENDİSİ! Fizik gücünle (%${phy}) forvetin üzerinden müthiş sıçrayıp kafayla topu orta sahaya fırlattın!`;
+                            },
+                            onFail: () => {
+                                return `Hava topu yeteneğin (%${phy}) yetersiz kaldı! Forvet kafayı vurdu ama top neyse ki üst direkten auta çıktı.`;
+                            }
+                        },
+                        {
+                            text: `🛡️ Rakip Forvete Perde Yap, Kaleciyi Çıkar`,
+                            effect: `Savunma (%${def}) zekasına bağlı perdeleme.`,
+                            successChance: this.calculateStatSuccess(def, 55),
+                            onSuccess: () => {
+                                if (!this.playerStats.tackles) this.playerStats.tackles = 0;
+                                this.playerStats.tackles++;
+                                return `KUSURSUZ PERDELEME! Savunma zekanla (%${def}) forveti kilitledin, kalecimiz topu rahatça kontrol etti!`;
+                            },
+                            onFail: () => {
+                                return `Savunma sezgin (%${def}) eksik kaldı, forvet perdeden sıyrıldı.`;
+                            }
+                        },
+                        {
+                            text: `🎯 Kafayla İndirip Kontraya Uzun Top Çıkar`,
+                            effect: `Fizik ve Pas ortalamasına (%${Math.round((phy + pas)/2)}) bağlı asist şansı.`,
+                            successChance: this.calculateStatSuccess((phy + pas) / 2, 55),
                             onSuccess: () => {
                                 this.score.player++;
                                 this.playerStats.assists++;
                                 this.playerStats.passes++;
-                                return "KORNERDEN DOĞAN MÜKEMMEL ASİST! Korner topunu kafayla indirdin ve fırlayan forvetimizi kaçırdın! Kaleciyle karşı karşıya gol! ASİST!";
+                                return `SAVUNMADAN HARİKA ASİST! Korner topunu kafayla indirip doğrudan kaçan forvetimizi gördün, kaleciyle karşı karşıya gol! ASİST!`;
                             },
                             onFail: () => {
                                 this.playerStats.passes++;
-                                return "Kafayla indirdiğin top rakip orta sahada kaldı, savunmaya geri dönüyoruz.";
+                                return `Kafayla indirdiğin top rakip orta sahada kaldı.`;
                             }
                         }
                     ]
-                };
-            }
-        }
-
-        if (!isSpecialEvent) {
-            const isLastMinute = (idx === this.choiceMinutes.length - 1 && this.choiceMinutes.length > 1);
-
-            if (pos === "Defans") {
-                // ==================== DEFANS SENARYOLARI ====================
-                if (isLastMinute) {
-                    choiceData = {
-                        title: "💥 90. DAKİKA ÇİZGİDEN ÇIKARMA & KRİTİK BLOK",
-                        description: "Son anlar! Rakip forvet kalecimizi geçti ve boş kaleye vurdu! Top kale çizgisine süzülüyor, çizgide bir tek sen varsın!",
-                        options: [
-                            {
-                                text: "⚡ Uzanıp Çizgiden Kafayla Çıkar! (Fizik & Canla Başla)",
-                                effect: "Fizik gücüne bağlı takımı ipten alma.",
-                                successChance: 0.40 + ((this.playerState.physical || 50) * 0.005),
-                                onSuccess: () => {
-                                    if (!this.playerStats.tackles) this.playerStats.tackles = 0;
-                                    this.playerStats.tackles += 2;
-                                    this.playerState.hocaGuveni = Math.min(100, (this.playerState.hocaGuveni || 40) + 8);
-                                    this.playerState.moral = Math.min(100, (this.playerState.moral || 100) + 10);
-                                    return "İMKÂNSIZ KURTARIŞ! Çizgi üzerinde adeta uçarak topu kafayla kornere çeldin! TAKIMI İPTEN ALDIN! STADYUM YIKILIYOR!";
-                                },
-                                onFail: () => {
-                                    return "Çizgide kafayı uzattın ama top eldiven gibi direğin dibinden ağlara gitti.";
-                                }
+                },
+                // 2: Outmuscle Wing
+                {
+                    title: "💪 Çizgide Kanat Forvetini Sindirme & Omuz Omuza",
+                    description: "Rakip hızlı kanat oyuncusu çizgiden içeri kat etmeye çalışıyor! Hemen yanındasın.",
+                    options: [
+                        {
+                            text: `💪 Gövdeni Araya Koyup Topu Auta Bırak`,
+                            effect: `Fizik (%${phy}) gücüne bağlı.`,
+                            successChance: this.calculateStatSuccess(phy, 55),
+                            onSuccess: () => {
+                                if (!this.playerStats.tackles) this.playerStats.tackles = 0;
+                                this.playerStats.tackles++;
+                                return `KAYA GİBİ SAĞLAM! Gövdeni araya koyarak kanat oyuncusunu topla birlikte auta sürdün!`;
                             },
-                            {
-                                text: "🦶 Kayarak Direk Dibinden Topu Süpür! (Savunma Reaksiyonu)",
-                                effect: "Savunma gücüne bağlı kritik süpürme.",
-                                successChance: 0.45 + ((this.playerState.defense || 50) * 0.005),
-                                onSuccess: () => {
-                                    if (!this.playerStats.tackles) this.playerStats.tackles = 0;
-                                    this.playerStats.tackles += 2;
-                                    this.playerState.hocaGuveni = Math.min(100, (this.playerState.hocaGuveni || 40) + 5);
-                                    return "KAHRAMANCA MÜDAHALE! Son salisede ayağını uzatarak topu çizgiden taca gönderdin! Rakip forvet inanamıyor!";
-                                },
-                                onFail: () => {
-                                    return "Müdahale için hamle yaptın ama top milimetrik farkla içeri girdi.";
-                                }
-                            },
-                            {
-                                text: "🛡️ Taktik Faul Yapıp Kontrayı Kes (Sarı Kart Garantili)",
-                                effect: "Sarı kart görürsün ama mutlak kontra atağı kesersin.",
-                                successChance: 0.85,
-                                onSuccess: () => {
-                                    this.hasYellowCard = true;
-                                    this.playerState.hocaGuveni = Math.min(100, (this.playerState.hocaGuveni || 40) + 5);
-                                    return "FEDAKARCA TAKTİK FAUL! Rakip forveti formasından çekerek atağı başlamadan bitirdin. Hakem sarı kart gösterdi ama golü önledin!";
-                                },
-                                onFail: () => {
-                                    return "Faul yapmaya çalıştın ama rakip sıyrılıp atağa devam etti.";
-                                }
+                            onFail: () => {
+                                return `Fizik gücün (%${phy}) yetersiz kaldı, kanat oyuncusu çeviklikle sıyrıldı.`;
                             }
-                        ]
-                    };
-                } else if (idx === 0) {
-                    choiceData = {
-                        title: "🛡️ 1'E 1 RAKİP KONTRA TEHDİDİ",
-                        description: "Rakip forvet savunma arkasına sarktı ve kalecimizle karşı karşıya kalmak üzere! Son adam sensin, üzerine doğru geliyor. Ne yapacaksın?",
-                        options: [
-                            {
-                                text: "🦶 Zamanlamayı Ayarla ve Kayarak Müdahale Et",
-                                effect: "Savunma gücüne bağlı temiz top kapma.",
-                                successChance: 0.35 + ((this.playerState.defense || 50) * 0.005),
-                                onSuccess: () => {
-                                    if (!this.playerStats.tackles) this.playerStats.tackles = 0;
-                                    this.playerStats.tackles++;
-                                    return "MÜKEMMEL KAYARAK MÜDAHALE! Topu forvetin ayağından jilet gibi aldın ve tehlikeyi savuşturdun! Hakem temiz dedi!";
-                                },
-                                onFail: () => {
-                                    return "Zamanlama hatası! Forvet sıyrıldı ama kalecimiz şutunu çeldi.";
-                                }
+                        },
+                        {
+                            text: `🦶 Ayakta Müdahale ile Topu Çal`,
+                            effect: `Savunma (%${def}) yeteneğine bağlı.`,
+                            successChance: this.calculateStatSuccess(def, 55),
+                            onSuccess: () => {
+                                if (!this.playerStats.tackles) this.playerStats.tackles = 0;
+                                this.playerStats.tackles++;
+                                return `TERTEMİZ TOP KAPMA! Savunma müdahalenle (%${def}) topu ayağından söküp aldın!`;
                             },
-                            {
-                                text: "💪 Omuz Omuza Girip Forveti Sindir",
-                                effect: "Fizik gücüne bağlı gövde mücadelesi.",
-                                successChance: 0.40 + ((this.playerState.physical || 50) * 0.005),
-                                onSuccess: () => {
-                                    if (!this.playerStats.tackles) this.playerStats.tackles = 0;
-                                    this.playerStats.tackles++;
-                                    return "KAYA GİBİ SAĞLAM! Omuz darbesiyle forveti şut çekemeden dışarı süpürdün ve top auta çıktı!";
-                                },
-                                onFail: () => {
-                                    return "Hakem omuz mücadelesine faul düdüğü çaldı. Kritik bir serbest vuruş.";
-                                }
-                            },
-                            {
-                                text: "⚡ Kademe Alıp Şut Açısını Kapat",
-                                effect: "Hız ve savunma dengesine bağlı pozisyon alma.",
-                                successChance: 0.50 + ((this.playerState.speed || 50) * 0.004),
-                                onSuccess: () => {
-                                    return "HARİKA KADEME! Forvetin önünü kapatıp şut açısını daralttın, kalecimiz rahatça kontrol etti!";
-                                },
-                                onFail: () => {
-                                    return "Forvet dar açıdan vurdu ama top yan ağlarda kaldı.";
-                                }
+                            onFail: () => {
+                                return `Müdahalen (%${def}) boşa gitti, rakip ortasını açtı.`;
                             }
-                        ]
-                    };
-                } else {
-                    choiceData = {
-                        title: "🎯 GERİDEN OYUN KURMA & PRES KIRMA",
-                        description: "Kendi ceza sahası önündesin. Rakip 3 kişiyle şok pres uyguluyor. Top ayağında!",
-                        options: [
-                            {
-                                text: "🚀 Savunma Arkasına Milimetrik Uzun Pas Çıkar",
-                                effect: "Pas gücüne bağlı doğrudan asist/gol şansı.",
-                                successChance: 0.30 + ((this.playerState.passing || 50) * 0.005),
-                                onSuccess: () => {
-                                    this.score.player++;
-                                    this.playerStats.assists++;
-                                    this.playerStats.passes++;
-                                    return "ŞAPKA ÇIKARTILIR! 50 metrelik nokta uzun pasla forvetimizi kaleciyle karşı karşıya bıraktın! GOOOL! HARİKA ASİST!";
-                                },
-                                onFail: () => {
-                                    this.playerStats.passes++;
-                                    return "Uzun pasın rakip stoperin kafasında kaldı, rakip topu kontrol etti.";
-                                }
+                        }
+                    ]
+                },
+                // 3: Recovery Sprint
+                {
+                    title: "⚡ Derin Ara Pasında Geriye Kademe Deparı",
+                    description: "Defans arkasına hızlı bir ara pası atıldı! Rakip forvetle birlikte topa doğru koşuyorsun.",
+                    options: [
+                        {
+                            text: `⚡ 30 Metrelik Deparla Forveti Yakala`,
+                            effect: `Hız (%${spe}) gücüne bağlı geri dönüş.`,
+                            successChance: this.calculateStatSuccess(spe, 55),
+                            onSuccess: () => {
+                                if (!this.playerStats.tackles) this.playerStats.tackles = 0;
+                                this.playerStats.tackles++;
+                                return `MÜTHİŞ DEPAR! Hızın (%${spe}) sayesinde forveti arkadan yakalayıp topu kaleciye kazandırdın!`;
                             },
-                            {
-                                text: "⚽ Soğukkanlı Çalımla Baskıyı Kır",
-                                effect: "Dribbling gücüne bağlı topla çıkış.",
-                                successChance: 0.35 + ((this.playerState.dribbling || 50) * 0.005),
-                                onSuccess: () => {
-                                    this.playerStats.passes++;
-                                    return "BÜYÜK SOĞUKKANLILIK! Rakip forvete klas bir vücut çalımı atıp topu orta sahaya taşıdın, stadyum alkışlıyor!";
-                                },
-                                onFail: () => {
-                                    return "Çalım denerken baskı arttı, topu son anda taca göndermek zorunda kaldın.";
-                                }
-                            },
-                            {
-                                text: `🛡️ ${teammate}'ye Garanti Pasla Açıl`,
-                                effect: "Güvenli pasla tehlike bölgesinden çıkma.",
-                                successChance: 0.75 + ((this.playerState.passing || 50) * 0.002),
-                                onSuccess: () => {
-                                    this.playerStats.passes++;
-                                    return `TEMİZ OYUN! Tek pasla ${teammate}'yi gördün ve takım baskıdan tertemiz çıktı.`;
-                                },
-                                onFail: () => {
-                                    this.playerStats.passes++;
-                                    return "Pas biraz hızlı gitti ve taca çıktı.";
-                                }
+                            onFail: () => {
+                                return `Hızın (%${spe}) yetersiz kaldı! Forvet arkada boş kaldı ama şutu auta gitti.`;
                             }
-                        ]
-                    };
+                        },
+                        {
+                            text: `🦶 Son Anda Ayak Uzatıp Topu Kornere Çel`,
+                            effect: `Hız ve Savunma ortalamasına (%${Math.round((spe + def)/2)}) bağlı.`,
+                            successChance: this.calculateStatSuccess((spe + def) / 2, 55),
+                            onSuccess: () => {
+                                if (!this.playerStats.tackles) this.playerStats.tackles = 0;
+                                this.playerStats.tackles++;
+                                return `KRİTİK MÜDAHALE! Son anda uzattığın ayakla topu kornere çeldin!`;
+                            },
+                            onFail: () => {
+                                return `Ayağını uzattın ama yetişemedin.`;
+                            }
+                        }
+                    ]
+                },
+                // 4: Build-up Long Ball
+                {
+                    title: "🎯 Geriden 50 Metrelik Nokta Uzun Pas",
+                    description: "Kendi yarı sahanda top ayağında. Forvetimiz rakip savunma arkasına el kaldırıp koşu gösteriyor!",
+                    options: [
+                        {
+                            text: `🚀 Savunma Arkasına 50 Metrelik Nokta Pas At`,
+                            effect: `Pas (%${pas}) yeteneğine bağlı asist şansı. Düşükse taça gider!`,
+                            successChance: this.calculateStatSuccess(pas, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.assists++;
+                                this.playerStats.passes++;
+                                return `ŞAPKA ÇIKARTILIR! Pas kalitenle (%${pas}) 50 metreden forvetimizin önüne adrese teslim top attın! GOOOL! HARİKA ASİST!`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Pas yeteneğin (%${pas}) bu uzun top için yetersiz kaldı, top doğrudan rakip kaleciye gitti.`;
+                            }
+                        },
+                        {
+                            text: `🛡️ ${teammate}'ye Garanti Yerden Pas Ver`,
+                            effect: `Güvenli kısa pas (%${pas}).`,
+                            successChance: this.calculateStatSuccess(pas, 45),
+                            onSuccess: () => {
+                                this.playerStats.passes++;
+                                return `TEMİZ OYUN! Tek pasla ${teammate}'yi gördün ve takım atağa güvenle çıktı.`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Kısa pasın biraz zayıf kaldı, rakip baskı kurdu.`;
+                            }
+                        }
+                    ]
+                },
+                // 5: Press Resistance
+                {
+                    title: "⚽ Ceza Sahası Önünde Forvet Presini Çalımla Kırma",
+                    description: "Ceza sahası önünde 2 rakip forvet birden şok pres uyguluyor! Ne yapacaksın?",
+                    options: [
+                        {
+                            text: `⚽ Klas Vücut Çalımıyla Baskıdan Sıyrıl`,
+                            effect: `Dribbling (%${dri}) ve soğukkanlılık yeteneğine bağlı. Düşükse top kaybı!`,
+                            successChance: this.calculateStatSuccess(dri, 55),
+                            onSuccess: () => {
+                                this.playerStats.passes++;
+                                return `BÜYÜK SOĞUKKANLILIK! Dribbling yeteneğinle (%${dri}) forvete klas bir vücut çalımı atıp orta sahayı gördün! Tribünler alkışlıyor!`;
+                            },
+                            onFail: () => {
+                                return `Dribbling seviyen (%${dri}) pres altında yetersiz kaldı! Topu son anda taca vurmak zorunda kaldın.`;
+                            }
+                        },
+                        {
+                            text: `🚀 Riski Göze Almayıp Topu Taca Dik`,
+                            effect: `Garanti emniyetli savunma.`,
+                            successChance: 0.85,
+                            onSuccess: () => {
+                                return `GARANTİ SAVUNMA! Topu taca dikerek savunmanın yerleşmesini sağladın.`;
+                            },
+                            onFail: () => {
+                                return `Top taca çıktı.`;
+                            }
+                        }
+                    ]
+                },
+                // 6: Shot Block
+                {
+                    title: "🧱 Ceza Sahası Dışı Sert Şut Bloku",
+                    description: "Rakip orta saha 20 metreden kaleyi gördü ve çok sert bir şut çıkardı! Şut senin hizandan geçiyor!",
+                    options: [
+                        {
+                            text: `🧱 Gövdeni Siper Edip Şutu Engelle`,
+                            effect: `Savunma ve Fizik ortalamasına (%${Math.round((def + phy)/2)}) bağlı.`,
+                            successChance: this.calculateStatSuccess((def + phy) / 2, 55),
+                            onSuccess: () => {
+                                if (!this.playerStats.tackles) this.playerStats.tackles = 0;
+                                this.playerStats.tackles++;
+                                return `KAYA GİBİ BLOK! Vücudunu siper ederek mutlak bir gol şutunu kornere çeldin! Kalecimiz teşekkür etti!`;
+                            },
+                            onFail: () => {
+                                return `Blok hamlen (%${Math.round((def+phy)/2)}) yetersiz kaldı, top bacak arasından geçti ama kalecimiz kurtardı.`;
+                            }
+                        },
+                        {
+                            text: `⚡ Ayak Uzatıp Şutun Yönünü Değiştir`,
+                            effect: `Hız ve Savunma ortalamasına (%${Math.round((spe + def)/2)}) bağlı.`,
+                            successChance: this.calculateStatSuccess((spe + def) / 2, 55),
+                            onSuccess: () => {
+                                if (!this.playerStats.tackles) this.playerStats.tackles = 0;
+                                this.playerStats.tackles++;
+                                return `MÜTHİŞ REAKSİYON! Uzattığın ayakla topun hızını kesip kalecimizin kucağına yuvarladın!`;
+                            },
+                            onFail: () => {
+                                return `Ayağını uzattın ama top çarpmadan geçti.`;
+                            }
+                        }
+                    ]
+                },
+                // 7: Offside Trap
+                {
+                    title: "📐 Savunma Hattı & Kusursuz Ofsayt Taktiği",
+                    description: "Rakip orta saha derin ara pası atmak üzere. Savunma hattını tek bir hamleyle yönetebilirsin!",
+                    options: [
+                        {
+                            text: `📐 Son Anda Öne Adım Atıp Forveti Ofsayta Düşür`,
+                            effect: `Savunma (%${def}) taktik zekasına bağlı. Düşükse forvet kaçar!`,
+                            successChance: this.calculateStatSuccess(def, 55),
+                            onSuccess: () => {
+                                return `KUSURSUZ OFSAYT TAKTİĞİ! Savunma bilginle (%${def}) tam zamanında öne çıktın ve yan hakem bayrağını kaldırdı!`;
+                            },
+                            onFail: () => {
+                                return `Savunma zamanlaman (%${def}) gecikti, forvet ofsayttan kaçtı ama şutu auta gitti.`;
+                            }
+                        },
+                        {
+                            text: `⚡ Forvetle Beraber Geriye Koş`,
+                            effect: `Hız (%${spe}) gücüne bağlı.`,
+                            successChance: this.calculateStatSuccess(spe, 55),
+                            onSuccess: () => {
+                                return `ADIM ADIM TAKİP! Hızınla (%${spe}) forvetin peşini bırakmadın ve pozisyonu bozdun!`;
+                            },
+                            onFail: () => {
+                                return `Forvet bir adım önde kaldı.`;
+                            }
+                        }
+                    ]
+                },
+                // 8: Last Ditch Clearance (90th min)
+                {
+                    title: "💥 90. Dakika Çizgiden Çıkarma & Kahramanlık",
+                    description: "90. dakika! Rakip forvet kalecimizi geçti ve boş kaleye vurdu! Top kale çizgisine süzülüyor, çizgide bir tek sen varsın!",
+                    options: [
+                        {
+                            text: `⚡ Uzanıp Çizgiden Kafayla Çıkar! (Fedakarlık)`,
+                            effect: `Fizik (%${phy}) ve Fedakarlık gücüne bağlı takımı ipten alma.`,
+                            successChance: this.calculateStatSuccess(phy, 55),
+                            onSuccess: () => {
+                                if (!this.playerStats.tackles) this.playerStats.tackles = 0;
+                                this.playerStats.tackles += 2;
+                                this.playerState.hocaGuveni = Math.min(100, (this.playerState.hocaGuveni || 40) + 8);
+                                this.playerState.moral = Math.min(100, (this.playerState.moral || 100) + 10);
+                                return `İMKÂNSIZ KURTARIŞ! Fizik gücünle (%${phy}) çizgi üzerinde adeta uçarak topu kafayla kornere çeldin! TAKIMI İPTEN ALDIN! STADYUM YIKILIYOR!`;
+                            },
+                            onFail: () => {
+                                return `Fiziksel uzanışın (%${phy}) yetersiz kaldı, top milimetrik farkla içeri girdi.`;
+                            }
+                        },
+                        {
+                            text: `🦶 Direk Dibinden Topu Kayarak Süpür!`,
+                            effect: `Savunma (%${def}) reaksiyonuna bağlı.`,
+                            successChance: this.calculateStatSuccess(def, 55),
+                            onSuccess: () => {
+                                if (!this.playerStats.tackles) this.playerStats.tackles = 0;
+                                this.playerStats.tackles += 2;
+                                this.playerState.hocaGuveni = Math.min(100, (this.playerState.hocaGuveni || 40) + 5);
+                                return `KAHRAMANCA MÜDAHALE! Savunma sezginle (%${def}) son salisede ayağını uzatarak topu çizgiden taca gönderdin!`;
+                            },
+                            onFail: () => {
+                                return `Savunma hamlen (%${def}) gecikti, top filelerde.`;
+                            }
+                        }
+                    ]
+                },
+                // 9: Tactical Foul
+                {
+                    title: "🟨 Profesyonelce Taktik Faul Yapıp Mutlak Golü Önleme",
+                    description: "Son anlar! Rakip forvet 3'e 1 kontra atağa kalktı. Önündesin.",
+                    options: [
+                        {
+                            text: `🟨 Formadan Hafifçe Çekip Kontrayı Durdur`,
+                            effect: `Savunma (%${def}) zekasına bağlı sarı kartlık taktik faul.`,
+                            successChance: this.calculateStatSuccess(def, 45),
+                            onSuccess: () => {
+                                this.hasYellowCard = true;
+                                this.playerState.hocaGuveni = Math.min(100, (this.playerState.hocaGuveni || 40) + 5);
+                                return `FEDAKARCA TAKTİK FAUL! Rakip forveti formasından çekerek atağı başlamadan bitirdin. Hakem sarı kart gösterdi ama mutlak golü önledin!`;
+                            },
+                            onFail: () => {
+                                return `Faul yapmaya çalıştın ama rakip sıyrılıp atağa devam etti.`;
+                            }
+                        },
+                        {
+                            text: `⚡ Kaleciye Güvenip Geriye Depar At`,
+                            effect: `Hız (%${spe}) gücüne bağlı.`,
+                            successChance: this.calculateStatSuccess(spe, 55),
+                            onSuccess: () => {
+                                return `HIZLI GERİ DÖNÜŞ! Hızınla (%${spe}) kademeye girdin ve forvetin şutunu bozdun!`;
+                            },
+                            onFail: () => {
+                                return `Hızın yetersiz kaldı.`;
+                            }
+                        }
+                    ]
                 }
-            } else if (pos === "Orta Saha") {
-                // ==================== ORTA SAHA SENARYOLARI ====================
-                if (isLastMinute) {
-                    choiceData = {
-                        title: "⚡ 90. DAKİKA MAÇI ÇÖZME FIRSATI",
-                        description: "Maçın son düdüğü çalmak üzere! Orta alanda top ayağında, tüm takım ileri çıktı. Maçı nasıl bitireceksin?",
-                        options: [
-                            {
-                                text: `🎯 Ceza Sahasına ${teammate}'nin Koşusuna Öldürücü Ara Pası`,
-                                effect: "Pas gücüne bağlı son saniye galibiyet asisti.",
-                                successChance: 0.35 + ((this.playerState.passing || 50) * 0.005),
-                                onSuccess: () => {
-                                    this.score.player++;
-                                    this.playerStats.assists++;
-                                    this.playerStats.passes++;
-                                    return `SON SANİYE ASİSTİ! Defans arkasına aşırdığın topta ${teammate} gelişine vurdu ve GOOOL! MAÇ BİZİM!`;
-                                },
-                                onFail: () => {
-                                    this.playerStats.passes++;
-                                    return "Son pas kalabalık defansın ayağında kaldı, hakem son düdüğü çaldı.";
-                                }
-                            },
-                            {
-                                text: "🚀 Ceza Sahası Dışından Gelişine Vole Çak!",
-                                effect: "Şut gücüne bağlı sansasyonel galibiyet golü.",
-                                successChance: 0.22 + ((this.playerState.shooting || 50) * 0.005),
-                                onSuccess: () => {
-                                    this.score.player++;
-                                    this.playerStats.goals++;
-                                    this.playerStats.shots++;
-                                    return this.checkGoalCommentary("İNANILMAZ BİR VOLE GOLÜ! Ceza sahası dışından gelişine çaktın ve fileler yırtıldı! GOOOL! STAT AYAKTA!");
-                                },
-                                onFail: () => {
-                                    this.playerStats.shots++;
-                                    return "Vole vuruşun üst direği sıyırarak auta gitti.";
-                                }
-                            },
-                            {
-                                text: "⚽ Topu Bayrak Direğinde Saklayıp Zaman Geçir",
-                                effect: "Taktik zekayla skoru koruma.",
-                                successChance: 0.75 + ((this.playerState.dribbling || 50) * 0.002),
-                                onSuccess: () => {
-                                    this.playerState.hocaGuveni = Math.min(100, (this.playerState.hocaGuveni || 40) + 5);
-                                    this.playerState.moral = Math.min(100, (this.playerState.moral || 100) + 5);
-                                    return "USTACA ZAMAN GEÇİRME! Topu vücudunla mükemmel sakladın, rakip faul yaptı ve maçı kilitledin! Hoca kenardan alkışlıyor!";
-                                },
-                                onFail: () => {
-                                    return "İki kişi bastırdı ve top taca gitti.";
-                                }
-                            }
-                        ]
-                    };
-                } else if (idx === 0) {
-                    choiceData = {
-                        title: "👟 MAESTRO VİZYONU: DEFANS ARKASI BOŞLUK",
-                        description: "Orta sahada topu kontrol ettin. Rakip savunma çizgisi önde yakalandı, forvetimiz araya koşu gösteriyor!",
-                        options: [
-                            {
-                                text: "🎯 Savunmanın Arkasına Milimetrik Ara Pası",
-                                effect: "Pas gücüne bağlı asist şansı.",
-                                successChance: 0.35 + ((this.playerState.passing || 50) * 0.005),
-                                onSuccess: () => {
-                                    this.score.player++;
-                                    this.playerStats.assists++;
-                                    this.playerStats.passes++;
-                                    return "ÖLÜMCÜL ARA PASI! Defans bloklarının arasından süzülen topla forvetimiz golü yaptı! HARİKA ASİST!";
-                                },
-                                onFail: () => {
-                                    this.playerStats.passes++;
-                                    return "Ara pasın bir nebze hızlı gitti ve kalecide kaldı.";
-                                }
-                            },
-                            {
-                                text: "🚀 25 Metreden Kaleye Füze Gönder!",
-                                effect: "Şut gücüne bağlı uzaktan gol şansı.",
-                                successChance: 0.22 + ((this.playerState.shooting || 50) * 0.005),
-                                onSuccess: () => {
-                                    this.score.player++;
-                                    this.playerStats.goals++;
-                                    this.playerStats.shots++;
-                                    return this.checkGoalCommentary("FÜZE VE GOOOL! Ceza sahası dışından çıkardığın füze 90'da örümcek ağlarını aldı! BÜYÜLEYİCİ BİR GOL!");
-                                },
-                                onFail: () => {
-                                    this.playerStats.shots++;
-                                    return "Füzen direği sıyırarak auta çıktı, tribünler alkışladı.";
-                                }
-                            },
-                            {
-                                text: "⚽ Çalımla Savunmayı Üzerine Çekip Açıyı Genişlet",
-                                effect: "Dribbling gücüne bağlı oyun açma.",
-                                successChance: 0.32 + ((this.playerState.dribbling || 50) * 0.004),
-                                onSuccess: () => {
-                                    this.score.player++;
-                                    this.playerStats.assists++;
-                                    this.playerStats.passes++;
-                                    return "BÜYÜCÜ! İki orta saha oyuncusundan sıyrılıp ceza sahasına girdin ve arkadaşına boş pas çıkardın! ASİST!";
-                                },
-                                onFail: () => {
-                                    return "Çalım atarken rakip stoper ayak koydu.";
-                                }
-                            }
-                        ]
-                    };
-                } else {
-                    choiceData = {
-                        title: "🛡️ ORTA SAHADA ŞOK PRES & TOP KAZANMA",
-                        description: "Rakip oyun kurucu orta sahada topla dönmeye çalışıyor. Hemen ensesindesin!",
-                        options: [
-                            {
-                                text: "🛡️ Ani Presle Topu Söküp Al",
-                                effect: "Savunma gücüne bağlı hızlı kontra atağı.",
-                                successChance: 0.38 + ((this.playerState.defense || 50) * 0.005),
-                                onSuccess: () => {
-                                    this.playerStats.passes++;
-                                    return "MÜTHİŞ TOP KAPMA! Topu tertemiz kapıp takımı 3'e 2 kontra atağa kaldırdın!";
-                                },
-                                onFail: () => {
-                                    return "Rakip oyuncu topu son anda geriye oynamayı başardı.";
-                                }
-                            },
-                            {
-                                text: `👟 Tek Pasla Kaçan ${teammate}'yi Gör`,
-                                effect: "Pas gücüne bağlı hızlı hücum asisti.",
-                                successChance: 0.32 + ((this.playerState.passing || 50) * 0.005),
-                                onSuccess: () => {
-                                    this.score.player++;
-                                    this.playerStats.assists++;
-                                    this.playerStats.passes++;
-                                    return `KUSURSUZ SERVİS! Tek dokunuşla ${teammate}'yi kaçırdın, içeri girip golü attı! ASİST!`;
-                                },
-                                onFail: () => {
-                                    this.playerStats.passes++;
-                                    return "Pas savunma tarafından taca çelindi.";
-                                }
-                            },
-                            {
-                                text: "⚡ Çeviklikle Topu Saklayıp Oyunu Ters Kanada Aç",
-                                effect: "Hız ve Pas ortalamasına bağlı oyun yönü değiştirme.",
-                                successChance: 0.45 + (((this.playerState.speed || 50) + (this.playerState.passing || 50)) / 2 * 0.004),
-                                onSuccess: () => {
-                                    this.playerStats.passes++;
-                                    return "MAESTRO DİNAMİZMİ! 40 metrelik ters kanat pasıyla hücumu hızlandırdın!";
-                                },
-                                onFail: () => {
-                                    this.playerStats.passes++;
-                                    return "Ters kanat pası biraz alçak gitti ve savunmada kaldı.";
-                                }
-                            }
-                        ]
-                    };
-                }
+            ];
+
+            let pool = defScenarios;
+            let chosenIndex = 0;
+            if (isLastMinute) {
+                chosenIndex = 8; // 90th min last ditch clearance
             } else {
-                // ==================== FORVET SENARYOLARI ====================
-                if (isLastMinute) {
-                    choiceData = {
-                        title: "Son Dakika Draması",
-                        description: "Maçın son anları! Ceza sahasında topla buluştun, arkandan stoperin sert bir darbesi var. Dengen sarsılıyor!",
-                        options: [
-                            {
-                                text: "Düşmemeye çalışıp zor pozisyonda şutunu çek.",
-                                effect: "Şut gücüne bağlı düşük şanslı gol denemesi.",
-                                successChance: 0.25 + ((this.playerState.shooting || 50) * 0.005),
-                                onSuccess: () => {
-                                    this.score.player++;
-                                    this.playerStats.goals++;
-                                    this.playerStats.shots++;
-                                    return this.checkGoalCommentary("İNANILMAZ GOL! Yıkılmadı, ayakta kaldı ve golünü yaptı! MÜTHİŞ BİR KARAKTER! GOOOL!");
-                                },
-                                onFail: () => {
-                                    this.playerStats.shots++;
-                                    return "Dengesiz vurulan şut kale direğinin yanından dışarı gitti.";
-                                }
-                            },
-                            {
-                                text: "Kendini yere bırakıp hakemden penaltı bekle.",
-                                effect: "Sabit %45 şansla penaltı kazanma şansı.",
-                                successChance: 0.45,
-                                onSuccess: () => {
-                                    this.score.player++;
-                                    this.playerStats.goals++;
-                                    this.playerStats.shots++;
-                                    return this.checkGoalCommentary("PENALTI! Hakem düdüğü çaldı! Topun başına geçtin ve kaleciyi ters köşe yaptın! GOOOL!");
-                                },
-                                onFail: () => {
-                                    if (this.hasYellowCard) {
-                                        this.isSentOff = true;
-                                        GAME.state.suspendedWeeks = 2;
-                                        this.hasYellowCard = false;
-                                        this.playerState.moral = Math.max(10, (this.playerState.moral || 100) - 20);
-                                        this.playerState.hocaGuveni = Math.max(10, (this.playerState.hocaGuveni || 40) - 15);
-                                        return "HAKEM ALDATMAYA YÖNELİK HAREKETTEN 2. SARI KARTTAN KIRMIZI KART GÖSTERDİ! Oyundan atıldın!";
-                                    } else {
-                                        this.hasYellowCard = true;
-                                        this.playerState.moral = Math.max(0, (this.playerState.moral || 100) - 10);
-                                        this.playerState.hocaGuveni = Math.max(0, (this.playerState.hocaGuveni || 40) - 5);
-                                        return "HAKEM ALDATMAYA YÖNELİK HAREKETTEN SARI KART GÖSTERDİ! Hakem yemedi.";
-                                    }
-                                }
-                            },
-                            {
-                                text: "Topu korner bayrağına doğru saklayıp zaman geçir.",
-                                effect: "Takım yararına zaman geçirerek maçı kilitleme.",
-                                successChance: 0.70 + ((this.playerState.speed || 50) * 0.002),
-                                onSuccess: () => {
-                                    this.playerState.hocaGuveni = Math.min(100, (this.playerState.hocaGuveni || 40) + 5);
-                                    this.playerState.moral = Math.min(100, (this.playerState.moral || 100) + 5);
-                                    return "HARİKA TAKTİK ZAMAN GEÇİRME! Topu bayrak direğinin dibinde mükemmel sakladın, stoperlerin sinirleri gerildi. Hoca alkışlıyor!";
-                                },
-                                onFail: () => {
-                                    return "İki kişi sıkıştırdı, topu taça attılar.";
-                                }
-                            }
-                        ]
-                    };
-                } else if (idx === 0) {
-                    choiceData = {
-                        title: "🎯 Ceza Sahası Yayında Gol Fırsatı",
-                        description: "Ceza sahası yayında topla buluştun, rakip stoperler üstüne doğru kayıyor. Ne yapacaksın?",
-                        options: [
-                            {
-                                text: this.getRandomChoiceText('shoot'),
-                                effect: "Şut gücüne bağlı gol şansı.",
-                                successChance: 0.20 + ((this.playerState.shooting || 50) * 0.004),
-                                onSuccess: () => {
-                                    this.score.player++;
-                                    this.playerStats.goals++;
-                                    this.playerStats.shots++;
-                                    return this.checkGoalCommentary("MÜTHİŞ BİR GOL! Topu 90'a astın! Tribünler ismini haykırıyor! GOOOL!");
-                                },
-                                onFail: () => {
-                                    this.playerStats.shots++;
-                                    return "Şutun az farkla auta çıktı! Defans derin nefes aldı.";
-                                }
-                            },
-                            {
-                                text: this.getRandomChoiceText('pass'),
-                                effect: "Pas gücüne bağlı asist şansı.",
-                                successChance: 0.25 + ((this.playerState.passing || 50) * 0.004),
-                                onSuccess: () => {
-                                    this.score.player++;
-                                    this.playerStats.assists++;
-                                    this.playerStats.passes++;
-                                    return "ASİST! Savunmanın arkasına mükemmel bir pas yolladın, arkadaşın kaleciyle karşı karşıya golü yaptı!";
-                                },
-                                onFail: () => {
-                                    this.playerStats.passes++;
-                                    return "Pas denemen kısa kaldı, defans araya girdi.";
-                                }
-                            },
-                            {
-                                text: "Kalecinin öne çıktığını gör ve aşırtma vuruş dene!",
-                                effect: "Şut ve Pas ortalamasına bağlı aşırtma.",
-                                successChance: 0.15 + ((this.playerState.shooting || 50) * 0.004),
-                                onSuccess: () => {
-                                    this.score.player++;
-                                    this.playerStats.goals++;
-                                    this.playerStats.shots++;
-                                    return this.checkGoalCommentary("İNANILMAZ GOL! Kalecinin üzerinden süzülen top tam direğin dibinden ağlarla buluştu! Müthiş aşırtma!");
-                                },
-                                onFail: () => {
-                                    this.playerStats.shots++;
-                                    return "Aşırtma vuruşun az farkla üst direkten auta çıktı.";
-                                }
-                            }
-                        ]
-                    };
-                } else {
-                    let isCarambole = (idx % 2 === 0);
-                    if (isCarambole) {
-                        choiceData = {
-                            title: "💥 Ceza Sahası Karambolü",
-                            description: "Savunmadan seken top ceza sahası içinde önüne düştü! Ne yapacaksın?",
-                            options: [
-                                {
-                                    text: this.getRandomChoiceText('shoot'),
-                                    effect: "Şut gücüne bağlı gol şansı.",
-                                    successChance: 0.22 + ((this.playerState.shooting || 50) * 0.004),
-                                    onSuccess: () => {
-                                        this.score.player++;
-                                        this.playerStats.goals++;
-                                        this.playerStats.shots++;
-                                        return this.checkGoalCommentary("GOOOL! Kalabalığın arasından sıyrılan top köşeden tam isabetle ağlara gitti!");
-                                    },
-                                    onFail: () => {
-                                        this.playerStats.shots++;
-                                        return "Şutun defansa çarpıp kornere gitti!";
-                                    }
-                                },
-                                {
-                                    text: this.getRandomChoiceText('pass'),
-                                    effect: "Pas gücüne bağlı asist şansı.",
-                                    successChance: 0.25 + ((this.playerState.passing || 50) * 0.004),
-                                    onSuccess: () => {
-                                        this.score.player++;
-                                        this.playerStats.assists++;
-                                        this.playerStats.passes++;
-                                        return "HARİKA ASİST! Topuk pasınla topla buluşan arkadaşın sert vurup ağları sarstı!";
-                                    },
-                                    onFail: () => {
-                                        this.playerStats.passes++;
-                                        return "Topuk pasın kalabalık defanstan sekti.";
-                                    }
-                                }
-                            ]
-                        };
-                    } else {
-                        choiceData = {
-                            title: "⚡ Hızlı Kontratak & Çalım",
-                            description: "Kontratakta kanatta topla buluştun, önünde geniş koridor var!",
-                            options: [
-                                {
-                                    text: this.getRandomChoiceText('dribble'),
-                                    effect: "Hız ve Dribbling ile içeri kat etme.",
-                                    successChance: 0.20 + (((this.playerState.speed || 50) + (this.playerState.dribbling || 50)) / 2 * 0.004),
-                                    onSuccess: () => {
-                                        this.score.player++;
-                                        this.playerStats.goals++;
-                                        this.playerStats.shots++;
-                                        return this.checkGoalCommentary("NEFİS ÇALIMLAR VE GOL! Kaleciyi de yatırıp topu boş ağlara yolladın! GOOOL!");
-                                    },
-                                    onFail: () => {
-                                        this.playerStats.shots++;
-                                        return "Çalım denerken rakip bek ayak koydu.";
-                                    }
-                                },
-                                {
-                                    text: this.getRandomChoiceText('pass'),
-                                    effect: "Hız ve Pas ile içeri orta kesme.",
-                                    successChance: 0.25 + (((this.playerState.speed || 50) + (this.playerState.passing || 50)) / 2 * 0.004),
-                                    onSuccess: () => {
-                                        this.score.player++;
-                                        this.playerStats.assists++;
-                                        this.playerStats.passes++;
-                                        return `ADRESE TESLİM ORTA! ${teammate} kafayla ağları havalandırdı! ASİST!`;
-                                    },
-                                    onFail: () => {
-                                        this.playerStats.passes++;
-                                        return "Yaptığın orta doğrudan kalecinin kucağında kaldı.";
-                                    }
-                                }
-                            ]
-                        };
-                    }
-                }
+                let available = [0, 1, 2, 3, 4, 5, 6, 7, 9].filter(i => !this.usedScenarioIndices.includes(i));
+                if (available.length === 0) available = [0, 1, 2, 3, 4, 5, 6, 7];
+                chosenIndex = available[Math.floor(Math.random() * available.length)];
             }
+            this.usedScenarioIndices.push(chosenIndex);
+            choiceData = pool[chosenIndex];
+
+        } else if (pos === "Orta Saha") {
+            // ==================== ORTA SAHA (10 FARKLI SENARYO) ====================
+            const midScenarios = [
+                // 0: Through Ball Masterclass
+                {
+                    title: "👟 Defansı Yaran Milimetrik Ara Pası",
+                    description: "Orta alanda topu kontrol ettin. Rakip savunma çizgisi önde yakalandı, forvetimiz araya koşu gösteriyor!",
+                    options: [
+                        {
+                            text: `🎯 Savunma Bloklarının Arasından Ara Pası Bırak`,
+                            effect: `Pas (%${pas}) yeteneğine bağlı asist. Düşükse stoper keser!`,
+                            successChance: this.calculateStatSuccess(pas, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.assists++;
+                                this.playerStats.passes++;
+                                return `ÖLÜMCÜL ARA PASI! Pas kalitenle (%${pas}) defansın arasından geçen harika ara pasla forvetimiz golü attı! HARİKA ASİST!`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Pas yeteneğin (%${pas}) bu ince ara pası için yetersiz kaldı, top rakip stoperin ayağında kaldı.`;
+                            }
+                        },
+                        {
+                            text: `🚀 Ceza Sahası Dışından Kaleye Füze Yolla`,
+                            effect: `Şut (%${sho}) gücüne bağlı uzaktan gol şansı.`,
+                            successChance: this.calculateStatSuccess(sho, 58),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`FÜZE VE GOOOL! Şut kalitenle (%${sho}) 25 metreden çıkardığın füze 90'da örümcek ağlarını aldı! BÜYÜLEYİCİ BİR GOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Şut yeteneğin (%${sho}) bu mesafeden kaleyi bulmaya yetmedi, top auta çıktı.`;
+                            }
+                        },
+                        {
+                            text: `⚽ Çalımla Savunmayı Üzerine Çek`,
+                            effect: `Dribbling (%${dri}) yeteneğine bağlı.`,
+                            successChance: this.calculateStatSuccess(dri, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.assists++;
+                                this.playerStats.passes++;
+                                return `BÜYÜCÜ! Dribbling yeteneğinle (%${dri}) iki orta saha oyuncusundan sıyrılıp ceza sahasına girdin ve arkadaşına boş pas çıkardın! ASİST!`;
+                            },
+                            onFail: () => {
+                                return `Dribbling seviyen (%${dri}) yetersiz kaldı, rakip topu kaptı.`;
+                            }
+                        }
+                    ]
+                },
+                // 1: Long Range Screamer
+                {
+                    title: "🚀 28 Metreden 90'a Füze Gönderme Fırsatı",
+                    description: "Ceza sahası yayının 5 metre gerisinde önün bomboş kaldı! Kaleci hafif önde.",
+                    options: [
+                        {
+                            text: `🚀 Kaleci Köşesine Sert Füze Çak!`,
+                            effect: `Şut (%${sho}) gücüne bağlı gol şansı.`,
+                            successChance: this.calculateStatSuccess(sho, 58),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`İNANILMAZ GOL! Şut gücünle (%${sho}) 28 metreden çaktığın füze elleri bükerek filelere girdi! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Şut yeteneğin (%${sho}) yetersiz kaldı, top kalecinin kucağına gitti.`;
+                            }
+                        },
+                        {
+                            text: `👟 ${teammate}'ye Pası Aktar`,
+                            effect: `Pas (%${pas}) yeteneğine bağlı asist şansı.`,
+                            successChance: this.calculateStatSuccess(pas, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.assists++;
+                                this.playerStats.passes++;
+                                return `MÜKEMMEL ASİST! Pas kalitenle (%${pas}) topu ${teammate}'nin önüne bıraktın, gelişine vurup golü yaptı!`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Pasın biraz yavaş kaldı.`;
+                            }
+                        }
+                    ]
+                },
+                // 2: Close Control Dribble
+                {
+                    title: "⚽ Dar Alanda 3 Kişinin Arasından Top Saklayıp Çıkış",
+                    description: "Orta alanda 3 rakip oyuncu birden etrafını sardı! Ne yapacaksın?",
+                    options: [
+                        {
+                            text: `⚽ Zidane Dönüşüyle Baskıdan Sıyrıl`,
+                            effect: `Dribbling (%${dri}) yeteneğine bağlı.`,
+                            successChance: this.calculateStatSuccess(dri, 55),
+                            onSuccess: () => {
+                                this.playerStats.passes++;
+                                return `FUTBOL SANATI! Dribbling yeteneğinle (%${dri}) harika bir 360 dönüşü yapıp 3 kişinin arasından tertemiz çıktın!`;
+                            },
+                            onFail: () => {
+                                return `Dribbling seviyen (%${dri}) dar alanda yetersiz kaldı, topu kaptırdın.`;
+                            }
+                        },
+                        {
+                            text: `💪 Vücudunu Koyup Faul Al`,
+                            effect: `Fizik (%${phy}) gücüne bağlı.`,
+                            successChance: this.calculateStatSuccess(phy, 55),
+                            onSuccess: () => {
+                                return `AKIL DOLU OYUN! Fizik gücünle (%${phy}) topu saklayıp rakibe faul yaptırdın, takım nefes aldı!`;
+                            },
+                            onFail: () => {
+                                return `Fizik gücün (%${phy}) yetmedi, dengeni kaybedip topu kaybettin.`;
+                            }
+                        }
+                    ]
+                },
+                // 3: Midfield Ball Recovery
+                {
+                    title: "🛡️ Orta Alanda Şok Pres & Top Kapma",
+                    description: "Rakip oyun kurucu orta sahada topla dönmeye çalışıyor. Hemen ensesindesin!",
+                    options: [
+                        {
+                            text: `🛡️ Rakip Oyun Kurucudan Topu Söküp Al`,
+                            effect: `Savunma (%${def}) yeteneğine bağlı kontra başlangıcı.`,
+                            successChance: this.calculateStatSuccess(def, 55),
+                            onSuccess: () => {
+                                this.playerStats.passes++;
+                                return `MÜTHİŞ TOP KAPMA! Savunma müdahalenle (%${def}) topu kapıp takımı 3'e 2 kontra atağa kaldırdın!`;
+                            },
+                            onFail: () => {
+                                return `Savunma hamlen (%${def}) boşa gitti, rakip pasını çıkardı.`;
+                            }
+                        },
+                        {
+                            text: `👟 Topu Kapıp Tek Pasla ${teammate}'yi Kaçır`,
+                            effect: `Pas (%${pas}) ve Savunma ortalamasına (%${Math.round((def+pas)/2)}) bağlı asist.`,
+                            successChance: this.calculateStatSuccess((def + pas) / 2, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.assists++;
+                                this.playerStats.passes++;
+                                return `KUSURSUZ SERVİS! Topu kapar kapmaz tek dokunuşla ${teammate}'yi kaçırdın, içeri girip golü attı! ASİST!`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Hızlı pas denemen savunmada kaldı.`;
+                            }
+                        }
+                    ]
+                },
+                // 4: Diagonal Switch
+                {
+                    title: "⚡ 40 Metrelik Ters Kanat Açılışı",
+                    description: "Sol kanatta sıkıştık, sağ kanattaki boş arkadaşımız tek başına bekliyor!",
+                    options: [
+                        {
+                            text: `⚡ Ters Kanattaki Boş Arkadaşa Diyagonal Pas Çıkar`,
+                            effect: `Pas ve Hız ortalamasına (%${Math.round((pas+spe)/2)}) bağlı.`,
+                            successChance: this.calculateStatSuccess((pas + spe) / 2, 55),
+                            onSuccess: () => {
+                                this.playerStats.passes++;
+                                return `MAESTRO VİZYONU! 40 metrelik milimetrik ters kanat pasınla (%${Math.round((pas+spe)/2)}) rakip savunmanın dengesini alt üst ettin!`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Ters kanat pasın (%${pas}) biraz alçak gitti ve savunmada kaldı.`;
+                            }
+                        },
+                        {
+                            text: `🎯 Yerden Hızlı Dikine Pas Yolla`,
+                            effect: `Pas (%${pas}) yeteneğine bağlı.`,
+                            successChance: this.calculateStatSuccess(pas, 55),
+                            onSuccess: () => {
+                                this.playerStats.passes++;
+                                return `DİKİNE HARİKA PAS! Yerden dikine pasla forvetimizi buluşturdun!`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Dikine pasın kesildi.`;
+                            }
+                        }
+                    ]
+                },
+                // 5: Box to Box Engine
+                {
+                    title: "💪 Box-to-Box 90 Metrelik Depar ve Hücum Desteği",
+                    description: "Kendi ceza sahamızdan başlayan kontratakta 90 metre depar atıp rakip ceza sahasına girdin!",
+                    options: [
+                        {
+                            text: `💪 Dönen Topa Gelişine Vur!`,
+                            effect: `Fizik ve Şut ortalamasına (%${Math.round((phy+sho)/2)}) bağlı gol şansı.`,
+                            successChance: this.calculateStatSuccess((phy + sho) / 2, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`CİĞERSİZ BOX-TO-BOX GOLÜ! 90 metrelik koşunun ardından dönen topa gelişine çaktın ve ağlar havalandı! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Koşunun ardından nefesin yetmedi (%${phy}), vuruşun auta gitti.`;
+                            }
+                        },
+                        {
+                            text: `👟 İkinci Dalga Hücumunda Arkadaşına Boş Pas Çıkar`,
+                            effect: `Pas (%${pas}) yeteneğine bağlı asist.`,
+                            successChance: this.calculateStatSuccess(pas, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.assists++;
+                                this.playerStats.passes++;
+                                return `HARİKA İKİNCİ DALGA ASİSTİ! Ceza sahası yayında arkadaşını gördün, plaseyle golü attı! ASİST!`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Pasın arkada kaldı.`;
+                            }
+                        }
+                    ]
+                },
+                // 6: Setpiece Maestro
+                {
+                    title: "📐 Ceza Sahası Yayı Dışı Frikik Ustalığı",
+                    description: "26 metreden kritik bir serbest vuruş kazandık. Baraj kuruldu, topun başında maestro sensin!",
+                    options: [
+                        {
+                            text: `💫 Baraj Üstünden 90'a Kavisli Plase`,
+                            effect: `Pas ve Şut ortalamasına (%${Math.round((pas+sho)/2)}) bağlı frikik golü.`,
+                            successChance: this.calculateStatSuccess((pas + sho) / 2, 58),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`MÜTHİŞ FRİKİK GOLÜ! Barajın üzerinden süzülen falsolu top tam 90'a asıldı! Kaleci kımıldayamadı! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Frikik vuruşun (%${sho}) baraja takıldı.`;
+                            }
+                        },
+                        {
+                            text: `📐 Arka Direğe Kavisli Asist Ortası Kes`,
+                            effect: `Pas (%${pas}) yeteneğine bağlı asist ortası.`,
+                            successChance: this.calculateStatSuccess(pas, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.assists++;
+                                this.playerStats.passes++;
+                                return `ADRESE TESLİM ORTA! Arka direğe kestiğin kavisli ortaya stoperimiz kafayı çaktı ve GOOOL! ASİST!`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Orta kalecinin ellerinde eridi.`;
+                            }
+                        }
+                    ]
+                },
+                // 7: Tiki Taka Link
+                {
+                    title: "👟 Tek Topla Verkaç ve Ceza Sahasına Sızma",
+                    description: `${teammate} ile ceza sahası önünde hızlı tek paslaşmalar yapıyorsunuz.`,
+                    options: [
+                        {
+                            text: `👟 Hızlı Verkaçla Kaleciyle Karşı Karşıya Kal`,
+                            effect: `Pas ve Dribbling ortalamasına (%${Math.round((pas+dri)/2)}) bağlı gol.`,
+                            successChance: this.calculateStatSuccess((pas + dri) / 2, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`TIKI-TAKA GOLÜ! Tek paslarla savunmayı delip kaleciyle karşı karşıya golü bıraktın! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Verkaçın son pası biraz hızlı kaçtı (%${pas}).`;
+                            }
+                        },
+                        {
+                            text: `🎯 Tek Pasla Forvete Gol Pası Bırak`,
+                            effect: `Pas (%${pas}) yeteneğine bağlı asist.`,
+                            successChance: this.calculateStatSuccess(pas, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.assists++;
+                                this.playerStats.passes++;
+                                return `ZARİF ASİST! Topukla bıraktığın topta forvet golü attı! ASİST!`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Pas savunmada kaldı.`;
+                            }
+                        }
+                    ]
+                },
+                // 8: Last Minute Volley (90th min)
+                {
+                    title: "⚡ 90. Dakika Dönen Topa Gelişine Vole",
+                    description: "90. dakika! Savunmadan seken top ceza sahası dışına, tam önüne doğru süzülüyor!",
+                    options: [
+                        {
+                            text: `🚀 Gelişine Voleyle 90'a Çak!`,
+                            effect: `Şut (%${sho}) yeteneğine bağlı son saniye galibiyet golü.`,
+                            successChance: this.calculateStatSuccess(sho, 58),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`YILIN GOLÜ! 90. dakikada ceza sahası dışından gelişine vurduğun vole ağları deldi! GOOOL! STAT YIKILIYOR!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Vole vuruşun (%${sho}) üst direği sıyırarak auta gitti.`;
+                            }
+                        },
+                        {
+                            text: `🎯 Ceza Sahasına ${teammate}'nin Koşusuna Aşırtma Pas At`,
+                            effect: `Pas (%${pas}) yeteneğine bağlı son saniye asisti.`,
+                            successChance: this.calculateStatSuccess(pas, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.assists++;
+                                this.playerStats.passes++;
+                                return `SON SANİYE ASİSTİ! Defans arkasına aşırdığın topta ${teammate} gelişine vurdu ve GOOOL! MAÇ BİZİM!`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Aşırtma pasın savunmada kaldı.`;
+                            }
+                        }
+                    ]
+                },
+                // 9: Tempo Control
+                {
+                    title: "⏱️ Korner Bayrağında Top Saklayıp Maçı Kilitleme",
+                    description: "Son dakikalarda 1 farklı öndeyiz. Top ayağında, korner bayrağına yakınsın.",
+                    options: [
+                        {
+                            text: `⏱️ Vücudunla Topu Koruyup Rakibe Faul Yaptır`,
+                            effect: `Dribbling ve Fizik ortalamasına (%${Math.round((dri+phy)/2)}) bağlı.`,
+                            successChance: this.calculateStatSuccess((dri + phy) / 2, 50),
+                            onSuccess: () => {
+                                this.playerState.hocaGuveni = Math.min(100, (this.playerState.hocaGuveni || 40) + 5);
+                                this.playerState.moral = Math.min(100, (this.playerState.moral || 100) + 5);
+                                return `USTACA ZAMAN GEÇİRME! Topu bayrak direğinde 2 dakika sakladın (%${Math.round((dri+phy)/2)}), rakip sinirlenip faul yaptı. Maç bitti! Hoca alkışlıyor!`;
+                            },
+                            onFail: () => {
+                                return `İki kişi bastırdı ve top taca gitti.`;
+                            }
+                        },
+                        {
+                            text: `👟 Boştaki ${teammate}'ye Pas Çıkar`,
+                            effect: `Pas (%${pas}) yeteneğine bağlı.`,
+                            successChance: this.calculateStatSuccess(pas, 55),
+                            onSuccess: () => {
+                                this.playerStats.passes++;
+                                return `GÜVENLİ PAS! Topu geriye oynayarak süreyi erittin.`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Pas taca gitti.`;
+                            }
+                        }
+                    ]
+                }
+            ];
+
+            let pool = midScenarios;
+            let chosenIndex = 0;
+            if (isLastMinute) {
+                chosenIndex = 8; // 90th min volley
+            } else {
+                let available = [0, 1, 2, 3, 4, 5, 6, 7, 9].filter(i => !this.usedScenarioIndices.includes(i));
+                if (available.length === 0) available = [0, 1, 2, 3, 4, 5, 6, 7];
+                chosenIndex = available[Math.floor(Math.random() * available.length)];
+            }
+            this.usedScenarioIndices.push(chosenIndex);
+            choiceData = pool[chosenIndex];
+
+        } else {
+            // ==================== FORVET (10 FARKLI SENARYO) ====================
+            const fwdScenarios = [
+                // 0: Box Finishing
+                {
+                    title: "🎯 Kaleciyle Karşı Karşıya Soğukkanlı Plase",
+                    description: "Ceza sahası içinde topla buluştun, kaleci açıyı daraltmak için üstüne geliyor! Nereye vuracaksın?",
+                    options: [
+                        {
+                            text: `🎯 Kalecinin Yanından Uzak Köşeye Plase`,
+                            effect: `Şut (%${sho}) yeteneğine bağlı. Düşükse kalecide kalır!`,
+                            successChance: this.calculateStatSuccess(sho, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`KLAS GOL! Şut yeteneğinle (%${sho}) kalecinin uzanamayacağı köşeye pürüzsüz bir plase bıraktın! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Şut kaliten (%${sho}) bu plase için yetersiz kaldı! Kaleci uzanarak topu çeldi.`;
+                            }
+                        },
+                        {
+                            text: `🚀 Tavana Sert Şut Zımbala`,
+                            effect: `Şut (%${sho}) gücüne bağlı sert vuruş.`,
+                            successChance: this.calculateStatSuccess(sho, 58),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`FÜZE VE GOOOL! Tavana öyle sert vurdun ki (%${sho}) kalecinin elleri büküldü! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Şutun (%${sho}) üst direğe çarpıp auta gitti!`;
+                            }
+                        },
+                        {
+                            text: `👟 Boş Koşan ${teammate}'ye Pas Çıkar`,
+                            effect: `Pas (%${pas}) yeteneğine bağlı asist.`,
+                            successChance: this.calculateStatSuccess(pas, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.assists++;
+                                this.playerStats.passes++;
+                                return `CÖMERT ASİST! Pas kalitenle (%${pas}) boş kaleye yuvarladın, ${teammate} golü attı! ASİST!`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Pas denemen biraz kısa kaldı.`;
+                            }
+                        }
+                    ]
+                },
+                // 1: Counter Sprint
+                {
+                    title: "⚡ Savunma Arkasına Patlayıcı Depar",
+                    description: "Savunma arkasına atılan derin topta stoperlerle yarışa girdin!",
+                    options: [
+                        {
+                            text: `⚡ Stoperleri Rüzgarınla Geçip Kaleciyle Baş Başa Kal`,
+                            effect: `Hız (%${spe}) yeteneğine bağlı. Düşükse stoper yetişir!`,
+                            successChance: this.calculateStatSuccess(spe, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`MÜTHİŞ DEPAR VE GOL! Hızınla (%${spe}) stoperleri geride bıraktın ve kaleciyi avladın! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Hızın (%${spe}) yetersiz kaldı! Stoper arkadan yetişip topu kornere yolladı.`;
+                            }
+                        },
+                        {
+                            text: `⚽ Kaleciyi Çalımla Geçip Boş Kaleye Yuvarla`,
+                            effect: `Dribbling (%${dri}) yeteneğine bağlı gol.`,
+                            successChance: this.calculateStatSuccess(dri, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`NEFİS ÇALIM VE GOL! Dribbling yeteneğinle (%${dri}) kaleciyi yatırıp topu boş ağlara yolladın! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Çalım denerken kaleci ayağındaki topu kaptı.`;
+                            }
+                        }
+                    ]
+                },
+                // 2: Wing Dribble
+                {
+                    title: "⚽ Beki Çalımla Pazara Gönderme ve Ceza Sahasına Sızma",
+                    description: "Sol kanatta topla buluştun, rakip sağ bek önünü kapatıyor.",
+                    options: [
+                        {
+                            text: `⚽ Bacak Arası Çalımla Beki Ekarte Et`,
+                            effect: `Dribbling (%${dri}) yeteneğine bağlı.`,
+                            successChance: this.calculateStatSuccess(dri, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`BÜYÜLEYİCİ ÇALIM! Beki bacak arasıyla (%${dri}) geçip çaprazdan ağları sarstın! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Dribbling seviyen (%${dri}) yetersiz kaldı, bek ayak koydu.`;
+                            }
+                        },
+                        {
+                            text: `🎯 Çizgiye İnip Arka Direğe Orta Kes`,
+                            effect: `Pas (%${pas}) yeteneğine bağlı asist.`,
+                            successChance: this.calculateStatSuccess(pas, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.assists++;
+                                this.playerStats.passes++;
+                                return `ADRESE TESLİM ORTA! Arka direkteki arkadaşın kafayla golü yaptı! ASİST!`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Orta doğrudan kalecide kaldı.`;
+                            }
+                        }
+                    ]
+                },
+                // 3: Towering Header
+                {
+                    title: "✈️ Yan Ortada Stoperin Üzerinden Kafa Golü",
+                    description: "Kanattan ceza sahasına harika bir orta kesildi! Stoperle birlikte kafaya yükseliyorsun!",
+                    options: [
+                        {
+                            text: `✈️ Havada Asılı Kalıp Köşeye Kafa Vur`,
+                            effect: `Fizik (%${phy}) ve hava hakimiyetine bağlı kafa golü.`,
+                            successChance: this.calculateStatSuccess(phy, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`RONALDO GİBİ ASILI KALDI! Fizik gücünle (%${phy}) havada asılı kalıp köşeye füze gibi kafa golü attın! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Hava mücadelesinde fizik gücün (%${phy}) yetmedi, topa kafayı vuramadın.`;
+                            }
+                        },
+                        {
+                            text: `👟 Kafayla İndirip ${teammate}'ye Servis Yap`,
+                            effect: `Pas ve Fizik ortalamasına (%${Math.round((pas+phy)/2)}) bağlı asist.`,
+                            successChance: this.calculateStatSuccess((pas + phy) / 2, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.assists++;
+                                this.playerStats.passes++;
+                                return `AKIL DOLU İNDİRİŞ! Kafayla indirdiğin topta ${teammate} gelişine vurup golü attı! ASİST!`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `İndirdiğin top savunmada kaldı.`;
+                            }
+                        }
+                    ]
+                },
+                // 4: Target Man Wall
+                {
+                    title: "👟 Sırtı Dönük Duvar Olup Kanat Arkadaşına Servis",
+                    description: "Stoper arkandan baskı yaparken ceza sahası yayında topu sırtınla sakladın.",
+                    options: [
+                        {
+                            text: `👟 Topu Saklayıp Kaçan ${teammate}'ye Tek Pas Bırak`,
+                            effect: `Pas ve Fizik ortalamasına (%${Math.round((pas+phy)/2)}) bağlı asist.`,
+                            successChance: this.calculateStatSuccess((pas + phy) / 2, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.assists++;
+                                this.playerStats.passes++;
+                                return `KUSURSUZ SERVİS! Topu saklayıp (${Math.round((pas+phy)/2)}) tek pasla ${teammate}'yi gördün, gelişine gol! ASİST!`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Stoper arkandan yüklendi (%${phy}), pasın kısa kaldı.`;
+                            }
+                        },
+                        {
+                            text: `⚽ Ani Dönüşle Stoperi Oyundan Düşür ve Vur`,
+                            effect: `Dribbling ve Şut ortalamasına (%${Math.round((dri+sho)/2)}) bağlı gol.`,
+                            successChance: this.calculateStatSuccess((dri + sho) / 2, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`MÜTHİŞ DÖNÜŞ VE GOL! Dribbling ustalığınla (%${dri}) stoperin etrafından dönüp köşeyi buldun! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Dönüş sırasında stoper ayak koydu.`;
+                            }
+                        }
+                    ]
+                },
+                // 5: Audacious Chip
+                {
+                    title: "🚀 Kalecinin Öne Çıktığını Görüp Şık Aşırtma",
+                    description: "Kalecinin 5 metre öne çıktığını fark ettin! Ceza sahası yayındasın.",
+                    options: [
+                        {
+                            text: `🚀 Kalecinin Üzerinden Aşırtma Vur`,
+                            effect: `Şut ve Pas ortalamasına (%${Math.round((sho+pas)/2)}) bağlı aşırtma golü.`,
+                            successChance: this.calculateStatSuccess((sho + pas) / 2, 58),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`ŞAPKA ÇIKARTILIR! Kalecinin üzerinden süzülen aşırtma top direğin dibinden ağlarla buluştu! EFSANE GOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Aşırtma vuruşun (%${sho}) az farkla üst direkten auta çıktı.`;
+                            }
+                        },
+                        {
+                            text: `🎯 Yerden Sert ve İsabetli Vur`,
+                            effect: `Şut (%${sho}) yeteneğine bağlı.`,
+                            successChance: this.calculateStatSuccess(sho, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`GOOOL! Yerden köşeye sert vuruşla kaleciyi ters köşe yaptın!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Şutun kalecide kaldı.`;
+                            }
+                        }
+                    ]
+                },
+                // 6: Poacher Rebound
+                {
+                    title: "💥 Ceza Sahası Karambolünde Fırsatçı Vuruş",
+                    description: "Direkten dönen top ceza sahası içinde tam önüne düştü!",
+                    options: [
+                        {
+                            text: `💥 Dönen Topa Gelişine Tek Vuruş Çak!`,
+                            effect: `Şut (%${sho}) ve fırsatçılık yeteneğine bağlı.`,
+                            successChance: this.calculateStatSuccess(sho, 52),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`FIRSATÇI GOLCÜ! Dönen topu havada yakalayıp köşeye zımbaladın! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Ayağın kaydı (%${sho}), top defansa çarpıp kornere gitti.`;
+                            }
+                        },
+                        {
+                            text: `👟 Topuk Pasıyla ${teammate}'yi Gör`,
+                            effect: `Pas (%${pas}) yeteneğine bağlı asist.`,
+                            successChance: this.calculateStatSuccess(pas, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.assists++;
+                                this.playerStats.passes++;
+                                return `HARİKA ASİST! Topuk pasınla buluşan ${teammate} golü attı! ASİST!`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Pas savunmada kaldı.`;
+                            }
+                        }
+                    ]
+                },
+                // 7: High Press Keeper
+                {
+                    title: "🛡️ Rakip Kaleciye Şok Ön Pres & Hata Yaptırma",
+                    description: "Rakip kaleci topla fazla oyalandı! Üzerine doğru son hızla depar atıyorsun.",
+                    options: [
+                        {
+                            text: `🛡️ Kalecinin Ayağındaki Topa Kayıp Kap`,
+                            effect: `Hız ve Savunma ortalamasına (%${Math.round((spe+def)/2)}) bağlı gol şansı.`,
+                            successChance: this.calculateStatSuccess((spe + def) / 2, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`İNANILMAZ ÖN PRES GOLÜ! Kalecinin ayağındaki topa kayarak müdahale ettin ve top boş ağlara yuvarlandı! GOOOL!`);
+                            },
+                            onFail: () => {
+                                return `Kaleci son anda topu uzaklaştırdı.`;
+                            }
+                        },
+                        {
+                            text: `⚡ Kaleciyi Hataya Zorlayıp Pasını Kes`,
+                            effect: `Hız (%${spe}) yeteneğine bağlı.`,
+                            successChance: this.calculateStatSuccess(spe, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.assists++;
+                                this.playerStats.passes++;
+                                return `HATA YAPTIRDIN! Kaleci panikle topu arkadaşımıza attı, boş kaleye gol! ASİST!`;
+                            },
+                            onFail: () => {
+                                return `Kaleci pasını aktardı.`;
+                            }
+                        }
+                    ]
+                },
+                // 8: Penalty Drama (90th min)
+                {
+                    title: "🎭 Son Dakika Ceza Sahasında Penaltı / Ayakta Kalma",
+                    description: "Maçın son anları! Ceza sahasında topla buluştun, arkandan stoperin sert darbesi var!",
+                    options: [
+                        {
+                            text: `🎯 Yıkılma, Ayakta Kalıp Zor Pozisyonda Vur!`,
+                            effect: `Şut (%${sho}) ve Fizik gücüne bağlı gol şansı.`,
+                            successChance: this.calculateStatSuccess((sho + phy) / 2, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`İNANILMAZ KARAKTER VE GOL! Yıkılmadı, ayakta kaldı ve golünü yaptı! MÜTHİŞ BİR GOL! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Dengesiz vurulan şut auta gitti.`;
+                            }
+                        },
+                        {
+                            text: `🎭 Teması Alıp Hakemden Penaltı Bekle`,
+                            effect: `Sabit %45 şansla penaltı kazanma (Kart riski var).`,
+                            successChance: 0.45,
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`PENALTI VE GOOOL! Hakem beyaz noktayı gösterdi! Topun başına geçip kaleciyi ters köşe yaptın! GOOOL!`);
+                            },
+                            onFail: () => {
+                                if (this.hasYellowCard) {
+                                    this.isSentOff = true;
+                                    GAME.state.suspendedWeeks = 2;
+                                    this.hasYellowCard = false;
+                                    this.playerState.moral = Math.max(10, (this.playerState.moral || 100) - 20);
+                                    this.playerState.hocaGuveni = Math.max(10, (this.playerState.hocaGuveni || 40) - 15);
+                                    return "HAKEM ALDATMAYA YÖNELİK HAREKETTEN 2. SARI KARTTAN KIRMIZI KART GÖSTERDİ! Oyundan atıldın!";
+                                } else {
+                                    this.hasYellowCard = true;
+                                    this.playerState.moral = Math.max(0, (this.playerState.moral || 100) - 10);
+                                    this.playerState.hocaGuveni = Math.max(0, (this.playerState.hocaGuveni || 40) - 5);
+                                    return "HAKEM ALDATMAYA YÖNELİK HAREKETTEN SARI KART GÖSTERDİ!";
+                                }
+                            }
+                        },
+                        {
+                            text: `⚽ Korner Bayrağına Gidip Zaman Geçir`,
+                            effect: `Hız (%${spe}) ile maçı kilitleme.`,
+                            successChance: this.calculateStatSuccess(spe, 45),
+                            onSuccess: () => {
+                                this.playerState.hocaGuveni = Math.min(100, (this.playerState.hocaGuveni || 40) + 5);
+                                this.playerState.moral = Math.min(100, (this.playerState.moral || 100) + 5);
+                                return `HARİKA TAKTİK ZAMAN GEÇİRME! Topu bayrak direğinde sakladın, hoca alkışlıyor!`;
+                            },
+                            onFail: () => {
+                                return `Top taca çıktı.`;
+                            }
+                        }
+                    ]
+                },
+                // 9: Bicycle Kick
+                {
+                    title: "⚡ 90. Dakika Akrobatik Röveşata / Vole",
+                    description: "Son dakikada penaltı noktasına doğru yüksek bir orta geldi!",
+                    options: [
+                        {
+                            text: `⚡ Havaya Sıçrayıp Röveşata Çak!`,
+                            effect: `Şut ve Fizik ortalamasına (%${Math.round((sho+phy)/2)}) bağlı efsane röveşata golü.`,
+                            successChance: this.calculateStatSuccess((sho + phy) / 2, 60),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`PUSKAS ÖDÜLLÜK RÖVEŞATA GOLÜ! Havada ters takla atıp topu 90'a çaktın! STADYUM AYAKTA ALKIŞLIYOR! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Röveşata vuruşun (%${sho}) topa tam oturmadı, auta çıktı.`;
+                            }
+                        },
+                        {
+                            text: `🎯 Göğsünle İndirip Plase Gönder`,
+                            effect: `Şut (%${sho}) yeteneğine bağlı.`,
+                            successChance: this.calculateStatSuccess(sho, 55),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`SOĞUKKANLI GOL! Göğsünle indirip kalecinin altından ağlara yuvarladın! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.shots++;
+                                return `Göğsünle indirirken stoper topu uzaklaştırdı.`;
+                            }
+                        }
+                    ]
+                }
+            ];
+
+            let pool = fwdScenarios;
+            let chosenIndex = 0;
+            if (isLastMinute) {
+                chosenIndex = 8; // penalty / clutch drama
+            } else {
+                let available = [0, 1, 2, 3, 4, 5, 6, 7, 9].filter(i => !this.usedScenarioIndices.includes(i));
+                if (available.length === 0) available = [0, 1, 2, 3, 4, 5, 6, 7];
+                chosenIndex = available[Math.floor(Math.random() * available.length)];
+            }
+            this.usedScenarioIndices.push(chosenIndex);
+            choiceData = pool[chosenIndex];
         }
 
         this.activeChoice = choiceData;
