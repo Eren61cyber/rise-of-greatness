@@ -708,6 +708,50 @@ const GAME = {
         alert(`${displayName} başarıyla satın alındı!`);
     },
 
+    cancelItem: function(itemId) {
+        const item = DATABASE.LIFESTYLE_ITEMS.find(i => i.id === itemId);
+        if (!item) return;
+
+        if (!this.state.ownedItems.includes(itemId)) {
+            alert("Bu hizmete veya eşyaya sahip değilsiniz!");
+            return;
+        }
+
+        let displayName = item.name;
+        if (itemId === "gerze_fc") {
+            let locationName = this.state.hometownDistrict || this.state.hometown || "Gerze";
+            locationName = locationName.charAt(0).toUpperCase() + locationName.slice(1);
+            displayName = `👑 ${locationName} Belediyespor Kulübü`;
+        }
+
+        const confirmMsg = item.isWeekly 
+            ? `${displayName} hizmetini iptal etmek istediğinizden emin misiniz? Artık haftalık ücret kesilmeyecek.`
+            : `${displayName} eşyasını satmak istediğinizden emin misiniz? (${Math.round(item.cost * 0.5).toLocaleString()} € geri ödenecek)`;
+
+        if (!confirm(confirmMsg)) return;
+
+        // Revert passive bonus if any
+        if (itemId === "nutritionist") {
+            this.state.kondisyonRegenBonus = Math.max(0, (this.state.kondisyonRegenBonus || 15) - 15);
+        } else if (itemId === "pr_agent") {
+            this.state.sponsorIncomeBonus = Math.max(0, (this.state.sponsorIncomeBonus || 20) - 20);
+        }
+
+        // Refund 50% for non-weekly assets
+        let refundText = "";
+        if (!item.isWeekly) {
+            let refundAmount = Math.round(item.cost * 0.5);
+            this.state.money += refundAmount;
+            refundText = ` (${refundAmount.toLocaleString()} € bakiye iade edildi)`;
+        }
+
+        this.state.ownedItems = this.state.ownedItems.filter(id => id !== itemId);
+        this.saveGame();
+        this.updateUI();
+
+        alert(`${displayName} başarıyla ${item.isWeekly ? "iptal edildi" : "satıldı"}!${refundText}`);
+    },
+
     buyConsumable: function(itemId) {
         const item = DATABASE.CONSUMABLES.find(c => c.id === itemId);
         if (!item) return false;
