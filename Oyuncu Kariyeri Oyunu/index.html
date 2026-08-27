@@ -6438,60 +6438,139 @@
             const activePlanId = GAME.state.activeNutritionPlan || "mediterranean";
 
             let html = `
-                <div style="background: linear-gradient(135deg, rgba(16,185,129,0.12), rgba(6,78,59,0.25)); border: 1px solid rgba(16,185,129,0.3); border-radius: 12px; padding: 14px; margin-bottom: 12px;">
-                    <div style="font-size: 13px; font-weight: 800; color: var(--primary); margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
-                        <span>🥗</span> PROFESYONEL SPORCU BESLENME RUTİNİ
-                    </div>
-                    <div style="font-size: 11.5px; color: #cbd5e1; line-height: 1.4;">
-                        "Yetenek maç kazandırır ama ne yediğin ve nasıl dinlendiğin bir dünya yıldızı olup olmayacağını belirler." Cristiano Ronaldo, Erling Haaland ve Arda Güler gibi elit futbolcuların bilimsel diyet ve toparlanma rutinlerini uygula.
-                    </div>
+                <div style="margin: 4px 0 10px 0;">
+                    <h3 style="color: #f8fafc; font-size: 13px; font-weight: 800; border-left: 2.5px solid var(--primary); padding-left: 8px; margin: 0; font-family: var(--font-heading); letter-spacing: 0.5px;">HAFTALIK DİYET & BESLENME PLANLARI</h3>
                 </div>
-
-                <h3 style="color: white; margin: 10px 0 8px 0; font-size: 13.5px; font-weight: 800; border-left: 3px solid var(--primary); padding-left: 8px;">Haftalık Diyet & Beslenme Planları</h3>
             `;
+
+            const dietDetails = {
+                "mediterranean": {
+                    focus: "Dengeli toparlanma ve sakatlık koruması.",
+                    badges: [
+                        { icon: "🛡️", text: "-%40 Sakatlık", bg: "rgba(16,185,129,0.15)", color: "#10b981", border: "rgba(16,185,129,0.3)" },
+                        { icon: "⚡", text: "+10 Kondisyon", bg: "rgba(56,189,248,0.15)", color: "#38bdf8", border: "rgba(56,189,248,0.3)" },
+                        { icon: "❤️", text: "+5 Moral", bg: "rgba(244,63,94,0.15)", color: "#f43f5e", border: "rgba(244,63,94,0.3)" }
+                    ]
+                },
+                "high_protein": {
+                    focus: "Maksimum kas onarımı, güç ve şut verimi.",
+                    badges: [
+                        { icon: "💪", text: "+%25 Fiziksel", bg: "rgba(245,158,11,0.15)", color: "#f59e0b", border: "rgba(245,158,11,0.3)" },
+                        { icon: "🎯", text: "+%25 Şut", bg: "rgba(168,85,247,0.15)", color: "#a855f7", border: "rgba(168,85,247,0.3)" },
+                        { icon: "⚡", text: "+5 Enerji", bg: "rgba(56,189,248,0.15)", color: "#38bdf8", border: "rgba(56,189,248,0.3)" }
+                    ]
+                },
+                "carb_loading": {
+                    focus: "Glikojen yüklemesi ve 90 dakika diri kalma.",
+                    badges: [
+                        { icon: "⚡", text: "-%35 Kondisyon Kaybı", bg: "rgba(56,189,248,0.15)", color: "#38bdf8", border: "rgba(56,189,248,0.3)" },
+                        { icon: "🏃", text: "+10 Dayanıklılık", bg: "rgba(16,185,129,0.15)", color: "#10b981", border: "rgba(16,185,129,0.3)" }
+                    ]
+                },
+                "cheat_meal": {
+                    focus: "Hızlı moral yükseltme ve kaçamak öğünü.",
+                    badges: [
+                        { icon: "❤️", text: "+25 Moral", bg: "rgba(244,63,94,0.15)", color: "#f43f5e", border: "rgba(244,63,94,0.3)" },
+                        { icon: "⚠️", text: "-15 Kondisyon", bg: "rgba(239,68,68,0.15)", color: "#ef4444", border: "rgba(239,68,68,0.3)" }
+                    ]
+                }
+            };
 
             DATABASE.NUTRITION_PLANS.forEach(plan => {
                 const isActive = activePlanId === plan.id && plan.id !== "cheat_meal";
                 const canAfford = GAME.state.money >= plan.cost;
-                const btnText = plan.id === "cheat_meal" 
-                    ? `${plan.cost} € Kaçamak Yap` 
-                    : (isActive ? "✅ Aktif Menü" : `${plan.cost} € / Hafta Seç`);
-                const btnClass = isActive ? "btn-disabled" : (canAfford ? "btn-primary" : "btn-disabled");
-                const disabledAttr = (isActive || !canAfford) ? "disabled" : "";
+                const info = dietDetails[plan.id] || { focus: plan.target, badges: [] };
+
+                let buttonHTML = "";
+                if (isActive) {
+                    buttonHTML = `<button class="btn btn-disabled" disabled style="padding: 7px 14px; font-size: 11.5px; border-radius: 8px; flex-shrink: 0; white-space: nowrap; color: #10b981; border: 1px solid rgba(16,185,129,0.4); background: rgba(16,185,129,0.12); font-weight: 800;">✓ Aktif Menü</button>`;
+                } else if (plan.id === "cheat_meal") {
+                    let btnClass = canAfford ? "btn-event" : "btn-disabled";
+                    let disabledAttr = !canAfford ? "disabled" : "";
+                    buttonHTML = `<button class="btn ${btnClass}" ${disabledAttr} onclick="GAME.setNutritionPlan('${plan.id}'); renderNutritionAndRecovery();" style="padding: 7px 14px; font-size: 11.5px; border-radius: 8px; flex-shrink: 0; white-space: nowrap;">${plan.cost} € Kaçamak</button>`;
+                } else {
+                    let btnClass = canAfford ? "btn-primary" : "btn-disabled";
+                    let disabledAttr = !canAfford ? "disabled" : "";
+                    buttonHTML = `<button class="btn ${btnClass}" ${disabledAttr} onclick="GAME.setNutritionPlan('${plan.id}'); renderNutritionAndRecovery();" style="padding: 7px 14px; font-size: 11.5px; border-radius: 8px; flex-shrink: 0; white-space: nowrap;">${plan.cost} € / Hafta Seç</button>`;
+                }
+
+                let badgesHTML = info.badges.map(b => `
+                    <span style="display: inline-flex; align-items: center; gap: 3px; background: ${b.bg}; color: ${b.color}; border: 1px solid ${b.border}; padding: 3px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 700;">
+                        ${b.icon} ${b.text}
+                    </span>
+                `).join(" ");
 
                 html += `
-                    <div class="shop-card glass" style="display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border-radius: 12px; border: 1px solid ${isActive ? 'rgba(16,185,129,0.5)' : 'var(--border-glass)'}; background: ${isActive ? 'rgba(16,185,129,0.06)' : '#131822'}; margin-bottom: 8px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <h4 style="margin: 0; font-size: 13.5px; font-weight: 700; color: #f8fafc;">${plan.name}</h4>
-                                <span style="font-size: 10.5px; color: var(--primary); font-weight: 700;">🎯 ${plan.target}</span>
+                    <div class="shop-card glass" style="display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border-radius: 12px; border: 1.5px solid ${isActive ? 'rgba(16,185,129,0.5)' : 'var(--border-glass)'}; background: ${isActive ? 'rgba(16,185,129,0.05)' : '#131822'}; margin-bottom: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+                            <div style="flex: 1;">
+                                <h4 style="margin: 0 0 2px 0; font-size: 13.5px; font-weight: 700; color: #f8fafc; font-family: var(--font-heading);">${plan.name}</h4>
+                                <p style="margin: 0; font-size: 11.5px; color: var(--text-muted); line-height: 1.3;">${info.focus}</p>
                             </div>
-                            <button class="btn ${btnClass}" ${disabledAttr} onclick="GAME.setNutritionPlan('${plan.id}'); renderNutritionAndRecovery();" style="padding: 7px 12px; font-size: 11.5px; border-radius: 8px; flex-shrink: 0;">${btnText}</button>
+                            ${buttonHTML}
                         </div>
-                        <div style="font-size: 11.5px; color: #94a3b8; line-height: 1.35;">${plan.desc}</div>
-                        <div style="font-size: 11px; color: var(--accent-yellow); font-weight: 600;">⚡ Etki: ${plan.stats}</div>
-                        <div style="background: rgba(255,255,255,0.03); border-radius: 6px; padding: 6px 8px; font-size: 10.5px; color: #38bdf8; line-height: 1.35;">${plan.proTip}</div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px;">
+                            ${badgesHTML}
+                        </div>
                     </div>
                 `;
             });
 
-            html += `<h3 style="color: white; margin: 16px 0 8px 0; font-size: 13.5px; font-weight: 800; border-left: 3px solid var(--accent-blue); padding-left: 8px;">Maç & İdman Sonrası Rejenerasyon (Toparlanma)</h3>`;
+            html += `
+                <div style="margin: 16px 0 10px 0;">
+                    <h3 style="color: #f8fafc; font-size: 13px; font-weight: 800; border-left: 2.5px solid #38bdf8; padding-left: 8px; margin: 0; font-family: var(--font-heading); letter-spacing: 0.5px;">REJENERASYON (TOPARLANMA)</h3>
+                </div>
+            `;
+
+            const recoveryDetails = {
+                "ice_bath": {
+                    focus: "Laktik asit tahliyesi ve anında kas toparlanması.",
+                    badges: [
+                        { icon: "⚡", text: "+25 Kondisyon", bg: "rgba(56,189,248,0.15)", color: "#38bdf8", border: "rgba(56,189,248,0.3)" },
+                        { icon: "❄️", text: "Kas Onarımı", bg: "rgba(16,185,129,0.15)", color: "#10b981", border: "rgba(16,185,129,0.3)" }
+                    ]
+                },
+                "sleep_protocol": {
+                    focus: "Derin melatonin uykusu ve büyüme hormonu.",
+                    badges: [
+                        { icon: "❤️", text: "+15 Moral", bg: "rgba(244,63,94,0.15)", color: "#f43f5e", border: "rgba(244,63,94,0.3)" },
+                        { icon: "⚡", text: "+10 Kondisyon", bg: "rgba(56,189,248,0.15)", color: "#38bdf8", border: "rgba(56,189,248,0.3)" }
+                    ]
+                },
+                "hydration_electrolytes": {
+                    focus: "Magnezyum ve potasyumlu hidrasyon dengesi.",
+                    badges: [
+                        { icon: "⚡", text: "+15 Kondisyon", bg: "rgba(56,189,248,0.15)", color: "#38bdf8", border: "rgba(56,189,248,0.3)" },
+                        { icon: "💧", text: "Sıfır Kramp", bg: "rgba(16,185,129,0.15)", color: "#10b981", border: "rgba(16,185,129,0.3)" }
+                    ]
+                }
+            };
 
             DATABASE.RECOVERY_ROUTINES.forEach(routine => {
                 const canAfford = GAME.state.money >= routine.cost;
+                const info = recoveryDetails[routine.id] || { focus: routine.desc, badges: [] };
                 const btnText = routine.cost === 0 ? "Uygula (Ücretsiz)" : `${routine.cost} € Uygula`;
                 const btnClass = canAfford ? "btn-secondary" : "btn-disabled";
                 const disabledAttr = !canAfford ? "disabled" : "";
 
+                let badgesHTML = info.badges.map(b => `
+                    <span style="display: inline-flex; align-items: center; gap: 3px; background: ${b.bg}; color: ${b.color}; border: 1px solid ${b.border}; padding: 3px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 700;">
+                        ${b.icon} ${b.text}
+                    </span>
+                `).join(" ");
+
                 html += `
                     <div class="shop-card glass" style="display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border-glass); background: #131822; margin-bottom: 8px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <h4 style="margin: 0; font-size: 13.5px; font-weight: 700; color: #f8fafc;">${routine.name}</h4>
-                            <button class="btn ${btnClass}" ${disabledAttr} onclick="GAME.applyRecoveryRoutine('${routine.id}'); renderNutritionAndRecovery();" style="padding: 7px 12px; font-size: 11.5px; border-radius: 8px; flex-shrink: 0;">${btnText}</button>
+                        <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+                            <div style="flex: 1;">
+                                <h4 style="margin: 0 0 2px 0; font-size: 13.5px; font-weight: 700; color: #f8fafc; font-family: var(--font-heading);">${routine.name}</h4>
+                                <p style="margin: 0; font-size: 11.5px; color: var(--text-muted); line-height: 1.3;">${info.focus}</p>
+                            </div>
+                            <button class="btn ${btnClass}" ${disabledAttr} onclick="GAME.applyRecoveryRoutine('${routine.id}'); renderNutritionAndRecovery();" style="padding: 7px 14px; font-size: 11.5px; border-radius: 8px; flex-shrink: 0; white-space: nowrap;">${btnText}</button>
                         </div>
-                        <div style="font-size: 11.5px; color: #94a3b8; line-height: 1.35;">${routine.desc}</div>
-                        <div style="font-size: 11px; color: var(--accent-green); font-weight: 600;">✨ Fayda: ${routine.stats}</div>
-                        <div style="background: rgba(255,255,255,0.03); border-radius: 6px; padding: 6px 8px; font-size: 10.5px; color: #38bdf8; line-height: 1.35;">${routine.proTip}</div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px;">
+                            ${badgesHTML}
+                        </div>
                     </div>
                 `;
             });
