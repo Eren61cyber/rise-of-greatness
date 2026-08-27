@@ -324,16 +324,16 @@ const DATABASE = {
     },
 
     LIFESTYLE_ITEMS: [
-        { id: "nutritionist", name: "Özel Beslenme Şefi", cost: 300, isWeekly: true, desc: "Kondisyon yenilenmesini %15 artırır. (Haftalık 300 €)", effect: (s) => { s.kondisyonRegenBonus += 15; } },
-        { id: "doc_ahmet", name: "👨‍⚕️ Fizyoterapist Ahmet", cost: 150, isWeekly: true, desc: "Haftalık 150 €. Antrenman enerji maliyetini düşürür (-5 Enerji). Sakatlık süresini 1 hafta kısaltır.", effect: (s) => {} },
-        { id: "doc_can", name: "🩺 Prof. Dr. Can (Özel Doktor)", cost: 800, isWeekly: true, desc: "Haftalık 800 €. Sakatlık iyileşme süresini %50 kısaltır. Genel sakatlanma riskini %40 düşürür.", effect: (s) => {} },
-        { id: "doc_clinic", name: "🏥 Elit Sağlık Kliniği Üyeliği", cost: 2500, isWeekly: true, desc: "Haftalık 2500 €. Sakatlanma riskini %80 azaltır. Sakatlandığında iyileşme süresini 1 haftaya sabitler.", effect: (s) => {} },
-        { id: "pr_agent", name: "Sosyal Medya/PR Menajeri", cost: 400, isWeekly: true, desc: "Sponsorluk gelirlerini %20 artırır. (Haftalık 400 €)", effect: (s) => { s.sponsorIncomeBonus += 20; } },
-        { id: "bodyguard", name: "🛡️ Özel Koruma (Bodyguard)", cost: 1200, isWeekly: true, desc: "Seni mafya baskınlarından, kurşunlamalardan ve haraç kesilmesinden %100 korur. (Haftalık 1200 €)", effect: (s) => {} },
+        { id: "nutritionist", name: "Özel Beslenme Şefi", cost: 60, isWeekly: true, desc: "Kondisyon yenilenmesini %15 artırır. (Haftalık 60 €)", effect: (s) => { s.kondisyonRegenBonus += 15; } },
+        { id: "doc_ahmet", name: "👨‍⚕️ Fizyoterapist Ahmet", cost: 40, isWeekly: true, desc: "Haftalık 40 €. Antrenman enerji maliyetini düşürür (-5 Enerji). Sakatlık süresini 1 hafta kısaltır.", effect: (s) => {} },
+        { id: "doc_can", name: "🩺 Prof. Dr. Can (Özel Doktor)", cost: 200, isWeekly: true, desc: "Haftalık 200 €. Sakatlık iyileşme süresini %50 kısaltır. Genel sakatlanma riskini %40 düşürür.", effect: (s) => {} },
+        { id: "doc_clinic", name: "🏥 Elit Sağlık Kliniği Üyeliği", cost: 750, isWeekly: true, desc: "Haftalık 750 €. Sakatlanma riskini %80 azaltır. Sakatlandığında iyileşme süresini 1 haftaya sabitler.", effect: (s) => {} },
+        { id: "pr_agent", name: "Sosyal Medya/PR Menajeri", cost: 100, isWeekly: true, desc: "Sponsorluk gelirlerini %20 artırır. (Haftalık 100 €)", effect: (s) => { s.sponsorIncomeBonus += 20; } },
+        { id: "bodyguard", name: "🛡️ Özel Koruma (Bodyguard)", cost: 350, isWeekly: true, desc: "Seni mafya baskınlarından, kurşunlamalardan ve haraç kesilmesinden %100 korur. (Haftalık 350 €)", effect: (s) => {} },
         { id: "sports_car", name: "Lüks Spor Araba", cost: 180000, isWeekly: false, desc: "180,000 €. +50,000 Sosyal Medya Takipçisi, -10 Hoca Güveni.", effect: (s) => { s.followers += 50000; s.hocaGuveni = Math.max(0, s.hocaGuveni - 10); } },
         { id: "penthouse", name: "Boğaz Manzaralı Rezidans", cost: 650000, isWeekly: false, desc: "650,000 €. Moral seviyesini maksimuma sabitlemeye yardımcı olur (+25 Moral).", effect: (s) => { s.moral = Math.min(100, s.moral + 25); } },
-        { id: "yacht", name: "🚢 Ultra Lüks Yat", cost: 1500000, isWeekly: false, desc: "1,500,000 €. +120,000 Takipçi, +45 Moral. Haftalık bakım masrafı: 12,000 €.", effect: (s) => { s.followers += 120000; s.moral = Math.min(100, s.moral + 45); } },
-        { id: "jet", name: "✈️ Özel Jet", cost: 5000000, isWeekly: false, desc: "5,000,000 €. +400,000 Takipçi, +60 Moral. Haftalık uçuş ve hangar masrafı: 35,000 €.", effect: (s) => { s.followers += 400000; s.moral = Math.min(100, s.moral + 60); } },
+        { id: "yacht", name: "🚢 Ultra Lüks Yat", cost: 1500000, isWeekly: false, desc: "1,500,000 €. +120,000 Takipçi, +45 Moral. Haftalık bakım masrafı: 4,000 €.", effect: (s) => { s.followers += 120000; s.moral = Math.min(100, s.moral + 45); } },
+        { id: "jet", name: "✈️ Özel Jet", cost: 5000000, isWeekly: false, desc: "5,000,000 €. +400,000 Takipçi, +60 Moral. Haftalık uçuş ve hangar masrafı: 15,000 €.", effect: (s) => { s.followers += 400000; s.moral = Math.min(100, s.moral + 60); } },
         { id: "mansion", name: "🏰 Tarihi Boğaz Yalısı", cost: 3500000, isWeekly: false, desc: "3,500,000 €. Prestij simgesi! +250,000 Takipçi, +80 Moral.", effect: (s) => { s.followers += 250000; s.moral = Math.min(100, s.moral + 80); } },
         { id: "gerze_fc", name: "👑 Gerze Belediyespor Kulübü", cost: 10000000, isWeekly: false, desc: "10,000,000 €. Memleketinin takımını satın alıp başkan ol! Her hafta +15,000 Takipçi ve +10,000 € pasif gelir sağlar.", effect: (s) => { s.followers += 50000; } }
     ],
@@ -515,40 +515,40 @@ const DATABASE = {
     CONSUMABLES: [
         {
             id: "energy_drink",
-            name: "⚡ Enerji İçeceği",
-            cost: 1200,
-            desc: "Anında +35 Kondisyon verir. Dinlenmeye gerek kalmadan sonraki maça hazır olursun!",
+            name: "💧 Su & Muz (Temel Enerji)",
+            cost: 40,
+            desc: "Hızlı toparlanma sağlar. (+25 Kondisyon)",
             effect: (s) => {
-                s.kondisyon = Math.min(100, s.kondisyon + 35);
+                s.kondisyon = Math.min(100, s.kondisyon + 25);
             }
         },
         {
             id: "nrg_drink",
-            name: "⚡ NRG Enerji İçeceği (NSS Özel)",
-            cost: 2800,
-            desc: "NSS efsanesi NRG içeceği! Kondisyonunu anında +50 doldurur ve +5 Moral verir.",
+            name: "⚡ Profesyonel İzotonik",
+            cost: 120,
+            desc: "Yüksek performanslı sporcu içeceği. (+45 Kondisyon, +5 Moral)",
             effect: (s) => {
-                s.kondisyon = Math.min(100, s.kondisyon + 50);
+                s.kondisyon = Math.min(100, s.kondisyon + 45);
                 s.moral = Math.min(100, s.moral + 5);
             }
         },
         {
             id: "vitamin_booster",
-            name: "💊 Vitamin Takviyesi",
-            cost: 3200,
-            desc: "Kondisyonunu +60 doldurur ve bağışıklık sistemini güçlendirir.",
+            name: "💊 Vitamin Kürü",
+            cost: 250,
+            desc: "Hücre yenileyici yoğun vitamin takviyesi. (+65 Kondisyon)",
             effect: (s) => {
-                s.kondisyon = Math.min(100, s.kondisyon + 60);
+                s.kondisyon = Math.min(100, s.kondisyon + 65);
             }
         },
         {
             id: "physio_massage",
-            name: "💆 Fizyoterapi & Masaj",
-            cost: 6500,
-            desc: "Kondisyonunu tamamen (%100) doldurur ve yorgun kaslarını rahatlatarak +5 Moral sağlar.",
+            name: "💆 Masaj & Terapi",
+            cost: 500,
+            desc: "Profesyonel kulüp masajı. (Kondisyonu %100 yapar, +10 Moral)",
             effect: (s) => {
                 s.kondisyon = 100;
-                s.moral = Math.min(100, s.moral + 5);
+                s.moral = Math.min(100, s.moral + 10);
             }
         }
     ],
@@ -591,16 +591,16 @@ const DATABASE = {
         {
             id: "tea_garden",
             name: "☕ Yerel Çay Bahçesi",
-            cost: 10000,
-            weeklyYield: 150,
-            desc: "Sahilde ailelerin dinlendiği samimi bir çay bahçesi. (+150 €/Hafta)"
+            cost: 8000,
+            weeklyYield: 240,
+            desc: "Sahilde ailelerin dinlendiği samimi bir çay bahçesi. (+240 €/Hafta)"
         },
         {
             id: "orchard",
             name: "🌳 Tarım Arazisi (Fındık/Zeytin)",
-            cost: 40000,
-            weeklyYield: 800,
-            desc: "Verimli fındık veya zeytin tarım arazisi. Güvenli yatırım. (+800 €/Hafta)"
+            cost: 35000,
+            weeklyYield: 1050,
+            desc: "Verimli fındık veya zeytin tarım arazisi. Güvenli yatırım. (+1.050 €/Hafta)"
         },
         {
             id: "local_sponsor",
@@ -612,9 +612,9 @@ const DATABASE = {
         {
             id: "textile_factory",
             name: "🏭 Memleket Fabrikası",
-            cost: 250000,
-            weeklyYield: 6200,
-            desc: "İstihdam sağlayan modern bir dikim atölyesi. Müthiş getiri! (+6.200 €/Hafta)"
+            cost: 200000,
+            weeklyYield: 5500,
+            desc: "İstihdam sağlayan modern bir dikim atölyesi. Müthiş getiri! (+5.500 €/Hafta)"
         }
     ],
 

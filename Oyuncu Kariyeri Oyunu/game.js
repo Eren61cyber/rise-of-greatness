@@ -21,7 +21,7 @@ const GAME = {
         speed: 52,
 
         // Financial & Boost Modifiers
-        weeklySalary: 150,
+        weeklySalary: 350,
         sponsorIncomeBonus: 0,
         kondisyonRegenBonus: 0,
         injuryRiskReduction: 0,
@@ -80,7 +80,7 @@ const GAME = {
             familyBondsSevered: false,
             familyStoryWeeks: 0,
             familyStoryStage: 0,
-            weeklySalary: startingSalary || 150,
+            weeklySalary: startingSalary || 350,
             sponsorIncomeBonus: 0,
             kondisyonRegenBonus: 0,
             injuryRiskReduction: 0,
@@ -881,16 +881,16 @@ const GAME = {
             }
         }
 
-        // Fluctuate Crypto Prices
+        // Fluctuate Crypto Prices (Dengeli / Simetrik Dalgalanma)
         if (!this.state.cryptoPrices) {
             this.state.cryptoPrices = { btc: 52000, eth: 3200, doge: 0.15, atl: 1.0 };
         }
         
-        let btcChange = (Math.random() * 11 - 5) / 100;
-        let ethChange = (Math.random() * 20 - 9) / 100;
-        let dogeChange = (Math.random() * 60 - 25) / 100;
-        let atlBase = (this.state.rating - 50) / 100;
-        let atlChange = (Math.random() * 30 - 15 + (atlBase * 15)) / 100;
+        let btcChange = (Math.random() * 10 - 5) / 100;     // -%5 ile +%5 arası
+        let ethChange = (Math.random() * 16 - 8) / 100;     // -%8 ile +%8 arası
+        let dogeChange = (Math.random() * 40 - 20) / 100;   // -%20 ile +%20 arası
+        let atlBase = (this.state.rating - 60) / 100;       // 60 rating üstünde pozitif eğilim
+        let atlChange = (Math.random() * 20 - 10 + (atlBase * 15)) / 100;
 
         // Apply mafia insider tip multiplier
         if (this.state.mafiaTip) {
@@ -938,10 +938,10 @@ const GAME = {
 
         // Yacht & Jet weekly maintenance costs
         if (this.state.ownedItems.includes("yacht")) {
-            weeklyDeduction += 12000;
+            weeklyDeduction += 4000;
         }
         if (this.state.ownedItems.includes("jet")) {
-            weeklyDeduction += 35000;
+            weeklyDeduction += 15000;
         }
         
         // Sevgili haftalik giderini dus ve etkilerini uygula
