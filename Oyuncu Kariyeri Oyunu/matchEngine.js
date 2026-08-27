@@ -321,7 +321,7 @@ const MatchEngine = {
         return pool[Math.floor(Math.random() * pool.length)];
     },
 
-    calculateStatChance: function(statVal, difficulty = 55) {
+    calculateStatSuccess: function(statVal, difficulty = 55) {
         const val = Math.round(statVal || 50);
         const diff = val - difficulty;
         let chance = 0.50 + (diff * 0.009);
@@ -331,6 +331,10 @@ const MatchEngine = {
             chance = Math.max(chance, 0.72); // High stat mastery
         }
         return Math.max(0.12, Math.min(0.92, parseFloat(chance.toFixed(2))));
+    },
+
+    calculateStatChance: function(statVal, difficulty = 55) {
+        return this.calculateStatSuccess(statVal, difficulty);
     },
 
     triggerChoice: function(minute) {
