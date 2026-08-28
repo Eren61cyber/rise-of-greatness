@@ -147,7 +147,7 @@
     <!-- RiseUp Studios Animated Splash Screen -->
     <style>
         /* ══════════════════════════════════════════════════════════════════
-           CONSOLE-GRADE SPLASH SCREEN & TRANSITION STYLES
+           2-STAGE CINEMATIC STUDIO & GAME TITLE SPLASH SYSTEM
         ══════════════════════════════════════════════════════════════════ */
         #intro-overlay {
             position: fixed;
@@ -155,29 +155,103 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: radial-gradient(circle at 50% 38%, #0f1523 0%, #080c14 55%, #030407 100%);
+            background: #07090e;
             z-index: 999999;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            padding: 40px 20px;
-            cursor: pointer;
             user-select: none;
+            cursor: pointer;
             transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             will-change: opacity, transform;
         }
 
-        /* Subtle Carbon Mesh Pattern */
+        /* Ambient background carbon vignette */
         #intro-overlay::before {
             content: "";
             position: absolute;
             inset: 0;
-            background-image: radial-gradient(rgba(255, 215, 0, 0.04) 1px, transparent 1px);
-            background-size: 24px 24px;
+            background: radial-gradient(circle at 50% 45%, rgba(15, 23, 42, 0.65) 0%, rgba(7, 9, 14, 0.95) 70%, #040508 100%);
             pointer-events: none;
-            opacity: 0.6;
+        }
+
+        /* ── STAGE 1: RISEUP STUDIOS INTRO ──────────────────────────────── */
+        #splash-stage-1 {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            opacity: 0;
+            transform: scale(0.96);
+            transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.2, 0.8, 0.3, 1);
+            pointer-events: none;
+        }
+
+        #splash-stage-1.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        #splash-stage-1.fade-out {
+            opacity: 0;
+            transform: scale(1.04);
+            pointer-events: none;
+        }
+
+        .studio-emblem-wrap {
+            position: relative;
+            margin-bottom: 22px;
+            filter: drop-shadow(0 0 25px rgba(0, 229, 183, 0.35)) drop-shadow(0 0 45px rgba(245, 166, 35, 0.2));
+        }
+
+        .studio-title {
+            font-family: 'Space Grotesk', 'Rajdhani', sans-serif;
+            font-size: clamp(22px, 5.5vw, 36px);
+            font-weight: 800;
+            letter-spacing: clamp(6px, 1.8vw, 12px);
+            color: #ffffff;
+            text-transform: uppercase;
+            margin: 0;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #ffffff 0%, #00e5b7 50%, #ffd700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .studio-sub {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(10px, 2.2vw, 13px);
+            font-weight: 600;
+            letter-spacing: clamp(6px, 1.4vw, 9px);
+            color: rgba(255, 255, 255, 0.45);
+            text-transform: uppercase;
+            margin-top: 8px;
+        }
+
+        /* ── STAGE 2: GAME TITLE SCREEN ─────────────────────────────────── */
+        #splash-stage-2 {
+            position: absolute;
+            inset: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 40px 20px;
+            z-index: 10;
+            opacity: 0;
+            transform: scale(0.97);
+            transition: opacity 0.5s cubic-bezier(0.2, 0.8, 0.3, 1), transform 0.5s cubic-bezier(0.2, 0.8, 0.3, 1);
+            pointer-events: none;
+        }
+
+        #splash-stage-2.active {
+            display: flex;
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
         }
 
         /* Golden Ambient Radial Glow behind the trophy */
@@ -213,7 +287,7 @@
             text-align: center;
         }
 
-        /* Trophy Container & Breathing Effect */
+        /* Trophy Container & Floating Effect */
         .console-trophy-wrap {
             position: relative;
             margin-bottom: 24px;
@@ -369,79 +443,96 @@
         }
     </style>
 
-    <!-- Console-Grade Splash Overlay -->
-    <div id="intro-overlay" onclick="skipIntroDirectly(event)">
+    <!-- 2-Stage Console-Grade Splash Overlay -->
+    <div id="intro-overlay" onclick="onSplashOverlayClick(event)">
         <!-- Quick Skip Button -->
         <button id="cin-skip-btn" onclick="skipIntroDirectly(event)">
             <span>GEÇ</span>
             <span style="font-size: 11px;">⏭️</span>
         </button>
 
-        <!-- Ambient Luxury Gold Glow -->
-        <div class="console-ambient-glow"></div>
-
-        <!-- Center Splash Hero -->
-        <div class="console-splash-main">
-            <div class="console-trophy-wrap">
-                <!-- Ballon d'Or Trophy SVG -->
-                <svg width="180" height="210" viewBox="0 0 180 210" fill="none" xmlns="http://www.w3.org/2000/svg" class="console-trophy-svg">
-                    <defs>
-                        <linearGradient id="goldSheenBase" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stop-color="#fff8e1"/>
-                            <stop offset="30%" stop-color="#ffd700"/>
-                            <stop offset="60%" stop-color="#f59e0b"/>
-                            <stop offset="85%" stop-color="#b45309"/>
-                            <stop offset="100%" stop-color="#78350f"/>
-                        </linearGradient>
-                        <radialGradient id="ballonDorOrb" cx="40%" cy="35%" r="62%">
-                            <stop offset="0%" stop-color="#ffffff"/>
-                            <stop offset="25%" stop-color="#ffe082"/>
-                            <stop offset="55%" stop-color="#ffb300"/>
-                            <stop offset="85%" stop-color="#c67d0a"/>
-                            <stop offset="100%" stop-color="#451a03"/>
-                        </radialGradient>
-                        <linearGradient id="goldPillar" x1="0" y1="0" x2="1" y2="0">
-                            <stop offset="0%" stop-color="#92400e"/>
-                            <stop offset="25%" stop-color="#fcd34d"/>
-                            <stop offset="50%" stop-color="#ffffff"/>
-                            <stop offset="75%" stop-color="#f59e0b"/>
-                            <stop offset="100%" stop-color="#78350f"/>
-                        </linearGradient>
-                    </defs>
-                    <!-- Pedestal -->
-                    <path d="M50 185 L130 185 L142 202 L38 202 Z" fill="url(#goldSheenBase)"/>
-                    <rect x="58" y="166" width="64" height="20" rx="3" fill="#121824" stroke="url(#goldSheenBase)" stroke-width="1.5"/>
-                    <rect x="66" y="172" width="48" height="8" rx="1.5" fill="url(#goldSheenBase)" opacity="0.85"/>
-                    <!-- Stem -->
-                    <path d="M82 135 L98 135 L94 166 L86 166 Z" fill="url(#goldPillar)"/>
-                    <!-- Handles -->
-                    <path d="M52 82 C32 94 36 128 58 138 C68 142 78 144 86 144 L86 138 C76 138 68 135 62 131 C46 122 44 98 60 88 Z" fill="url(#goldSheenBase)" opacity="0.9"/>
-                    <path d="M128 82 C148 94 144 128 122 138 C112 142 102 144 94 144 L94 138 C104 138 112 135 118 131 C134 122 136 98 120 88 Z" fill="url(#goldSheenBase)" opacity="0.9"/>
-                    <!-- Golden Orb (Ballon d'Or Globe) -->
-                    <circle cx="90" cy="74" r="50" fill="url(#ballonDorOrb)"/>
-                    <!-- Facets -->
-                    <path d="M90 32 L103 44 L98 62 L82 62 L77 44 Z" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"/>
-                    <path d="M90 24 L90 32 M103 44 L118 42 M98 62 L112 76 M82 62 L68 76 M77 44 L62 42" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/>
-                    <circle cx="90" cy="74" r="50" fill="none" stroke="url(#goldSheenBase)" stroke-width="1.5" opacity="0.6"/>
-                    <!-- Specular Highlight -->
-                    <ellipse cx="76" cy="54" rx="14" ry="8" fill="rgba(255,255,255,0.55)" transform="rotate(-30 76 54)"/>
+        <!-- ══ STAGE 1: RiseUp Studios Production Intro ══ -->
+        <div id="splash-stage-1" class="active">
+            <div class="studio-emblem-wrap">
+                <svg width="74" height="74" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="40" cy="40" r="37" stroke="rgba(255, 215, 0, 0.4)" stroke-width="1.5" stroke-dasharray="6 4"/>
+                    <path d="M40 12 L54 40 L46 38 L46 64 L34 64 L34 38 L26 40 Z" stroke="#00e5b7" stroke-width="2.2" stroke-linejoin="round" fill="rgba(0, 229, 183, 0.12)"/>
+                    <path d="M34 64 Q40 73 46 64" stroke="#ffd700" stroke-width="2" fill="rgba(255, 215, 0, 0.25)" stroke-linecap="round"/>
+                    <circle cx="40" cy="11" r="3" fill="#ffd700"/>
                 </svg>
             </div>
-
-            <!-- Title & Subtitle -->
-            <div class="console-title-wrap">
-                <h1 class="console-main-title">RISE OF GREATNESS</h1>
-                <div class="console-sub-title">ROAD TO BALLON D'OR</div>
-            </div>
+            <h2 class="studio-title">RISEUP STUDIOS</h2>
+            <div class="studio-sub">PRESENTS</div>
         </div>
 
-        <!-- Bottom Minimal Pulse Prompt -->
-        <div class="console-bottom-section">
-            <div id="cin-tap-start" class="console-tap-prompt">
-                <div class="console-tap-text">EKRANA DOKUN & BAŞLA</div>
-                <div class="console-tap-sub">PRESS ANYWHERE TO PLAY</div>
+        <!-- ══ STAGE 2: Game Title Screen ══ -->
+        <div id="splash-stage-2">
+            <!-- Ambient Luxury Gold Glow -->
+            <div class="console-ambient-glow"></div>
+
+            <!-- Center Splash Hero -->
+            <div class="console-splash-main">
+                <div class="console-trophy-wrap">
+                    <!-- Ballon d'Or Trophy SVG -->
+                    <svg width="180" height="210" viewBox="0 0 180 210" fill="none" xmlns="http://www.w3.org/2000/svg" class="console-trophy-svg">
+                        <defs>
+                            <linearGradient id="goldSheenBase" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#fff8e1"/>
+                                <stop offset="30%" stop-color="#ffd700"/>
+                                <stop offset="60%" stop-color="#f59e0b"/>
+                                <stop offset="85%" stop-color="#b45309"/>
+                                <stop offset="100%" stop-color="#78350f"/>
+                            </linearGradient>
+                            <radialGradient id="ballonDorOrb" cx="40%" cy="35%" r="62%">
+                                <stop offset="0%" stop-color="#ffffff"/>
+                                <stop offset="25%" stop-color="#ffe082"/>
+                                <stop offset="55%" stop-color="#ffb300"/>
+                                <stop offset="85%" stop-color="#c67d0a"/>
+                                <stop offset="100%" stop-color="#451a03"/>
+                            </radialGradient>
+                            <linearGradient id="goldPillar" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stop-color="#92400e"/>
+                                <stop offset="25%" stop-color="#fcd34d"/>
+                                <stop offset="50%" stop-color="#ffffff"/>
+                                <stop offset="75%" stop-color="#f59e0b"/>
+                                <stop offset="100%" stop-color="#78350f"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- Pedestal -->
+                        <path d="M50 185 L130 185 L142 202 L38 202 Z" fill="url(#goldSheenBase)"/>
+                        <rect x="58" y="166" width="64" height="20" rx="3" fill="#121824" stroke="url(#goldSheenBase)" stroke-width="1.5"/>
+                        <rect x="66" y="172" width="48" height="8" rx="1.5" fill="url(#goldSheenBase)" opacity="0.85"/>
+                        <!-- Stem -->
+                        <path d="M82 135 L98 135 L94 166 L86 166 Z" fill="url(#goldPillar)"/>
+                        <!-- Handles -->
+                        <path d="M52 82 C32 94 36 128 58 138 C68 142 78 144 86 144 L86 138 C76 138 68 135 62 131 C46 122 44 98 60 88 Z" fill="url(#goldSheenBase)" opacity="0.9"/>
+                        <path d="M128 82 C148 94 144 128 122 138 C112 142 102 144 94 144 L94 138 C104 138 112 135 118 131 C134 122 136 98 120 88 Z" fill="url(#goldSheenBase)" opacity="0.9"/>
+                        <!-- Golden Orb (Ballon d'Or Globe) -->
+                        <circle cx="90" cy="74" r="50" fill="url(#ballonDorOrb)"/>
+                        <!-- Facets -->
+                        <path d="M90 32 L103 44 L98 62 L82 62 L77 44 Z" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"/>
+                        <path d="M90 24 L90 32 M103 44 L118 42 M98 62 L112 76 M82 62 L68 76 M77 44 L62 42" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/>
+                        <circle cx="90" cy="74" r="50" fill="none" stroke="url(#goldSheenBase)" stroke-width="1.5" opacity="0.6"/>
+                        <!-- Specular Highlight -->
+                        <ellipse cx="76" cy="54" rx="14" ry="8" fill="rgba(255,255,255,0.55)" transform="rotate(-30 76 54)"/>
+                    </svg>
+                </div>
+
+                <!-- Title & Subtitle -->
+                <div class="console-title-wrap">
+                    <h1 class="console-main-title">RISE OF GREATNESS</h1>
+                    <div class="console-sub-title">ROAD TO BALLON D'OR</div>
+                </div>
             </div>
-            <div class="console-brand-tag">RISEUP STUDIOS • NEXT GEN CAREER MODE</div>
+
+            <!-- Bottom Minimal Pulse Prompt -->
+            <div class="console-bottom-section">
+                <div id="cin-tap-start" class="console-tap-prompt">
+                    <div class="console-tap-text">EKRANA DOKUN & BAŞLA</div>
+                    <div class="console-tap-sub">PRESS ANYWHERE TO PLAY</div>
+                </div>
+                <div class="console-brand-tag">RISEUP STUDIOS • NEXT GEN CAREER MODE</div>
+            </div>
         </div>
     </div>
 
@@ -3675,8 +3766,38 @@
             });
         }
 
-        // ── CONSOLE-GRADE INTRO & DARK CROSSFADE (0.4s) ──────────────────
+        // ── 2-STAGE CINEMATIC SPLASH CONTROLLER ───────────────────────────
+        let currentSplashStage = 1;
+        let splashTimer1 = null;
+        let splashTimer2 = null;
         let introSkipped = false;
+
+        function playStudioChime() {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
+                const now = ctx.currentTime;
+                const master = ctx.createGain();
+                master.gain.setValueAtTime(0.35, now);
+                master.connect(ctx.destination);
+                
+                // Soft studio chime (C5, E5, G5, B5)
+                [523.25, 659.25, 783.99, 987.77].forEach((freq, i) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, now + i * 0.08);
+                    gain.gain.setValueAtTime(0.0001, now + i * 0.08);
+                    gain.gain.linearRampToValueAtTime(0.08, now + i * 0.08 + 0.04);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.08 + 0.8);
+                    osc.connect(gain);
+                    gain.connect(master);
+                    osc.start(now + i * 0.08);
+                    osc.stop(now + i * 0.08 + 0.85);
+                });
+            } catch(e) { /* Audio context not supported */ }
+        }
 
         function playConsoleIntroSound() {
             try {
@@ -3697,7 +3818,7 @@
                 subOsc.frequency.setValueAtTime(55, now);
                 subOsc.frequency.exponentialRampToValueAtTime(32, now + 0.5);
                 subGain.gain.setValueAtTime(0.001, now);
-                subGain.gain.linearRampToValueAtTime(0.5, now + 0.05);
+                subGain.gain.linearRampToValueAtTime(0.45, now + 0.05);
                 subGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);
                 subOsc.connect(subGain);
                 subGain.connect(master);
@@ -3721,6 +3842,42 @@
             } catch(e) { /* Audio context not supported */ }
         }
 
+        function transitionToTitleStage() {
+            if (currentSplashStage >= 2 || introSkipped) return;
+            currentSplashStage = 2;
+            if (splashTimer1) clearTimeout(splashTimer1);
+            if (splashTimer2) clearTimeout(splashTimer2);
+
+            const st1 = document.getElementById("splash-stage-1");
+            const st2 = document.getElementById("splash-stage-2");
+
+            if (st1) {
+                st1.classList.remove("active");
+                st1.classList.add("fade-out");
+            }
+
+            setTimeout(() => {
+                if (st1) st1.style.display = "none";
+                if (st2 && !introSkipped) {
+                    st2.style.display = "flex";
+                    // Trigger reflow
+                    st2.offsetHeight;
+                    st2.classList.add("active");
+                }
+            }, 400);
+        }
+
+        function onSplashOverlayClick(e) {
+            if (introSkipped) return;
+            if (currentSplashStage === 1) {
+                // If user clicks while Studio intro is playing, immediately advance to Title Stage
+                transitionToTitleStage();
+            } else {
+                // If in Title stage, dismiss to game
+                skipIntroDirectly(e);
+            }
+        }
+
         function skipIntroDirectly(e) {
             if (e) {
                 e.stopPropagation();
@@ -3728,6 +3885,8 @@
             }
             if (introSkipped) return;
             introSkipped = true;
+            if (splashTimer1) clearTimeout(splashTimer1);
+            if (splashTimer2) clearTimeout(splashTimer2);
 
             const overlay = document.getElementById("intro-overlay");
             if (overlay) {
@@ -3750,7 +3909,21 @@
         }
 
         function handleIntroVideo() {
-            // Intro overlay is ready on load with CSS animations; transitions on tap/click
+            const st1 = document.getElementById("splash-stage-1");
+            if (st1) {
+                setTimeout(() => {
+                    if (!introSkipped && currentSplashStage === 1) {
+                        st1.classList.add("active");
+                    }
+                }, 80);
+            }
+
+            // Auto-advance from Studio Intro (1.8s) to Title Stage
+            splashTimer1 = setTimeout(() => {
+                if (!introSkipped && currentSplashStage === 1) {
+                    transitionToTitleStage();
+                }
+            }, 1800);
         }
 
         // Initialize state
