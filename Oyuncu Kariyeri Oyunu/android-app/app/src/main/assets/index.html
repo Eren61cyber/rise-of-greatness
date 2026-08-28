@@ -2791,12 +2791,11 @@
                         file = "kurtaris.mp3";
                     } else if (type === "penalti") {
                         file = "penalti.mp3";
-                    } else if (type === "frikik") {
-                        file = "frikik.mp3";
                     } else if (type === "son_duduk") {
                         file = "son_duduk.mp3";
                     } else {
-                        file = `${type}.mp3`;
+                        if (callback) callback();
+                        return null;
                     }
 
                     let soundUrl = `sounds/spiker/${file}`;
