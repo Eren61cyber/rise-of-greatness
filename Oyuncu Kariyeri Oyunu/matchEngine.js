@@ -385,6 +385,11 @@ const MatchEngine = {
     },
 
     triggerChoice: function(minute) {
+        if (this.isSentOff || this.isSubbedOff || this.isDropped) {
+            this.isPausedForChoice = false;
+            this.activeChoice = null;
+            return;
+        }
         this.isPausedForChoice = true;
         
         let choiceData = null;
@@ -1921,6 +1926,7 @@ const MatchEngine = {
     },
 
     triggerCardDispute: function() {
+        if (this.isSentOff || this.isSubbedOff || this.isDropped) return;
         if (this.hasYellowCard) {
             // Zaten sarı kartı var -> 2. Sarıdan Kırmızı!
             this.isSentOff = true;
@@ -2019,6 +2025,7 @@ const MatchEngine = {
     },
 
     triggerSetPiece: function() {
+        if (this.isSentOff || this.isSubbedOff || this.isDropped) return;
         this.isPausedForChoice = true;
         
         let choiceData = null;
@@ -2316,6 +2323,26 @@ const MatchEngine = {
                 } else if (Math.random() < 0.15) {
                     const pName = (self.playerState && self.playerState.playerName) || (window.GAME && GAME.state && GAME.state.playerName) || "Oyuncumuz";
                     self.callbacks.onMinuteUpdate(self.min, self.score, `10 kişi mücadele ediyoruz, ${pName} kırmızı kartla tribünde olduğu için hücumda eksiğiz.`);
+                } else {
+                    self.callbacks.onMinuteUpdate(self.min, self.score, null);
+                }
+                self.timer = setTimeout(tick, 1000 / self.currentSpeed);
+                return;
+            }
+
+            // If player is subbed off, run bench simulation (no interactive prompts, pure sideline view)
+            if (self.isSubbedOff) {
+                let ratingPlayer = (self.teamPlayer.att + self.teamPlayer.mid + self.teamPlayer.def) / 3;
+                let ratingOpponent = (self.teamOpponent.att + self.teamOpponent.mid + self.teamOpponent.def) / 3;
+                let probOpp = ratingOpponent / (ratingPlayer + ratingOpponent);
+                if (Math.random() < probOpp * 0.015) {
+                    self.score.opponent++;
+                    self.callbacks.onMinuteUpdate(self.min, self.score, `MAALESEF GOL! ${self.teamOpponent.name} topu ağlarımıza gönderdi.`);
+                } else if (Math.random() < (1 - probOpp) * 0.012) {
+                    self.score.player++;
+                    self.callbacks.onMinuteUpdate(self.min, self.score, `GOOOOL!!! Takım arkadaşların harika paslaşmalarla golü buluyor!`);
+                } else if (Math.random() < 0.10) {
+                    self.callbacks.onMinuteUpdate(self.min, self.score, `Yedek kulübesinde maçı heyecanla takip ediyorsun.`);
                 } else {
                     self.callbacks.onMinuteUpdate(self.min, self.score, null);
                 }
