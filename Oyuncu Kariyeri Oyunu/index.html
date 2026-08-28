@@ -2794,12 +2794,23 @@
                 this.startMenuMusic(); // Resume menu music
             },
 
+            currentSpikerAudio: null,
+
             playSpiker: function(type, callback) {
                 if (!this.enabled) {
                     if (callback) callback();
                     return null;
                 }
                 try {
+                    // Stop any previous spiker audio to prevent overlap
+                    if (this.currentSpikerAudio) {
+                        try {
+                            this.currentSpikerAudio.pause();
+                            this.currentSpikerAudio.currentTime = 0;
+                        } catch(e) {}
+                        this.currentSpikerAudio = null;
+                    }
+
                     let file = "";
                     if (type === "gol") {
                         file = "gol_1.mp3";
@@ -2807,8 +2818,6 @@
                         file = "asist.mp3";
                     } else if (type === "stoper") {
                         file = "stoper.mp3";
-                    } else if (type === "direk") {
-                        file = "direk.mp3";
                     } else if (type === "kurtaris") {
                         file = "kurtaris.mp3";
                     } else if (type === "penalti") {
@@ -2822,12 +2831,16 @@
 
                     let soundUrl = `sounds/spiker/${file}`;
                     let audio = new Audio(soundUrl);
+                    this.currentSpikerAudio = audio;
                     audio.volume = 0.95;
                     let hasFinished = false;
 
                     const onDone = () => {
                         if (!hasFinished) {
                             hasFinished = true;
+                            if (this.currentSpikerAudio === audio) {
+                                this.currentSpikerAudio = null;
+                            }
                             if (callback) callback();
                         }
                     };
@@ -2843,8 +2856,8 @@
                         onDone();
                     });
 
-                    // Safety fallback after 6s
-                    setTimeout(onDone, 6000);
+                    // Safety fallback after 5s
+                    setTimeout(onDone, 5000);
                     return audio;
                 } catch(e) {
                     console.error("Audio error in playSpiker:", e);

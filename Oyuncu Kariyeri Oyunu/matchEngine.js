@@ -2171,20 +2171,37 @@ const MatchEngine = {
 
         let hasScored = this.playerStats.goals > previousGoals;
         let hasAssisted = this.playerStats.assists > previousAssists;
-        let isStoperTackle = resultComment.includes("KAYARAK MÜDAHALE") || resultComment.includes("TOP KAPMA") || resultComment.includes("KAYA GİBİ SAĞLAM") || resultComment.includes("HAVALARIN EFENDİSİ") || resultComment.includes("KRİTİK MÜDAHALE");
-        let isPostHit = resultComment.includes("DİREK") || resultComment.includes("direkten") || resultComment.includes("direğe") || resultComment.includes("Direk");
-        let isKeeperSave = resultComment.includes("kalecimiz") || resultComment.includes("Kaleci") || resultComment.includes("çeldi") || resultComment.includes("çıkardı");
+        const playerPos = (this.playerState && this.playerState.position) || (window.GAME && GAME.state && GAME.state.position) || "Forvet";
+        
+        let isStoperTackle = (playerPos === "Defans") && success && (
+            resultComment.includes("KAYARAK MÜDAHALE") || 
+            resultComment.includes("TOP KAPMA") || 
+            resultComment.includes("KAYA GİBİ SAĞLAM") || 
+            resultComment.includes("HAVALARIN EFENDİSİ") || 
+            resultComment.includes("KRİTİK MÜDAHALE") ||
+            resultComment.includes("HARİKA KADEME") ||
+            resultComment.includes("HAVA HAKİMİYETİ") ||
+            resultComment.includes("ÇİZGİDEN ÇIKARDIN")
+        );
+        
+        let isKeeperSave = !success && !hasScored && !hasAssisted && (
+            resultComment.includes("kalecide kaldı") || 
+            resultComment.includes("uzanarak topu çeldi") || 
+            resultComment.includes("topu çelmeyi başardı") || 
+            resultComment.includes("kaleci şutu çeldi") || 
+            resultComment.includes("kalecimiz son anda") || 
+            resultComment.includes("kaleci kurtardı") ||
+            resultComment.includes("kaleci topa kapandı")
+        );
 
-        // Trigger corresponding spiker sound
+        // Trigger corresponding spiker sound strictly and cleanly
         if (typeof SoundManager !== "undefined" && typeof SoundManager.playSpiker === "function") {
             if (hasScored) {
-                // Goal celebration handles its own audio
+                // Goal celebration handles goal spiker
             } else if (hasAssisted) {
                 SoundManager.playSpiker("asist");
             } else if (isStoperTackle) {
                 SoundManager.playSpiker("stoper");
-            } else if (isPostHit) {
-                SoundManager.playSpiker("direk");
             } else if (isKeeperSave) {
                 SoundManager.playSpiker("kurtaris");
             }
