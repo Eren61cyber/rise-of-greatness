@@ -1389,65 +1389,104 @@
                      SAHNE 3: ⚡ MEVKİ & OYUN TARZI SEÇİMİ
                 ══════════════════════════════════════════ -->
                 <div id="intro-step-position" class="intro-scene-step" style="display: none;">
-                    <div style="width: 60px; height: 60px; margin: 0 auto 12px auto; background: rgba(239, 68, 68, 0.12); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; border: 1.5px solid rgba(239, 68, 68, 0.35);">
+                    <div style="width: 60px; height: 60px; margin: 0 auto 12px auto; background: radial-gradient(circle, rgba(0,229,183,0.2) 0%, transparent 70%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; border: 1.5px solid rgba(0,229,183,0.35); box-shadow: 0 0 20px rgba(0,229,183,0.15);">
                         ⚡
                     </div>
-                    <h3 class="event-tag" style="background: linear-gradient(135deg, #f43f5e 0%, #fb7185 100%); color: #fff; font-weight: 900; padding: 4px 14px; border-radius: 20px; font-size: 11px; width: fit-content; margin: 0 auto 10px auto; text-transform: uppercase; letter-spacing: 1px;">⭐ 3. SAHNE: MEVKİ SEÇİMİ</h3>
-                    <h2 style="color: white; margin-bottom: 6px; font-size: 21px; font-weight: 800;">Sahadaki Rolün</h2>
-                    <p style="font-size: 12px; color: #94a3b8; margin-bottom: 16px;">Hangi mevkide bir dünya efsanesine dönüşeceksin?</p>
+                    
+                    <h2 style="color: #ffffff; margin: 0 0 6px 0; font-family: 'Rajdhani', sans-serif; font-size: 24px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase;">Sahadaki Rolün</h2>
+                    <p style="font-size: 12.5px; color: #94a3b8; margin-bottom: 18px; line-height: 1.4;">Hangi mevkide bir dünya efsanesine dönüşeceksin?</p>
 
-                    <!-- 3 Rich Position Cards -->
-                    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px;" id="intro-position-stack">
+                    <!-- Tactical Position Cards Stack -->
+                    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px;" id="intro-position-stack">
                         
-                        <!-- FORVET -->
-                        <div class="intro-pos-banner active" data-pos="Forvet" onclick="selectIntroPosition('Forvet')" style="cursor: pointer; padding: 12px 14px; border-radius: 14px; border: 2px solid var(--primary); background: rgba(16, 185, 129, 0.12); text-align: left; transition: all 0.2s ease; display: flex; align-items: center; justify-content: space-between;">
-                            <div style="display: flex; align-items: center; gap: 12px;">
-                                <div style="font-size: 26px; width: 42px; height: 42px; background: rgba(16, 185, 129, 0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center;">⚽</div>
+                        <!-- FORVET (FW) -->
+                        <div class="intro-pos-banner active" data-pos="Forvet" onclick="selectIntroPosition('Forvet')" style="cursor: pointer; padding: 14px 16px; border-radius: 16px; border: 1px solid #10b981; background: rgba(16, 185, 129, 0.08); box-shadow: 0 4px 20px rgba(16, 185, 129, 0.12); text-align: left; transition: all 0.25s ease; display: flex; align-items: center; justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: 14px;">
+                                <!-- Tactical Badge -->
+                                <div class="pos-badge-code" style="font-family: 'Space Grotesk', monospace; font-size: 13px; font-weight: 900; letter-spacing: 1.5px; width: 46px; height: 46px; border-radius: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); display: flex; align-items: center; justify-content: center; color: #00e5b7; flex-shrink: 0;">
+                                    FW
+                                </div>
                                 <div>
-                                    <div style="font-size: 14px; font-weight: 900; color: #fff;">FORVET (ST/SF)</div>
-                                    <div style="font-size: 11px; color: var(--primary); font-weight: 700;">Bitirici & Gol Makinesi</div>
-                                    <div style="font-size: 10px; color: #94a3b8; margin-top: 2px;">Kaleciyle 1v1, voleler, aşırtmalar, kafa golleri</div>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span style="font-size: 15px; font-weight: 900; color: #ffffff; letter-spacing: 0.3px;">FORVET</span>
+                                        <span style="font-size: 10.5px; font-weight: 700; color: #94a3b8;">· ST / SF</span>
+                                    </div>
+                                    <div style="font-size: 11px; color: #64748b; margin-top: 1px; margin-bottom: 6px;">Bitirici & Gol Makinesi</div>
+                                    <!-- Mini Stat Chips -->
+                                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                        <span style="font-size: 9.5px; font-weight: 800; color: #00e5b7; background: rgba(0,229,183,0.12); border: 1px solid rgba(0,229,183,0.25); padding: 2px 7px; border-radius: 6px;">🎯 +5 Şut & Bitiricilik</span>
+                                        <span style="font-size: 9.5px; font-weight: 800; color: #ffd700; background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.2); padding: 2px 7px; border-radius: 6px;">⚡ +3 Hücum Hızı</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div style="font-size: 11px; font-weight: 900; color: var(--primary); background: rgba(16,185,129,0.15); padding: 4px 8px; border-radius: 8px;">ŞUT & HIZ</div>
+                            <!-- Selection Check Icon -->
+                            <div class="pos-check-indicator" style="width: 24px; height: 24px; border-radius: 50%; background: #10b981; color: #05140d; font-size: 12px; font-weight: 900; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px rgba(16,185,129,0.5); flex-shrink: 0;">
+                                ✓
+                            </div>
                         </div>
 
-                        <!-- ORTA SAHA -->
-                        <div class="intro-pos-banner" data-pos="Orta Saha" onclick="selectIntroPosition('Orta Saha')" style="cursor: pointer; padding: 12px 14px; border-radius: 14px; border: 1.5px solid rgba(255,255,255,0.12); background: #131822; text-align: left; transition: all 0.2s ease; display: flex; align-items: center; justify-content: space-between;">
-                            <div style="display: flex; align-items: center; gap: 12px;">
-                                <div style="font-size: 26px; width: 42px; height: 42px; background: rgba(59, 130, 246, 0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center;">🧠</div>
+                        <!-- ORTA SAHA (MF) -->
+                        <div class="intro-pos-banner" data-pos="Orta Saha" onclick="selectIntroPosition('Orta Saha')" style="cursor: pointer; padding: 14px 16px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); background: rgba(15, 23, 42, 0.5); text-align: left; transition: all 0.25s ease; display: flex; align-items: center; justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: 14px;">
+                                <!-- Tactical Badge -->
+                                <div class="pos-badge-code" style="font-family: 'Space Grotesk', monospace; font-size: 13px; font-weight: 900; letter-spacing: 1.5px; width: 46px; height: 46px; border-radius: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); display: flex; align-items: center; justify-content: center; color: #94a3b8; flex-shrink: 0;">
+                                    MF
+                                </div>
                                 <div>
-                                    <div style="font-size: 14px; font-weight: 900; color: #fff;">ORTA SAHA (MC/AMC)</div>
-                                    <div style="font-size: 11px; color: #60a5fa; font-weight: 700;">Maestro & Oyun Kurucu</div>
-                                    <div style="font-size: 10px; color: #94a3b8; margin-top: 2px;">Milimetrik ara pasları, 25m füzeler, tempo yönetimi</div>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span style="font-size: 15px; font-weight: 900; color: #ffffff; letter-spacing: 0.3px;">ORTA SAHA</span>
+                                        <span style="font-size: 10.5px; font-weight: 700; color: #94a3b8;">· MC / AMC</span>
+                                    </div>
+                                    <div style="font-size: 11px; color: #64748b; margin-top: 1px; margin-bottom: 6px;">Maestro & Oyun Kurucu</div>
+                                    <!-- Mini Stat Chips -->
+                                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                        <span style="font-size: 9.5px; font-weight: 800; color: #00e5b7; background: rgba(0,229,183,0.12); border: 1px solid rgba(0,229,183,0.25); padding: 2px 7px; border-radius: 6px;">🧠 +5 Pas & Vizyon</span>
+                                        <span style="font-size: 9.5px; font-weight: 800; color: #ffd700; background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.2); padding: 2px 7px; border-radius: 6px;">⚙️ +3 Oyun Kurma</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div style="font-size: 11px; font-weight: 900; color: #60a5fa; background: rgba(59,130,246,0.15); padding: 4px 8px; border-radius: 8px;">PAS & VİZYON</div>
+                            <!-- Selection Check Icon -->
+                            <div class="pos-check-indicator" style="width: 24px; height: 24px; border-radius: 50%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: transparent; font-size: 12px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                ✓
+                            </div>
                         </div>
 
-                        <!-- DEFANS -->
-                        <div class="intro-pos-banner" data-pos="Defans" onclick="selectIntroPosition('Defans')" style="cursor: pointer; padding: 12px 14px; border-radius: 14px; border: 1.5px solid rgba(255,255,255,0.12); background: #131822; text-align: left; transition: all 0.2s ease; display: flex; align-items: center; justify-content: space-between;">
-                            <div style="display: flex; align-items: center; gap: 12px;">
-                                <div style="font-size: 26px; width: 42px; height: 42px; background: rgba(245, 158, 11, 0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center;">🛡️</div>
+                        <!-- DEFANS (DF) -->
+                        <div class="intro-pos-banner" data-pos="Defans" onclick="selectIntroPosition('Defans')" style="cursor: pointer; padding: 14px 16px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); background: rgba(15, 23, 42, 0.5); text-align: left; transition: all 0.25s ease; display: flex; align-items: center; justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: 14px;">
+                                <!-- Tactical Badge -->
+                                <div class="pos-badge-code" style="font-family: 'Space Grotesk', monospace; font-size: 13px; font-weight: 900; letter-spacing: 1.5px; width: 46px; height: 46px; border-radius: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); display: flex; align-items: center; justify-content: center; color: #94a3b8; flex-shrink: 0;">
+                                    DF
+                                </div>
                                 <div>
-                                    <div style="font-size: 14px; font-weight: 900; color: #fff;">DEFANS (CB/RB/LB)</div>
-                                    <div style="font-size: 11px; color: #fbbf24; font-weight: 700;">Geçilmez Duvar & Kaya Stoper</div>
-                                    <div style="font-size: 10px; color: #94a3b8; margin-top: 2px;">Son adam kayarak müdahale, hava topu, çizgiden çıkarma</div>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span style="font-size: 15px; font-weight: 900; color: #ffffff; letter-spacing: 0.3px;">DEFANS</span>
+                                        <span style="font-size: 10.5px; font-weight: 700; color: #94a3b8;">· CB / RB / LB</span>
+                                    </div>
+                                    <div style="font-size: 11px; color: #64748b; margin-top: 1px; margin-bottom: 6px;">Geçilmez Duvar & Kaya Stoper</div>
+                                    <!-- Mini Stat Chips -->
+                                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                        <span style="font-size: 9.5px; font-weight: 800; color: #00e5b7; background: rgba(0,229,183,0.12); border: 1px solid rgba(0,229,183,0.25); padding: 2px 7px; border-radius: 6px;">🛡️ +5 Savunma & Müdahale</span>
+                                        <span style="font-size: 9.5px; font-weight: 800; color: #ffd700; background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.2); padding: 2px 7px; border-radius: 6px;">💪 +3 Fiziksel Güç</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div style="font-size: 11px; font-weight: 900; color: #fbbf24; background: rgba(245,158,11,0.15); padding: 4px 8px; border-radius: 8px;">SAVUNMA & FİZİK</div>
+                            <!-- Selection Check Icon -->
+                            <div class="pos-check-indicator" style="width: 24px; height: 24px; border-radius: 50%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: transparent; font-size: 12px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                ✓
+                            </div>
                         </div>
 
                     </div>
 
-                    <!-- Dynamic Role Info Tag -->
-                    <div id="intro-pos-desc-box" style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 10px; padding: 10px; font-size: 11.5px; color: #cbd5e1; margin-bottom: 18px;">
-                        ⚽ <strong>Forvet Seçildi:</strong> Antrenmanlarda Şut ve Bitiricilik odaklı çalışacaksın, maçlardaki fırsat kartlarında ceza sahası pozisyonları sana gelecek!
-                    </div>
-
-                    <div style="display: flex; gap: 10px;">
-                        <button class="btn btn-secondary" onclick="goToIntroStep('identity')" style="flex: 1; padding: 13px; font-weight: 800; font-size: 13px;">⬅️ GERİ</button>
-                        <button class="btn btn-primary" onclick="goToIntroStep('custom')" style="flex: 2; padding: 13px; font-weight: 900; font-size: 13px;">YÜZ SEÇİMİNE GEÇ ➡️</button>
+                    <!-- Balanced Navigation Buttons -->
+                    <div style="display: flex; gap: 12px; align-items: center;">
+                        <button class="btn btn-secondary" onclick="goToIntroStep('identity')" style="flex: 1; padding: 14px 16px; font-weight: 700; font-size: 13px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #cbd5e1; border-radius: 12px; cursor: pointer; transition: all 0.2s ease;">
+                            ← Geri
+                        </button>
+                        <button class="btn btn-primary" onclick="goToIntroStep('custom')" style="flex: 2; padding: 14px 20px; font-weight: 900; font-size: 13.5px; font-family: 'Space Grotesk', 'Rajdhani', sans-serif; text-transform: uppercase; background: linear-gradient(135deg, #00e5b7 0%, #059669 100%); color: #05140d; border: 1px solid rgba(255,255,255,0.25); border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 229, 183, 0.35); cursor: pointer; letter-spacing: 0.5px; transition: all 0.2s ease;">
+                            Yüz Seçimine Geç →
+                        </button>
                     </div>
                 </div>
 
@@ -3003,33 +3042,42 @@
             selectedIntroPosition = pos;
             const cards = document.querySelectorAll(".intro-pos-banner");
             cards.forEach(card => {
-                if (card.getAttribute("data-pos") === pos) {
+                const cardPos = card.getAttribute("data-pos");
+                const badge = card.querySelector(".pos-badge-code");
+                const check = card.querySelector(".pos-check-indicator");
+                
+                if (cardPos === pos) {
                     card.classList.add("active");
-                    card.style.borderColor = pos === "Forvet" ? "var(--primary)" : (pos === "Orta Saha" ? "#3b82f6" : "#f59e0b");
-                    card.style.background = pos === "Forvet" ? "rgba(16, 185, 129, 0.12)" : (pos === "Orta Saha" ? "rgba(59, 130, 246, 0.12)" : "rgba(245, 158, 11, 0.12)");
+                    card.style.borderColor = "#10b981";
+                    card.style.background = "rgba(16, 185, 129, 0.08)";
+                    card.style.boxShadow = "0 4px 20px rgba(16, 185, 129, 0.12)";
+                    if (badge) {
+                        badge.style.color = "#00e5b7";
+                        badge.style.borderColor = "rgba(0, 229, 183, 0.35)";
+                    }
+                    if (check) {
+                        check.style.background = "#10b981";
+                        check.style.borderColor = "#10b981";
+                        check.style.color = "#05140d";
+                        check.style.boxShadow = "0 0 10px rgba(16, 185, 129, 0.5)";
+                    }
                 } else {
                     card.classList.remove("active");
-                    card.style.borderColor = "rgba(255,255,255,0.12)";
-                    card.style.background = "#131822";
+                    card.style.borderColor = "rgba(255,255,255,0.08)";
+                    card.style.background = "rgba(15, 23, 42, 0.5)";
+                    card.style.boxShadow = "none";
+                    if (badge) {
+                        badge.style.color = "#94a3b8";
+                        badge.style.borderColor = "rgba(255, 255, 255, 0.12)";
+                    }
+                    if (check) {
+                        check.style.background = "rgba(255,255,255,0.08)";
+                        check.style.borderColor = "rgba(255,255,255,0.15)";
+                        check.style.color = "transparent";
+                        check.style.boxShadow = "none";
+                    }
                 }
             });
-
-            const descBox = document.getElementById("intro-pos-desc-box");
-            if (descBox) {
-                if (pos === "Forvet") {
-                    descBox.style.background = "rgba(16, 185, 129, 0.08)";
-                    descBox.style.borderColor = "rgba(16, 185, 129, 0.2)";
-                    descBox.innerHTML = `⚽ <strong>Forvet Seçildi:</strong> Antrenmanlarda Şut ve Bitiricilik odaklı çalışacaksın, maçlardaki fırsat kartlarında ceza sahası pozisyonları sana gelecek!`;
-                } else if (pos === "Orta Saha") {
-                    descBox.style.background = "rgba(59, 130, 246, 0.08)";
-                    descBox.style.borderColor = "rgba(59, 130, 246, 0.2)";
-                    descBox.innerHTML = `🧠 <strong>Orta Saha Seçildi:</strong> Pas ve Vizyon odaklı çalışacaksın, maçlarda hücum organizasyonu ve uzaktan füzelerle oyunu yöneteceksin!`;
-                } else if (pos === "Defans") {
-                    descBox.style.background = "rgba(245, 158, 11, 0.08)";
-                    descBox.style.borderColor = "rgba(245, 158, 11, 0.2)";
-                    descBox.innerHTML = `🛡️ <strong>Defans Seçildi:</strong> Savunma ve Fizik odaklı çalışacaksın, maçlarda rakip forvetleri durdurma ve hava toplarını temizleme fırsatları gelecek!`;
-                }
-            }
         };
 
         let currentBackstoryText = "";
