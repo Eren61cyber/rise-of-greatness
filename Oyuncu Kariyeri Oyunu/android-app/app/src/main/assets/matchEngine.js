@@ -130,6 +130,10 @@ const MatchEngine = {
                 GAME.matchSimulatedThisWeek = true;
                 GAME.simulateLeagueWeek(self.score.player, self.score.opponent);
 
+                if (typeof SoundManager !== "undefined" && typeof SoundManager.playSpiker === "function") {
+                    SoundManager.playSpiker("son_duduk");
+                }
+
                 // Calculate position-specific match performance rating
                 const playerPos = (self.playerState && self.playerState.position) || (window.GAME && GAME.state && GAME.state.position) || "Forvet";
                 let rating = 6.0;
@@ -242,6 +246,14 @@ const MatchEngine = {
                 self.momentumBoost = 0;
                 self.momentumDuration = 0;
                 callbacks.onMinuteUpdate(self.min, self.score, `MAALESEF GOL! ${self.teamOpponent.name} topu ağlarımıza gönderdi.`);
+                if (callbacks.onEventPause) {
+                    self.isPausedForChoice = true;
+                    callbacks.onEventPause(`❌ ${self.min}' RAKİP GOL ATTI!`, `${self.teamOpponent.name} golü buldu. Maça devam etmek için dokunun.`, () => {
+                        self.isPausedForChoice = false;
+                        self.resumeTick();
+                    });
+                    return;
+                }
             }
             // Teammate goal chance (not scored by user)
             else if (Math.random() < (1 - probOpp) * 0.012) {
@@ -250,7 +262,18 @@ const MatchEngine = {
                     self.momentumBoost = 15;
                     self.momentumDuration = 12;
                 }
+                if (typeof SoundManager !== "undefined" && typeof SoundManager.playSpiker === "function") {
+                    SoundManager.playSpiker("gol");
+                }
                 callbacks.onMinuteUpdate(self.min, self.score, `GOOOOL!!! Takım arkadaşların harika paslaşmalarla golü buluyor!`);
+                if (callbacks.onEventPause) {
+                    self.isPausedForChoice = true;
+                    callbacks.onEventPause(`⚽ ${self.min}' GOOOOL!`, `Takımın golü buldu! Maça devam etmek için dokunun.`, () => {
+                        self.isPausedForChoice = false;
+                        self.resumeTick();
+                    });
+                    return;
+                }
             }
             // Generic commentary
             else if (Math.random() < 0.15) {
@@ -1993,6 +2016,9 @@ const MatchEngine = {
         const isPenalty = Math.random() < 0.40;
 
         if (isPenalty) {
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playSpiker === "function") {
+                SoundManager.playSpiker("penalti");
+            }
             choiceData = {
                 title: "🎯 PENALTI KAZANDINIZ!",
                 description: "Hakem beyaz noktayı gösterdi! Topun başına geçtin. Hangi köşeyi ve vuruş tarzını hedefleyeceksin?",
@@ -2131,6 +2157,7 @@ const MatchEngine = {
         let success = rand < opt.successChance;
         
         let previousGoals = this.playerStats.goals;
+        let previousAssists = this.playerStats.assists;
 
         let resultComment = "";
         if (success) {
@@ -2143,17 +2170,43 @@ const MatchEngine = {
         this.callbacks.onMinuteUpdate(this.min, this.score, resultComment);
 
         let hasScored = this.playerStats.goals > previousGoals;
+        let hasAssisted = this.playerStats.assists > previousAssists;
+        let isStoperTackle = resultComment.includes("KAYARAK MÜDAHALE") || resultComment.includes("TOP KAPMA") || resultComment.includes("KAYA GİBİ SAĞLAM") || resultComment.includes("HAVALARIN EFENDİSİ") || resultComment.includes("KRİTİK MÜDAHALE");
+        let isPostHit = resultComment.includes("DİREK") || resultComment.includes("direkten") || resultComment.includes("direğe") || resultComment.includes("Direk");
+        let isKeeperSave = resultComment.includes("kalecimiz") || resultComment.includes("Kaleci") || resultComment.includes("çeldi") || resultComment.includes("çıkardı");
+
+        // Trigger corresponding spiker sound
+        if (typeof SoundManager !== "undefined" && typeof SoundManager.playSpiker === "function") {
+            if (hasScored) {
+                // Goal celebration handles its own audio
+            } else if (hasAssisted) {
+                SoundManager.playSpiker("asist");
+            } else if (isStoperTackle) {
+                SoundManager.playSpiker("stoper");
+            } else if (isPostHit) {
+                SoundManager.playSpiker("direk");
+            } else if (isKeeperSave) {
+                SoundManager.playSpiker("kurtaris");
+            }
+        }
 
         if (hasScored && this.callbacks.onGoalScoredCelebration) {
             this.isPausedForChoice = true;
             this.activeChoice = null;
             this.callbacks.onGoalScoredCelebration(this.min, (celebrationText, celebrationCommentary) => {
                 this.callbacks.onMinuteUpdate(this.min, this.score, celebrationCommentary);
-                this.isPausedForChoice = false;
-                const self = this;
-                this.timer = setTimeout(function() {
-                    self.resumeTick();
-                }, 3000 / this.currentSpeed);
+                if (this.callbacks.onEventPause) {
+                    this.callbacks.onEventPause(`⚽ ${this.min}' GOOOL SEVİNCİ!`, `Muhteşem bir sevinç! Maça devam etmek için dokunun.`, () => {
+                        this.isPausedForChoice = false;
+                        this.resumeTick();
+                    });
+                } else {
+                    this.isPausedForChoice = false;
+                    const self = this;
+                    this.timer = setTimeout(function() {
+                        self.resumeTick();
+                    }, 3000 / this.currentSpeed);
+                }
             });
         } else {
             this.isPausedForChoice = false;
@@ -2175,6 +2228,10 @@ const MatchEngine = {
                 // Match finished!
                 GAME.matchSimulatedThisWeek = true;
                 GAME.simulateLeagueWeek(self.score.player, self.score.opponent);
+
+                if (typeof SoundManager !== "undefined" && typeof SoundManager.playSpiker === "function") {
+                    SoundManager.playSpiker("son_duduk");
+                }
 
                 let rating = 6.0 + 
                              (self.playerStats.goals * 1.5) + 

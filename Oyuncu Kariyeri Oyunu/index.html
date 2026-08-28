@@ -1029,6 +1029,15 @@
                     <!-- Option buttons will render here -->
                 </div>
             </div>
+
+            <!-- Interactive Match Continue / Goal Pause Banner -->
+            <div id="match-continue-banner" class="glass" style="display: none; padding: 14px 18px; margin-bottom: 10px; border: 2px solid #00e5b7; background: linear-gradient(135deg, rgba(0,229,183,0.18), rgba(4,20,14,0.9)); border-radius: 12px; box-shadow: 0 4px 25px rgba(0, 229, 183, 0.35); align-items: center; justify-content: space-between; gap: 12px; animation: pulse 1.8s infinite;">
+                <div style="text-align: left; flex: 1;">
+                    <div id="match-continue-title" style="color: #00e5b7; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">⚽ GOOOL SEVİNCİ</div>
+                    <div id="match-continue-msg" style="color: #fff; font-size: 13.5px; font-weight: 700; margin-top: 2px;">Maça devam etmek için dokunun</div>
+                </div>
+                <button id="btn-match-continue" class="btn btn-primary" style="padding: 10px 22px; font-weight: 900; font-size: 13px; letter-spacing: 0.5px; background: #00e5b7; color: #04140e; border: none; border-radius: 8px; cursor: pointer; flex-shrink: 0; box-shadow: 0 0 15px rgba(0,229,183,0.5);">DEVAM ET ➔</button>
+            </div>
         </section>
 
         <!-- RANDOM RPG EVENT MODAL -->
@@ -2761,6 +2770,66 @@
                     }
                 } catch(e) {}
                 this.startMenuMusic(); // Resume menu music
+            },
+
+            playSpiker: function(type, callback) {
+                if (!this.enabled) {
+                    if (callback) callback();
+                    return null;
+                }
+                try {
+                    let file = "";
+                    if (type === "gol") {
+                        file = Math.random() < 0.5 ? "gol_1.mp3" : "gol_2.mp3";
+                    } else if (type === "asist") {
+                        file = "asist.mp3";
+                    } else if (type === "stoper") {
+                        file = "stoper.mp3";
+                    } else if (type === "direk") {
+                        file = "direk.mp3";
+                    } else if (type === "kurtaris") {
+                        file = "kurtaris.mp3";
+                    } else if (type === "penalti") {
+                        file = "penalti.mp3";
+                    } else if (type === "frikik") {
+                        file = "frikik.mp3";
+                    } else if (type === "son_duduk") {
+                        file = "son_duduk.mp3";
+                    } else {
+                        file = `${type}.mp3`;
+                    }
+
+                    let soundUrl = `sounds/spiker/${file}`;
+                    let audio = new Audio(soundUrl);
+                    audio.volume = 0.95;
+                    let hasFinished = false;
+
+                    const onDone = () => {
+                        if (!hasFinished) {
+                            hasFinished = true;
+                            if (callback) callback();
+                        }
+                    };
+
+                    audio.addEventListener("ended", onDone);
+                    audio.addEventListener("error", (e) => {
+                        console.warn("Spiker sound not found or failed:", soundUrl, e);
+                        onDone();
+                    });
+
+                    audio.play().catch(e => {
+                        console.warn("Spiker play prevented:", e);
+                        onDone();
+                    });
+
+                    // Safety fallback after 6s
+                    setTimeout(onDone, 6000);
+                    return audio;
+                } catch(e) {
+                    console.error("Audio error in playSpiker:", e);
+                    if (callback) callback();
+                    return null;
+                }
             }
         };
 
@@ -9024,6 +9093,16 @@
                     const container = document.getElementById("celebration-options-container");
                     container.innerHTML = "";
 
+                    // Play Spiker Goal Shouting & Crowd Cheer
+                    if (typeof SoundManager !== "undefined") {
+                        if (typeof SoundManager.playSpiker === "function") {
+                            SoundManager.playSpiker("gol");
+                        }
+                        if (typeof SoundManager.playCrowdCheer === "function") {
+                            SoundManager.playCrowdCheer();
+                        }
+                    }
+
                     const options = [
                         {
                             text: "🏃‍♂️ Diz Üstü Kayarak Sevin",
@@ -9094,6 +9173,24 @@
                     });
 
                     modal.style.display = "flex";
+                },
+                onEventPause: function(title, msg, onContinue) {
+                    const banner = document.getElementById("match-continue-banner");
+                    const titleEl = document.getElementById("match-continue-title");
+                    const msgEl = document.getElementById("match-continue-msg");
+                    const btn = document.getElementById("btn-match-continue");
+                    
+                    if (titleEl) titleEl.innerText = title;
+                    if (msgEl) msgEl.innerText = msg;
+                    if (banner) banner.style.display = "flex";
+
+                    const handleContinue = () => {
+                        if (banner) banner.style.display = "none";
+                        btn.removeEventListener("click", handleContinue);
+                        if (onContinue) onContinue();
+                    };
+
+                    btn.addEventListener("click", handleContinue, { once: true });
                 },
                 onMatchFinish: function(result) {
                     let pGoals = result.playerStats.goals;
