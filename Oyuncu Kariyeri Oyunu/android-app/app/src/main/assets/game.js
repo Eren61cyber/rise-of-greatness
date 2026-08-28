@@ -1380,8 +1380,8 @@ const GAME = {
         if (this.state.suspendedWeeks > 0) this.unlockAchievement("red_card");
         if (this.state.hasBallonDor) this.unlockAchievement("ballon_dor");
 
-        const goodPerformance = (rating >= 7.2 || (goals + assists) > 0);
-        const poorPerformance = (goals === 0 && assists === 0 && rating < 6.5);
+        const goodPerformance = (rating >= 7.0 || (goals + assists) > 0);
+        const poorPerformance = (rating < 6.0);
 
         // Good match tracking (min 7.2 or goal/assist)
         if (goodPerformance) {

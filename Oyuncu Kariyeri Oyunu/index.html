@@ -9237,19 +9237,19 @@
                     lastPlayerScore = score.player;
                     lastOpponentScore = score.opponent;
 
-                    // 60. dakika: Fırsat bulamazsak teknik direktör oyundan çıkarır (Sadece ilk 11 başladıysak ve kırmızı kart yememişsek)
-                    if (min === 60 && !playerSubbedOff && !MatchEngine.isSentOff && !MatchEngine.isBenched && !MatchEngine.isDropped && MatchEngine.playerStats.goals === 0 && MatchEngine.playerStats.assists === 0) {
+                    // 60. dakika: Sadece hiçbir varlık gösteremeyen (müdahalesi, pası, golü/asisti olmayan) ve takım gerideyken çok düşük ihtimalle taktik değişiklik
+                    const totalPlayerImpact = (MatchEngine.playerStats.goals || 0) + (MatchEngine.playerStats.assists || 0) + (MatchEngine.playerStats.tackles || 0) + (MatchEngine.playerStats.passes || 0);
+                    if (min === 60 && !playerSubbedOff && !MatchEngine.isSentOff && !MatchEngine.isBenched && !MatchEngine.isDropped && totalPlayerImpact === 0 && score.opponent > score.player && Math.random() < 0.15) {
                         playerSubbedOff = true;
                         MatchEngine.isSubbedOff = true;
                         MatchEngine.choiceMinutes = []; // Stop generating further chances
                         timelineLog.innerHTML += `
                             <div style="border-left: 2.5px solid var(--accent-yellow); padding-left: 8px; margin: 8px 0; background: rgba(255,193,7,0.08); border-radius:4px; padding: 8px;">
                                 <strong style="color: var(--accent-yellow);">60' 🔄 OYUNCU DEĞİŞİKLİĞİ!</strong><br>
-                                <span style="color: #ccc; font-size: 12px;">Teknik Direktör: <em>"${GAME.state.playerName}, bugün etkin olamadın. Seni çekiyorum. Git ve daha çok antrenman yap!"</em></span>
+                                <span style="color: #ccc; font-size: 12px;">Teknik Direktör: <em>"${GAME.state.playerName}, bugün takım geride ve pozisyon bulamadın. Seni dinlendiriyorum."</em></span>
                             </div>
                         `;
-                        GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 8);
-                        GAME.state.moral = Math.max(10, GAME.state.moral - 10);
+                        GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 2);
                         timelineLog.scrollTop = timelineLog.scrollHeight;
                     }
                     

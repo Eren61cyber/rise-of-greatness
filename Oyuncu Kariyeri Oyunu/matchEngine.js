@@ -137,15 +137,24 @@ const MatchEngine = {
                 // Calculate position-specific match performance rating
                 const playerPos = (self.playerState && self.playerState.position) || (window.GAME && GAME.state && GAME.state.position) || "Forvet";
                 let rating = 6.0;
+                let tacklesCount = self.playerStats.tackles || 0;
+                let goalsCount = self.playerStats.goals || 0;
+                let assistsCount = self.playerStats.assists || 0;
+                let passesCount = self.playerStats.passes || 0;
+                let shotsCount = self.playerStats.shots || 0;
+
                 if (playerPos === "Defans") {
-                    const cleanSheet = self.score.opponent === 0;
-                    const tacklesCount = self.playerStats.tackles || 0;
-                    rating = 6.2 + (cleanSheet ? 1.6 : 0) - (self.score.opponent * 0.35) + (tacklesCount * 0.6) + (self.playerStats.goals * 1.5) + (self.playerStats.assists * 1.0) + (self.playerStats.passes * 0.12);
+                    const cleanSheet = (self.score.opponent === 0);
+                    let baseDef = 6.5;
+                    if (cleanSheet) baseDef += 1.2;
+                    else if (self.score.opponent === 1) baseDef += 0.3;
+                    else if (self.score.opponent >= 3) baseDef -= 0.6;
+                    rating = baseDef + (tacklesCount * 1.1) + (goalsCount * 1.8) + (assistsCount * 1.3) + (passesCount * 0.10);
                 } else if (playerPos === "Orta Saha") {
-                    rating = 6.0 + (self.playerStats.assists * 1.4) + (self.playerStats.goals * 1.2) + (self.playerStats.passes * 0.18) + (self.playerStats.shots * 0.08);
+                    rating = 6.2 + (assistsCount * 1.4) + (goalsCount * 1.3) + (tacklesCount * 0.8) + (passesCount * 0.15) + (shotsCount * 0.08);
                 } else {
                     // Forvet
-                    rating = 6.0 + (self.playerStats.goals * 1.6) + (self.playerStats.assists * 0.9) + (self.playerStats.shots * 0.12) + (self.playerStats.passes * 0.05);
+                    rating = 6.0 + (goalsCount * 1.6) + (assistsCount * 1.0) + (tacklesCount * 0.5) + (shotsCount * 0.15) + (passesCount * 0.05);
                 }
                 if (self.isSentOff) {
                     rating = Math.max(3.0, rating * 0.6);
@@ -2250,13 +2259,33 @@ const MatchEngine = {
                     SoundManager.playSpiker("son_duduk");
                 }
 
-                let rating = 6.0 + 
-                             (self.playerStats.goals * 1.5) + 
-                             (self.playerStats.assists * 1.0) + 
-                             (self.playerStats.passes * 0.05) + 
-                             (self.playerStats.shots * 0.08);
+                const playerPos = (self.playerState && self.playerState.position) || (window.GAME && GAME.state && GAME.state.position) || "Forvet";
+                let rating = 6.0;
+                let tacklesCount = self.playerStats.tackles || 0;
+                let goalsCount = self.playerStats.goals || 0;
+                let assistsCount = self.playerStats.assists || 0;
+                let passesCount = self.playerStats.passes || 0;
+                let shotsCount = self.playerStats.shots || 0;
+
+                if (playerPos === "Defans") {
+                    const cleanSheet = (self.score.opponent === 0);
+                    let baseDef = 6.5;
+                    if (cleanSheet) baseDef += 1.2;
+                    else if (self.score.opponent === 1) baseDef += 0.3;
+                    else if (self.score.opponent >= 3) baseDef -= 0.6;
+                    rating = baseDef + (tacklesCount * 1.1) + (goalsCount * 1.8) + (assistsCount * 1.3) + (passesCount * 0.10);
+                } else if (playerPos === "Orta Saha") {
+                    rating = 6.2 + (assistsCount * 1.4) + (goalsCount * 1.3) + (tacklesCount * 0.8) + (passesCount * 0.15) + (shotsCount * 0.08);
+                } else {
+                    // Forvet
+                    rating = 6.0 + (goalsCount * 1.6) + (assistsCount * 1.0) + (tacklesCount * 0.5) + (shotsCount * 0.15) + (passesCount * 0.05);
+                }
+
                 if (self.isSentOff) {
                     rating = Math.max(3.0, rating * 0.6);
+                }
+                if (self.isDropped) {
+                    rating = 5.0;
                 }
                 rating = Math.max(3.0, Math.min(10.0, parseFloat(rating.toFixed(1))));
 
@@ -2266,6 +2295,7 @@ const MatchEngine = {
                         playerStats: {
                             goals: self.playerStats.goals,
                             assists: self.playerStats.assists,
+                            tackles: self.playerStats.tackles || 0,
                             passes: self.playerStats.passes,
                             shots: self.playerStats.shots,
                             rating: rating,
