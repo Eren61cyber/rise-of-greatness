@@ -3562,8 +3562,8 @@
                         btn.style.borderColor = "#00e5b7";
                         btn.style.background = "rgba(0, 229, 183, 0.12)";
                         
-                        // Futbolda şans değil disiplin ve çalışma var: Kararlı taktik hamle her zaman başarıyla sonuçlanır!
-                        const success = true;
+                        // Taktiksel tercihin başarı şansına göre dinamik sonuç
+                        const success = Math.random() < (opt.successChance || 0.65);
                         
                         // Dynamic Tactical Simulation Physics
                         if (trialStage === 0) {
@@ -4314,7 +4314,7 @@
         let currentTutorialStep = 0;
         const tutorialSteps = [
             {
-                text: "Selam! Ben Ece, bu yolculukta senin kişisel kariyer danışmanın olacağım. Harika bir başlangıç yaptın! Sana oyunun temellerini kısaca anlatayım.",
+                text: "Selam! Ben Eren, bu yolculukta senin kişisel kariyer danışmanın olacağım. Harika bir başlangıç yaptın! Sana oyunun temellerini kısaca anlatayım.",
             },
             {
                 text: "Lobi ekranında maaşını, takipçi sayını ve en önemlisi Kondisyon/Moral/Hoca Güveni barlarını görebilirsin. Antrenman yapmak 20 Kondisyon tüketir. Maç oynamak ise 30 Kondisyon götürür. Sıfırlanırsa sakatlanabilirsin! Yorgun hissettiğinde 'Haftayı Dinlenerek Geçir' butonuna basmalısın.",
@@ -4597,10 +4597,9 @@
         }
 
         function checkForNewspaperAlert() {
-            let week = GAME.state.currentWeek;
-            if (week === 14 || week === 30) {
-                openRiseUpNewsModal();
-                return true;
+            // Ticker is updated passively without intrusive full-screen popups
+            if (typeof updateHomeNewsPreview === "function") {
+                updateHomeNewsPreview();
             }
             return false;
         }
@@ -4675,31 +4674,6 @@
             }
             GAME.saveGame();
             GAME.updateUI();
-            
-            // Trigger a beautiful Daily Entry Reward modal clipping!
-            const agentName = GAME.state.agentId === "izi" ? "İzim" : "Bedirhan Abi";
-            const agentIcon = GAME.state.agentId === "izi" ? "👩🏼‍💼" : "👨🏻‍💼";
-            
-            let rewardMsg = `💰 +${cashReward.toLocaleString()} € Nakit`;
-            if (packReward) {
-                const packName = packReward === "pack_standard" ? "Standart Paket" : packReward === "pack_gold" ? "Altın Paket" : "Premium Paket";
-                rewardMsg += `<br>📦 +${packCount}x ${packName}`;
-            }
-            if (extraItems.length > 0) {
-                rewardMsg += `<br>${extraItems.join("<br>")}`;
-            }
-            
-            setTimeout(() => {
-                showNewspaperModal(
-                    `GÜNLÜK HEDİYE`,
-                    `DESTEK GELDİ!`,
-                    `GÜN ${r.day}/7`,
-                    `Temsilciniz ${agentIcon} <b>${agentName}</b> size bugün için şu destek paketini gönderdi:<br><br><span style="color: var(--accent-yellow); font-size: 15px; font-weight: bold; line-height: 1.6;">${rewardMsg}</span><br><br>Yarın yine bekliyoruz, 7. günde Premium Paket seni bekliyor!`,
-                    () => {
-                        // Empty callback, do not trigger random events immediately
-                    }
-                );
-            }, 1000);
         }
 
         function triggerBallonOrNewspaperCheck() {

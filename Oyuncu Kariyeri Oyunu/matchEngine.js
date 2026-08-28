@@ -145,16 +145,17 @@ const MatchEngine = {
 
                 if (playerPos === "Defans") {
                     const cleanSheet = (self.score.opponent === 0);
-                    let baseDef = 6.5;
-                    if (cleanSheet) baseDef += 1.2;
-                    else if (self.score.opponent === 1) baseDef += 0.3;
-                    else if (self.score.opponent >= 3) baseDef -= 0.6;
-                    rating = baseDef + (tacklesCount * 1.1) + (goalsCount * 1.8) + (assistsCount * 1.3) + (passesCount * 0.10);
+                    let baseDef = 6.2;
+                    if (cleanSheet) baseDef += 0.8;
+                    else if (self.score.opponent === 1) baseDef += 0.0;
+                    else if (self.score.opponent === 2) baseDef -= 0.4;
+                    else if (self.score.opponent >= 3) baseDef -= 0.8;
+                    rating = baseDef + (tacklesCount * 0.70) + (goalsCount * 1.5) + (assistsCount * 1.0) + (passesCount * 0.06);
                 } else if (playerPos === "Orta Saha") {
-                    rating = 6.2 + (assistsCount * 1.4) + (goalsCount * 1.3) + (tacklesCount * 0.8) + (passesCount * 0.15) + (shotsCount * 0.08);
+                    rating = 6.0 + (assistsCount * 1.2) + (goalsCount * 1.2) + (tacklesCount * 0.6) + (passesCount * 0.10) + (shotsCount * 0.08);
                 } else {
                     // Forvet
-                    rating = 6.0 + (goalsCount * 1.6) + (assistsCount * 1.0) + (tacklesCount * 0.5) + (shotsCount * 0.15) + (passesCount * 0.05);
+                    rating = 6.0 + (goalsCount * 1.4) + (assistsCount * 0.9) + (tacklesCount * 0.4) + (shotsCount * 0.10) + (passesCount * 0.05);
                 }
                 if (self.isSentOff) {
                     rating = Math.max(3.0, rating * 0.6);
@@ -780,9 +781,9 @@ const MatchEngine = {
                             successChance: this.calculateStatSuccess(phy, "att"),
                             onSuccess: () => {
                                 if (!this.playerStats.tackles) this.playerStats.tackles = 0;
-                                this.playerStats.tackles += 2;
-                                this.playerState.hocaGuveni = Math.min(100, (this.playerState.hocaGuveni || 40) + 8);
-                                this.playerState.moral = Math.min(100, (this.playerState.moral || 100) + 10);
+                                this.playerStats.tackles++;
+                                this.playerState.hocaGuveni = Math.min(100, (this.playerState.hocaGuveni || 40) + 6);
+                                this.playerState.moral = Math.min(100, (this.playerState.moral || 100) + 8);
                                 return `İMKÂNSIZ KURTARIŞ! Fizik gücünle (%${phy}) çizgi üzerinde adeta uçarak topu kafayla kornere çeldin! TAKIMI İPTEN ALDIN! STADYUM YIKILIYOR!`;
                             },
                             onFail: () => {
@@ -795,7 +796,7 @@ const MatchEngine = {
                             successChance: this.calculateStatSuccess(def, "att"),
                             onSuccess: () => {
                                 if (!this.playerStats.tackles) this.playerStats.tackles = 0;
-                                this.playerStats.tackles += 2;
+                                this.playerStats.tackles++;
                                 this.playerState.hocaGuveni = Math.min(100, (this.playerState.hocaGuveni || 40) + 5);
                                 return `KAHRAMANCA MÜDAHALE! Savunma sezginle (%${def}) son salisede ayağını uzatarak topu çizgiden taca gönderdin!`;
                             },
@@ -866,11 +867,12 @@ const MatchEngine = {
 
             let pool = defScenarios;
             let chosenIndex = 0;
-            if (isLastMinute) {
-                chosenIndex = 8; // 90th min last ditch clearance
+            let available = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].filter(i => !this.usedScenarioIndices.includes(i));
+            if (available.length === 0) available = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+            
+            if (isLastMinute && Math.random() < 0.35 && available.includes(8)) {
+                chosenIndex = 8; // 90th min hero clearance (sometimes)
             } else {
-                let available = [0, 1, 2, 3, 4, 5, 6, 7, 9].filter(i => !this.usedScenarioIndices.includes(i));
-                if (available.length === 0) available = [0, 1, 2, 3, 4, 5, 6, 7];
                 chosenIndex = available[Math.floor(Math.random() * available.length)];
             }
             this.usedScenarioIndices.push(chosenIndex);
@@ -2276,16 +2278,17 @@ const MatchEngine = {
 
                 if (playerPos === "Defans") {
                     const cleanSheet = (self.score.opponent === 0);
-                    let baseDef = 6.5;
-                    if (cleanSheet) baseDef += 1.2;
-                    else if (self.score.opponent === 1) baseDef += 0.3;
-                    else if (self.score.opponent >= 3) baseDef -= 0.6;
-                    rating = baseDef + (tacklesCount * 1.1) + (goalsCount * 1.8) + (assistsCount * 1.3) + (passesCount * 0.10);
+                    let baseDef = 6.2;
+                    if (cleanSheet) baseDef += 0.8;
+                    else if (self.score.opponent === 1) baseDef += 0.0;
+                    else if (self.score.opponent === 2) baseDef -= 0.4;
+                    else if (self.score.opponent >= 3) baseDef -= 0.8;
+                    rating = baseDef + (tacklesCount * 0.70) + (goalsCount * 1.5) + (assistsCount * 1.0) + (passesCount * 0.06);
                 } else if (playerPos === "Orta Saha") {
-                    rating = 6.2 + (assistsCount * 1.4) + (goalsCount * 1.3) + (tacklesCount * 0.8) + (passesCount * 0.15) + (shotsCount * 0.08);
+                    rating = 6.0 + (assistsCount * 1.2) + (goalsCount * 1.2) + (tacklesCount * 0.6) + (passesCount * 0.10) + (shotsCount * 0.08);
                 } else {
                     // Forvet
-                    rating = 6.0 + (goalsCount * 1.6) + (assistsCount * 1.0) + (tacklesCount * 0.5) + (shotsCount * 0.15) + (passesCount * 0.05);
+                    rating = 6.0 + (goalsCount * 1.4) + (assistsCount * 0.9) + (tacklesCount * 0.4) + (shotsCount * 0.10) + (passesCount * 0.05);
                 }
 
                 if (self.isSentOff) {

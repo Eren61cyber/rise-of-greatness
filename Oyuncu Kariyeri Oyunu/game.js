@@ -1276,50 +1276,37 @@ const GAME = {
             this.simulateEsportsMatch();
         }
 
-        // Check for lack of training warning (4 weeks without training)
+        // =========================================================================
+        // 📉 FORM VE YETENEK KÖRELME SİSTEMİ (Skill Decay / Rustiness)
+        // =========================================================================
         isAllMaxed = (this.state.shooting >= 100 && this.state.passing >= 100 && this.state.speed >= 100 && (this.state.dribbling || 50) >= 100 && (this.state.defense || 50) >= 100 && (this.state.physical || 50) >= 100);
-        if (this.state.weeksSinceLastTraining === 4 && this.state.injuryWeeks <= 0 && !isAllMaxed) {
-            if (typeof window.showNewspaperModal !== "undefined") {
-                setTimeout(() => {
-                    window.showNewspaperModal(
-                        "FLAŞ HABER 📰",
-                        `${this.state.playerName.toUpperCase()} KAYIPLARA KARIŞTI!`,
-                        "Antrenman Sahasında Tembellik İddiaları!",
-                        `Son <b>4 haftadır</b> antrenman tesislerinde neredeyse hiç görülmeyen genç yıldız adayı <b>${this.state.playerName}</b> için spor basını kazan kaldırıyor! <br><br>Taraftarlar sosyal medyada oyuncunun disiplinsizliğine isyan ederken, teknik direktörün de bu durumdan son derece rahatsız olduğu ve böyle devam ederse oyuncuyu <b>kadro dışı</b> bırakabileceği konuşuluyor. Acilen antrenman yapıp kendini göstermelisin!`
-                    );
-                }, 1800);
-            }
-        } 
-        // Active penalty for longer neglect (>= 6 weeks without training)
-        else if (this.state.weeksSinceLastTraining >= 6 && this.state.injuryWeeks <= 0 && !isAllMaxed) {
-            this.state.hocaGuveni = Math.max(5, this.state.hocaGuveni - 8);
-            this.state.moral = Math.max(10, this.state.moral - 10);
-            
-            if (typeof window.showNewspaperModal !== "undefined") {
-                setTimeout(() => {
-                    window.showNewspaperModal(
-                        "KRİZ RAPORU 🚨",
-                        `DİSİPLİNSİZLİK FATURASI KESİLDİ!`,
-                        "Hoca Güveni ve Moral Dip Yaptı!",
-                        `Tam <b>${this.state.weeksSinceLastTraining} haftadır</b> antrenman yapmayan <b>${this.state.playerName}</b>, kulüpte adeta krize neden oldu! <br><br>Teknik direktör oyuncuya olan inancını tamamen kaybetti. Kulüpten sızan bilgilere göre oyuncunun antrenman yapmayı reddetmesi sebebiyle hoca güveni ve moral yerle bir oldu (-8 Hoca Güveni, -10 Moral). Kariyerini kurtarmak için hemen antrenman sekmesine gitmelisin!`
-                    );
-                }, 1800);
-            }
-        }
+        if (!isAllMaxed && this.state.injuryWeeks <= 0) {
+            if (this.state.weeksSinceLastTraining === 2) {
+                // 2. Hafta Hafif Uyarı
+                console.log("2 haftadır antrenman yapılmadı.");
+            } else if (this.state.weeksSinceLastTraining >= 3 && (this.state.weeksSinceLastTraining % 2 === 1)) {
+                // 3, 5, 7... haftalarda antrenman yapılmadıysa yetenek körelmesi (-1 rastgele stat)
+                const statKeys = ["shooting", "passing", "speed", "dribbling", "defense", "physical"];
+                const eligibleStats = statKeys.filter(k => (this.state[k] || 50) > 40);
+                if (eligibleStats.length > 0) {
+                    const pickedKey = eligibleStats[Math.floor(Math.random() * eligibleStats.length)];
+                    this.state[pickedKey] = Math.max(40, this.state[pickedKey] - 1);
+                    this.state.hocaGuveni = Math.max(5, this.state.hocaGuveni - 3);
+                    this.state.rating = this.calculateOverallRating();
 
-        // Check for lack of shopping warning (6 weeks without purchases)
-        if (this.state.weeksSinceLastPurchase === 6) {
-            if (typeof window.showNewspaperModal !== "undefined") {
-                const agentName = this.state.agentId === "izi" ? "İzim" : "Bedirhan Abi";
-                const agentIcon = this.state.agentId === "izi" ? "👩🏼‍💼" : "👨🏻‍💼";
-                setTimeout(() => {
-                    window.showNewspaperModal(
-                        "SOSYETİK MAGAZİN 📸",
-                        `CÜZDANININ AĞZINI AÇMIYOR!`,
-                        `${this.state.playerName.toUpperCase()} PARALARI MEZARA MI GÖTÜRECEK?`,
-                        `Milyon euroluk sözleşmelere imza atan, kulübünden ve sponsorlarından sürekli para kazanan yıldız futbolcu <b>${this.state.playerName}</b>'nin son <b>6 haftadır</b> tek bir kuruş bile harcamadığı ortaya çıktı! <br><br>Menajeri ${agentIcon} <b>${agentName}</b> oyuncuyu uyardı: <em>"Nakit biriktirmek güzel ama markanı ve yaşam kaliteni artırmak için mağazadan yeni kramponlar, lüks arabalar, mülkler veya borsa yatırımları almalısın. Biraz hayatın tadını çıkar aslanım!"</em>`
-                    );
-                }, 2800);
+                    const statNames = {
+                        shooting: "Şut",
+                        passing: "Pas",
+                        speed: "Hız",
+                        dribbling: "Dribbling",
+                        defense: "Defans",
+                        physical: "Fizik"
+                    };
+
+                    setTimeout(() => {
+                        alert(`⚠️ FORM KAYBI & KÖRELME!\n\n${this.state.weeksSinceLastTraining} haftadır antrenman yapmadığın için maç ritmini kaybettin ve yeteneklerin paslandı!\n\n📉 ${statNames[pickedKey]} yeteneğin -1 düştü (Yeni Değer: ${this.state[pickedKey]}).\nTeknik direktörün sana olan güveni azaldı (-3 Hoca Güveni).\n\nFormunu korumak için düzenli antrenman yapmalısın! 💪⚽`);
+                    }, 800);
+                }
             }
         }
 
