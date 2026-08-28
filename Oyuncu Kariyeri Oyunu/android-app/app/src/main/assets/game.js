@@ -123,6 +123,9 @@ const GAME = {
             currentLeague: sLeague,
             currentClub: startingClub.name,
             currentWeek: 1,
+            transferredThisWindow: false,
+            lastTransferredWeek: 0,
+            lastTransferredSeason: 17,
             seasonGoals: 0,
             seasonAssists: 0,
             careerGoals: 0,
@@ -603,6 +606,12 @@ const GAME = {
                     this.state.lastLoginTimestamp = 0;
                     this.saveGame();
                 }
+                if (typeof this.state.transferredThisWindow === "undefined") {
+                    this.state.transferredThisWindow = false;
+                    this.state.lastTransferredWeek = 0;
+                    this.state.lastTransferredSeason = this.state.age || 17;
+                    this.saveGame();
+                }
 
                 this.checkDailyLoginReward();
                 this.matchSimulatedThisWeek = false;
@@ -907,9 +916,10 @@ const GAME = {
     advanceWeek: function() {
         this.state.currentWeek++;
 
-        // Transfer penceresi kapandıysa aktif teklifleri sıfırla
+        // Transfer penceresi kapandıysa aktif teklifleri ve transfer kilidini sıfırla
         if (!this.isTransferWindowActive()) {
             this.state.activeTransferOffers = [];
+            this.state.transferredThisWindow = false;
         }
 
         // Haftalık antrenman ve toparlanma sayacını sıfırla
@@ -1389,6 +1399,12 @@ const GAME = {
 
     checkForTransferOffers: function() {
         if (!this.isTransferWindowActive()) {
+            this.state.activeTransferOffers = [];
+            return [];
+        }
+
+        // Bu transfer penceresinde zaten başka bir takıma imza atıldıysa yeni teklif üretilmez (Tek transfer hakkı)
+        if (this.state.transferredThisWindow) {
             this.state.activeTransferOffers = [];
             return [];
         }
@@ -2395,12 +2411,14 @@ const GAME = {
             emotionalMatch: this.state.mostEmotionalMatch || "Bu sezon olağanüstü bir dram yaşanmadı."
         };
 
-        // Reset season stats
+        // Reset season stats & transfer state
         this.state.seasonGoals = 0;
         this.state.seasonAssists = 0;
         this.state.seasonApps = 0;
         this.state.mostEmotionalMatch = null;
         this.state.currentWeek = 1;
+        this.state.transferredThisWindow = false;
+        this.state.activeTransferOffers = [];
         
         // Reset league table & scorers for the current league
         this.initLeagueTable();

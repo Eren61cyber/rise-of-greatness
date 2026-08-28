@@ -6959,6 +6959,7 @@
         // Render Transfer Offers
         function renderTransferOffers() {
             const container = document.getElementById("offers-container");
+            if (!container) return;
             container.innerHTML = "";
 
             if (!GAME.isTransferWindowActive()) {
@@ -6970,7 +6971,29 @@
                         <div style="width: 100%; max-width: 300px; margin-top: 10px; font-size: 11.5px; border: 1px solid var(--border-glass); padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.02); text-align: left; line-height: 1.6; color: #ddd;">
                             <strong style="color: var(--primary);">⏳ Transfer Dönemleri Takvimi:</strong><br>
                             • <strong>Ara Transfer Dönemi:</strong> 14 - 21. Haftalar<br>
-                            • <strong>Yaz Transfer Dönemi:</strong> 34. Hafta & Yeni Sezon 1 - 2. Haftalar
+                            • <strong>Yaz Transfer Dönemi:</strong> 37. Hafta (Sezon Sonu)
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            if (GAME.state.transferredThisWindow) {
+                const nextWindowText = GAME.state.currentWeek <= 21 ? "37. Hafta (Sezon Sonu Yaz Dönemi)" : "Gelecek Sezon 14. Hafta";
+                container.innerHTML = `
+                    <div class="empty-state glass" style="padding: 28px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; min-height: 260px; border: 1.5px solid rgba(16, 185, 129, 0.35); background: linear-gradient(180deg, rgba(16, 185, 129, 0.06) 0%, rgba(13, 19, 31, 0.9) 100%);">
+                        <div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(16, 185, 129, 0.15); border: 1.5px solid #10b981; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 0 20px rgba(16, 185, 129, 0.25);">✍️</div>
+                        <div>
+                            <h3 style="color: #10b981; margin: 0; font-size: 16.5px; font-weight: 800; letter-spacing: 0.5px; font-family: var(--font-heading);">YENİ SÖZLEŞME İMZALANDI</h3>
+                            <p style="font-size: 12.5px; color: #e2e8f0; max-width: 350px; line-height: 1.55; margin: 6px auto 0 auto;">
+                                Bu transfer döneminde <strong>${GAME.state.currentClub}</strong> kulübüne imza attınız. FIFA kuralları ve sözleşmeniz gereği aynı transfer döneminde birden fazla transfer yapamazsınız.
+                            </p>
+                        </div>
+                        <div style="width: 100%; max-width: 320px; font-size: 11.5px; border: 1px solid var(--border-glass); padding: 12px 14px; border-radius: 10px; background: rgba(0,0,0,0.5); text-align: left; line-height: 1.6; color: #94a3b8;">
+                            <div style="color: #f8fafc; font-weight: 700; margin-bottom: 4px; font-size: 12px;">📋 Aktif Sözleşme Durumu:</div>
+                            • <strong>Kulüp:</strong> <span style="color: #fff; font-weight: 600;">${GAME.state.currentClub}</span> (${GAME.state.currentLeague})<br>
+                            • <strong>Haftalık Maaş:</strong> <span style="color: var(--primary); font-weight: 700;">${(GAME.state.weeklySalary || 350).toLocaleString()} €</span><br>
+                            • <strong>Sonraki Transfer Dönemi:</strong> <span style="color: var(--accent-yellow); font-weight: 600;">${nextWindowText}</span>
                         </div>
                     </div>
                 `;
@@ -6978,7 +7001,7 @@
             }
 
             let offers = GAME.checkForTransferOffers();
-            if (offers.length === 0) {
+            if (!offers || offers.length === 0) {
                 container.innerHTML = `<div class="empty-state glass">Şu an sizi transfer etmek isteyen kulüp bulunmuyor. Derecenizi yükseltin!</div>`;
                 return;
             }
@@ -7354,13 +7377,37 @@
             GAME.state.currentClub = teamName;
             GAME.state.currentLeague = leagueName;
             GAME.state.weeklySalary = salary;
+            GAME.state.transferredThisWindow = true;
+            GAME.state.lastTransferredWeek = GAME.state.currentWeek;
+            GAME.state.lastTransferredSeason = GAME.state.age || 17;
+            GAME.state.activeTransferOffers = [];
+
+            // New club adaptation: fresh chemistry & coach trust baseline
+            GAME.state.takimUyumu = Math.min(60, Math.max(35, (GAME.state.takimUyumu || 50) - 15));
+            GAME.state.hocaGuveni = Math.min(60, Math.max(40, (GAME.state.hocaGuveni || 40)));
+
             if (typeof GAME.updateTeammateName === "function") {
                 GAME.updateTeammateName();
             }
             GAME.initLeagueTable();
+
+            // Breaking News & Social Media Post
+            const postText = `🚨 RESMİ: ${GAME.state.playerName}, ${teamName} kulübüne transfer oldu! Genç yıldız haftalık ${salary.toLocaleString()} € kazanacak ve yeni takımının başarısı için ter dökecek. 📝⚽`;
+            GAME.addSocialPost("@transfer_merkezi", "Transfer Nöbeti", postText);
+
             GAME.saveGame();
             GAME.updateUI();
-            alert(`${teamName} kulübüne transferiniz tamamlandı! Başarılar!`);
+
+            if (typeof showNewspaperModal === "function") {
+                showNewspaperModal(
+                    "TRANSFER ÖZEL",
+                    `${GAME.state.playerName.toUpperCase()} RESMEN ${teamName.toUpperCase()}'DE!`,
+                    "Yılın Bomba Transferi İmzalandı!",
+                    `${GAME.state.playerName}, kariyerinde dev bir adım atarak ${teamName} kulübüyle resmi sözleşmeye imza attı! Yeni kulübünde haftalık ${salary.toLocaleString()} € kazanacak olan yıldız oyuncunun ilk maçı heyecanla bekleniyor.`
+                );
+            } else {
+                alert(`🎉 ${teamName} kulübüne transferiniz tamamlandı! Başarılar!`);
+            }
             
             document.querySelector("[data-target='panel-career']").click();
             determineNextOpponent();
