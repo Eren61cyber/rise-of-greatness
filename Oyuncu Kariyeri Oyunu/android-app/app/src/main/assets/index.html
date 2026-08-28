@@ -1589,23 +1589,53 @@
                     </div>
 
                     <!-- MINI PITCH GAME SCREEN -->
-                    <div id="trial-pitch-canvas" style="position: relative; width: 100%; height: 170px; background: linear-gradient(to bottom, #102e1c 0%, #06170d 100%); border: 1px solid var(--border-glass); border-radius: 12px; overflow: hidden; margin-bottom: 14px; box-shadow: inset 0 0 30px rgba(0,0,0,0.7);">
-                        <!-- Field Grass Grid Line -->
-                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(to right, transparent, transparent 38px, rgba(255,255,255,0.015) 38px, rgba(255,255,255,0.015) 76px); pointer-events: none;"></div>
+                    <div id="trial-pitch-canvas" style="position: relative; width: 100%; height: 185px; background: repeating-linear-gradient(to bottom, #123321 0px, #123321 26px, #0c2517 26px, #0c2517 52px); border: 1.5px solid rgba(0, 229, 183, 0.3); border-radius: 16px; overflow: hidden; margin-bottom: 14px; box-shadow: inset 0 0 35px rgba(0,0,0,0.85), 0 8px 25px rgba(0,0,0,0.5);">
+                        <!-- Floodlight Radial Glow from Top Center / Corners -->
+                        <div style="position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, rgba(0, 229, 183, 0.18) 0%, transparent 65%), radial-gradient(circle at 0% 100%, rgba(255,255,255,0.05) 0%, transparent 40%), radial-gradient(circle at 100% 100%, rgba(255,255,255,0.05) 0%, transparent 40%); pointer-events: none;"></div>
+                        <!-- Fine Pitch Grid Stripes -->
+                        <div style="position: absolute; inset: 0; background: repeating-linear-gradient(to right, transparent, transparent 40px, rgba(255,255,255,0.015) 40px, rgba(255,255,255,0.015) 80px); pointer-events: none;"></div>
                         <!-- Penalty Area Arc -->
-                        <div style="position: absolute; top: -35px; left: 50%; transform: translateX(-50%); width: 100px; height: 100px; border: 1.5px solid rgba(255,255,255,0.12); border-radius: 50%; pointer-events: none;"></div>
+                        <div style="position: absolute; top: -35px; left: 50%; transform: translateX(-50%); width: 110px; height: 110px; border: 1.5px solid rgba(255,255,255,0.22); border-radius: 50%; pointer-events: none;"></div>
                         <!-- Penalty Box -->
-                        <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 160px; height: 60px; border-bottom: 1.5px solid rgba(255,255,255,0.12); border-left: 1.5px solid rgba(255,255,255,0.12); border-right: 1.5px solid rgba(255,255,255,0.12); pointer-events: none;"></div>
-                        <!-- Goal Post Frame -->
-                        <div style="position: absolute; top: -2px; left: 50%; transform: translateX(-50%); width: 66px; height: 12px; border: 2px solid rgba(255,255,255,0.55); border-top: none; background: rgba(255,255,255,0.08); pointer-events: none; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px; z-index: 5;"></div>
-                        <div id="trial-goal-net" style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 66px; height: 10px; background: repeating-linear-gradient(45deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 2px, transparent 2px, transparent 4px); transition: transform 0.15s ease; pointer-events: none; z-index: 4;"></div>
+                        <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 180px; height: 68px; border-bottom: 1.5px solid rgba(255,255,255,0.25); border-left: 1.5px solid rgba(255,255,255,0.25); border-right: 1.5px solid rgba(255,255,255,0.25); pointer-events: none;"></div>
+                        <!-- Goal Area (6 Yard Box) -->
+                        <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 84px; height: 26px; border-bottom: 1.2px solid rgba(255,255,255,0.2); border-left: 1.2px solid rgba(255,255,255,0.2); border-right: 1.2px solid rgba(255,255,255,0.2); pointer-events: none;"></div>
+                        <!-- Penalty Spot -->
+                        <div style="position: absolute; top: 46px; left: 50%; transform: translateX(-50%); width: 5px; height: 5px; background: rgba(255,255,255,0.6); border-radius: 50%; pointer-events: none; box-shadow: 0 0 4px rgba(255,255,255,0.8);"></div>
 
-                        <!-- Game Objects -->
-                        <div id="trial-player-node" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 18px; height: 18px; background: #00E5FF; border: 2.5px solid #fff; border-radius: 50%; box-shadow: 0 0 12px #00E5FF; transition: all 1s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 900; color: black; z-index: 10; font-family: sans-serif;">Y</div>
-                        <div id="trial-teammate-node" style="position: absolute; top: 80px; left: 20%; width: 18px; height: 18px; background: #2979FF; border: 2px solid #fff; border-radius: 50%; box-shadow: 0 0 10px #2979FF; display: none; align-items: center; justify-content: center; font-size: 8px; font-weight: 900; color: white; transition: all 1s ease; z-index: 9; font-family: sans-serif;">A</div>
-                        <div id="trial-opponent-node" style="position: absolute; top: 22px; left: 50%; transform: translateX(-50%); width: 18px; height: 18px; background: #FF3D00; border: 2.5px solid #fff; border-radius: 50%; box-shadow: 0 0 12px #FF3D00; transition: all 1s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 900; color: white; z-index: 10; font-family: sans-serif;">K</div>
-                        <div id="trial-defender-node" style="position: absolute; top: 80px; left: 60%; width: 18px; height: 18px; background: #D50000; border: 2px solid #fff; border-radius: 50%; box-shadow: 0 0 10px #D50000; display: none; align-items: center; justify-content: center; font-size: 8px; font-weight: 900; color: white; transition: all 1s ease; z-index: 9; font-family: sans-serif;">D</div>
-                        <div id="trial-ball-node" style="position: absolute; bottom: 42px; left: 50%; transform: translateX(-50%); width: 11px; height: 11px; background: #ffffff; border: 1.8px solid #000; border-radius: 50%; box-shadow: 0 0 8px rgba(255,255,255,0.9); transition: all 1.2s cubic-bezier(0.15, 0.85, 0.35, 1); z-index: 11;"></div>
+                        <!-- Goal Post & 3D Net -->
+                        <div style="position: absolute; top: -2px; left: 50%; transform: translateX(-50%); width: 72px; height: 13px; border: 2.5px solid rgba(255,255,255,0.85); border-top: none; background: rgba(255,255,255,0.12); pointer-events: none; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px; z-index: 5; box-shadow: 0 2px 8px rgba(0,0,0,0.5);"></div>
+                        <div id="trial-goal-net" style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 72px; height: 11px; background: repeating-linear-gradient(45deg, rgba(255,255,255,0.2) 0px, rgba(255,255,255,0.2) 2px, transparent 2px, transparent 4px), repeating-linear-gradient(-45deg, rgba(255,255,255,0.2) 0px, rgba(255,255,255,0.2) 2px, transparent 2px, transparent 4px); transition: transform 0.15s ease; pointer-events: none; z-index: 4;"></div>
+
+                        <!-- Shockwave Ripple Effect -->
+                        <div id="trial-shockwave" style="position: absolute; width: 14px; height: 14px; border-radius: 50%; border: 2.5px solid #00e5b7; box-shadow: 0 0 15px #00e5b7; transform: translate(-50%, 50%) scale(0); opacity: 0; pointer-events: none; z-index: 25;"></div>
+
+                        <!-- Ball Motion Trail -->
+                        <div id="trial-ball-trail" style="position: absolute; pointer-events: none; width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.4); opacity: 0; transform: translate(-50%, 50%); z-index: 10; filter: blur(1px); transition: all 0.3s ease;"></div>
+
+                        <!-- Player Tactical Token (User) -->
+                        <div id="trial-player-node" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 22px; height: 22px; background: linear-gradient(135deg, #00e5b7 0%, #059669 100%); border: 2px solid #ffffff; border-radius: 50%; box-shadow: 0 0 16px rgba(0,229,183,0.85); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; color: #05140d; z-index: 15; font-family: 'Space Grotesk', sans-serif;">
+                            <div id="trial-player-dir" style="position: absolute; top: -6px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 3.5px solid transparent; border-right: 3.5px solid transparent; border-bottom: 5px solid #00e5b7; filter: drop-shadow(0 0 3px #00e5b7);"></div>
+                            <span id="trial-player-num">10</span>
+                        </div>
+
+                        <!-- Teammate Tactical Token -->
+                        <div id="trial-teammate-node" style="position: absolute; top: 80px; left: 20%; width: 20px; height: 20px; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border: 1.8px solid #ffffff; border-radius: 50%; box-shadow: 0 0 12px rgba(59,130,246,0.8); display: none; align-items: center; justify-content: center; font-size: 9px; font-weight: 900; color: #ffffff; z-index: 14; font-family: 'Space Grotesk', sans-serif;">
+                            <span id="trial-teammate-text">P</span>
+                        </div>
+
+                        <!-- Opponent / Goalkeeper Tactical Token -->
+                        <div id="trial-opponent-node" style="position: absolute; top: 22px; left: 50%; transform: translateX(-50%); width: 22px; height: 22px; background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%); border: 2px solid #ffffff; border-radius: 50%; box-shadow: 0 0 16px rgba(244,63,94,0.85); display: flex; align-items: center; justify-content: center; font-size: 9.5px; font-weight: 900; color: #ffffff; z-index: 15; font-family: 'Space Grotesk', sans-serif;">
+                            <span id="trial-opponent-text">K</span>
+                        </div>
+
+                        <!-- Defender Tactical Token -->
+                        <div id="trial-defender-node" style="position: absolute; top: 80px; left: 60%; width: 20px; height: 20px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border: 1.8px solid #ffffff; border-radius: 50%; box-shadow: 0 0 12px rgba(245,158,11,0.8); display: none; align-items: center; justify-content: center; font-size: 9px; font-weight: 900; color: #ffffff; z-index: 14; font-family: 'Space Grotesk', sans-serif;">
+                            <span id="trial-defender-text">D</span>
+                        </div>
+
+                        <!-- Ball Token -->
+                        <div id="trial-ball-node" style="position: absolute; bottom: 44px; left: 50%; transform: translateX(-50%); width: 12px; height: 12px; background: radial-gradient(circle at 35% 35%, #ffffff 0%, #e2e8f0 60%, #94a3b8 100%); border: 1.5px solid #1e293b; border-radius: 50%; box-shadow: 0 0 10px rgba(255,255,255,0.9), 0 3px 6px rgba(0,0,0,0.6); z-index: 16;"></div>
                     </div>
 
                     <div class="event-choices" id="trial-choices-container" style="display: flex; flex-direction: column; gap: 8px;">
@@ -2843,12 +2873,16 @@
                     desc: "Ceza sahasında topla buluştun, kaleci açıyı daraltmak için üzerine doğru koşuyor! Nasıl bir vuruş yapacaksın?",
                     options: [
                         {
+                            actionTitle: "Uzak Köşeye Teknik Plase",
+                            actionDesc: "Kalecinin uzanamayacağı uzak köşeye falsolu ve dengeli vuruş yap.",
                             text: "Uzak köşeye sert ve plase bırak.",
                             commentarySuccess: "MUHTEŞEM BİTİRİCİLİK! Kalecinin uzanamayacağı köşeye füze gibi plase! Antrenörler not defterini dolduruyor.",
                             commentaryFail: "Plase köşeyi bulmadı, kaleci kornere çeldi.",
                             successChance: 0.70
                         },
                         {
+                            actionTitle: "Aşırtma Vuruş (Çip)",
+                            actionDesc: "Öne çıkan kalecinin üstünden topu hafifçe havalandırıp tavana yolla.",
                             text: "Aşırtma vuruşla kalecinin üstünden yolla.",
                             commentarySuccess: "KLAS HAREKET! Kalecinin çaresiz bakışları arasında top süzülerek tavana gitti! Tribünler ayakta!",
                             commentaryFail: "Aşırtma vuruşun ayarı kaçtı, top üst direği yalayarak auta çıktı.",
@@ -2861,12 +2895,16 @@
                     desc: "Sağ kanattan milimetrik bir orta kesildi, ceza sahasında stoperin önünde topla buluşuyorsun!",
                     options: [
                         {
+                            actionTitle: "Gelişine Sert Vole",
+                            actionDesc: "Havadan gelen topa yere inmeden sert ve falsolu vuruş yap.",
                             text: "Gelişine sert bir vole yapıştır.",
                             commentarySuccess: "İNANILMAZ BİR VOLE! Top ağları delecek gibi doksana takıldı! Gözlemciler alkışlıyor!",
                             commentaryFail: "Topa tam oturmadı, vole yan ağlarda kaldı.",
                             successChance: 0.65
                         },
                         {
+                            actionTitle: "Ön Direğe Kafa Vuruşu",
+                            actionDesc: "Stoperin önüne hızla kat edip köşeye sert kafa şutu çıkar.",
                             text: "Ön direğe koşup kafayla köşeye bırak.",
                             commentarySuccess: "TAM BİR SANTRFOR GOLÜ! Ön direkte müthiş kafa vuruşuyla kaleciyi ters ayakta yakaladın!",
                             commentaryFail: "Stoper hava topunda fizik avantajını kullandı ve topu uzaklaştırdı.",
@@ -2879,12 +2917,16 @@
                     desc: "Son stoperle karşı karşıyasın, arkadan kademe savunması yetişmek üzere!",
                     options: [
                         {
+                            actionTitle: "Dış Kulvardan Depar",
+                            actionDesc: "Ani hız patlamasıyla stoperin ters yönüne sprint at.",
                             text: "Hız patlamasıyla dış kulvardan sıyrıl.",
                             commentarySuccess: "ADETA RÜZGAR! Muazzam bir deparla stoperi pazara yolladın ve içeri sokuldun!",
                             commentaryFail: "Stoper omuz omuza mücadelede dengeni bozdu ve topu kazandı.",
                             successChance: 0.60
                         },
                         {
+                            actionTitle: "Bilek Çalımı & Bacak Arası",
+                            actionDesc: "Bilek hareketiyle rakibi tereddütte bırakıp topu bacaklarının arasından geçir.",
                             text: "Bilek çalımıyla bacak arası at.",
                             commentarySuccess: "ÇALIM RESİTALİ! Mükemmel bir bacak arası! Antrenörlerin gözleri parıldıyor!",
                             commentaryFail: "Çalım denerken stoper ayak koydu ve atağı kesti.",
@@ -2899,12 +2941,16 @@
                     desc: "Merkezde topu kontrol ettin, forvet oyuncun rakip stoperlerin arkasına koşu yapıyor!",
                     options: [
                         {
+                            actionTitle: "Yerden İnce Ara Pası",
+                            actionDesc: "Stoperlerin arasındaki koridora falsolu milimetrik top yuvarla.",
                             text: "Yerden ince ve kavisli bir ara pası yolla.",
                             commentarySuccess: "MAESTRO VİZYONU! Savunmanın arasından süzülen top forveti kaleciyle karşı karşıya bıraktı! Asist!",
                             commentaryFail: "Pas bir adım yavaş kaldı, stoper son anda topu kornere çeldi.",
                             successChance: 0.70
                         },
                         {
+                            actionTitle: "Havadan Aşırtma Pas",
+                            actionDesc: "Savunma bloğunun üzerinden forvetin koşu yoluna yumuşak aşırtma top at.",
                             text: "Savunmanın üstünden havadan adrese teslim aşırtma pas at.",
                             commentarySuccess: "SANAT ESERİ PAS! Top forvetin ayağına adeta konduruldu! İnanılmaz teknik!",
                             commentaryFail: "Pas fazla havalandı, kaleci çıkarak havada kontrol etti.",
@@ -2917,12 +2963,16 @@
                     desc: "Rakip ceza sahası önünde seken top sana geldi, kaleci hafif önde!",
                     options: [
                         {
+                            actionTitle: "Doksana Kavisli Plase",
+                            actionDesc: "Topun altına falso vererek çatala doğru teknik plase yolla.",
                             text: "Doksana doğru kavisli bir plase yolla.",
                             commentarySuccess: "DOKSANA ASILDI! 25 metreden çatala giden inanılmaz bir şut! Antrenörler alkışlıyor!",
                             commentaryFail: "Kavis fazla açıldı, top direğin hemen yanından auta çıktı.",
                             successChance: 0.60
                         },
                         {
+                            actionTitle: "Gelişine Tam Güç Şut",
+                            actionDesc: "Seken topa ayak üstüyle mermi gibi sert şut çıkar.",
                             text: "Gelişine tam güçle tavana mermi sık.",
                             commentarySuccess: "MERMİ GİBİ! Top kalecinin eldivenlerini yakarak ağlarla buluştu!",
                             commentaryFail: "Şut savunmadan döndü, tehlike savuşturuldu.",
@@ -2935,12 +2985,16 @@
                     desc: "Rakip 3 kişiyle seni dar alanda presle sıkıştırdı, pas verecek boş alan arıyorsun!",
                     options: [
                         {
+                            actionTitle: "Diyagonal Uzun Pas",
+                            actionDesc: "Presi tek topla ters kanattaki boş arkadaşına açarak oyunu rahatlat.",
                             text: "Tek topla boşta kalan ters kanada uzun diyagonal pas at.",
                             commentarySuccess: "OYUN KURUCU DEHASI! Presi tek pasla boşa çıkarıp takımı atağa kaldırdın!",
                             commentaryFail: "Pasın yönü isabetsiz oldu, top doğrudan taca çıktı.",
                             successChance: 0.65
                         },
                         {
+                            actionTitle: "Vücut Çalımı & Dönüş",
+                            actionDesc: "Dar alanda ani gövde çalımıyla iki rakibin arasından sıyrıl.",
                             text: "Dar alanda vücut çalımıyla iki kişinin arasından sıyrıl.",
                             commentarySuccess: "BÜYÜLEYİCİ TEKNİK! İki rakip birbirine çarptı, topu tereyağından kıl çeker gibi çıkardın!",
                             commentaryFail: "Pres çok sert geldi, topu ayağından açınca kaptırdın.",
@@ -2955,12 +3009,16 @@
                     desc: "Rakip hızlı forvet süratle kalene doğru geliyor, ceza sahasına girmeden müdahale etmelisin!",
                     options: [
                         {
+                            actionTitle: "Zamanlamalı Kayarak Müdahale",
+                            actionDesc: "Ceza sahasına girmeden tertemiz bir hamleyle topu söküp al.",
                             text: "Kusursuz zamanlamayla kayarak topa müdahale et.",
                             commentarySuccess: "KUSURSUZ MÜDAHALE! Tertemiz bir kayarak müdahaleyle topu söküp aldın! Alkışlar sana!",
                             commentaryFail: "Zamanlamayı biraz kaçırdın, forvet son anda sıyrıldı.",
                             successChance: 0.70
                         },
                         {
+                            actionTitle: "Ayakta Kal & Omuz Omuza Karşıla",
+                            actionDesc: "Fizik gücünü kullanarak forveti dış kulvara sür ve hücumu kes.",
                             text: "Ayakta kal, omuz omuza mücadeleyle forveti dışarı sür.",
                             commentarySuccess: "GEÇİLMEZ DUVAR! Güçlü fiziğinle forveti ezdin ve topu taca yolladın!",
                             commentaryFail: "Rakip çeviklikle yön değiştirdi ve atağı sürdürdü.",
@@ -2973,12 +3031,16 @@
                     desc: "Rakip takım tehlikeli bir korner ortası kullandı, penaltı noktasına doğru yüksek bir top geliyor!",
                     options: [
                         {
+                            actionTitle: "Yükselerek Kafayla Temizle",
+                            actionDesc: "Ceza sahasında havada asılı kalarak topu tehlike bölgesinden uzaklaştır.",
                             text: "Yüksel ve kafayla topu ceza sahası dışına uzaklaştır.",
                             commentarySuccess: "HAVA HAKİMİ! Havada adeta asılı kaldın ve topu tehlike bölgesinden uzaklaştırdın!",
                             commentaryFail: "Rakip santrfor arkadan yükseldi ve kafa vuruşunu yaptı.",
                             successChance: 0.65
                         },
                         {
+                            actionTitle: "Kafayla Kontra Atak Başlat",
+                            actionDesc: "Hava topunu kanat oyuncunun koşu yoluna indirip takımı atağa çıkar.",
                             text: "Kafayla topu hücuma kalkan kanat oyuncunun koşu yoluna indir.",
                             commentarySuccess: "SAVUNMADAN HÜCUMA! Kafayla indirdiğin top takımı 3'e 2 kontraya çıkardı! Harika vizyon!",
                             commentaryFail: "İndirdiğin top rakip orta sahaya gitti.",
@@ -2991,12 +3053,16 @@
                     desc: "Topu kazandın, rakip savunma önde yakalandı, forvetin ileri koşu gösteriyor!",
                     options: [
                         {
+                            actionTitle: "50 Metrelik Nokta Pas",
+                            actionDesc: "Geriden ileri forvetin koşu yoluna adrese teslim uzun top at.",
                             text: "Forvetin koşu yoluna 50 metrelik uzun ve isabetli diyagonal pas at.",
                             commentarySuccess: "ADRESE TESLİM! Geriden attığın muhteşem pas forveti kaleciyle karşı karşıya bıraktı!",
                             commentaryFail: "Pas fazla hızlı gitti, doğrudan rakip kaleciye ulaştı.",
                             successChance: 0.60
                         },
                         {
+                            actionTitle: "Öne Kat Edip Verkaç Yap",
+                            actionDesc: "Boş alana topla çıkıp orta sahayla güvenli paslaşarak hücumu kur.",
                             text: "Önündeki boş alanı sürüp orta sahayla güvenli verkaç yap.",
                             commentarySuccess: "MODERN STOPER! Soğukkanlılıkla takımı atağa kaldırdın, antrenörler takdir etti!",
                             commentaryFail: "Pasın zamanlaması gecikti, rakip hücum hattı baskı yaptı.",
@@ -3150,6 +3216,22 @@
             if (nextBtn2) nextBtn2.style.display = "block";
         };
 
+        function triggerTrialShockwave(xPercent, yBottomPx, color = "#00e5b7") {
+            const sw = document.getElementById("trial-shockwave");
+            if (!sw) return;
+            sw.style.transition = "none";
+            sw.style.left = xPercent;
+            sw.style.bottom = yBottomPx;
+            sw.style.borderColor = color;
+            sw.style.boxShadow = `0 0 16px ${color}`;
+            sw.style.transform = "translate(-50%, 50%) scale(0.2)";
+            sw.style.opacity = "1";
+            sw.offsetHeight;
+            sw.style.transition = "all 0.45s cubic-bezier(0.15, 0.85, 0.35, 1)";
+            sw.style.transform = "translate(-50%, 50%) scale(3.5)";
+            sw.style.opacity = "0";
+        }
+
         function runTrial() {
             const container = document.getElementById("trial-choices-container");
             const titleEl = document.getElementById("trial-title");
@@ -3158,29 +3240,39 @@
             const scorePill = document.getElementById("trial-score-pill");
 
             const player = document.getElementById("trial-player-node");
+            const playerNum = document.getElementById("trial-player-num");
+            const playerDir = document.getElementById("trial-player-dir");
             const opponent = document.getElementById("trial-opponent-node");
+            const opponentText = document.getElementById("trial-opponent-text");
             const defender = document.getElementById("trial-defender-node");
             const teammate = document.getElementById("trial-teammate-node");
             const ball = document.getElementById("trial-ball-node");
+            const ballTrail = document.getElementById("trial-ball-trail");
             const net = document.getElementById("trial-goal-net");
 
             const posTrials = POSITION_TRIALS[selectedIntroPosition] || POSITION_TRIALS["Forvet"];
 
-            if (scorePill) scorePill.innerText = `Puan: ${trialScore} / 3`;
+            // Update user jersey number on tactical disc
+            const customNum = document.getElementById("intro-number-input") ? document.getElementById("intro-number-input").value.trim() : "10";
+            if (playerNum) playerNum.innerText = customNum || "10";
 
-            // Setup pitch positions for the current stage
+            if (scorePill) scorePill.innerText = `Skor: ${trialScore} / 3`;
+
+            // Setup pitch positions for current stage
             if (trialStage < 3) {
                 const currentTrial = posTrials[trialStage];
-                titleEl.innerText = currentTrial.title;
-                descEl.innerText = currentTrial.desc;
-                container.innerHTML = "";
+                if (titleEl) titleEl.innerText = currentTrial.title;
+                if (descEl) descEl.innerText = currentTrial.desc;
+                if (container) container.innerHTML = "";
 
-                // Reset positions to default (instantly, without transitions)
+                // Reset positions and transitions to initial stage setup
                 player.style.transition = "none";
                 opponent.style.transition = "none";
                 defender.style.transition = "none";
                 teammate.style.transition = "none";
                 ball.style.transition = "none";
+                if (ballTrail) ballTrail.style.opacity = "0";
+                
                 opponent.style.transform = "translateX(-50%)";
                 opponent.style.animation = "none";
                 defender.style.transform = "none";
@@ -3188,15 +3280,16 @@
                 ball.style.transform = "translateX(-50%) scale(1)";
 
                 if (trialStage === 0) {
-                    // Stage 1
+                    // Stage 1 (1v1 Scenario)
                     player.style.bottom = "20px";
                     player.style.left = "50%";
-                    player.innerText = "Y";
+                    if (playerDir) playerDir.style.transform = "translateX(-50%) rotate(0deg)";
 
                     opponent.style.display = "flex";
-                    opponent.style.top = selectedIntroPosition === "Defans" ? "85px" : "22px";
+                    opponent.style.top = selectedIntroPosition === "Defans" ? "90px" : "24px";
                     opponent.style.left = "50%";
-                    opponent.innerText = selectedIntroPosition === "Defans" ? "F" : "K";
+                    if (opponentText) opponentText.innerText = selectedIntroPosition === "Defans" ? "F" : "K";
+                    
                     if (selectedIntroPosition !== "Defans") {
                         opponent.style.animation = "gk-sway 1.4s infinite alternate ease-in-out";
                     }
@@ -3204,18 +3297,18 @@
                     defender.style.display = "none";
                     teammate.style.display = "none";
 
-                    ball.style.bottom = selectedIntroPosition === "Defans" ? "70px" : "42px";
+                    ball.style.bottom = selectedIntroPosition === "Defans" ? "74px" : "44px";
                     ball.style.left = "50%";
                 } else if (trialStage === 1) {
-                    // Stage 2
-                    player.style.bottom = "20px";
+                    // Stage 2 (Wing Play / Long Range)
+                    player.style.bottom = "22px";
                     player.style.left = "50%";
-                    player.innerText = "Y";
+                    if (playerDir) playerDir.style.transform = "translateX(-50%) rotate(-15deg)";
 
                     opponent.style.display = "flex";
                     opponent.style.top = "70px";
                     opponent.style.left = "65%";
-                    opponent.innerText = "D";
+                    if (opponentText) opponentText.innerText = "D";
 
                     defender.style.display = "flex";
                     defender.style.top = "75px";
@@ -3225,18 +3318,18 @@
                     teammate.style.top = "60px";
                     teammate.style.left = "16%";
 
-                    ball.style.bottom = "42px";
+                    ball.style.bottom = "44px";
                     ball.style.left = "50%";
                 } else if (trialStage === 2) {
-                    // Stage 3
-                    player.style.bottom = "15px";
+                    // Stage 3 (Pressing / Playmaking Break)
+                    player.style.bottom = "18px";
                     player.style.left = "50%";
-                    player.innerText = "Y";
+                    if (playerDir) playerDir.style.transform = "translateX(-50%) rotate(20deg)";
 
                     opponent.style.display = "flex";
                     opponent.style.top = "75px";
                     opponent.style.left = "50%";
-                    opponent.innerText = "D";
+                    if (opponentText) opponentText.innerText = "D";
 
                     defender.style.display = "flex";
                     defender.style.top = "42px";
@@ -3244,101 +3337,162 @@
 
                     teammate.style.display = "none";
 
-                    ball.style.bottom = "36px";
+                    ball.style.bottom = "38px";
                     ball.style.left = "50%";
                 }
 
                 // Force reflow
                 player.offsetHeight;
 
-                // Re-enable transition styles
-                player.style.transition = "all 1s cubic-bezier(0.25, 0.8, 0.25, 1)";
-                opponent.style.transition = "all 1s cubic-bezier(0.25, 0.8, 0.25, 1)";
-                defender.style.transition = "all 1s cubic-bezier(0.25, 0.8, 0.25, 1)";
-                teammate.style.transition = "all 1s cubic-bezier(0.25, 0.8, 0.25, 1)";
-                ball.style.transition = "all 1.1s cubic-bezier(0.15, 0.85, 0.35, 1)";
+                // Re-enable smooth transition curves
+                player.style.transition = "all 0.9s cubic-bezier(0.2, 0.8, 0.25, 1)";
+                opponent.style.transition = "all 0.9s cubic-bezier(0.2, 0.8, 0.25, 1)";
+                defender.style.transition = "all 0.9s cubic-bezier(0.2, 0.8, 0.25, 1)";
+                teammate.style.transition = "all 0.9s cubic-bezier(0.2, 0.8, 0.25, 1)";
+                ball.style.transition = "all 1s cubic-bezier(0.15, 0.85, 0.35, 1)";
 
+                // Render Choices as Tactical Action Cards
                 currentTrial.options.forEach((opt, idx) => {
                     const btn = document.createElement("button");
-                    btn.className = "btn btn-event";
+                    btn.className = "trial-tactical-card";
+                    btn.style.width = "100%";
+                    btn.style.padding = "13px 15px";
+                    btn.style.borderRadius = "14px";
+                    btn.style.background = "rgba(15, 23, 42, 0.75)";
+                    btn.style.border = "1px solid rgba(255, 255, 255, 0.1)";
                     btn.style.textAlign = "left";
-                    btn.innerHTML = `<span class="choice-text" style="font-weight: bold; color: var(--primary);">${opt.text}</span>`;
+                    btn.style.cursor = "pointer";
+                    btn.style.transition = "all 0.2s ease";
+                    btn.style.display = "flex";
+                    btn.style.alignItems = "center";
+                    btn.style.justifyContent = "space-between";
+                    btn.style.marginBottom = "8px";
+
+                    btn.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 32px; height: 32px; border-radius: 9px; background: rgba(0, 229, 183, 0.1); border: 1px solid rgba(0, 229, 183, 0.25); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', monospace; font-size: 11.5px; font-weight: 900; color: #00e5b7; flex-shrink: 0;">
+                                ${idx === 0 ? 'A' : 'B'}
+                            </div>
+                            <div>
+                                <div style="font-size: 13.5px; font-weight: 800; color: #ffffff; font-family: 'Space Grotesk', sans-serif;">
+                                    ${opt.actionTitle || opt.text}
+                                </div>
+                                <div style="font-size: 11px; color: #94a3b8; margin-top: 2px; line-height: 1.3;">
+                                    ${opt.actionDesc || opt.text}
+                                </div>
+                            </div>
+                        </div>
+                        <div style="font-size: 10px; font-weight: 800; color: ${opt.successChance >= 0.65 ? '#00e5b7' : '#ffd700'}; background: rgba(255,255,255,0.05); padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08); flex-shrink: 0; margin-left: 8px;">
+                            %${Math.round(opt.successChance * 100)} İHTİMAL
+                        </div>
+                    `;
+
+                    btn.addEventListener("mouseenter", () => {
+                        btn.style.borderColor = "rgba(0, 229, 183, 0.4)";
+                        btn.style.background = "rgba(15, 23, 42, 0.95)";
+                    });
+                    btn.addEventListener("mouseleave", () => {
+                        btn.style.borderColor = "rgba(255, 255, 255, 0.1)";
+                        btn.style.background = "rgba(15, 23, 42, 0.75)";
+                    });
                     
                     btn.addEventListener("click", () => {
-                        container.querySelectorAll("button").forEach(b => b.disabled = true);
+                        container.querySelectorAll("button").forEach(b => {
+                            b.disabled = true;
+                            b.style.opacity = "0.5";
+                        });
+                        btn.style.opacity = "1";
+                        btn.style.borderColor = "#00e5b7";
+                        btn.style.background = "rgba(0, 229, 183, 0.12)";
                         
                         const success = Math.random() < opt.successChance;
                         
-                        // Dynamic pitch animation
+                        // Dynamic Tactical Simulation Physics
                         if (trialStage === 0) {
                             opponent.style.animation = "none";
                             const diveLeft = Math.random() < 0.5;
-                            opponent.style.left = diveLeft ? "40%" : "60%";
+                            opponent.style.left = diveLeft ? "38%" : "62%";
+                            player.style.bottom = "36px";
                             
                             if (success) {
-                                ball.style.left = diveLeft ? "58%" : "42%";
-                                ball.style.bottom = "166px";
+                                ball.style.left = diveLeft ? "62%" : "38%";
+                                ball.style.bottom = "172px";
                                 setTimeout(() => {
+                                    triggerTrialShockwave(ball.style.left, "172px", "#ffd700");
                                     net.style.transform = "translateX(-50%) translateY(-4px) scaleY(1.3)";
-                                    setTimeout(() => net.style.transform = "translateX(-50%)", 180);
-                                }, 900);
+                                    setTimeout(() => net.style.transform = "translateX(-50%)", 200);
+                                }, 850);
                             } else {
                                 ball.style.left = opponent.style.left;
-                                ball.style.bottom = "30px";
+                                ball.style.bottom = "32px";
+                                setTimeout(() => {
+                                    triggerTrialShockwave(opponent.style.left, "32px", "#f43f5e");
+                                }, 500);
                             }
                         } else if (trialStage === 1) {
-                            player.style.bottom = "32px";
-                            ball.style.bottom = "50px";
+                            player.style.bottom = "35px";
+                            ball.style.bottom = "54px";
                             setTimeout(() => {
                                 if (success) {
                                     ball.style.left = "16%";
-                                    ball.style.bottom = "66px";
+                                    ball.style.bottom = "68px";
                                     setTimeout(() => {
+                                        triggerTrialShockwave("16%", "68px", "#3b82f6");
                                         teammate.style.top = "42px";
-                                        ball.style.transition = "all 0.4s ease-out";
+                                        ball.style.transition = "all 0.45s ease-out";
                                         ball.style.left = "48%";
-                                        ball.style.bottom = "166px";
+                                        ball.style.bottom = "172px";
                                         setTimeout(() => {
+                                            triggerTrialShockwave("48%", "172px", "#00e5b7");
                                             net.style.transform = "translateX(-50%) translateY(-4px) scaleY(1.3)";
-                                            setTimeout(() => net.style.transform = "translateX(-50%)", 180);
-                                        }, 350);
-                                    }, 700);
+                                            setTimeout(() => net.style.transform = "translateX(-50%)", 200);
+                                        }, 380);
+                                    }, 600);
                                 } else {
                                     defender.style.left = "30%";
                                     ball.style.left = "31%";
-                                    ball.style.bottom = "66px";
+                                    ball.style.bottom = "68px";
+                                    setTimeout(() => {
+                                        triggerTrialShockwave("31%", "68px", "#f43f5e");
+                                    }, 400);
                                 }
-                            }, 300);
+                            }, 250);
                         } else if (trialStage === 2) {
                             if (success) {
-                                player.style.left = "30%";
-                                player.style.bottom = "110px";
-                                ball.style.left = "30%";
-                                ball.style.bottom = "126px";
-                                opponent.style.left = "45%";
+                                player.style.left = "32%";
+                                player.style.bottom = "115px";
+                                ball.style.left = "32%";
+                                ball.style.bottom = "130px";
+                                opponent.style.left = "48%";
+                                setTimeout(() => {
+                                    triggerTrialShockwave("32%", "130px", "#00e5b7");
+                                }, 700);
                             } else {
-                                opponent.style.top = "50px";
+                                opponent.style.top = "52px";
                                 player.style.bottom = "45px";
                                 ball.style.bottom = "60px";
+                                setTimeout(() => {
+                                    triggerTrialShockwave("50%", "60px", "#f43f5e");
+                                }, 500);
                             }
                         }
 
-                        // Outcome text
+                        // Outcome commentary & scoring
                         if (success) {
                             trialScore++;
                             commEl.innerText = opt.commentarySuccess;
-                            commEl.style.color = "var(--primary)";
+                            commEl.style.color = "#00e5b7";
                         } else {
                             commEl.innerText = opt.commentaryFail;
-                            commEl.style.color = "var(--accent-red)";
+                            commEl.style.color = "#f43f5e";
                         }
 
-                        if (scorePill) scorePill.innerText = `Puan: ${trialScore} / 3`;
+                        if (scorePill) scorePill.innerText = `Skor: ${trialScore} / 3`;
 
                         setTimeout(() => {
                             trialStage++;
                             runTrial();
-                        }, 2200);
+                        }, 2300);
                     });
                     
                     container.appendChild(btn);
@@ -3347,16 +3501,15 @@
                 goToIntroStep('contract');
 
                 const resText = document.getElementById("result-text");
-                const resEmoji = document.getElementById("result-emoji");
                 const resTag = document.getElementById("result-tag");
                 const resClubTitle = document.getElementById("result-club-title");
                 const resLeagueBadge = document.getElementById("result-league-badge");
                 const resSalaryVal = document.getElementById("result-salary-val");
                 const resTrustVal = document.getElementById("result-trust-val");
 
-                let name = document.getElementById("intro-name-input").value.trim() || "Genç Yetenek";
-                let city = document.getElementById("intro-city-input").value.trim() || "Sinop";
-                let district = document.getElementById("intro-district-input").value.trim() || "Gerze";
+                let name = document.getElementById("intro-name-input") ? document.getElementById("intro-name-input").value.trim() : "Genç Yetenek";
+                let city = document.getElementById("intro-city-input") ? document.getElementById("intro-city-input").value.trim() : "Sinop";
+                let district = document.getElementById("intro-district-input") ? document.getElementById("intro-district-input").value.trim() : "Gerze";
 
                 const bs = getBackstory(city, district);
                 const startingClub = (typeof DATABASE !== "undefined" && DATABASE.getRandomAmateurClub) ? DATABASE.getRandomAmateurClub() : { name: "Yıldız Gençlikspor" };
