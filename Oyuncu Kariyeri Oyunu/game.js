@@ -429,11 +429,20 @@ const GAME = {
                 if (typeof this.state.careerAssists === "undefined" || isNaN(this.state.careerAssists)) {
                     this.state.careerAssists = 0;
                 }
+                if (typeof this.state.careerApps === "undefined" || isNaN(this.state.careerApps)) {
+                    this.state.careerApps = 0;
+                }
                 if (typeof this.state.seasonGoals === "undefined" || isNaN(this.state.seasonGoals)) {
                     this.state.seasonGoals = 0;
                 }
                 if (typeof this.state.seasonAssists === "undefined" || isNaN(this.state.seasonAssists)) {
                     this.state.seasonAssists = 0;
+                }
+                if (typeof this.state.seasonApps === "undefined" || isNaN(this.state.seasonApps)) {
+                    this.state.seasonApps = 0;
+                }
+                if (typeof this.state.totalEarnings === "undefined" || isNaN(this.state.totalEarnings)) {
+                    this.state.totalEarnings = this.state.money || 0;
                 }
                  if (typeof this.state.dribbling === "undefined") {
                      this.state.dribbling = 50;
@@ -1010,6 +1019,7 @@ const GAME = {
         }
 
         this.state.money += salary;
+        this.state.totalEarnings = (this.state.totalEarnings || 0) + salary;
 
         // Krampon eskime payı
         if (this.state.activeBootSponsor || this.state.activePurchasedBoot) {
@@ -1876,12 +1886,15 @@ const GAME = {
             "skill-dribbling": this.state.dribbling || 50,
             "skill-defense": this.state.defense || 50,
             "skill-physical": this.state.physical || 50,
-            "career-goals": this.state.careerGoals,
-            "career-assists": this.state.careerAssists,
-            "career-apps": this.state.careerApps,
-            "career-total-goals": this.state.careerGoals,
-            "career-total-assists": this.state.careerAssists,
-            "career-total-earnings": this.state.totalEarnings ? this.state.totalEarnings.toLocaleString() : "0",
+            "career-goals": this.state.careerGoals || 0,
+            "career-assists": this.state.careerAssists || 0,
+            "career-apps": this.state.careerApps || 0,
+            "career-total-goals": this.state.careerGoals || 0,
+            "career-total-assists": this.state.careerAssists || 0,
+            "season-goals": this.state.seasonGoals || 0,
+            "season-assists": this.state.seasonAssists || 0,
+            "season-apps": this.state.seasonApps || 0,
+            "career-total-earnings": (this.state.totalEarnings || 0).toLocaleString(),
             "career-biggest-win": this.state.biggestWin || "Yok",
             "career-biggest-loss": this.state.biggestLoss || "Yok",
             "career-emotional-match": this.state.mostEmotionalMatch || "Kariyerinde henüz unutulmaz bir dram yaşanmadı.",
@@ -1890,7 +1903,7 @@ const GAME = {
             "career-rel-team": (this.state.takimUyumu || 50) + "%",
             "career-rel-fans": (this.state.taraftarSevgisi || 50) + "%",
             "weekly-salary-text": (function(state) {
-                let txt = state.weeklySalary + " €/Hafta";
+                let txt = (state.weeklySalary || 350) + " €/Hafta";
                 if (state.activeBootSponsor) {
                     const boot = DATABASE.BOOT_SPONSORS.find(b => b.id === state.activeBootSponsor);
                     if (boot) {
@@ -2387,12 +2400,14 @@ const GAME = {
         this.state.trophies.push({ id: "ballon_or", name: `Ballon d'Or (Altın Top) (${year})`, icon: "👑" });
             this.state.followers += 75000;
             this.state.money += 50000;
+            this.state.totalEarnings = (this.state.totalEarnings || 0) + 50000;
             message += `👑 <strong>BALLON D'OR KAZANDINIZ!</strong> Yılın en iyi futbolcusu seçilerek <strong>Altın Top (Ballon d'Or)</strong> ödülünü kazandınız! Medya çıldırıyor! (+75,000 Takipçi, +50,000 €)<br><br>`;
             this.addSocialPost("@ballondor_news", "Ballon d'Or France Football", `WINNER: ${this.state.playerName.toUpperCase()}! The young Turkish sensation has officially claimed the prestigious Ballon d'Or trophy! Absolute masterclass! 👑⚽🇫🇷`);
             this.state.triggerBallonOrNewspaper = true;
         }
 
         this.state.money += bonus;
+        this.state.totalEarnings = (this.state.totalEarnings || 0) + bonus;
         this.state.followers += followerGain;
         this.state.hocaGuveni = Math.min(100, this.state.hocaGuveni + 15);
         this.state.moral = 100;

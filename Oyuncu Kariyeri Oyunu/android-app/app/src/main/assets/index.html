@@ -608,21 +608,6 @@
                     </div>
                 </div>
 
-                <!-- 🏆 KUPA MÜZESİ (TROPHY SHOWCASE) -->
-                <div class="card glass" style="margin-top: 10px; padding: 14px;">
-                    <div style="font-size: 11px; font-weight: 800; color: var(--accent-yellow); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-yellow);"><circle cx="12" cy="8" r="7"/><path d="M4 15V9h2v6M20 15V9h-2v6M9 22h6M12 15v7"/></svg> Kupa Müzesi
-                    </div>
-                    <div id="trophy-showcase-container" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
-                        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 4px 0; opacity: 0.3;">
-                            <span style="font-size: 20px;">🏆</span>
-                            <span style="font-size: 20px; transform: scale(1.1);">🏆</span>
-                            <span style="font-size: 20px;">🏆</span>
-                        </div>
-                        <div style="font-size: 10px; font-weight: 800; color: #fff; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">0 Kupa</div>
-                    </div>
-                </div>
-
                 <!-- Social Media Feed Card -->
                 <div class="card glass" style="margin-top: 10px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
                     <div style="font-size: 11px; font-weight: 800; color: var(--accent-blue); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px;">
@@ -672,7 +657,10 @@
                     </div>
                 </div>
 
-                <!-- 1. İstatistik Bento Izgarası (Grid) 3'lü -->
+                <!-- 1. Kariyer İstatistikleri Grid 3'lü -->
+                <div style="font-size: 11px; font-weight: 800; color: #00e5b7; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                    ⭐ GENEL KARİYER İSTATİSTİKLERİ
+                </div>
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px;">
                     <div class="card glass" style="padding: 12px 8px; text-align: center; border-radius: 12px; background: rgba(0, 168, 255, 0.05); border: 1px solid rgba(0, 168, 255, 0.15);">
                         <div style="font-size: 18px; font-weight: 900; color: #00a8ff; font-variant-numeric: tabular-nums;" id="career-apps">0</div>
@@ -688,7 +676,26 @@
                     </div>
                 </div>
 
-                <!-- 2. Finansal Durum Kartı: Yan yana 2'li -->
+                <!-- 2. Bu Sezon İstatistikleri Grid 3'lü -->
+                <div style="font-size: 11px; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                    📅 BU SEZON PERFORMANSI
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px;">
+                    <div class="card glass" style="padding: 12px 8px; text-align: center; border-radius: 12px; background: rgba(56, 189, 248, 0.05); border: 1px solid rgba(56, 189, 248, 0.15);">
+                        <div style="font-size: 18px; font-weight: 900; color: #38bdf8; font-variant-numeric: tabular-nums;" id="season-apps">0</div>
+                        <div style="font-size: 9px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-top: 4px;">Sezon Maç</div>
+                    </div>
+                    <div class="card glass" style="padding: 12px 8px; text-align: center; border-radius: 12px; background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.15);">
+                        <div style="font-size: 18px; font-weight: 900; color: #10b981; font-variant-numeric: tabular-nums;" id="season-goals">0</div>
+                        <div style="font-size: 9px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-top: 4px;">Sezon Gol</div>
+                    </div>
+                    <div class="card glass" style="padding: 12px 8px; text-align: center; border-radius: 12px; background: rgba(245, 158, 11, 0.05); border: 1px solid rgba(245, 158, 11, 0.15);">
+                        <div style="font-size: 18px; font-weight: 900; color: #f59e0b; font-variant-numeric: tabular-nums;" id="season-assists">0</div>
+                        <div style="font-size: 9px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-top: 4px;">Sezon Asist</div>
+                    </div>
+                </div>
+
+                <!-- 3. Finansal Durum Kartı: Yan yana 2'li -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
                     <div class="card glass" style="padding: 14px; border-radius: 12px; display: flex; flex-direction: column; justify-content: center;">
                         <div style="font-size: 10px; font-weight: 800; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 6px;">Toplam Kazanç</div>
@@ -704,7 +711,22 @@
                     </div>
                 </div>
 
-                <!-- 3. Unutulmaz Anlar (Milestones) Rozet Kartları -->
+                <!-- 🏆 KUPA MÜZESİ (TROPHY SHOWCASE) -->
+                <div class="card glass" style="margin-bottom: 12px; padding: 14px; border-radius: 12px;">
+                    <div style="font-size: 11px; font-weight: 800; color: var(--accent-yellow); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-yellow);"><circle cx="12" cy="8" r="7"/><path d="M4 15V9h2v6M20 15V9h-2v6M9 22h6M12 15v7"/></svg> Kupa Müzesi
+                    </div>
+                    <div id="trophy-showcase-container" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 4px 0; opacity: 0.3;">
+                            <span style="font-size: 20px;">🏆</span>
+                            <span style="font-size: 20px; transform: scale(1.1);">🏆</span>
+                            <span style="font-size: 20px;">🏆</span>
+                        </div>
+                        <div style="font-size: 10px; font-weight: 800; color: #fff; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">0 Kupa</div>
+                    </div>
+                </div>
+
+                <!-- 4. Unutulmaz Anlar (Milestones) Rozet Kartları -->
                 <div class="card glass" style="margin-bottom: 12px; padding: 14px; border-radius: 12px;">
                     <div style="font-size: 11px; font-weight: 800; color: var(--accent-red); text-transform: uppercase; margin-bottom: 10px;">📸 Unutulmaz Anlar</div>
                     
@@ -2780,7 +2802,7 @@
                 try {
                     let file = "";
                     if (type === "gol") {
-                        file = Math.random() < 0.5 ? "gol_1.mp3" : "gol_2.mp3";
+                        file = "gol_1.mp3";
                     } else if (type === "asist") {
                         file = "asist.mp3";
                     } else if (type === "stoper") {
@@ -2845,9 +2867,17 @@
 
                 tab.classList.add("active");
                 const target = tab.getAttribute("data-target");
-                document.getElementById(target).classList.add("active");
+                const targetPanel = document.getElementById(target);
+                if (targetPanel) targetPanel.classList.add("active");
 
-                // Update tab items
+                // Update tab items & refresh UI bindings
+                if (typeof GAME !== "undefined" && typeof GAME.updateUI === "function") {
+                    GAME.updateUI();
+                }
+
+                if (target === "panel-my-career") {
+                    if (typeof updateTrophyShowcase === "function") updateTrophyShowcase();
+                }
                 if (target === "panel-training") {
                     renderTrainingPanel();
                 }
@@ -5128,6 +5158,7 @@
                     if (!GAME.state.trophies) GAME.state.trophies = [];
                     GAME.state.trophies.push({ id: "super_kupa", name: `Süper Kupa Şampiyonluğu (${year})`, icon: "🏆" });
                     GAME.state.money += 35000;
+                    GAME.state.totalEarnings = (GAME.state.totalEarnings || 0) + 35000;
                     GAME.state.followers += 20000;
                     alert(`🏆 TEBRİKLER! Süper Kupa sizin! Maçta sergilediğin harika oyunla takımını Süper Kupa şampiyonu yaptın ve müzene yeni bir kupa ekledin! (+35.000 € | +20.000 Takipçi)`);
                 } else if (scoreDiff < 0) {
@@ -5138,6 +5169,7 @@
                         if (!GAME.state.trophies) GAME.state.trophies = [];
                         GAME.state.trophies.push({ id: "super_kupa", name: `Süper Kupa Şampiyonluğu (${year})`, icon: "🏆" });
                         GAME.state.money += 35000;
+                        GAME.state.totalEarnings = (GAME.state.totalEarnings || 0) + 35000;
                         GAME.state.followers += 20000;
                         alert(`🏆 TEBRİKLER! Normal süresi berabere biten Süper Kupa finalinde penaltı atışlarıyla rakibinizi 4-3 devirerek şampiyon oldunuz! (+35.000 € | +20.000 Takipçi)`);
                     } else {
@@ -5166,6 +5198,7 @@
                         if (!GAME.state.trophies) GAME.state.trophies = [];
                         GAME.state.trophies.push({ id: cupId, name: `${cupName} Şampiyonluğu (${year})`, icon: "🏆" });
                         GAME.state.money += 150000;
+                        GAME.state.totalEarnings = (GAME.state.totalEarnings || 0) + 150000;
                         GAME.state.followers += 100000;
                         alert(`🌟 AVRUPA ŞAMPİYONUSUNUZ! 🌟\n\nMuhteşem bir zafer! ${cupName} finalinde destan yazarak kupayı kazandınız! Adını Avrupa tarihine altın harflerle yazdırdın.\n\nPrimi: +150.000 € | Takipçi: +100.000`);
                         
@@ -5192,6 +5225,7 @@
                             if (!GAME.state.trophies) GAME.state.trophies = [];
                             GAME.state.trophies.push({ id: cupId, name: `${cupName} Şampiyonluğu (${year})`, icon: "🏆" });
                             GAME.state.money += 150000;
+                            GAME.state.totalEarnings = (GAME.state.totalEarnings || 0) + 150000;
                             GAME.state.followers += 100000;
                             alert(`🌟 DESTANSI AVRUPA ŞAMPİYONLUĞU! 🌟\n\n${cupName} finalinde penaltı atışlarıyla rakibinizi devirerek KUPAYI KALDIRDINIZ! Şampiyonuz!\n\nPrimi: +150.000 € | Takipçi: +100.000`);
                             
@@ -9339,11 +9373,15 @@
                         checkDramaticHeadline(pGoals, pRating, scoreDiff, isLastMinute);
                         updateMissionsBadge();
                         updateStreakBadge();
-                        GAME.saveGame();
                     }
+
+                    GAME.saveGame();
+                    GAME.updateUI();
 
                     if (!GAME.state.isNationalCallUp) {
                         triggerInterview(pRating, pGoals, pAssists);
+                    } else {
+                        proceedPostMatch();
                     }
                 }
             });
