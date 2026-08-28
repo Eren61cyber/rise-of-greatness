@@ -308,7 +308,13 @@ const MatchEngine = {
                 "Rakip stoperi bacak arası çalımla geç!",
                 "Hızını kullanıp kanattan çizgiye in!",
                 "Topu sağa çekip rakibini ekarte et!"
-      calculateStatSuccess: function(statVal, targetType = "def") {
+            ]
+        };
+        const pool = pools[type] || pools.shoot;
+        return pool[Math.floor(Math.random() * pool.length)];
+    },
+
+    calculateStatSuccess: function(statVal, targetType = "def") {
         const val = Math.round(statVal || 50);
         
         // Dynamically compute opponent strength based on actual opponent team stats & league
