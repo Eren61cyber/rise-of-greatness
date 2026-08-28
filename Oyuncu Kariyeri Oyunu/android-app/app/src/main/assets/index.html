@@ -15,7 +15,7 @@
     <!-- Google Fonts for premium sports typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Rajdhani:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Rajdhani:wght@600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
     <script>
         // Fix relative resource loading on Vercel if opened without trailing slash
         if (window.location.pathname.endsWith('/Oyuncu%20Kariyeri%20Oyunu') || window.location.pathname.endsWith('/Oyuncu Kariyeri Oyunu')) {
@@ -146,130 +146,216 @@
     <!-- Intro Video Overlay -->
     <!-- RiseUp Studios Animated Splash Screen -->
     <style>
-        /* ══════════════════════════════════════════
-           CINEMATIC INTRO KEYFRAMES & STYLING
-        ══════════════════════════════════════════ */
-        @keyframes cin-tap-ring {
-            0%   { transform: scale(1);   opacity: 0.8; }
-            100% { transform: scale(1.9); opacity: 0;   }
-        }
-        @keyframes cin-tap-blink {
-            0%, 100% { opacity: 0.95; transform: scale(1); }
-            50%       { opacity: 0.45; transform: scale(0.97); }
-        }
-        @keyframes cin-searchlight-left {
-            0%   { transform: rotate(-45deg); }
-            50%  { transform: rotate(-10deg); }
-            100% { transform: rotate(-45deg); }
-        }
-        @keyframes cin-searchlight-right {
-            0%   { transform: rotate(45deg); }
-            50%  { transform: rotate(10deg); }
-            100% { transform: rotate(45deg); }
-        }
-        @keyframes cin-ball-drop {
-            0%   { transform: translate3d(-50%, -180px, 0) rotate(0deg) scale(0.6); opacity: 0; }
-            20%  { opacity: 1; }
-            50%  { transform: translate3d(-50%, 0px, 0) rotate(320deg) scale(1); }
-            62%  { transform: translate3d(-50%, -35px, 0) rotate(380deg) scale(0.95); }
-            74%  { transform: translate3d(-50%, 0px, 0) rotate(440deg) scale(1); }
-            84%  { transform: translate3d(-50%, -12px, 0) rotate(480deg) scale(0.98); }
-            92%  { transform: translate3d(-50%, 0px, 0) rotate(510deg) scale(1); }
-            100% { transform: translate3d(-50%, 0px, 0) rotate(520deg) scale(1); opacity: 1; }
-        }
-        @keyframes cin-ball-exit {
-            0%   { transform: translate3d(-50%, 0, 0) rotate(520deg) scale(1); opacity: 1; }
-            100% { transform: translate3d(-50%, -30px, 0) rotate(580deg) scale(0.4); opacity: 0; }
-        }
-        @keyframes cin-trophy-reveal {
-            0%   { transform: translate(-50%, -50%) scale(0.4); opacity: 0; filter: blur(10px); }
-            50%  { opacity: 0.9; filter: blur(0); }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 0.65; }
-        }
-        @keyframes cin-text-rise-in {
-            0%   { transform: translate3d(-80px, 0, 0); opacity: 0; letter-spacing: 2px; }
-            60%  { transform: translate3d(6px, 0, 0); opacity: 1; letter-spacing: 9px; }
-            100% { transform: translate3d(0, 0, 0); opacity: 1; letter-spacing: 7px; }
-        }
-        @keyframes cin-text-great-in {
-            0%   { transform: translate3d(90px, 0, 0) scaleX(1.4); opacity: 0; }
-            50%  { transform: translate3d(-8px, 0, 0) scaleX(0.95); opacity: 1; }
-            100% { transform: translate3d(0, 0, 0) scaleX(1); opacity: 1; }
-        }
-        @keyframes cin-sub-glow {
-            0%, 100% { opacity: 0.7; letter-spacing: 4px; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
-            50%       { opacity: 1; letter-spacing: 5px; text-shadow: 0 0 20px rgba(255,215,0,0.9), 0 0 35px rgba(245,166,35,0.7); }
-        }
-        @keyframes cin-shockwave {
-            0%   { transform: translate(-50%, -50%) scale(0.2); opacity: 0.9; }
-            100% { transform: translate(-50%, -50%) scale(4.5); opacity: 0; }
-        }
-        @keyframes cin-spark {
-            0%   { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
-            100% { transform: translate3d(var(--sx), var(--sy), 0) scale(0); opacity: 0; }
-        }
-        @keyframes cin-glow-pulse {
-            0%, 100% { text-shadow: 0 0 20px rgba(245,166,35,0.6), 0 0 50px rgba(245,166,35,0.2); }
-            50%       { text-shadow: 0 0 40px rgba(255,215,0,0.95), 0 0 80px rgba(245,166,35,0.5), 0 0 120px rgba(245,166,35,0.2); }
-        }
-        @keyframes cin-flash {
-            0%   { opacity: 0; }
-            35%  { opacity: 1; }
-            100% { opacity: 0; }
-        }
-        @keyframes cin-ball-spin {
-            from { transform: rotate(0deg); }
-            to   { transform: rotate(360deg); }
+        /* ══════════════════════════════════════════════════════════════════
+           CONSOLE-GRADE SPLASH SCREEN & TRANSITION STYLES
+        ══════════════════════════════════════════════════════════════════ */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at 50% 38%, #0f1523 0%, #080c14 55%, #030407 100%);
+            z-index: 999999;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 40px 20px;
+            cursor: pointer;
+            user-select: none;
+            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: opacity, transform;
         }
 
-        #cin-ball-wrap {
+        /* Subtle Carbon Mesh Pattern */
+        #intro-overlay::before {
+            content: "";
             position: absolute;
-            bottom: 15%;
-            left: 50%;
-            width: clamp(75px, 14vw, 115px);
-            height: clamp(75px, 14vw, 115px);
-            opacity: 0;
-            z-index: 5;
-            will-change: transform, opacity;
-            filter: drop-shadow(0 0 20px rgba(255,215,0,0.95))
-                    drop-shadow(0 0 50px rgba(245,166,35,0.7))
-                    drop-shadow(0 0 90px rgba(245,166,35,0.3));
+            inset: 0;
+            background-image: radial-gradient(rgba(255, 215, 0, 0.04) 1px, transparent 1px);
+            background-size: 24px 24px;
+            pointer-events: none;
+            opacity: 0.6;
         }
-        #cin-ball-svg-inner {
-            width: 100%;
-            height: 100%;
-            animation: cin-ball-spin 0.8s linear infinite;
-            will-change: transform;
-        }
-        #cin-ball-shadow-ground {
+
+        /* Golden Ambient Radial Glow behind the trophy */
+        .console-ambient-glow {
             position: absolute;
-            bottom: 14.5%;
+            top: 42%;
             left: 50%;
-            transform: translateX(-50%);
-            width: clamp(55px, 10vw, 85px);
-            height: 14px;
-            background: radial-gradient(ellipse, rgba(255,215,0,0.65) 0%, transparent 75%);
+            transform: translate(-50%, -50%);
+            width: clamp(280px, 60vw, 550px);
+            height: clamp(280px, 60vw, 550px);
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.12) 0%, rgba(245, 158, 11, 0.05) 45%, transparent 70%);
+            pointer-events: none;
             border-radius: 50%;
-            opacity: 0;
-            z-index: 4;
-            filter: blur(6px);
+            filter: blur(40px);
+            animation: console-ambient-pulse 5s ease-in-out infinite;
         }
+
+        @keyframes console-ambient-pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+            50% { transform: translate(-50%, -50%) scale(1.12); opacity: 1; }
+        }
+
+        /* Center Content Stack */
+        .console-splash-main {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: auto;
+            margin-bottom: auto;
+            text-align: center;
+        }
+
+        /* Trophy Container & Breathing Effect */
+        .console-trophy-wrap {
+            position: relative;
+            margin-bottom: 24px;
+            animation: console-trophy-float 4s ease-in-out infinite;
+        }
+
+        @keyframes console-trophy-float {
+            0%, 100% { transform: translateY(0px) scale(1); filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 25px rgba(255, 215, 0, 0.35)); }
+            50% { transform: translateY(-8px) scale(1.02); filter: drop-shadow(0 25px 45px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 45px rgba(255, 215, 0, 0.55)); }
+        }
+
+        .console-trophy-svg {
+            width: clamp(120px, 20vw, 170px);
+            height: auto;
+            display: block;
+        }
+
+        /* Typography */
+        .console-title-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .console-main-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: clamp(34px, 8.5vw, 68px);
+            font-weight: 800;
+            letter-spacing: clamp(6px, 1.8vw, 12px);
+            text-transform: uppercase;
+            line-height: 1;
+            margin: 0;
+            background: linear-gradient(135deg, #ffffff 0%, #fff3b0 25%, #ffd700 50%, #f59e0b 75%, #ffffff 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: console-title-shimmer 6s linear infinite;
+            filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.8));
+        }
+
+        @keyframes console-title-shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .console-sub-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(10.5px, 2.4vw, 14px);
+            font-weight: 700;
+            letter-spacing: clamp(5px, 1.2vw, 8px);
+            color: #ffd700;
+            text-transform: uppercase;
+            opacity: 0.85;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .console-sub-title::before,
+        .console-sub-title::after {
+            content: "";
+            width: clamp(15px, 4vw, 30px);
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.7));
+        }
+        .console-sub-title::after {
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.7), transparent);
+        }
+
+        /* Minimal Pulse Prompt at Bottom */
+        .console-bottom-section {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .console-tap-prompt {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            animation: console-prompt-pulse 2.2s ease-in-out infinite;
+        }
+
+        @keyframes console-prompt-pulse {
+            0%, 100% { opacity: 0.95; transform: scale(1); }
+            50% { opacity: 0.45; transform: scale(0.98); }
+        }
+
+        .console-tap-text {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: clamp(14px, 3.2vw, 18px);
+            font-weight: 700;
+            letter-spacing: 5px;
+            color: #ffffff;
+            text-transform: uppercase;
+            text-shadow: 0 0 16px rgba(255, 215, 0, 0.4);
+        }
+
+        .console-tap-sub {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+        }
+
+        .console-brand-tag {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: rgba(255, 215, 0, 0.35);
+            text-transform: uppercase;
+        }
+
+        /* Top Right Skip Button */
         #cin-skip-btn {
             position: absolute;
             top: 24px;
             right: 20px;
             z-index: 50;
-            background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 215, 0, 0.4);
-            color: #ffd700;
-            padding: 8px 16px;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            color: rgba(255, 215, 0, 0.85);
+            padding: 7px 15px;
             border-radius: 20px;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 1px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 215, 0, 0.2);
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
@@ -277,144 +363,86 @@
         }
         #cin-skip-btn:hover {
             background: rgba(255, 215, 0, 0.15);
-            border-color: #ffd700;
-            transform: scale(1.05);
+            border-color: rgba(255, 215, 0, 0.6);
+            color: #ffffff;
+            transform: scale(1.04);
         }
     </style>
 
-    <div id="intro-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at 50% 30%, #0d1b2a 0%, #050b14 60%, #000 100%); z-index: 999999; overflow: hidden; transition: opacity 0.8s cubic-bezier(0.1, 0.8, 0.2, 1); opacity: 1;">
-
-        <!-- Top Right Skip Button (Instant access) -->
-        <button id="cin-skip-btn" onclick="skipIntroDirectly()">
-            <span>HIZLI GEÇ</span>
-            <span style="font-size: 13px;">⏭️</span>
+    <!-- Console-Grade Splash Overlay -->
+    <div id="intro-overlay" onclick="skipIntroDirectly(event)">
+        <!-- Quick Skip Button -->
+        <button id="cin-skip-btn" onclick="skipIntroDirectly(event)">
+            <span>GEÇ</span>
+            <span style="font-size: 11px;">⏭️</span>
         </button>
 
-        <!-- Dynamic Stadium Searchlights -->
-        <div id="cin-searchlight-left" style="position: absolute; bottom: -50px; left: 10%; width: 180px; height: 120vh; background: linear-gradient(to top, rgba(255,215,0,0.18) 0%, rgba(255,245,180,0.05) 60%, transparent 100%); transform-origin: bottom center; animation: cin-searchlight-left 6s ease-in-out infinite; pointer-events: none; filter: blur(15px); z-index: 1;"></div>
-        <div id="cin-searchlight-right" style="position: absolute; bottom: -50px; right: 10%; width: 180px; height: 120vh; background: linear-gradient(to top, rgba(0,229,183,0.18) 0%, rgba(0,180,216,0.05) 60%, transparent 100%); transform-origin: bottom center; animation: cin-searchlight-right 6s ease-in-out infinite; pointer-events: none; filter: blur(15px); z-index: 1;"></div>
+        <!-- Ambient Luxury Gold Glow -->
+        <div class="console-ambient-glow"></div>
 
-        <!-- TAP TO START — waits for user gesture so Web Audio can play -->
-        <div id="cin-tap-start" style="
-            position:absolute; inset:0; z-index:30;
-            display:flex; flex-direction:column; align-items:center; justify-content:center;
-            cursor:pointer; background: radial-gradient(circle at 50% 40%, rgba(13,27,42,0.85) 0%, #000 80%);
-        ">
-            <!-- Pulsing ring & Ballon d'Or silhouette -->
-            <div style="position:relative; width:clamp(110px,22vw,170px); height:clamp(110px,22vw,170px); margin-bottom:24px;">
-                <div style="position:absolute;inset:0;border-radius:50%;border:2px solid rgba(245,166,35,0.35);animation:cin-tap-ring 2s ease-out infinite;"></div>
-                <div style="position:absolute;inset:12px;border-radius:50%;border:1.5px solid rgba(0,229,183,0.3);animation:cin-tap-ring 2s ease-out 0.4s infinite;"></div>
-                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:clamp(52px,11vw,84px); filter: drop-shadow(0 0 25px rgba(255,215,0,0.8));">🏆</div>
+        <!-- Center Splash Hero -->
+        <div class="console-splash-main">
+            <div class="console-trophy-wrap">
+                <!-- Ballon d'Or Trophy SVG -->
+                <svg width="180" height="210" viewBox="0 0 180 210" fill="none" xmlns="http://www.w3.org/2000/svg" class="console-trophy-svg">
+                    <defs>
+                        <linearGradient id="goldSheenBase" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#fff8e1"/>
+                            <stop offset="30%" stop-color="#ffd700"/>
+                            <stop offset="60%" stop-color="#f59e0b"/>
+                            <stop offset="85%" stop-color="#b45309"/>
+                            <stop offset="100%" stop-color="#78350f"/>
+                        </linearGradient>
+                        <radialGradient id="ballonDorOrb" cx="40%" cy="35%" r="62%">
+                            <stop offset="0%" stop-color="#ffffff"/>
+                            <stop offset="25%" stop-color="#ffe082"/>
+                            <stop offset="55%" stop-color="#ffb300"/>
+                            <stop offset="85%" stop-color="#c67d0a"/>
+                            <stop offset="100%" stop-color="#451a03"/>
+                        </radialGradient>
+                        <linearGradient id="goldPillar" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0%" stop-color="#92400e"/>
+                            <stop offset="25%" stop-color="#fcd34d"/>
+                            <stop offset="50%" stop-color="#ffffff"/>
+                            <stop offset="75%" stop-color="#f59e0b"/>
+                            <stop offset="100%" stop-color="#78350f"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Pedestal -->
+                    <path d="M50 185 L130 185 L142 202 L38 202 Z" fill="url(#goldSheenBase)"/>
+                    <rect x="58" y="166" width="64" height="20" rx="3" fill="#121824" stroke="url(#goldSheenBase)" stroke-width="1.5"/>
+                    <rect x="66" y="172" width="48" height="8" rx="1.5" fill="url(#goldSheenBase)" opacity="0.85"/>
+                    <!-- Stem -->
+                    <path d="M82 135 L98 135 L94 166 L86 166 Z" fill="url(#goldPillar)"/>
+                    <!-- Handles -->
+                    <path d="M52 82 C32 94 36 128 58 138 C68 142 78 144 86 144 L86 138 C76 138 68 135 62 131 C46 122 44 98 60 88 Z" fill="url(#goldSheenBase)" opacity="0.9"/>
+                    <path d="M128 82 C148 94 144 128 122 138 C112 142 102 144 94 144 L94 138 C104 138 112 135 118 131 C134 122 136 98 120 88 Z" fill="url(#goldSheenBase)" opacity="0.9"/>
+                    <!-- Golden Orb (Ballon d'Or Globe) -->
+                    <circle cx="90" cy="74" r="50" fill="url(#ballonDorOrb)"/>
+                    <!-- Facets -->
+                    <path d="M90 32 L103 44 L98 62 L82 62 L77 44 Z" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"/>
+                    <path d="M90 24 L90 32 M103 44 L118 42 M98 62 L112 76 M82 62 L68 76 M77 44 L62 42" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/>
+                    <circle cx="90" cy="74" r="50" fill="none" stroke="url(#goldSheenBase)" stroke-width="1.5" opacity="0.6"/>
+                    <!-- Specular Highlight -->
+                    <ellipse cx="76" cy="54" rx="14" ry="8" fill="rgba(255,255,255,0.55)" transform="rotate(-30 76 54)"/>
+                </svg>
             </div>
-            <div style="
-                font-family: 'Inter',sans-serif; font-size:clamp(14px,3.2vw,20px);
-                font-weight:900; letter-spacing:6px; text-transform:uppercase;
-                background: linear-gradient(135deg, #ffd700, #ffb300, #ffffff);
-                -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-                animation:cin-tap-blink 1.4s ease-in-out infinite;
-            ">EKRANA DOKUN & BAŞLA</div>
-            <div style="font-family: 'Inter',sans-serif;font-size:10px;color:rgba(255,215,0,0.45);letter-spacing:3px;margin-top:10px; font-weight:700;">ROAD TO BALLON D'OR</div>
-        </div>
 
-        <!-- Cinematic letterbox bars -->
-        <div id="cin-bar-top" style="position:absolute;top:0;left:0;width:100%;height:12%;background:#000;z-index:10;transform-origin:top;transform:scaleY(0);"></div>
-        <div id="cin-bar-bot" style="position:absolute;bottom:0;left:0;width:100%;height:12%;background:#000;z-index:10;transform-origin:bottom;transform:scaleY(0);"></div>
-
-        <!-- Stadium ground glow -->
-        <div id="cin-ground" style="position:absolute;bottom:14.5%;left:50%;width:70%;height:4px;background:linear-gradient(90deg,transparent,#00e5b7,#ffd700,#00e5b7,transparent);transform:translateX(-50%);opacity:0;border-radius:50%;filter:blur(3px);"></div>
-
-        <!-- Stadium light rays (injected by JS) -->
-        <div id="cin-lights" style="position:absolute;inset:0;z-index:2;pointer-events:none;"></div>
-
-        <!-- Ballon d'Or Trophy Background Glow Silhouette -->
-        <div id="cin-trophy-bg" style="position:absolute;top:45%;left:50%;transform:translate(-50%,-50%) scale(0.6);opacity:0;z-index:3;pointer-events:none;filter:drop-shadow(0 0 40px rgba(255,215,0,0.6));">
-            <svg width="220" height="220" viewBox="0 0 100 100" fill="none" opacity="0.35">
-                <circle cx="50" cy="40" r="28" fill="url(#cinTrophyGrad)"/>
-                <path d="M50 68 L50 82 M35 85 L65 85 M42 82 L58 82" stroke="#ffd700" stroke-width="3" stroke-linecap="round"/>
-                <path d="M22 35 Q12 40 24 55 Q34 65 44 65" stroke="#ffd700" stroke-width="2.5" fill="none"/>
-                <path d="M78 35 Q88 40 76 55 Q66 65 56 65" stroke="#ffd700" stroke-width="2.5" fill="none"/>
-                <defs>
-                    <radialGradient id="cinTrophyGrad" cx="40%" cy="35%" r="65%">
-                        <stop offset="0%" stop-color="#fff8e1"/>
-                        <stop offset="40%" stop-color="#ffd700"/>
-                        <stop offset="100%" stop-color="#b8860b"/>
-                    </radialGradient>
-                </defs>
-            </svg>
-        </div>
-
-        <!-- White flash overlay -->
-        <div id="cin-flash" style="position:absolute;inset:0;background:#fff;opacity:0;z-index:8;pointer-events:none;"></div>
-
-        <!-- Spark particles container -->
-        <div id="cin-sparks" style="position:absolute;bottom:14.5%;left:50%;z-index:6;pointer-events:none;"></div>
-
-        <!-- Ground shadow under ball -->
-        <div id="cin-ball-shadow-ground"></div>
-
-        <!-- Football — custom SVG with visible pentagon pattern & triple glow -->
-        <div id="cin-ball-wrap">
-            <svg id="cin-ball-svg-inner" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" overflow="visible">
-                <defs>
-                    <radialGradient id="ballGrad" cx="36%" cy="32%" r="65%">
-                        <stop offset="0%"   stop-color="#ffffff"/>
-                        <stop offset="50%"  stop-color="#eeeeee"/>
-                        <stop offset="100%" stop-color="#bbbbbb"/>
-                    </radialGradient>
-                    <filter id="ballGlow" x="-40%" y="-40%" width="180%" height="180%">
-                        <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="blur"/>
-                        <feFlood flood-color="#ffd700" flood-opacity="0.8" result="c"/>
-                        <feComposite in="c" in2="blur" operator="in" result="glow"/>
-                        <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
-                    </filter>
-                </defs>
-                <!-- Outer ring -->
-                <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(255,215,0,0.5)" stroke-width="2.5"/>
-                <!-- Main ball body -->
-                <circle cx="50" cy="50" r="44" fill="url(#ballGrad)" filter="url(#ballGlow)"/>
-                <!-- Centre pentagon -->
-                <path d="M50 27 L63 36 L58 51 L42 51 L37 36 Z" fill="#111"/>
-                <!-- Top -->
-                <path d="M50 4  L67 14 L61 30 L39 30 L33 14 Z" fill="#1a1a1a"/>
-                <!-- Upper-right -->
-                <path d="M72 19 L89 31 L83 49 L66 46 L63 31 Z" fill="#1a1a1a"/>
-                <!-- Lower-right -->
-                <path d="M82 57 L89 76 L72 87 L60 73 L66 55 Z" fill="#1a1a1a"/>
-                <!-- Bottom -->
-                <path d="M50 78 L63 89 L50 96 L37 89 Z"         fill="#1a1a1a"/>
-                <!-- Lower-left -->
-                <path d="M18 57 L34 55 L40 73 L28 87 L11 76 Z" fill="#1a1a1a"/>
-                <!-- Upper-left -->
-                <path d="M28 19 L37 31 L34 46 L17 49 L11 31 Z" fill="#1a1a1a"/>
-                <!-- Shine highlight -->
-                <ellipse cx="36" cy="31" rx="11" ry="7" fill="rgba(255,255,255,0.5)" transform="rotate(-30,36,31)"/>
-            </svg>
-        </div>
-
-        <!-- Text block with Road to Ballon d'Or subtitle -->
-        <div id="cin-texts" style="position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:7;pointer-events:none; width: 90%;">
-            <div id="cin-rise" style="font-family: 'Inter',sans-serif;font-size:clamp(26px,6vw,56px);font-weight:900;letter-spacing:8px;color:#f5a623;text-transform:uppercase;opacity:0;will-change:transform,opacity;">RISE OF</div>
-            <div id="cin-great" style="font-family: 'Inter',sans-serif;font-size:clamp(36px,9vw,86px);font-weight:900;letter-spacing:6px;background:linear-gradient(135deg,#ffd700 0%,#f5a623 40%,#fff8e1 70%,#f5a623 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-transform:uppercase;opacity:0;will-change:transform,opacity;margin-top:-6px;">GREATNESS</div>
-            <div id="cin-ballondor-sub" style="font-family: 'Inter',sans-serif; font-size: clamp(11px, 2.5vw, 15px); font-weight: 800; color: #ffd700; text-transform: uppercase; margin-top: 12px; opacity: 0; animation: cin-sub-glow 2s ease-in-out infinite;">
-                ⭐ ROAD TO BALLON D'OR ⭐
+            <!-- Title & Subtitle -->
+            <div class="console-title-wrap">
+                <h1 class="console-main-title">RISE OF GREATNESS</h1>
+                <div class="console-sub-title">ROAD TO BALLON D'OR</div>
             </div>
         </div>
 
-        <!-- Shockwave ring -->
-        <div id="cin-shockwave" style="position:absolute;top:46%;left:50%;width:200px;height:200px;border:2.5px solid rgba(245,166,35,0.85);border-radius:50%;opacity:0;z-index:6;pointer-events:none;"></div>
-
-        <!-- RiseUp Studios logo (final scene) -->
-        <div id="cin-studio" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;z-index:9;pointer-events:none;transition:opacity 0.5s ease;">
-            <svg width="60" height="60" viewBox="0 0 80 80" fill="none">
-                <circle cx="40" cy="40" r="36" stroke="#f5a623" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.4"/>
-                <path d="M40 14 L52 40 L45 38 L45 62 L35 62 L35 38 L28 40 Z" stroke="#f5a623" stroke-width="2" stroke-linejoin="round" fill="rgba(245,166,35,0.2)"/>
-                <path d="M35 62 Q40 72 45 62" stroke="#ffd700" stroke-width="1.5" fill="rgba(255,215,0,0.3)" stroke-linecap="round"/>
-                <circle cx="40" cy="12" r="2.5" fill="#ffd700"/>
-            </svg>
-            <div style="font-family: 'Inter',sans-serif;font-size:clamp(16px,4vw,22px);font-weight:900;letter-spacing:6px;margin-top:14px;background:linear-gradient(90deg,#f5a623,#ffd700,#f5a623);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:riseup-shimmer 2s linear infinite;">RISEUP STUDIOS</div>
-            <div style="font-family: 'Inter',sans-serif;font-size:10px;color:rgba(245,166,35,0.5);letter-spacing:3px;margin-top:6px;">PRESENTS</div>
+        <!-- Bottom Minimal Pulse Prompt -->
+        <div class="console-bottom-section">
+            <div id="cin-tap-start" class="console-tap-prompt">
+                <div class="console-tap-text">EKRANA DOKUN & BAŞLA</div>
+                <div class="console-tap-sub">PRESS ANYWHERE TO PLAY</div>
+            </div>
+            <div class="console-brand-tag">RISEUP STUDIOS • NEXT GEN CAREER MODE</div>
         </div>
-
     </div>
 
     <!-- Main Layout Wrapper (For Desktop Viewports) -->
@@ -3647,8 +3675,52 @@
             });
         }
 
-        // Global skip function for intro
+        // ── CONSOLE-GRADE INTRO & DARK CROSSFADE (0.4s) ──────────────────
         let introSkipped = false;
+
+        function playConsoleIntroSound() {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
+                const now = ctx.currentTime;
+                
+                // Master Gain
+                const master = ctx.createGain();
+                master.gain.setValueAtTime(0.45, now);
+                master.connect(ctx.destination);
+
+                // Warm Sub-Bass Body (55Hz -> 32Hz sine swell)
+                const subOsc = ctx.createOscillator();
+                const subGain = ctx.createGain();
+                subOsc.type = 'sine';
+                subOsc.frequency.setValueAtTime(55, now);
+                subOsc.frequency.exponentialRampToValueAtTime(32, now + 0.5);
+                subGain.gain.setValueAtTime(0.001, now);
+                subGain.gain.linearRampToValueAtTime(0.5, now + 0.05);
+                subGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);
+                subOsc.connect(subGain);
+                subGain.connect(master);
+                subOsc.start(now);
+                subOsc.stop(now + 0.65);
+
+                // Luxury Crystal Chime / Shimmer (F# major chord)
+                [739.99, 932.33, 1108.73, 1479.98].forEach((freq, i) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + i * 0.025);
+                    gain.gain.setValueAtTime(0.0001, now + i * 0.025);
+                    gain.gain.linearRampToValueAtTime(0.12, now + i * 0.025 + 0.03);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.025 + 0.45);
+                    osc.connect(gain);
+                    gain.connect(master);
+                    osc.start(now + i * 0.025);
+                    osc.stop(now + i * 0.025 + 0.5);
+                });
+            } catch(e) { /* Audio context not supported */ }
+        }
+
         function skipIntroDirectly(e) {
             if (e) {
                 e.stopPropagation();
@@ -3657,258 +3729,28 @@
             if (introSkipped) return;
             introSkipped = true;
 
-            // Hide tap prompt if still visible
-            const tapEl = document.getElementById("cin-tap-start");
-            if (tapEl) tapEl.style.display = "none";
-
             const overlay = document.getElementById("intro-overlay");
             if (overlay) {
+                // Play warm console transition sound
+                playConsoleIntroSound();
+
+                // Smooth dark crossfade (0.4s)
                 overlay.style.pointerEvents = "none";
-                overlay.style.opacity = 0;
+                overlay.style.opacity = "0";
+                overlay.style.transform = "scale(1.025)";
+
                 setTimeout(() => {
                     overlay.style.display = "none";
-                    // Start game music only after intro is fully gone
+                    // Start game menu background music
                     if (typeof SoundManager !== "undefined" && SoundManager.musicEnabled) {
                         SoundManager.startMenuMusic();
                     }
-                }, 600);
+                }, 400);
             }
-        }
-
-        // ── WEB AUDIO CINEMATIC SCORE ────────────────────────────────────
-        function playCinematicIntroSound() {
-            try {
-                const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                if (!AudioCtx) return;
-                const ctx = new AudioCtx();
-                const master = ctx.createGain(); master.gain.value = 0.65;
-                master.connect(ctx.destination);
-                // Reverb
-                const rBuf = ctx.createBuffer(2, ctx.sampleRate*2.5, ctx.sampleRate);
-                for (let ch=0;ch<2;ch++) { const d=rBuf.getChannelData(ch); for (let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,2.5); }
-                const rev = ctx.createConvolver(); rev.buffer = rBuf;
-                const rvG = ctx.createGain(); rvG.gain.value = 0.28;
-                rev.connect(rvG); rvG.connect(master);
-                const now = ctx.currentTime;
-                function osc(type,freq,t,dur,vol) {
-                    const o=ctx.createOscillator(),g=ctx.createGain();
-                    o.type=type; o.frequency.value=freq;
-                    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(vol,t+0.02);
-                    g.gain.setValueAtTime(vol*0.85,t+dur*0.6); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
-                    o.connect(g); g.connect(master); g.connect(rev); o.start(t); o.stop(t+dur+0.05);
-                }
-                function boom(t,freq,dur,vol) {
-                    const o=ctx.createOscillator(),g=ctx.createGain();
-                    o.type='sine'; o.frequency.setValueAtTime(freq,t); o.frequency.exponentialRampToValueAtTime(freq*0.15,t+dur);
-                    g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
-                    o.connect(g); g.connect(master); g.connect(rev); o.start(t); o.stop(t+dur+0.05);
-                }
-                function nz(t,dur,vol,ff) {
-                    const buf=ctx.createBuffer(1,ctx.sampleRate*dur,ctx.sampleRate); const d=buf.getChannelData(0);
-                    for (let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
-                    const src=ctx.createBufferSource(); src.buffer=buf;
-                    const flt=ctx.createBiquadFilter(); flt.type='bandpass'; flt.frequency.value=ff; flt.Q.value=0.7;
-                    const g=ctx.createGain(); g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
-                    src.connect(flt); flt.connect(g); g.connect(master); src.start(t); src.stop(t+dur);
-                }
-                // 0.0s: rumble
-                boom(now,40,3.5,0.35); nz(now,1.5,0.08,80);
-                // 0.3s: lights sparkle
-                [1100,1600,2200,3000,4000].forEach((f,i)=>osc('sine',f,now+0.3+i*0.045,0.9,0.10));
-                nz(now+0.3,0.5,0.18,2800); boom(now+0.3,60,0.8,0.3);
-                // 0.9s: ball whoosh
-                (function(){const o=ctx.createOscillator(),g=ctx.createGain(),flt=ctx.createBiquadFilter();
-                flt.type='lowpass';flt.frequency.value=500;o.type='sawtooth';
-                o.frequency.setValueAtTime(700,now+0.9);o.frequency.exponentialRampToValueAtTime(60,now+2.1);
-                g.gain.setValueAtTime(0.22,now+0.9);g.gain.exponentialRampToValueAtTime(0.0001,now+2.2);
-                o.connect(flt);flt.connect(g);g.connect(master);o.start(now+0.9);o.stop(now+2.3);})();
-                // 1.4s: impact bounces
-                boom(now+1.42,110,0.28,0.75); nz(now+1.42,0.18,0.4,700);
-                boom(now+1.77,90,0.22,0.45);  nz(now+1.77,0.14,0.25,550);
-                boom(now+1.97,70,0.18,0.25);
-                // 2.0s: rising strings
-                [196,247,294,370,440,523].forEach((f,i)=>{osc('sawtooth',f,now+2.0+i*0.055,0.85,0.07);osc('sine',f*2,now+2.0+i*0.055,0.85,0.035);});
-                // 2.3s: RISE OF brass
-                [174,220,277,329].forEach((f,i)=>osc('sawtooth',f,now+2.3+i*0.04,1.0,0.09)); boom(now+2.3,55,1.0,0.4);
-                // 2.9s: GREATNESS epic chord
-                boom(now+2.9,41,2.2,0.85); boom(now+2.9,82,1.8,0.55);
-                [110,138,165,220,277,329,440,523,659].forEach((f,i)=>{osc('sawtooth',f,now+2.9+i*0.01,2.0,0.055);osc('square',f,now+2.9,1.5,0.02);});
-                nz(now+2.9,0.3,0.55,500); osc('sine',1760,now+2.9,0.4,0.12);
-                // 3.3s: spark pings
-                [880,1200,1540,1980,1100,1440,800].forEach((f,i)=>osc('sine',f,now+3.3+i*0.07,0.45,0.09));
-                // 4.0s: sustain
-                [220,330,440,554].forEach(f=>osc('sawtooth',f,now+4.0,1.1,0.05));
-                // 5.7s: logo chimes
-                [523,659,784,1047,1319].forEach((f,i)=>osc('sine',f,now+5.7+i*0.18,1.3,0.09));
-                boom(now+5.7,65,1.8,0.28); osc('sawtooth',261,now+5.7,1.5,0.06); osc('sawtooth',329,now+5.8,1.4,0.05);
-            } catch(e) { /* Web Audio not supported */ }
         }
 
         function handleIntroVideo() {
-            if (introSkipped) return;
-            const overlay = document.getElementById("intro-overlay");
-            if (!overlay) return;
-
-            function animate(el, anim) { if (el) el.style.animation = anim; }
-            function setStyle(el, styles) { if (el) Object.assign(el.style, styles); }
-
-            // ── Wait for user TAP before starting (required for Web Audio) ──
-            const tapEl = document.getElementById("cin-tap-start");
-            let started = false;
-            function startCinematic() {
-                if (started) return;
-                started = true;
-
-                // Hide tap prompt with fade
-                if (tapEl) {
-                    tapEl.style.transition = "opacity 0.4s";
-                    tapEl.style.opacity = "0";
-                    setTimeout(() => { if (tapEl) tapEl.style.display = "none"; }, 400);
-                }
-
-                // Start the music (now we have user gesture — browser allows it)
-                playCinematicIntroSound();
-
-                const barTop = document.getElementById("cin-bar-top");
-                const barBot = document.getElementById("cin-bar-bot");
-                animate(barTop, "cin-bar-in 0.5s cubic-bezier(0.4,0,0.2,1) forwards");
-                animate(barBot, "cin-bar-in 0.5s cubic-bezier(0.4,0,0.2,1) forwards");
-
-            // ── PHASE 1 (300ms): Stadium light burst ────────────────────
-            setTimeout(() => {
-                if (introSkipped) return;
-                const lightsEl = document.getElementById("cin-lights");
-                if (!lightsEl) return;
-                const rays = [
-                    { rot: "-35deg", left: "35%", dur: "1.4s", delay: "0s"   },
-                    { rot: "-18deg", left: "42%", dur: "1.2s", delay: "0.1s" },
-                    { rot:   "0deg", left: "50%", dur: "1.5s", delay: "0s"   },
-                    { rot:  "18deg", left: "58%", dur: "1.2s", delay: "0.1s" },
-                    { rot:  "35deg", left: "65%", dur: "1.4s", delay: "0.05s"},
-                    { rot: "-50deg", left: "25%", dur: "1.0s", delay: "0.2s" },
-                    { rot:  "50deg", left: "75%", dur: "1.0s", delay: "0.2s" },
-                ];
-                rays.forEach(r => {
-                    const ray = document.createElement("div");
-                    ray.style.cssText = `
-                        position:absolute; top:0; left:${r.left};
-                        width:2px; height:100%;
-                        background:linear-gradient(to bottom, rgba(255,245,180,0.9) 0%, rgba(245,166,35,0.3) 40%, transparent 80%);
-                        transform-origin:top center;
-                        --rot:${r.rot};
-                        animation:cin-light-burst ${r.dur} ease-out ${r.delay} forwards;
-                        will-change:transform,opacity;
-                    `;
-                    lightsEl.appendChild(ray);
-                });
-            }, 300);
-
-            // ── PHASE 2 (900ms): Football drops and bounces ─────────────
-            setTimeout(() => {
-                if (introSkipped) return;
-                const ball   = document.getElementById("cin-ball-wrap");
-                const ground = document.getElementById("cin-ground");
-                const shadow = document.getElementById("cin-ball-shadow-ground");
-                animate(ball, "cin-ball-drop 1.8s cubic-bezier(0.3,0,0.7,1) forwards");
-                if (ground) { animate(ground, "cin-ground-pulse 1s ease-in-out 0.8s 2 forwards"); setStyle(ground, { opacity: "0.3" }); }
-                if (shadow) setTimeout(() => setStyle(shadow, { opacity: "1", transition: "opacity 0.4s" }), 600);
-            }, 900);
-
-            // ── PHASE 3 (2300ms): "RISE OF" slides in from left ─────────
-            setTimeout(() => {
-                if (introSkipped) return;
-                const rise = document.getElementById("cin-rise");
-                animate(rise, "cin-text-rise-in 0.7s cubic-bezier(0.2,0.8,0.3,1) forwards");
-                if (rise) rise.style.animation += ", cin-glow-pulse 2s ease-in-out 0.7s infinite";
-            }, 2300);
-
-            // ── PHASE 4 (2900ms): "GREATNESS" crashes in from right ─────
-            setTimeout(() => {
-                if (introSkipped) return;
-                const great = document.getElementById("cin-great");
-                animate(great, "cin-text-great-in 0.6s cubic-bezier(0.1,0.9,0.2,1) forwards");
-
-                // Shockwave ring
-                const sw = document.getElementById("cin-shockwave");
-                if (sw) animate(sw, "cin-shockwave 0.8s ease-out forwards");
-
-                // White flash
-                const flash = document.getElementById("cin-flash");
-                if (flash) animate(flash, "cin-flash 0.5s ease-out forwards");
-
-                // Ball exits (kicked away) + shadow fades
-                const ball   = document.getElementById("cin-ball-wrap");
-                const shadow = document.getElementById("cin-ball-shadow-ground");
-                if (ball) {
-                    setTimeout(() => {
-                        animate(ball, "cin-ball-exit 0.4s ease-in forwards");
-                        if (shadow) setStyle(shadow, { transition: "opacity 0.2s", opacity: "0" });
-                    }, 200);
-                }
-            }, 2900);
-
-            // ── PHASE 5 (3300ms): Spark particles explode ───────────────
-            setTimeout(() => {
-                if (introSkipped) return;
-                const sparksEl = document.getElementById("cin-sparks");
-                if (!sparksEl) return;
-                const colors = ["#ffd700","#f5a623","#fff","#ffb300","#ffe082"];
-                for (let i = 0; i < 28; i++) {
-                    const sp = document.createElement("div");
-                    const angle = (Math.random() * 360) * Math.PI / 180;
-                    const dist  = 60 + Math.random() * 160;
-                    const sx = Math.cos(angle) * dist + "px";
-                    const sy = -(Math.abs(Math.sin(angle)) * dist + 20) + "px";
-                    const size = 2 + Math.random() * 4;
-                    const dur  = 0.6 + Math.random() * 0.8;
-                    sp.style.cssText = `
-                        position:absolute; left:0; top:0;
-                        width:${size}px; height:${size}px;
-                        background:${colors[i % colors.length]};
-                        border-radius:50%;
-                        --sx:${sx}; --sy:${sy};
-                        animation:cin-spark ${dur}s ease-out forwards;
-                        animation-delay:${Math.random() * 0.3}s;
-                        will-change:transform,opacity;
-                    `;
-                    sparksEl.appendChild(sp);
-                }
-            }, 3300);
-
-            // ── PHASE 6 (5200ms): Fade texts + bars out ─────────────────
-            setTimeout(() => {
-                if (introSkipped) return;
-                const texts = document.getElementById("cin-texts");
-                if (texts) setStyle(texts, { transition: "opacity 0.6s", opacity: "0" });
-                if (barTop) setStyle(barTop, { transition: "transform 0.5s", transform: "scaleY(0)" });
-                if (barBot) setStyle(barBot, { transition: "transform 0.5s", transform: "scaleY(0)" });
-            }, 5200);
-
-            // ── PHASE 7 (5700ms): RiseUp Studios logo ───────────────────
-            setTimeout(() => {
-                if (introSkipped) return;
-                const studio = document.getElementById("cin-studio");
-                if (studio) setStyle(studio, { transition: "opacity 0.6s ease", opacity: "1" });
-            }, 5700);
-
-            // ── PHASE 8 (7400ms): Dismiss overlay ───────────────────────
-            setTimeout(() => {
-                if (!introSkipped) skipIntroDirectly();
-            }, 7400);
-
-            } // end startCinematic()
-
-            // ── Bind tap/click — triggers only once ──────────────────────
-            if (tapEl) {
-                tapEl.addEventListener("click",  startCinematic, { once: true });
-                tapEl.addEventListener("touchend", function(e) {
-                    e.preventDefault();
-                    startCinematic();
-                }, { once: true });
-            } else {
-                // No tap element — start directly (e.g. desktop dev mode)
-                startCinematic();
-            }
+            // Intro overlay is ready on load with CSS animations; transitions on tap/click
         }
 
         // Initialize state
