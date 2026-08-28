@@ -143,19 +143,17 @@
         });
     </script>
 
-    <!-- Intro Video Overlay -->
-    <!-- RiseUp Studios Animated Splash Screen -->
+    <!-- ══════════════════════════════════════════════════════════════════
+         CINEMATIC 3-STAGE STUDIO INTRO (RISE OF GREATNESS)
+    ══════════════════════════════════════════════════════════════════ -->
     <style>
-        /* ══════════════════════════════════════════════════════════════════
-           CINEMATIC RISEUP STUDIOS PRODUCTION SPLASH
-        ══════════════════════════════════════════════════════════════════ */
         #intro-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: radial-gradient(circle at 50% 50%, #0d131f 0%, #07090e 60%, #030407 100%);
+            background: #04060a;
             z-index: 999999;
             overflow: hidden;
             display: flex;
@@ -167,24 +165,148 @@
             will-change: opacity, transform;
         }
 
-        /* Ambient Dynamic Aura */
-        .riseup-ambient-aura {
+        /* Stage Container Transitions */
+        .intro-stage {
             position: absolute;
-            width: clamp(260px, 50vw, 480px);
-            height: clamp(260px, 50vw, 480px);
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(0, 229, 183, 0.16) 0%, rgba(255, 215, 0, 0.08) 45%, transparent 70%);
-            filter: blur(50px);
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px;
+            opacity: 0;
             pointer-events: none;
-            animation: riseup-aura-pulse 2.4s ease-in-out infinite;
+            transform: scale(0.95);
+            transition: opacity 0.5s cubic-bezier(0.2, 0.8, 0.25, 1), transform 0.5s cubic-bezier(0.2, 0.8, 0.25, 1);
+        }
+        .intro-stage.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
         }
 
-        @keyframes riseup-aura-pulse {
-            0%, 100% { transform: scale(0.95); opacity: 0.7; }
-            50% { transform: scale(1.15); opacity: 1; }
+        /* Skip Indicator */
+        .intro-skip-hint {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.45);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 6px 14px;
+            border-radius: 20px;
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            transition: all 0.2s ease;
+        }
+        .intro-skip-hint:hover {
+            color: #00e5b7;
+            border-color: #00e5b7;
+            background: rgba(0, 229, 183, 0.1);
         }
 
-        /* Motion Studio Container */
+        /* ──── STAGE 1: FOOTBALL ATMOSPHERE ──── */
+        .stage1-turf-glow {
+            position: absolute;
+            width: clamp(280px, 60vw, 520px);
+            height: clamp(280px, 60vw, 520px);
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.22) 0%, rgba(245, 158, 11, 0.08) 40%, transparent 70%);
+            filter: blur(55px);
+            animation: turf-pulse 2.2s ease-in-out infinite;
+        }
+        @keyframes turf-pulse {
+            0%, 100% { transform: scale(0.92); opacity: 0.6; }
+            50% { transform: scale(1.12); opacity: 1; }
+        }
+        .stage1-ball-box {
+            position: relative;
+            width: clamp(100px, 22vw, 140px);
+            height: clamp(100px, 22vw, 140px);
+            margin-bottom: 24px;
+            animation: ball-reveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes ball-reveal {
+            0% { transform: scale(0.7) translateY(20px); opacity: 0; filter: blur(10px); }
+            100% { transform: scale(1) translateY(0); opacity: 1; filter: blur(0); }
+        }
+        .stage1-ball-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 25px rgba(0, 229, 183, 0.6)) drop-shadow(0 0 50px rgba(255, 215, 0, 0.35));
+            animation: ball-float 3s ease-in-out infinite;
+        }
+        @keyframes ball-float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(6deg); }
+        }
+        .stage1-whisper {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(11px, 2.8vw, 13.5px);
+            font-weight: 700;
+            letter-spacing: clamp(6px, 1.8vw, 12px);
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            animation: whisper-fade 1.4s ease-in-out forwards;
+        }
+        @keyframes whisper-fade {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 0.85; transform: translateY(0); }
+        }
+
+        /* ──── STAGE 2: SWORD SLASH & RISEUP STUDIOS ──── */
+        .sword-slash-wrapper {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 50;
+        }
+        .sword-slash-beam {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 240vw;
+            height: 5px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.95) 45%, #00e5b7 50%, #ffd700 55%, transparent 100%);
+            box-shadow: 0 0 30px #ffffff, 0 0 60px #00e5b7, 0 0 100px #ffd700;
+            transform: translate(-50%, -50%) rotate(-32deg) scaleX(0);
+            transform-origin: center center;
+            opacity: 0;
+        }
+        .sword-slash-beam.animate {
+            animation: sword-slash-anim 0.5s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+        }
+        @keyframes sword-slash-anim {
+            0% { transform: translate(-50%, -50%) rotate(-32deg) scaleX(0); opacity: 0; }
+            25% { opacity: 1; transform: translate(-50%, -50%) rotate(-32deg) scaleX(1.15); }
+            100% { transform: translate(-50%, -50%) rotate(-32deg) scaleX(1.4); opacity: 0; }
+        }
+        .sword-slash-spark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ffffff 0%, #00e5b7 40%, transparent 70%);
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+        }
+        .sword-slash-spark.animate {
+            animation: spark-burst 0.55s ease-out forwards;
+        }
+        @keyframes spark-burst {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+            40% { transform: translate(-50%, -50%) scale(2.2); opacity: 0.9; }
+            100% { transform: translate(-50%, -50%) scale(3.8); opacity: 0; }
+        }
+
         .riseup-studio-stage {
             position: relative;
             z-index: 10;
@@ -194,17 +316,7 @@
             justify-content: center;
             text-align: center;
             padding: 20px;
-            animation: riseup-stage-reveal 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-
-        @keyframes riseup-stage-reveal {
-            0% { transform: scale(0.88); opacity: 0; filter: blur(8px); }
-            30% { transform: scale(1); opacity: 1; filter: blur(0px); }
-            85% { transform: scale(1.02); opacity: 1; }
-            100% { transform: scale(1.03); opacity: 1; }
-        }
-
-        /* Animated Studio Emblem */
         .riseup-emblem-box {
             position: relative;
             width: clamp(80px, 16vw, 110px);
@@ -214,7 +326,6 @@
             align-items: center;
             justify-content: center;
         }
-
         .riseup-orbital-ring {
             position: absolute;
             inset: -8px;
@@ -222,12 +333,10 @@
             border: 1.5px dashed rgba(0, 229, 183, 0.45);
             animation: riseup-orbit 8s linear infinite;
         }
-
         @keyframes riseup-orbit {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
         .riseup-emblem-svg {
             width: 100%;
             height: 100%;
@@ -235,13 +344,10 @@
             filter: drop-shadow(0 0 20px rgba(0, 229, 183, 0.7)) drop-shadow(0 0 40px rgba(255, 215, 0, 0.4));
             animation: riseup-emblem-float 2.2s ease-in-out infinite;
         }
-
         @keyframes riseup-emblem-float {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-4px); }
         }
-
-        /* Typography & Kinetic Shimmer */
         .riseup-brand-title {
             font-family: 'Space Grotesk', 'Rajdhani', sans-serif;
             font-size: clamp(26px, 6.5vw, 44px);
@@ -258,12 +364,10 @@
             animation: riseup-text-shimmer 2.2s ease-in-out forwards;
             filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.9));
         }
-
         @keyframes riseup-text-shimmer {
             0% { background-position: 100% center; }
             100% { background-position: -50% center; }
         }
-
         .riseup-brand-sub {
             font-family: 'Space Grotesk', sans-serif;
             font-size: clamp(9.5px, 2.2vw, 12.5px);
@@ -276,9 +380,7 @@
             align-items: center;
             gap: 12px;
         }
-
-        .riseup-brand-sub::before,
-        .riseup-brand-sub::after {
+        .riseup-brand-sub::before, .riseup-brand-sub::after {
             content: "";
             width: clamp(20px, 5vw, 40px);
             height: 1px;
@@ -288,66 +390,214 @@
             background: linear-gradient(90deg, rgba(255, 215, 0, 0.7), transparent);
         }
 
-        /* Light Sweep Beam */
-        .riseup-light-sweep {
-            position: absolute;
-            top: -50%;
-            left: -60%;
-            width: 50%;
-            height: 200%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
-            transform: rotate(25deg);
-            pointer-events: none;
-            animation: riseup-beam 1.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s forwards;
+        /* ──── STAGE 3: GAME TITLE & BALLON D'OR ──── */
+        .stage3-trophy-box {
+            position: relative;
+            width: clamp(90px, 20vw, 130px);
+            height: clamp(90px, 20vw, 130px);
+            margin-bottom: 18px;
         }
-
-        @keyframes riseup-beam {
-            0% { left: -60%; opacity: 0; }
-            30% { opacity: 1; }
-            100% { left: 140%; opacity: 0; }
+        .stage3-trophy-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.7)) drop-shadow(0 0 60px rgba(245, 158, 11, 0.4));
+            animation: trophy-glow 2.5s ease-in-out infinite;
+        }
+        @keyframes trophy-glow {
+            0%, 100% { transform: translateY(0); filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.6)); }
+            50% { transform: translateY(-4px); filter: drop-shadow(0 0 45px rgba(255, 215, 0, 0.9)) drop-shadow(0 0 80px rgba(0, 229, 183, 0.4)); }
+        }
+        .game-main-title {
+            font-family: 'Space Grotesk', 'Rajdhani', sans-serif;
+            font-size: clamp(24px, 6.5vw, 42px);
+            font-weight: 900;
+            letter-spacing: clamp(4px, 1.6vw, 10px);
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin: 0;
+            background: linear-gradient(110deg, #ffffff 0%, #ffd700 35%, #00e5b7 70%, #ffffff 100%);
+            background-size: 250% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.9));
+            animation: title-shimmer 3s ease-in-out infinite;
+        }
+        @keyframes title-shimmer {
+            0% { background-position: 100% center; }
+            50% { background-position: 0% center; }
+            100% { background-position: -100% center; }
+        }
+        .game-sub-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(10px, 2.4vw, 13px);
+            font-weight: 700;
+            letter-spacing: clamp(5px, 1.4vw, 8px);
+            color: #ffd700;
+            text-transform: uppercase;
+            margin-top: 10px;
+            margin-bottom: 36px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .game-sub-title::before, .game-sub-title::after {
+            content: "";
+            width: clamp(18px, 4vw, 36px);
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.8));
+        }
+        .game-sub-title::after {
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.8), transparent);
+        }
+        .tap-to-start-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            background: rgba(0, 229, 183, 0.08);
+            border: 1px solid rgba(0, 229, 183, 0.35);
+            border-radius: 99px;
+            color: #ffffff;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(11px, 2.5vw, 13px);
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            box-shadow: 0 0 25px rgba(0, 229, 183, 0.2);
+            animation: tap-pulse 1.8s ease-in-out infinite;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .tap-to-start-btn:hover {
+            background: rgba(0, 229, 183, 0.18);
+            border-color: #00e5b7;
+            transform: scale(1.05);
+            box-shadow: 0 0 35px rgba(0, 229, 183, 0.4);
+        }
+        .tap-pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00e5b7;
+            box-shadow: 0 0 10px #00e5b7;
+            animation: pulse-dot 1.2s infinite alternate ease-in-out;
+        }
+        @keyframes pulse-dot {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(1.3); opacity: 1; }
+        }
+        @keyframes tap-pulse {
+            0%, 100% { opacity: 0.85; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.03); }
         }
     </style>
 
-    <!-- RiseUp Studios Cinematic Splash Overlay -->
+    <!-- 3-Stage Cinematic Intro Overlay -->
     <div id="intro-overlay" onclick="skipIntroDirectly(event)">
-        <!-- Ambient Glowing Aura -->
-        <div class="riseup-ambient-aura"></div>
+        <!-- Skip Hint -->
+        <div class="intro-skip-hint">ATLAMAK İÇİN DOKUN ❯</div>
 
-        <!-- Light Sweep Reflection -->
-        <div class="riseup-light-sweep"></div>
-
-        <!-- Central Animated Studio Presentation -->
-        <div class="riseup-studio-stage">
-            <!-- Studio Emblem with Orbital Ring -->
-            <div class="riseup-emblem-box">
-                <div class="riseup-orbital-ring"></div>
-                <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" class="riseup-emblem-svg">
+        <!-- ── 1. AŞAMA: FUTBOL SİNEMATİĞİ & ATMOSFER ── -->
+        <div id="intro-stage-1" class="intro-stage active">
+            <div class="stage1-turf-glow"></div>
+            <div class="stage1-ball-box">
+                <svg viewBox="0 0 100 100" class="stage1-ball-svg" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <defs>
-                        <linearGradient id="riseupCyanGold" x1="0" y1="0" x2="80" y2="80" gradientUnits="userSpaceOnUse">
-                            <stop offset="0%" stop-color="#00e5b7"/>
-                            <stop offset="50%" stop-color="#38bdf8"/>
-                            <stop offset="100%" stop-color="#ffd700"/>
-                        </linearGradient>
-                        <radialGradient id="starGoldGlow" cx="40" cy="40" r="15" gradientUnits="userSpaceOnUse">
+                        <radialGradient id="ballShine" cx="35%" cy="30%" r="65%">
                             <stop offset="0%" stop-color="#ffffff"/>
-                            <stop offset="60%" stop-color="#ffd700"/>
-                            <stop offset="100%" stop-color="#f59e0b"/>
+                            <stop offset="35%" stop-color="#38bdf8"/>
+                            <stop offset="70%" stop-color="#00e5b7"/>
+                            <stop offset="100%" stop-color="#064e3b"/>
                         </radialGradient>
                     </defs>
-                    <!-- Outer Stylized Shield/Hexagon -->
-                    <path d="M40 8 L66 22 L66 52 L40 72 L14 52 L14 22 Z" stroke="url(#riseupCyanGold)" stroke-width="2.5" stroke-linejoin="round" fill="rgba(0, 229, 183, 0.08)"/>
-                    <!-- Upward Wing Chevrons -->
-                    <path d="M40 18 L54 38 L46 36 L46 56 L34 56 L34 36 L26 38 Z" fill="url(#riseupCyanGold)" opacity="0.9"/>
-                    <!-- Base Arch -->
-                    <path d="M28 58 Q40 68 52 58" stroke="#ffd700" stroke-width="2" stroke-linecap="round" fill="none"/>
-                    <!-- Crown Star -->
-                    <circle cx="40" cy="18" r="3.5" fill="url(#starGoldGlow)"/>
+                    <circle cx="50" cy="50" r="44" fill="url(#ballShine)" stroke="#ffd700" stroke-width="2"/>
+                    <polygon points="50,32 62,41 57,56 43,56 38,41" fill="#0f172a" stroke="#ffd700" stroke-width="1.8"/>
+                    <line x1="50" y1="32" x2="50" y2="14" stroke="#ffd700" stroke-width="1.8"/>
+                    <line x1="62" y1="41" x2="80" y2="34" stroke="#ffd700" stroke-width="1.8"/>
+                    <line x1="57" y1="56" x2="72" y2="72" stroke="#ffd700" stroke-width="1.8"/>
+                    <line x1="43" y1="56" x2="28" y2="72" stroke="#ffd700" stroke-width="1.8"/>
+                    <line x1="38" y1="41" x2="20" y2="34" stroke="#ffd700" stroke-width="1.8"/>
+                    <polygon points="50,14 42,6 58,6" fill="#0f172a" stroke="#ffd700" stroke-width="1.5"/>
+                    <polygon points="80,34 92,30 88,46" fill="#0f172a" stroke="#ffd700" stroke-width="1.5"/>
+                    <polygon points="20,34 8,30 12,46" fill="#0f172a" stroke="#ffd700" stroke-width="1.5"/>
                 </svg>
             </div>
+            <div class="stage1-whisper">BİR EFSANENİN DOĞUŞU</div>
+        </div>
 
-            <!-- Title and Subtitle -->
-            <h1 class="riseup-brand-title">RISEUP STUDIOS</h1>
-            <div class="riseup-brand-sub">PRESENTS</div>
+        <!-- ── 2. AŞAMA: KILIÇ EFEKTİ İLE RISEUP STUDIOS REVEAL ── -->
+        <div id="intro-stage-2" class="intro-stage">
+            <!-- Sword Slash Visual Layer -->
+            <div class="sword-slash-wrapper">
+                <div id="sword-beam" class="sword-slash-beam"></div>
+                <div id="sword-spark" class="sword-slash-spark"></div>
+            </div>
+
+            <div class="riseup-studio-stage">
+                <div class="riseup-emblem-box">
+                    <div class="riseup-orbital-ring"></div>
+                    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" class="riseup-emblem-svg">
+                        <defs>
+                            <linearGradient id="riseupCyanGold" x1="0" y1="0" x2="80" y2="80" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#00e5b7"/>
+                                <stop offset="50%" stop-color="#38bdf8"/>
+                                <stop offset="100%" stop-color="#ffd700"/>
+                            </linearGradient>
+                            <radialGradient id="starGoldGlow" cx="40" cy="40" r="15" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#ffffff"/>
+                                <stop offset="60%" stop-color="#ffd700"/>
+                                <stop offset="100%" stop-color="#f59e0b"/>
+                            </radialGradient>
+                        </defs>
+                        <path d="M40 8 L66 22 L66 52 L40 72 L14 52 L14 22 Z" stroke="url(#riseupCyanGold)" stroke-width="2.5" stroke-linejoin="round" fill="rgba(0, 229, 183, 0.08)"/>
+                        <path d="M40 18 L54 38 L46 36 L46 56 L34 56 L34 36 L26 38 Z" fill="url(#riseupCyanGold)" opacity="0.9"/>
+                        <path d="M28 58 Q40 68 52 58" stroke="#ffd700" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <circle cx="40" cy="18" r="3.5" fill="url(#starGoldGlow)"/>
+                    </svg>
+                </div>
+                <h1 class="riseup-brand-title">RISEUP STUDIOS</h1>
+                <div class="riseup-brand-sub">PRESENTS</div>
+            </div>
+        </div>
+
+        <!-- ── 3. AŞAMA: OYUN BAŞLIĞI & BALLON D'OR ── -->
+        <div id="intro-stage-3" class="intro-stage">
+            <div class="stage3-trophy-box">
+                <svg viewBox="0 0 100 100" class="stage3-trophy-svg" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <radialGradient id="trophyGoldShine" cx="40%" cy="30%" r="70%">
+                            <stop offset="0%" stop-color="#ffffff"/>
+                            <stop offset="30%" stop-color="#ffe082"/>
+                            <stop offset="70%" stop-color="#ffb300"/>
+                            <stop offset="100%" stop-color="#e65100"/>
+                        </radialGradient>
+                        <linearGradient id="basePyrite" x1="0" y1="0" x2="100" y2="100">
+                            <stop offset="0%" stop-color="#334155"/>
+                            <stop offset="50%" stop-color="#1e293b"/>
+                            <stop offset="100%" stop-color="#0f172a"/>
+                        </linearGradient>
+                    </defs>
+                    <polygon points="24,86 76,86 70,72 30,72" fill="url(#basePyrite)" stroke="#ffd700" stroke-width="1.5"/>
+                    <rect x="36" y="76" width="28" height="6" rx="2" fill="#ffd700" opacity="0.9"/>
+                    <path d="M44 72 L42 56 L58 56 L56 72 Z" fill="url(#trophyGoldShine)" stroke="#ffb300" stroke-width="1"/>
+                    <circle cx="50" cy="34" r="26" fill="url(#trophyGoldShine)" stroke="#ffd700" stroke-width="2"/>
+                    <polygon points="50,22 58,28 55,38 45,38 42,28" fill="rgba(255,255,255,0.4)" stroke="#e65100" stroke-width="1.2"/>
+                    <line x1="50" y1="22" x2="50" y2="10" stroke="#e65100" stroke-width="1.2"/>
+                    <line x1="58" y1="28" x2="70" y2="24" stroke="#e65100" stroke-width="1.2"/>
+                    <line x1="55" y1="38" x2="65" y2="48" stroke="#e65100" stroke-width="1.2"/>
+                    <line x1="45" y1="38" x2="35" y2="48" stroke="#e65100" stroke-width="1.2"/>
+                    <line x1="42" y1="28" x2="30" y2="24" stroke="#e65100" stroke-width="1.2"/>
+                    <circle cx="50" cy="8" r="2" fill="#ffffff" filter="drop-shadow(0 0 6px #ffffff)"/>
+                </svg>
+            </div>
+            <h1 class="game-main-title">RISE OF GREATNESS</h1>
+            <div class="game-sub-title">ROAD TO BALLON D'OR</div>
+            
+            <div class="tap-to-start-btn">
+                <span class="tap-pulse-dot"></span>
+                <span>EKRANA DOKUN & BAŞLA</span>
+            </div>
         </div>
     </div>
 
@@ -3889,76 +4139,254 @@
             });
         }
 
-        // ── DYNAMIC RISEUP STUDIOS PRODUCTION AUDIO & CONTROLLER ──────────
+        // ══════════════════════════════════════════════════════════════════
+        // 🎬 CINEMATIC 3-STAGE STUDIO INTRO & AUDIO SYNTHESIZER
+        // ══════════════════════════════════════════════════════════════════
         let introSkipped = false;
-        let introAutoTimer = null;
-        let audioPlayed = false;
+        let introTimers = [];
+        let introAudioCtx = null;
 
-        function playRiseUpStudioSound() {
-            if (audioPlayed) return;
-            audioPlayed = true;
-            try {
+        function getAudioContext() {
+            if (!introAudioCtx) {
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                if (!AudioCtx) return;
-                const ctx = new AudioCtx();
-                if (ctx.state === "suspended") {
-                    ctx.resume();
+                if (AudioCtx) {
+                    introAudioCtx = new AudioCtx();
                 }
+            }
+            if (introAudioCtx && introAudioCtx.state === "suspended") {
+                introAudioCtx.resume().catch(() => {});
+            }
+            return introAudioCtx;
+        }
+
+        // 1. Stage 1 Audio: Stadium Murmur + Heartbeat Sub Thumps
+        function playStage1AtmosphereAudio() {
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
                 const now = ctx.currentTime;
-                
-                // Master Bus
+
                 const master = ctx.createGain();
-                master.gain.setValueAtTime(0.55, now);
+                master.gain.setValueAtTime(0.5, now);
                 master.connect(ctx.destination);
 
-                // 1. Warm Sub-Bass Boom (48Hz -> 30Hz)
+                // Ambient Stadium Wind / Crowd Murmur (Filtered White Noise)
+                const bufferSize = ctx.sampleRate * 1.8;
+                const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = (Math.random() * 2 - 1) * 0.35;
+                }
+                const noise = ctx.createBufferSource();
+                noise.buffer = buffer;
+
+                const noiseFilter = ctx.createBiquadFilter();
+                noiseFilter.type = 'bandpass';
+                noiseFilter.frequency.setValueAtTime(180, now);
+                noiseFilter.frequency.exponentialRampToValueAtTime(260, now + 1.2);
+                noiseFilter.Q.setValueAtTime(3.5, now);
+
+                const noiseGain = ctx.createGain();
+                noiseGain.gain.setValueAtTime(0.001, now);
+                noiseGain.gain.linearRampToValueAtTime(0.22, now + 0.5);
+                noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.6);
+
+                noise.connect(noiseFilter);
+                noiseFilter.connect(noiseGain);
+                noiseGain.connect(master);
+                noise.start(now);
+                noise.stop(now + 1.7);
+
+                // Two Rhythmic Heartbeat Thumps (Lub-Dub)
+                [0.15, 0.45, 1.0, 1.28].forEach((timeOffset, idx) => {
+                    const beatOsc = ctx.createOscillator();
+                    const beatGain = ctx.createGain();
+                    beatOsc.type = 'sine';
+                    const beatTime = now + timeOffset;
+                    beatOsc.frequency.setValueAtTime(54, beatTime);
+                    beatOsc.frequency.exponentialRampToValueAtTime(32, beatTime + 0.18);
+
+                    const amp = (idx % 2 === 0) ? 0.4 : 0.28;
+                    beatGain.gain.setValueAtTime(0.001, beatTime);
+                    beatGain.gain.linearRampToValueAtTime(amp, beatTime + 0.03);
+                    beatGain.gain.exponentialRampToValueAtTime(0.0001, beatTime + 0.22);
+
+                    beatOsc.connect(beatGain);
+                    beatGain.connect(master);
+                    beatOsc.start(beatTime);
+                    beatOsc.stop(beatTime + 0.25);
+                });
+            } catch(e) { /* AudioContext error safety */ }
+        }
+
+        // 2. Stage 2 Audio: Sharp Metallic Sword Slash + Sub-Bass Drop
+        function playStage2SwordSlashSFX() {
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const now = ctx.currentTime;
+
+                const master = ctx.createGain();
+                master.gain.setValueAtTime(0.65, now);
+                master.connect(ctx.destination);
+
+                // A. High-Frequency Metallic Blade Slice (Sharp Whoosh)
+                const sliceOsc = ctx.createOscillator();
+                const sliceGain = ctx.createGain();
+                const sliceFilter = ctx.createBiquadFilter();
+                sliceOsc.type = 'sawtooth';
+                sliceFilter.type = 'bandpass';
+                sliceFilter.frequency.setValueAtTime(3600, now);
+                sliceFilter.frequency.exponentialRampToValueAtTime(450, now + 0.16);
+                sliceFilter.Q.setValueAtTime(6.0, now);
+
+                sliceGain.gain.setValueAtTime(0.001, now);
+                sliceGain.gain.linearRampToValueAtTime(0.38, now + 0.02);
+                sliceGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
+
+                sliceOsc.connect(sliceFilter);
+                sliceFilter.connect(sliceGain);
+                sliceGain.connect(master);
+                sliceOsc.start(now);
+                sliceOsc.stop(now + 0.3);
+
+                // B. Pure Metallic Blade Ring Resonance
+                const ringOsc = ctx.createOscillator();
+                const ringGain = ctx.createGain();
+                ringOsc.type = 'sine';
+                ringOsc.frequency.setValueAtTime(1864, now + 0.04);
+                ringGain.gain.setValueAtTime(0.001, now + 0.04);
+                ringGain.gain.linearRampToValueAtTime(0.18, now + 0.07);
+                ringGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.85);
+
+                ringOsc.connect(ringGain);
+                ringGain.connect(master);
+                ringOsc.start(now + 0.04);
+                ringOsc.stop(now + 0.9);
+
+                // C. Deep Sub-Bass Impact Boom (Sub Drop)
                 const subOsc = ctx.createOscillator();
                 const subGain = ctx.createGain();
                 subOsc.type = 'sine';
-                subOsc.frequency.setValueAtTime(52, now);
-                subOsc.frequency.exponentialRampToValueAtTime(30, now + 0.9);
-                subGain.gain.setValueAtTime(0.001, now);
-                subGain.gain.linearRampToValueAtTime(0.5, now + 0.08);
+                subOsc.frequency.setValueAtTime(72, now + 0.02);
+                subOsc.frequency.exponentialRampToValueAtTime(26, now + 0.9);
+
+                subGain.gain.setValueAtTime(0.001, now + 0.02);
+                subGain.gain.linearRampToValueAtTime(0.55, now + 0.08);
                 subGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.2);
+
                 subOsc.connect(subGain);
                 subGain.connect(master);
-                subOsc.start(now);
+                subOsc.start(now + 0.02);
                 subOsc.stop(now + 1.3);
 
-                // 2. High-Tech Riser Whoosh (Filtered Sawtooth Sweep 120Hz -> 900Hz)
-                const whooshOsc = ctx.createOscillator();
-                const whooshGain = ctx.createGain();
-                const filter = ctx.createBiquadFilter();
-                whooshOsc.type = 'sawtooth';
-                filter.type = 'lowpass';
-                filter.frequency.setValueAtTime(160, now);
-                filter.frequency.exponentialRampToValueAtTime(1100, now + 0.6);
-                whooshGain.gain.setValueAtTime(0.0001, now);
-                whooshGain.gain.linearRampToValueAtTime(0.18, now + 0.25);
-                whooshGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.85);
-                whooshOsc.connect(filter);
-                filter.connect(whooshGain);
-                whooshGain.connect(master);
-                whooshOsc.start(now);
-                whooshOsc.stop(now + 0.9);
-
-                // 3. Luxurious Studio Chime Arpeggio (E5 -> G#5 -> B5 -> E6 -> G#6)
-                const notes = [659.25, 830.61, 987.77, 1318.51, 1661.22];
+                // D. Luxurious Golden Chime Chord (E5 -> G#5 -> B5 -> E6)
+                const notes = [659.25, 830.61, 987.77, 1318.51];
                 notes.forEach((freq, i) => {
                     const osc = ctx.createOscillator();
                     const gain = ctx.createGain();
                     osc.type = (i === notes.length - 1) ? 'triangle' : 'sine';
-                    const startTime = now + 0.12 + (i * 0.09);
+                    const startTime = now + 0.10 + (i * 0.08);
                     osc.frequency.setValueAtTime(freq, startTime);
                     gain.gain.setValueAtTime(0.0001, startTime);
-                    gain.gain.linearRampToValueAtTime(0.16, startTime + 0.04);
+                    gain.gain.linearRampToValueAtTime(0.14, startTime + 0.04);
                     gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.9);
                     osc.connect(gain);
                     gain.connect(master);
                     osc.start(startTime);
                     osc.stop(startTime + 0.95);
                 });
-            } catch(e) { /* AudioContext not supported */ }
+            } catch(e) { /* AudioContext error safety */ }
+        }
+
+        // 3. Stage 3 Audio: Orchestral Synth Chord Swell
+        function playStage3ThemeSwellAudio() {
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const now = ctx.currentTime;
+
+                const master = ctx.createGain();
+                master.gain.setValueAtTime(0.45, now);
+                master.connect(ctx.destination);
+
+                // Harmonic F# Major Warm Cinematic Pad (F#3, C#4, F#4, A#4)
+                const chord = [185.00, 277.18, 369.99, 466.16];
+                chord.forEach((freq) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    const filter = ctx.createBiquadFilter();
+
+                    osc.type = 'sawtooth';
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(400, now);
+                    filter.frequency.exponentialRampToValueAtTime(1400, now + 1.2);
+
+                    gain.gain.setValueAtTime(0.0001, now);
+                    gain.gain.linearRampToValueAtTime(0.12, now + 0.6);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.8);
+
+                    osc.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(master);
+                    osc.start(now);
+                    osc.stop(now + 2.9);
+                });
+            } catch(e) { /* AudioContext error safety */ }
+        }
+
+        // ── 3-STAGE CINEMATIC TIMELINE CONTROLLER ──────────────────────────
+        function startCinematicIntro() {
+            // Stage 1 starts immediately
+            playStage1AtmosphereAudio();
+
+            // Stage 2: Kılıç Efekti ve RiseUp Studios (at t = 1.4s)
+            introTimers.push(setTimeout(() => {
+                if (introSkipped) return;
+                const s1 = document.getElementById("intro-stage-1");
+                const s2 = document.getElementById("intro-stage-2");
+                if (s1) s1.classList.remove("active");
+                if (s2) s2.classList.add("active");
+
+                // Trigger Sword Slash beam & spark animation
+                const beam = document.getElementById("sword-beam");
+                const spark = document.getElementById("sword-spark");
+                if (beam) beam.classList.add("animate");
+                if (spark) spark.classList.add("animate");
+
+                playStage2SwordSlashSFX();
+            }, 1400));
+
+            // Stage 3: Oyun Başlığı & Ballon d'Or (at t = 3.4s)
+            introTimers.push(setTimeout(() => {
+                if (introSkipped) return;
+                const s2 = document.getElementById("intro-stage-2");
+                const s3 = document.getElementById("intro-stage-3");
+                if (s2) s2.classList.remove("active");
+                if (s3) s3.classList.add("active");
+
+                playStage3ThemeSwellAudio();
+            }, 3400));
+
+            // Auto-transition to lobby/game after complete sequence (at t = 5.6s)
+            introTimers.push(setTimeout(() => {
+                if (!introSkipped) {
+                    skipIntroDirectly();
+                }
+            }, 5600));
+
+            // Unlock audio on first gesture
+            const unlockAudio = () => {
+                getAudioContext();
+                window.removeEventListener("touchstart", unlockAudio);
+                window.removeEventListener("mousedown", unlockAudio);
+            };
+            window.addEventListener("touchstart", unlockAudio, { passive: true });
+            window.addEventListener("mousedown", unlockAudio, { passive: true });
+        }
+
+        function handleIntroVideo() {
+            startCinematicIntro();
         }
 
         function skipIntroDirectly(e) {
@@ -3968,10 +4396,9 @@
             }
             if (introSkipped) return;
             introSkipped = true;
-            if (introAutoTimer) clearTimeout(introAutoTimer);
+            introTimers.forEach(t => clearTimeout(t));
 
-            // Ensure sound plays if it was waiting for first user gesture
-            playRiseUpStudioSound();
+            getAudioContext();
 
             const overlay = document.getElementById("intro-overlay");
             if (overlay) {
@@ -3988,27 +4415,6 @@
                     }
                 }, 450);
             }
-        }
-
-        function handleIntroVideo() {
-            // Attempt to trigger audio on load
-            playRiseUpStudioSound();
-
-            // Also attach one-time listener to window so if browser blocked autoplay, the first tap anywhere plays it
-            const unlockAudio = () => {
-                playRiseUpStudioSound();
-                window.removeEventListener("touchstart", unlockAudio);
-                window.removeEventListener("mousedown", unlockAudio);
-            };
-            window.addEventListener("touchstart", unlockAudio, { passive: true });
-            window.addEventListener("mousedown", unlockAudio, { passive: true });
-
-            // Exactly 2.2 seconds total, then automatically smooth dark crossfade to game
-            introAutoTimer = setTimeout(() => {
-                if (!introSkipped) {
-                    skipIntroDirectly();
-                }
-            }, 2200);
         }
 
         // Initialize state
