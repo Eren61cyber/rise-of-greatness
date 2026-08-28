@@ -38,6 +38,7 @@ const GAME = {
         careerAssists: 0,
         careerApps: 0,
         totalEarnings: 0,
+        jerseyNumber: 10,
         biggestWin: null,
         biggestLoss: null,
         mostEmotionalMatch: null,
@@ -443,6 +444,9 @@ const GAME = {
                 }
                 if (typeof this.state.totalEarnings === "undefined" || isNaN(this.state.totalEarnings)) {
                     this.state.totalEarnings = this.state.money || 0;
+                }
+                if (typeof this.state.jerseyNumber === "undefined" || isNaN(this.state.jerseyNumber)) {
+                    this.state.jerseyNumber = 10;
                 }
                  if (typeof this.state.dribbling === "undefined") {
                      this.state.dribbling = 50;
@@ -1870,6 +1874,8 @@ const GAME = {
 
         const bindings = {
             "player-name": pNameStr,
+            "player-jersey-number": "#" + (this.state.jerseyNumber || 10),
+            "player-jersey-number-badge": "#" + (this.state.jerseyNumber || 10),
             "player-age": this.state.age,
             "player-rating": this.state.rating,
             "player-position": this.state.position,
