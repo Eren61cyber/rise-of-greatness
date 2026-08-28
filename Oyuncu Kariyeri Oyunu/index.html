@@ -3983,18 +3983,6 @@
                         checkAndStartTutorial();
                     });
                 }
-            }
-                    GAME.resetGame(name, startingLeague, startingSalary, startingTrust, city, district, selectedStartingClub, selectedIntroPosition);
-                    GAME.state.avatarCustomization = tempAvatarCustomization;
-                    GAME.saveGame();
-                    GAME.updateUI();
-
-                    introModal.classList.remove("active");
-                    determineNextOpponent();
-                    renderLeagueTable();
-                    renderSocialFeed();
-                    checkAndStartTutorial();
-                });
             } else {
                 GAME.init();
                 
