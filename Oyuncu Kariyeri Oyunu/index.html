@@ -9702,38 +9702,59 @@
                         let rawText = opt.text || "";
                         let rawDesc = opt.effect || "";
 
-                        // Determine theme and icon
+                        // Determine theme, icon, and specific attribute stat
                         let theme = "theme-shoot";
-                        let chipIcon = "🎯";
+                        let chipIcon = "⚽";
+                        let statLabel = "Şut";
+                        let statVal = (GAME.state && GAME.state.shooting) ? GAME.state.shooting : 50;
                         let lText = (rawText + " " + rawDesc).toLowerCase();
 
-                        if (lText.includes("kay") || lText.includes("sök") || lText.includes("savunma") || lText.includes("müdahale") || lText.includes("özür") || lText.includes("kabullen")) {
+                        if (lText.includes("kay") || lText.includes("sök") || lText.includes("savunma") || lText.includes("müdahale") || lText.includes("kap")) {
                             theme = "theme-defense";
                             chipIcon = "🛡️";
-                        } else if (lText.includes("pas") || lText.includes("kaçır") || lText.includes("orta") || lText.includes("taktik") || lText.includes("aç")) {
+                            statLabel = "Savunma";
+                            statVal = (GAME.state && GAME.state.defense) ? GAME.state.defense : 50;
+                        } else if (lText.includes("pas") || lText.includes("kaçır") || lText.includes("orta") || lText.includes("taktik") || lText.includes("aç") || lText.includes("özür") || lText.includes("kabullen")) {
                             theme = "theme-pass";
                             chipIcon = "👟";
-                        } else if (lText.includes("hız") || lText.includes("depar") || lText.includes("kontra") || lText.includes("koş")) {
+                            statLabel = "Pas";
+                            statVal = (GAME.state && GAME.state.passing) ? GAME.state.passing : 50;
+                        } else if (lText.includes("hız") || lText.includes("depar") || lText.includes("kontra") || lText.includes("koş") || lText.includes("boşa")) {
                             theme = "theme-speed";
                             chipIcon = "⚡";
+                            statLabel = "Hız";
+                            statVal = (GAME.state && GAME.state.speed) ? GAME.state.speed : 50;
+                        } else if (lText.includes("fizik") || lText.includes("yıkılma") || lText.includes("ayakta") || lText.includes("güç")) {
+                            theme = "theme-defense";
+                            chipIcon = "💪";
+                            statLabel = "Fizik";
+                            statVal = (GAME.state && GAME.state.physical) ? GAME.state.physical : 50;
                         } else if (lText.includes("çalım") || lText.includes("sakla") || lText.includes("falso") || lText.includes("röveşata") || lText.includes("aşırtma") || lText.includes("viral") || lText.includes("itiraz")) {
                             theme = "theme-skill";
                             chipIcon = "👑";
+                            statLabel = "Yetenek";
+                            statVal = (GAME.state && GAME.state.dribbling) ? GAME.state.dribbling : ((GAME.state && GAME.state.shooting) ? GAME.state.shooting : 50);
                         } else {
                             theme = "theme-shoot";
                             chipIcon = "⚽";
+                            statLabel = "Şut";
+                            statVal = (GAME.state && GAME.state.shooting) ? GAME.state.shooting : 50;
                         }
 
-                        // Calculate Chip Text (e.g. %53 Şans or Stat chip)
-                        let chipText = "";
-                        if (typeof opt.successChance === "number") {
-                            let pct = Math.max(5, Math.min(99, Math.round(opt.successChance * 100)));
-                            chipText = `%${pct} Şans`;
-                        } else if (opt.statUsed && GAME.state && GAME.state[opt.statUsed]) {
-                            chipText = `${opt.statUsed.toUpperCase()}: ${GAME.state[opt.statUsed]}`;
-                        } else {
-                            chipText = "Aksiyon";
+                        if (opt.statUsed && GAME.state && GAME.state[opt.statUsed]) {
+                            const statMap = {
+                                "shooting": "Şut",
+                                "passing": "Pas",
+                                "speed": "Hız",
+                                "defense": "Savunma",
+                                "physical": "Fizik",
+                                "dribbling": "Yetenek"
+                            };
+                            statLabel = statMap[opt.statUsed] || opt.statUsed;
+                            statVal = GAME.state[opt.statUsed];
                         }
+
+                        let chipText = `${statLabel} ${statVal}`;
 
                         // Clean emojis from button title for clean typography
                         let cleanTitle = rawText.replace(/^[^\w\s\u00C0-\u017F\u0100-\u024F]+/g, '').trim();
@@ -9752,6 +9773,7 @@
                             </button>
                         `;
                     });
+
 
                     decCard.style.display = "block";
                     timelineLog.scrollTop = timelineLog.scrollHeight;
