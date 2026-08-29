@@ -1131,13 +1131,14 @@
                 <!-- Match Live Stats & Possession Bar -->
                 <div class="scoreboard-live-bar">
                     <div class="possession-bar-wrapper">
-                        <span class="possession-label left" id="possession-home-txt">%52</span>
+                        <span id="possession-home-txt" style="display:none;"></span>
                         <div class="possession-track">
                             <div class="possession-fill-home" id="possession-home-bar" style="width: 52%;"></div>
                         </div>
-                        <span class="possession-label right" id="possession-away-txt">%48</span>
+                        <span id="possession-away-txt" style="display:none;"></span>
                     </div>
                 </div>
+
 
                 <!-- Player Live Performance Bar & Match Speed -->
                 <div class="scoreboard-player-hud">
@@ -9763,15 +9764,12 @@
                         optionsContainer.innerHTML += `
                             <button class="match-action-card ${theme}" onclick="chooseMatchOption(${idx})">
                                 <div class="action-card-left">
-                                    <div class="action-card-title">${cleanTitle}</div>
+                                    <div class="action-card-title">${chipIcon} ${cleanTitle}</div>
                                     <div class="action-card-desc">${rawDesc}</div>
-                                </div>
-                                <div class="action-card-chip">
-                                    <span>${chipIcon}</span>
-                                    <span>${chipText}</span>
                                 </div>
                             </button>
                         `;
+
                     });
 
 
