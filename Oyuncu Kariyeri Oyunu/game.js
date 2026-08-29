@@ -1299,6 +1299,9 @@ const GAME = {
         // Transition opponent states centrally here
         this.state.lastOpponentName = this.state.nextOpponentName;
         this.state.nextOpponentName = null;
+        // Clear weekly fixtures so they are always regenerated fresh for the next week
+        this.state.weeklyFixtures = [];
+        this.state.weeklyFixturesWeek = 0;
 
         // Simulate weekly Esports match if founded
         if (this.state.esportsTeam) {
@@ -3288,9 +3291,17 @@ const GAME = {
         let numWeeks = numTeams - 1;
         let halfSize = numTeams / 2;
         
+        // Shuffle the initial order (keeping index 0 fixed as the "pivot")
+        // so that consecutive runs don't always produce the same first-week matchups
+        let pivot = teams[0];
+        let rest = teams.slice(1);
+        rest.sort(() => Math.random() - 0.5);
+        teams = [pivot, ...rest];
+        
         let seasonFixtures = [];
         
-        // Round 1 (First Half of Season)
+        // Round 1 (First Half of Season) — Standard Berger tables algorithm
+        // Fixed: teams[0] stays fixed; rotate the remaining n-1 teams clockwise each round
         for (let week = 0; week < numWeeks; week++) {
             let weekFixtures = [];
             for (let i = 0; i < halfSize; i++) {
@@ -3305,14 +3316,14 @@ const GAME = {
             }
             seasonFixtures.push(weekFixtures);
             
-            // Rotate teams (Berger tables method)
-            let newTeams = [];
-            newTeams.push(teams[0]);
-            newTeams.push(teams[numTeams - 1]);
-            for (let i = 1; i < numTeams - 1; i++) {
-                newTeams.push(teams[i]);
+            // Correct Berger rotation: keep teams[0] fixed,
+            // rotate the rest one position clockwise (last → second position)
+            let rotated = [teams[0]];
+            rotated.push(teams[numTeams - 1]);           // last moves to position 1
+            for (let i = 1; i < numTeams - 1; i++) {    // rest shift right by one
+                rotated.push(teams[i]);
             }
-            teams = newTeams;
+            teams = rotated;
         }
         
         // Round 2 (Second Half of Season - reverse home/away)
@@ -3327,6 +3338,7 @@ const GAME = {
         this.state.seasonFixtures = seasonFixtures.concat(secondHalf);
         this.saveGame();
     },
+
 
     unlockAchievement: function(id) {
         const achDefs = {
