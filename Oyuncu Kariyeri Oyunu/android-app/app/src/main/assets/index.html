@@ -5411,11 +5411,9 @@
             if (week === 1 && GAME.state.currentLeague === "Süper Lig" && GAME.state.wonLeagueLastSeason) {
                 GAME.state.isSuperCupMatch = true;
                 
-                let topTeams = ["Galatastar", "Kartal FK", "Bahçeşehir"];
-                let opponentName = topTeams[Math.floor(Math.random() * topTeams.length)];
-                if (opponentName === GAME.state.currentClub) {
-                    opponentName = "Trabzonstar";
-                }
+                let topTeams = ["Galatastar", "Kartal FK", "Bahçeşehir", "Trabzonstar"].filter(t => t !== GAME.state.currentClub && t !== GAME.state.lastOpponentName);
+                if (topTeams.length === 0) topTeams = ["Galatastar", "Kartal FK", "Bahçeşehir", "Trabzonstar"].filter(t => t !== GAME.state.currentClub);
+                let opponentName = topTeams[Math.floor(Math.random() * topTeams.length)] || "Galatastar";
                 
                 let teamObj = null;
                 for (let lg in DATABASE.LEAGUES) {
@@ -5456,8 +5454,9 @@
                 }
                 
                 if (!opponent) {
-                    let eligibleOpponents = pool.filter(t => t.name !== GAME.state.currentClub);
-                    opponent = eligibleOpponents[Math.floor(Math.random() * eligibleOpponents.length)];
+                    let eligibleOpponents = pool.filter(t => t.name !== GAME.state.currentClub && t.name !== GAME.state.lastOpponentName);
+                    if (eligibleOpponents.length === 0) eligibleOpponents = pool.filter(t => t.name !== GAME.state.currentClub);
+                    opponent = eligibleOpponents[Math.floor(Math.random() * eligibleOpponents.length)] || pool[0];
                     GAME.state.nextOpponentName = opponent.name;
                     GAME.saveGame();
                 }
@@ -5497,7 +5496,9 @@
                         natOpp = DATABASE.NATIONAL_TEAMS.find(t => t.name === GAME.state.nextOpponentName);
                     }
                     if (!natOpp) {
-                        natOpp = DATABASE.NATIONAL_TEAMS[Math.floor(Math.random() * DATABASE.NATIONAL_TEAMS.length)];
+                        let eligibleNat = DATABASE.NATIONAL_TEAMS.filter(t => t.name !== GAME.state.lastOpponentName);
+                        if (eligibleNat.length === 0) eligibleNat = DATABASE.NATIONAL_TEAMS;
+                        natOpp = eligibleNat[Math.floor(Math.random() * eligibleNat.length)];
                         GAME.state.nextOpponentName = natOpp.name;
                         GAME.saveGame();
                     }
@@ -5546,7 +5547,7 @@
 
             if (fixtureIndex >= 0 && fixtureIndex < GAME.state.seasonFixtures.length) {
                 let weeklyMatchups = GAME.state.seasonFixtures[fixtureIndex];
-                let myMatchup = weeklyMatchups.find(m => m.home === GAME.state.currentClub || m.away === GAME.state.currentClub);
+                let myMatchup = weeklyMatchups ? weeklyMatchups.find(m => m.home === GAME.state.currentClub || m.away === GAME.state.currentClub) : null;
                 if (myMatchup) {
                     let opponentName = myMatchup.home === GAME.state.currentClub ? myMatchup.away : myMatchup.home;
                     
@@ -5560,6 +5561,13 @@
                         }
                         GAME.state.nextOpponentName = nextOpponent.name;
                     }
+                } else {
+                    // Fallback: If my club wasn't in the pre-generated fixture (e.g. after transfer)
+                    let eligibleTeams = league.teams.filter(t => t.name !== GAME.state.currentClub && t.name !== GAME.state.lastOpponentName);
+                    if (eligibleTeams.length === 0) eligibleTeams = league.teams.filter(t => t.name !== GAME.state.currentClub);
+                    let picked = eligibleTeams[Math.floor(Math.random() * eligibleTeams.length)] || league.teams[0];
+                    nextOpponent = picked;
+                    GAME.state.nextOpponentName = picked.name;
                 }
             } else {
                 GAME.state.nextOpponentName = "Lig Bitti";
@@ -5571,6 +5579,7 @@
 
             displayNextOpponent();
         }
+
 
         function displayNextOpponent() {
             const playBtn = document.getElementById("btn-play-match");
@@ -5997,16 +6006,16 @@
                             <button class="btn btn-event" onclick="buyPack('icon')" ${isLimitReached ? 'disabled' : ''} style="padding: 6px 12px; font-size: 11px; font-weight: bold; background: rgba(156,39,176,0.15); color: #E040FB; border: 1px solid rgba(156,39,176,0.3);">150.000 €</button>
                         </div>
 
-                        <!-- Special Offer (20 TL Fırsat Paketi) -->
+                        <!-- Special Offer (3x Mega Fırsat Paketi) -->
                         <div style="display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, rgba(0,230,118,0.05), rgba(0,0,0,0.25)); border: 1px solid rgba(0,230,118,0.25); padding: 10px 14px; border-radius: 12px;">
                             <div style="display: flex; align-items: center; gap: 12px;">
                                 <div style="font-size: 24px; filter: drop-shadow(0 2px 4px rgba(0,230,118,0.4));">🔥</div>
                                 <div>
-                                    <h4 style="color: #00E676; font-size: 13px; font-weight: 800; margin: 0;">Fırsat Paketi (3x Açılım)</h4>
-                                    <p style="color: var(--text-muted); font-size: 10.5px; margin: 2px 0 0 0;">3 adet paketi sınırsız limit ile aç</p>
+                                    <h4 style="color: #00E676; font-size: 13px; font-weight: 800; margin: 0;">3x Mega Fırsat Paketi</h4>
+                                    <p style="color: var(--text-muted); font-size: 10.5px; margin: 2px 0 0 0;">3 adet süper kartı sınırsız limit ile aç</p>
                                 </div>
                             </div>
-                            <button class="btn btn-primary" onclick="buyPack('promo')" style="padding: 6px 12px; font-size: 11px; font-weight: 900; background: #00E676; color: #000; border: none; box-shadow: 0 0 10px rgba(0,230,118,0.35);">20 TL (Mock)</button>
+                            <button class="btn btn-primary" onclick="buyPack('promo')" style="padding: 6px 12px; font-size: 11px; font-weight: 900; background: #00E676; color: #000; border: none; box-shadow: 0 0 10px rgba(0,230,118,0.35);">250.000 €</button>
                         </div>
 
                     </div>
@@ -6078,7 +6087,7 @@
             if (type === 'silver') cost = 10000;
             else if (type === 'gold') cost = 50000;
             else if (type === 'icon') cost = 150000;
-            else if (type === 'promo') cost = 20;
+            else if (type === 'promo') cost = 250000;
 
             const myCollection = GAME.state.collection || [];
             const inGameCashCount = myCollection.filter(c => !c.isPremium).length;
@@ -6088,21 +6097,18 @@
                     alert("❌ Koleksiyonunuzda en fazla 10 adet oyun parası kartı bulundurabilirsiniz! Yeni kart almak için albümünüzdeki kartlardan bazılarını satmalısınız.");
                     return;
                 }
-                if (GAME.state.money < cost) {
-                    alert("❌ Yetersiz Bakiye! Bu paketi açmak için yeterli paranız yok.");
-                    return;
-                }
-            } else {
-                if (GAME.state.money < 20) {
-                    alert("❌ Yetersiz Bakiye! Fırsat paketi için hesabınızda en az 20 € olmalıdır.");
-                    return;
-                }
+            }
+
+            if (GAME.state.money < cost) {
+                alert(`❌ Yetersiz Bakiye! Bu paketi açmak için en az ${cost.toLocaleString()} € bakiyeniz olmalıdır.`);
+                return;
             }
 
             GAME.state.money -= cost;
             if (window.SoundManager) window.SoundManager.playBuy();
             GAME.saveGame();
             GAME.updateUI();
+
 
             activePackType = type;
             packedPlayer = rollPackedPlayer(type);
@@ -7693,6 +7699,10 @@
                 GAME.updateTeammateName();
             }
             GAME.initLeagueTable();
+            GAME.generateSeasonFixtures();
+            GAME.state.lastOpponentName = null;
+            GAME.state.nextOpponentName = null;
+            nextOpponent = null;
 
             // Breaking News & Social Media Post
             const postText = `🚨 RESMİ: ${GAME.state.playerName}, ${teamName} kulübüne transfer oldu! Genç yıldız haftalık ${salary.toLocaleString()} € kazanacak ve yeni takımının başarısı için ter dökecek. 📝⚽`;
@@ -7714,6 +7724,7 @@
             
             document.querySelector("[data-target='panel-career']").click();
             determineNextOpponent();
+
         }
 
         function getAgentIconSVG(agentId) {
@@ -9621,9 +9632,12 @@
             });
             } catch (err) {
                 console.error("Critical error in startMatch:", err);
-                alert("Maç başlatılırken bir hata oluştu: " + err.message + "\nStack: " + err.stack);
+                if (pBtn) pBtn.disabled = false;
+                if (sBtn) sBtn.disabled = false;
+                alert("Maç başlatılırken bir hata oluştu: " + err.message + "\nLütfen tekrar deneyin.");
             }
         }
+
 
         function chooseMatchOption(optionIdx) {
             document.getElementById("match-decision-card").style.display = "none";

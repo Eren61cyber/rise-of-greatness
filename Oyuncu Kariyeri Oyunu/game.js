@@ -870,10 +870,14 @@ const GAME = {
         if (plan.id === "cheat_meal") {
             if (!confirm("Hamburger ve fast-food kaçamağı yapmak istediğinden emin misin? (+25 Moral, -15 Kondisyon)")) return false;
             this.state.money -= plan.cost;
-            plan.applyWeekly(this.state);
+            this.state.moral = Math.min(100, (this.state.moral || 50) + 25);
+            this.state.kondisyon = Math.max(0, (this.state.kondisyon || 100) - 15);
             this.saveGame();
             this.updateUI();
-            alert("🍔 Kaçamak öğün yendi! Moral tavan yaptı ama hoca duysa fena kızar! (-15 Kondisyon)");
+            if (typeof window !== "undefined" && typeof window.renderNutritionAndRecovery === "function") {
+                window.renderNutritionAndRecovery();
+            }
+            alert(`🍔 Kaçamak öğün afiyetle yendi!\n\n📈 Moral: %${this.state.moral} (+25)\n📉 Kondisyon: %${this.state.kondisyon} (-15)`);
             return true;
         }
 
@@ -882,6 +886,7 @@ const GAME = {
         this.updateUI();
         alert(`🥗 ${plan.name} aktif haftalık beslenme rutininiz olarak belirlendi! (${plan.stats})`);
         return true;
+
     },
 
     applyRecoveryRoutine: function(routineId) {

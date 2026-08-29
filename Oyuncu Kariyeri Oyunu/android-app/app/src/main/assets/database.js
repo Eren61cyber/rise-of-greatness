@@ -673,9 +673,13 @@ const DATABASE = {
             stats: "+25 Moral, -15 Kondisyon",
             desc: "Büyük boy burger, patates kızartması ve gazlı içecek.",
             proTip: "⚠️ Sporcu Uyarısı: Doymuş yağ ve rafine şeker vücutta su tutar (ödem yapar), laktik asit birikimini artırır ve maç temposunda erken tıkanmaya yol açar.",
-            applyWeekly: (s) => {}
+            applyWeekly: (s) => {
+                s.moral = Math.min(100, (s.moral || 50) + 25);
+                s.kondisyon = Math.max(0, (s.kondisyon || 100) - 15);
+            }
         }
     ],
+
 
     RECOVERY_ROUTINES: [
         {
