@@ -737,9 +737,6 @@ body {
     to { transform: translateY(0); }
 }
 
-.match-header {
-    display: flex;
-    justify-content: space-between;
 /* ============================================================
    TV BROADCAST PREMIUM SCOREBOARD
    ============================================================ */
