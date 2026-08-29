@@ -2466,10 +2466,14 @@ const GAME = {
         this.state.seasonGoals = 0;
         this.state.seasonAssists = 0;
         this.state.seasonApps = 0;
+        this.state.currentLeagueGoals = 0;
+        this.state.currentLeagueAssists = 0;
+        this.state.currentLeagueApps = 0;
         this.state.mostEmotionalMatch = null;
         this.state.currentWeek = 1;
         this.state.transferredThisWindow = false;
         this.state.activeTransferOffers = [];
+
         
         // Reset league table & scorers for the current league
         this.initLeagueTable();

@@ -701,6 +701,20 @@
                     </div>
                 </div>
 
+                <!-- 📊 LİGLERE GÖRE KARİYER DÖKÜMÜ -->
+                <div class="card glass" style="margin-bottom: 12px; padding: 14px; border-radius: 12px;">
+                    <div style="font-size: 11px; font-weight: 800; color: #00E676; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <span>📊</span> Liglere Göre Kariyer Dökümü
+                        </div>
+                        <span style="font-size: 10px; color: var(--text-muted); font-weight: 700;">Tüm Zamanlar</span>
+                    </div>
+                    <div id="career-league-breakdown-container" style="display: flex; flex-direction: column; gap: 8px;">
+                        <!-- Dynamically filled with league performance cards -->
+                    </div>
+                </div>
+
+
                 <!-- 3. Finansal Durum Kartı: Yan yana 2'li -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
                     <div class="card glass" style="padding: 14px; border-radius: 12px; display: flex; flex-direction: column; justify-content: center;">
@@ -3037,7 +3051,9 @@
 
                 if (target === "panel-my-career") {
                     if (typeof updateTrophyShowcase === "function") updateTrophyShowcase();
+                    if (typeof renderCareerLeagueBreakdown === "function") renderCareerLeagueBreakdown();
                 }
+
                 if (target === "panel-training") {
                     renderTrainingPanel();
                 }
@@ -5858,6 +5874,83 @@
             });
         }
 
+        // Lig Bazlı Kariyer Dökümünü Çiz
+        function renderCareerLeagueBreakdown() {
+            const container = document.getElementById("career-league-breakdown-container");
+            if (!container || !GAME || !GAME.state) return;
+
+            // Ensure careerLeagueStats exists
+            if (!GAME.state.careerLeagueStats) {
+                GAME.state.careerLeagueStats = {};
+            }
+
+            // Fallback for existing save files: if careerLeagueStats is empty, populate with current career numbers
+            const stats = GAME.state.careerLeagueStats;
+            const curLeague = GAME.state.currentLeague || "3. Lig";
+            if (Object.keys(stats).length === 0 && (GAME.state.careerGoals > 0 || GAME.state.careerApps > 0)) {
+                stats[curLeague] = {
+                    apps: GAME.state.careerApps || 0,
+                    goals: GAME.state.careerGoals || 0,
+                    assists: GAME.state.careerAssists || 0
+                };
+            }
+
+            const leagueMeta = {
+                "3. Lig": { icon: "🥉", color: "#b87333", bg: "rgba(184, 115, 51, 0.12)", border: "rgba(184, 115, 51, 0.3)" },
+                "2. Lig": { icon: "🥈", color: "#c0c0c0", bg: "rgba(192, 192, 192, 0.12)", border: "rgba(192, 192, 192, 0.3)" },
+                "1. Lig": { icon: "🥇", color: "#e5e5e5", bg: "rgba(229, 229, 229, 0.12)", border: "rgba(229, 229, 229, 0.3)" },
+                "Süper Lig": { icon: "🇹🇷", color: "#00E676", bg: "rgba(0, 230, 118, 0.12)", border: "rgba(0, 230, 118, 0.3)" },
+                "Premier Lig": { icon: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", color: "#38BDF8", bg: "rgba(56, 189, 248, 0.12)", border: "rgba(56, 189, 248, 0.3)" },
+                "La Liga": { icon: "🇪🇸", color: "#FFD600", bg: "rgba(255, 214, 0, 0.12)", border: "rgba(255, 214, 0, 0.3)" },
+                "Serie A": { icon: "🇮🇹", color: "#00B0FF", bg: "rgba(0, 176, 255, 0.12)", border: "rgba(0, 176, 255, 0.3)" },
+                "Bundesliga": { icon: "🇩🇪", color: "#FF5252", bg: "rgba(255, 82, 82, 0.12)", border: "rgba(255, 82, 82, 0.3)" },
+                "Ligue 1": { icon: "🇫🇷", color: "#E040FB", bg: "rgba(224, 64, 251, 0.12)", border: "rgba(224, 64, 251, 0.3)" },
+                "Süper Kupa": { icon: "🛡️", color: "#FFC107", bg: "rgba(255, 193, 7, 0.12)", border: "rgba(255, 193, 7, 0.3)" },
+                "Avrupa Kupaları": { icon: "⭐", color: "#00E5FF", bg: "rgba(0, 229, 255, 0.12)", border: "rgba(0, 229, 255, 0.3)" },
+                "Milli Takım": { icon: "🇹🇷", color: "#EF4444", bg: "rgba(239, 68, 68, 0.15)", border: "rgba(239, 68, 68, 0.35)" }
+            };
+
+            const leagueKeys = Object.keys(stats);
+            if (leagueKeys.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 14px; color: var(--text-muted); font-size: 11.5px; border: 1px dashed rgba(255,255,255,0.08); border-radius: 8px;">
+                        Henüz resmi bir lig maçında süre almadınız.
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = "";
+            leagueKeys.forEach(lKey => {
+                const item = stats[lKey];
+                const meta = leagueMeta[lKey] || { icon: "⚽", color: "#00E676", bg: "rgba(255,255,255,0.05)", border: "rgba(255,255,255,0.1)" };
+                const ratio = item.apps > 0 ? (item.goals / item.apps).toFixed(2) : "0.00";
+
+                container.innerHTML += `
+                    <div style="background: ${meta.bg}; border: 1px solid ${meta.border}; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="font-size: 20px;">${meta.icon}</div>
+                            <div>
+                                <div style="font-size: 13px; font-weight: 800; color: #FFFFFF;">${lKey}</div>
+                                <div style="font-size: 10px; color: #94A3B8; font-weight: 600;">👕 ${item.apps || 0} Maç • Oran: ${ratio} Gol/Maç</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="text-align: right;">
+                                <div style="font-size: 15px; font-weight: 900; color: #00E676; font-variant-numeric: tabular-nums;">${item.goals || 0}</div>
+                                <div style="font-size: 8.5px; color: #94A3B8; font-weight: 700; text-transform: uppercase;">Gol</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 15px; font-weight: 900; color: #FFD600; font-variant-numeric: tabular-nums;">${item.assists || 0}</div>
+                                <div style="font-size: 8.5px; color: #94A3B8; font-weight: 700; text-transform: uppercase;">Asist</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+
 
         // Render Shop Items
         function renderShopItems() {
@@ -7749,6 +7842,7 @@
         }
 
         function acceptTransfer(teamName, leagueName, salary) {
+            let prevLeague = GAME.state.currentLeague;
             GAME.state.currentClub = teamName;
             GAME.state.currentLeague = leagueName;
             GAME.state.weeklySalary = salary;
@@ -7756,6 +7850,14 @@
             GAME.state.lastTransferredWeek = GAME.state.currentWeek;
             GAME.state.lastTransferredSeason = GAME.state.age || 17;
             GAME.state.activeTransferOffers = [];
+
+            // If transferring to a new league, reset current league top scorer numbers
+            if (prevLeague !== leagueName) {
+                GAME.state.currentLeagueGoals = 0;
+                GAME.state.currentLeagueAssists = 0;
+                GAME.state.currentLeagueApps = 0;
+                GAME.initLeagueScorers(false);
+            }
 
             // New club adaptation: fresh chemistry & coach trust baseline
             GAME.state.takimUyumu = Math.min(60, Math.max(35, (GAME.state.takimUyumu || 50) - 15));
@@ -7769,6 +7871,7 @@
             GAME.state.lastOpponentName = null;
             GAME.state.nextOpponentName = null;
             nextOpponent = null;
+
 
             // Breaking News & Social Media Post
             const postText = `🚨 RESMİ: ${GAME.state.playerName}, ${teamName} kulübüne transfer oldu! Genç yıldız haftalık ${salary.toLocaleString()} € kazanacak ve yeni takımının başarısı için ter dökecek. 📝⚽`;
@@ -8198,8 +8301,11 @@
             const assistsBody = document.getElementById("top-assists-body");
             if (!scorersBody || !assistsBody) return;
 
-            // Player'i krallıklara dahil et
-            let playerGoalObj = { name: GAME.state.playerName, club: GAME.state.currentClub, goals: GAME.state.seasonGoals || 0, assists: GAME.state.seasonAssists || 0, isPlayer: true };
+            // Player'i krallıklara dahil et (Sadece bu ligde atılan goller geçerlidir!)
+            const curLgGoals = typeof GAME.state.currentLeagueGoals !== "undefined" ? GAME.state.currentLeagueGoals : (GAME.state.seasonGoals || 0);
+            const curLgAssists = typeof GAME.state.currentLeagueAssists !== "undefined" ? GAME.state.currentLeagueAssists : (GAME.state.seasonAssists || 0);
+            let playerGoalObj = { name: GAME.state.playerName, club: GAME.state.currentClub, goals: curLgGoals, assists: curLgAssists, isPlayer: true };
+
             
             let allScorers = [...GAME.state.leagueScorers, playerGoalObj];
             
@@ -8954,14 +9060,27 @@
                 }
 
                 // Update stats
-                GAME.state.careerApps++;
+                GAME.state.careerApps = (GAME.state.careerApps || 0) + 1;
                 GAME.state.seasonApps = (GAME.state.seasonApps || 0) + 1;
-                GAME.state.careerGoals += playerGoalsThisMatch;
-                GAME.state.careerAssists += playerAssistsThisMatch;
-                GAME.state.seasonGoals += playerGoalsThisMatch;
-                GAME.state.seasonAssists += playerAssistsThisMatch;
+                GAME.state.careerGoals = (GAME.state.careerGoals || 0) + playerGoalsThisMatch;
+                GAME.state.careerAssists = (GAME.state.careerAssists || 0) + playerAssistsThisMatch;
+                GAME.state.seasonGoals = (GAME.state.seasonGoals || 0) + playerGoalsThisMatch;
+                GAME.state.seasonAssists = (GAME.state.seasonAssists || 0) + playerAssistsThisMatch;
+
+                let compKey = GAME.state.isNationalCallUp ? "Milli Takım" : (GAME.state.isEuropeanCupMatch ? "Avrupa Kupaları" : (GAME.state.isSuperCupMatch ? "Süper Kupa" : (GAME.state.currentLeague || "3. Lig")));
+                if (!GAME.state.isNationalCallUp && !GAME.state.isEuropeanCupMatch && !GAME.state.isSuperCupMatch) {
+                    GAME.state.currentLeagueGoals = (GAME.state.currentLeagueGoals || 0) + playerGoalsThisMatch;
+                    GAME.state.currentLeagueAssists = (GAME.state.currentLeagueAssists || 0) + playerAssistsThisMatch;
+                    GAME.state.currentLeagueApps = (GAME.state.currentLeagueApps || 0) + 1;
+                }
+                if (!GAME.state.careerLeagueStats) GAME.state.careerLeagueStats = {};
+                if (!GAME.state.careerLeagueStats[compKey]) GAME.state.careerLeagueStats[compKey] = { apps: 0, goals: 0, assists: 0 };
+                GAME.state.careerLeagueStats[compKey].apps += 1;
+                GAME.state.careerLeagueStats[compKey].goals += playerGoalsThisMatch;
+                GAME.state.careerLeagueStats[compKey].assists += playerAssistsThisMatch;
 
                 let drainAmount = isBenched ? 12 : 30;
+
                 if (GAME.state.matchStaminaBonus) {
                     drainAmount = Math.round(drainAmount * (1 - GAME.state.matchStaminaBonus / 100));
                 }
@@ -9689,13 +9808,27 @@
                         GAME.state.forcePlayerOfTheMatch = false;
                     }
 
-                    GAME.state.careerApps++;
+                    GAME.state.careerApps = (GAME.state.careerApps || 0) + 1;
                     GAME.state.seasonApps = (GAME.state.seasonApps || 0) + 1;
-                    GAME.state.careerGoals += pGoals;
-                    GAME.state.careerAssists += pAssists;
-                    GAME.state.seasonGoals += pGoals;
-                    GAME.state.seasonAssists += pAssists;
+                    GAME.state.careerGoals = (GAME.state.careerGoals || 0) + pGoals;
+                    GAME.state.careerAssists = (GAME.state.careerAssists || 0) + pAssists;
+                    GAME.state.seasonGoals = (GAME.state.seasonGoals || 0) + pGoals;
+                    GAME.state.seasonAssists = (GAME.state.seasonAssists || 0) + pAssists;
+
+                    let compKey = GAME.state.isNationalCallUp ? "Milli Takım" : (GAME.state.isEuropeanCupMatch ? "Avrupa Kupaları" : (GAME.state.isSuperCupMatch ? "Süper Kupa" : (GAME.state.currentLeague || "3. Lig")));
+                    if (!GAME.state.isNationalCallUp && !GAME.state.isEuropeanCupMatch && !GAME.state.isSuperCupMatch) {
+                        GAME.state.currentLeagueGoals = (GAME.state.currentLeagueGoals || 0) + pGoals;
+                        GAME.state.currentLeagueAssists = (GAME.state.currentLeagueAssists || 0) + pAssists;
+                        GAME.state.currentLeagueApps = (GAME.state.currentLeagueApps || 0) + 1;
+                    }
+                    if (!GAME.state.careerLeagueStats) GAME.state.careerLeagueStats = {};
+                    if (!GAME.state.careerLeagueStats[compKey]) GAME.state.careerLeagueStats[compKey] = { apps: 0, goals: 0, assists: 0 };
+                    GAME.state.careerLeagueStats[compKey].apps += 1;
+                    GAME.state.careerLeagueStats[compKey].goals += pGoals;
+                    GAME.state.careerLeagueStats[compKey].assists += pAssists;
+
                     GAME.state.kondisyon = Math.max(10, GAME.state.kondisyon - 30);
+
 
                     let scoreDiff = result.score.player - result.score.opponent;
                     let scoreStr = `${result.score.player}-${result.score.opponent}`;
