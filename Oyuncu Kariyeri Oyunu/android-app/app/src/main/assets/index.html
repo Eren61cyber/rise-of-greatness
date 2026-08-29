@@ -901,11 +901,51 @@
                     <!-- Dynamic esports management rendering -->
                 </div>
 
-                <div class="shop-list" id="shop-propass-container" style="display: none; flex-direction: column; gap: 12px;">
-                    <div class="card glass" style="border: 2px solid #9c27b0; text-align: center; padding: 20px;">
-                        <h2 style="color: #9c27b0; margin-bottom: 10px;">👑 PRO PASS SATIN AL</h2>
-                        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Özel altın kaplama arayüz, isim yanında "PRO" rozeti ve maçlardan ekstra gelir kazanma şansı!</p>
-                        <button class="btn btn-primary" onclick="window.buyProPass()" style="background: linear-gradient(135deg, #9c27b0, #6a1b9a); border: none; padding: 12px 24px; font-weight: bold;">💎 150.000 € ile Satın Al</button>
+                <div class="shop-list" id="shop-propass-container" style="display: none; flex-direction: column; gap: 14px;">
+                    <div class="card glass" style="border: 2px solid #ffd700; background: radial-gradient(circle at top right, rgba(255, 215, 0, 0.15), rgba(156, 39, 176, 0.2)), var(--bg-card); text-align: center; padding: 24px 16px; border-radius: 16px; position: relative; overflow: hidden; box-shadow: 0 8px 32px rgba(255, 215, 0, 0.15);">
+                        <div style="display: inline-block; background: linear-gradient(135deg, #ffd700, #ff9800); color: #000; font-size: 11px; font-weight: 900; letter-spacing: 1px; padding: 4px 14px; border-radius: 20px; text-transform: uppercase; margin-bottom: 12px; box-shadow: 0 2px 10px rgba(255, 215, 0, 0.4);">
+                            👑 VIP AYRICALIK KULÜBÜ
+                        </div>
+
+                        <h2 style="color: #fff; font-size: 22px; font-weight: 900; margin: 0 0 6px 0; text-shadow: 0 2px 8px rgba(0,0,0,0.6);">PRO PASS VIP</h2>
+                        <p style="font-size: 13px; color: #ffd700; margin: 0 0 18px 0; font-weight: 600;">Ömür Boyu Kalıcı Elit Oyuncu Statüsü</p>
+
+                        <div style="background: rgba(0, 0, 0, 0.4); border-radius: 12px; padding: 14px; margin-bottom: 20px; text-align: left; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(255, 215, 0, 0.2);">
+                            <div style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #fff;">
+                                <span style="font-size: 18px;">💰</span>
+                                <div><strong>+500.000 €</strong> Hoş Geldin Transfer Bonusu (Anında Bakiye)</div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #fff;">
+                                <span style="font-size: 18px;">👑</span>
+                                <div><strong>Altın PRO Rozeti</strong> (İsminin yanında ömür boyu VIP prestij)</div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #fff;">
+                                <span style="font-size: 18px;">✨</span>
+                                <div><strong>Altın Işıltılı FUT Kartı</strong> (Özel VIP kart parıltı efekti)</div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #fff;">
+                                <span style="font-size: 18px;">⚡</span>
+                                <div><strong>+%25 Ekstra Maç & Galibiyet Primi</strong></div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #fff;">
+                                <span style="font-size: 18px;">📈</span>
+                                <div><strong>Süper Antrenman Verimi</strong> (Kondisyon tüketimi azalır, haftalık 5 idman)</div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #fff;">
+                                <span style="font-size: 18px;">🛡️</span>
+                                <div><strong>Form Koruması</strong> (İdman körelmesine karşı ekstra tolerans)</div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #fff;">
+                                <span style="font-size: 18px;">🚫</span>
+                                <div><strong>%100 Reklamsız Deneyim</strong></div>
+                            </div>
+                        </div>
+
+                        <div id="propass-action-box">
+                            <button id="btn-buy-propass" class="btn btn-primary" onclick="window.buyProPass()" style="background: linear-gradient(135deg, #ffd700, #ff8f00); color: #000; border: none; padding: 14px 24px; font-size: 16px; font-weight: 900; border-radius: 12px; width: 100%; box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4); cursor: pointer;">
+                                💎 PRO PASS SATIN AL — 49.99 ₺
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -5878,8 +5918,11 @@
                 renderPacksPanel();
             } else if (tabName === 'esports') {
                 renderEsportsPanel();
+            } else if (tabName === 'propass') {
+                if (typeof updateProPassUI === 'function') updateProPassUI();
             }
         }
+
 
         let activePackType = "";
         let packedPlayer = null;
@@ -8194,27 +8237,60 @@
             if (!GAME || !GAME.state) return;
             
             if (GAME.state.proPassActive) {
-                alert("Zaten Pro Pass sahibisiniz!");
+                alert("👑 Zaten Pro Pass VIP üyesisiniz! Tüm ayrıcalıklardan ömür boyu yararlanmaktasınız.");
                 return;
             }
 
-            const cost = 150000;
-            if (GAME.state.money >= cost) {
-                GAME.state.money -= cost;
-                GAME.state.proPassActive = true;
-                GAME.updateUI();
-                GAME.saveGame();
-                alert("👑 Tebrikler! Pro Pass satın aldınız. İsmine PRO rozeti eklenecek ve artık ekstra maç geliri kazanacaksınız!");
-                
-                // Add visual badge to player name across the app
-                const nameElements = document.querySelectorAll('.bind-player-name');
-                nameElements.forEach(el => {
-                    el.innerHTML = `${GAME.state.playerName} <span style="background:var(--accent-yellow); color:black; font-size:10px; padding:2px 4px; border-radius:4px; font-weight:bold;">PRO</span>`;
-                });
+            // Android Google Play Billing Kontrolü
+            if (window.Android && typeof window.Android.buyProPass === 'function') {
+                window.Android.buyProPass("pro_pass_49");
             } else {
-                alert(`Yetersiz bakiye! Pro Pass almak için ${cost.toLocaleString()} € gerekiyor.`);
+                // Tarayıcı / Web Test Modu
+                const confirmBuy = confirm("👑 [GOOGLE PLAY ÖDEME SİMÜLASYONU]\n\n" +
+                    "Ürün: Rise of Greatness - PRO PASS VIP\n" +
+                    "Fiyat: 49.99 ₺ (Ömür Boyu)\n\n" +
+                    "Ayrıcalıklar:\n" +
+                    "• +500.000 € Anında Nakit Transfer Bonusu\n" +
+                    "• Altın PRO Rozeti ve VIP FUT Kart Teması\n" +
+                    "• +%25 Maç & Galibiyet Gelirleri\n" +
+                    "• Süper Antrenman & Form Koruması\n" +
+                    "• %100 Reklamsız Deneyim\n\n" +
+                    "49.99 ₺ ödemeyi onaylayıp PRO PASS'i aktif etmek istiyor musunuz?");
+                
+                if (confirmBuy) {
+                    GAME.activateProPassReal(500000);
+                }
             }
         };
+
+        window.onProPassPurchaseSuccess = function() {
+            if (window.GAME && typeof window.GAME.activateProPassReal === 'function') {
+                window.GAME.activateProPassReal(500000);
+            }
+        };
+
+        window.onProPassPurchaseRestored = function() {
+            if (window.GAME && window.GAME.state) {
+                window.GAME.state.proPassActive = true;
+                window.GAME.saveGame();
+                window.GAME.updateUI();
+                if (typeof window.updateProPassUI === 'function') {
+                    window.updateProPassUI();
+                }
+            }
+        };
+
+        window.updateProPassUI = function() {
+            const box = document.getElementById("propass-action-box");
+            if (box && GAME && GAME.state && GAME.state.proPassActive) {
+                box.innerHTML = `
+                    <div style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.25), rgba(255, 215, 0, 0.25)); border: 2px solid #4caf50; border-radius: 12px; padding: 14px; text-align: center; color: #4caf50; font-weight: 800; font-size: 15px; box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);">
+                        👑 PRO PASS VIP ÜYELİĞİNİZ AKTİF
+                    </div>
+                `;
+            }
+        };
+
 
         window.showFixturesModal = function() {
             const modal = document.getElementById("fixtures-modal");

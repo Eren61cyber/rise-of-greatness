@@ -698,16 +698,20 @@ const GAME = {
             return;
         }
 
-        // Haftalık 4 antrenman sınırı
+        // Haftalık antrenman sınırı (Pro Pass ile 5 idman)
+        const maxTrainings = this.state.proPassActive ? 5 : 4;
         if (typeof this.state.weeklyTrainingCount === "undefined") {
             this.state.weeklyTrainingCount = 0;
         }
-        if (this.state.weeklyTrainingCount >= 4) {
-            alert("Bu hafta zaten 4 kez antrenman yaptınız! Kaslarınızı aşırı yormamalısınız. Haftayı ilerletip yeni haftaya geçerek antrenmanlara devam edebilirsiniz.");
+        if (this.state.weeklyTrainingCount >= maxTrainings) {
+            alert(`Bu hafta zaten ${maxTrainings} kez antrenman yaptınız! Kaslarınızı aşırı yormamalısınız. Haftayı ilerletip yeni haftaya geçerek antrenmanlara devam edebilirsiniz.`);
             return;
         }
 
         let energyCost = this.state.ownedItems.includes("doc_ahmet") ? 15 : 20;
+        if (this.state.proPassActive) {
+            energyCost = Math.max(10, energyCost - 5); // Pro Pass kondisyon tasarrufu
+        }
         if (this.state.kondisyon < energyCost) {
             alert(`Antrenman yapmak için en az %${energyCost} kondisyon gereklidir! Dinlenmelisin.`);
             return;
@@ -737,7 +741,24 @@ const GAME = {
         }
     },
 
+    activateProPassReal: function(bonusMoney = 500000) {
+        this.state.proPassActive = true;
+        if (bonusMoney > 0) {
+            this.state.money = (this.state.money || 0) + bonusMoney;
+            this.state.totalEarnings = (this.state.totalEarnings || 0) + bonusMoney;
+        }
+        this.saveGame();
+        this.updateUI();
+        if (typeof window !== "undefined") {
+            if (typeof window.updateProPassUI === "function") window.updateProPassUI();
+            if (typeof window.renderFutCard === "function") window.renderFutCard();
+            if (typeof window.renderTrainingPanel === "function") window.renderTrainingPanel();
+        }
+        alert(`👑 TEBRİKLER! PRO PASS VIP AKTİF EDİLDİ!\n\n✨ Altın PRO Rozeti profilinize eklendi.\n💰 +${bonusMoney.toLocaleString()} € Hoş Geldin Nakit Bonusu hesabınıza aktarıldı!\n⚡ Süper Antrenman ve +%25 Ekstra Gelir avantajları açıldı.`);
+    },
+
     buyItem: function(itemId) {
+
         const item = DATABASE.LIFESTYLE_ITEMS.find(i => i.id === itemId);
         if (!item) return;
 
@@ -976,6 +997,9 @@ const GAME = {
 
         // Calculate weekly salary
         let salary = this.state.weeklySalary;
+        if (this.state.proPassActive) {
+            salary += Math.round(salary * 0.25); // Pro Pass VIP +%25 Ekstra Maaş Bonusu
+        }
         if (this.state.sponsorIncomeBonus > 0) {
             salary += Math.round(salary * (this.state.sponsorIncomeBonus / 100));
         }
@@ -1280,12 +1304,13 @@ const GAME = {
         // 📉 FORM VE YETENEK KÖRELME SİSTEMİ (Skill Decay / Rustiness)
         // =========================================================================
         isAllMaxed = (this.state.shooting >= 100 && this.state.passing >= 100 && this.state.speed >= 100 && (this.state.dribbling || 50) >= 100 && (this.state.defense || 50) >= 100 && (this.state.physical || 50) >= 100);
+        const decayThreshold = this.state.proPassActive ? 5 : 3;
         if (!isAllMaxed && this.state.injuryWeeks <= 0) {
-            if (this.state.weeksSinceLastTraining === 2) {
-                // 2. Hafta Hafif Uyarı
-                console.log("2 haftadır antrenman yapılmadı.");
-            } else if (this.state.weeksSinceLastTraining >= 3 && (this.state.weeksSinceLastTraining % 2 === 1)) {
-                // 3, 5, 7... haftalarda antrenman yapılmadıysa yetenek körelmesi (-1 rastgele stat)
+            if (this.state.weeksSinceLastTraining === (decayThreshold - 1)) {
+                // Ön Uyarı
+                console.log("Antrenman yapılmadı uyarısı.");
+            } else if (this.state.weeksSinceLastTraining >= decayThreshold && (this.state.weeksSinceLastTraining % 2 === 1)) {
+                // Belirlenen haftalarda antrenman yapılmadıysa yetenek körelmesi (-1 rastgele stat)
                 const statKeys = ["shooting", "passing", "speed", "dribbling", "defense", "physical"];
                 const eligibleStats = statKeys.filter(k => (this.state[k] || 50) > 40);
                 if (eligibleStats.length > 0) {
@@ -1905,8 +1930,9 @@ const GAME = {
                 }
                 return txt;
             })(this.state),
-            "training-count-indicator": (4 - (this.state.weeklyTrainingCount || 0)) + " / 4"
+            "training-count-indicator": ((this.state.proPassActive ? 5 : 4) - (this.state.weeklyTrainingCount || 0)) + " / " + (this.state.proPassActive ? 5 : 4)
         };
+
 
         // 4 Category Aggregation Stats (Matching competitor layout: TEKNİK, FİZİKSEL, ZİHİNSEL, SAVUNMA)
         const tekVal = Math.round(((this.state.shooting || 50) + (this.state.dribbling || 50) + (this.state.passing || 50)) / 3);
@@ -2027,6 +2053,18 @@ const GAME = {
         if (typeof updateHomeNewsPreview === "function") {
             updateHomeNewsPreview();
         }
+        if (typeof updateProPassUI === "function") {
+            updateProPassUI();
+        }
+        const futCardEl = document.querySelector(".fut-card");
+        if (futCardEl) {
+            if (this.state.proPassActive) {
+                futCardEl.classList.add("pro-pass-vip-card");
+            } else {
+                futCardEl.classList.remove("pro-pass-vip-card");
+            }
+        }
+
 
         // Update Desktop Sidebar Elements
         try {
