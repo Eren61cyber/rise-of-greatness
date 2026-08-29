@@ -1170,13 +1170,14 @@
             </div>
 
             <!-- Match Decision Card (Pops up inside match overlay when choice is triggered) -->
-            <div id="match-decision-card" class="glass" style="display: none; padding: 16px; margin-bottom: 10px; border: 2px solid var(--accent-yellow); box-shadow: 0 0 15px rgba(255, 214, 0, 0.2); animation: fadeIn 0.3s ease;">
-                <div style="background: var(--accent-yellow); color: black; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; width: fit-content;" id="decision-title">KRİTİK POZİSYON!</div>
-                <p id="decision-desc" style="font-size: 14px; font-weight: 600; margin: 10px 0; line-height: 1.4; color: #FFF;"></p>
+            <div id="match-decision-card" style="display: none; padding: 14px; margin-bottom: 10px; background: #0f172a; border: 1.5px solid rgba(245, 158, 11, 0.6); border-radius: 14px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(245, 158, 11, 0.15); animation: fadeIn 0.25s ease;">
+                <div style="background: #F59E0B; color: #050B14; font-size: 10px; font-weight: 900; padding: 3px 8px; border-radius: 6px; letter-spacing: 0.5px; text-transform: uppercase; width: fit-content;" id="decision-title">KRİTİK POZİSYON</div>
+                <p id="decision-desc" style="font-size: 13px; font-weight: 600; margin: 8px 0 12px 0; line-height: 1.4; color: #F1F5F9;"></p>
                 <div id="decision-options-container" style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
-                    <!-- Option buttons will render here -->
+                    <!-- Tactical action cards will render here -->
                 </div>
             </div>
+
 
             <!-- Interactive Match Continue / Goal Pause Banner -->
             <div id="match-continue-banner" class="glass" style="display: none; padding: 14px 18px; margin-bottom: 10px; border: 2px solid #00e5b7; background: linear-gradient(135deg, rgba(0,229,183,0.18), rgba(4,20,14,0.9)); border-radius: 12px; box-shadow: 0 4px 25px rgba(0, 229, 183, 0.35); align-items: center; justify-content: space-between; gap: 12px; animation: pulse 1.8s infinite;">
@@ -9642,26 +9643,47 @@
                         }
                         
                         if (comment) {
-                            let colorClass = "var(--text-muted)";
-                            let prefix = "";
+                            let eventClass = "";
+                            let icon = "⚡";
+                            
                             if (comment.includes("GOOOL")) {
-                                colorClass = "var(--primary)";
-                                prefix = "⚽ ";
+                                eventClass = "goal";
+                                icon = "⚽";
                                 SoundManager.playGoal();
-                            } else if (comment.includes("MAALESEF GOL")) {
-                                colorClass = "var(--accent-red)";
-                                prefix = "❌ ";
+                            } else if (comment.includes("MAALESEF GOL") || comment.includes("Gol Yedik")) {
+                                eventClass = "conceded";
+                                icon = "❌";
                                 SoundManager.playConceded();
-                            } else if (comment.includes("kaçtı") || comment.includes("döndü") || comment.includes("kurtardı") || comment.includes("dışarı")) {
-                                SoundManager.playMiss();
+                            } else if (comment.includes("KIRMIZI KART") || comment.includes("ihraç")) {
+                                eventClass = "card-red";
+                                icon = "🟥";
                             } else if (comment.includes("SARI KART")) {
-                                colorClass = "var(--accent-yellow)";
-                                prefix = "🟨 ";
+                                eventClass = "card-yellow";
+                                icon = "🟨";
+                            } else if (comment.includes("kurtardı") || comment.includes("kaleci")) {
+                                eventClass = "save";
+                                icon = "🧤";
+                                SoundManager.playMiss();
+                            } else if (comment.includes("kaçtı") || comment.includes("döndü") || comment.includes("direk") || comment.includes("dışarı") || comment.includes("şut") || comment.includes("vurdu")) {
+                                eventClass = "shot";
+                                icon = "👟";
+                                SoundManager.playMiss();
+                            } else if (comment.includes("müdahale") || comment.includes("top kap") || comment.includes("söktü") || comment.includes("kayarak")) {
+                                eventClass = "tackle";
+                                icon = "⚡";
+                            } else if (comment.includes("taktik") || comment.includes("hoca") || comment.includes("uyarı")) {
+                                eventClass = "tactic";
+                                icon = "🗣️";
+                            } else if (comment.includes("oyundan") || comment.includes("değişiklik")) {
+                                eventClass = "sub";
+                                icon = "🔄";
                             }
 
                             timelineLog.innerHTML += `
-                                <div style="border-left: 2.5px solid ${colorClass}; padding-left: 8px; margin: 4px 0; color: white;">
-                                    <strong style="color: var(--text-muted);">${min}'</strong> ${prefix}${comment}
+                                <div class="match-feed-item ${eventClass}">
+                                    <span class="match-feed-min">${min}'</span>
+                                    <span class="match-feed-icon">${icon}</span>
+                                    <span class="match-feed-text">${comment}</span>
                                 </div>
                             `;
                             timelineLog.scrollTop = timelineLog.scrollHeight;
@@ -9670,22 +9692,63 @@
 
                 onMatchChoice: function(minute, choiceData) {
                     const decCard = document.getElementById("match-decision-card");
-                    document.getElementById("decision-title").innerText = `${minute}' DA KRİTİK POZİSYON!`;
+                    document.getElementById("decision-title").innerText = `${minute}' KRİTİK POZİSYON`;
                     document.getElementById("decision-desc").innerText = choiceData.description;
                     
                     const optionsContainer = document.getElementById("decision-options-container");
                     optionsContainer.innerHTML = "";
 
                     choiceData.options.forEach((opt, idx) => {
-                        let statDisplay = "";
-                        if (opt.statUsed) {
-                            let statVal = GAME.state[opt.statUsed];
-                            statDisplay = ` (Yetenek: ${statVal})`;
+                        let rawText = opt.text || "";
+                        let rawDesc = opt.effect || "";
+
+                        // Determine theme and icon
+                        let theme = "theme-shoot";
+                        let chipIcon = "🎯";
+                        let lText = (rawText + " " + rawDesc).toLowerCase();
+
+                        if (lText.includes("kay") || lText.includes("sök") || lText.includes("savunma") || lText.includes("müdahale") || lText.includes("özür") || lText.includes("kabullen")) {
+                            theme = "theme-defense";
+                            chipIcon = "🛡️";
+                        } else if (lText.includes("pas") || lText.includes("kaçır") || lText.includes("orta") || lText.includes("taktik") || lText.includes("aç")) {
+                            theme = "theme-pass";
+                            chipIcon = "👟";
+                        } else if (lText.includes("hız") || lText.includes("depar") || lText.includes("kontra") || lText.includes("koş")) {
+                            theme = "theme-speed";
+                            chipIcon = "⚡";
+                        } else if (lText.includes("çalım") || lText.includes("sakla") || lText.includes("falso") || lText.includes("röveşata") || lText.includes("aşırtma") || lText.includes("viral") || lText.includes("itiraz")) {
+                            theme = "theme-skill";
+                            chipIcon = "👑";
+                        } else {
+                            theme = "theme-shoot";
+                            chipIcon = "⚽";
                         }
+
+                        // Calculate Chip Text (e.g. %53 Şans or Stat chip)
+                        let chipText = "";
+                        if (typeof opt.successChance === "number") {
+                            let pct = Math.max(5, Math.min(99, Math.round(opt.successChance * 100)));
+                            chipText = `%${pct} Şans`;
+                        } else if (opt.statUsed && GAME.state && GAME.state[opt.statUsed]) {
+                            chipText = `${opt.statUsed.toUpperCase()}: ${GAME.state[opt.statUsed]}`;
+                        } else {
+                            chipText = "Aksiyon";
+                        }
+
+                        // Clean emojis from button title for clean typography
+                        let cleanTitle = rawText.replace(/^[^\w\s\u00C0-\u017F\u0100-\u024F]+/g, '').trim();
+                        if (!cleanTitle) cleanTitle = rawText;
+
                         optionsContainer.innerHTML += `
-                            <button class="btn btn-event" style="text-align: left; width: 100%;" onclick="chooseMatchOption(${idx})">
-                                <span class="choice-text" style="font-weight: bold; color: var(--primary);">${opt.text}</span>
-                                <span class="choice-effect" style="font-size: 11px; color: var(--text-muted);">${opt.effect}${statDisplay}</span>
+                            <button class="match-action-card ${theme}" onclick="chooseMatchOption(${idx})">
+                                <div class="action-card-left">
+                                    <div class="action-card-title">${cleanTitle}</div>
+                                    <div class="action-card-desc">${rawDesc}</div>
+                                </div>
+                                <div class="action-card-chip">
+                                    <span>${chipIcon}</span>
+                                    <span>${chipText}</span>
+                                </div>
                             </button>
                         `;
                     });
@@ -9693,6 +9756,7 @@
                     decCard.style.display = "block";
                     timelineLog.scrollTop = timelineLog.scrollHeight;
                 },
+
                 onGoalScoredCelebration: function(minute, resumeCallback) {
                     const modal = document.getElementById("celebration-modal");
                     const container = document.getElementById("celebration-options-container");
