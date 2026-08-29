@@ -1060,23 +1060,89 @@
                 <div class="goal-anim-text" id="goal-anim-text">GOL!</div>
             </div>
 
-            <div class="match-header glass">
-                <div class="team player-team">
-                    <span class="team-name" id="match-player-team">Galatastar</span>
-                    <span class="color-badge" id="player-badge"></span>
+            <!-- TV BROADCAST MASTER SCOREBOARD -->
+            <div class="broadcast-scoreboard glass">
+                <!-- Top Competition Banner -->
+                <div class="scoreboard-competition-ribbon">
+                    <div class="comp-title-wrapper">
+                        <span class="comp-icon" id="scoreboard-comp-icon">🏆</span>
+                        <span class="comp-name" id="scoreboard-comp-name">TFF SÜPER LİG</span>
+                    </div>
+                    <div class="live-pill">
+                        <span class="live-blink-dot"></span>
+                        <span id="scoreboard-live-status">CANLI</span>
+                    </div>
                 </div>
-                <div class="score" id="match-score">0 - 0</div>
-                <div class="team opponent-team">
-                    <span class="color-badge" id="opponent-badge"></span>
-                    <span class="team-name" id="match-opponent-team">Fenerbaçe FK</span>
+
+                <!-- Main Teams & Score Section -->
+                <div class="scoreboard-match-row">
+                    <!-- Home Team -->
+                    <div class="scoreboard-team home-team">
+                        <div class="team-crest-box" id="player-crest-box" style="background-color: #C00000;">
+                            <span class="team-initials" id="player-initials">GS</span>
+                        </div>
+                        <div class="team-info-col home-info">
+                            <span class="team-name-bold" id="match-player-team">GALATASTAR</span>
+                            <span class="team-sub-tag">EV SAHİBİ</span>
+                        </div>
+                    </div>
+
+                    <!-- Center Score Box & Timer -->
+                    <div class="scoreboard-center-box">
+                        <div class="scoreboard-digital-score">
+                            <span class="score-digit home-score" id="score-home">0</span>
+                            <span class="score-divider">:</span>
+                            <span class="score-digit away-score" id="score-away">0</span>
+                            <!-- Hidden legacy score element for safety -->
+                            <span id="match-score" style="display: none;">0 - 0</span>
+                        </div>
+                        <div class="scoreboard-clock-pill">
+                            <span class="clock-icon">⏱️</span>
+                            <span class="clock-time" id="match-time">0'</span>
+                        </div>
+                    </div>
+
+                    <!-- Away Team -->
+                    <div class="scoreboard-team away-team">
+                        <div class="team-info-col away-info">
+                            <span class="team-name-bold" id="match-opponent-team">FENERBAHÇE FK</span>
+                            <span class="team-sub-tag">DEPLASMAN</span>
+                        </div>
+                        <div class="team-crest-box" id="opponent-crest-box" style="background-color: #002D72;">
+                            <span class="team-initials" id="opponent-initials">FB</span>
+                        </div>
+                    </div>
                 </div>
-                <button id="btn-match-speed" class="btn btn-secondary" style="padding: 6px 10px; font-size: 11px; margin-left: 10px; height: fit-content; min-width: 65px;">Hız: 1x</button>
+
+                <!-- Match Live Stats & Possession Bar -->
+                <div class="scoreboard-live-bar">
+                    <div class="possession-bar-wrapper">
+                        <span class="possession-label left" id="possession-home-txt">%52</span>
+                        <div class="possession-track">
+                            <div class="possession-fill-home" id="possession-home-bar" style="width: 52%;"></div>
+                        </div>
+                        <span class="possession-label right" id="possession-away-txt">%48</span>
+                    </div>
+                </div>
+
+                <!-- Player Live Performance Bar & Match Speed -->
+                <div class="scoreboard-player-hud">
+                    <div class="player-hud-stat live-rating-badge" id="live-rating-badge">
+                        <span class="hud-label">⭐ REYTİNG</span>
+                        <span class="hud-val" id="live-player-rating">6.0</span>
+                    </div>
+                    <div class="player-hud-stat">
+                        <span class="hud-label">⚽ GOL</span>
+                        <span class="hud-val" id="live-player-goals">0</span>
+                    </div>
+                    <div class="player-hud-stat">
+                        <span class="hud-label">🎯 ASİST</span>
+                        <span class="hud-val" id="live-player-assists">0</span>
+                    </div>
+                    <button id="btn-match-speed" class="scoreboard-speed-btn">⚡ 1x</button>
+                </div>
             </div>
 
-            <!-- Score time ticker header -->
-            <div style="text-align: center; margin-top: 5px;">
-                <div class="game-time" id="match-time" style="font-size: 36px; line-height: 1; font-weight: 800;">0'</div>
-            </div>
 
             <!-- Match Timeline Terminal -->
             <div class="match-terminal glass" id="match-terminal" style="display: flex; flex: 1; flex-direction: column; margin: 15px 0; padding: 14px; overflow-y: auto; gap: 8px; font-family: 'Inter', sans-serif; max-height: calc(100% - 240px);">
@@ -9162,6 +9228,37 @@
         }, { once: true });
 
 
+        // Team Initials Helper for Broadcast Scoreboard
+        function getTeamInitials(name) {
+            if (!name) return "FK";
+            const n = name.trim();
+            if (n === "Galatastar") return "GS";
+            if (n === "Fenerbahçe FK" || n === "Bahçeşehir") return "FB";
+            if (n === "Kartal FK") return "BJK";
+            if (n === "Trabzonstar") return "TS";
+            if (n === "Türkiye") return "TUR";
+            if (n === "Real Madrid") return "RMA";
+            if (n === "Barcelona") return "BAR";
+            if (n === "Bayern") return "BAY";
+            if (n === "Manchester City") return "MCI";
+            if (n === "Liverpool") return "LIV";
+            if (n === "Paris SG") return "PSG";
+            if (n === "Arsenal") return "ARS";
+            if (n === "Inter") return "INT";
+            if (n === "Juventus") return "JUV";
+            if (n === "Milan") return "MIL";
+            if (n === "Dortmund") return "BVB";
+            if (n === "Atletico") return "ATM";
+            if (n === "Porto") return "POR";
+            if (n === "Ajax") return "AJA";
+            
+            const words = n.split(" ");
+            if (words.length >= 2) {
+                return (words[0][0] + words[1][0]).toUpperCase();
+            }
+            return n.substring(0, 3).toUpperCase();
+        }
+
         // Match Logic integration
         let currentMatchSpeed = 1;
 
@@ -9201,7 +9298,7 @@
 
                 currentMatchSpeed = 1;
                 const speedBtn = document.getElementById("btn-match-speed");
-                speedBtn.innerText = "Hız: 1x";
+                if (speedBtn) speedBtn.innerText = "⚡ Hız: 1x";
 
                 let playerTeamObj = GAME.getPlayerTeamObject();
                 if (GAME.state.isNationalCallUp) {
@@ -9226,28 +9323,94 @@
                     };
                 }
 
-                document.getElementById("match-player-team").innerText = playerTeamObj.name;
-                document.getElementById("player-badge").style.backgroundColor = playerTeamObj.color;
+                // Setup Competition Banner
+                let compIcon = "🏆";
+                let compName = GAME.state.currentLeague || "TFF SÜPER LİG";
+                if (GAME.state.isNationalCallUp) {
+                    compIcon = "🇹🇷";
+                    compName = "A MİLLİ MAÇ";
+                } else if (GAME.state.isSuperCupMatch) {
+                    compIcon = "🏆";
+                    compName = "TFF SÜPER KUPA FİNALİ";
+                } else if (GAME.state.isEuropeanCupMatch) {
+                    let stages = ["", "Çeyrek Final", "Yarı Final", "Final"];
+                    let stageName = stages[GAME.state.europeanCupStage] || "Final";
+                    compIcon = "⭐";
+                    compName = GAME.state.qualifiedForEurope === "ChampionsLeague" ? `ŞAMPİYONLAR LİGİ (${stageName.toUpperCase()})` : `AVRUPA LİGİ (${stageName.toUpperCase()})`;
+                }
 
+                const compIconEl = document.getElementById("scoreboard-comp-icon");
+                const compNameEl = document.getElementById("scoreboard-comp-name");
+                if (compIconEl) compIconEl.innerText = compIcon;
+                if (compNameEl) compNameEl.innerText = compName;
+
+                // Setup Teams and Crests
                 const opponentObj = nextOpponent || { name: "Rakip", color: "#333" };
-                document.getElementById("match-opponent-team").innerText = opponentObj.name;
-                document.getElementById("opponent-badge").style.backgroundColor = opponentObj.color;
+                const pInitials = getTeamInitials(playerTeamObj.name);
+                const oInitials = getTeamInitials(opponentObj.name);
 
-                document.getElementById("match-score").innerText = "0 - 0";
+                const pInitialsEl = document.getElementById("player-initials");
+                const oInitialsEl = document.getElementById("opponent-initials");
+                const pCrestEl = document.getElementById("player-crest-box");
+                const oCrestEl = document.getElementById("opponent-crest-box");
+
+                if (pInitialsEl) pInitialsEl.innerText = pInitials;
+                if (oInitialsEl) oInitialsEl.innerText = oInitials;
+                if (pCrestEl) pCrestEl.style.backgroundColor = playerTeamObj.color || "#C00000";
+                if (oCrestEl) oCrestEl.style.backgroundColor = opponentObj.color || "#002D72";
+
+                const matchPTeam = document.getElementById("match-player-team");
+                const matchOTeam = document.getElementById("match-opponent-team");
+                if (matchPTeam) matchPTeam.innerText = playerTeamObj.name.toUpperCase();
+                if (matchOTeam) matchOTeam.innerText = opponentObj.name.toUpperCase();
+
+                const scoreHomeEl = document.getElementById("score-home");
+                const scoreAwayEl = document.getElementById("score-away");
+                const matchScoreEl = document.getElementById("match-score");
+                if (scoreHomeEl) scoreHomeEl.innerText = "0";
+                if (scoreAwayEl) scoreAwayEl.innerText = "0";
+                if (matchScoreEl) matchScoreEl.innerText = "0 - 0";
                 document.getElementById("match-time").innerText = "0'";
-                
+
+                // Setup Live Performance HUD
+                const liveRatingEl = document.getElementById("live-player-rating");
+                const liveGoalsEl = document.getElementById("live-player-goals");
+                const liveAssistsEl = document.getElementById("live-player-assists");
+                const liveRatingBadge = document.getElementById("live-rating-badge");
+                if (liveRatingEl) liveRatingEl.innerText = "6.0";
+                if (liveGoalsEl) liveGoalsEl.innerText = "0";
+                if (liveAssistsEl) liveAssistsEl.innerText = "0";
+                if (liveRatingBadge) {
+                    liveRatingBadge.style.borderColor = "rgba(0, 230, 118, 0.3)";
+                    liveRatingBadge.style.backgroundColor = "rgba(0, 230, 118, 0.12)";
+                }
+
+                // Setup Initial Possession
+                let pPower = (playerTeamObj.att + playerTeamObj.mid + playerTeamObj.def) / 3;
+                let oPower = (opponentObj.att + opponentObj.mid + opponentObj.def) / 3;
+                let basePoss = Math.round((pPower / (pPower + oPower)) * 100);
+                basePoss = Math.max(35, Math.min(65, basePoss));
+                const possHomeTxt = document.getElementById("possession-home-txt");
+                const possAwayTxt = document.getElementById("possession-away-txt");
+                const possBar = document.getElementById("possession-home-bar");
+                if (possHomeTxt) possHomeTxt.innerText = `%${basePoss}`;
+                if (possAwayTxt) possAwayTxt.innerText = `%${100 - basePoss}`;
+                if (possBar) possBar.style.width = `${basePoss}%`;
+
                 const timelineLog = document.getElementById("match-log-timeline");
-                timelineLog.innerHTML = `<div style="color: var(--text-muted);">Maç başlamak üzere, hakem son kontrolleri yapıyor...</div>`;
+                timelineLog.innerHTML = `<div style="color: var(--text-muted); font-size: 11.5px; padding: 4px 0;">🎙️ Maç başlamak üzere, hakem ve oyuncular sahaya çıkıyor...</div>`;
 
                 document.getElementById("match-decision-card").style.display = "none";
 
-                speedBtn.onclick = () => {
-                    if (currentMatchSpeed === 1) currentMatchSpeed = 2;
-                    else if (currentMatchSpeed === 2) currentMatchSpeed = 4;
-                    else currentMatchSpeed = 1;
-                    speedBtn.innerText = `Hız: ${currentMatchSpeed}x`;
-                    MatchEngine.setSpeed(currentMatchSpeed);
-                };
+                if (speedBtn) {
+                    speedBtn.onclick = () => {
+                        if (currentMatchSpeed === 1) currentMatchSpeed = 2;
+                        else if (currentMatchSpeed === 2) currentMatchSpeed = 4;
+                        else currentMatchSpeed = 1;
+                        speedBtn.innerText = `⚡ Hız: ${currentMatchSpeed}x`;
+                        MatchEngine.setSpeed(currentMatchSpeed);
+                    };
+                }
 
                 // Run Simulator
                 let playerSubbedOff = false;
@@ -9286,61 +9449,106 @@
 
                 MatchEngine.simulate(playerTeamObj, opponentObj, GAME.state, {
                     onMinuteUpdate: function(min, score, comment) {
-                    document.getElementById("match-time").innerText = min + "'";
-                    document.getElementById("match-score").innerText = `${score.player} - ${score.opponent}`;
+                        let minText = min + "'";
+                        if (min === 45) minText = "45' (İ.Y.)";
+                        else if (min === 90) minText = "90' (M.S.)";
+                        document.getElementById("match-time").innerText = minText;
 
-                    // Trigger animations on score change
-                    if (score.player > lastPlayerScore) {
-                        triggerGoalEffect("scored");
-                    } else if (score.opponent > lastOpponentScore) {
-                        triggerGoalEffect("conceded");
-                    }
-                    lastPlayerScore = score.player;
-                    lastOpponentScore = score.opponent;
+                        if (scoreHomeEl) scoreHomeEl.innerText = score.player;
+                        if (scoreAwayEl) scoreAwayEl.innerText = score.opponent;
+                        if (matchScoreEl) matchScoreEl.innerText = `${score.player} - ${score.opponent}`;
 
-                    // 60. dakika: Sadece hiçbir varlık gösteremeyen (müdahalesi, pası, golü/asisti olmayan) ve takım gerideyken çok düşük ihtimalle taktik değişiklik
-                    const totalPlayerImpact = (MatchEngine.playerStats.goals || 0) + (MatchEngine.playerStats.assists || 0) + (MatchEngine.playerStats.tackles || 0) + (MatchEngine.playerStats.passes || 0);
-                    if (min === 60 && !playerSubbedOff && !MatchEngine.isSentOff && !MatchEngine.isBenched && !MatchEngine.isDropped && totalPlayerImpact === 0 && score.opponent > score.player && Math.random() < 0.15) {
-                        playerSubbedOff = true;
-                        MatchEngine.isSubbedOff = true;
-                        MatchEngine.choiceMinutes = []; // Stop generating further chances
-                        timelineLog.innerHTML += `
-                            <div style="border-left: 2.5px solid var(--accent-yellow); padding-left: 8px; margin: 8px 0; background: rgba(255,193,7,0.08); border-radius:4px; padding: 8px;">
-                                <strong style="color: var(--accent-yellow);">60' 🔄 OYUNCU DEĞİŞİKLİĞİ!</strong><br>
-                                <span style="color: #ccc; font-size: 12px;">Teknik Direktör: <em>"${GAME.state.playerName}, bugün takım geride ve pozisyon bulamadın. Seni dinlendiriyorum."</em></span>
-                            </div>
-                        `;
-                        GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 2);
-                        timelineLog.scrollTop = timelineLog.scrollHeight;
-                    }
-                    
-                    if (comment) {
-                        let colorClass = "var(--text-muted)";
-                        let prefix = "";
-                        if (comment.includes("GOOOL")) {
-                            colorClass = "var(--primary)";
-                            prefix = "⚽ ";
-                            SoundManager.playGoal();
-                        } else if (comment.includes("MAALESEF GOL")) {
-                            colorClass = "var(--accent-red)";
-                            prefix = "❌ ";
-                            SoundManager.playConceded();
-                        } else if (comment.includes("kaçtı") || comment.includes("döndü") || comment.includes("kurtardı") || comment.includes("dışarı")) {
-                            SoundManager.playMiss();
-                        } else if (comment.includes("SARI KART")) {
-                            colorClass = "var(--accent-yellow)";
-                            prefix = "🟨 ";
+                        // Live Performance HUD Updates
+                        const pG = MatchEngine.playerStats.goals || 0;
+                        const pA = MatchEngine.playerStats.assists || 0;
+                        const pT = MatchEngine.playerStats.tackles || 0;
+                        const pP = MatchEngine.playerStats.passes || 0;
+                        const isYC = MatchEngine.hasYellowCard ? 1 : 0;
+                        const isRC = MatchEngine.isSentOff ? 1 : 0;
+
+                        let currentLiveRating = 6.0 + (pG * 1.5) + (pA * 0.9) + (pT * 0.4) + (pP * 0.08) - (isYC * 0.4) - (isRC * 2.0);
+                        currentLiveRating = Math.max(3.0, Math.min(10.0, currentLiveRating));
+                        const formattedLiveRating = currentLiveRating.toFixed(1);
+
+                        if (liveRatingEl) liveRatingEl.innerText = formattedLiveRating;
+                        if (liveGoalsEl) liveGoalsEl.innerText = pG;
+                        if (liveAssistsEl) liveAssistsEl.innerText = pA;
+
+                        if (liveRatingBadge) {
+                            if (currentLiveRating >= 7.5) {
+                                liveRatingBadge.style.borderColor = "#00E676";
+                                liveRatingBadge.style.backgroundColor = "rgba(0, 230, 118, 0.18)";
+                                if (liveRatingEl) liveRatingEl.style.color = "#00E676";
+                            } else if (currentLiveRating >= 6.5) {
+                                liveRatingBadge.style.borderColor = "#FFD600";
+                                liveRatingBadge.style.backgroundColor = "rgba(255, 214, 0, 0.15)";
+                                if (liveRatingEl) liveRatingEl.style.color = "#FFD600";
+                            } else {
+                                liveRatingBadge.style.borderColor = "#EF4444";
+                                liveRatingBadge.style.backgroundColor = "rgba(239, 68, 68, 0.15)";
+                                if (liveRatingEl) liveRatingEl.style.color = "#EF4444";
+                            }
                         }
 
+                        // Dynamic possession flutter
+                        let possShift = Math.floor(Math.sin(min * 0.3) * 3);
+                        let currentPoss = Math.max(30, Math.min(70, basePoss + (score.player - score.opponent) * 2 + possShift));
+                        if (possHomeTxt) possHomeTxt.innerText = `%${currentPoss}`;
+                        if (possAwayTxt) possAwayTxt.innerText = `%${100 - currentPoss}`;
+                        if (possBar) possBar.style.width = `${currentPoss}%`;
 
-                        timelineLog.innerHTML += `
-                            <div style="border-left: 2.5px solid ${colorClass}; padding-left: 8px; margin: 4px 0; color: white;">
-                                <strong style="color: var(--text-muted);">${min}'</strong> ${prefix}${comment}
-                            </div>
-                        `;
-                        timelineLog.scrollTop = timelineLog.scrollHeight;
-                    }
-                },
+                        // Trigger animations on score change
+                        if (score.player > lastPlayerScore) {
+                            triggerGoalEffect("scored");
+                        } else if (score.opponent > lastOpponentScore) {
+                            triggerGoalEffect("conceded");
+                        }
+                        lastPlayerScore = score.player;
+                        lastOpponentScore = score.opponent;
+
+                        // 60. dakika: Sadece hiçbir varlık gösteremeyen ve takım gerideyken taktik değişiklik
+                        const totalPlayerImpact = (MatchEngine.playerStats.goals || 0) + (MatchEngine.playerStats.assists || 0) + (MatchEngine.playerStats.tackles || 0) + (MatchEngine.playerStats.passes || 0);
+                        if (min === 60 && !playerSubbedOff && !MatchEngine.isSentOff && !MatchEngine.isBenched && !MatchEngine.isDropped && totalPlayerImpact === 0 && score.opponent > score.player && Math.random() < 0.15) {
+                            playerSubbedOff = true;
+                            MatchEngine.isSubbedOff = true;
+                            MatchEngine.choiceMinutes = [];
+                            timelineLog.innerHTML += `
+                                <div style="border-left: 2.5px solid var(--accent-yellow); padding-left: 8px; margin: 8px 0; background: rgba(255,193,7,0.08); border-radius:4px; padding: 8px;">
+                                    <strong style="color: var(--accent-yellow);">60' 🔄 OYUNCU DEĞİŞİKLİĞİ!</strong><br>
+                                    <span style="color: #ccc; font-size: 12px;">Teknik Direktör: <em>"${GAME.state.playerName}, bugün takım geride ve pozisyon bulamadın. Seni dinlendiriyorum."</em></span>
+                                </div>
+                            `;
+                            GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 2);
+                            timelineLog.scrollTop = timelineLog.scrollHeight;
+                        }
+                        
+                        if (comment) {
+                            let colorClass = "var(--text-muted)";
+                            let prefix = "";
+                            if (comment.includes("GOOOL")) {
+                                colorClass = "var(--primary)";
+                                prefix = "⚽ ";
+                                SoundManager.playGoal();
+                            } else if (comment.includes("MAALESEF GOL")) {
+                                colorClass = "var(--accent-red)";
+                                prefix = "❌ ";
+                                SoundManager.playConceded();
+                            } else if (comment.includes("kaçtı") || comment.includes("döndü") || comment.includes("kurtardı") || comment.includes("dışarı")) {
+                                SoundManager.playMiss();
+                            } else if (comment.includes("SARI KART")) {
+                                colorClass = "var(--accent-yellow)";
+                                prefix = "🟨 ";
+                            }
+
+                            timelineLog.innerHTML += `
+                                <div style="border-left: 2.5px solid ${colorClass}; padding-left: 8px; margin: 4px 0; color: white;">
+                                    <strong style="color: var(--text-muted);">${min}'</strong> ${prefix}${comment}
+                                </div>
+                            `;
+                            timelineLog.scrollTop = timelineLog.scrollHeight;
+                        }
+                    },
+
                 onMatchChoice: function(minute, choiceData) {
                     const decCard = document.getElementById("match-decision-card");
                     document.getElementById("decision-title").innerText = `${minute}' DA KRİTİK POZİSYON!`;
