@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
@@ -2332,21 +2332,41 @@
             <div class="event-card glass" style="max-width: 450px; text-align: left; border: 2px solid #ef4444; box-shadow: 0 0 45px rgba(239, 68, 68, 0.45); padding: 14px; border-radius: 14px; width: 100%; background: #08090f;">
                 
                 <!-- Broadcast Top Bar -->
-                <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; margin-bottom: 10px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px; margin-bottom: 8px;">
                     <div style="display: flex; align-items: center; gap: 6px;">
                         <span style="background: #ef4444; color: white; font-weight: 900; font-size: 9.5px; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.5px; animation: onAirPulse 1s infinite alternate;">🔴 CANLI</span>
-                        <span style="font-size: 12px; font-weight: 900; color: #fff; letter-spacing: 0.5px;">SİYAH FUTBOL STÜDYOSU</span>
+                        <span style="font-size: 11.5px; font-weight: 900; color: #fff; letter-spacing: 0.5px;">SİYAH FUTBOL PRIME-TIME</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 9.5px; color: #ef4444; font-weight: 900; background: rgba(239,68,68,0.12); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(239,68,68,0.3);">
+                            👥 <span id="siyah-live-viewers">1.284.500</span>
+                        </span>
                         <span id="siyah-live-clock" style="font-size: 10px; color: #FFD600; font-family: monospace; font-weight: bold; background: rgba(0,0,0,0.5); padding: 1px 6px; border-radius: 3px; border: 1px solid rgba(255,214,0,0.2);">01:45:18</span>
-                        <span style="font-size: 9.5px; color: #94a3b8; font-weight: 800;">HD 1080p</span>
                     </div>
                 </div>
 
+                <!-- Studio Tension / Chaos Bar -->
+                <div style="background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 4px 8px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <span style="font-size: 11px;">🔥</span>
+                        <span style="font-size: 10px; font-weight: 900; color: #FFD600; letter-spacing: 0.5px;">STÜDYO GERİLİMİ:</span>
+                    </div>
+                    <div style="flex: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+                        <div id="siyah-tension-bar" style="width: 45%; height: 100%; background: linear-gradient(90deg, #eab308 0%, #ef4444 100%); transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); border-radius: 3px; box-shadow: 0 0 8px #ef4444;"></div>
+                    </div>
+                    <span id="siyah-tension-percent" style="font-size: 10px; font-weight: 900; color: #ef4444; min-width: 32px; text-align: right;">%45</span>
+                </div>
+
                 <!-- 3D Studio Stage Area -->
-                <div class="siyah-studio-wrapper">
-                    <!-- Ceiling Volumetric Ambient Lighting -->
-                    <div class="siyah-studio-lights"></div>
+                <div class="siyah-studio-wrapper" id="siyah-studio-stage">
+                    <!-- Ceiling Steel Truss Scaffolding -->
+                    <div class="siyah-steel-truss"></div>
+
+                    <!-- Volumetric Dynamic Light Beams & Smoke -->
+                    <div class="siyah-volumetric-beams"></div>
+
+                    <!-- Polished Reflective Epoxy Floor -->
+                    <div class="siyah-epoxy-floor"></div>
 
                     <!-- LED Panoramic Video Wall -->
                     <div class="siyah-studio-backdrop">
@@ -2533,7 +2553,7 @@
                 </div>
 
                 <!-- Live TV Lower-Third (KJ Bandı) -->
-                <div class="siyah-tv-kj">
+                <div class="siyah-tv-kj" id="siyah-kj-box">
                     <div class="siyah-kj-topbar">
                         <span>🔴 SON DAKİKA | SİYAH FUTBOL ÖZEL MASASI</span>
                         <span id="siyah-kj-speaker-role">ESKİ HAKEM</span>
@@ -2565,6 +2585,7 @@
                 </div>
             </div>
         </div>
+
 
 
 
@@ -5490,89 +5511,17 @@
             if (!overlay) return;
 
             if (streak >= 5) {
-                emojiEl.innerText = "🔥🔥";
+                emojiEl.innerText = "🔥🔥🔥🔥";
                 titleEl.innerText = "DURDURULAMAZ!";
-                subEl.innerText = `${streak} Üst Üste Yüksek Performans! +5 OVR Bonus!`;
+                subEl.innerText = ${streak} Üst Üste Yüksek Performans! +5 OVR Bonus!;
             } else {
                 emojiEl.innerText = "🔥";
                 titleEl.innerText = "ATEŞ SERİSİ!";
-                subEl.innerText = `${streak} üst üste harika performans! Seni kimse durduramaz!`;
+                subEl.innerText = ${streak} Üst üste harika performans! Seni kimse durduramaz!;
             }
 
             overlay.style.display = "flex";
             setTimeout(() => { overlay.style.display = "none"; }, 2800);
-        }
-
-        // ═══════════════════════════════════════════════════════
-        // 🗞️ DRAMATIC HEADLINE TRIGGER
-        // ═══════════════════════════════════════════════════════
-        function checkDramaticHeadline(goals, rating, scoreDiff, isLastMinute) {
-            const pName = GAME.state.playerName || "Yıldız";
-            const streak = GAME.state.hotStreak || 0;
-
-            // Hat-trick
-            if (goals >= 3) {
-                setTimeout(() => {
-                    showNewspaperModal(
-                        `HAFTA ${GAME.state.currentWeek}`,
-                        `TÜRKİYE'Yİ KASIP KAVURDUNUz! 🔥⚽⚽⚽`,
-                        `${pName.toUpperCase()} HAT-TRİCK YAPTI!`,
-                        `Sahada adeta fırtına gibi esen <b>${pName}</b>, bu sezonun en büyük bireysel performansını sergiledi! Üç golle maçı kurtaran yıldız oyuncu hakkında sosyal medya alev alev yandı. Milli Takım seçmenleri not aldı — <b>${pName}</b> dünya gündemine girdi!`
-                    );
-                    // No interview after newspaper close for this one - just proceed normally
-                }, 500);
-                return true;
-            }
-
-            // 90+ late winner / injury time goal
-            if (isLastMinute && goals >= 1 && scoreDiff > 0) {
-                setTimeout(() => {
-                    showNewspaperModal(
-                        `HAFTA ${GAME.state.currentWeek}`,
-                        `TÜRKİYE SENİ KONUŞUYOR! ⏱️🔥`,
-                        `SON DAKİKADA ${pName.toUpperCase()}!`,
-                        `İşte sahada efsane böyle doğar! <b>${pName}</b> son saniyelerde ağları havalandırarak takımını bir felaketten kurtardı! Tüm Türkiye tribünden ekrana bağlandı. Sosyal medyada bu gol günün en viral anı!`
-                    );
-                }, 500);
-                return true;
-            }
-
-            // 5+ streak milestone
-            if (streak >= 5 && streak % 5 === 0) {
-                setTimeout(() => {
-                    showNewspaperModal(
-                        `HAFTA ${GAME.state.currentWeek}`,
-                        `DURDURULAMIYOR! 🔥🔥`,
-                        `${pName.toUpperCase()} ${streak} MAÇLIK ATEŞ SERİSİNDE!`,
-                        `Üst üste <b>${streak}</b> maçta yüksek performans sergileyen <b>${pName}</b>, hem Süper Lig'in hem de Avrupa'nın radarına girdi! Büyük kulüplerin gözleri artık bu genç yıldızın üstünde. Transfer sezonu ne getirecek?`
-                    );
-                }, 500);
-                return true;
-            }
-
-            return false;
-        }
-        window.checkDramaticHeadline = checkDramaticHeadline;
-
-        function afterWeekAdvanced() {
-            if (typeof determineNextOpponent === "function") {
-                determineNextOpponent();
-            }
-            if (typeof GAME !== "undefined" && typeof GAME.updateUI === "function") {
-                GAME.updateUI();
-            }
-            if (typeof renderLeagueTable === "function") {
-                renderLeagueTable();
-            }
-            if (typeof renderLeagueScorers === "function") {
-                renderLeagueScorers();
-            }
-            // Generate missions for new week + refresh badges
-            if (typeof GAME !== "undefined") {
-                GAME.generateWeeklyMissions();
-                updateMissionsBadge();
-                updateStreakBadge();
-            }
         }
 
         // 📺 SİYAH FUTBOL 3D SİNEMATİK STÜDYO MOTORU
@@ -5589,7 +5538,7 @@
             const h = String(now.getHours()).padStart(2, '0');
             const m = String(now.getMinutes()).padStart(2, '0');
             const s = String(now.getSeconds()).padStart(2, '0');
-            clockEl.innerText = `${h}:${m}:${s}`;
+            clockEl.innerText = ${h}::;
         }
 
         function runSiyahTypewriter(text) {
@@ -5602,12 +5551,12 @@
 
             speechTextEl.innerHTML = '<span class="siyah-typing-cursor"></span>';
             let charIndex = 0;
-            const fullText = `"${text}"`;
+            const fullText = "";
 
             siyahTypewriterTimer = setInterval(() => {
                 if (charIndex < fullText.length) {
                     charIndex++;
-                    speechTextEl.innerHTML = `${fullText.substring(0, charIndex)}<span class="siyah-typing-cursor"></span>`;
+                    speechTextEl.innerHTML = ${fullText.substring(0, charIndex)}<span class="siyah-typing-cursor"></span>;
                 } else {
                     clearInterval(siyahTypewriterTimer);
                     siyahTypewriterTimer = null;
@@ -5624,42 +5573,49 @@
                 return;
             }
 
-            const pName = GAME.state.playerName || "Genç Yıldız";
+            const pName = (typeof GAME !== "undefined" && GAME.state && GAME.state.playerName) || "Genç Yıldız";
             const goals = (ctx && ctx.goals) || 0;
             const rating = (ctx && ctx.rating) || 6.5;
 
             const ledTopic = document.getElementById("siyah-led-topic");
 
             if (goals >= 2 || rating >= 8.5) {
-                if (ledTopic) ledTopic.innerText = `${pName.toUpperCase()} ŞOVU & ZAFER GECESİ`;
+                if (ledTopic) ledTopic.innerText = ${pName.toUpperCase()} ŞOVU & ZAFER GECESİ;
                 currentSiyahQuotes = [
-                    { name: "Ahmet Çakar", role: "Eski Hakem", quote: `Bakın ben açık ve net konuşayım. Bu ${pName}'de öyle bir kumaş, öyle bir ciğer var ki... Böyle devam ederse Avrupa devleri kapısında yatar! Hakem de pozisyonları iyi süzdü bu arada.` },
-                    { name: "Rasim Ozan", role: "Ateşli Yorumcu", quote: `Hocaaam hocaaam! Çıldırtma beni canlı yayında! Bu çocuk bu gece sahada adeta bir terminatör, bir futbol canavarı gibiydi! Türkiye seninle gurur duyuyor be çocuk!` },
-                    { name: "Sinan Engin", role: "Eski Futbolcu", quote: `Kardeşim ben bu çocuğa kefilim. Sezon başından beri söylüyorum; bu çocukta saf kalite, doğuştan klas var. Çocuğun önünü kesmeyin, bırakın aksın gitsin.` },
-                    { name: "Ertem Şener", role: "Moderatör", quote: `Evet sevgili seyirciler, stüdyo resmen alev alev! Şimdi soruyorum: ${pName} önümüzdeki sezon Ballon d'Or listesine ilk 10'dan girer mi? Canlı yayında oyluyoruz!` }
+                    { name: "Ahmet Çakar", role: "Eski Hakem", tension: 50, quote: Bakın ben açık ve net konuşayım. Bu 'de öyle bir kumaş, öyle bir ciğer var ki... Böyle devam ederse Avrupa devleri kapısında yatar! Hakem de pozisyonları iyi süzdü bu arada. },
+                    { name: "Rasim Ozan", role: "Ateşli Yorumcu", tension: 78, quote: Hocaaam hocaaam! Çıldırtma beni canlı yayında! Bu çocuk bu gece sahada adeta bir terminatör, bir futbol canavarı gibiydi! Türkiye seninle gurur duyuyor be çocuk! },
+                    { name: "Sinan Engin", role: "Eski Futbolcu", tension: 90, quote: Kardeşim ben bu çocuğa kefilim. Sezon başından beri söylüyorum; bu çocukta saf kalite, doğuştan klas var. Çocuğun önünü kesmeyin, bırakın aksın gitsin. },
+                    { name: "Ertem Şener", role: "Moderatör", tension: 98, quote: Evet sevgili seyirciler, stüdyo resmen alev alev! Şimdi soruyorum:  önümüzdeki sezon Ballon d'Or listesine ilk 10'dan girer mi? Canlı yayında oyluyoruz! }
                 ];
             } else if (rating <= 5.8) {
-                if (ledTopic) ledTopic.innerText = `KRİZ MASASI: ${pName.toUpperCase()}`;
+                if (ledTopic) ledTopic.innerText = KRİZ MASASI: ;
                 currentSiyahQuotes = [
-                    { name: "Ahmet Çakar", role: "Eski Hakem", quote: `Ben ne dedim Ertem? Genç çocuklara erkenden yıldız muamelesi yapıp gazı veriyorsunuz! Bu gece sahada hayalet gibiydi, tek bir olumlu hareketi yok!` },
-                    { name: "Rasim Ozan", role: "Ateşli Yorumcu", quote: `Hocam insaf ya, yapma etme! Çocuğun üzerine bu kadar acımasızca gitmeyin! Bir maç kötü oynadı diye linç mi edelim geleceğimizi!` },
-                    { name: "Sinan Engin", role: "Eski Futbolcu", quote: `Kardeşim geceleri gezmeyi tozmayı bırakıp tesiste yatıp kalkacak. Yoksa bu lig insanı yer bitirir, benden söylemesi.` },
-                    { name: "Ertem Şener", role: "Moderatör", quote: `Evet stüdyoda büyük fikir ayrılığı var! Bakalım ${pName} önümüzdeki hafta sahada nasıl bir reaksiyon verecek?` }
+                    { name: "Ahmet Çakar", role: "Eski Hakem", tension: 60, quote: Ben ne dedim Ertem? Genç çocuklara erkenden yıldız muamelesi yapıp gazı veriyorsunuz! Bu gece sahada hayalet gibiydi, tek bir olumlu hareketi yok! },
+                    { name: "Rasim Ozan", role: "Ateşli Yorumcu", tension: 85, quote: Hocam insaf ya, yapma etme! Çocuğun üzerine bu kadar acımasızca gitmeyin! Bir maç kötü oynadı diye linç mi edelim geleceğimizi! },
+                    { name: "Sinan Engin", role: "Eski Futbolcu", tension: 94, quote: Kardeşim geceleri gezmeyi tozmayı bırakıp tesiste yatıp kalkacak. Yoksa bu lig insanı yer bitirir, benden söylemesi. },
+                    { name: "Ertem Şener", role: "Moderatör", tension: 100, quote: Evet stüdyoda büyük fikir ayrılığı var! Bakalım  önümüzdeki hafta sahada nasıl bir reaksiyon verecek? }
                 ];
             } else {
-                if (ledTopic) ledTopic.innerText = `CANLI TARTIŞMA: ${pName.toUpperCase()}`;
+                if (ledTopic) ledTopic.innerText = CANLI TARTIŞMA: ;
                 currentSiyahQuotes = [
-                    { name: "Ahmet Çakar", role: "Eski Hakem", quote: `İyi kumaş, yetenekli çocuk ama daha çok fırın ekmek yemesi lazım. Kendini hemen dünya yıldızı zannetmesin.` },
-                    { name: "Rasim Ozan", role: "Ateşli Yorumcu", quote: `Hocaaaam! Bu çocuk bu ligin en heyecan verici yeteneğidir, sahada top ayağına gelince tribünler ayağa kalkıyor!` },
-                    { name: "Sinan Engin", role: "Eski Futbolcu", quote: `Kardeşim hocası ona taktik tahtasında daha fazla özgürlük tanımalı. Bırakın çocuk hissettiği gibi oynasın.` },
-                    { name: "Ertem Şener", role: "Moderatör", quote: `Siyah Futbol masasında tansiyon zirvede! Reklamların ardından özel kulis bilgileriyle devam edeceğiz!` }
+                    { name: "Ahmet Çakar", role: "Eski Hakem", tension: 45, quote: İyi kumaş, yetenekli çocuk ama daha çok fırın ekmek yemesi lazım. Kendini hemen dünya yıldızı zannetmesin. },
+                    { name: "Rasim Ozan", role: "Ateşli Yorumcu", tension: 70, quote: Hocaaaam! Bu çocuk bu ligin en heyecan verici yeteneğidir, sahada top ayağına gelince tribünler ayağa kalkıyor! },
+                    { name: "Sinan Engin", role: "Eski Futbolcu", tension: 86, quote: Kardeşim hocası ona taktik tahtasında daha fazla özgürlük tanımalı. Bırakın çocuk hissettiği gibi oynasın. },
+                    { name: "Ertem Şener", role: "Moderatör", tension: 95, quote: Siyah Futbol masasında tansiyon zirvede! Reklamların ardından özel kulis bilgileriyle devam edeceğiz! }
                 ];
             }
 
             modal.style.display = "flex";
             updateSiyahStudioClock();
             if (siyahClockTimer) clearInterval(siyahClockTimer);
-            siyahClockTimer = setInterval(updateSiyahStudioClock, 1000);
+            siyahClockTimer = setInterval(() => {
+                updateSiyahStudioClock();
+                const viewersEl = document.getElementById("siyah-live-viewers");
+                if (viewersEl) {
+                    const base = 1280000 + Math.floor(Math.random() * 45000);
+                    viewersEl.innerText = base.toLocaleString('tr-TR');
+                }
+            }, 1000);
 
             selectPanelistSpeaker(0);
         }
@@ -5669,9 +5625,25 @@
             currentSiyahIndex = index;
             const speaker = currentSiyahQuotes[currentSiyahIndex];
 
+            // Reji Camera Cut Glitch Animation
+            const studioStage = document.getElementById("siyah-studio-stage");
+            if (studioStage) {
+                studioStage.classList.remove("reji-cam-switch");
+                void studioStage.offsetWidth;
+                studioStage.classList.add("reji-cam-switch");
+            }
+
+            // KJ Flash Pulse
+            const kjBox = document.getElementById("siyah-kj-box");
+            if (kjBox) {
+                kjBox.classList.remove("siyah-flash-pulse");
+                void kjBox.offsetWidth;
+                kjBox.classList.add("siyah-flash-pulse");
+            }
+
             // Update seated 3D panelist active states & spotlights
             for (let i = 0; i < 4; i++) {
-                const el = document.getElementById(`panelist-${i}`);
+                const el = document.getElementById(panelist-);
                 if (el) {
                     if (i === currentSiyahIndex) {
                         el.classList.add("active-speaker");
@@ -5679,7 +5651,7 @@
                         el.classList.remove("active-speaker");
                     }
                 }
-                const plate = document.getElementById(`desk-plate-${i}`);
+                const plate = document.getElementById(desk-plate-);
                 if (plate) {
                     if (i === currentSiyahIndex) {
                         plate.classList.add("active-plate");
@@ -5689,11 +5661,21 @@
                 }
             }
 
+            // Update Tension Bar
+            const tensionBar = document.getElementById("siyah-tension-bar");
+            const tensionPercent = document.getElementById("siyah-tension-percent");
+            const tVal = speaker.tension || 50;
+            if (tensionBar) tensionBar.style.width = ${tVal}%;
+            if (tensionPercent) {
+                tensionPercent.innerText = tVal >= 95 ? % (KAOS!) : %;
+                tensionPercent.style.color = tVal >= 80 ? '#ef4444' : '#eab308';
+            }
+
             // Update TV Lower-Third (KJ)
             const speakerNameEl = document.getElementById("siyah-active-speaker-name");
             const roleEl = document.getElementById("siyah-kj-speaker-role");
 
-            if (speakerNameEl) speakerNameEl.innerHTML = `${speaker.name.toUpperCase()} KONUŞUYOR:`;
+            if (speakerNameEl) speakerNameEl.innerHTML = ${speaker.name.toUpperCase()} KONUŞUYOR:;
             if (roleEl) roleEl.innerText = (speaker.role || "YORUMCU").toUpperCase();
 
             // Run smooth typewriter streaming text
@@ -5705,7 +5687,6 @@
             currentSiyahIndex = (currentSiyahIndex + 1) % currentSiyahQuotes.length;
             selectPanelistSpeaker(currentSiyahIndex);
         }
-
 
         function closeSiyahFutbolModal() {
             if (siyahTypewriterTimer) {
@@ -5724,8 +5705,6 @@
                 act();
             }
         }
-
-
 
         // 📣 TRİBÜNLERE 3'LÜ ÇEKTİRME MOTORU
         let tribunStep = 0;
