@@ -2026,73 +2026,149 @@
         </div>
 
         <!-- RISEUP NEWS NEWSPAPER MODAL -->
-        <div class="event-modal-overlay" id="newspaper-modal" onclick="if(event.target===this) closeRiseUpNewsModal()" style="background: rgba(0,0,0,0.92); z-index: 10020; display: none; align-items: center; justify-content: center; padding: 15px;">
-            <div class="newspaper-card glass" style="max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 20px; border: 2px solid var(--primary); border-radius: 14px; box-shadow: 0 10px 45px rgba(0, 229, 255, 0.25); background: #0f1418; color: #fff; position: relative;">
-                
-                <!-- Quick Close Button (Top Right) -->
-                <button onclick="closeRiseUpNewsModal()" style="position: absolute; top: 12px; right: 12px; width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,23,68,0.8)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">✕</button>
+        <div class="event-modal-overlay" id="newspaper-modal" onclick="if(event.target===this) closeRiseUpNewsModal()" style="background: rgba(0,0,0,0.94); backdrop-filter: blur(10px); z-index: 10020; display: none; align-items: center; justify-content: center; padding: 12px; overflow-y: auto;">
+            <div class="newspaper-3d-wrapper">
+                <div class="newspaper-sheet-3d" id="newspaper-sheet">
+                    <!-- Quick Close Button (Top Right) -->
+                    <button class="btn-newspaper-quick-close" onclick="closeRiseUpNewsModal()" title="Kapat">✕</button>
 
-                <!-- Newspaper Masthead -->
-                <div style="border-bottom: 2px solid rgba(255,255,255,0.15); padding-bottom: 10px; margin-bottom: 14px; text-align: center; padding-right: 25px;">
-                    <div style="font-size: 26px; font-weight: 900; letter-spacing: 3px; color: #ffffff; font-family: 'Cinzel', Georgia, serif; text-transform: uppercase; text-shadow: 0 2px 10px rgba(0, 229, 255, 0.4);">
-                        📰 RISEUP NEWS
+                    <!-- Horizontal Paper Crease Shadow -->
+                    <div class="newspaper-fold-crease"></div>
+
+                    <!-- Newspaper Masthead -->
+                    <div class="newspaper-masthead">
+                        <div class="newspaper-top-meta">
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <svg class="newspaper-barcode-svg" viewBox="0 0 60 16">
+                                    <rect x="0" y="0" width="3" height="16" fill="#94a3b8"/>
+                                    <rect x="5" y="0" width="1.5" height="16" fill="#94a3b8"/>
+                                    <rect x="8" y="0" width="4" height="16" fill="#94a3b8"/>
+                                    <rect x="14" y="0" width="2" height="16" fill="#94a3b8"/>
+                                    <rect x="18" y="0" width="1" height="16" fill="#94a3b8"/>
+                                    <rect x="21" y="0" width="3.5" height="16" fill="#94a3b8"/>
+                                    <rect x="27" y="0" width="2" height="16" fill="#94a3b8"/>
+                                    <rect x="31" y="0" width="4" height="16" fill="#94a3b8"/>
+                                    <rect x="37" y="0" width="1.5" height="16" fill="#94a3b8"/>
+                                    <rect x="41" y="0" width="3" height="16" fill="#94a3b8"/>
+                                    <rect x="46" y="0" width="2" height="16" fill="#94a3b8"/>
+                                    <rect x="50" y="0" width="4" height="16" fill="#94a3b8"/>
+                                    <rect x="56" y="0" width="2" height="16" fill="#94a3b8"/>
+                                </svg>
+                                <span id="news-issue-no">SAYI: #1024</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span id="news-date" style="color: #00e5b7; font-weight: 800;">HAFTA 1</span>
+                                <span>FİYAT: 20 ₺</span>
+                            </div>
+                        </div>
+
+                        <div class="newspaper-title-row">
+                            <div class="newspaper-main-logo">📰 RISEUP NEWS</div>
+                            <div class="newspaper-stamp-badge" id="news-stamp-badge">🔴 ÖZEL BASKI</div>
+                        </div>
+                        <div class="newspaper-sub-motto">
+                            TÜRKİYE VE DÜNYA SPOR & EKONOMİ GÜNDEMİ
+                        </div>
                     </div>
-                    <div style="font-size: 9.5px; color: var(--accent-yellow); font-weight: bold; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px;">
-                        TÜRKİYE VE DÜNYA SPOR & EKONOMİ GÜNDEMİ
+
+                    <!-- 1. Main Headline Area -->
+                    <div class="newspaper-headline-section">
+                        <div class="newspaper-headline-tag">🔥 GÜNÜN MANŞETİ</div>
+                        <h2 class="newspaper-headline-title" id="news-title">
+                            LİG HEYECANI BAŞLADI!
+                        </h2>
+                        <h4 class="newspaper-headline-sub" id="news-subtitle">
+                            Gözler genç yıldızların ve şampiyonluk adaylarının üstünde.
+                        </h4>
+
+                        <!-- Nocturnal Torch / Stadium Lead Visual -->
+                        <div class="newspaper-lead-visual">
+                            <svg class="newspaper-lead-svg" viewBox="0 0 400 80" preserveAspectRatio="none">
+                                <defs>
+                                    <linearGradient id="np-sky-grad" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="#090b14"/>
+                                        <stop offset="100%" stop-color="#1e1b4b"/>
+                                    </linearGradient>
+                                    <radialGradient id="np-flare-1" cx="30%" cy="65%" r="45%">
+                                        <stop offset="0%" stop-color="#ef4444" stop-opacity="0.95"/>
+                                        <stop offset="55%" stop-color="#f59e0b" stop-opacity="0.45"/>
+                                        <stop offset="100%" stop-color="#ef4444" stop-opacity="0"/>
+                                    </radialGradient>
+                                    <radialGradient id="np-flare-2" cx="70%" cy="65%" r="45%">
+                                        <stop offset="0%" stop-color="#ef4444" stop-opacity="0.95"/>
+                                        <stop offset="55%" stop-color="#f59e0b" stop-opacity="0.45"/>
+                                        <stop offset="100%" stop-color="#ef4444" stop-opacity="0"/>
+                                    </radialGradient>
+                                    <linearGradient id="np-beam" x1="0" y1="0" x2="1" y2="1">
+                                        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.22"/>
+                                        <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+                                    </linearGradient>
+                                </defs>
+                                <rect width="400" height="80" fill="url(#np-sky-grad)"/>
+                                <polygon points="10,0 35,0 75,80 0,80" fill="url(#np-beam)"/>
+                                <polygon points="390,0 365,0 325,80 400,80" fill="url(#np-beam)"/>
+                                <circle cx="20" cy="8" r="4.5" fill="#ffffff"/>
+                                <circle cx="380" cy="8" r="4.5" fill="#ffffff"/>
+                                <path d="M 0 52 Q 100 45 200 48 Q 300 45 400 52 L 400 80 L 0 80 Z" fill="#0b0f19"/>
+                                <ellipse cx="200" cy="78" rx="140" ry="16" fill="#047857" opacity="0.6"/>
+                                <ellipse cx="200" cy="78" rx="60" ry="8" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.5"/>
+                                <circle cx="120" cy="55" r="32" fill="url(#np-flare-1)"/>
+                                <circle cx="280" cy="55" r="32" fill="url(#np-flare-2)"/>
+                                <path d="M 40 68 Q 45 56 50 68 Q 55 58 60 68 Q 70 54 80 68 Q 95 56 110 68 Q 125 50 140 68 Q 160 52 180 68 Q 200 48 220 68 Q 240 52 260 68 Q 280 50 295 68 Q 310 56 325 68 Q 340 54 350 68 Q 360 58 370 68 L 400 80 L 0 80 Z" fill="#030712"/>
+                                <circle cx="118" cy="48" r="1.5" fill="#fef08a"/>
+                                <circle cx="126" cy="42" r="1.2" fill="#ef4444"/>
+                                <circle cx="278" cy="46" r="1.5" fill="#fef08a"/>
+                                <circle cx="286" cy="40" r="1.2" fill="#ef4444"/>
+                            </svg>
+                        </div>
                     </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); margin-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 5px;">
-                        <span id="news-issue-no">SAYI: 1024</span>
-                        <span id="news-date" style="color: var(--primary); font-weight: bold;">HAFTA 1</span>
-                        <span>FİYAT: 20 ₺</span>
+
+                    <!-- 2. Two-Column Editorial Layout -->
+                    <div class="newspaper-columns-grid">
+                        <!-- Left Column: Main Sports Article -->
+                        <div class="newspaper-column-main">
+                            <p class="newspaper-article-body" id="news-desc">
+                                Lig maçlarında heyecan dorukta. Genç yetenekler performanslarıyla spor medyasının manşetlerini süslüyor.
+                            </p>
+                            <div class="newspaper-byline">✍️ Spor Servisi / Özel Haber</div>
+                        </div>
+
+                        <!-- Right Column: Economy & Gossip Clippings -->
+                        <div class="newspaper-column-side">
+                            <!-- Economy Clipping -->
+                            <div class="newspaper-clipping eco">
+                                <div class="newspaper-clipping-header">
+                                    <span style="color: #00e5b7;">📈 EKONOMİ</span>
+                                    <span id="news-eco-ticker" style="color: #00e5b7; font-weight: bold;">BIST Spor: +%3.8 ↗</span>
+                                </div>
+                                <h3 class="newspaper-clipping-title" id="news-eco-title">
+                                    Gayrimenkul ve Arsa Değerleri Yükselişte!
+                                </h3>
+                                <p class="newspaper-clipping-text" id="news-eco-desc">
+                                    Piyasalarda sıcak para hareketliliği sürerken arsa yatırımları kazandırıyor.
+                                </p>
+                            </div>
+
+                            <!-- Magazine Clipping -->
+                            <div class="newspaper-clipping mag">
+                                <div class="newspaper-clipping-header">
+                                    <span style="color: #c084fc;">⚡ KULİS & MAGAZİN</span>
+                                </div>
+                                <h3 class="newspaper-clipping-title" id="news-mag-title">
+                                    Sosyal Medyada Futbol Tartışmaları Viral Oldu
+                                </h3>
+                                <p class="newspaper-clipping-text" id="news-mag-desc">
+                                    Haftanın en çok konuşulan olayları sosyal medyayı salladı.
+                                </p>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- 3. Fold & Continue Button -->
+                    <button class="btn-newspaper-fold" id="btn-news-close" onclick="closeRiseUpNewsModal()">
+                        📰 GAZETEYİ KATLA VE DEVAM ET
+                    </button>
                 </div>
-
-                <!-- 1. SECTION: SPOR & FUTBOL MANŞETİ -->
-                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 10px; padding: 14px; margin-bottom: 12px; text-align: left; position: relative;">
-                    <div style="display: inline-block; background: var(--accent-red); color: white; font-size: 9px; font-weight: 900; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
-                        ⚽ SPOR & FUTBOL MANŞETİ
-                    </div>
-                    <h2 id="news-title" style="font-family: Georgia, serif; font-size: 18px; font-weight: 800; line-height: 1.3; margin: 0 0 6px 0; color: #ffffff; text-transform: uppercase;">
-                        LİG HEYECANI BAŞLADI!
-                    </h2>
-                    <h4 id="news-subtitle" style="font-size: 12px; font-weight: 700; color: var(--accent-yellow); margin: 0 0 8px 0; line-height: 1.35;">
-                        Gözler genç yıldızların ve şampiyonluk adaylarının üstünde.
-                    </h4>
-                    <p id="news-desc" style="font-size: 12px; line-height: 1.55; color: #d0d7de; margin: 0; text-align: justify;"></p>
-                </div>
-
-                <!-- 2. SECTION: EKONOMİ & PİYASALAR -->
-                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(0, 229, 183, 0.3); border-radius: 10px; padding: 14px; margin-bottom: 12px; text-align: left;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                        <span style="background: var(--accent-green); color: black; font-size: 9px; font-weight: 900; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px;">
-                            📈 EKONOMİ & PİYASALAR
-                        </span>
-                        <span id="news-eco-ticker" style="font-size: 9.5px; color: var(--accent-green); font-weight: bold;">BIST Spor: +%3.8 ↗</span>
-                    </div>
-                    <h3 id="news-eco-title" style="font-size: 14px; font-weight: 800; color: #ffffff; margin: 0 0 6px 0;">
-                        Gayrimenkul ve Arsa Değerleri Yükselişte!
-                    </h3>
-                    <p id="news-eco-desc" style="font-size: 11.5px; line-height: 1.5; color: #c4ccd4; margin: 0; text-align: justify;">
-                        Piyasalarda sıcak para hareketliliği sürerken, futbol kulüplerinin sponsorluk gelirleri artıyor. Yatırım uzmanları gayrimenkul ve arsa yatırımlarını öneriyor.
-                    </p>
-                </div>
-
-                <!-- 3. SECTION: ÜLKE GÜNDEMİ & MAGAZİN -->
-                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 10px; padding: 14px; margin-bottom: 18px; text-align: left;">
-                    <div style="display: inline-block; background: var(--accent-purple); color: white; font-size: 9px; font-weight: 900; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
-                        🇹🇷 ÜLKE GÜNDEMİ & MAGAZİN
-                    </div>
-                    <h3 id="news-mag-title" style="font-size: 14px; font-weight: 800; color: #ffffff; margin: 0 0 6px 0;">
-                        Sosyal Medyada Futbol Tartışmaları Viral Oldu
-                    </h3>
-                    <p id="news-mag-desc" style="font-size: 11.5px; line-height: 1.5; color: #c4ccd4; margin: 0; text-align: justify;">
-                        Haftanın en çok konuşulan olayları sosyal medyayı salladı. Maç günleri sokaklarda ve kafelerde futbol coşkusu hakim.
-                    </p>
-                </div>
-
-                <button class="btn btn-primary" id="btn-news-close" onclick="closeRiseUpNewsModal()" style="width: 100%; padding: 12px; font-weight: 800; font-size: 13px; letter-spacing: 0.5px; cursor: pointer;">
-                    🗞️ GAZETEYİ KATLA VE DEVAM ET
-                </button>
             </div>
         </div>
 
@@ -2748,6 +2824,39 @@
                         console.warn("Web Audio API is not supported or blocked in this browser:", e);
                         this.audioCtx = null;
                     }
+                }
+            },
+
+            playPaperRustle: function() {
+                if (!this.enabled) return;
+                try {
+                    this.initAudio();
+                    let ctx = this.audioCtx;
+                    if (!ctx) return;
+                    let now = ctx.currentTime;
+                    let bufferSize = Math.floor(ctx.sampleRate * 0.35);
+                    let buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                    let data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.08));
+                    }
+                    let noise = ctx.createBufferSource();
+                    noise.buffer = buffer;
+                    let filter = ctx.createBiquadFilter();
+                    filter.type = "bandpass";
+                    filter.frequency.setValueAtTime(1600, now);
+                    filter.frequency.exponentialRampToValueAtTime(450, now + 0.3);
+                    filter.Q.setValueAtTime(3.0, now);
+                    let gain = ctx.createGain();
+                    gain.gain.setValueAtTime(0.25, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                    noise.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(ctx.destination);
+                    noise.start(now);
+                    noise.stop(now + 0.35);
+                } catch(e) {
+                    console.error("Audio error in playPaperRustle:", e);
                 }
             },
 
@@ -5014,30 +5123,44 @@
         let newspaperCloseCallback = null;
 
         function closeRiseUpNewsModal() {
+            const sheet = document.getElementById("newspaper-sheet");
             const modal = document.getElementById("newspaper-modal");
-            if (modal) {
-                modal.style.display = "none";
-                modal.classList.remove("active");
-            }
-            if (typeof SoundManager !== "undefined" && typeof SoundManager.playClick === "function") {
+            
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playPaperRustle === "function") {
+                try { SoundManager.playPaperRustle(); } catch(e){}
+            } else if (typeof SoundManager !== "undefined" && typeof SoundManager.playClick === "function") {
                 try { SoundManager.playClick(); } catch(e){}
             }
 
-            if (typeof newspaperCloseCallback === "function") {
-                let cb = newspaperCloseCallback;
-                newspaperCloseCallback = null;
-                cb();
-            } else {
-                try {
-                    if (typeof checkForWhatsAppEvents === "function" && !checkForWhatsAppEvents()) {
-                        if (Math.random() < 0.4 && typeof triggerRandomEvent === "function") {
-                            triggerRandomEvent();
-                        }
-                    }
-                } catch(e) {
-                    console.warn("Event check error after news close:", e);
-                }
+            if (sheet) {
+                sheet.classList.add("folding-out");
             }
+
+            setTimeout(() => {
+                if (modal) {
+                    modal.style.display = "none";
+                    modal.classList.remove("active");
+                }
+                if (sheet) {
+                    sheet.classList.remove("folding-out");
+                }
+
+                if (typeof newspaperCloseCallback === "function") {
+                    let cb = newspaperCloseCallback;
+                    newspaperCloseCallback = null;
+                    cb();
+                } else {
+                    try {
+                        if (typeof checkForWhatsAppEvents === "function" && !checkForWhatsAppEvents()) {
+                            if (Math.random() < 0.4 && typeof triggerRandomEvent === "function") {
+                                triggerRandomEvent();
+                            }
+                        }
+                    } catch(e) {
+                        console.warn("Event check error after news close:", e);
+                    }
+                }
+            }, 420);
         }
         window.closeRiseUpNewsModal = closeRiseUpNewsModal;
 
@@ -5056,7 +5179,7 @@
                 }
 
                 const issueEl = document.getElementById("news-issue-no");
-                if (issueEl) issueEl.innerText = `SAYI: ${news.issueNo}`;
+                if (issueEl) issueEl.innerText = `SAYI: #${news.issueNo}`;
                 const dateEl = document.getElementById("news-date");
                 if (dateEl) dateEl.innerText = news.weekStr;
                 
@@ -5083,19 +5206,24 @@
                 if (magDescEl) magDescEl.innerHTML = news.mag.desc;
 
                 const modal = document.getElementById("newspaper-modal");
+                const sheet = document.getElementById("newspaper-sheet");
+                if (sheet) {
+                    sheet.classList.remove("folding-out");
+                }
                 if (modal) {
                     modal.style.display = "flex";
                     modal.classList.add("active");
                 }
                 
-                if (typeof SoundManager !== "undefined" && typeof SoundManager.playClick === "function") {
+                if (typeof SoundManager !== "undefined" && typeof SoundManager.playPaperRustle === "function") {
+                    try { SoundManager.playPaperRustle(); } catch(e){}
+                } else if (typeof SoundManager !== "undefined" && typeof SoundManager.playClick === "function") {
                     try { SoundManager.playClick(); } catch(e){}
                 }
             } catch(err) {
                 console.error("Error opening RiseUp News modal:", err);
             }
         }
-
         window.openRiseUpNewsModal = openRiseUpNewsModal;
         window.updateHomeNewsPreview = updateHomeNewsPreview;
 
