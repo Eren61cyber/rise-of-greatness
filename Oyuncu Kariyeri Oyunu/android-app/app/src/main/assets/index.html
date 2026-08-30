@@ -5149,16 +5149,6 @@
                     let cb = newspaperCloseCallback;
                     newspaperCloseCallback = null;
                     cb();
-                } else {
-                    try {
-                        if (typeof checkForWhatsAppEvents === "function" && !checkForWhatsAppEvents()) {
-                            if (Math.random() < 0.4 && typeof triggerRandomEvent === "function") {
-                                triggerRandomEvent();
-                            }
-                        }
-                    } catch(e) {
-                        console.warn("Event check error after news close:", e);
-                    }
                 }
             }, 420);
         }
