@@ -1460,31 +1460,48 @@
             </div>
         </div>
 
-        <!-- INTERVIEW MODAL -->
-        <div class="event-modal-overlay" id="interview-modal">
-            <div class="event-card glass" style="max-width: 420px; text-align: center;">
-                <h3 id="interview-tag" class="event-tag" style="background: var(--accent-purple); color: white; font-weight: 800; padding: 4px 10px; border-radius: 6px; font-size: 10px; width: fit-content; margin: 0 auto 12px auto; text-transform: uppercase;">🎤 Maç Sonu Röportajı</h3>
-                <h2 style="color: white; margin-bottom: 15px;">Mikrofonlar Sende!</h2>
+        <!-- 🎙️ FLASH INTERVIEW & MIXED ZONE MODAL -->
+        <div class="event-modal-overlay" id="interview-modal" style="background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); z-index: 10020; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
+            <div class="event-card glass" style="max-width: 440px; width: 100%; text-align: center; border: 2px solid #a855f7; box-shadow: 0 0 40px rgba(168, 85, 247, 0.35); padding: 20px; border-radius: 16px; background: linear-gradient(180deg, #161224 0%, #0d0a17 100%); position: relative;">
                 
-                <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass); border-radius: 12px; padding: 15px; margin-bottom: 20px; text-align: left;">
-                    <p id="interview-reporter" style="font-size: 12px; color: var(--accent-purple); font-weight: bold; margin-bottom: 6px;">🎙️ Spor Muhabiri:</p>
-                    <p id="interview-question" style="font-size: 14px; color: white; line-height: 1.5; font-style: italic;">
-                        "Bugün sahada adeta fırtına gibi estiniz ve Maçın Oyuncusu seçildiniz. Bu harika performansınız hakkında neler söyleyeceksiniz?"
+                <!-- Live Broadcast Badge -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;">
+                    <div style="display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 900; color: #ef4444; letter-spacing: 1px;">
+                        <span style="width: 8px; height: 8px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 8px #ef4444; display: inline-block;"></span>
+                        🔴 CANLI YAYIN | FLASH RÖPORTAJ
+                    </div>
+                    <div style="font-size: 10px; color: #c084fc; font-weight: 800; text-transform: uppercase;" id="interview-club-badge">
+                        🎙️ BASIN ODASI
+                    </div>
+                </div>
+
+                <h2 style="color: white; font-size: 20px; font-weight: 900; margin: 0 0 6px 0;">Mikrofonlar Sende!</h2>
+                <p style="font-size: 11.5px; color: #94a3b8; margin: 0 0 14px 0;">Kameralar karşısındasın. Vereceğin yanıt kariyerini, hoca güvenini ve taraftar sevgisini şekillendirecek!</p>
+
+                <!-- Reporter Question Box -->
+                <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(168, 85, 247, 0.4); border-left: 4px solid #a855f7; border-radius: 10px; padding: 14px; margin-bottom: 16px; text-align: left;">
+                    <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+                        <span style="font-size: 14px;">🎙️</span>
+                        <span id="interview-reporter" style="font-size: 11px; color: #c084fc; font-weight: 800; text-transform: uppercase;">Spor Muhabiri:</span>
+                    </div>
+                    <p id="interview-question" style="font-size: 13.5px; color: #f1f5f9; line-height: 1.45; font-style: italic; font-weight: 600; margin: 0;">
+                        "Bugün sahada harika bir futbol sergilediniz. Maç hakkında neler söylemek istersiniz?"
                     </p>
                 </div>
 
+                <!-- 3 Choice Buttons -->
                 <div class="event-choices" style="display: flex; flex-direction: column; gap: 10px;">
-                    <button class="btn btn-event" id="interview-opt-1" style="text-align: left; padding: 12px;">
-                        <span class="choice-text" style="font-weight: bold; color: var(--primary); display: block; margin-bottom: 2px;">"Takım arkadaşlarım olmasaydı başaramazdım, bu zafer hepimizin." (Alçakgönüllü)</span>
-                        <span class="choice-effect" style="font-size: 10px; color: var(--text-muted);">+5 Hoca Güveni, +5 Moral, +200 Takipçi</span>
+                    <button class="btn btn-event" id="interview-opt-1" style="text-align: left; padding: 12px 14px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(0,229,183,0.3); cursor: pointer; transition: all 0.2s;">
+                        <span class="choice-text" style="font-weight: 800; font-size: 12.5px; color: #00e5b7; display: block; margin-bottom: 4px;">"Takım arkadaşlarım olmasaydı başaramazdım."</span>
+                        <span class="choice-effect" style="font-size: 10.5px; color: #94a3b8; font-weight: 600; display: block;">+5 Hoca Güveni, +5 Moral, +1.000 Takipçi</span>
                     </button>
-                    <button class="btn btn-event" id="interview-opt-2" style="text-align: left; padding: 12px;">
-                        <span class="choice-text" style="font-weight: bold; color: var(--accent-yellow); display: block; margin-bottom: 2px;">"Kendi kalitemi biliyorum, bu performanslar benim için normal." (Özgüvenli)</span>
-                        <span class="choice-effect" style="font-size: 10px; color: var(--text-muted);">-5 Hoca Güveni, +10 Moral, +1,500 Takipçi (Medya bayılır)</span>
+                    <button class="btn btn-event" id="interview-opt-2" style="text-align: left; padding: 12px 14px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,214,0,0.3); cursor: pointer; transition: all 0.2s;">
+                        <span class="choice-text" style="font-weight: 800; font-size: 12.5px; color: #FFD600; display: block; margin-bottom: 4px;">"Bana boşuna Kral demiyorlar!"</span>
+                        <span class="choice-effect" style="font-size: 10.5px; color: #94a3b8; font-weight: 600; display: block;">+15 Moral, +15.000 Takipçi, -3 Hoca Güveni</span>
                     </button>
-                    <button class="btn btn-event" id="interview-opt-3" style="text-align: left; padding: 12px;">
-                        <span class="choice-text" style="font-weight: bold; color: var(--accent-blue); display: block; margin-bottom: 2px;">"Bu maçı Şile'de zor günler geçiren babama ve aileme armağan ediyorum." (Duygusal)</span>
-                        <span class="choice-effect" style="font-size: 10px; color: var(--text-muted);">+15 Moral, +600 Takipçi, Sosyal Medyada Büyük Sempati</span>
+                    <button class="btn btn-event" id="interview-opt-3" style="text-align: left; padding: 12px 14px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(239,68,68,0.3); cursor: pointer; transition: all 0.2s;">
+                        <span class="choice-text" style="font-weight: 800; font-size: 12.5px; color: #ef4444; display: block; margin-bottom: 4px;">"Bu maçı aileme armağan ediyorum."</span>
+                        <span class="choice-effect" style="font-size: 10.5px; color: #94a3b8; font-weight: 600; display: block;">+10 Moral, +5.000 Takipçi</span>
                     </button>
                 </div>
             </div>
@@ -6259,7 +6276,9 @@
         function testInterview() {
             const sm = document.getElementById("settings-modal");
             if (sm) sm.classList.remove("active");
-            openInterviewModal(8.5, 2, 1);
+            openInterviewModal(8.5, 2, 1, () => {
+                showCustomAlert("Röportaj başarıyla tamamlandı!", "RÖPORTAJ", "🎙️", "info");
+            });
         }
 
         function testTribun() {
@@ -6286,7 +6305,6 @@
             const rm = document.getElementById("retirement-summary-modal");
             if (rm) rm.classList.add("active");
         }
-
 
         function proceedPostMatch() {
             GAME.advanceWeek();
@@ -6320,34 +6338,37 @@
                         "Muhteşem Oyunuyla Gazete Manşetlerinde!",
                         `Bugün sahada adeta devleşen genç yetenek ${GAME.state.playerName}, sergilediği olağanüstü performansla futbol severleri büyüledi. Maçın Oyuncusu seçilen ${GAME.state.playerName} için basın mensupları ve gözlemciler sıraya girdi. Karşılaşma sonrasında kameraların karşısına geçmeye hazırlanan genç futbolcunun ne diyeceği merakla bekleniyor.`,
                         () => {
-                            openInterviewModal(rating, goals, assists);
+                            openInterviewModal(rating, goals, assists, continueFlow);
                         }
                     );
                 });
             } else if (isRegularInterviewTime) {
                 GAME.state.matchesSinceLastInterview = 0;
-                openInterviewModal(rating, goals, assists);
+                openInterviewModal(rating, goals, assists, continueFlow);
             } else {
                 continueFlow();
             }
         }
 
-
-        function openInterviewModal(rating, goals, assists) {
+        function openInterviewModal(rating, goals, assists, onComplete = null) {
             const interviewModal = document.getElementById("interview-modal");
             const opt1 = document.getElementById("interview-opt-1");
             const opt2 = document.getElementById("interview-opt-2");
             const opt3 = document.getElementById("interview-opt-3");
             const qEl = document.getElementById("interview-question");
-            const pName = GAME.state.playerName || "Genç Yıldız";
+            const pName = (GAME.state.playerName || "Genç Yıldız");
+            const clubName = (GAME.state.currentClub || "Kulüp");
             const hometown = GAME.state.hometownDistrict || GAME.state.hometownCity || "Memleket";
+
+            const clubBadge = document.getElementById("interview-club-badge");
+            if (clubBadge) clubBadge.innerText = `🎙️ ${clubName.toUpperCase()} BASIN ODASI`;
 
             // 8 Farklı Gerçekçi Türk Futbol Muhabiri Sorusu & Efsane Yanıt Havuzu
             const scenarios = [
-                // 1. Yıldız Performans Sorusu
                 {
                     question: `"Bugün sahada adeta şov yaptın, muhteşem bir performans izledik. Neler hissediyorsun?"`,
                     opt1Text: `"Önemli olan benim gol atmam değil, takımın 3 puan almasıydı." (Mütevazı & Takım Oyuncusu)`,
+                    opt1Effect: `+5 Hoca Güveni, +5 Moral, +1.000 Takipçi`,
                     opt1Apply: () => {
                         GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 5);
                         GAME.state.moral = Math.min(100, GAME.state.moral + 5);
@@ -6355,6 +6376,7 @@
                         GAME.addSocialPost("@spor_manset", "Basın Odası", `${pName}: 'Önemli olan 3 puandı.' Genç yıldızın efendiliği alkış topladı.`);
                     },
                     opt2Text: `"Bana boşuna 'Kral' demiyorlar, top bana gelirse o top içeri girer!" (Laubali & Havalı)`,
+                    opt2Effect: `-3 Hoca Güveni, +15 Moral, +15.000 Takipçi`,
                     opt2Apply: () => {
                         GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 3);
                         GAME.state.moral = Math.min(100, GAME.state.moral + 15);
@@ -6362,16 +6384,17 @@
                         GAME.addSocialPost("@futbol_geyik", "Sosyal Medya", `${pName}: 'Bana boşuna Kral demiyorlar!' Açıklama sosyal medyayı yıktı geçti!`);
                     },
                     opt3Text: `"Attığım golü anneme ve beni kıskanan rakiplerime armağan ediyorum." (Duygusal & İğneleyici)`,
+                    opt3Effect: `+10 Moral, +5.000 Takipçi`,
                     opt3Apply: () => {
                         GAME.state.moral = Math.min(100, GAME.state.moral + 10);
                         GAME.state.followers += 5000;
                         GAME.addSocialPost(`@${pName.toLowerCase().replace(/\s/g, '_')}_fan`, "Taraftar Sayfası", `${pName}'den rakiplere kapak gibi mesaj: 'Beni kıskananlara armağan olsun!'`);
                     }
                 },
-                // 2. Kritik / Estetik Gol Sorusu
                 {
-                    question: `"Attığın muhteşem gol sosyal medyayı yıktı. Pozisyonda şans mı vardı yoksa tamamen bireysel yetenek mi?"`,
+                    question: `"Attığın muhteşem gol sosyal medyayı yıktı. Pozisyonda şans mı vardı yoksa tamamen bireysel kalite mi?"`,
                     opt1Text: `"Golümü beğenmeyen gitsin voleybol izlesin kardeşim! Şans değil, saf kalite." (Sivri Dilli)`,
+                    opt1Effect: `-4 Hoca Güveni, +12 Moral, +15.000 Takipçi, +%10 Taraftar`,
                     opt1Apply: () => {
                         GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 4);
                         GAME.state.moral = Math.min(100, GAME.state.moral + 12);
@@ -6379,23 +6402,26 @@
                         GAME.state.followers += 15000;
                         GAME.addSocialPost("@manset_spor", "Son Dakika", `${pName}'den eleştirilere olay yanıt: 'Golümü beğenmeyen voleybol izlesin!'`);
                     },
-                    opt2Text: `"Çok çalıştık, antrenmanlardaki çalışmalarımızın karşılığını aldık." (Klasik Profesyonel)`,
+                    opt2Text: `"Çok çalıştık, antrenmanlardaki çalışmalarımızın karşılığını aldık." (Profesyonel)`,
+                    opt2Effect: `+8 Hoca Güveni, +5 Moral, +800 Takipçi`,
                     opt2Apply: () => {
                         GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 8);
                         GAME.state.moral = Math.min(100, GAME.state.moral + 5);
                         GAME.state.followers += 800;
                     },
                     opt3Text: `"Defansları o kadar yavaştı ki kaleye koşarken esnedim." (Mizahi Laubali)`,
+                    opt3Effect: `+15 Moral, +12.000 Takipçi, -2 Hoca Güveni`,
                     opt3Apply: () => {
                         GAME.state.moral = Math.min(100, GAME.state.moral + 15);
                         GAME.state.followers += 12000;
+                        GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 2);
                         GAME.addSocialPost("@tribun_sesi", "Tribün", `${pName} rakip defansla adeta dalga geçti! Sosyal medya bu sözleri konuşuyor.`);
                     }
                 },
-                // 3. Rakip Savunma & Gerilim Sorusu
                 {
                     question: `"Rakip savunma maç boyu sana çok sert müdahalelerde bulundu. Neler söylemek istersin?"`,
                     opt1Text: `"Rakip stoper formamı çekeceğine imza isteseydi maç sonu verirdim." (Ağır Laubali)`,
+                    opt1Effect: `+15 Moral, +12.000 Takipçi, +%12 Taraftar`,
                     opt1Apply: () => {
                         GAME.state.moral = Math.min(100, GAME.state.moral + 15);
                         GAME.state.taraftarSevgisi = Math.min(100, (GAME.state.taraftarSevgisi || 40) + 12);
@@ -6403,21 +6429,23 @@
                         GAME.addSocialPost("@spor_kulisi", "Özel", `${pName}: 'Stoper formamı çekeceğine imza istese verirdim!' Olay sözler!`);
                     },
                     opt2Text: `"Futbol temas oyunu. Sahada olan sahada kalır, önümüzdeki maçlara bakacağız." (Klasik)`,
+                    opt2Effect: `+5 Hoca Güveni, +3 Moral, +500 Takipçi`,
                     opt2Apply: () => {
                         GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 5);
                         GAME.state.moral = Math.min(100, GAME.state.moral + 3);
                         GAME.state.followers += 500;
                     },
                     opt3Text: `"Karşı takımın kalecisi bu gece rüyasında beni görecek, geçmiş olsun." (Özgüvenli)`,
+                    opt3Effect: `+15 Moral, +8.000 Takipçi`,
                     opt3Apply: () => {
                         GAME.state.moral = Math.min(100, GAME.state.moral + 15);
                         GAME.state.followers += 8000;
                     }
                 },
-                // 4. Hakem Yönetimi Sorusu
                 {
                     question: `"Maçın hakemi çok tartışılan kararlar verdi. Hakem yönetimi hakkında ne düşünüyorsun?"`,
                     opt1Text: `"Hakem hakkında konuşursam ceza alırım ama hakkımız gasp edildi!" (Cesur & İsyankar)`,
+                    opt1Effect: `+%20 Taraftar Sevgisi, +10 Moral, +10.000 Takipçi`,
                     opt1Apply: () => {
                         GAME.state.taraftarSevgisi = Math.min(100, (GAME.state.taraftarSevgisi || 40) + 20);
                         GAME.state.moral = Math.min(100, GAME.state.moral + 10);
@@ -6425,96 +6453,38 @@
                         GAME.addSocialPost("@tff_haber", "Hakem Raporu", `${pName}'den hakeme sert tepki! Taraftar arkasında kenetlendi.`);
                     },
                     opt2Text: `"Hakemler de insan, hata yapabilirler. Biz kendi oyunumuza odaklanıyoruz." (Politik)`,
+                    opt2Effect: `+10 Hoca Güveni, +5 Moral`,
                     opt2Apply: () => {
                         GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 10);
                         GAME.state.moral = Math.min(100, GAME.state.moral + 5);
                     },
                     opt3Text: `"Hakem bey bu akşam çok formdaydı, keşke biraz da maçı izleseydi." (İronik)`,
+                    opt3Effect: `+15.000 Takipçi, -3 Hoca Güveni`,
                     opt3Apply: () => {
                         GAME.state.followers += 15000;
                         GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 3);
                     }
                 },
-                // 5. Erken Oyundan Alınma Sorusu
-                {
-                    question: `"Hoca seni erkenden oyundan aldı ve kenara gelirken biraz tepkiliydin. Bir sorun mu var?"`,
-                    opt1Text: `"Hoca beni erken çıkardı, büyük hata yaptı. Kalsaydım hat-trick gelirdi." (Sert Laubali)`,
-                    opt1Apply: () => {
-                        GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 15);
-                        GAME.state.moral = Math.min(100, GAME.state.moral + 10);
-                        GAME.state.followers += 10000;
-                        GAME.addSocialPost("@derin_futbol", "Manşet", `Kriz! ${pName} hocasına meydan okudu: 'Beni çıkarmak hataydı!'`);
-                    },
-                    opt2Text: `"Hocamızın kararına saygım sonsuz, yorgundum ve dinlendirmek istedi." (Sadık Takım Oyuncusu)`,
-                    opt2Apply: () => {
-                        GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 10);
-                        GAME.state.moral = Math.min(100, GAME.state.moral + 5);
-                    },
-                    opt3Text: `"Sahada o kadar hızlıydım ki hocam kramponlarım yanmasın diye çıkardı herhalde." (Espri)`,
-                    opt3Apply: () => {
-                        GAME.state.followers += 6000;
-                        GAME.state.moral = Math.min(100, GAME.state.moral + 10);
-                    }
-                },
-                // 6. Mağlubiyet / Puan Kaybı Sorusu
-                {
-                    question: `"Bugün sahada beklenen futbolu oynayamadınız ve puan kaybettiniz. Sebebi neydi?"`,
-                    opt1Text: `"Hatalarımızdan ders çıkarıp haftaya taraftarımıza kendimizi affettireceğiz." (Klişe)`,
-                    opt1Apply: () => {
-                        GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 5);
-                        GAME.state.moral = Math.min(100, GAME.state.moral + 5);
-                    },
-                    opt2Text: `"Biz büyük bir aileyiz, hocamızın ve takımımızın sonuna kadar arkasındayız!" (Kulüpçü)`,
-                    opt2Apply: () => {
-                        GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 10);
-                        GAME.state.followers += 2000;
-                    },
-                    opt3Text: `"Ben sahada elimden geleni yaptım ama bazı arkadaşlar gezintiye çıkmıştı." (Fitneci)`,
-                    opt3Apply: () => {
-                        GAME.state.moral = Math.min(100, GAME.state.moral + 5);
-                        GAME.state.followers += 8000;
-                        GAME.addSocialPost("@futbol_kulis", "Soyunma Odası", `${pName}'den takım arkadaşlarına ağır gönderme! Ortalık karıştı.`);
-                    }
-                },
-                // 7. Transfer Dedikoduları Sorusu
                 {
                     question: `"Büyük kulüplerin ve Avrupa devlerinin senin için sıraya girdiği söyleniyor. Geleceğin ne olacak?"`,
                     opt1Text: `"Transfer teklifleri mi? Söyleyin: Satılık değilim, paha biçilemezim!" (Egoist & Karizmatik)`,
+                    opt1Effect: `+25.000 Takipçi, +15 Moral`,
                     opt1Apply: () => {
                         GAME.state.followers += 25000;
                         GAME.state.moral = Math.min(100, GAME.state.moral + 15);
                         GAME.addSocialPost("@transfer_bomba", "Transfer", `${pName}: 'Satılık değilim, paha biçilemezim!' Avrupa basını ayakta!`);
                     },
                     opt2Text: `"Ben bu ligin 3 gömlek üzerindeyim, yakında tüm dünya beni konuşacak." (Aşırı İddialı)`,
+                    opt2Effect: `+15.000 Takipçi, +10 Moral`,
                     opt2Apply: () => {
                         GAME.state.followers += 15000;
                         GAME.state.moral = Math.min(100, GAME.state.moral + 10);
                     },
                     opt3Text: `"Kulübümde çok mutluyum, sözleşmemin son anına kadar bu arma için savaşırım." (Sadık)`,
+                    opt3Effect: `+%20 Taraftar Sevgisi, +10 Hoca Güveni`,
                     opt3Apply: () => {
                         GAME.state.taraftarSevgisi = Math.min(100, (GAME.state.taraftarSevgisi || 40) + 20);
                         GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 10);
-                    }
-                },
-                // 8. Kutlama & Gece Hayatı Sorusu
-                {
-                    question: `"Bu büyük galibiyeti bu akşam nasıl kutlayacaksınız, özel bir planınız var mı?"`,
-                    opt1Text: `"Bu gece kutlamayı gece kulübünde yapacağım, bütün hesaplar benden!" (Gece Kuşu Laubali)`,
-                    opt1Apply: () => {
-                        GAME.state.followers += 20000;
-                        GAME.state.kondisyon = Math.max(0, GAME.state.kondisyon - 10);
-                        GAME.state.moral = Math.min(100, GAME.state.moral + 15);
-                        GAME.addSocialPost("@magazin_canli", "Gece Hayatı", `${pName} gece kulübünü kapattı! Şampanya patlatan genç yıldız sabahı gördü.`);
-                    },
-                    opt2Text: `"${hometown}'deki ailemi arayıp dualarını alacağım, en büyük mutluluğum bu." (Maneviyat)`,
-                    opt2Apply: () => {
-                        GAME.state.moral = Math.min(100, GAME.state.moral + 15);
-                        GAME.state.followers += 5000;
-                    },
-                    opt3Text: `"Kutlama yok, hemen tesislere dönüp buz banyosu yapacağız. Haftaya maç var." (Disiplin Abidesi)`,
-                    opt3Apply: () => {
-                        GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 15);
-                        GAME.state.kondisyon = Math.min(100, GAME.state.kondisyon + 10);
                     }
                 }
             ];
@@ -6522,9 +6492,20 @@
             const chosenScn = scenarios[Math.floor(Math.random() * scenarios.length)];
             qEl.innerText = chosenScn.question;
 
-            opt1.querySelector(".choice-text").innerText = chosenScn.opt1Text;
-            opt2.querySelector(".choice-text").innerText = chosenScn.opt2Text;
-            opt3.querySelector(".choice-text").innerText = chosenScn.opt3Text;
+            const opt1ChoiceText = opt1.querySelector(".choice-text");
+            const opt1ChoiceEffect = opt1.querySelector(".choice-effect");
+            if (opt1ChoiceText) opt1ChoiceText.innerText = chosenScn.opt1Text;
+            if (opt1ChoiceEffect) opt1ChoiceEffect.innerText = chosenScn.opt1Effect || "+5 Hoca Güveni";
+
+            const opt2ChoiceText = opt2.querySelector(".choice-text");
+            const opt2ChoiceEffect = opt2.querySelector(".choice-effect");
+            if (opt2ChoiceText) opt2ChoiceText.innerText = chosenScn.opt2Text;
+            if (opt2ChoiceEffect) opt2ChoiceEffect.innerText = chosenScn.opt2Effect || "+10 Moral";
+
+            const opt3ChoiceText = opt3.querySelector(".choice-text");
+            const opt3ChoiceEffect = opt3.querySelector(".choice-effect");
+            if (opt3ChoiceText) opt3ChoiceText.innerText = chosenScn.opt3Text;
+            if (opt3ChoiceEffect) opt3ChoiceEffect.innerText = chosenScn.opt3Effect || "+15 Moral";
 
             // Clone to clear listeners
             const newOpt1 = opt1.cloneNode(true);
@@ -6535,33 +6516,38 @@
             opt2.parentNode.replaceChild(newOpt2, opt2);
             opt3.parentNode.replaceChild(newOpt3, opt3);
 
-            newOpt1.addEventListener("click", () => {
-                chosenScn.opt1Apply();
-                GAME.saveGame();
-                GAME.updateUI();
-                interviewModal.classList.remove("active");
-                proceedPostMatch();
-            });
+            const handleChoice = (applyFn) => {
+                if (typeof SoundManager !== "undefined" && typeof SoundManager.playClick === "function") {
+                    try { SoundManager.playClick(); } catch(e){}
+                }
+                if (typeof applyFn === "function") applyFn();
+                if (typeof GAME.saveGame === "function") GAME.saveGame();
+                if (typeof GAME.updateUI === "function") GAME.updateUI();
 
-            newOpt2.addEventListener("click", () => {
-                chosenScn.opt2Apply();
-                GAME.saveGame();
-                GAME.updateUI();
-                interviewModal.classList.remove("active");
-                proceedPostMatch();
-            });
+                if (interviewModal) {
+                    interviewModal.style.display = "none";
+                    interviewModal.classList.remove("active");
+                }
 
-            newOpt3.addEventListener("click", () => {
-                chosenScn.opt3Apply();
-                GAME.saveGame();
-                GAME.updateUI();
-                interviewModal.classList.remove("active");
-                proceedPostMatch();
-            });
+                if (typeof onComplete === "function") {
+                    onComplete();
+                } else {
+                    proceedPostMatch();
+                }
+            };
+
+            newOpt1.addEventListener("click", () => handleChoice(chosenScn.opt1Apply));
+            newOpt2.addEventListener("click", () => handleChoice(chosenScn.opt2Apply));
+            newOpt3.addEventListener("click", () => handleChoice(chosenScn.opt3Apply));
+
+            if (interviewModal) {
+                interviewModal.style.display = "flex";
+                interviewModal.classList.add("active");
+            }
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playClick === "function") {
+                try { SoundManager.playClick(); } catch(e){}
+            }
         }
-
-
-
 
         function resolveCupMatchOutcome(scoreDiff) {
             let year = 2026 + (GAME.state.age - 17);
