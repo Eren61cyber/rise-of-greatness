@@ -5513,11 +5513,11 @@
             if (streak >= 5) {
                 emojiEl.innerText = "🔥🔥🔥🔥";
                 titleEl.innerText = "DURDURULAMAZ!";
-                subEl.innerText = ${streak} Üst Üste Yüksek Performans! +5 OVR Bonus!;
+                subEl.innerText = `${streak} Üst Üste Yüksek Performans! +5 OVR Bonus!`;
             } else {
                 emojiEl.innerText = "🔥";
                 titleEl.innerText = "ATEŞ SERİSİ!";
-                subEl.innerText = ${streak} Üst üste harika performans! Seni kimse durduramaz!;
+                subEl.innerText = `${streak} Üst üste harika performans! Seni kimse durduramaz!`;
             }
 
             overlay.style.display = "flex";
@@ -5538,7 +5538,7 @@
             const h = String(now.getHours()).padStart(2, '0');
             const m = String(now.getMinutes()).padStart(2, '0');
             const s = String(now.getSeconds()).padStart(2, '0');
-            clockEl.innerText = ${h}::;
+            clockEl.innerText = `${h}:${m}:${s}`;
         }
 
         function runSiyahTypewriter(text) {
@@ -5551,12 +5551,12 @@
 
             speechTextEl.innerHTML = '<span class="siyah-typing-cursor"></span>';
             let charIndex = 0;
-            const fullText = "";
+            const fullText = `"${text}"`;
 
             siyahTypewriterTimer = setInterval(() => {
                 if (charIndex < fullText.length) {
                     charIndex++;
-                    speechTextEl.innerHTML = ${fullText.substring(0, charIndex)}<span class="siyah-typing-cursor"></span>;
+                    speechTextEl.innerHTML = `${fullText.substring(0, charIndex)}<span class="siyah-typing-cursor"></span>`;
                 } else {
                     clearInterval(siyahTypewriterTimer);
                     siyahTypewriterTimer = null;
@@ -5580,28 +5580,28 @@
             const ledTopic = document.getElementById("siyah-led-topic");
 
             if (goals >= 2 || rating >= 8.5) {
-                if (ledTopic) ledTopic.innerText = ${pName.toUpperCase()} ŞOVU & ZAFER GECESİ;
+                if (ledTopic) ledTopic.innerText = `${pName.toUpperCase()} ŞOVU & ZAFER GECESİ`;
                 currentSiyahQuotes = [
-                    { name: "Ahmet Çakar", role: "Eski Hakem", tension: 50, quote: Bakın ben açık ve net konuşayım. Bu 'de öyle bir kumaş, öyle bir ciğer var ki... Böyle devam ederse Avrupa devleri kapısında yatar! Hakem de pozisyonları iyi süzdü bu arada. },
-                    { name: "Rasim Ozan", role: "Ateşli Yorumcu", tension: 78, quote: Hocaaam hocaaam! Çıldırtma beni canlı yayında! Bu çocuk bu gece sahada adeta bir terminatör, bir futbol canavarı gibiydi! Türkiye seninle gurur duyuyor be çocuk! },
-                    { name: "Sinan Engin", role: "Eski Futbolcu", tension: 90, quote: Kardeşim ben bu çocuğa kefilim. Sezon başından beri söylüyorum; bu çocukta saf kalite, doğuştan klas var. Çocuğun önünü kesmeyin, bırakın aksın gitsin. },
-                    { name: "Ertem Şener", role: "Moderatör", tension: 98, quote: Evet sevgili seyirciler, stüdyo resmen alev alev! Şimdi soruyorum:  önümüzdeki sezon Ballon d'Or listesine ilk 10'dan girer mi? Canlı yayında oyluyoruz! }
+                    { name: "Ahmet Çakar", role: "Eski Hakem", tension: 50, quote: `Bakın ben açık ve net konuşayım. Bu ${pName}'de öyle bir kumaş, öyle bir ciğer var ki... Böyle devam ederse Avrupa devleri kapısında yatar! Hakem de pozisyonları iyi süzdü bu arada.` },
+                    { name: "Rasim Ozan", role: "Ateşli Yorumcu", tension: 78, quote: `Hocaaam hocaaam! Çıldırtma beni canlı yayında! Bu çocuk bu gece sahada adeta bir terminatör, bir futbol canavarı gibiydi! Türkiye seninle gurur duyuyor be çocuk!` },
+                    { name: "Sinan Engin", role: "Eski Futbolcu", tension: 90, quote: `Kardeşim ben bu çocuğa kefilim. Sezon başından beri söylüyorum; bu çocukta saf kalite, doğuştan klas var. Çocuğun önünü kesmeyin, bırakın aksın gitsin.` },
+                    { name: "Ertem Şener", role: "Moderatör", tension: 98, quote: `Evet sevgili seyirciler, stüdyo resmen alev alev! Şimdi soruyorum: ${pName} önümüzdeki sezon Ballon d'Or listesine ilk 10'dan girer mi? Canlı yayında oyluyoruz!` }
                 ];
             } else if (rating <= 5.8) {
-                if (ledTopic) ledTopic.innerText = KRİZ MASASI: ;
+                if (ledTopic) ledTopic.innerText = `KRİZ MASASI: ${pName.toUpperCase()}`;
                 currentSiyahQuotes = [
-                    { name: "Ahmet Çakar", role: "Eski Hakem", tension: 60, quote: Ben ne dedim Ertem? Genç çocuklara erkenden yıldız muamelesi yapıp gazı veriyorsunuz! Bu gece sahada hayalet gibiydi, tek bir olumlu hareketi yok! },
-                    { name: "Rasim Ozan", role: "Ateşli Yorumcu", tension: 85, quote: Hocam insaf ya, yapma etme! Çocuğun üzerine bu kadar acımasızca gitmeyin! Bir maç kötü oynadı diye linç mi edelim geleceğimizi! },
-                    { name: "Sinan Engin", role: "Eski Futbolcu", tension: 94, quote: Kardeşim geceleri gezmeyi tozmayı bırakıp tesiste yatıp kalkacak. Yoksa bu lig insanı yer bitirir, benden söylemesi. },
-                    { name: "Ertem Şener", role: "Moderatör", tension: 100, quote: Evet stüdyoda büyük fikir ayrılığı var! Bakalım  önümüzdeki hafta sahada nasıl bir reaksiyon verecek? }
+                    { name: "Ahmet Çakar", role: "Eski Hakem", tension: 60, quote: `Ben ne dedim Ertem? Genç çocuklara erkenden yıldız muamelesi yapıp gazı veriyorsunuz! Bu gece sahada hayalet gibiydi, tek bir olumlu hareketi yok!` },
+                    { name: "Rasim Ozan", role: "Ateşli Yorumcu", tension: 85, quote: `Hocam insaf ya, yapma etme! Çocuğun üzerine bu kadar acımasızca gitmeyin! Bir maç kötü oynadı diye linç mi edelim geleceğimizi!` },
+                    { name: "Sinan Engin", role: "Eski Futbolcu", tension: 94, quote: `Kardeşim geceleri gezmeyi tozmayı bırakıp tesiste yatıp kalkacak. Yoksa bu lig insanı yer bitirir, benden söylemesi.` },
+                    { name: "Ertem Şener", role: "Moderatör", tension: 100, quote: `Evet stüdyoda büyük fikir ayrılığı var! Bakalım ${pName} önümüzdeki hafta sahada nasıl bir reaksiyon verecek?` }
                 ];
             } else {
-                if (ledTopic) ledTopic.innerText = CANLI TARTIŞMA: ;
+                if (ledTopic) ledTopic.innerText = `CANLI TARTIŞMA: ${pName.toUpperCase()}`;
                 currentSiyahQuotes = [
-                    { name: "Ahmet Çakar", role: "Eski Hakem", tension: 45, quote: İyi kumaş, yetenekli çocuk ama daha çok fırın ekmek yemesi lazım. Kendini hemen dünya yıldızı zannetmesin. },
-                    { name: "Rasim Ozan", role: "Ateşli Yorumcu", tension: 70, quote: Hocaaaam! Bu çocuk bu ligin en heyecan verici yeteneğidir, sahada top ayağına gelince tribünler ayağa kalkıyor! },
-                    { name: "Sinan Engin", role: "Eski Futbolcu", tension: 86, quote: Kardeşim hocası ona taktik tahtasında daha fazla özgürlük tanımalı. Bırakın çocuk hissettiği gibi oynasın. },
-                    { name: "Ertem Şener", role: "Moderatör", tension: 95, quote: Siyah Futbol masasında tansiyon zirvede! Reklamların ardından özel kulis bilgileriyle devam edeceğiz! }
+                    { name: "Ahmet Çakar", role: "Eski Hakem", tension: 45, quote: `İyi kumaş, yetenekli çocuk ama daha çok fırın ekmek yemesi lazım. Kendini hemen dünya yıldızı zannetmesin.` },
+                    { name: "Rasim Ozan", role: "Ateşli Yorumcu", tension: 70, quote: `Hocaaaam! Bu çocuk bu ligin en heyecan verici yeteneğidir, sahada top ayağına gelince tribünler ayağa kalkıyor!` },
+                    { name: "Sinan Engin", role: "Eski Futbolcu", tension: 86, quote: `Kardeşim hocası ona taktik tahtasında daha fazla özgürlük tanımalı. Bırakın çocuk hissettiği gibi oynasın.` },
+                    { name: "Ertem Şener", role: "Moderatör", tension: 95, quote: `Siyah Futbol masasında tansiyon zirvede! Reklamların ardından özel kulis bilgileriyle devam edeceğiz!` }
                 ];
             }
 
@@ -5643,7 +5643,7 @@
 
             // Update seated 3D panelist active states & spotlights
             for (let i = 0; i < 4; i++) {
-                const el = document.getElementById(panelist-);
+                const el = document.getElementById(`panelist-${i}`);
                 if (el) {
                     if (i === currentSiyahIndex) {
                         el.classList.add("active-speaker");
@@ -5651,7 +5651,7 @@
                         el.classList.remove("active-speaker");
                     }
                 }
-                const plate = document.getElementById(desk-plate-);
+                const plate = document.getElementById(`desk-plate-${i}`);
                 if (plate) {
                     if (i === currentSiyahIndex) {
                         plate.classList.add("active-plate");
@@ -5665,9 +5665,9 @@
             const tensionBar = document.getElementById("siyah-tension-bar");
             const tensionPercent = document.getElementById("siyah-tension-percent");
             const tVal = speaker.tension || 50;
-            if (tensionBar) tensionBar.style.width = ${tVal}%;
+            if (tensionBar) tensionBar.style.width = `${tVal}%`;
             if (tensionPercent) {
-                tensionPercent.innerText = tVal >= 95 ? % (KAOS!) : %;
+                tensionPercent.innerText = tVal >= 95 ? `%${tVal} (KAOS!)` : `%${tVal}`;
                 tensionPercent.style.color = tVal >= 80 ? '#ef4444' : '#eab308';
             }
 
@@ -5675,7 +5675,7 @@
             const speakerNameEl = document.getElementById("siyah-active-speaker-name");
             const roleEl = document.getElementById("siyah-kj-speaker-role");
 
-            if (speakerNameEl) speakerNameEl.innerHTML = ${speaker.name.toUpperCase()} KONUŞUYOR:;
+            if (speakerNameEl) speakerNameEl.innerHTML = `${speaker.name.toUpperCase()} KONUŞUYOR:`;
             if (roleEl) roleEl.innerText = (speaker.role || "YORUMCU").toUpperCase();
 
             // Run smooth typewriter streaming text
