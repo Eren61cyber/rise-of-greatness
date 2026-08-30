@@ -1170,8 +1170,9 @@
                         <span class="hud-label">🎯 ASİST</span>
                         <span class="hud-val" id="live-player-assists">0</span>
                     </div>
-                    <button id="btn-match-speed" class="scoreboard-speed-btn">⚡ 1x</button>
+                    <button id="btn-match-speed" class="scoreboard-speed-btn">1x</button>
                 </div>
+
             </div>
 
 
@@ -9637,7 +9638,8 @@
 
                 currentMatchSpeed = 1;
                 const speedBtn = document.getElementById("btn-match-speed");
-                if (speedBtn) speedBtn.innerText = "⚡ Hız: 1x";
+                if (speedBtn) speedBtn.innerText = "Hız: 1x";
+
 
                 let playerTeamObj = GAME.getPlayerTeamObject();
                 if (GAME.state.isNationalCallUp) {
@@ -9746,8 +9748,9 @@
                         if (currentMatchSpeed === 1) currentMatchSpeed = 2;
                         else if (currentMatchSpeed === 2) currentMatchSpeed = 4;
                         else currentMatchSpeed = 1;
-                        speedBtn.innerText = `⚡ Hız: ${currentMatchSpeed}x`;
+                        speedBtn.innerText = `Hız: ${currentMatchSpeed}x`;
                         MatchEngine.setSpeed(currentMatchSpeed);
+
                     };
                 }
 
@@ -9863,46 +9866,38 @@
                         
                         if (comment) {
                             let eventClass = "";
-                            let icon = "⚡";
                             
                             if (comment.includes("GOOOL")) {
                                 eventClass = "goal";
-                                icon = "⚽";
                                 SoundManager.playGoal();
                             } else if (comment.includes("MAALESEF GOL") || comment.includes("Gol Yedik")) {
                                 eventClass = "conceded";
-                                icon = "❌";
                                 SoundManager.playConceded();
                             } else if (comment.includes("KIRMIZI KART") || comment.includes("ihraç")) {
                                 eventClass = "card-red";
-                                icon = "🟥";
                             } else if (comment.includes("SARI KART")) {
                                 eventClass = "card-yellow";
-                                icon = "🟨";
                             } else if (comment.includes("kurtardı") || comment.includes("kaleci")) {
                                 eventClass = "save";
-                                icon = "🧤";
                                 SoundManager.playMiss();
                             } else if (comment.includes("kaçtı") || comment.includes("döndü") || comment.includes("direk") || comment.includes("dışarı") || comment.includes("şut") || comment.includes("vurdu")) {
                                 eventClass = "shot";
-                                icon = "👟";
                                 SoundManager.playMiss();
                             } else if (comment.includes("müdahale") || comment.includes("top kap") || comment.includes("söktü") || comment.includes("kayarak")) {
                                 eventClass = "tackle";
-                                icon = "⚡";
                             } else if (comment.includes("taktik") || comment.includes("hoca") || comment.includes("uyarı")) {
                                 eventClass = "tactic";
-                                icon = "🗣️";
                             } else if (comment.includes("oyundan") || comment.includes("değişiklik")) {
                                 eventClass = "sub";
-                                icon = "🔄";
                             }
+
+                            // Clean any lightning, emojis or weird symbols from comment
+                            let cleanComment = comment.replace(/[⚡👟🗣️🔄🧤⚽❌🟨🟥💪👑]/g, '').replace(/\s+/g, ' ').trim();
 
                             timelineLog.innerHTML += `
                                 <div class="match-feed-item ${eventClass}">
                                     <span class="match-feed-min">${min}'</span>
-                                    <span class="match-feed-icon">${icon}</span>
-                                    <span class="match-feed-text">${comment}</span>
+                                    <span class="match-feed-text">${cleanComment}</span>
                                 </div>
                             `;
                             timelineLog.scrollTop = timelineLog.scrollHeight;
@@ -9921,74 +9916,49 @@
                         let rawText = opt.text || "";
                         let rawDesc = opt.effect || "";
 
-                        // Determine theme, icon, and specific attribute stat
+                        // Determine card theme purely for subtle styling
                         let theme = "theme-shoot";
-                        let chipIcon = "⚽";
-                        let statLabel = "Şut";
-                        let statVal = (GAME.state && GAME.state.shooting) ? GAME.state.shooting : 50;
                         let lText = (rawText + " " + rawDesc).toLowerCase();
 
                         if (lText.includes("kay") || lText.includes("sök") || lText.includes("savunma") || lText.includes("müdahale") || lText.includes("kap")) {
                             theme = "theme-defense";
-                            chipIcon = "🛡️";
-                            statLabel = "Savunma";
-                            statVal = (GAME.state && GAME.state.defense) ? GAME.state.defense : 50;
                         } else if (lText.includes("pas") || lText.includes("kaçır") || lText.includes("orta") || lText.includes("taktik") || lText.includes("aç") || lText.includes("özür") || lText.includes("kabullen")) {
                             theme = "theme-pass";
-                            chipIcon = "👟";
-                            statLabel = "Pas";
-                            statVal = (GAME.state && GAME.state.passing) ? GAME.state.passing : 50;
                         } else if (lText.includes("hız") || lText.includes("depar") || lText.includes("kontra") || lText.includes("koş") || lText.includes("boşa")) {
                             theme = "theme-speed";
-                            chipIcon = "⚡";
-                            statLabel = "Hız";
-                            statVal = (GAME.state && GAME.state.speed) ? GAME.state.speed : 50;
                         } else if (lText.includes("fizik") || lText.includes("yıkılma") || lText.includes("ayakta") || lText.includes("güç")) {
                             theme = "theme-defense";
-                            chipIcon = "💪";
-                            statLabel = "Fizik";
-                            statVal = (GAME.state && GAME.state.physical) ? GAME.state.physical : 50;
                         } else if (lText.includes("çalım") || lText.includes("sakla") || lText.includes("falso") || lText.includes("röveşata") || lText.includes("aşırtma") || lText.includes("viral") || lText.includes("itiraz")) {
                             theme = "theme-skill";
-                            chipIcon = "👑";
-                            statLabel = "Yetenek";
-                            statVal = (GAME.state && GAME.state.dribbling) ? GAME.state.dribbling : ((GAME.state && GAME.state.shooting) ? GAME.state.shooting : 50);
                         } else {
                             theme = "theme-shoot";
-                            chipIcon = "⚽";
-                            statLabel = "Şut";
-                            statVal = (GAME.state && GAME.state.shooting) ? GAME.state.shooting : 50;
                         }
 
-                        if (opt.statUsed && GAME.state && GAME.state[opt.statUsed]) {
-                            const statMap = {
-                                "shooting": "Şut",
-                                "passing": "Pas",
-                                "speed": "Hız",
-                                "defense": "Savunma",
-                                "physical": "Fizik",
-                                "dribbling": "Yetenek"
-                            };
-                            statLabel = statMap[opt.statUsed] || opt.statUsed;
-                            statVal = GAME.state[opt.statUsed];
-                        }
-
-                        let chipText = `${statLabel} ${statVal}`;
-
-                        // Clean emojis from button title for clean typography
-                        let cleanTitle = rawText.replace(/^[^\w\s\u00C0-\u017F\u0100-\u024F]+/g, '').trim();
+                        // Clean emojis and symbols from button title
+                        let cleanTitle = rawText.replace(/^[^\w\s\u00C0-\u017F\u0100-\u024F]+/g, '').replace(/[⚡👟🗣️🔄🧤⚽❌🟨🟥💪👑]/g, '').trim();
                         if (!cleanTitle) cleanTitle = rawText;
+
+                        // DO NOT show stat calculation hints, percentages, or average formulas
+                        let cleanDesc = "";
+                        if (rawDesc) {
+                            let eff = rawDesc;
+                            const isFormula = eff.includes("ortalamasına") || eff.includes("yeteneğine") || eff.includes("%") || eff.includes("oranı") || eff.includes("şut ve") || eff.includes("pas ve") || eff.includes("hız ve") || eff.includes("fiziksel");
+                            if (!isFormula) {
+                                cleanDesc = eff;
+                            }
+                        }
 
                         optionsContainer.innerHTML += `
                             <button class="match-action-card ${theme}" onclick="chooseMatchOption(${idx})">
                                 <div class="action-card-left">
-                                    <div class="action-card-title">${chipIcon} ${cleanTitle}</div>
-                                    <div class="action-card-desc">${rawDesc}</div>
+                                    <div class="action-card-title">${cleanTitle}</div>
+                                    ${cleanDesc ? `<div class="action-card-desc">${cleanDesc}</div>` : ''}
                                 </div>
                             </button>
                         `;
 
                     });
+
 
 
                     decCard.style.display = "block";
