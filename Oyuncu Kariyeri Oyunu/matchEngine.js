@@ -1219,6 +1219,59 @@ const MatchEngine = {
                         }
                     ]
                 },
+                // Authentic Turkish Derby Corner
+                {
+                    title: "Deplasman Cehennemi: Kalkan Korumasında Korner",
+                    description: "Tribünlerden sahaya çakmak ve bozuk para yağıyor! Çevik kuvvet polisleri korner bayrağında üstünüze kalkan tutuyor. Kritik bir duran top!",
+                    options: [
+                        {
+                            text: "Kalkanın Arkasından Ön Direğe Sert Kavisli Kes",
+                            effect: "Pas yeteneğine bağlı asist ortası.",
+                            successChance: this.calculateStatSuccess(pas, "def"),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.assists++;
+                                this.playerStats.passes++;
+                                return `CEHENNEMDE MUAZZAM ASİST! Yağan yabancı maddelere rağmen ön direğe kestiğin harika ortaya forvetimiz kafayı vurdu ve GOOOL! ASİST!`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Yoğun tribün baskısı altında yapılan orta savunmadan döndü.`;
+                            }
+                        },
+                        {
+                            text: "Kısa Pasla Arkadaşınla Verkaça Girip İçeri Kat Et",
+                            effect: "Dribbling ve Pas ile ceza sahasına sızma.",
+                            successChance: this.calculateStatSuccess((dri + pas) / 2, "def"),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.goals++;
+                                this.playerStats.shots++;
+                                return this.checkGoalCommentary(`ŞAHANE BİREYSEL BECERİ! Kısa pasla oyunu başlatıp çizgiden içeri sıyrıldın ve dar açıdan fileleri havalandırdın! GOOOL!`);
+                            },
+                            onFail: () => {
+                                this.playerStats.dribbles++;
+                                return `Verkaç sonrası rakip kademe topu taca yolladı.`;
+                            }
+                        },
+                        {
+                            text: "Tribünlere 'Sakin Olun' İşareti Yapıp Arka Direğe As",
+                            effect: "Soğukkanlılıkla arka direğe yüksek top.",
+                            successChance: this.calculateStatSuccess((pas + phy) / 2, "def"),
+                            onSuccess: () => {
+                                this.score.player++;
+                                this.playerStats.assists++;
+                                this.playerStats.passes++;
+                                return `KUSURSUZ SOĞUKKANLILIK! Tribünleri susturan mükemmel bir arka direk ortası ve kafa vuruşuyla GOOOL! ASİST!`;
+                            },
+                            onFail: () => {
+                                this.playerStats.passes++;
+                                return `Yüksekten giden orta kalecinin ellerinde kaldı.`;
+                            }
+                        }
+                    ]
+                },
+
                 // 7: Tiki Taka Link
                 {
                     title: "👟 Tek Topla Verkaç ve Ceza Sahasına Sızma",

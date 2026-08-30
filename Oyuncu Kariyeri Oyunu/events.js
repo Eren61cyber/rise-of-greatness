@@ -5,7 +5,32 @@
 
 const RANDOM_EVENTS = [
     {
+        id: "tesis_baskini",
+        title: "Tesisleri Basan Taraftarlar: 'O Forma Kutsaldır!'",
+        scope: "All",
+        description: "Gece yarısı yüzlerce meşaleli taraftar tesis kapısına dayandı! 'O forma kutsaldır nasip olmaz herkese!' tezahüratları geceyi inletiyor. Kaptanla birlikte kapıya çıkıp konuşmanız bekleniyor.",
+        optionA: {
+            text: "Taraftarın önüne çık, megafonu alıp galibiyet yemini et!",
+            effectText: "Moral +15, Taraftar Sevgisi +15, Takipçi +12k",
+            apply: (state) => {
+                state.moral = Math.min(100, state.moral + 15);
+                state.taraftarSevgisi = Math.min(100, (state.taraftarSevgisi || 40) + 15);
+                state.followers += 12000;
+            }
+        },
+        optionB: {
+            text: "Işıkları yaktırıp gece yarısı sahada ekstra idman yap.",
+            effectText: "Kondisyon -15, Şut +1, Hoca Güveni +15",
+            apply: (state) => {
+                state.kondisyon = Math.max(0, state.kondisyon - 15);
+                state.shooting = (state.shooting || 50) + 1;
+                state.hocaGuveni = Math.min(100, state.hocaGuveni + 15);
+            }
+        }
+    },
+    {
         id: "derby_stream",
+
         title: "Derbi Öncesi Canlı Yayın Daveti",
         scope: "Süper Lig",
         description: "Derbi öncesi, Türkiye'nin en popüler futbol yayıncısı seni yayınına konuk etmek istiyor. Yayın gece yarısı bitecek ve büyük ilgi toplayacak.",

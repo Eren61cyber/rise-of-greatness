@@ -324,19 +324,24 @@ const DATABASE = {
     },
 
     LIFESTYLE_ITEMS: [
+        { id: "tofas_dogan", name: "Bordo Modifiyeli Doğan SLX", cost: 500, isWeekly: false, desc: "500 € (₺8.000). CMS40 jant, abarth egzoz, dikiz aynasında vanilya kokusu. +5 Moral, +2.000 Takipçi.", effect: (s) => { s.moral = Math.min(100, s.moral + 5); s.followers += 2000; } },
         { id: "nutritionist", name: "Özel Beslenme Şefi", cost: 60, isWeekly: true, desc: "Kondisyon yenilenmesini %15 artırır. (Haftalık 60 €)", effect: (s) => { s.kondisyonRegenBonus += 15; } },
-        { id: "doc_ahmet", name: "👨‍⚕️ Fizyoterapist Ahmet", cost: 40, isWeekly: true, desc: "Haftalık 40 €. Antrenman enerji maliyetini düşürür (-5 Enerji). Sakatlık süresini 1 hafta kısaltır.", effect: (s) => {} },
-        { id: "doc_can", name: "🩺 Prof. Dr. Can (Özel Doktor)", cost: 200, isWeekly: true, desc: "Haftalık 200 €. Sakatlık iyileşme süresini %50 kısaltır. Genel sakatlanma riskini %40 düşürür.", effect: (s) => {} },
-        { id: "doc_clinic", name: "🏥 Elit Sağlık Kliniği Üyeliği", cost: 750, isWeekly: true, desc: "Haftalık 750 €. Sakatlanma riskini %80 azaltır. Sakatlandığında iyileşme süresini 1 haftaya sabitler.", effect: (s) => {} },
+        { id: "doc_ahmet", name: "Fizyoterapist Ahmet", cost: 40, isWeekly: true, desc: "Haftalık 40 €. Antrenman enerji maliyetini düşürür (-5 Enerji). Sakatlık süresini 1 hafta kısaltır.", effect: (s) => {} },
+        { id: "vw_golf_r", name: "Gri Yazılımlı Golf", cost: 35000, isWeekly: false, desc: "35,000 €. Pop-bang egzozlu genç futbolcu klasiği. +15 Moral, +10.000 Takipçi.", effect: (s) => { s.moral = Math.min(100, s.moral + 15); s.followers += 10000; } },
+        { id: "doc_can", name: "Prof. Dr. Can (Özel Doktor)", cost: 200, isWeekly: true, desc: "Haftalık 200 €. Sakatlık iyileşme süresini %50 kısaltır. Genel sakatlanma riskini %40 düşürür.", effect: (s) => {} },
+        { id: "vw_passat", name: "Beyaz Passat (Aşiret Paket)", cost: 75000, isWeekly: false, desc: "75,000 €. Gırtlak dolu aşiret paketi, ön cam dahil zindan film. +25 Moral, +25.000 Takipçi.", effect: (s) => { s.moral = Math.min(100, s.moral + 25); s.followers += 25000; } },
+        { id: "doc_clinic", name: "Elit Sağlık Kliniği Üyeliği", cost: 750, isWeekly: true, desc: "Haftalık 750 €. Sakatlanma riskini %80 azaltır. Sakatlandığında iyileşme süresini 1 haftaya sabitler.", effect: (s) => {} },
         { id: "pr_agent", name: "Sosyal Medya/PR Menajeri", cost: 100, isWeekly: true, desc: "Sponsorluk gelirlerini %20 artırır. (Haftalık 100 €)", effect: (s) => { s.sponsorIncomeBonus += 20; } },
-        { id: "bodyguard", name: "🛡️ Özel Koruma (Bodyguard)", cost: 350, isWeekly: true, desc: "Seni mafya baskınlarından, kurşunlamalardan ve haraç kesilmesinden %100 korur. (Haftalık 350 €)", effect: (s) => {} },
-        { id: "sports_car", name: "Lüks Spor Araba", cost: 180000, isWeekly: false, desc: "180,000 €. +50,000 Sosyal Medya Takipçisi, -10 Hoca Güveni.", effect: (s) => { s.followers += 50000; s.hocaGuveni = Math.max(0, s.hocaGuveni - 10); } },
+        { id: "bodyguard", name: "Özel Koruma (Bodyguard)", cost: 350, isWeekly: true, desc: "Seni mafya baskınlarından, kurşunlamalardan ve haraç kesilmesinden %100 korur. (Haftalık 350 €)", effect: (s) => {} },
+        { id: "mercedes_g63", name: "Mat Siyah Mercedes G63 AMG", cost: 280000, isWeekly: false, desc: "280,000 €. Bebek ve Nişantaşı valelerinin göz bebeği. +40 Moral, +100.000 Takipçi.", effect: (s) => { s.moral = Math.min(100, s.moral + 40); s.followers += 100000; } },
+        { id: "sports_car", name: "Lüks İtalyan Süper Spor Araba", cost: 450000, isWeekly: false, desc: "450,000 €. +150,000 Sosyal Medya Takipçisi, +50 Moral.", effect: (s) => { s.followers += 150000; s.moral = Math.min(100, s.moral + 50); } },
         { id: "penthouse", name: "Boğaz Manzaralı Rezidans", cost: 650000, isWeekly: false, desc: "650,000 €. Moral seviyesini maksimuma sabitlemeye yardımcı olur (+25 Moral).", effect: (s) => { s.moral = Math.min(100, s.moral + 25); } },
-        { id: "yacht", name: "🚢 Ultra Lüks Yat", cost: 1500000, isWeekly: false, desc: "1,500,000 €. +120,000 Takipçi, +45 Moral. Haftalık bakım masrafı: 4,000 €.", effect: (s) => { s.followers += 120000; s.moral = Math.min(100, s.moral + 45); } },
-        { id: "jet", name: "✈️ Özel Jet", cost: 5000000, isWeekly: false, desc: "5,000,000 €. +400,000 Takipçi, +60 Moral. Haftalık uçuş ve hangar masrafı: 15,000 €.", effect: (s) => { s.followers += 400000; s.moral = Math.min(100, s.moral + 60); } },
-        { id: "mansion", name: "🏰 Tarihi Boğaz Yalısı", cost: 3500000, isWeekly: false, desc: "3,500,000 €. Prestij simgesi! +250,000 Takipçi, +80 Moral.", effect: (s) => { s.followers += 250000; s.moral = Math.min(100, s.moral + 80); } },
-        { id: "gerze_fc", name: "👑 Gerze Belediyespor Kulübü", cost: 10000000, isWeekly: false, desc: "10,000,000 €. Memleketinin takımını satın alıp başkan ol! Her hafta +15,000 Takipçi ve +10,000 € pasif gelir sağlar.", effect: (s) => { s.followers += 50000; } }
+        { id: "yacht", name: "Ultra Lüks Yat", cost: 1500000, isWeekly: false, desc: "1,500,000 €. +120,000 Takipçi, +45 Moral. Haftalık bakım masrafı: 4,000 €.", effect: (s) => { s.followers += 120000; s.moral = Math.min(100, s.moral + 45); } },
+        { id: "jet", name: "Özel Jet", cost: 5000000, isWeekly: false, desc: "5,000,000 €. +400,000 Takipçi, +60 Moral. Haftalık uçuş ve hangar masrafı: 15,000 €.", effect: (s) => { s.followers += 400000; s.moral = Math.min(100, s.moral + 60); } },
+        { id: "mansion", name: "Tarihi Boğaz Yalısı", cost: 3500000, isWeekly: false, desc: "3,500,000 €. Prestij simgesi! +250,000 Takipçi, +80 Moral.", effect: (s) => { s.followers += 250000; s.moral = Math.min(100, s.moral + 80); } },
+        { id: "gerze_fc", name: "Gerze Belediyespor Kulübü", cost: 10000000, isWeekly: false, desc: "10,000,000 €. Memleketinin takımını satın alıp başkan ol! Her hafta +15,000 Takipçi ve +10,000 € pasif gelir sağlar.", effect: (s) => { s.followers += 50000; } }
     ],
+
 
     GIRLFRIENDS: [
         {

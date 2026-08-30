@@ -2278,10 +2278,78 @@
                     </div>
                 </div>
 
+                <!-- 🏛️ EMEKLİLİK SONRASI TÜRK İŞİ KARİYER SEÇİMİ -->
+                <div style="background: rgba(255,255,255,0.03); border-radius: 10px; border: 1px solid var(--border-glass); padding: 12px; margin-bottom: 16px; text-align: left;">
+                    <div style="font-size: 11px; font-weight: 800; color: var(--accent-yellow); text-transform: uppercase; margin-bottom: 8px;">🏛️ EMEKLİLİK SONRASI GELECEK YOLUN</div>
+                    <div id="retirement-paths-container" style="display: flex; flex-direction: column; gap: 6px;">
+                        <button class="btn" onclick="selectRetirementPath('siyah_futbol')" id="ret-path-siyah" style="text-align: left; padding: 8px 10px; font-size: 11px; font-weight: 700; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: white; border-radius: 6px;">
+                            📺 Siyah Futbol Masasında Yorumcu Ol (Canlı yayında gençlere salla)
+                        </button>
+                        <button class="btn" onclick="selectRetirementPath('survivor')" id="ret-path-survivor" style="text-align: left; padding: 8px 10px; font-size: 11px; font-weight: 700; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: white; border-radius: 6px;">
+                            🏝️ Survivor Ünlüler Takımına Katıl (Ada konseyinde SMS birincisi ol)
+                        </button>
+                        <button class="btn" onclick="selectRetirementPath('baskan')" id="ret-path-baskan" style="text-align: left; padding: 8px 10px; font-size: 11px; font-weight: 700; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: white; border-radius: 6px;">
+                            👔 Memleketten Belediye Başkanı Adayı Ol (Meydana heykelin dikilsin)
+                        </button>
+                        <button class="btn" onclick="selectRetirementPath('td')" id="ret-path-td" style="text-align: left; padding: 8px 10px; font-size: 11px; font-weight: 700; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: white; border-radius: 6px;">
+                            ⚽ Efsane Olduğun Kulübe Teknik Direktör Ol (Kulübü şampiyon yap)
+                        </button>
+                    </div>
+                    <div id="ret-path-selected-text" style="display: none; margin-top: 8px; font-size: 11.5px; color: #10b981; font-weight: bold; background: rgba(16,185,129,0.1); padding: 6px 10px; border-radius: 6px;"></div>
+                </div>
+
                 <!-- Action Button -->
                 <button class="btn btn-primary" id="btn-ret-restart" style="width: 100%; padding: 14px; font-weight: 800; font-size: 14px; text-transform: uppercase; background: linear-gradient(135deg, var(--accent-yellow) 0%, #ff8f00 100%); color: black; border: none; box-shadow: 0 0 15px rgba(255,143,0,0.3);">Yeni Kariyere Başla! ⚽🔥</button>
             </div>
         </div>
+
+        <!-- 📺 SİYAH FUTBOL GECE MASASI MODAL -->
+        <div class="event-modal-overlay" id="siyah-futbol-modal" style="background: rgba(0,0,0,0.92); z-index: 10025; display: none; align-items: center; justify-content: center; overflow-y: auto; padding: 16px;">
+            <div class="event-card glass" style="max-width: 440px; text-align: left; border: 2px solid #ef4444; box-shadow: 0 0 35px rgba(239, 68, 68, 0.35); padding: 20px; border-radius: 12px; width: 100%;">
+                <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; margin-bottom: 12px;">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span style="background: #ef4444; color: white; font-weight: 900; font-size: 9px; padding: 2px 6px; border-radius: 4px; letter-spacing: 0.5px;">CANLI YAYIN</span>
+                        <span style="font-size: 12px; font-weight: 900; color: #fff; letter-spacing: 0.5px;">SİYAH FUTBOL GECE MASASI</span>
+                    </div>
+                    <span style="font-size: 10px; color: #94a3b8;">01:45</span>
+                </div>
+                
+                <h3 id="siyah-futbol-headline" style="color: #FFD600; font-size: 14px; font-weight: 900; margin: 0 0 12px 0; line-height: 1.3;">
+                    "FLAŞ: GENÇ YILDIZ BU GECE TÜRKİYE'Yİ ÇILDIRTTI!"
+                </h3>
+
+                <div id="siyah-futbol-comments-container" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;">
+                    <!-- Panelists quotes -->
+                </div>
+
+                <button class="btn btn-primary" onclick="closeSiyahFutbolModal()" style="width: 100%; padding: 12px; font-weight: 900; font-size: 13px; background: #ef4444; color: white; border: none;">
+                    PROGRAMI KAPAT & DEVAM ET
+                </button>
+            </div>
+        </div>
+
+        <!-- 📣 TRİBÜNLERE 3'LÜ ÇEKTİRME MODAL -->
+        <div class="event-modal-overlay" id="tribun-3lu-modal" style="background: rgba(0,0,0,0.92); z-index: 10025; display: none; align-items: center; justify-content: center; padding: 16px;">
+            <div class="event-card glass" style="max-width: 400px; text-align: center; border: 2px solid #00e5b7; box-shadow: 0 0 35px rgba(0, 229, 183, 0.35); padding: 24px; border-radius: 14px; width: 100%;">
+                <div style="font-size: 42px; margin-bottom: 8px;">📣🏟️</div>
+                <h2 style="color: white; font-size: 20px; font-weight: 900; margin: 0 0 6px 0;">TRİBÜNLERE 3'LÜ ÇEKTİR!</h2>
+                <p style="font-size: 12px; color: #94a3b8; margin: 0 0 16px 0;">Binlerce taraftar tribünde senin işaretini bekliyor! Ritimle butona bas!</p>
+
+                <div id="tribun-stage-display" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 16px; margin-bottom: 16px;">
+                    <div id="tribun-stage-text" style="font-size: 22px; font-weight: 900; color: #FFD600; letter-spacing: 1px;">
+                        "ŞŞŞŞŞŞŞŞŞŞŞŞŞŞT!..."
+                    </div>
+                    <div id="tribun-sub-text" style="font-size: 11px; color: #cbd5e1; margin-top: 4px;">
+                        Tribünler sustu, nefesler tutuldu...
+                    </div>
+                </div>
+
+                <button id="btn-tribun-action" class="btn btn-primary btn-pulse" onclick="advanceTribun3lu()" style="width: 100%; padding: 14px; font-weight: 900; font-size: 14px; background: #00e5b7; color: black; border: none;">
+                    🤫 ŞŞŞŞŞŞŞŞT DİYE BAĞIR!
+                </button>
+            </div>
+        </div>
+
 
         <!-- PRIVACY POLICY MODAL (Google Play Compliance) -->
         <div class="event-modal-overlay" id="privacy-modal" style="background: rgba(0,0,0,0.85); z-index: 10030; display: none; align-items: center; justify-content: center;">
@@ -5266,6 +5334,181 @@
             }
         }
 
+        // 📺 SİYAH FUTBOL MODAL MOTORU
+        let pendingPostMatchAction = null;
+
+        function showSiyahFutbolModal(ctx, onDone) {
+            pendingPostMatchAction = onDone;
+            const modal = document.getElementById("siyah-futbol-modal");
+            if (!modal) {
+                if (typeof onDone === "function") onDone();
+                return;
+            }
+
+            const pName = GAME.state.playerName || "Genç Yıldız";
+            const goals = ctx.goals || 0;
+            const rating = ctx.rating || 6.5;
+
+            const headlineEl = document.getElementById("siyah-futbol-headline");
+            const commentsContainer = document.getElementById("siyah-futbol-comments-container");
+
+            let quotes = [];
+
+            if (goals >= 2 || rating >= 8.5) {
+                headlineEl.innerText = `"FLAŞ: ${pName.toUpperCase()} BU GECE TÜRKİYE'Yİ AYAĞA KALDIRDI!"`;
+                quotes = [
+                    { name: "Ahmet Hoca", role: "Eski Hakem", quote: `Bakın ben açık konuşayım. Bu ${pName}'de öyle bir kumaş var ki, böyle devam ederse Avrupa'da kapısında yatarlar! Hakem de maçı iyi yönetti bu arada.` },
+                    { name: "Rasim", role: "Ateşli Yorumcu", quote: `Hocaaam hocaaam! Çıldırtma beni! Bu çocuk bu gece adeta bir canavar, bir terminatör gibiydi! Türkiye'nin gururudur bu çocuk!` },
+                    { name: "Sinan Abi", role: "Eski Futbolcu", quote: `Kardeşim ben bu çocuğa kefilim. Sezon başından beri söylüyorum, bu çocukta saf kalite var. Önünü kesmeyin.` },
+                    { name: "Ertem", role: "Moderatör", quote: `Evet sevgili seyirciler, stüdyo alev alev! Sizce ${pName} önümüzdeki yıl Ballon d'Or listesine girer mi?` }
+                ];
+            } else if (rating <= 5.8) {
+                headlineEl.innerText = `"KRİZ: ${pName.toUpperCase()} BU AKŞAM SAHADA YOKLARI OYNADI!"`;
+                quotes = [
+                    { name: "Ahmet Hoca", role: "Eski Hakem", quote: `Ben ne dedim Ertem? Genç çocuklara çok erken gaz veriyorsunuz! Bu gece sahada ruh gibi gezindi.` },
+                    { name: "Rasim", role: "Ateşli Yorumcu", quote: `Hocam yapma etme! Çocuğun üzerine bu kadar gitmeyin, bir maç kötü oynadı diye linç mi edelim!` },
+                    { name: "Sinan Abi", role: "Eski Futbolcu", quote: `Kardeşim geceleri gezmeyi bırakıp idmana odaklanacak. Yoksa bu lig onu yer bitirir, benden söylemesi.` },
+                    { name: "Ertem", role: "Moderatör", quote: `Evet yorumcularımız ikiye bölündü! Bakalım ${pName} haftaya nasıl bir reaksiyon verecek?` }
+                ];
+            } else {
+                headlineEl.innerText = `"TARTIŞMA: ${pName.toUpperCase()} İÇİN AVRUPA DEVLERİ SIRAYA GİRDİ Mİ?"`;
+                quotes = [
+                    { name: "Ahmet Hoca", role: "Eski Hakem", quote: `İyi futbolcu ama daha pişmesi lazım. Kendini hemen yıldız sanmasın.` },
+                    { name: "Rasim", role: "Ateşli Yorumcu", quote: `Hocaaaam! Bu çocuk ligin en heyecan veren yeteneğidir, net!` },
+                    { name: "Sinan Abi", role: "Eski Futbolcu", quote: `Kardeşim hocası ona daha fazla özgürlük vermeli. Bırakın oynasın çocuk.` },
+                    { name: "Ertem", role: "Moderatör", quote: `Siyah Futbol masasında gündem yine sıcak! Canlı yayın devam ediyor.` }
+                ];
+            }
+
+            commentsContainer.innerHTML = quotes.map(q => `
+                <div style="background: rgba(255,255,255,0.05); border-left: 3px solid #ef4444; border-radius: 6px; padding: 10px; text-align: left;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                        <strong style="color: #FFD600; font-size: 11.5px;">${q.name}</strong>
+                        <span style="font-size: 10px; color: #94a3b8; background: rgba(0,0,0,0.3); padding: 1px 6px; border-radius: 4px;">${q.role}</span>
+                    </div>
+                    <p style="margin: 0; font-size: 11.5px; color: #f1f5f9; line-height: 1.4; font-style: italic;">
+                        "${q.quote}"
+                    </p>
+                </div>
+            `).join("");
+
+            modal.style.display = "flex";
+        }
+
+        function closeSiyahFutbolModal() {
+            const modal = document.getElementById("siyah-futbol-modal");
+            if (modal) modal.style.display = "none";
+            if (typeof pendingPostMatchAction === "function") {
+                const act = pendingPostMatchAction;
+                pendingPostMatchAction = null;
+                act();
+            }
+        }
+
+        // 📣 TRİBÜNLERE 3'LÜ ÇEKTİRME MOTORU
+        let tribunStep = 0;
+        function startTribun3lu(onComplete) {
+            tribunStep = 0;
+            pendingPostMatchAction = onComplete;
+            const modal = document.getElementById("tribun-3lu-modal");
+            if (!modal) {
+                if (typeof onComplete === "function") onComplete();
+                return;
+            }
+            updateTribunUI();
+            modal.style.display = "flex";
+        }
+
+        function updateTribunUI() {
+            const stageText = document.getElementById("tribun-stage-text");
+            const subText = document.getElementById("tribun-sub-text");
+            const btn = document.getElementById("btn-tribun-action");
+            const clubName = GAME.state.currentClub || "Şampiyon";
+
+            if (tribunStep === 0) {
+                stageText.innerText = `"ŞŞŞŞŞŞŞŞŞŞŞŞŞŞT!..."`;
+                subText.innerText = "Tribünler sustu, binlerce taraftar parmak havada bekliyor...";
+                btn.innerText = "🤫 'BİR...' DİYE BAĞIR!";
+                btn.style.background = "#00e5b7";
+                btn.style.color = "black";
+            } else if (tribunStep === 1) {
+                stageText.innerText = `"1... 2... 3!..."`;
+                subText.innerText = "Tribünler seninle birlikte sayıyor! Ritim zirvede!";
+                btn.innerText = `🔥 'ŞAMPİYON ${clubName.toUpperCase()}!' DİYE PATLAT!`;
+                btn.style.background = "#FFD600";
+                btn.style.color = "black";
+            } else if (tribunStep === 2) {
+                stageText.innerText = `🔥 "ŞAMPİYON ${clubName.toUpperCase()}! LAY LAY LAY..."`;
+                subText.innerText = "MEŞALELER YANDI! STADYUM YIKILIYOR! (+15 Moral, +10.000 Takipçi)";
+                btn.innerText = "🏆 TARAFTARI SELAMLA & DEVAM ET";
+                btn.style.background = "#ef4444";
+                btn.style.color = "white";
+            }
+        }
+
+        function advanceTribun3lu() {
+            if (tribunStep < 2) {
+                tribunStep++;
+                updateTribunUI();
+            } else {
+                // Done
+                GAME.state.moral = Math.min(100, GAME.state.moral + 15);
+                GAME.state.followers += 10000;
+                GAME.state.taraftarSevgisi = Math.min(100, (GAME.state.taraftarSevgisi || 40) + 15);
+                GAME.saveGame();
+                GAME.updateUI();
+
+                const modal = document.getElementById("tribun-3lu-modal");
+                if (modal) modal.style.display = "none";
+
+                if (typeof pendingPostMatchAction === "function") {
+                    const act = pendingPostMatchAction;
+                    pendingPostMatchAction = null;
+                    act();
+                }
+            }
+        }
+
+        // 🏛️ EMEKLİLİK YOLU SEÇİMİ
+        function selectRetirementPath(pathKey) {
+            const paths = {
+                siyah_futbol: {
+                    title: "Siyah Futbol Yorumcusu",
+                    desc: "Artık stüdyoda Ahmet Hoca ve Rasim'le birliktesin! Canlı yayında çayını yudumlayıp hakem kararlarını ve genç futbolcuları yorumluyorsun. TV reytingleri tavan yaptı!"
+                },
+                survivor: {
+                    title: "Survivor Ünlüler Şampiyonu",
+                    desc: "Dominik adasında parkurlarda fırtına gibi estin! Futbolcu kondisyonunla ada konseyinde halkın büyük desteğini alarak şampiyonluk kupasını kaldırdın!"
+                },
+                baskan: {
+                    title: "Memleket Belediye Başkanı",
+                    desc: "Memleketine hizmet için siyasete girdin ve rekor oyla belediye başkanı seçildin! Şehrin merkez meydanına senin dev bir futbolcu heykelin dikildi!"
+                },
+                td: {
+                    title: "Efsane Teknik Direktör",
+                    desc: "Futbolu bıraktığın kulübün başına hoca olarak geçtin! Taktik dehanla takımı şampiyon yapıp adını kulüp tarihine altın harflerle kazıdın!"
+                }
+            };
+
+            const chosen = paths[pathKey];
+            if (!chosen) return;
+
+            GAME.state.retirementCareer = chosen.title;
+            const textEl = document.getElementById("ret-path-selected-text");
+            if (textEl) {
+                textEl.style.display = "block";
+                textEl.innerText = `Seçilen Yol: ${chosen.title} - ${chosen.desc}`;
+            }
+
+            ['siyah', 'survivor', 'baskan', 'td'].forEach(k => {
+                const b = document.getElementById(`ret-path-${k}`);
+                if (b) {
+                    b.style.border = (k === (pathKey === 'siyah_futbol' ? 'siyah' : pathKey)) ? "2px solid #10b981" : "1px solid rgba(255,255,255,0.15)";
+                    b.style.background = (k === (pathKey === 'siyah_futbol' ? 'siyah' : pathKey)) ? "rgba(16,185,129,0.2)" : "rgba(255,255,255,0.06)";
+                }
+            });
+        }
+
         function proceedPostMatch() {
             GAME.advanceWeek();
             determineNextOpponent();
@@ -5273,145 +5516,236 @@
         }
 
         function triggerInterview(rating, goals, assists) {
-            // Her maçtan sonra sormaması için maç sayacını artır
             if (!GAME.state.matchesSinceLastInterview) GAME.state.matchesSinceLastInterview = 0;
             GAME.state.matchesSinceLastInterview++;
 
-            const isPlayerOfTheMatch = (rating >= 8.5);
+            const isPlayerOfTheMatch = (rating >= 8.5 || goals >= 2);
+            const shouldTriggerSiyahFutbol = (rating >= 8.5 || rating <= 5.8 || (GAME.state.matchesSinceLastInterview % 4 === 0));
             const isRegularInterviewTime = (GAME.state.matchesSinceLastInterview >= 5 && (rating >= 7.3 || goals > 0));
 
-            // Eğer Maçın Oyuncusu isek gazeteye çıkıp röportaj verelim!
+            const continueFlow = () => {
+                if (shouldTriggerSiyahFutbol) {
+                    showSiyahFutbolModal({ rating, goals, assists }, proceedPostMatch);
+                } else {
+                    proceedPostMatch();
+                }
+            };
+
+            // Eğer Maçın Oyuncusu isek önce 3'lü çektir, sonra gazeteye çık, sonra röportaj ver
             if (isPlayerOfTheMatch) {
-                GAME.state.matchesSinceLastInterview = 0; // Sayacı sıfırla
-                
-                // Maçın Oyuncusu Gazete Pop-up'ı göster, kapatınca röportajı aç
-                showNewspaperModal(
-                    `HAFTA ${GAME.state.currentWeek}`,
-                    `${GAME.state.playerName.toUpperCase()} MAÇIN OYUNCUSU!`,
-                    "Muhteşem Oyunuyla Gazete Manşetlerinde!",
-                    `Bugün sahada adeta devleşen genç yetenek ${GAME.state.playerName}, sergilediği olağanüstü performansla futbol severleri büyüledi. Maçın Oyuncusu seçilen ${GAME.state.playerName} için basın mensupları ve gözlemciler sıraya girdi. Karşılaşma sonrasında kameraların karşısına geçmeye hazırlanan genç futbolcunun ne diyeceği merakla bekleniyor.`,
-                    () => {
-                        openInterviewModal(rating, goals, assists);
-                    }
-                );
-            } 
-            // Eğer normal röportaj zamanı gelmişse (5 maçta 1)
-            else if (isRegularInterviewTime) {
-                GAME.state.matchesSinceLastInterview = 0; // Sayacı sıfırla
+                GAME.state.matchesSinceLastInterview = 0;
+                startTribun3lu(() => {
+                    showNewspaperModal(
+                        `HAFTA ${GAME.state.currentWeek}`,
+                        `${GAME.state.playerName.toUpperCase()} MAÇIN OYUNCUSU!`,
+                        "Muhteşem Oyunuyla Gazete Manşetlerinde!",
+                        `Bugün sahada adeta devleşen genç yetenek ${GAME.state.playerName}, sergilediği olağanüstü performansla futbol severleri büyüledi. Maçın Oyuncusu seçilen ${GAME.state.playerName} için basın mensupları ve gözlemciler sıraya girdi. Karşılaşma sonrasında kameraların karşısına geçmeye hazırlanan genç futbolcunun ne diyeceği merakla bekleniyor.`,
+                        () => {
+                            openInterviewModal(rating, goals, assists);
+                        }
+                    );
+                });
+            } else if (isRegularInterviewTime) {
+                GAME.state.matchesSinceLastInterview = 0;
                 openInterviewModal(rating, goals, assists);
-            } 
-            // Hiçbiri değilse direkt devam et
-            else {
-                proceedPostMatch();
+            } else {
+                continueFlow();
             }
         }
+
 
         function openInterviewModal(rating, goals, assists) {
             const interviewModal = document.getElementById("interview-modal");
             const opt1 = document.getElementById("interview-opt-1");
             const opt2 = document.getElementById("interview-opt-2");
             const opt3 = document.getElementById("interview-opt-3");
-
-            // Muhabir sorusunu özelleştir
             const qEl = document.getElementById("interview-question");
-            if (rating >= 8.5) {
-                const mvpQuestions = [
-                    `"Bugün sahada adeta fırtına gibi estiniz ve Maçın Oyuncusu seçildiniz. Bu harika performansınız hakkında neler söyleyeceksiniz?"`,
-                    `"İnanılmaz bir akşam! Tribünler maç bitmesine rağmen adınızı haykırıyor. MVP ödülünü aldınız, bu galibiyeti neye bağlıyorsunuz?"`,
-                    `"Bugün adeta tek başınıza maçı aldınız diyebiliriz, harika oyununuzla MVP seçildiniz. Bu yüksek seviyenizi koruyabilecek misiniz?"`,
-                    `"Rakip savunma bugün sizi durdurmakta çaresiz kaldı ve hak edilmiş bir MVP ödülü aldınız. Bu harika performansın sırrı ne?"`,
-                    `"Bugün taraftarların sevgilisi oldunuz, sahada basmadık yer bırakmadınız ve MVP seçildiniz. Neler hissettiğinizi öğrenebilir miyiz?"`
-                ];
-                qEl.innerText = mvpQuestions[Math.floor(Math.random() * mvpQuestions.length)];
-            } else {
-                const regularQuestions = [
-                    `"Son haftalarda istikrarlı bir performans sergiliyorsunuz. Takımdaki geleceğinizi ve bugünkü maçı nasıl değerlendirirsiniz?"`,
-                    `"Bugün sahada istekli bir mücadele vardı. Takım içindeki kimyanız ve bugünkü oyun hakkında ne düşünüyorsunuz?"`,
-                    `"Gelişmeye devam eden genç bir yetenek olarak taraftarlar sizden çok şey bekliyor. Bugün sahada neler eksikti?"`,
-                    `"Son dönemdeki antrenman performansınız konuşuluyor. Bugünü ve gelecek haftalardaki hedeflerinizi bizimle paylaşır mısınız?"`
-                ];
-                qEl.innerText = regularQuestions[Math.floor(Math.random() * regularQuestions.length)];
-            }
+            const pName = GAME.state.playerName || "Genç Yıldız";
+            const hometown = GAME.state.hometownDistrict || GAME.state.hometownCity || "Memleket";
 
-            const hometown = GAME.state.hometownDistrict || GAME.state.hometownCity || "Şile";
-            const pName = GAME.state.playerName;
-
-            const templates = [
+            // 8 Farklı Gerçekçi Türk Futbol Muhabiri Sorusu & Efsane Yanıt Havuzu
+            const scenarios = [
+                // 1. Yıldız Performans Sorusu
                 {
-                    opt1Text: `"Takım olarak iyi mücadele ettik. Hoca'mızın dediklerini uyguladık ve kazandık." (Mütevazı)`,
+                    question: `"Bugün sahada adeta şov yaptın, muhteşem bir performans izledik. Neler hissediyorsun?"`,
+                    opt1Text: `"Önemli olan benim gol atmam değil, takımın 3 puan almasıydı." (Mütevazı & Takım Oyuncusu)`,
                     opt1Apply: () => {
                         GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 5);
                         GAME.state.moral = Math.min(100, GAME.state.moral + 5);
-                        GAME.state.followers += 200;
-                        GAME.addSocialPost("@tribun_sessiz", "Tribün Akustiği", `${pName}'in röportajdaki efendiliği... İşte aradığımız Türk genci! Helal olsun. 👏👏`);
+                        GAME.state.followers += 1000;
+                        GAME.addSocialPost("@spor_manset", "Basın Odası", `${pName}: 'Önemli olan 3 puandı.' Genç yıldızın efendiliği alkış topladı.`);
                     },
-                    opt2Text: `"Sahadaki kalitemi herkes gördü. Yedek kalmaya niyetim yok, bu takımın lideri benim." (Özgüvenli)`,
+                    opt2Text: `"Bana boşuna 'Kral' demiyorlar, top bana gelirse o top içeri girer!" (Laubali & Havalı)`,
                     opt2Apply: () => {
-                        GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 5);
-                        GAME.state.moral = Math.min(100, GAME.state.moral + 10);
-                        GAME.state.followers += 1500;
-                        GAME.addSocialPost("@spor_manset", "Spor Manşetleri", `${pName}: "Ben buraya yedek kalmaya gelmedim, kalitem ortada." Medyada manşetler alev alev! 🔥🎤`);
-                    },
-                    opt3Text: `"Bu galibiyeti ${hometown}'deki aileme ve sevdiklerime armağan ediyorum." (Duygusal)`,
-                    opt3Apply: () => {
+                        GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 3);
                         GAME.state.moral = Math.min(100, GAME.state.moral + 15);
-                        GAME.state.followers += 600;
-                        GAME.addSocialPost(`@${pName.toLowerCase().replace(/\s/g, '_')}_fan`, `${pName} Fan`, `${pName} bugünkü golünü ailesine armağan etti. ${hometown}'deki zor günleri atlatacaklar inşallah! Dualarımız seninle çocuk! ❤️🥺`);
+                        GAME.state.followers += 15000;
+                        GAME.addSocialPost("@futbol_geyik", "Sosyal Medya", `${pName}: 'Bana boşuna Kral demiyorlar!' Açıklama sosyal medyayı yıktı geçti!`);
+                    },
+                    opt3Text: `"Attığım golü anneme ve beni kıskanan rakiplerime armağan ediyorum." (Duygusal & İğneleyici)`,
+                    opt3Apply: () => {
+                        GAME.state.moral = Math.min(100, GAME.state.moral + 10);
+                        GAME.state.followers += 5000;
+                        GAME.addSocialPost(`@${pName.toLowerCase().replace(/\s/g, '_')}_fan`, "Taraftar Sayfası", `${pName}'den rakiplere kapak gibi mesaj: 'Beni kıskananlara armağan olsun!'`);
                     }
                 },
+                // 2. Kritik / Estetik Gol Sorusu
                 {
-                    opt1Text: `"Hocamızın taktiği mükemmeldi. Antrenmanlardaki çalışmalarımızın karşılığını aldık." (Takım Oyuncusu)`,
+                    question: `"Attığın muhteşem gol sosyal medyayı yıktı. Pozisyonda şans mı vardı yoksa tamamen bireysel yetenek mi?"`,
+                    opt1Text: `"Golümü beğenmeyen gitsin voleybol izlesin kardeşim! Şans değil, saf kalite." (Sivri Dilli)`,
                     opt1Apply: () => {
+                        GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 4);
+                        GAME.state.moral = Math.min(100, GAME.state.moral + 12);
+                        GAME.state.taraftarSevgisi = Math.min(100, (GAME.state.taraftarSevgisi || 40) + 10);
+                        GAME.state.followers += 15000;
+                        GAME.addSocialPost("@manset_spor", "Son Dakika", `${pName}'den eleştirilere olay yanıt: 'Golümü beğenmeyen voleybol izlesin!'`);
+                    },
+                    opt2Text: `"Çok çalıştık, antrenmanlardaki çalışmalarımızın karşılığını aldık." (Klasik Profesyonel)`,
+                    opt2Apply: () => {
                         GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 8);
                         GAME.state.moral = Math.min(100, GAME.state.moral + 5);
-                        GAME.state.followers += 100;
-                        GAME.addSocialPost("@taktik_analiz", "Taktik Analiz", `${pName} taktik disipline çok sadık. Geleceğin yıldızı olacağı kesin! 📈`);
+                        GAME.state.followers += 800;
                     },
-                    opt2Text: `"Büyük kulüplerin benimle ilgilenmesi normal ama şu an sadece takımıma odaklıyım." (İddialı)`,
-                    opt2Apply: () => {
-                        GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 5);
-                        GAME.state.moral = Math.min(100, GAME.state.moral + 12);
-                        GAME.state.followers += 2200;
-                        GAME.addSocialPost("@transfer_kulisi", "Transfer Kulisi", `TRANSFER ATEŞİ! ${pName} büyük tekliflerin kapıda olduğunu doğruladı! 💣🔥`);
-                    },
-                    opt3Text: `"Bizi deplasmanda bile yalnız bırakmayan muhteşem taraftarımıza armağan olsun!" (Sevgi Dolu)`,
+                    opt3Text: `"Defansları o kadar yavaştı ki kaleye koşarken esnedim." (Mizahi Laubali)`,
                     opt3Apply: () => {
-                        GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 5);
-                        GAME.state.moral = Math.min(100, GAME.state.moral + 10);
-                        GAME.state.followers += 1000;
-                        GAME.addSocialPost("@taraftar_sesi", "Taraftar Sesi", `İşte kulüp aidiyeti! ${pName} taraftarı bağrına bastı, helal olsun aslanım! 💚`);
+                        GAME.state.moral = Math.min(100, GAME.state.moral + 15);
+                        GAME.state.followers += 12000;
+                        GAME.addSocialPost("@tribun_sesi", "Tribün", `${pName} rakip defansla adeta dalga geçti! Sosyal medya bu sözleri konuşuyor.`);
                     }
                 },
+                // 3. Rakip Savunma & Gerilim Sorusu
                 {
-                    opt1Text: `"Sadece işimi yapıyorum. Hafta içi çok çalıştım, çalışmaya da devam edeceğim." (Profesyonel)`,
+                    question: `"Rakip savunma maç boyu sana çok sert müdahalelerde bulundu. Neler söylemek istersin?"`,
+                    opt1Text: `"Rakip stoper formamı çekeceğine imza isteseydi maç sonu verirdim." (Ağır Laubali)`,
                     opt1Apply: () => {
-                        GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 10);
-                        GAME.state.moral = Math.min(100, GAME.state.moral + 2);
-                        GAME.state.followers += 300;
-                        GAME.addSocialPost("@idman_gunlugu", "İdman Günlüğü", `${pName} disiplinli çalışmasının meyvesini alıyor. Örnek profesyonel! 🏃‍♂️💪`);
-                    },
-                    opt2Text: `"Bu sadece başlangıç. Hedefim Avrupa'nın en büyük liglerinde oynamak!" (Hırslı)`,
-                    opt2Apply: () => {
-                        GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 2);
                         GAME.state.moral = Math.min(100, GAME.state.moral + 15);
-                        GAME.state.followers += 1800;
-                        GAME.addSocialPost("@avrupa_radari", "Avrupa Radarı", `${pName} gözünü Avrupa devlerine dikti. Hırslı ve cesur konuşması olay yarattı! ✈️🗺️`);
+                        GAME.state.taraftarSevgisi = Math.min(100, (GAME.state.taraftarSevgisi || 40) + 12);
+                        GAME.state.followers += 12000;
+                        GAME.addSocialPost("@spor_kulisi", "Özel", `${pName}: 'Stoper formamı çekeceğine imza istese verirdim!' Olay sözler!`);
                     },
-                    opt3Text: `"Çok şükür bugün emeklerimizin karşılığını aldık. Güzel bir sezon diliyorum." (İnançlı)`,
-                    opt3Apply: () => {
+                    opt2Text: `"Futbol temas oyunu. Sahada olan sahada kalır, önümüzdeki maçlara bakacağız." (Klasik)`,
+                    opt2Apply: () => {
                         GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 5);
-                        GAME.state.moral = Math.min(100, GAME.state.moral + 8);
+                        GAME.state.moral = Math.min(100, GAME.state.moral + 3);
                         GAME.state.followers += 500;
-                        GAME.addSocialPost("@kader_ve_spor", "Spor Analiz", `Soğukkanlı ve inançlı. ${pName} sahada duruşuyla da fark yaratıyor. 👏🙏`);
+                    },
+                    opt3Text: `"Karşı takımın kalecisi bu gece rüyasında beni görecek, geçmiş olsun." (Özgüvenli)`,
+                    opt3Apply: () => {
+                        GAME.state.moral = Math.min(100, GAME.state.moral + 15);
+                        GAME.state.followers += 8000;
+                    }
+                },
+                // 4. Hakem Yönetimi Sorusu
+                {
+                    question: `"Maçın hakemi çok tartışılan kararlar verdi. Hakem yönetimi hakkında ne düşünüyorsun?"`,
+                    opt1Text: `"Hakem hakkında konuşursam ceza alırım ama hakkımız gasp edildi!" (Cesur & İsyankar)`,
+                    opt1Apply: () => {
+                        GAME.state.taraftarSevgisi = Math.min(100, (GAME.state.taraftarSevgisi || 40) + 20);
+                        GAME.state.moral = Math.min(100, GAME.state.moral + 10);
+                        GAME.state.followers += 10000;
+                        GAME.addSocialPost("@tff_haber", "Hakem Raporu", `${pName}'den hakeme sert tepki! Taraftar arkasında kenetlendi.`);
+                    },
+                    opt2Text: `"Hakemler de insan, hata yapabilirler. Biz kendi oyunumuza odaklanıyoruz." (Politik)`,
+                    opt2Apply: () => {
+                        GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 10);
+                        GAME.state.moral = Math.min(100, GAME.state.moral + 5);
+                    },
+                    opt3Text: `"Hakem bey bu akşam çok formdaydı, keşke biraz da maçı izleseydi." (İronik)`,
+                    opt3Apply: () => {
+                        GAME.state.followers += 15000;
+                        GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 3);
+                    }
+                },
+                // 5. Erken Oyundan Alınma Sorusu
+                {
+                    question: `"Hoca seni erkenden oyundan aldı ve kenara gelirken biraz tepkiliydin. Bir sorun mu var?"`,
+                    opt1Text: `"Hoca beni erken çıkardı, büyük hata yaptı. Kalsaydım hat-trick gelirdi." (Sert Laubali)`,
+                    opt1Apply: () => {
+                        GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 15);
+                        GAME.state.moral = Math.min(100, GAME.state.moral + 10);
+                        GAME.state.followers += 10000;
+                        GAME.addSocialPost("@derin_futbol", "Manşet", `Kriz! ${pName} hocasına meydan okudu: 'Beni çıkarmak hataydı!'`);
+                    },
+                    opt2Text: `"Hocamızın kararına saygım sonsuz, yorgundum ve dinlendirmek istedi." (Sadık Takım Oyuncusu)`,
+                    opt2Apply: () => {
+                        GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 10);
+                        GAME.state.moral = Math.min(100, GAME.state.moral + 5);
+                    },
+                    opt3Text: `"Sahada o kadar hızlıydım ki hocam kramponlarım yanmasın diye çıkardı herhalde." (Espri)`,
+                    opt3Apply: () => {
+                        GAME.state.followers += 6000;
+                        GAME.state.moral = Math.min(100, GAME.state.moral + 10);
+                    }
+                },
+                // 6. Mağlubiyet / Puan Kaybı Sorusu
+                {
+                    question: `"Bugün sahada beklenen futbolu oynayamadınız ve puan kaybettiniz. Sebebi neydi?"`,
+                    opt1Text: `"Hatalarımızdan ders çıkarıp haftaya taraftarımıza kendimizi affettireceğiz." (Klişe)`,
+                    opt1Apply: () => {
+                        GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 5);
+                        GAME.state.moral = Math.min(100, GAME.state.moral + 5);
+                    },
+                    opt2Text: `"Biz büyük bir aileyiz, hocamızın ve takımımızın sonuna kadar arkasındayız!" (Kulüpçü)`,
+                    opt2Apply: () => {
+                        GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 10);
+                        GAME.state.followers += 2000;
+                    },
+                    opt3Text: `"Ben sahada elimden geleni yaptım ama bazı arkadaşlar gezintiye çıkmıştı." (Fitneci)`,
+                    opt3Apply: () => {
+                        GAME.state.moral = Math.min(100, GAME.state.moral + 5);
+                        GAME.state.followers += 8000;
+                        GAME.addSocialPost("@futbol_kulis", "Soyunma Odası", `${pName}'den takım arkadaşlarına ağır gönderme! Ortalık karıştı.`);
+                    }
+                },
+                // 7. Transfer Dedikoduları Sorusu
+                {
+                    question: `"Büyük kulüplerin ve Avrupa devlerinin senin için sıraya girdiği söyleniyor. Geleceğin ne olacak?"`,
+                    opt1Text: `"Transfer teklifleri mi? Söyleyin: Satılık değilim, paha biçilemezim!" (Egoist & Karizmatik)`,
+                    opt1Apply: () => {
+                        GAME.state.followers += 25000;
+                        GAME.state.moral = Math.min(100, GAME.state.moral + 15);
+                        GAME.addSocialPost("@transfer_bomba", "Transfer", `${pName}: 'Satılık değilim, paha biçilemezim!' Avrupa basını ayakta!`);
+                    },
+                    opt2Text: `"Ben bu ligin 3 gömlek üzerindeyim, yakında tüm dünya beni konuşacak." (Aşırı İddialı)`,
+                    opt2Apply: () => {
+                        GAME.state.followers += 15000;
+                        GAME.state.moral = Math.min(100, GAME.state.moral + 10);
+                    },
+                    opt3Text: `"Kulübümde çok mutluyum, sözleşmemin son anına kadar bu arma için savaşırım." (Sadık)`,
+                    opt3Apply: () => {
+                        GAME.state.taraftarSevgisi = Math.min(100, (GAME.state.taraftarSevgisi || 40) + 20);
+                        GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 10);
+                    }
+                },
+                // 8. Kutlama & Gece Hayatı Sorusu
+                {
+                    question: `"Bu büyük galibiyeti bu akşam nasıl kutlayacaksınız, özel bir planınız var mı?"`,
+                    opt1Text: `"Bu gece kutlamayı gece kulübünde yapacağım, bütün hesaplar benden!" (Gece Kuşu Laubali)`,
+                    opt1Apply: () => {
+                        GAME.state.followers += 20000;
+                        GAME.state.kondisyon = Math.max(0, GAME.state.kondisyon - 10);
+                        GAME.state.moral = Math.min(100, GAME.state.moral + 15);
+                        GAME.addSocialPost("@magazin_canli", "Gece Hayatı", `${pName} gece kulübünü kapattı! Şampanya patlatan genç yıldız sabahı gördü.`);
+                    },
+                    opt2Text: `"${hometown}'deki ailemi arayıp dualarını alacağım, en büyük mutluluğum bu." (Maneviyat)`,
+                    opt2Apply: () => {
+                        GAME.state.moral = Math.min(100, GAME.state.moral + 15);
+                        GAME.state.followers += 5000;
+                    },
+                    opt3Text: `"Kutlama yok, hemen tesislere dönüp buz banyosu yapacağız. Haftaya maç var." (Disiplin Abidesi)`,
+                    opt3Apply: () => {
+                        GAME.state.hocaGuveni = Math.min(100, GAME.state.hocaGuveni + 15);
+                        GAME.state.kondisyon = Math.min(100, GAME.state.kondisyon + 10);
                     }
                 }
             ];
 
-            const chosenTpl = templates[Math.floor(Math.random() * templates.length)];
+            const chosenScn = scenarios[Math.floor(Math.random() * scenarios.length)];
+            qEl.innerText = chosenScn.question;
 
-            opt1.querySelector(".choice-text").innerText = chosenTpl.opt1Text;
-            opt2.querySelector(".choice-text").innerText = chosenTpl.opt2Text;
-            opt3.querySelector(".choice-text").innerText = chosenTpl.opt3Text;
+            opt1.querySelector(".choice-text").innerText = chosenScn.opt1Text;
+            opt2.querySelector(".choice-text").innerText = chosenScn.opt2Text;
+            opt3.querySelector(".choice-text").innerText = chosenScn.opt3Text;
 
             // Clone to clear listeners
             const newOpt1 = opt1.cloneNode(true);
@@ -5423,7 +5757,7 @@
             opt3.parentNode.replaceChild(newOpt3, opt3);
 
             newOpt1.addEventListener("click", () => {
-                chosenTpl.opt1Apply();
+                chosenScn.opt1Apply();
                 GAME.saveGame();
                 GAME.updateUI();
                 interviewModal.classList.remove("active");
@@ -5431,7 +5765,7 @@
             });
 
             newOpt2.addEventListener("click", () => {
-                chosenTpl.opt2Apply();
+                chosenScn.opt2Apply();
                 GAME.saveGame();
                 GAME.updateUI();
                 interviewModal.classList.remove("active");
@@ -5439,13 +5773,14 @@
             });
 
             newOpt3.addEventListener("click", () => {
-                chosenTpl.opt3Apply();
+                chosenScn.opt3Apply();
                 GAME.saveGame();
                 GAME.updateUI();
                 interviewModal.classList.remove("active");
                 proceedPostMatch();
             });
         }
+
 
 
 
@@ -7978,7 +8313,30 @@
                     }, 2000);
                 };
                 choicesContainer.appendChild(btnBluff);
+
+                // Option 5: Türk İşi Özel Madde (Köy yumurtası, VIP Vito, kuzene kadro)
+                const btnTurkIsi = document.createElement("button");
+                btnTurkIsi.className = "wa-choice-btn";
+                btnTurkIsi.style.borderColor = "rgba(16, 185, 129, 0.4)";
+                btnTurkIsi.innerHTML = `🇹🇷 Türk İşi Özel Madde Talep Et (VIP Vito, köy yumurtası & kuzene iş)`;
+                btnTurkIsi.onclick = () => {
+                    addMessage(`🇹🇷 Özel Şartım: Haftalık memleketten 1 koli köy yumurtası & fındık, siyah camlı VIP Vito tahsisi ve kuzenime kulüpte kadro verilecek!`, "right");
+                    choicesContainer.innerHTML = "";
+                    
+                    showTyping(() => {
+                        let turkMsg = activeAgentId ?
+                            `🤣 Kanka başkan kahkaha attı! 'Ulan tam Türk genci, bayıldım delikanlıya! Vito da hazır, kuzeni de malzemeci yaptık!' dedi! Moral tavan yaptı!` :
+                            `Başkanımız talebinizi tebessümle karşıladı: 'Böyle cana yakın futbolcu zor bulunur, hepsi sözleşmeye eklensin!' Hayırlı olsun!`;
+                        addMessage(turkMsg, "left");
+                        GAME.state.moral = 100;
+                        GAME.state.followers += 5000;
+                        GAME.state.money += 3000;
+                        showStep2Choices(salary, false);
+                    }, 2000);
+                };
+                choicesContainer.appendChild(btnTurkIsi);
             }
+
 
 
             // Step 2 Choices (Accept or reject negotiated deal)
@@ -8071,18 +8429,21 @@
 
 
             // Breaking News & Social Media Post
-            const postText = `🚨 RESMİ: ${GAME.state.playerName}, ${teamName} kulübüne transfer oldu! Genç yıldız haftalık ${salary.toLocaleString()} € kazanacak ve yeni takımının başarısı için ter dökecek. 📝⚽`;
+            const postText = `RESMİ: ${GAME.state.playerName}, ${teamName} kulübüne transfer oldu! Genç yıldız haftalık ${salary.toLocaleString()} € kazanacak ve yeni takımının başarısı için ter dökecek.`;
             GAME.addSocialPost("@transfer_merkezi", "Transfer Nöbeti", postText);
 
+            // Havalimanı Meşaleli Karşılama Bonusu
+            GAME.state.followers += 25000;
+            GAME.state.moral = 100;
             GAME.saveGame();
             GAME.updateUI();
 
             if (typeof showNewspaperModal === "function") {
                 showNewspaperModal(
-                    "TRANSFER ÖZEL",
-                    `${GAME.state.playerName.toUpperCase()} RESMEN ${teamName.toUpperCase()}'DE!`,
-                    "Yılın Bomba Transferi İmzalandı!",
-                    `${GAME.state.playerName}, kariyerinde dev bir adım atarak ${teamName} kulübüyle resmi sözleşmeye imza attı! Yeni kulübünde haftalık ${salary.toLocaleString()} € kazanacak olan yıldız oyuncunun ilk maçı heyecanla bekleniyor.`
+                    "GECE 02:00 HAVALİMANI İZDİHAMI",
+                    `${GAME.state.playerName.toUpperCase()} İÇİN MEŞALELİ KARŞILAMA!`,
+                    "Binlerce Taraftar Geceyi Gündüze Çevirdi!",
+                    `Gece saat 02:00'de şehre inen ${GAME.state.playerName}, binlerce coşkulu taraftar tarafından meşaleler ve marşlarla karşılandı! Boynuna kulüp atkısı sarılan ve omuzlara alınan genç yıldız, taraftarlara ilk üçlüsünü çektirdi. Sosyal medyada karşılama görüntüleri milyonlarca izlendi. Haftalık ${salary.toLocaleString()} € maaşla formayı sırtına geçirecek yıldız oyuncuya başarılar diliyoruz!`
                 );
             } else {
                 alert(`🎉 ${teamName} kulübüne transferiniz tamamlandı! Başarılar!`);
@@ -8090,6 +8451,7 @@
             
             document.querySelector("[data-target='panel-career']").click();
             determineNextOpponent();
+
 
         }
 
