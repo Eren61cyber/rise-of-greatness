@@ -2403,10 +2403,10 @@
 
                             <!-- Embedded Digital LED Nameplates -->
                             <div class="siyah-led-nameplates-bar">
-                                <span class="siyah-led-plate" id="desk-plate-0">AHMET ÇAKAR</span>
-                                <span class="siyah-led-plate" id="desk-plate-1">RASİM OZAN</span>
-                                <span class="siyah-led-plate" id="desk-plate-2">SİNAN ENGİN</span>
-                                <span class="siyah-led-plate" id="desk-plate-3">ERTEM ŞENER</span>
+                                <span class="siyah-led-plate" id="desk-plate-0">AHMET HOCA</span>
+                                <span class="siyah-led-plate" id="desk-plate-1">RASİM</span>
+                                <span class="siyah-led-plate" id="desk-plate-2">SİNAN ABİ</span>
+                                <span class="siyah-led-plate" id="desk-plate-3">ERTEM</span>
                             </div>
                         </div>
                     </div>
@@ -2442,7 +2442,7 @@
                                 <circle cx="34" cy="74" r="3.5" fill="#facc15"/>
                             </svg>
                         </div>
-                        <span class="siyah-seat-name">Ahmet Çakar</span>
+                        <span class="siyah-seat-name">Ahmet Hoca</span>
                         <span class="siyah-seat-role">Eski Hakem</span>
                     </div>
 
@@ -2476,7 +2476,7 @@
                                 <path d="M 64 72 L 67 69 L 67 75 Z" fill="#facc15"/>
                             </svg>
                         </div>
-                        <span class="siyah-seat-name">Rasim Ozan</span>
+                        <span class="siyah-seat-name">Rasim</span>
                         <span class="siyah-seat-role">Ateşli Yorumcu</span>
                     </div>
 
@@ -2510,7 +2510,7 @@
                                 <circle cx="34" cy="74" r="3" fill="#eab308"/>
                             </svg>
                         </div>
-                        <span class="siyah-seat-name">Sinan Engin</span>
+                        <span class="siyah-seat-name">Sinan Abi</span>
                         <span class="siyah-seat-role">Eski Futbolcu</span>
                     </div>
 
@@ -2547,7 +2547,7 @@
                                 <polygon points="48,64 52,64 53,88 47,88" fill="#1e40af"/>
                             </svg>
                         </div>
-                        <span class="siyah-seat-name">Ertem Şener</span>
+                        <span class="siyah-seat-name">Ertem</span>
                         <span class="siyah-seat-role">Moderatör</span>
                     </div>
                 </div>
@@ -5582,26 +5582,26 @@
             if (goals >= 2 || rating >= 8.5) {
                 if (ledTopic) ledTopic.innerText = `${pName.toUpperCase()} ŞOVU & ZAFER GECESİ`;
                 currentSiyahQuotes = [
-                    { name: "Ahmet Çakar", role: "Eski Hakem", tension: 50, quote: `Bakın ben açık ve net konuşayım. Bu ${pName}'de öyle bir kumaş, öyle bir ciğer var ki... Böyle devam ederse Avrupa devleri kapısında yatar! Hakem de pozisyonları iyi süzdü bu arada.` },
-                    { name: "Rasim Ozan", role: "Ateşli Yorumcu", tension: 78, quote: `Hocaaam hocaaam! Çıldırtma beni canlı yayında! Bu çocuk bu gece sahada adeta bir terminatör, bir futbol canavarı gibiydi! Türkiye seninle gurur duyuyor be çocuk!` },
-                    { name: "Sinan Engin", role: "Eski Futbolcu", tension: 90, quote: `Kardeşim ben bu çocuğa kefilim. Sezon başından beri söylüyorum; bu çocukta saf kalite, doğuştan klas var. Çocuğun önünü kesmeyin, bırakın aksın gitsin.` },
-                    { name: "Ertem Şener", role: "Moderatör", tension: 98, quote: `Evet sevgili seyirciler, stüdyo resmen alev alev! Şimdi soruyorum: ${pName} önümüzdeki sezon Ballon d'Or listesine ilk 10'dan girer mi? Canlı yayında oyluyoruz!` }
+                    { name: "Ahmet Hoca", role: "Eski Hakem", tension: 50, quote: `Bakın ben açık ve net konuşayım. Bu ${pName}'de öyle bir kumaş, öyle bir ciğer var ki... Böyle devam ederse Avrupa devleri kapısında yatar! Hakem de pozisyonları iyi süzdü bu arada.` },
+                    { name: "Rasim", role: "Ateşli Yorumcu", tension: 78, quote: `Hocaaam hocaaam! Çıldırtma beni canlı yayında! Bu çocuk bu gece sahada adeta bir terminatör, bir futbol canavarı gibiydi! Türkiye seninle gurur duyuyor be çocuk!` },
+                    { name: "Sinan Abi", role: "Eski Futbolcu", tension: 90, quote: `Kardeşim ben bu çocuğa kefilim. Sezon başından beri söylüyorum; bu çocukta saf kalite, doğuştan klas var. Çocuğun önünü kesmeyin, bırakın aksın gitsin.` },
+                    { name: "Ertem", role: "Moderatör", tension: 98, quote: `Evet sevgili seyirciler, stüdyo resmen alev alev! Şimdi soruyorum: ${pName} önümüzdeki sezon Ballon d'Or listesine ilk 10'dan girer mi? Canlı yayında oyluyoruz!` }
                 ];
             } else if (rating <= 5.8) {
                 if (ledTopic) ledTopic.innerText = `KRİZ MASASI: ${pName.toUpperCase()}`;
                 currentSiyahQuotes = [
-                    { name: "Ahmet Çakar", role: "Eski Hakem", tension: 60, quote: `Ben ne dedim Ertem? Genç çocuklara erkenden yıldız muamelesi yapıp gazı veriyorsunuz! Bu gece sahada hayalet gibiydi, tek bir olumlu hareketi yok!` },
-                    { name: "Rasim Ozan", role: "Ateşli Yorumcu", tension: 85, quote: `Hocam insaf ya, yapma etme! Çocuğun üzerine bu kadar acımasızca gitmeyin! Bir maç kötü oynadı diye linç mi edelim geleceğimizi!` },
-                    { name: "Sinan Engin", role: "Eski Futbolcu", tension: 94, quote: `Kardeşim geceleri gezmeyi tozmayı bırakıp tesiste yatıp kalkacak. Yoksa bu lig insanı yer bitirir, benden söylemesi.` },
-                    { name: "Ertem Şener", role: "Moderatör", tension: 100, quote: `Evet stüdyoda büyük fikir ayrılığı var! Bakalım ${pName} önümüzdeki hafta sahada nasıl bir reaksiyon verecek?` }
+                    { name: "Ahmet Hoca", role: "Eski Hakem", tension: 60, quote: `Ben ne dedim Ertem? Genç çocuklara erkenden yıldız muamelesi yapıp gazı veriyorsunuz! Bu gece sahada hayalet gibiydi, tek bir olumlu hareketi yok!` },
+                    { name: "Rasim", role: "Ateşli Yorumcu", tension: 85, quote: `Hocam insaf ya, yapma etme! Çocuğun üzerine bu kadar acımasızca gitmeyin! Bir maç kötü oynadı diye linç mi edelim geleceğimizi!` },
+                    { name: "Sinan Abi", role: "Eski Futbolcu", tension: 94, quote: `Kardeşim geceleri gezmeyi tozmayı bırakıp tesiste yatıp kalkacak. Yoksa bu lig insanı yer bitirir, benden söylemesi.` },
+                    { name: "Ertem", role: "Moderatör", tension: 100, quote: `Evet stüdyoda büyük fikir ayrılığı var! Bakalım ${pName} önümüzdeki hafta sahada nasıl bir reaksiyon verecek?` }
                 ];
             } else {
                 if (ledTopic) ledTopic.innerText = `CANLI TARTIŞMA: ${pName.toUpperCase()}`;
                 currentSiyahQuotes = [
-                    { name: "Ahmet Çakar", role: "Eski Hakem", tension: 45, quote: `İyi kumaş, yetenekli çocuk ama daha çok fırın ekmek yemesi lazım. Kendini hemen dünya yıldızı zannetmesin.` },
-                    { name: "Rasim Ozan", role: "Ateşli Yorumcu", tension: 70, quote: `Hocaaaam! Bu çocuk bu ligin en heyecan verici yeteneğidir, sahada top ayağına gelince tribünler ayağa kalkıyor!` },
-                    { name: "Sinan Engin", role: "Eski Futbolcu", tension: 86, quote: `Kardeşim hocası ona taktik tahtasında daha fazla özgürlük tanımalı. Bırakın çocuk hissettiği gibi oynasın.` },
-                    { name: "Ertem Şener", role: "Moderatör", tension: 95, quote: `Siyah Futbol masasında tansiyon zirvede! Reklamların ardından özel kulis bilgileriyle devam edeceğiz!` }
+                    { name: "Ahmet Hoca", role: "Eski Hakem", tension: 45, quote: `İyi kumaş, yetenekli çocuk ama daha çok fırın ekmek yemesi lazım. Kendini hemen dünya yıldızı zannetmesin.` },
+                    { name: "Rasim", role: "Ateşli Yorumcu", tension: 70, quote: `Hocaaaam! Bu çocuk bu ligin en heyecan verici yeteneğidir, sahada top ayağına gelince tribünler ayağa kalkıyor!` },
+                    { name: "Sinan Abi", role: "Eski Futbolcu", tension: 86, quote: `Kardeşim hocası ona taktik tahtasında daha fazla özgürlük tanımalı. Bırakın çocuk hissettiği gibi oynasın.` },
+                    { name: "Ertem", role: "Moderatör", tension: 95, quote: `Siyah Futbol masasında tansiyon zirvede! Reklamların ardından özel kulis bilgileriyle devam edeceğiz!` }
                 ];
             }
 
