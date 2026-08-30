@@ -7939,9 +7939,13 @@
                             showCloseChoices();
                         }
                     }, 1800);
+                };
+                choicesContainer.appendChild(btnBonus);
+
                 // Option 4: Bluffing (High risk, high reward)
                 let bluffSalary = Math.round(salary * 1.35);
                 const btnBluff = document.createElement("button");
+
                 btnBluff.className = "wa-choice-btn";
                 btnBluff.style.borderColor = "rgba(239, 68, 68, 0.4)";
                 btnBluff.innerHTML = activeAgentId ? `🃏 Blöf yap: 'Büyük kulüpler de peşimizde' de (+%35 zam talep et - ${bluffSalary.toLocaleString()} € / Hf).` : `🃏 Blöf yap: 'Masada başka kulüplerin de teklifi var' de (%35 zam talep et).`;
