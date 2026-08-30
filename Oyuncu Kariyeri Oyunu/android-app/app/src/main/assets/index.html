@@ -1060,27 +1060,7 @@
             </button>
         </nav>
 
-        <!-- Müzik Aç/Kapat Butonu (sabit sağ üst) -->
-        <button id="btn-music-toggle" onclick="toggleMusicBtn()" style="
-            position: fixed;
-            top: 14px;
-            right: 14px;
-            z-index: 99999;
-            background: rgba(0,0,0,0.55);
-            border: 1.5px solid rgba(255,255,255,0.18);
-            color: white;
-            font-size: 20px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 12px rgba(0,0,0,0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        " title="Müziği Aç/Kapat">🎵</button>
+        
 
 
         <!-- MATCH DAY VIEW (Fullscreen overlay during matches) -->
@@ -1330,7 +1310,7 @@
                                     <div style="font-size: 10px; color: #8b949e; margin-top: 2px;">Menüde çalan synth melodisi.</div>
                                 </div>
                                 <label class="switch" style="position: relative; display: inline-block; width: 40px; height: 20px; margin: 0;">
-                                    <input type="checkbox" id="settings-music-toggle" checked style="opacity: 0; width: 0; height: 0;">
+                                    <input type="checkbox" id="settings-music-toggle" style="opacity: 0; width: 0; height: 0;">
                                     <span class="slider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); transition: .4s; border-radius: 20px; border: 1px solid #30363d;"></span>
                                 </label>
                             </div>
@@ -2750,7 +2730,7 @@
         };
         const SoundManager = {
             enabled: true,
-            musicEnabled: true,
+            musicEnabled: false,
             audioCtx: null,
             sequencerInterval: null,
             currentBeat: 0,
