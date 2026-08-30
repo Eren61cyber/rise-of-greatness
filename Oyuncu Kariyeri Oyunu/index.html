@@ -2900,91 +2900,189 @@
                 }
             },
 
-            playStadiumShh: function() {
+            duckMusic: function(targetVol = 0.05, duration = 0.4) {
+                if (this.bgMusicElement && !this.bgMusicElement.paused) {
+                    try {
+                        this.bgMusicElement.volume = Math.max(0.01, targetVol);
+                    } catch(e) {}
+                }
+            },
+
+            unduckMusic: function(duration = 0.5) {
+                if (this.bgMusicElement && !this.bgMusicElement.paused) {
+                    try {
+                        this.bgMusicElement.volume = 0.25;
+                    } catch(e) {}
+                }
+            },
+
+            playAudioFileWithFallback: function(filePath, fallbackFn) {
                 if (!this.enabled) return;
                 try {
-                    this.initAudio();
-                    let ctx = this.audioCtx;
-                    if (!ctx) return;
-                    let now = ctx.currentTime;
-                    let bufferSize = Math.floor(ctx.sampleRate * 0.45);
-                    let buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-                    let data = buffer.getChannelData(0);
-                    for (let i = 0; i < bufferSize; i++) {
-                        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.12));
+                    let audio = new Audio(filePath);
+                    audio.volume = 0.85;
+                    let playPromise = audio.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(err => {
+                            if (typeof fallbackFn === "function") fallbackFn();
+                        });
                     }
-                    let noise = ctx.createBufferSource();
-                    noise.buffer = buffer;
-                    let filter = ctx.createBiquadFilter();
-                    filter.type = "bandpass";
-                    filter.frequency.setValueAtTime(3200, now);
-                    filter.frequency.exponentialRampToValueAtTime(1800, now + 0.4);
-                    filter.Q.setValueAtTime(4.0, now);
-                    let gain = ctx.createGain();
-                    gain.gain.setValueAtTime(0.18, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
-                    noise.connect(filter);
-                    filter.connect(gain);
-                    gain.connect(ctx.destination);
-                    noise.start(now);
-                    noise.stop(now + 0.45);
                 } catch(e) {
-                    console.error("Audio error in playStadiumShh:", e);
+                    if (typeof fallbackFn === "function") fallbackFn();
                 }
+            },
+
+            playStadiumShh: function() {
+                if (!this.enabled) return;
+                this.duckMusic(0.05);
+
+                this.playAudioFileWithFallback("sounds/sfx_shh.mp3", () => {
+                    try {
+                        this.initAudio();
+                        let ctx = this.audioCtx;
+                        if (!ctx) return;
+                        let now = ctx.currentTime;
+
+                        // 1. Shhhh Crowd Whisper (Filtered Bandpass Noise Sweep)
+                        let bufferSize = Math.floor(ctx.sampleRate * 0.7);
+                        let buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                        let data = buffer.getChannelData(0);
+                        for (let i = 0; i < bufferSize; i++) {
+                            data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.22));
+                        }
+                        let noise = ctx.createBufferSource();
+                        noise.buffer = buffer;
+                        let filter = ctx.createBiquadFilter();
+                        filter.type = "bandpass";
+                        filter.frequency.setValueAtTime(3600, now);
+                        filter.frequency.exponentialRampToValueAtTime(1400, now + 0.6);
+                        filter.Q.setValueAtTime(4.5, now);
+                        let gain = ctx.createGain();
+                        gain.gain.setValueAtTime(0.22, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+                        noise.connect(filter);
+                        filter.connect(gain);
+                        gain.connect(ctx.destination);
+                        noise.start(now);
+                        noise.stop(now + 0.7);
+
+                        // 2. Tense Heartbeat (Dual Low Sine Thud)
+                        let playHeartbeat = (timeOffset) => {
+                            let osc = ctx.createOscillator();
+                            let hGain = ctx.createGain();
+                            osc.type = "sine";
+                            osc.frequency.setValueAtTime(58, now + timeOffset);
+                            osc.frequency.exponentialRampToValueAtTime(32, now + timeOffset + 0.14);
+                            hGain.gain.setValueAtTime(0.35, now + timeOffset);
+                            hGain.gain.exponentialRampToValueAtTime(0.001, now + timeOffset + 0.16);
+                            osc.connect(hGain);
+                            hGain.connect(ctx.destination);
+                            osc.start(now + timeOffset);
+                            osc.stop(now + timeOffset + 0.16);
+                        };
+                        playHeartbeat(0.05);
+                        playHeartbeat(0.28);
+                    } catch(e) {
+                        console.error("Audio error in playStadiumShh:", e);
+                    }
+                });
             },
 
             playStadiumDrumBeat: function(step) {
                 if (!this.enabled) return;
-                try {
-                    this.initAudio();
-                    let ctx = this.audioCtx;
-                    if (!ctx) return;
-                    let now = ctx.currentTime;
-                    
-                    let osc = ctx.createOscillator();
-                    let gain = ctx.createGain();
-                    let baseFreq = 160 + (step * 25);
-                    osc.type = "sine";
-                    osc.frequency.setValueAtTime(baseFreq, now);
-                    osc.frequency.exponentialRampToValueAtTime(40, now + 0.28);
-                    
-                    gain.gain.setValueAtTime(0.4, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-                    osc.connect(gain);
-                    gain.connect(ctx.destination);
-                    osc.start(now);
-                    osc.stop(now + 0.3);
+                this.duckMusic(0.08);
 
-                    let bufferSize = Math.floor(ctx.sampleRate * 0.15);
-                    let buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-                    let data = buffer.getChannelData(0);
-                    for (let i = 0; i < bufferSize; i++) {
-                        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.04));
+                this.playAudioFileWithFallback("sounds/sfx_drum.mp3", () => {
+                    try {
+                        this.initAudio();
+                        let ctx = this.audioCtx;
+                        if (!ctx) return;
+                        let now = ctx.currentTime;
+                        
+                        // 1. Deep Sub-bass Kick Drum
+                        let osc = ctx.createOscillator();
+                        let gain = ctx.createGain();
+                        let baseFreq = 170 + (step * 30);
+                        osc.type = "sine";
+                        osc.frequency.setValueAtTime(baseFreq, now);
+                        osc.frequency.exponentialRampToValueAtTime(38, now + 0.32);
+                        
+                        gain.gain.setValueAtTime(0.55, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(now);
+                        osc.stop(now + 0.35);
+
+                        // 2. Snare / Stadium Echo Transient
+                        let bufferSize = Math.floor(ctx.sampleRate * 0.22);
+                        let buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                        let data = buffer.getChannelData(0);
+                        for (let i = 0; i < bufferSize; i++) {
+                            data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.06));
+                        }
+                        let noise = ctx.createBufferSource();
+                        noise.buffer = buffer;
+                        let noiseGain = ctx.createGain();
+                        noiseGain.gain.setValueAtTime(0.22, now);
+                        noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+                        noise.connect(noiseGain);
+                        noiseGain.connect(ctx.destination);
+                        noise.start(now);
+                        noise.stop(now + 0.22);
+
+                        // 3. Crowd Vocal Chant Transient
+                        let formantOsc = ctx.createOscillator();
+                        let formantGain = ctx.createGain();
+                        formantOsc.type = "triangle";
+                        formantOsc.frequency.setValueAtTime(280 + (step * 40), now);
+                        formantOsc.frequency.linearRampToValueAtTime(240, now + 0.25);
+                        formantGain.gain.setValueAtTime(0.18, now);
+                        formantGain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+                        formantOsc.connect(formantGain);
+                        formantGain.connect(ctx.destination);
+                        formantOsc.start(now);
+                        formantOsc.stop(now + 0.28);
+                    } catch(e) {
+                        console.error("Audio error in playStadiumDrumBeat:", e);
                     }
-                    let noise = ctx.createBufferSource();
-                    noise.buffer = buffer;
-                    let noiseGain = ctx.createGain();
-                    noiseGain.gain.setValueAtTime(0.15, now);
-                    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
-                    noise.connect(noiseGain);
-                    noiseGain.connect(ctx.destination);
-                    noise.start(now);
-                    noise.stop(now + 0.15);
-                } catch(e) {
-                    console.error("Audio error in playStadiumDrumBeat:", e);
-                }
+                });
             },
 
             playStadiumEruption: function() {
                 if (!this.enabled) return;
-                try {
-                    this.initAudio();
-                    let ctx = this.audioCtx;
-                    if (!ctx) return;
-                    this.playGoal();
-                } catch(e) {
-                    console.error("Audio error in playStadiumEruption:", e);
-                }
+                this.unduckMusic();
+
+                this.playAudioFileWithFallback("sounds/sfx_roar.mp3", () => {
+                    try {
+                        this.initAudio();
+                        let ctx = this.audioCtx;
+                        if (!ctx) return;
+                        let now = ctx.currentTime;
+
+                        // 1. Pyro / Firework Explosion Sub Boom
+                        let boomOsc = ctx.createOscillator();
+                        let boomGain = ctx.createGain();
+                        boomOsc.type = "sine";
+                        boomOsc.frequency.setValueAtTime(120, now);
+                        boomOsc.frequency.exponentialRampToValueAtTime(28, now + 0.6);
+                        boomGain.gain.setValueAtTime(0.6, now);
+                        boomGain.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
+                        boomOsc.connect(boomGain);
+                        boomGain.connect(ctx.destination);
+                        boomOsc.start(now);
+                        boomOsc.stop(now + 0.65);
+
+                        // 2. Double Whistle + Crowd Cheering Wave
+                        this.playGoal();
+                    } catch(e) {
+                        console.error("Audio error in playStadiumEruption:", e);
+                    }
+                });
+            },
+
+            stopTribunAudio: function() {
+                this.unduckMusic();
             },
 
             playPaperRustle: function() {
@@ -6080,6 +6178,10 @@
         }
 
         function advanceTribun3lu() {
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.initAudio === "function") {
+                SoundManager.initAudio();
+            }
+
             if (tribunStep < 4) {
                 tribunStep++;
                 updateTribunUI();
@@ -6091,6 +6193,10 @@
                     GAME.state.taraftarSevgisi = Math.min(100, (GAME.state.taraftarSevgisi || 40) + 15);
                     if (typeof GAME.saveGame === "function") GAME.saveGame();
                     if (typeof GAME.updateUI === "function") GAME.updateUI();
+                }
+
+                if (typeof SoundManager !== "undefined" && typeof SoundManager.stopTribunAudio === "function") {
+                    SoundManager.stopTribunAudio();
                 }
 
                 const modal = document.getElementById("tribun-3lu-modal");
