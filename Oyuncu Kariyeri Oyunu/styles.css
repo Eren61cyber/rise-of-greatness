@@ -1,4 +1,4 @@
-﻿/* 
+/* 
  * Rise Of Greatness: Kariyer Efsanesi - Style Sheets
  * Clean, professional, modern sports manager UI design system.
  */
@@ -3780,18 +3780,18 @@ input[type="text"]:focus, select:focus {
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   🏆 1. BALLON D'OR & THE BEST PARIS GALA GECESİ
+   🏆 1. BALLON D'OR & THE BEST PARIS GALA GECESİ (AAA VIP LUXURY)
 ══════════════════════════════════════════════════════════════════ */
 .ballondor-card-stage {
     position: relative;
     width: 100%;
-    max-width: 480px;
-    background: radial-gradient(circle at 50% 20%, #2a1f07 0%, #150f02 50%, #080601 100%);
+    max-width: 460px;
+    background: radial-gradient(circle at 50% 15%, #2a1f07 0%, #150f02 45%, #050401 100%);
     border: 2px solid #FFD600;
-    border-radius: 20px;
-    box-shadow: 0 0 60px rgba(255, 214, 0, 0.45), inset 0 0 50px rgba(0,0,0,0.85);
+    border-radius: 24px;
+    box-shadow: 0 0 70px rgba(255, 214, 0, 0.45), 0 20px 60px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255, 255, 255, 0.3);
     overflow: hidden;
-    padding: 22px;
+    padding: 24px 20px;
     color: #fff;
     text-align: center;
     perspective: 1000px;
@@ -3801,83 +3801,103 @@ input[type="text"]:focus, select:focus {
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 180px;
-    background: radial-gradient(ellipse at 50% 0%, rgba(255, 214, 0, 0.25) 0%, transparent 75%);
+    background: radial-gradient(ellipse at 50% 0%, rgba(255, 214, 0, 0.3) 0%, rgba(255, 143, 0, 0.1) 50%, transparent 80%);
     pointer-events: none;
     z-index: 1;
 }
 
 .ballondor-trophy-wrap {
     position: relative;
-    width: 130px;
-    height: 130px;
-    margin: 0 auto 12px auto;
+    width: 140px;
+    height: 140px;
+    margin: 4px auto 14px auto;
     z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.ballondor-trophy-sphere {
-    width: 90px;
-    height: 90px;
-    margin: 10px auto;
+.ballondor-3d-ball {
+    width: 105px;
+    height: 105px;
     border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #fff8db 0%, #ffd700 40%, #b8860b 80%, #5c4002 100%);
-    box-shadow: 0 0 35px #ffd700, inset 0 0 20px rgba(255,255,255,0.7);
+    background: radial-gradient(circle at 32% 28%, #ffffff 0%, #fff2a3 15%, #ffd700 45%, #d49a00 70%, #684200 90%, #291a00 100%);
+    box-shadow: 
+        0 0 45px rgba(255, 215, 0, 0.8),
+        0 0 90px rgba(255, 170, 0, 0.4),
+        inset -8px -12px 25px rgba(0, 0, 0, 0.8),
+        inset 6px 6px 16px rgba(255, 255, 255, 0.9);
     position: relative;
-    animation: trophyGlowPulse 2.5s infinite alternate ease-in-out;
+    animation: ballonDorFloat 3s infinite alternate ease-in-out;
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
 }
 
-@keyframes trophyGlowPulse {
-    0% { transform: scale(1) rotate(0deg); box-shadow: 0 0 25px #ffd700; }
-    100% { transform: scale(1.06) rotate(6deg); box-shadow: 0 0 50px #ffea75, 0 0 80px rgba(255,215,0,0.6); }
+.ballondor-ball-pedestal {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 65px;
+    height: 18px;
+    background: linear-gradient(180deg, #334155 0%, #0f172a 100%);
+    border: 1px solid #FFD600;
+    border-radius: 4px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 0 10px rgba(255,214,0,0.4);
+}
+
+@keyframes ballonDorFloat {
+    0% { transform: translateY(0px) rotate(-3deg); filter: drop-shadow(0 10px 20px rgba(255,215,0,0.5)); }
+    100% { transform: translateY(-8px) rotate(4deg); filter: drop-shadow(0 18px 30px rgba(255,215,0,0.85)); }
 }
 
 .tuxedo-select-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    margin-bottom: 14px;
+    gap: 10px;
+    margin-bottom: 16px;
     position: relative;
     z-index: 3;
 }
 
 .tuxedo-option-card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 215, 0, 0.3);
-    border-radius: 10px;
-    padding: 10px 6px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.07) 0%, rgba(0, 0, 0, 0.4) 100%);
+    border: 1.5px solid rgba(255, 215, 0, 0.25);
+    border-radius: 12px;
+    padding: 12px 8px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 11px;
 }
 
 .tuxedo-option-card:hover, .tuxedo-option-card.selected {
-    background: rgba(255, 215, 0, 0.2);
+    background: linear-gradient(145deg, rgba(255, 215, 0, 0.25) 0%, rgba(255, 143, 0, 0.15) 100%);
     border-color: #FFD600;
-    transform: translateY(-2px);
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.45);
 }
 
 
 /* ══════════════════════════════════════════════════════════════════
-   💼 2. LÜKS REZİDANS PENTHOUSE TRANSFER MASASI
+   💼 2. LÜKS REZİDANS PENTHOUSE TRANSFER MASASI (VIP NEGOTIATION)
 ══════════════════════════════════════════════════════════════════ */
 .penthouse-card-stage {
     position: relative;
     width: 100%;
-    max-width: 480px;
-    background: linear-gradient(180deg, #0d131f 0%, #06090e 100%);
+    max-width: 460px;
+    background: linear-gradient(180deg, #0b111e 0%, #05080f 100%);
     border: 2px solid #00e5b7;
-    border-radius: 18px;
-    box-shadow: 0 0 55px rgba(0, 229, 183, 0.35), inset 0 0 45px rgba(0,0,0,0.8);
+    border-radius: 22px;
+    box-shadow: 0 0 60px rgba(0, 229, 183, 0.35), 0 20px 50px rgba(0,0,0,0.9);
     overflow: hidden;
-    padding: 20px;
+    padding: 22px;
     color: #fff;
 }
 
 .skyscraper-panorama {
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 120px;
-    background: linear-gradient(180deg, rgba(0, 229, 183, 0.12) 0%, transparent 100%);
+    height: 130px;
+    background: linear-gradient(180deg, rgba(0, 229, 183, 0.15) 0%, transparent 100%);
     pointer-events: none;
 }
 
@@ -3885,28 +3905,31 @@ input[type="text"]:focus, select:focus {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    padding: 10px 14px;
     margin-bottom: 8px;
     font-size: 12px;
+    backdrop-filter: blur(8px);
 }
 
 .transfer-leverage-track {
     width: 100%;
     height: 10px;
     background: rgba(255,255,255,0.1);
-    border-radius: 5px;
+    border-radius: 6px;
     overflow: hidden;
     margin: 8px 0 14px 0;
+    border: 1px solid rgba(255,255,255,0.15);
 }
 
 .transfer-leverage-fill {
     height: 100%;
     background: linear-gradient(90deg, #ef4444 0%, #FFD600 50%, #00e5b7 100%);
-    width: 60%;
-    transition: width 0.4s ease;
+    width: 80%;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 12px rgba(0, 229, 183, 0.5);
 }
 
 
@@ -3916,13 +3939,13 @@ input[type="text"]:focus, select:focus {
 .national-anthem-stage {
     position: relative;
     width: 100%;
-    max-width: 480px;
-    background: radial-gradient(ellipse at 50% 20%, #450a0a 0%, #1f0404 60%, #090101 100%);
+    max-width: 460px;
+    background: radial-gradient(ellipse at 50% 20%, #4a0808 0%, #1f0303 60%, #080101 100%);
     border: 2px solid #ef4444;
-    border-radius: 18px;
-    box-shadow: 0 0 55px rgba(239, 68, 68, 0.45);
+    border-radius: 22px;
+    box-shadow: 0 0 65px rgba(239, 68, 68, 0.5), 0 20px 50px rgba(0,0,0,0.9);
     overflow: hidden;
-    padding: 20px;
+    padding: 22px;
     color: #fff;
     text-align: center;
 }
@@ -3932,9 +3955,9 @@ input[type="text"]:focus, select:focus {
     top: -20px;
     left: 50%;
     transform: translateX(-50%);
-    width: 280px;
-    height: 140px;
-    opacity: 0.22;
+    width: 320px;
+    height: 160px;
+    opacity: 0.25;
     pointer-events: none;
     background: radial-gradient(circle, #ef4444 40%, transparent 70%);
 }
@@ -3945,12 +3968,12 @@ input[type="text"]:focus, select:focus {
     justify-content: center;
     width: 32px;
     height: 32px;
-    background: #FFD600;
+    background: linear-gradient(135deg, #FFD600 0%, #ff8f00 100%);
     color: #000;
     font-weight: 900;
     font-size: 16px;
     border-radius: 50%;
-    box-shadow: 0 0 15px #FFD600;
+    box-shadow: 0 0 18px #FFD600;
     margin-right: 6px;
 }
 
@@ -3961,22 +3984,22 @@ input[type="text"]:focus, select:focus {
 .garage-card-stage {
     position: relative;
     width: 100%;
-    max-width: 480px;
-    background: linear-gradient(180deg, #10141e 0%, #080a0f 100%);
+    max-width: 460px;
+    background: linear-gradient(180deg, #0e131d 0%, #06080e 100%);
     border: 2px solid #00e5ff;
-    border-radius: 18px;
-    box-shadow: 0 0 60px rgba(0, 229, 255, 0.35);
+    border-radius: 22px;
+    box-shadow: 0 0 65px rgba(0, 229, 255, 0.35), 0 20px 50px rgba(0,0,0,0.9);
     overflow: hidden;
-    padding: 20px;
+    padding: 22px;
     color: #fff;
 }
 
 .garage-neon-floor {
     position: absolute;
     bottom: 0; left: 0; right: 0;
-    height: 80px;
-    background: linear-gradient(0deg, rgba(0, 229, 255, 0.15) 0%, transparent 100%);
-    border-top: 1px solid rgba(0, 229, 255, 0.3);
+    height: 90px;
+    background: linear-gradient(0deg, rgba(0, 229, 255, 0.18) 0%, transparent 100%);
+    border-top: 1px solid rgba(0, 229, 255, 0.35);
     pointer-events: none;
 }
 
@@ -3985,24 +4008,24 @@ input[type="text"]:focus, select:focus {
     align-items: center;
     background: #ffffff;
     color: #000000;
-    border: 2px solid #1e293b;
-    border-radius: 5px;
-    padding: 2px 8px;
+    border: 2.5px solid #1e293b;
+    border-radius: 6px;
+    padding: 3px 10px;
     font-family: 'Space Grotesk', monospace;
     font-weight: 900;
-    font-size: 13px;
-    letter-spacing: 1.5px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.8);
+    font-size: 14px;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.9);
 }
 
 .license-plate-badge .tr-flag-tag {
     background: #003399;
     color: #ffffff;
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 900;
-    padding: 2px 4px;
-    border-radius: 2px;
-    margin-right: 6px;
+    padding: 2px 5px;
+    border-radius: 3px;
+    margin-right: 8px;
 }
 
 .btn-rev-pedal {
@@ -4015,12 +4038,12 @@ input[type="text"]:focus, select:focus {
     font-size: 13px;
     letter-spacing: 0.8px;
     cursor: pointer;
-    box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+    box-shadow: 0 0 25px rgba(239, 68, 68, 0.6);
     transition: transform 0.1s ease;
 }
 
 .btn-rev-pedal:active {
-    transform: scale(0.95);
+    transform: scale(0.94);
 }
 
 
@@ -4033,10 +4056,10 @@ input[type="text"]:focus, select:focus {
     max-width: 460px;
     background: #05080e;
     border: 2px solid #00e5b7;
-    border-radius: 16px;
-    box-shadow: 0 0 50px rgba(0, 229, 183, 0.4), inset 0 0 35px rgba(0,0,0,0.9);
+    border-radius: 20px;
+    box-shadow: 0 0 55px rgba(0, 229, 183, 0.4), inset 0 0 40px rgba(0,0,0,0.9);
     overflow: hidden;
-    padding: 18px;
+    padding: 20px;
     color: #fff;
     text-align: center;
 }
@@ -4044,7 +4067,7 @@ input[type="text"]:focus, select:focus {
 .var-crt-scanlines {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: repeating-linear-gradient(0deg, rgba(0, 229, 183, 0.03) 0px, rgba(0, 229, 183, 0.03) 1px, transparent 1px, transparent 3px);
+    background: repeating-linear-gradient(0deg, rgba(0, 229, 183, 0.04) 0px, rgba(0, 229, 183, 0.04) 1px, transparent 1px, transparent 3px);
     pointer-events: none;
     z-index: 5;
 }
@@ -4075,11 +4098,11 @@ input[type="text"]:focus, select:focus {
 .victory-bus-stage {
     position: relative;
     width: 100%;
-    max-width: 480px;
-    background: radial-gradient(ellipse at 50% 20%, #1e112a 0%, #0d0614 60%, #030105 100%);
+    max-width: 460px;
+    background: radial-gradient(ellipse at 50% 20%, #201030 0%, #0e0517 60%, #030105 100%);
     border: 2px solid #FFD600;
-    border-radius: 20px;
-    box-shadow: 0 0 60px rgba(255, 214, 0, 0.45);
+    border-radius: 22px;
+    box-shadow: 0 0 65px rgba(255, 214, 0, 0.5), 0 20px 50px rgba(0,0,0,0.9);
     overflow: hidden;
     padding: 22px;
     color: #fff;
@@ -4088,24 +4111,24 @@ input[type="text"]:focus, select:focus {
 
 
 /* ══════════════════════════════════════════════════════════════════
-   👟 7. ÖZEL KRAMPON TASARIM ATÖLYESİ (SIGNATURE BOOT STUDIO)
+   👟 7. ÖZEL KRAMPON TASARIM ATÖLYESİ (SIGNATURE BOOT LAB)
 ══════════════════════════════════════════════════════════════════ */
 .boot-studio-stage {
     position: relative;
     width: 100%;
-    max-width: 480px;
-    background: linear-gradient(180deg, #141622 0%, #090a10 100%);
+    max-width: 460px;
+    background: linear-gradient(180deg, #121520 0%, #08090f 100%);
     border: 2px solid #00e5b7;
-    border-radius: 18px;
-    box-shadow: 0 0 50px rgba(0, 229, 183, 0.35);
+    border-radius: 22px;
+    box-shadow: 0 0 55px rgba(0, 229, 183, 0.35), 0 20px 50px rgba(0,0,0,0.9);
     overflow: hidden;
-    padding: 20px;
+    padding: 22px;
     color: #fff;
 }
 
 .boot-color-chip {
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     border: 2px solid rgba(255,255,255,0.4);
     cursor: pointer;
@@ -4113,9 +4136,9 @@ input[type="text"]:focus, select:focus {
 }
 
 .boot-color-chip:hover, .boot-color-chip.active {
-    transform: scale(1.18);
+    transform: scale(1.2);
     border-color: #ffffff;
-    box-shadow: 0 0 12px #00e5b7;
+    box-shadow: 0 0 14px #00e5b7;
 }
 
 
@@ -4126,13 +4149,13 @@ input[type="text"]:focus, select:focus {
     display: flex;
     align-items: center;
     gap: 10px;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.75);
     border: 1px solid #FFD600;
     border-left: 4px solid #FFD600;
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 10px 14px;
     margin: 8px 0;
-    box-shadow: 0 4px 15px rgba(255, 214, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(255, 214, 0, 0.25);
     animation: spikerPop 0.3s ease-out;
 }
 
