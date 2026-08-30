@@ -2334,7 +2334,7 @@
                 <!-- Broadcast Top Bar -->
                 <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; margin-bottom: 10px;">
                     <div style="display: flex; align-items: center; gap: 6px;">
-                        <span style="background: #ef4444; color: white; font-weight: 900; font-size: 9.5px; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.5px; animation: speakerPulse 1s infinite alternate;">🔴 CANLI</span>
+                        <span style="background: #ef4444; color: white; font-weight: 900; font-size: 9.5px; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.5px; animation: onAirPulse 1s infinite alternate;">🔴 CANLI</span>
                         <span style="font-size: 12px; font-weight: 900; color: #fff; letter-spacing: 0.5px;">SİYAH FUTBOL STÜDYOSU</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
@@ -2345,7 +2345,7 @@
 
                 <!-- 3D Studio Stage Area -->
                 <div class="siyah-studio-wrapper">
-                    <!-- Ceiling Spotlights Ambient Layer -->
+                    <!-- Ceiling Volumetric Ambient Lighting -->
                     <div class="siyah-studio-lights"></div>
 
                     <!-- LED Panoramic Video Wall -->
@@ -2365,53 +2365,169 @@
                         </div>
                     </div>
 
-                    <!-- 3D Glass Broadcast Desk -->
+                    <!-- 3D Curved Glass & Carbon Broadcast Desk -->
                     <div class="siyah-3d-table-container">
+                        <div class="siyah-desk-underglow"></div>
                         <div class="siyah-3d-table-top">
                             <div class="siyah-3d-table-inner"></div>
                             <div class="siyah-table-glass-glare"></div>
                             
                             <!-- Authentic Table Props -->
-                            <div class="siyah-prop-tea" style="top: 24%; left: 32%;">☕</div>
-                            <div class="siyah-prop-tea" style="top: 24%; right: 32%;">☕</div>
-                            <div class="siyah-prop-tablet" style="top: 36%; left: 45%;">📋</div>
-                            <div class="siyah-prop-mic" style="top: 42%; left: 16%;">🎙️</div>
-                            <div class="siyah-prop-mic" style="top: 22%; left: 40%;">🎙️</div>
-                            <div class="siyah-prop-mic" style="top: 22%; right: 40%;">🎙️</div>
-                            <div class="siyah-prop-mic" style="top: 42%; right: 16%;">🎙️</div>
+                            <div class="siyah-prop-tea" style="top: 20%; left: 32%;">☕</div>
+                            <div class="siyah-prop-tea" style="top: 20%; right: 32%;">☕</div>
+                            <div class="siyah-prop-tablet" style="top: 32%; left: 45%;">📋</div>
+                            <div class="siyah-prop-mic" style="top: 38%; left: 16%;">🎙️</div>
+                            <div class="siyah-prop-mic" style="top: 18%; left: 40%;">🎙️</div>
+                            <div class="siyah-prop-mic" style="top: 18%; right: 40%;">🎙️</div>
+                            <div class="siyah-prop-mic" style="top: 38%; right: 16%;">🎙️</div>
+
+                            <!-- Embedded Digital LED Nameplates -->
+                            <div class="siyah-led-nameplates-bar">
+                                <span class="siyah-led-plate" id="desk-plate-0">AHMET ÇAKAR</span>
+                                <span class="siyah-led-plate" id="desk-plate-1">RASİM OZAN</span>
+                                <span class="siyah-led-plate" id="desk-plate-2">SİNAN ENGİN</span>
+                                <span class="siyah-led-plate" id="desk-plate-3">ERTEM ŞENER</span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- 4 Seated Panelists with Spotlights -->
-                    <!-- 1. Ahmet Hoca -->
+                    <!-- 4 High-End Seated Broadcaster Tokens -->
+                    <!-- 1. Ahmet Çakar -->
                     <div class="siyah-panelist-wrapper siyah-seat-ahmet" id="panelist-0" onclick="selectPanelistSpeaker(0)">
-                        <div class="siyah-spotlight-beam"></div>
-                        <div class="siyah-avatar-circle">👴</div>
-                        <span class="siyah-seat-name">Ahmet Hoca</span>
+                        <div class="siyah-volumetric-spotlight"></div>
+                        <div class="siyah-token-badge">
+                            <div class="siyah-onair-ring"></div>
+                            <svg class="siyah-token-svg" viewBox="0 0 100 100">
+                                <defs>
+                                    <radialGradient id="grad-ahmet" cx="50%" cy="30%" r="70%">
+                                        <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.4"/>
+                                        <stop offset="100%" stop-color="#090d16"/>
+                                    </radialGradient>
+                                    <linearGradient id="gold-rim-0" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#fef08a"/>
+                                        <stop offset="50%" stop-color="#eab308"/>
+                                        <stop offset="100%" stop-color="#ca8a04"/>
+                                    </linearGradient>
+                                </defs>
+                                <circle cx="50" cy="50" r="48" fill="url(#grad-ahmet)" stroke="url(#gold-rim-0)" stroke-width="3.5"/>
+                                <ellipse cx="50" cy="38" rx="18" ry="20" fill="#fed7aa"/>
+                                <path d="M 32 32 C 32 18, 68 18, 68 32 C 62 26, 38 26, 32 32 Z" fill="#64748b"/>
+                                <rect x="36" y="32" width="11" height="8" rx="2" fill="none" stroke="#1e293b" stroke-width="2"/>
+                                <rect x="53" y="32" width="11" height="8" rx="2" fill="none" stroke="#1e293b" stroke-width="2"/>
+                                <line x1="47" y1="36" x2="53" y2="36" stroke="#1e293b" stroke-width="2"/>
+                                <path d="M 46 45 Q 50 48 54 45" fill="none" stroke="#9a3412" stroke-width="1.8"/>
+                                <path d="M 22 88 C 24 64, 40 58, 50 58 C 60 58, 76 64, 78 88 Z" fill="#1e3a8a"/>
+                                <polygon points="50,58 44,88 56,88" fill="#ffffff"/>
+                                <polygon points="48,64 52,64 54,88 46,88" fill="#dc2626"/>
+                                <circle cx="34" cy="74" r="3.5" fill="#facc15"/>
+                            </svg>
+                        </div>
+                        <span class="siyah-seat-name">Ahmet Çakar</span>
                         <span class="siyah-seat-role">Eski Hakem</span>
                     </div>
 
-                    <!-- 2. Rasim -->
+                    <!-- 2. Rasim Ozan -->
                     <div class="siyah-panelist-wrapper siyah-seat-rasim" id="panelist-1" onclick="selectPanelistSpeaker(1)">
-                        <div class="siyah-spotlight-beam"></div>
-                        <div class="siyah-avatar-circle">🤯</div>
-                        <span class="siyah-seat-name">Rasim</span>
+                        <div class="siyah-volumetric-spotlight"></div>
+                        <div class="siyah-token-badge">
+                            <div class="siyah-onair-ring"></div>
+                            <svg class="siyah-token-svg" viewBox="0 0 100 100">
+                                <defs>
+                                    <radialGradient id="grad-rasim" cx="50%" cy="30%" r="70%">
+                                        <stop offset="0%" stop-color="#ef4444" stop-opacity="0.4"/>
+                                        <stop offset="100%" stop-color="#090d16"/>
+                                    </radialGradient>
+                                    <linearGradient id="silver-rim-1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#ffffff"/>
+                                        <stop offset="50%" stop-color="#cbd5e1"/>
+                                        <stop offset="100%" stop-color="#64748b"/>
+                                    </linearGradient>
+                                </defs>
+                                <circle cx="50" cy="50" r="48" fill="url(#grad-rasim)" stroke="url(#silver-rim-1)" stroke-width="3.5"/>
+                                <ellipse cx="50" cy="38" rx="18" ry="20" fill="#fecaca"/>
+                                <path d="M 31 34 C 30 16, 70 16, 69 34 C 64 24, 36 24, 31 34 Z" fill="#1e293b"/>
+                                <path d="M 37 32 Q 42 29 46 33" fill="none" stroke="#0f172a" stroke-width="2"/>
+                                <path d="M 54 33 Q 58 29 63 32" fill="none" stroke="#0f172a" stroke-width="2"/>
+                                <circle cx="42" cy="35" r="2.2" fill="#0f172a"/>
+                                <circle cx="58" cy="35" r="2.2" fill="#0f172a"/>
+                                <ellipse cx="50" cy="46" rx="5" ry="3.5" fill="#881337"/>
+                                <path d="M 22 88 C 24 64, 40 58, 50 58 C 60 58, 76 64, 78 88 Z" fill="#334155"/>
+                                <polygon points="50,58 43,88 57,88" fill="#b91c1c"/>
+                                <path d="M 64 72 L 67 69 L 67 75 Z" fill="#facc15"/>
+                            </svg>
+                        </div>
+                        <span class="siyah-seat-name">Rasim Ozan</span>
                         <span class="siyah-seat-role">Ateşli Yorumcu</span>
                     </div>
 
-                    <!-- 3. Sinan Abi -->
+                    <!-- 3. Sinan Engin -->
                     <div class="siyah-panelist-wrapper siyah-seat-sinan" id="panelist-2" onclick="selectPanelistSpeaker(2)">
-                        <div class="siyah-spotlight-beam"></div>
-                        <div class="siyah-avatar-circle">🕶️</div>
-                        <span class="siyah-seat-name">Sinan Abi</span>
+                        <div class="siyah-volumetric-spotlight"></div>
+                        <div class="siyah-token-badge">
+                            <div class="siyah-onair-ring"></div>
+                            <svg class="siyah-token-svg" viewBox="0 0 100 100">
+                                <defs>
+                                    <radialGradient id="grad-sinan" cx="50%" cy="30%" r="70%">
+                                        <stop offset="0%" stop-color="#eab308" stop-opacity="0.35"/>
+                                        <stop offset="100%" stop-color="#090d16"/>
+                                    </radialGradient>
+                                    <linearGradient id="gold-rim-2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#fde047"/>
+                                        <stop offset="50%" stop-color="#ca8a04"/>
+                                        <stop offset="100%" stop-color="#854d0e"/>
+                                    </linearGradient>
+                                </defs>
+                                <circle cx="50" cy="50" r="48" fill="url(#grad-sinan)" stroke="url(#gold-rim-2)" stroke-width="3.5"/>
+                                <ellipse cx="50" cy="38" rx="18" ry="20" fill="#fed7aa"/>
+                                <path d="M 31 35 C 31 15, 69 15, 69 35 C 60 22, 40 22, 31 35 Z" fill="#0f172a"/>
+                                <path d="M 34 32 L 47 32 L 45 41 L 36 41 Z" fill="#020617" stroke="#eab308" stroke-width="1.2"/>
+                                <path d="M 53 32 L 66 32 L 64 41 L 55 41 Z" fill="#020617" stroke="#eab308" stroke-width="1.2"/>
+                                <line x1="47" y1="35" x2="53" y2="35" stroke="#eab308" stroke-width="1.5"/>
+                                <path d="M 44 46 Q 51 49 57 45" fill="none" stroke="#9a3412" stroke-width="2"/>
+                                <path d="M 22 88 C 24 64, 40 58, 50 58 C 60 58, 76 64, 78 88 Z" fill="#09090b"/>
+                                <polygon points="50,58 44,88 56,88" fill="#18181b"/>
+                                <path d="M 46 62 Q 50 67 54 62" fill="none" stroke="#eab308" stroke-width="2"/>
+                                <circle cx="34" cy="74" r="3" fill="#eab308"/>
+                            </svg>
+                        </div>
+                        <span class="siyah-seat-name">Sinan Engin</span>
                         <span class="siyah-seat-role">Eski Futbolcu</span>
                     </div>
 
-                    <!-- 4. Ertem -->
+                    <!-- 4. Ertem Şener -->
                     <div class="siyah-panelist-wrapper siyah-seat-ertem" id="panelist-3" onclick="selectPanelistSpeaker(3)">
-                        <div class="siyah-spotlight-beam"></div>
-                        <div class="siyah-avatar-circle">📺</div>
-                        <span class="siyah-seat-name">Ertem</span>
+                        <div class="siyah-volumetric-spotlight"></div>
+                        <div class="siyah-token-badge">
+                            <div class="siyah-onair-ring"></div>
+                            <svg class="siyah-token-svg" viewBox="0 0 100 100">
+                                <defs>
+                                    <radialGradient id="grad-ertem" cx="50%" cy="30%" r="70%">
+                                        <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.35"/>
+                                        <stop offset="100%" stop-color="#090d16"/>
+                                    </radialGradient>
+                                    <linearGradient id="cyan-rim-3" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#67e8f9"/>
+                                        <stop offset="50%" stop-color="#0891b2"/>
+                                        <stop offset="100%" stop-color="#155e75"/>
+                                    </linearGradient>
+                                </defs>
+                                <circle cx="50" cy="50" r="48" fill="url(#grad-ertem)" stroke="url(#cyan-rim-3)" stroke-width="3.5"/>
+                                <ellipse cx="50" cy="38" rx="18" ry="20" fill="#fed7aa"/>
+                                <path d="M 31 32 C 31 16, 69 16, 69 32 C 63 24, 37 24, 31 32 Z" fill="#1e293b"/>
+                                <path d="M 28 36 C 28 18, 72 18, 72 36" fill="none" stroke="#475569" stroke-width="3"/>
+                                <rect x="26" y="32" width="5" height="12" rx="2" fill="#0f172a"/>
+                                <rect x="69" y="32" width="5" height="12" rx="2" fill="#0f172a"/>
+                                <path d="M 28 42 Q 34 50 42 49" fill="none" stroke="#0f172a" stroke-width="2"/>
+                                <circle cx="43" cy="49" r="2.5" fill="#ef4444"/>
+                                <circle cx="42" cy="35" r="2" fill="#0f172a"/>
+                                <circle cx="58" cy="35" r="2" fill="#0f172a"/>
+                                <path d="M 45 44 Q 50 48 55 44" fill="none" stroke="#9a3412" stroke-width="1.8"/>
+                                <path d="M 22 88 C 24 64, 40 58, 50 58 C 60 58, 76 64, 78 88 Z" fill="#0f172a"/>
+                                <polygon points="50,58 44,88 56,88" fill="#f8fafc"/>
+                                <polygon points="48,64 52,64 53,88 47,88" fill="#1e40af"/>
+                            </svg>
+                        </div>
+                        <span class="siyah-seat-name">Ertem Şener</span>
                         <span class="siyah-seat-role">Moderatör</span>
                     </div>
                 </div>
@@ -2424,7 +2540,7 @@
                     </div>
                     <div class="siyah-kj-body">
                         <div class="siyah-speech-speaker">
-                            <span id="siyah-active-speaker-name">👴 AHMET HOCA KONUŞUYOR:</span>
+                            <span id="siyah-active-speaker-name">AHMET ÇAKAR KONUŞUYOR:</span>
                             <div class="siyah-live-eq">
                                 <span class="siyah-live-eq-bar"></span>
                                 <span class="siyah-live-eq-bar"></span>
@@ -2449,6 +2565,7 @@
                 </div>
             </div>
         </div>
+
 
 
 
@@ -5516,26 +5633,26 @@
             if (goals >= 2 || rating >= 8.5) {
                 if (ledTopic) ledTopic.innerText = `${pName.toUpperCase()} ŞOVU & ZAFER GECESİ`;
                 currentSiyahQuotes = [
-                    { name: "Ahmet Hoca", role: "Eski Hakem", icon: "👴", quote: `Bakın ben açık ve net konuşayım. Bu ${pName}'de öyle bir kumaş, öyle bir ciğer var ki... Böyle devam ederse Avrupa devleri kapısında yatar! Hakem de pozisyonları iyi süzdü bu arada.` },
-                    { name: "Rasim", role: "Ateşli Yorumcu", icon: "🤯", quote: `Hocaaam hocaaam! Çıldırtma beni canlı yayında! Bu çocuk bu gece sahada adeta bir terminatör, bir futbol canavarı gibiydi! Türkiye seninle gurur duyuyor be çocuk!` },
-                    { name: "Sinan Abi", role: "Eski Futbolcu", icon: "🕶️", quote: `Kardeşim ben bu çocuğa kefilim. Sezon başından beri söylüyorum; bu çocukta saf kalite, doğuştan klas var. Çocuğun önünü kesmeyin, bırakın aksın gitsin.` },
-                    { name: "Ertem", role: "Moderatör", icon: "📺", quote: `Evet sevgili seyirciler, stüdyo resmen alev alev! Şimdi soruyorum: ${pName} önümüzdeki sezon Ballon d'Or listesine ilk 10'dan girer mi? Canlı yayında oyluyoruz!` }
+                    { name: "Ahmet Çakar", role: "Eski Hakem", quote: `Bakın ben açık ve net konuşayım. Bu ${pName}'de öyle bir kumaş, öyle bir ciğer var ki... Böyle devam ederse Avrupa devleri kapısında yatar! Hakem de pozisyonları iyi süzdü bu arada.` },
+                    { name: "Rasim Ozan", role: "Ateşli Yorumcu", quote: `Hocaaam hocaaam! Çıldırtma beni canlı yayında! Bu çocuk bu gece sahada adeta bir terminatör, bir futbol canavarı gibiydi! Türkiye seninle gurur duyuyor be çocuk!` },
+                    { name: "Sinan Engin", role: "Eski Futbolcu", quote: `Kardeşim ben bu çocuğa kefilim. Sezon başından beri söylüyorum; bu çocukta saf kalite, doğuştan klas var. Çocuğun önünü kesmeyin, bırakın aksın gitsin.` },
+                    { name: "Ertem Şener", role: "Moderatör", quote: `Evet sevgili seyirciler, stüdyo resmen alev alev! Şimdi soruyorum: ${pName} önümüzdeki sezon Ballon d'Or listesine ilk 10'dan girer mi? Canlı yayında oyluyoruz!` }
                 ];
             } else if (rating <= 5.8) {
                 if (ledTopic) ledTopic.innerText = `KRİZ MASASI: ${pName.toUpperCase()}`;
                 currentSiyahQuotes = [
-                    { name: "Ahmet Hoca", role: "Eski Hakem", icon: "👴", quote: `Ben ne dedim Ertem? Genç çocuklara erkenden yıldız muamelesi yapıp gazı veriyorsunuz! Bu gece sahada hayalet gibiydi, tek bir olumlu hareketi yok!` },
-                    { name: "Rasim", role: "Ateşli Yorumcu", icon: "🤯", quote: `Hocam insaf ya, yapma etme! Çocuğun üzerine bu kadar acımasızca gitmeyin! Bir maç kötü oynadı diye linç mi edelim geleceğimizi!` },
-                    { name: "Sinan Abi", role: "Eski Futbolcu", icon: "🕶️", quote: `Kardeşim geceleri gezmeyi tozmayı bırakıp tesiste yatıp kalkacak. Yoksa bu lig insanı yer bitirir, benden söylemesi.` },
-                    { name: "Ertem", role: "Moderatör", icon: "📺", quote: `Evet stüdyoda büyük fikir ayrılığı var! Bakalım ${pName} önümüzdeki hafta sahada nasıl bir reaksiyon verecek?` }
+                    { name: "Ahmet Çakar", role: "Eski Hakem", quote: `Ben ne dedim Ertem? Genç çocuklara erkenden yıldız muamelesi yapıp gazı veriyorsunuz! Bu gece sahada hayalet gibiydi, tek bir olumlu hareketi yok!` },
+                    { name: "Rasim Ozan", role: "Ateşli Yorumcu", quote: `Hocam insaf ya, yapma etme! Çocuğun üzerine bu kadar acımasızca gitmeyin! Bir maç kötü oynadı diye linç mi edelim geleceğimizi!` },
+                    { name: "Sinan Engin", role: "Eski Futbolcu", quote: `Kardeşim geceleri gezmeyi tozmayı bırakıp tesiste yatıp kalkacak. Yoksa bu lig insanı yer bitirir, benden söylemesi.` },
+                    { name: "Ertem Şener", role: "Moderatör", quote: `Evet stüdyoda büyük fikir ayrılığı var! Bakalım ${pName} önümüzdeki hafta sahada nasıl bir reaksiyon verecek?` }
                 ];
             } else {
                 if (ledTopic) ledTopic.innerText = `CANLI TARTIŞMA: ${pName.toUpperCase()}`;
                 currentSiyahQuotes = [
-                    { name: "Ahmet Hoca", role: "Eski Hakem", icon: "👴", quote: `İyi kumaş, yetenekli çocuk ama daha çok fırın ekmek yemesi lazım. Kendini hemen dünya yıldızı zannetmesin.` },
-                    { name: "Rasim", role: "Ateşli Yorumcu", icon: "🤯", quote: `Hocaaaam! Bu çocuk bu ligin en heyecan verici yeteneğidir, sahada top ayağına gelince tribünler ayağa kalkıyor!` },
-                    { name: "Sinan Abi", role: "Eski Futbolcu", icon: "🕶️", quote: `Kardeşim hocası ona taktik tahtasında daha fazla özgürlük tanımalı. Bırakın çocuk hissettiği gibi oynasın.` },
-                    { name: "Ertem", role: "Moderatör", icon: "📺", quote: `Siyah Futbol masasında tansiyon zirvede! Reklamların ardından özel kulis bilgileriyle devam edeceğiz!` }
+                    { name: "Ahmet Çakar", role: "Eski Hakem", quote: `İyi kumaş, yetenekli çocuk ama daha çok fırın ekmek yemesi lazım. Kendini hemen dünya yıldızı zannetmesin.` },
+                    { name: "Rasim Ozan", role: "Ateşli Yorumcu", quote: `Hocaaaam! Bu çocuk bu ligin en heyecan verici yeteneğidir, sahada top ayağına gelince tribünler ayağa kalkıyor!` },
+                    { name: "Sinan Engin", role: "Eski Futbolcu", quote: `Kardeşim hocası ona taktik tahtasında daha fazla özgürlük tanımalı. Bırakın çocuk hissettiği gibi oynasın.` },
+                    { name: "Ertem Şener", role: "Moderatör", quote: `Siyah Futbol masasında tansiyon zirvede! Reklamların ardından özel kulis bilgileriyle devam edeceğiz!` }
                 ];
             }
 
@@ -5562,13 +5679,21 @@
                         el.classList.remove("active-speaker");
                     }
                 }
+                const plate = document.getElementById(`desk-plate-${i}`);
+                if (plate) {
+                    if (i === currentSiyahIndex) {
+                        plate.classList.add("active-plate");
+                    } else {
+                        plate.classList.remove("active-plate");
+                    }
+                }
             }
 
             // Update TV Lower-Third (KJ)
             const speakerNameEl = document.getElementById("siyah-active-speaker-name");
             const roleEl = document.getElementById("siyah-kj-speaker-role");
 
-            if (speakerNameEl) speakerNameEl.innerHTML = `${speaker.icon || '🎙️'} ${speaker.name.toUpperCase()} KONUŞUYOR:`;
+            if (speakerNameEl) speakerNameEl.innerHTML = `${speaker.name.toUpperCase()} KONUŞUYOR:`;
             if (roleEl) roleEl.innerText = (speaker.role || "YORUMCU").toUpperCase();
 
             // Run smooth typewriter streaming text
@@ -5580,6 +5705,7 @@
             currentSiyahIndex = (currentSiyahIndex + 1) % currentSiyahQuotes.length;
             selectPanelistSpeaker(currentSiyahIndex);
         }
+
 
         function closeSiyahFutbolModal() {
             if (siyahTypewriterTimer) {
