@@ -1361,7 +1361,30 @@
                         </div>
                     </div>
 
+                    <!-- Group 2.5: Türk İşi Özellikleri Test Et -->
+                    <div>
+                        <div style="font-size: 11px; font-weight: bold; color: #FFD600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">🧪 TÜRK İŞİ ÖZELLİKLER (HIZLI TEST)</div>
+                        <div style="background: #161b22; border: 1px solid #FFD600; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+                            <button onclick="document.getElementById('settings-modal').classList.remove('active'); showSiyahFutbolModal({ rating: 9.2, goals: 3 });" style="background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid #ef4444; padding: 10px; font-size: 11.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
+                                📺 Siyah Futbol TV Masasını Aç (Ahmet Hoca & Rasim)
+                            </button>
+                            <button onclick="document.getElementById('settings-modal').classList.remove('active'); openInterviewModal(8.5, 2, 1);" style="background: rgba(0,229,183,0.15); color: #00e5b7; border: 1px solid #00e5b7; padding: 10px; font-size: 11.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
+                                🎙️ Basın Toplantısı / Röportaj Yap (18+ Laubali Cevap)
+                            </button>
+                            <button onclick="document.getElementById('settings-modal').classList.remove('active'); startTribun3lu();" style="background: rgba(255,214,0,0.15); color: #FFD600; border: 1px solid #FFD600; padding: 10px; font-size: 11.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
+                                📣 Tribünlere 3'lü Çektir (Şşşşt... 1-2-3!)
+                            </button>
+                            <button onclick="document.getElementById('settings-modal').classList.remove('active'); showNewspaperModal('GECE 02:00 HAVALİMANI İZDİHAMI', (GAME.state.playerName || 'GENÇ YILDIZ').toUpperCase() + ' İÇİN MEŞALELİ KARŞILAMA!', 'Binlerce Taraftar Geceyi Gündüze Çevirdi!', 'Gece saat 02:00\\'de şehre inen ' + (GAME.state.playerName || 'yıldız oyuncu') + ' için binlerce meşale yakıldı!');" style="background: rgba(168,85,247,0.15); color: #c084fc; border: 1px solid #a855f7; padding: 10px; font-size: 11.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
+                                ✈️ Gece 02:00 Havalimanı Meşaleli Karşılamasını Gör
+                            </button>
+                            <button onclick="document.getElementById('settings-modal').classList.remove('active'); document.getElementById('retirement-summary-modal').classList.add('active');" style="background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid #3b82f6; padding: 10px; font-size: 11.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
+                                🏛️ Türk İşi Emeklilik Yollarını İncele
+                            </button>
+                        </div>
+                    </div>
+
                     <!-- Group 3: Tehlikeli Bölge -->
+
                     <div>
                         <div style="font-size: 11px; font-weight: bold; color: #f85149; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Tehlikeli Bölge</div>
                         <button id="settings-reset-career" style="background: transparent; color: #f85149; border: 1px solid rgba(248,81,73,0.4); padding: 12px; font-size: 12px; font-weight: bold; border-radius: 8px; width: 100%; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(248,81,73,0.1)'" onmouseout="this.style.background='transparent'">🗑️ Kariyeri Sıfırla & Baştan Başla</button>
