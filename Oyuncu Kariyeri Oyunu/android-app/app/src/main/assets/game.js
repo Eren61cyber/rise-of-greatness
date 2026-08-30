@@ -719,7 +719,18 @@ const GAME = {
 
         this.state.kondisyon -= energyCost;
         this.state.weeklyTrainingCount++;
-        this.state[targetKey] = Math.min(100, (this.state[targetKey] || 50) + 1);
+
+        // Difficulty-based stat gain
+        const diff = this.state.difficulty || "normal";
+        let statGain = 1;
+        if (diff === "easy") {
+            statGain = 2; // Başlangıç: double gain
+        } else if (diff === "hard") {
+            // Zor: +1 only every other training (alternating)
+            this.state._hardTrainCounter = (this.state._hardTrainCounter || 0) + 1;
+            statGain = (this.state._hardTrainCounter % 2 === 0) ? 1 : 0;
+        }
+        this.state[targetKey] = Math.min(100, (this.state[targetKey] || 50) + statGain);
 
         this.state.weeksSinceLastTraining = 0;
 
@@ -1258,10 +1269,21 @@ const GAME = {
         if (this.state.kondisyonRegenBonus > 0) {
             regen += Math.round(regen * (this.state.kondisyonRegenBonus / 100));
         }
+        // Difficulty affects kondisyon regen
+        const _diff = this.state.difficulty || "normal";
+        if (_diff === "easy") regen = Math.round(regen * 1.4);   // +%40 regen
+        else if (_diff === "hard") regen = Math.round(regen * 0.7); // -%30 regen
         this.state.kondisyon = Math.min(100, this.state.kondisyon + regen);
 
-        // Natural decay of morale
-        this.state.moral = Math.max(20, this.state.moral - 5);
+        // Natural decay of morale (harder = faster decay)
+        const moralDecay = _diff === "hard" ? 8 : (_diff === "easy" ? 2 : 5);
+        this.state.moral = Math.max(20, this.state.moral - moralDecay);
+
+        // 💍 Evlilik aile huzuru morali (+4 moral desteği)
+        if (this.state.isMarried) {
+            this.state.moral = Math.min(100, this.state.moral + 4);
+        }
+
 
         // Simulate league matches if not played manually (skip during national breaks)
         let completedWeek = this.state.currentWeek - 1;
@@ -1371,8 +1393,29 @@ const GAME = {
             } else if (rA < (aRate * 0.78)) {
                 scorer.assists += 1;
             }
+
+            // Sync with rivalPlayer if this is the rival
+            if (this.state.rivalPlayer && this.state.rivalPlayer.name === scorer.name) {
+                this.state.rivalPlayer.goals = scorer.goals;
+                this.state.rivalPlayer.assists = scorer.assists;
+            }
         });
+
+        // ⚔️ Rival banter social post chance (every ~4 weeks)
+        if (this.state.rivalPlayer && Math.random() < 0.22) {
+            const rival = this.state.rivalPlayer;
+            const pGoals = this.state.currentLeagueGoals || this.state.seasonGoals || 0;
+            const rivalQuotes = [
+                `Çok çalışıyoruz ve meyvelerini alıyoruz! Bu sezon gol krallığı tacı benim olacak. ⚽🔥 #${rival.club.replace(/\s/g, '')}`,
+                `Harika bir hafta daha! @${(this.state.playerName || "rakip").toLowerCase().replace(/\s/g, '_')} beni yakalamak istiyorsa daha çok koşması gerekecek! 😉⚡`,
+                `Gol krallığı yarışında zirve tek kişilik! Durmak yok, gollere devam. 👟💥`,
+                `Bu ligin en iyi forveti kim herkes çok iyi biliyor! Sahada konuşmaya devam. 🤫⚽`
+            ];
+            const quote = rivalQuotes[Math.floor(Math.random() * rivalQuotes.length)];
+            this.addSocialPost(rival.handle || "@rakip_forvet", `${rival.name} (${rival.club})`, quote);
+        }
     },
+
 
     getClubSalaryAndVal: function() {
         let val = DATABASE.calculateValue(this.state.rating, this.state.age);
@@ -1599,6 +1642,67 @@ const GAME = {
         alert(`${name} ile yollarınızı ayırdınız. Moralin düştü.`);
         return true;
     },
+
+    // 💍 AİLE VE EVLİLİK SİSTEMİ (Marriage & Family)
+    proposeMarriage: function() {
+        if (!this.state.relationship || !this.state.relationship.active) {
+            alert("Evlilik teklifi etmek için önce aktif bir ilişkiniz olmalı!");
+            return false;
+        }
+
+        if (this.state.isMarried) {
+            alert("Zaten evlisiniz! Mutlu bir yuvanız var. 💍❤️");
+            return false;
+        }
+
+        const gf = DATABASE.GIRLFRIENDS.find(g => g.id === this.state.relationship.id);
+        const name = gf ? gf.name : "kız arkadaşınız";
+
+        if ((this.state.relationship.level || 0) < 80) {
+            alert(`Evlilik teklifi etmek için ilişki bağınızın en az %80 olması gerekir! (Şu an: %${this.state.relationship.level || 0})`);
+            return false;
+        }
+
+        const ringCost = 25000;
+        if (this.state.money < ringCost) {
+            alert(`Tektaş pırlanta yüzük ve düğün masrafları için en az ${ringCost.toLocaleString()} € birikiminiz olmalıdır!`);
+            return false;
+        }
+
+        if (!confirm(`💍 ${name} için 25.000 € değerinde tektaş yüzük alıp evlilik teklifi etmek istiyor musunuz?`)) {
+            return false;
+        }
+
+        this.state.money -= ringCost;
+        this.state.isMarried = true;
+        this.state.spouseName = name;
+        this.state.marriageSeasons = 0;
+        this.state.moral = 100;
+        this.state.relationship.level = 100;
+        this.state.followers += 25000;
+
+        if (!this.state.trophies) this.state.trophies = [];
+        this.state.trophies.push({ id: "marriage", name: `Evlilik Yüzüğü (${name})`, icon: "💍" });
+
+        this.addSocialPost("@magazin_gundem", "Magazin Gündemi", `💍 YILIN DÜĞÜNÜ! ${this.state.playerName} ile ${name} muhteşem bir törenle dünyaevine girdi! Çiftimize bir ömür mutluluklar dileriz! ❤️🥂👰🤵`);
+
+        this.saveGame();
+        this.updateUI();
+
+        if (typeof showNewspaperModal === "function") {
+            showNewspaperModal(
+                "MAGAZİN ÖZEL",
+                `${this.state.playerName.toUpperCase()} DÜNYAEVİNE GİRDİ!`,
+                "Yılın En Romantik Transferi: Evlilik İmzası Atıldı!",
+                `Yeşil sahaların yıldızı ${this.state.playerName}, hayatının aşkı ${name} ile rüya gibi bir düğünle evlendi! Futbol dünyasından ve cemiyet hayatından ünlü isimlerin katıldığı gecede genç yıldız ömür boyu mutluluğa 'EVET' dedi. ❤️💍`
+            );
+        } else {
+            alert(`🎉 TEBRİKLER! ${name} teklifinizi sevinç gözyaşlarıyla kabul etti! Resmen evlendiniz! 💍❤️ (+25.000 Takipçi, Moral %100)`);
+        }
+
+        return true;
+    },
+
 
     signBootSponsor: function(bootId) {
         const boot = DATABASE.BOOT_SPONSORS.find(b => b.id === bootId);
@@ -2445,7 +2549,23 @@ const GAME = {
             this.state.triggerBallonOrNewspaper = true;
         }
 
+        // 👶 Aile & Bebek Doğumu Kontrolü (Family expansion)
+        if (this.state.isMarried) {
+            this.state.marriageSeasons = (this.state.marriageSeasons || 0) + 1;
+            if (this.state.marriageSeasons >= 1 && !this.state.hasChild && Math.random() < 0.45) {
+                this.state.hasChild = true;
+                this.state.followers += 50000;
+                this.state.money += 25000;
+                this.state.totalEarnings = (this.state.totalEarnings || 0) + 25000;
+                if (!this.state.trophies) this.state.trophies = [];
+                this.state.trophies.push({ id: "baby", name: "Baba Oldunuz! 👶", icon: "👶" });
+                this.addSocialPost("@magazin_gundem", "Magazin Gündemi", `👶 MÜJDELİ HABER! ${this.state.playerName} ve eşi ${this.state.spouseName || "eşi"} bebek sahibi oldu! Yıldız futbolcu ilk kez baba olmanın mutluluğunu yaşıyor! ❤️🍼`);
+                message += `👶 <strong>MÜJDE: BABA OLDUNUZ!</strong> Ailenize nur topu gibi bir bebek katıldı! Tebrik mesajları ve hediyeler yağıyor! (+50,000 Takipçi, +25,000 € Bebek Hediyeleri)<br><br>`;
+            }
+        }
+
         this.state.money += bonus;
+
         this.state.totalEarnings = (this.state.totalEarnings || 0) + bonus;
         this.state.followers += followerGain;
         this.state.hocaGuveni = Math.min(100, this.state.hocaGuveni + 15);
@@ -2465,8 +2585,24 @@ const GAME = {
             emotionalMatch: this.state.mostEmotionalMatch || "Bu sezon olağanüstü bir dram yaşanmadı."
         };
 
+        // 📚 Save to Career History Archive
+        if (!this.state.careerHistory) this.state.careerHistory = [];
+        const seasonYear = 2026 + (this.state.age - 17);
+        this.state.careerHistory.push({
+            year: seasonYear,
+            age: this.state.age,
+            club: this.state.currentClub,
+            league: this.state.currentLeague,
+            apps: seasonStats.apps,
+            goals: seasonStats.goals,
+            assists: seasonStats.assists,
+            rank: rank,
+            isChampion: (rank === 1)
+        });
+
         // Reset season stats & transfer state
         this.state.seasonGoals = 0;
+
         this.state.seasonAssists = 0;
         this.state.seasonApps = 0;
         this.state.currentLeagueGoals = 0;
@@ -2482,6 +2618,44 @@ const GAME = {
         this.initLeagueTable();
         this.initLeagueScorers(true);
         this.state.nextOpponentName = null; 
+        
+        // 🏅 Build award ceremony data for this season
+        const goals = seasonStats.goals;
+        const assists = seasonStats.assists;
+        const rating = this.state.rating;
+        let awards = [];
+
+        // Yılın 11'i adaylığı
+        if (rating >= 75 && (goals + assists) >= 10) {
+            awards.push({ icon: "🌟", title: "Yılın 11'i", desc: `${goals} gol, ${assists} asistlik sezonla en iyi 11'e seçildin!`, bonus: 15000 });
+            this.state.money += 15000;
+            this.state.totalEarnings = (this.state.totalEarnings || 0) + 15000;
+            this.state.followers += 10000;
+        }
+        // Gol Krallığı
+        const topScorer = (this.state.leagueScorers || [])[0];
+        if (topScorer && goals > 0 && goals >= (topScorer.goals || 0)) {
+            awards.push({ icon: "⚽", title: "Gol Krallığı", desc: `${goals} golle liginin gol kralı oldun! Altın Bot ödülü!`, bonus: 25000 });
+            this.state.money += 25000;
+            this.state.totalEarnings = (this.state.totalEarnings || 0) + 25000;
+            this.state.followers += 20000;
+        }
+        // En İyi Genç Oyuncu
+        if (this.state.age <= 23 && rating >= 70 && (goals + assists) >= 8) {
+            awards.push({ icon: "🌱", title: "Yılın Genç Oyuncusu", desc: `${this.state.age} yaşında olağanüstü bir sezon! Geleceğin yıldızı sen!`, bonus: 10000 });
+            this.state.money += 10000;
+            this.state.totalEarnings = (this.state.totalEarnings || 0) + 10000;
+            this.state.followers += 8000;
+        }
+        // Asist Krallığı
+        if (assists >= 10) {
+            awards.push({ icon: "🎯", title: "Asist Krallığı", desc: `${assists} asist! Sezonun en yaratıcı oyuncusu seçildin!`, bonus: 12000 });
+            this.state.money += 12000;
+            this.state.totalEarnings = (this.state.totalEarnings || 0) + 12000;
+            this.state.followers += 7000;
+        }
+
+        this.state.pendingAwardCeremony = awards.length > 0 ? { awards, season: this.state.age } : null;
         
         this.saveGame();
         this.updateUI();
@@ -2667,8 +2841,21 @@ const GAME = {
                     assists: forceReset ? 0 : estA
                 };
             });
+
+            // ⚔️ Assign a rival player from the league
+            const rivalCand = this.state.leagueScorers.find(s => s.club !== this.state.currentClub) || this.state.leagueScorers[0];
+            if (rivalCand) {
+                this.state.rivalPlayer = {
+                    name: rivalCand.name,
+                    club: rivalCand.club,
+                    handle: `@${rivalCand.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
+                    goals: rivalCand.goals,
+                    assists: rivalCand.assists
+                };
+            }
         }
     },
+
 
     AVATAR_FACES: [
         { id: 1, name: "Akdeniz / Fade & Sakal", file: "face_1.jpg", tag: "Popüler" },

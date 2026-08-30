@@ -635,8 +635,10 @@
                     <div class="card glass" style="padding: 16px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; text-align: center; background: linear-gradient(145deg, rgba(16, 25, 36, 0.4), rgba(5, 7, 10, 0.6)); border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 12px;">
                         <div style="font-size: 10px; font-weight: 800; color: #8b949e; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">SIRADAKİ RAKİP</div>
                         <div id="next-opponent-text" style="font-size: 18px; font-weight: 900; color: #fff; margin-bottom: 6px;">Rakip Aranıyor...</div>
-                        <div style="font-size: 10px; color: var(--accent-green); font-weight: 700; background: rgba(0, 230, 118, 0.1); padding: 3px 8px; border-radius: 6px;">Fikstür Maçı</div>
+                        <div style="font-size: 10px; color: var(--accent-green); font-weight: 700; background: rgba(0, 230, 118, 0.1); padding: 3px 8px; border-radius: 6px; margin-bottom: 8px;">Fikstür Maçı</div>
+                        <div id="rival-team-news" style="display:none; width: 100%; text-align: left; font-size: 11px; color: #94a3b8; background: rgba(15,23,42,0.6); border: 1px dashed rgba(255,255,255,0.12); padding: 8px 10px; border-radius: 8px; line-height: 1.4;"></div>
                     </div>
+
                     
                     <button class="btn btn-primary btn-pulse" id="btn-play-match" style="width: 100%; padding: 16px; font-size: 14px; font-weight: 900; border-radius: 12px; margin-bottom: 8px; background: var(--accent-green); color: #000; box-shadow: 0 4px 15px rgba(0,230,118,0.25); border: none;">
                         ⚽ MAÇI OYNA
@@ -713,6 +715,20 @@
                         <!-- Dynamically filled with league performance cards -->
                     </div>
                 </div>
+
+                <!-- 📚 SEZONLUK KARİYER GEÇMİŞİ ARŞİVİ -->
+                <div class="card glass" style="margin-bottom: 12px; padding: 14px; border-radius: 12px;">
+                    <div style="font-size: 11px; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <span>📚</span> Sezonluk Kariyer Arşivi
+                        </div>
+                        <span style="font-size: 10px; color: var(--text-muted); font-weight: 700;">Yıl Yıl Başarılar</span>
+                    </div>
+                    <div id="career-history-archive-container" style="display: flex; flex-direction: column; gap: 8px;">
+                        <!-- Dynamically filled with completed seasons -->
+                    </div>
+                </div>
+
 
 
                 <!-- 3. Finansal Durum Kartı: Yan yana 2'li -->
@@ -1876,8 +1892,28 @@
                         </div>
                     </div>
 
+                    <!-- Difficulty Mode Picker -->
+                    <div style="margin-bottom: 16px;">
+                        <div style="font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px;">🎮 KARİYER MODU SEÇ</div>
+                        <div style="display: flex; gap: 8px;">
+                            <button id="diff-btn-easy" onclick="selectDifficulty('easy')" style="flex:1; padding: 10px 6px; border-radius: 10px; border: 2px solid #10b981; background: rgba(16,185,129,0.15); color: #10b981; font-weight: 800; font-size: 11px; cursor: pointer; transition: all 0.2s;">
+                                🟢 Başlangıç
+                            </button>
+                            <button id="diff-btn-normal" onclick="selectDifficulty('normal')" style="flex:1; padding: 10px 6px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #94a3b8; font-weight: 800; font-size: 11px; cursor: pointer; transition: all 0.2s;">
+                                ⚽ Normal
+                            </button>
+                            <button id="diff-btn-hard" onclick="selectDifficulty('hard')" style="flex:1; padding: 10px 6px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #94a3b8; font-weight: 800; font-size: 11px; cursor: pointer; transition: all 0.2s;">
+                                🔴 Zor
+                            </button>
+                        </div>
+                        <div id="difficulty-desc" style="margin-top: 8px; font-size: 11px; color: #10b981; min-height: 16px; text-align: center; font-weight: 600;">
+                            Stat gelişimi hızlı, yaralanma yok — yeni başlayanlar için ideal
+                        </div>
+                    </div>
+
                     <button class="btn btn-primary" id="intro-btn-start" onclick="startCareerFromIntro()" style="width: 100%; padding: 15px 20px; font-size: 13.5px; font-weight: 900; letter-spacing: 0.5px; font-family: 'Space Grotesk', 'Rajdhani', sans-serif; text-transform: uppercase; background: linear-gradient(135deg, #00e5b7 0%, #059669 100%); color: #05140d; border: 1px solid rgba(255,255,255,0.25); border-radius: 12px; box-shadow: 0 4px 25px rgba(0, 229, 183, 0.35); cursor: pointer; transition: all 0.2s ease;">KULÜBE KATIL & SEZONA BAŞLA ➔</button>
                 </div>
+
 
             </div>
         </div>
@@ -2082,9 +2118,13 @@
                     </div>
                 </div>
 
+                <!-- Award Ceremony Section -->
+                <div id="ss-award-ceremony" style="display:none; margin-bottom:16px;"></div>
+
                 <button class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 14px; font-weight: bold;" onclick="closeSeasonSummaryModal()">DEVAM ET</button>
             </div>
         </div>
+
 
         <!-- REWARDED AD MODAL -->
         <div class="event-modal-overlay" id="ad-modal" style="background: rgba(0,0,0,0.9); z-index: 10010; display: none; align-items: center; justify-content: center;">
@@ -3054,7 +3094,9 @@
                 if (target === "panel-my-career") {
                     if (typeof updateTrophyShowcase === "function") updateTrophyShowcase();
                     if (typeof renderCareerLeagueBreakdown === "function") renderCareerLeagueBreakdown();
+                    if (typeof renderCareerHistoryArchive === "function") renderCareerHistoryArchive();
                 }
+
 
                 if (target === "panel-training") {
                     renderTrainingPanel();
@@ -3849,6 +3891,8 @@
             if (typeof GAME !== "undefined") {
                 GAME.resetGame(name, startingLeague, startingSalary, startingTrust, city, district, selectedStartingClub, selectedIntroPosition);
                 GAME.state.jerseyNumber = jerseyNumber;
+                // Save selected difficulty
+                GAME.state.difficulty = window._selectedDifficulty || "normal";
                 if (typeof tempAvatarCustomization !== "undefined") {
                     GAME.state.avatarCustomization = tempAvatarCustomization;
                 }
@@ -3867,6 +3911,39 @@
             if (typeof init3dFutCardEffects === "function") init3dFutCardEffects();
             if (typeof checkAndStartTutorial === "function") checkAndStartTutorial();
         };
+
+        // Difficulty selection handler
+        window._selectedDifficulty = "easy";
+        window.selectDifficulty = function(mode) {
+            window._selectedDifficulty = mode;
+            const btns = { easy: "diff-btn-easy", normal: "diff-btn-normal", hard: "diff-btn-hard" };
+            const descs = {
+                easy: { text: "Stat gelişimi hızlı, yaralanma yok — yeni başlayanlar için ideal", color: "#10b981" },
+                normal: { text: "Klasik kariyer deneyimi — dengeli ve gerçekçi", color: "#38bdf8" },
+                hard: { text: "Stat gelişimi yavaş, yaralanma riski yüksek — gerçek meydan okuma!", color: "#f43f5e" }
+            };
+            Object.entries(btns).forEach(([k, id]) => {
+                const btn = document.getElementById(id);
+                if (!btn) return;
+                if (k === mode) {
+                    const colors = { easy: "#10b981", normal: "#38bdf8", hard: "#f43f5e" };
+                    btn.style.borderColor = colors[k];
+                    btn.style.background = `rgba(${k === "easy" ? "16,185,129" : k === "normal" ? "56,189,248" : "244,63,94"},0.2)`;
+                    btn.style.color = colors[k];
+                } else {
+                    btn.style.borderColor = "rgba(255,255,255,0.15)";
+                    btn.style.background = "rgba(255,255,255,0.05)";
+                    btn.style.color = "#94a3b8";
+                }
+            });
+            const descEl = document.getElementById("difficulty-desc");
+            if (descEl) {
+                descEl.innerText = descs[mode].text;
+                descEl.style.color = descs[mode].color;
+            }
+        };
+
+
 
         function typeWriter(text, elementId, speed, callback) {
             let i = 0;
@@ -5782,7 +5859,29 @@
                     simulateBtn.style.display = "block";
                 }
             }
+
+            // 📰 RAKİP TAKIM HABERLERİ SİSTEMİ (Rival Team News)
+            const rivalNewsEl = document.getElementById("rival-team-news");
+            if (rivalNewsEl) {
+                if (nextOpponent && nextOpponent.name && nextOpponent.name !== "BAY Geçilen Hafta" && nextOpponent.name !== "Lig Bitti") {
+                    const newsPool = [
+                        `🚨 <strong>Kritik Gelişme:</strong> ${nextOpponent.name} teknik direktörü bu maçta savunma ağırlıklı bir taktikle sahaya çıkacaklarını açıkladı.`,
+                        `🔥 <strong>Maç Öncesi:</strong> ${nextOpponent.name} taraftarları bu maç için stadyumda özel koreografi hazırladı! Yoğun deplasman baskısı bekleniyor.`,
+                        `⚠️ <strong>Sakatlık Raporu:</strong> ${nextOpponent.name} kulübünün önemli bir oyuncusu son antrenmanda sakatlanarak kadrodan çıkarıldı.`,
+                        `⚡ <strong>Form Durumu:</strong> ${nextOpponent.name} son haftalarda ligin en az gol yiyen savunma kurgularından birine sahip.`,
+                        `🎙️ <strong>Basın Toplantısı:</strong> Rakip hoca: '${GAME.state.playerName || "Genç yıldız"} için özel adam adama savunma önlemi alacağız!'`,
+                        `📊 <strong>İstatistik:</strong> ${nextOpponent.name} hızlı hücumlarda ve duran toplarda ligin en tehlikeli ekiplerinden biri olarak öne çıkıyor.`
+                    ];
+                    // Pick deterministic per week+opponent
+                    const newsIndex = (week * 7 + (nextOpponent.name.length || 0)) % newsPool.length;
+                    rivalNewsEl.innerHTML = newsPool[newsIndex];
+                    rivalNewsEl.style.display = "block";
+                } else {
+                    rivalNewsEl.style.display = "none";
+                }
+            }
         }
+
 
         function updateTrophyShowcase() {
             const container = document.getElementById("trophy-showcase-container");
@@ -5948,14 +6047,59 @@
                             </div>
                         </div>
                     </div>
+            });
+        }
+
+        // 📚 Sezonluk Kariyer Arşivini Çiz
+        function renderCareerHistoryArchive() {
+            const container = document.getElementById("career-history-archive-container");
+            if (!container || !GAME || !GAME.state) return;
+
+            const history = GAME.state.careerHistory || [];
+            if (history.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 14px; color: var(--text-muted); font-size: 11.5px; border: 1px dashed rgba(255,255,255,0.08); border-radius: 8px;">
+                        Henüz tamamlanmış bir sezonunuz bulunmuyor. Sezon sonu arşiviniz burada listelenecek! ⏳
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = "";
+            // Reverse order (newest season first)
+            [...history].reverse().forEach(h => {
+                const champBadge = h.isChampion ? `<span style="font-size: 9px; font-weight: 800; background: rgba(255,214,0,0.15); border: 1px solid rgba(255,214,0,0.4); color: #FFD600; padding: 2px 6px; border-radius: 4px;">🏆 ŞAMPİYON</span>` : `<span style="font-size: 9px; font-weight: 700; color: #94A3B8;">${h.rank}. Sıra</span>`;
+                container.innerHTML += `
+                    <div style="background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <span style="font-size: 12px; font-weight: 900; color: #38bdf8;">${h.year || "Sezon"} (Yaş ${h.age || 17})</span>
+                                ${champBadge}
+                            </div>
+                            <div style="font-size: 11px; font-weight: 700; color: #FFFFFF; margin-top: 2px;">${h.club} <span style="font-size: 9.5px; color: #94A3B8; font-weight: normal;">(${h.league})</span></div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; font-variant-numeric: tabular-nums;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 12.5px; font-weight: 800; color: #E2E8F0;">${h.apps || 0}</div>
+                                <div style="font-size: 8px; color: #94A3B8;">Maç</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 12.5px; font-weight: 900; color: #00E676;">${h.goals || 0}</div>
+                                <div style="font-size: 8px; color: #94A3B8;">Gol</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 12.5px; font-weight: 900; color: #FFD600;">${h.assists || 0}</div>
+                                <div style="font-size: 8px; color: #94A3B8;">Asist</div>
+                            </div>
+                        </div>
+                    </div>
                 `;
             });
         }
 
-
-
         // Render Shop Items
         function renderShopItems() {
+
             const container = document.getElementById("shop-items-container");
             if (!container) return;
             container.innerHTML = "";
@@ -7508,19 +7652,28 @@
                 const activeGf = DATABASE.GIRLFRIENDS.find(g => g.id === GAME.state.relationship.id);
                 if (activeGf) {
                     const dateCost = Math.round(activeGf.cost * 0.8 + 100);
+                    const isMarried = GAME.state.isMarried;
+                    const marriageBtn = !isMarried ? `
+                        <button class="btn" style="flex: 1; padding: 10px; font-size: 11.5px; font-weight: 800; background: linear-gradient(135deg, rgba(255,215,0,0.2) 0%, rgba(245,158,11,0.2) 100%); color: #FFD600; border: 1px solid rgba(255,215,0,0.4);" onclick="GAME.proposeMarriage(); renderSocialPanel();">💍 Evlilik Teklifi Et (25.000 €)</button>
+                    ` : `
+                        <div style="font-size: 11px; font-weight: 800; color: #FFD600; background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3); padding: 6px 12px; border-radius: 8px; text-align: center;">💍 Mutlu Evlilik (Haftalık +5 Moral Desteği)</div>
+                    `;
+
                     statusContainer.innerHTML = `
-                        <div class="glass" style="padding: 16px; border-radius: 12px; border-left: 4px solid var(--accent-purple); display: flex; flex-direction: column; gap: 10px;">
+                        <div class="glass" style="padding: 16px; border-radius: 12px; border-left: 4px solid ${isMarried ? '#FFD600' : 'var(--accent-purple)'}; display: flex; flex-direction: column; gap: 10px;">
                             <div style="display: flex; align-items: center; justify-content: space-between;">
                                 <div style="display: flex; align-items: center; gap: 12px;">
                                     ${getGirlfriendIconSVG(activeGf.id)}
                                     <div>
-                                        <h3 style="color: white; margin: 0; font-size: 16px; font-family: var(--font-heading);">${activeGf.name}</h3>
-                                        <p style="font-size: 11.5px; color: var(--accent-purple); margin: 0; font-weight: bold;">${activeGf.role}</p>
+                                        <h3 style="color: white; margin: 0; font-size: 16px; font-family: var(--font-heading); display: flex; align-items: center; gap: 6px;">
+                                            ${activeGf.name} ${isMarried ? '<span style="font-size: 10px; background: #FFD600; color: #000; padding: 1px 6px; border-radius: 4px; font-weight: 900;">EŞİNİZ</span>' : ''}
+                                        </h3>
+                                        <p style="font-size: 11.5px; color: ${isMarried ? '#FFD600' : 'var(--accent-purple)'}; margin: 0; font-weight: bold;">${isMarried ? '💍 Eşiniz & Hayat Arkadaşınız' : activeGf.role}</p>
                                     </div>
                                 </div>
                                 <div style="text-align: right;">
-                                    <span style="font-size: 11.5px; color: var(--text-muted);">İlişki Bağı</span>
-                                    <div style="color: var(--accent-purple); font-weight: 800; font-size: 16px; font-family: var(--font-heading);">%${GAME.state.relationship.level}</div>
+                                    <span style="font-size: 11.5px; color: var(--text-muted);">${isMarried ? 'Aile Huzuru' : 'İlişki Bağı'}</span>
+                                    <div style="color: ${isMarried ? '#FFD600' : 'var(--accent-purple)'}; font-weight: 800; font-size: 16px; font-family: var(--font-heading);">%${GAME.state.relationship.level}</div>
                                 </div>
                             </div>
                             <p style="font-size: 12.5px; color: #cbd5e1; margin: 0; line-height: 1.4;">${activeGf.desc}</p>
@@ -7529,14 +7682,18 @@
                                 • Gider: <strong style="color: var(--accent-red);">${activeGf.cost} €</strong> / Hafta<br>
                                 • Faydalar: <strong style="color: var(--primary);">${activeGf.weeklyEffectText}</strong>
                             </div>
-                            <div style="display: flex; gap: 10px; margin-top: 5px;">
-                                <button class="btn btn-primary" style="flex: 1; padding: 10px; font-size: 12px;" onclick="GAME.goOnDate(); renderSocialPanel();">Buluşmaya Git (${dateCost} €, -%20 Kondisyon)</button>
-                                <button class="btn" style="padding: 10px; font-size: 12px; background: rgba(239, 68, 68, 0.12); color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.25);" onclick="GAME.breakUp(); renderSocialPanel();">İlişkiyi Bitir</button>
+                            <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 5px;">
+                                <div style="display: flex; gap: 8px;">
+                                    <button class="btn btn-primary" style="flex: 1; padding: 10px; font-size: 12px;" onclick="GAME.goOnDate(); renderSocialPanel();">❤️ Buluşmaya / Yemeğe Git (${dateCost} €, -%20 Kondisyon)</button>
+                                    ${!isMarried ? '<button class="btn" style="padding: 10px; font-size: 12px; background: rgba(239, 68, 68, 0.12); color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.25);" onclick="GAME.breakUp(); renderSocialPanel();">Ayrıl</button>' : ''}
+                                </div>
+                                ${marriageBtn}
                             </div>
                         </div>
                     `;
                 }
             } else {
+
                 statusContainer.innerHTML = `
                     <div class="empty-state glass" style="padding: 18px; text-align: center; border: 1px dashed var(--border-glass);">
                         <div style="width:40px; height:40px; border-radius:50%; background:#181f2a; border:1px solid #2a3547; display:flex; align-items:center; justify-content:center; color:#64748b; margin:0 auto 8px auto;">
@@ -7782,9 +7939,40 @@
                             showCloseChoices();
                         }
                     }, 1800);
+                // Option 4: Bluffing (High risk, high reward)
+                let bluffSalary = Math.round(salary * 1.35);
+                const btnBluff = document.createElement("button");
+                btnBluff.className = "wa-choice-btn";
+                btnBluff.style.borderColor = "rgba(239, 68, 68, 0.4)";
+                btnBluff.innerHTML = activeAgentId ? `🃏 Blöf yap: 'Büyük kulüpler de peşimizde' de (+%35 zam talep et - ${bluffSalary.toLocaleString()} € / Hf).` : `🃏 Blöf yap: 'Masada başka kulüplerin de teklifi var' de (%35 zam talep et).`;
+                btnBluff.onclick = () => {
+                    addMessage(btnBluff.innerText, "right");
+                    choicesContainer.innerHTML = "";
+                    
+                    showTyping(() => {
+                        let bluffChance = 0.45;
+                        if (activeAgentId === 'mino') bluffChance += 0.20; // Mino Raiola is a bluff master
+                        
+                        if (Math.random() < bluffChance) {
+                            // Successful Bluff
+                            let successMsg = activeAgentId ?
+                                `🔥 İNANILMAZ BLÖF TUTTU! Kulüp panikledi ve kaptırmamak için haftalık tam <strong>${bluffSalary.toLocaleString()} €</strong> teklif etti! Şaheser bir pazarlık oldu kanka!` :
+                                `Gelen diğer teklifleri biliyoruz. Seni kaybetmek istemiyoruz. Talebini kabul ediyoruz: Haftalık <strong>${bluffSalary.toLocaleString()} €</strong>! İmzalıyor muyuz?`;
+                            addMessage(successMsg, "left");
+                            showStep2Choices(bluffSalary, false);
+                        } else {
+                            // Failed Bluff
+                            let failMsg = activeAgentId ?
+                                `🚨 Kötü patladık kanka... Kulüp yöneticisi 'Bize şantaj yapamazsınız, başka kulübe gidin!' deyip telefonu yüzümüze kapattı.` :
+                                `Kulübümüz hiçbir futbolcunun tehdit veya blöfüne boyun eğmez. Teklifimizi derhal iptal ediyoruz.`;
+                            addMessage(failMsg, "left");
+                            showCloseChoices();
+                        }
+                    }, 2000);
                 };
-                choicesContainer.appendChild(btnBonus);
+                choicesContainer.appendChild(btnBluff);
             }
+
 
             // Step 2 Choices (Accept or reject negotiated deal)
             function showStep2Choices(finalSalary, hasBonus, bonusAmt = 0) {
@@ -8362,6 +8550,29 @@
                 document.getElementById("ss-modal-assists").innerText = `${stats.assists} Asist`;
                 document.getElementById("ss-modal-emotional").innerText = stats.emotionalMatch || "Sıradan bir sezondu...";
             }
+
+            // 🏅 Show pending award ceremony if any
+            const ceremony = GAME.state && GAME.state.pendingAwardCeremony;
+            const awardSection = document.getElementById("ss-award-ceremony");
+            if (ceremony && ceremony.awards && ceremony.awards.length > 0 && awardSection) {
+                let html = `<div style="margin-top:14px; padding:12px; background:rgba(255,215,0,0.08); border:1px solid rgba(255,215,0,0.25); border-radius:12px;">
+                    <div style="font-size:11px; font-weight:800; color:#FFD600; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">🏅 SEZON ÖDÜLLERİ</div>`;
+                ceremony.awards.forEach(a => {
+                    html += `<div style="display:flex; align-items:center; gap:10px; margin-bottom:8px; background:rgba(0,0,0,0.3); padding:8px 10px; border-radius:8px;">
+                        <span style="font-size:22px;">${a.icon}</span>
+                        <div style="flex:1; text-align:left;">
+                            <div style="font-weight:800; color:#fff; font-size:12px;">${a.title}</div>
+                            <div style="font-size:10.5px; color:#94a3b8;">${a.desc}</div>
+                        </div>
+                        <div style="font-weight:800; color:#10b981; font-size:12px; white-space:nowrap;">+${a.bonus.toLocaleString()}€</div>
+                    </div>`;
+                });
+                html += `</div>`;
+                awardSection.innerHTML = html;
+                awardSection.style.display = "block";
+            } else if (awardSection) {
+                awardSection.style.display = "none";
+            }
             
             modal.style.display = "flex";
         };
@@ -8369,6 +8580,7 @@
         window.closeSeasonSummaryModal = function() {
             const modal = document.getElementById("season-summary-modal");
             if (modal) modal.style.display = "none";
+            if (GAME.state) GAME.state.pendingAwardCeremony = null;
         };
 
         window.showAdModal = function() {
