@@ -2989,49 +2989,84 @@
         </div>
 
         <!-- 🏎️ 3D LUXURY GARAGE SHOWROOM MODAL -->
-        <div class="event-modal-overlay" id="garage-showroom-modal" style="background: rgba(0,0,0,0.95); backdrop-filter: blur(14px); z-index: 10030; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
+        <div class="event-modal-overlay" id="garage-showroom-modal" style="background: rgba(0,0,0,0.96); backdrop-filter: blur(16px); z-index: 10030; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
             <div class="garage-card-stage" id="garage-stage">
-                <div class="garage-neon-floor"></div>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 229, 255, 0.3); padding-bottom: 8px; margin-bottom: 12px;">
-                    <div style="font-size: 11.5px; font-weight: 900; color: #00e5ff; letter-spacing: 1px;">
-                        🏎️ SÜPERSTAR KOLEKSİYON GARAJI
+                <div class="showroom-overhead-lights"></div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 229, 255, 0.3); padding-bottom: 8px; margin-bottom: 12px; position: relative; z-index: 3;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 16px;">🏁</span>
+                        <div style="font-size: 12px; font-weight: 900; color: #00e5ff; letter-spacing: 1px; text-transform: uppercase;">
+                            SÜPERSTAR KOLEKSİYON GARAJI
+                        </div>
                     </div>
-                    <button onclick="closeGarageModal()" style="background: none; border: none; color: #94a3b8; font-size: 18px; cursor: pointer;">✕</button>
+                    <button onclick="closeGarageModal()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; width: 28px; height: 28px; color: #cbd5e1; font-size: 14px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center;">✕</button>
                 </div>
 
-                <!-- Car Showcase View -->
-                <div style="background: rgba(0,0,0,0.45); border: 1px solid rgba(0,229,255,0.25); border-radius: 14px; padding: 16px; margin-bottom: 12px; text-align: center;">
-                    <div id="garage-car-icon" style="font-size: 52px; margin-bottom: 6px;">🏎️</div>
-                    <h3 id="garage-car-name" style="font-size: 18px; font-weight: 900; color: #ffffff; margin: 0 0 4px 0;">Porsche 911 GT3 RS</h3>
-                    <div id="garage-car-specs" style="font-size: 11.5px; color: #00e5ff; font-weight: 700; margin-bottom: 12px;">525 HP • 0-100: 3.2s • 340.000 €</div>
+                <!-- Car Selector Tabs -->
+                <div class="car-nav-list" id="garage-cars-list">
+                    <!-- Rendered dynamically -->
+                </div>
 
-                    <!-- Dynamic Custom License Plate -->
-                    <div style="margin-bottom: 14px;">
-                        <div class="license-plate-badge">
-                            <span class="tr-flag-tag">TR</span>
-                            <span id="garage-plate-text">34 GS 1905</span>
+                <!-- 3D Car Showcase Stage -->
+                <div class="car-showcase-container" id="garage-car-showcase">
+                    <div class="car-turntable-platform"></div>
+                    <img id="garage-car-img" class="car-image-render" src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=800&q=85" alt="Supercar">
+                    <div class="exhaust-flame-burst" id="garage-exhaust-flame"></div>
+                </div>
+
+                <!-- Car Title & Spec Badges -->
+                <div style="position: relative; z-index: 3; margin-bottom: 12px;">
+                    <h3 id="garage-car-name" style="font-size: 19px; font-weight: 900; color: #ffffff; margin: 0 0 2px 0; letter-spacing: 0.5px; text-shadow: 0 2px 10px rgba(0,0,0,0.8);">
+                        Porsche 911 GT3 RS
+                    </h3>
+                    <div id="garage-car-brand" style="font-size: 11px; color: #00e5ff; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px;">
+                        STUTTGART • TRACK EDITION
+                    </div>
+
+                    <!-- Spec Grid -->
+                    <div class="car-spec-grid">
+                        <div class="car-spec-card">
+                            <div class="car-spec-val" id="garage-spec-hp">525 HP</div>
+                            <div class="car-spec-lbl">Motor Gücü</div>
+                        </div>
+                        <div class="car-spec-card">
+                            <div class="car-spec-val" id="garage-spec-accel">3.2 sn</div>
+                            <div class="car-spec-lbl">0-100 Hız</div>
+                        </div>
+                        <div class="car-spec-card">
+                            <div class="car-spec-val" id="garage-spec-speed">296 km/s</div>
+                            <div class="car-spec-lbl">Maks Hız</div>
+                        </div>
+                        <div class="car-spec-card">
+                            <div class="car-spec-val" id="garage-spec-price">340.000 €</div>
+                            <div class="car-spec-lbl">Değer</div>
                         </div>
                     </div>
 
-                    <!-- Exhaust Rev & Pedal Controls -->
+                    <!-- Realistic Turkish Embossed License Plate -->
+                    <div style="display: flex; justify-content: center; margin-bottom: 14px;">
+                        <div class="realistic-tr-plate" id="garage-plate-wrapper">
+                            <div class="tr-blue-band">
+                                <span style="font-size: 7px; opacity: 0.8;">★</span>
+                                <span>TR</span>
+                            </div>
+                            <span class="tr-plate-text-embossed" id="garage-plate-text">34 GS 1905</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Controls -->
                     <div style="display: flex; justify-content: center; gap: 10px;">
-                        <button class="btn-rev-pedal" onclick="revCarEngine()">
+                        <button class="btn-rev-pedal" onclick="revCarEngine()" style="flex: 1.2;">
                             ⚡ GAZA BAS (EGZOZ PATLAT)
                         </button>
-                        <button class="btn" onclick="editCarPlate()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 10px; padding: 8px 14px; font-size: 11.5px; font-weight: 800; cursor: pointer;">
-                            ✏️ Plakayı Değiştir
+                        <button class="btn" onclick="editCarPlate()" style="flex: 0.8; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 12px; padding: 12px; font-size: 11.5px; font-weight: 800; cursor: pointer;">
+                            ✏️ Plaka Değiştir
                         </button>
                     </div>
-                </div>
-
-                <!-- Garage Vehicle Selector -->
-                <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;" id="garage-cars-list">
-                    <!-- Rendered by JS -->
                 </div>
             </div>
         </div>
 
-        <!-- ⚡ VAR REVIEW MODAL -->
         <div class="event-modal-overlay" id="var-review-modal" style="background: rgba(0,0,0,0.96); backdrop-filter: blur(16px); z-index: 10035; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
             <div class="var-screen-stage" id="var-stage">
                 <div class="var-crt-scanlines"></div>
@@ -3326,56 +3361,91 @@
                 }
             },
 
-            playExhaustRev: function() {
+            playExhaustRev: function(carId = "porsche") {
                 if (!this.enabled) return;
+                try {
+                    // Try external sound file fallback
+                    let sfxFile = `sounds/engine_${carId}.mp3`;
+                    let audio = new Audio(sfxFile);
+                    audio.volume = 0.85;
+                    let playPromise = audio.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(() => {
+                            // Synthesize engine rev if audio file is missing
+                            this.synthesizeEngineRev(carId);
+                        });
+                    }
+                } catch(e) {
+                    this.synthesizeEngineRev(carId);
+                }
+            },
+
+            synthesizeEngineRev: function(carId) {
                 try {
                     this.initAudio();
                     let ctx = this.audioCtx;
                     if (!ctx) return;
                     let now = ctx.currentTime;
 
-                    // 1. Engine RPM Spool (Sub-bass V8/V10 sine ramp)
+                    let baseFreq = 70;
+                    let maxFreq = 380;
+                    let popCount = 3;
+
+                    if (carId === "porsche") {
+                        baseFreq = 85; maxFreq = 480; popCount = 3; // Flat-6 High Rev
+                    } else if (carId === "ferrari") {
+                        baseFreq = 75; maxFreq = 450; popCount = 2; // Twin-Turbo V8
+                    } else if (carId === "lambo") {
+                        baseFreq = 95; maxFreq = 580; popCount = 4; // Screaming V10
+                    } else if (carId === "gwagon") {
+                        baseFreq = 45; maxFreq = 220; popCount = 3; // Deep Sub-bass V8
+                    } else if (carId === "rolls") {
+                        baseFreq = 50; maxFreq = 260; popCount = 1; // Smooth Velvet V12
+                    }
+
+                    // 1. Engine RPM Acceleration Sweep
                     let osc = ctx.createOscillator();
                     let gain = ctx.createGain();
-                    osc.type = "sawtooth";
-                    osc.frequency.setValueAtTime(65, now);
-                    osc.frequency.exponentialRampToValueAtTime(340, now + 0.35);
-                    osc.frequency.exponentialRampToValueAtTime(120, now + 0.7);
+                    osc.type = (carId === "gwagon" || carId === "rolls") ? "sawtooth" : "triangle";
+                    osc.frequency.setValueAtTime(baseFreq, now);
+                    osc.frequency.exponentialRampToValueAtTime(maxFreq, now + 0.32);
+                    osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.2, now + 0.65);
 
                     let filter = ctx.createBiquadFilter();
                     filter.type = "lowpass";
-                    filter.frequency.setValueAtTime(400, now);
-                    filter.frequency.exponentialRampToValueAtTime(1900, now + 0.35);
-                    filter.frequency.exponentialRampToValueAtTime(300, now + 0.7);
+                    filter.frequency.setValueAtTime(300, now);
+                    filter.frequency.exponentialRampToValueAtTime(1800, now + 0.32);
+                    filter.frequency.exponentialRampToValueAtTime(350, now + 0.65);
 
-                    gain.gain.setValueAtTime(0.35, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.75);
+                    gain.gain.setValueAtTime(0.38, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
 
                     osc.connect(filter);
                     filter.connect(gain);
                     gain.connect(ctx.destination);
                     osc.start(now);
-                    osc.stop(now + 0.75);
+                    osc.stop(now + 0.7);
 
-                    // 2. Anti-lag / Exhaust Crackle Pops
-                    let popTimes = [0.38, 0.46, 0.54, 0.62];
-                    popTimes.forEach(tOffset => {
-                        let bSize = Math.floor(ctx.sampleRate * 0.06);
+                    // 2. Anti-lag / 2-Step Rev Limiter Crackles
+                    let popDelays = [0.34, 0.42, 0.50, 0.58];
+                    for (let i = 0; i < popCount; i++) {
+                        let tOffset = popDelays[i] || (0.34 + i * 0.08);
+                        let bSize = Math.floor(ctx.sampleRate * 0.05);
                         let b = ctx.createBuffer(1, bSize, ctx.sampleRate);
                         let d = b.getChannelData(0);
-                        for (let i = 0; i < bSize; i++) d[i] = (Math.random() * 2 - 1);
+                        for (let j = 0; j < bSize; j++) d[j] = (Math.random() * 2 - 1);
                         let nSrc = ctx.createBufferSource();
                         nSrc.buffer = b;
                         let nGain = ctx.createGain();
-                        nGain.gain.setValueAtTime(0.4, now + tOffset);
-                        nGain.gain.exponentialRampToValueAtTime(0.001, now + tOffset + 0.05);
+                        nGain.gain.setValueAtTime(0.45, now + tOffset);
+                        nGain.gain.exponentialRampToValueAtTime(0.001, now + tOffset + 0.045);
                         nSrc.connect(nGain);
                         nGain.connect(ctx.destination);
                         nSrc.start(now + tOffset);
-                        nSrc.stop(now + tOffset + 0.05);
-                    });
+                        nSrc.stop(now + tOffset + 0.045);
+                    }
                 } catch(e) {
-                    console.error("Audio error in playExhaustRev:", e);
+                    console.error("Audio error in synthesizeEngineRev:", e);
                 }
             },
 
@@ -7080,14 +7150,69 @@
 
 
         // ══════════════════════════════════════════════════════════════════
-        // 🏎️ 4. 3D LÜKS SHOWROOM & GARAJ CONTROLLER
+        // 🏎️ 4. 3D LÜKS SHOWROOM & GARAJ CONTROLLER (AAA ULTRA)
         // ══════════════════════════════════════════════════════════════════
         const garageCars = [
-            { id: "porsche", name: "Porsche 911 GT3 RS", icon: "🏎️", specs: "525 HP • 0-100: 3.2s • 340.000 €" },
-            { id: "ferrari", name: "Ferrari F8 Tributo", icon: "🏎️", specs: "720 HP • 0-100: 2.9s • 450.000 €" },
-            { id: "lambo", name: "Lamborghini Huracán STO", icon: "🏎️", specs: "640 HP • 0-100: 3.0s • 420.000 €" },
-            { id: "gwagon", name: "Mercedes-AMG G63 Mansory", icon: "🚙", specs: "585 HP • 4x4 BiTurbo • 380.000 €" },
-            { id: "rolls", name: "Rolls-Royce Ghost Black Badge", icon: "🚘", specs: "600 HP • Ultra Luxury • 550.000 €" }
+            {
+                id: "porsche",
+                brand: "Porsche",
+                name: "Porsche 911 GT3 RS",
+                hp: "525 HP",
+                accel: "3.2 sn",
+                topSpeed: "296 km/s",
+                price: "340.000 €",
+                soundType: "porsche",
+                img: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=800&q=85",
+                edition: "STUTTGART • TRACK EDITION"
+            },
+            {
+                id: "ferrari",
+                brand: "Ferrari",
+                name: "Ferrari F8 Tributo",
+                hp: "720 HP",
+                accel: "2.9 sn",
+                topSpeed: "340 km/s",
+                price: "450.000 €",
+                soundType: "ferrari",
+                img: "https://images.unsplash.com/photo-1592198084033-aade902d1aae?auto=format&fit=crop&w=800&q=85",
+                edition: "MARANELLO • V8 TWIN TURBO"
+            },
+            {
+                id: "lambo",
+                brand: "Lamborghini",
+                name: "Lamborghini Huracán STO",
+                hp: "640 HP",
+                accel: "3.0 sn",
+                topSpeed: "310 km/s",
+                price: "420.000 €",
+                soundType: "lambo",
+                img: "https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=800&q=85",
+                edition: "SANT'AGATA • V10 SQUADRA CORSE"
+            },
+            {
+                id: "gwagon",
+                brand: "Mercedes-AMG",
+                name: "Mercedes-AMG G63 Mansory",
+                hp: "585 HP",
+                accel: "4.5 sn",
+                topSpeed: "240 km/s",
+                price: "380.000 €",
+                soundType: "gwagon",
+                img: "https://images.unsplash.com/photo-1520031441872-265e4ff70366?auto=format&fit=crop&w=800&q=85",
+                edition: "AFFALTERBACH • 4X4 BITURBO"
+            },
+            {
+                id: "rolls",
+                brand: "Rolls-Royce",
+                name: "Rolls-Royce Ghost Black Badge",
+                hp: "600 HP",
+                accel: "4.8 sn",
+                topSpeed: "250 km/s",
+                price: "550.000 €",
+                soundType: "rolls",
+                img: "https://images.unsplash.com/photo-1631295868223-63265b40d9e4?auto=format&fit=crop&w=800&q=85",
+                edition: "GOODWOOD • V12 BLACK BADGE"
+            }
         ];
         let currentGarageCarIdx = 0;
 
@@ -7111,8 +7236,8 @@
             container.innerHTML = "";
             garageCars.forEach((car, idx) => {
                 let btn = document.createElement("button");
-                btn.style.cssText = "background: rgba(255,255,255,0.06); border: 1px solid rgba(0,229,255,0.3); border-radius: 8px; padding: 6px 10px; color: white; font-size: 11px; font-weight: 800; cursor: pointer; white-space: nowrap;";
-                btn.innerText = `${car.icon} ${car.name.split(' ')[0]}`;
+                btn.className = `car-nav-tab ${idx === currentGarageCarIdx ? "active" : ""}`;
+                btn.innerText = car.brand;
                 btn.onclick = () => updateSelectedGarageCar(idx);
                 container.appendChild(btn);
             });
@@ -7121,23 +7246,55 @@
         function updateSelectedGarageCar(idx) {
             currentGarageCarIdx = idx;
             const car = garageCars[idx];
+            
             const nameEl = document.getElementById("garage-car-name");
-            const specsEl = document.getElementById("garage-car-specs");
-            const iconEl = document.getElementById("garage-car-icon");
+            const brandEl = document.getElementById("garage-car-brand");
+            const hpEl = document.getElementById("garage-spec-hp");
+            const accelEl = document.getElementById("garage-spec-accel");
+            const speedEl = document.getElementById("garage-spec-speed");
+            const priceEl = document.getElementById("garage-spec-price");
+            const imgEl = document.getElementById("garage-car-img");
             const plateEl = document.getElementById("garage-plate-text");
 
             if (nameEl) nameEl.innerText = car.name;
-            if (specsEl) specsEl.innerText = car.specs;
-            if (iconEl) iconEl.innerText = car.icon;
+            if (brandEl) brandEl.innerText = car.edition;
+            if (hpEl) hpEl.innerText = car.hp;
+            if (accelEl) accelEl.innerText = car.accel;
+            if (speedEl) speedEl.innerText = car.topSpeed;
+            if (priceEl) priceEl.innerText = car.price;
+
+            if (imgEl) {
+                imgEl.classList.remove("car-switch-anim");
+                void imgEl.offsetWidth;
+                imgEl.src = car.img;
+                imgEl.classList.add("car-switch-anim");
+            }
 
             const savedPlate = (GAME.state.customPlate || "34 GS 1905");
             if (plateEl) plateEl.innerText = savedPlate;
+
+            renderGarageList();
         }
 
         function revCarEngine() {
+            const car = garageCars[currentGarageCarIdx] || garageCars[0];
             if (typeof SoundManager !== "undefined" && typeof SoundManager.playExhaustRev === "function") {
-                SoundManager.playExhaustRev();
+                SoundManager.playExhaustRev(car.soundType);
             }
+
+            const imgEl = document.getElementById("garage-car-img");
+            const flameEl = document.getElementById("garage-exhaust-flame");
+
+            if (imgEl) {
+                imgEl.classList.add("car-chassis-vibration");
+                setTimeout(() => { imgEl.classList.remove("car-chassis-vibration"); }, 750);
+            }
+
+            if (flameEl) {
+                flameEl.classList.add("active");
+                setTimeout(() => { flameEl.classList.remove("active"); }, 600);
+            }
+
             const stage = document.getElementById("garage-stage");
             if (stage) {
                 stage.classList.remove("stadium-camera-shake");
@@ -7172,6 +7329,43 @@
 
 
         // ══════════════════════════════════════════════════════════════════
+        // 🗞️ CHECK DRAMATIC HEADLINE (BUGFIX HELPER)
+        // ══════════════════════════════════════════════════════════════════
+        function checkDramaticHeadline(goals = 0, rating = 6.0, scoreDiff = 0, isLastMinute = false) {
+            const pName = (GAME.state.playerName || "Genç Yetenek").toUpperCase();
+            const team = (GAME.state.currentClub || "Takımımız").toUpperCase();
+            
+            if (goals >= 3) {
+                if (typeof showNewspaperModal === "function") {
+                    showNewspaperModal(
+                        `HAFTA ${GAME.state.week || 1}`,
+                        `${pName}'DEN TARİHİ HAT-TRICK!`,
+                        `${team} YILDIZIYLA ŞOV YAPTI: 3 GOLLE GECEYE DAMGA VURDU!`,
+                        `${pName}, bu akşam sergilediği inanılmaz performansla adını kulüp tarihine altın harflerle yazdırdı. Taraftarlar stadyumda dakikalarca ayakta alkışladı.`
+                    );
+                }
+            } else if (isLastMinute && goals >= 1) {
+                if (typeof showNewspaperModal === "function") {
+                    showNewspaperModal(
+                        `HAFTA ${GAME.state.week || 1}`,
+                        `90+ DA GELEN MUCİZE!`,
+                        `${pName} SON SANİYEDE HAYAT VERDİ!`,
+                        `Nefes kesen maçta ${pName} uzatma dakikalarında attığı kritik golle takımına 3 puanı getirdi. Tüm şehir ayakta!`
+                    );
+                }
+            } else if (rating >= 9.0) {
+                if (typeof showNewspaperModal === "function") {
+                    showNewspaperModal(
+                        `HAFTA ${GAME.state.week || 1}`,
+                        `SAHANIN EFENDİSİ: ${pName}!`,
+                        `9.0+ REYTİNGLİK RESİTAL!`,
+                        `Karşılaşmada adım atmadık yer bırakmayan ${pName}, futbol otoritelerinden tam not aldı. 'Geleceğin dünya yıldızı' manşetleri atıldı.`
+                    );
+                }
+            }
+        }
+
+// ══════════════════════════════════════════════════════════════════
         // ⚡ 5. VAR REVIEW CONTROLLER
         // ══════════════════════════════════════════════════════════════════
         let varCallback = null;
