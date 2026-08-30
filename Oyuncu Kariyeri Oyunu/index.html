@@ -901,6 +901,16 @@
                 </div>
 
                 <div class="shop-list" id="shop-items-container">
+                    <div class="card glass" style="margin-bottom: 12px; padding: 14px 16px; border: 1.5px solid #00e5ff; background: linear-gradient(135deg, rgba(0,229,255,0.18) 0%, rgba(16,20,30,0.85) 100%); border-radius: 14px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; box-shadow: 0 4px 20px rgba(0,229,255,0.2);" onclick="openGarageShowroom()">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <span style="font-size:32px;">ğŸï¸</span>
+                            <div>
+                                <div style="font-weight:900; font-size:13.5px; color:#ffffff; letter-spacing:0.5px;">3D LÃœKS GARAJ & ARAÃ‡ FÄ°LOSU</div>
+                                <div style="font-size:10.5px; color:#00e5ff; font-weight:700;">GerÃ§ek egzoz gazlama sesi ve plaka Ã¶zelleÅŸtirme</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm" style="background:#00e5ff; color:#000; font-weight:900; font-size:11px; border:none; padding:8px 14px; border-radius:8px; cursor:pointer;">GÄ°RÄ°Å</button>
+                    </div>
                     <!-- Dynamic rendering via main app -->
                 </div>
 
@@ -913,6 +923,16 @@
                 </div>
 
                 <div class="shop-list" id="shop-boots-container" style="display: none; flex-direction: column; gap: 12px;">
+                    <div class="card glass" style="margin-bottom: 12px; padding: 14px 16px; border: 1.5px solid #00e5b7; background: linear-gradient(135deg, rgba(0,229,183,0.18) 0%, rgba(16,20,30,0.85) 100%); border-radius: 14px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; box-shadow: 0 4px 20px rgba(0,229,183,0.2);" onclick="openBootCustomizer()">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <span style="font-size:32px;">ğŸ‘Ÿ</span>
+                            <div>
+                                <div style="font-weight:900; font-size:13.5px; color:#ffffff; letter-spacing:0.5px;">Ã–ZEL KRAMPON ATÃ–LYESÄ° (SIGNATURE LAB)</div>
+                                <div style="font-size:10.5px; color:#00e5b7; font-weight:700;">Kendi kramponunu tasarla & kalÄ±cÄ± stat buffÄ± kazan</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm" style="background:#00e5b7; color:#000; font-weight:900; font-size:11px; border:none; padding:8px 14px; border-radius:8px; cursor:pointer;">TASARLA</button>
+                    </div>
                     <!-- Dynamic boots rendering -->
                 </div>
 
@@ -1342,27 +1362,36 @@
                     </div>
 
                     <!-- Group 2.5: Türk İşi Özellikleri Test Et -->
+                    <!-- Group 2.5: TÃ¼m Mega Ã–zellikleri Test Et -->
                     <div>
-                        <div style="font-size: 11px; font-weight: bold; color: #FFD600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">🧪 TÜRK İŞİ ÖZELLİKLER (HIZLI TEST)</div>
-                        <div style="background: #161b22; border: 1px solid #FFD600; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
-                            <button onclick="testSiyahFutbol()" style="background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid #ef4444; padding: 10px; font-size: 11.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
-                                📺 Siyah Futbol TV Masasını Aç (Ahmet Hoca & Rasim)
+                        <div style="font-size: 11px; font-weight: bold; color: #FFD600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">ğŸ‘‘ SÃœPERSTAR & MEGA Ã–ZELLÄ°KLER (HIZLI TEST)</div>
+                        <div style="background: #161b22; border: 1px solid #FFD600; border-radius: 8px; padding: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <button onclick="testBallonDor()" style="background: rgba(255,214,0,0.15); color: #FFD600; border: 1px solid #FFD600; padding: 8px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
+                                ğŸ† Ballon d'Or GalasÄ±
                             </button>
-                            <button onclick="testInterview()" style="background: rgba(0,229,183,0.15); color: #00e5b7; border: 1px solid #00e5b7; padding: 10px; font-size: 11.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
-                                🎙️ Basın Toplantısı / Röportaj Yap (18+ Laubali Cevap)
+                            <button onclick="testTransferPenthouse()" style="background: rgba(0,229,183,0.15); color: #00e5b7; border: 1px solid #00e5b7; padding: 8px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
+                                ğŸ’¼ Penthouse Transfer
                             </button>
-                            <button onclick="testTribun()" style="background: rgba(255,214,0,0.15); color: #FFD600; border: 1px solid #FFD600; padding: 10px; font-size: 11.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
-                                📣 Tribünlere 3'lü Çektir (Şşşşt... 1-2-3!)
+                            <button onclick="testNationalAnthem()" style="background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid #ef4444; padding: 8px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
+                                ğŸ‡¹ğŸ‡· Ä°stiklal MarÅŸÄ± & Kaptan
                             </button>
-                            <button onclick="testAirport()" style="background: rgba(168,85,247,0.15); color: #c084fc; border: 1px solid #a855f7; padding: 10px; font-size: 11.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
-                                ✈️ Gece 02:00 Havalimanı Meşaleli Karşılamasını Gör
+                            <button onclick="testGarageShowroom()" style="background: rgba(0,229,255,0.15); color: #00e5ff; border: 1px solid #00e5ff; padding: 8px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
+                                ğŸï¸ 3D LÃ¼ks Garaj & Ses
                             </button>
-                            <button onclick="testRetirement()" style="background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid #3b82f6; padding: 10px; font-size: 11.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
-                                🏛️ Türk İşi Emeklilik Yollarını İncele
+                            <button onclick="testVarReview()" style="background: rgba(168,85,247,0.15); color: #c084fc; border: 1px solid #a855f7; padding: 8px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
+                                âš¡ VAR MonitÃ¶rÃ¼ Ä°ncele
+                            </button>
+                            <button onclick="testVictoryBus()" style="background: rgba(255,214,0,0.15); color: #FFD600; border: 1px solid #FFD600; padding: 8px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
+                                ğŸšŒ Åampiyonluk OtobÃ¼sÃ¼
+                            </button>
+                            <button onclick="testBootStudio()" style="background: rgba(0,229,183,0.15); color: #00e5b7; border: 1px solid #00e5b7; padding: 8px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
+                                ğŸ‘Ÿ Ã–zel Krampon Tasarla
+                            </button>
+                            <button onclick="testSiyahFutbol()" style="background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid #ef4444; padding: 8px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
+                                ğŸ“º Siyah Futbol MasasÄ±
                             </button>
                         </div>
                     </div>
-
 
                     <!-- Group 3: Tehlikeli Bölge -->
 
@@ -2759,6 +2788,383 @@
             </div>
         </div>
 
+        <!-- ğŸ† BALLON D'OR & THE BEST PARIS GALA MODAL -->
+        <div class="event-modal-overlay" id="ballondor-modal" style="background: rgba(0,0,0,0.96); backdrop-filter: blur(14px); z-index: 10035; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
+            <div class="ballondor-card-stage" id="ballondor-stage">
+                <div class="paris-eiffel-halo"></div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 215, 0, 0.3); padding-bottom: 8px; margin-bottom: 12px; position: relative; z-index: 3;">
+                    <div style="font-size: 10px; font-weight: 900; color: #FFD600; letter-spacing: 1.5px; text-transform: uppercase;">
+                        âœ¨ THEATRE DU CHATELET â€¢ PARIS
+                    </div>
+                    <div style="font-size: 10px; color: #ef4444; font-weight: 900; display: flex; align-items: center; gap: 4px;">
+                        <span class="var-rec-dot"></span> LIVE GALA
+                    </div>
+                </div>
+
+                <div class="ballondor-trophy-wrap">
+                    <div class="ballondor-trophy-sphere">
+                        <svg viewBox="0 0 100 100" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; opacity: 0.4;">
+                            <polygon points="50,15 65,30 50,45 35,30" fill="#ffffff"/>
+                            <polygon points="20,40 35,55 20,70 5,55" fill="#ffffff"/>
+                            <polygon points="80,40 95,55 80,70 65,55" fill="#ffffff"/>
+                            <polygon points="50,60 65,75 50,90 35,75" fill="#ffffff"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <h2 style="color: #FFD600; font-size: 22px; font-weight: 900; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 1px; font-family: 'Cinzel', Georgia, serif; text-shadow: 0 0 20px rgba(255,214,0,0.6);">
+                    BALLON D'OR KAZANANI!
+                </h2>
+                <p style="font-size: 11.5px; color: #fef08a; margin: 0 0 14px 0; font-weight: 700;" id="ballondor-player-name">
+                    DÃœNYANIN EN Ä°YÄ° FUTBOLCUSU SEÃ‡Ä°LDÄ°N!
+                </p>
+
+                <!-- Tuxedo Selection Step -->
+                <div id="ballondor-tuxedo-step">
+                    <div style="font-size: 10.5px; font-weight: 800; color: #cbd5e1; margin-bottom: 8px; text-transform: uppercase;">
+                        ğŸ‘” KÄ±rmÄ±zÄ± HalÄ± Smokinini SeÃ§:
+                    </div>
+                    <div class="tuxedo-select-grid">
+                        <div class="tuxedo-option-card selected" onclick="selectTuxedo(0, this)">
+                            <div style="font-size: 18px; margin-bottom: 2px;">ğŸ–¤</div>
+                            <div style="font-weight: 800; color: #fff;">Siyah Saten</div>
+                            <div style="font-size: 9px; color: #94a3b8;">Asil & Klasik</div>
+                        </div>
+                        <div class="tuxedo-option-card" onclick="selectTuxedo(1, this)">
+                            <div style="font-size: 18px; margin-bottom: 2px;">ğŸ·</div>
+                            <div style="font-weight: 800; color: #f87171;">Bordo Kadife</div>
+                            <div style="font-size: 9px; color: #94a3b8;">Karizmatik</div>
+                        </div>
+                        <div class="tuxedo-option-card" onclick="selectTuxedo(2, this)">
+                            <div style="font-size: 18px; margin-bottom: 2px;">ğŸ‘‘</div>
+                            <div style="font-weight: 800; color: #FFD600;">AltÄ±n NakÄ±ÅŸlÄ±</div>
+                            <div style="font-size: 9px; color: #94a3b8;">Kraliyet Stili</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="proceedToBallonDorSpeech()" style="width: 100%; padding: 12px; font-weight: 900; background: linear-gradient(135deg, #FFD600 0%, #ff8f00 100%); color: #000; border: none; border-radius: 8px; cursor: pointer;">
+                        ğŸ† SAHNEYE Ã‡IK & KUPAYI KALDIR
+                    </button>
+                </div>
+
+                <!-- Speech Step -->
+                <div id="ballondor-speech-step" style="display: none;">
+                    <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,215,0,0.3); border-radius: 10px; padding: 12px; margin-bottom: 12px; text-align: left;">
+                        <div style="font-size: 10px; color: #FFD600; font-weight: 800; margin-bottom: 6px;">ğŸ™ï¸ TEÅEKKÃœR KONUÅMAN:</div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <button class="btn btn-event" onclick="deliverBallonDorSpeech('humble')" style="text-align: left; padding: 10px; font-size: 11px; background: rgba(255,255,255,0.05); border: 1px solid rgba(0,229,183,0.3); border-radius: 6px; color: #00e5b7; cursor: pointer;">
+                                <strong>"Bu Ã¶dÃ¼l tÃ¼m takÄ±mÄ±mÄ±n ve beni destekleyen halkÄ±mÄ±n." (MÃ¼tevazÄ± Efsane)</strong>
+                                <div style="font-size: 9.5px; color: #94a3b8; margin-top: 2px;">+100.000 TakipÃ§i, +20 Moral, Global SaygÄ±</div>
+                            </button>
+                            <button class="btn btn-event" onclick="deliverBallonDorSpeech('confident')" style="text-align: left; padding: 10px; font-size: 11px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,214,0,0.3); border-radius: 6px; color: #FFD600; cursor: pointer;">
+                                <strong>"Ã‡ok Ã§alÄ±ÅŸtÄ±m ve dÃ¼nyanÄ±n en iyisi olduÄŸumu kanÄ±tladÄ±m!" (SÃ¼perstar)</strong>
+                                <div style="font-size: 9.5px; color: #94a3b8; margin-top: 2px;">+250.000 TakipÃ§i, +50.000 â‚¬ Sponsorluk Primi</div>
+                            </button>
+                            <button class="btn btn-event" onclick="deliverBallonDorSpeech('family')" style="text-align: left; padding: 10px; font-size: 11px; background: rgba(255,255,255,0.05); border: 1px solid rgba(239,68,68,0.3); border-radius: 6px; color: #f87171; cursor: pointer;">
+                                <strong>"Bu altÄ±n topu bana inanan aileme ve memleketime armaÄŸan ediyorum." (Duygusal)</strong>
+                                <div style="font-size: 9.5px; color: #94a3b8; margin-top: 2px;">+150.000 TakipÃ§i, +%30 Taraftar Sevgisi</div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ğŸ’¼ PENTHOUSE TRANSFER NEGOTIATION MODAL -->
+        <div class="event-modal-overlay" id="transfer-penthouse-modal" style="background: rgba(0,0,0,0.95); backdrop-filter: blur(12px); z-index: 10030; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
+            <div class="penthouse-card-stage" id="penthouse-stage">
+                <div class="skyscraper-panorama"></div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 229, 183, 0.3); padding-bottom: 8px; margin-bottom: 12px; position: relative; z-index: 3;">
+                    <div style="font-size: 10px; font-weight: 900; color: #00e5b7; letter-spacing: 1px;">
+                        ğŸ™ï¸ PENTHOUSE TRANSFER ZÄ°RVESÄ°
+                    </div>
+                    <div style="font-size: 10px; color: #FFD600; font-weight: 800;" id="penthouse-club-name">
+                        REAL MADRID CF
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px; margin-bottom: 12px;">
+                    <div style="font-size: 28px;">ğŸ‘”</div>
+                    <div style="text-align: left;">
+                        <div style="font-size: 12px; font-weight: 900; color: #ffffff;" id="penthouse-president-name">KulÃ¼p BaÅŸkanÄ± & Menajer</div>
+                        <div style="font-size: 10px; color: #94a3b8;" id="penthouse-dialogue">"Masaya senin iÃ§in tarihi bir kontrat koyduk. ÅartlarÄ±nÄ± konuÅŸalÄ±m."</div>
+                    </div>
+                </div>
+
+                <div style="text-align: left; margin-bottom: 6px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 10px; color: #cbd5e1; font-weight: 700;">
+                        <span>BaÅŸkanÄ±n Kabul EÅŸiÄŸi / SabrÄ±:</span>
+                        <span id="penthouse-leverage-val" style="color: #00e5b7;">%80</span>
+                    </div>
+                    <div class="transfer-leverage-track">
+                        <div class="transfer-leverage-fill" id="penthouse-leverage-bar" style="width: 80%;"></div>
+                    </div>
+                </div>
+
+                <!-- Contract Clauses -->
+                <div style="margin-bottom: 12px;">
+                    <div class="transfer-clause-row">
+                        <span style="color: #94a3b8;">HaftalÄ±k MaaÅŸ:</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <button class="btn btn-sm" onclick="adjustPenthouseClause('salary', -5000)" style="padding: 2px 7px; background: rgba(255,255,255,0.1); color: white;">-</button>
+                            <span id="penthouse-salary-val" style="font-weight: 900; color: #00e5b7;">50.000 â‚¬</span>
+                            <button class="btn btn-sm" onclick="adjustPenthouseClause('salary', 5000)" style="padding: 2px 7px; background: rgba(255,255,255,0.1); color: white;">+</button>
+                        </div>
+                    </div>
+                    <div class="transfer-clause-row">
+                        <span style="color: #94a3b8;">Ä°mza ParasÄ±:</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <button class="btn btn-sm" onclick="adjustPenthouseClause('signing', -50000)" style="padding: 2px 7px; background: rgba(255,255,255,0.1); color: white;">-</button>
+                            <span id="penthouse-signing-val" style="font-weight: 900; color: #FFD600;">500.000 â‚¬</span>
+                            <button class="btn btn-sm" onclick="adjustPenthouseClause('signing', 50000)" style="padding: 2px 7px; background: rgba(255,255,255,0.1); color: white;">+</button>
+                        </div>
+                    </div>
+                    <div class="transfer-clause-row">
+                        <span style="color: #94a3b8;">Gol BaÅŸÄ±na Prim:</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <button class="btn btn-sm" onclick="adjustPenthouseClause('goalBonus', -1000)" style="padding: 2px 7px; background: rgba(255,255,255,0.1); color: white;">-</button>
+                            <span id="penthouse-bonus-val" style="font-weight: 900; color: #60a5fa;">5.000 â‚¬</span>
+                            <button class="btn btn-sm" onclick="adjustPenthouseClause('goalBonus', 1000)" style="padding: 2px 7px; background: rgba(255,255,255,0.1); color: white;">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn" onclick="submitPenthouseOffer(true)" style="flex: 1; padding: 12px; font-weight: 900; font-size: 12px; background: linear-gradient(135deg, #00e5b7 0%, #00b4d8 100%); color: #000; border: none; border-radius: 8px; cursor: pointer;">
+                        âœï¸ KONTRATI Ä°MZALA
+                    </button>
+                    <button class="btn" onclick="closePenthouseModal()" style="padding: 12px 16px; font-weight: 800; font-size: 11px; background: rgba(255,255,255,0.08); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; cursor: pointer;">
+                        VazgeÃ§
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ğŸ‡¹ğŸ‡· NATIONAL ANTHEM & CAPTAIN TEAM TALK MODAL -->
+        <div class="event-modal-overlay" id="national-anthem-modal" style="background: rgba(0,0,0,0.96); backdrop-filter: blur(14px); z-index: 10030; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
+            <div class="national-anthem-stage" id="national-anthem-stage">
+                <div class="anthem-flag-waving"></div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(239, 68, 68, 0.4); padding-bottom: 8px; margin-bottom: 14px; position: relative; z-index: 3;">
+                    <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 900; color: #ef4444; letter-spacing: 1px;">
+                        <span class="anthem-captain-badge">C</span> A MÄ°LLÄ° TAKIM SEREMONÄ°SÄ°
+                    </div>
+                    <div style="font-size: 10px; color: #FFD600; font-weight: 800;" id="anthem-match-title">
+                        EURO 2028 FÄ°NALÄ°
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 14px;">
+                    <div style="font-size: 32px; margin-bottom: 4px;">ğŸ‡¹ğŸ‡·</div>
+                    <h2 style="font-size: 20px; font-weight: 900; color: #ffffff; margin: 0 0 6px 0; text-transform: uppercase;">
+                        Ä°STÄ°KLAL MARÅI Ã‡ALIYOR
+                    </h2>
+                    <p style="font-size: 11.5px; color: #cbd5e1; line-height: 1.45; margin: 0 0 10px 0;">
+                        "Korkma, sÃ¶nmez bu ÅŸafaklarda yÃ¼zen al sancak..." 50.000 taraftar tek yÃ¼rek halinde marÅŸÄ± haykÄ±rÄ±yor!
+                    </p>
+                </div>
+
+                <!-- Captain Team Talk Step -->
+                <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 12px; padding: 14px; text-align: left; margin-bottom: 14px;">
+                    <div style="font-size: 10.5px; font-weight: 900; color: #FFD600; margin-bottom: 8px; text-transform: uppercase;">
+                        ğŸ”¥ Kaptan Olarak TakÄ±ma AteÅŸleyici KonuÅŸma Yap:
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <button class="btn btn-event" onclick="deliverCaptainTalk('passion')" style="text-align: left; padding: 10px; font-size: 11px; background: rgba(255,255,255,0.05); border: 1px solid rgba(239,68,68,0.4); border-radius: 6px; color: #ef4444; cursor: pointer;">
+                            <strong>"Bu forma iÃ§in sahada basmadÄ±k Ã§im bÄ±rakmayacaÄŸÄ±z! Vatan iÃ§in!" (AteÅŸli & Agresif)</strong>
+                            <div style="font-size: 9.5px; color: #cbd5e1; margin-top: 2px;">+15 TakÄ±m HÄ±rsÄ±, +10 Åut GÃ¼cÃ¼</div>
+                        </button>
+                        <button class="btn btn-event" onclick="deliverCaptainTalk('tactical')" style="text-align: left; padding: 10px; font-size: 11px; background: rgba(255,255,255,0.05); border: 1px solid rgba(0,229,183,0.4); border-radius: 6px; color: #00e5b7; cursor: pointer;">
+                            <strong>"Sakin kalacaÄŸÄ±z, planÄ±mÄ±za sadÄ±k kalÄ±p rakibi boÄŸacaÄŸÄ±z." (Taktiksel Lider)</strong>
+                            <div style="font-size: 9.5px; color: #cbd5e1; margin-top: 2px;">+10 Pas & Vizyon, +10 Hoca GÃ¼veni</div>
+                        </button>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="proceedFromAnthem()" style="width: 100%; padding: 12px; font-weight: 900; background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); color: #fff; border: none; border-radius: 8px; cursor: pointer;">
+                    ğŸ‡¹ğŸ‡· SAHAYA Ã‡IK VE MÃœCADELE ET
+                </button>
+            </div>
+        </div>
+
+        <!-- ğŸï¸ 3D LUXURY GARAGE SHOWROOM MODAL -->
+        <div class="event-modal-overlay" id="garage-showroom-modal" style="background: rgba(0,0,0,0.95); backdrop-filter: blur(14px); z-index: 10030; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
+            <div class="garage-card-stage" id="garage-stage">
+                <div class="garage-neon-floor"></div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 229, 255, 0.3); padding-bottom: 8px; margin-bottom: 12px;">
+                    <div style="font-size: 11px; font-weight: 900; color: #00e5ff; letter-spacing: 1px;">
+                        ğŸï¸ SÃœPERSTAR KOLEKSÄ°YON GARAJI
+                    </div>
+                    <button onclick="closeGarageModal()" style="background: none; border: none; color: #94a3b8; font-size: 16px; cursor: pointer;">âœ•</button>
+                </div>
+
+                <!-- Car Showcase View -->
+                <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(0,229,255,0.2); border-radius: 12px; padding: 16px; margin-bottom: 12px; text-align: center;">
+                    <div id="garage-car-icon" style="font-size: 48px; margin-bottom: 6px;">ğŸï¸</div>
+                    <h3 id="garage-car-name" style="font-size: 18px; font-weight: 900; color: #ffffff; margin: 0 0 4px 0;">Porsche 911 GT3 RS</h3>
+                    <div id="garage-car-specs" style="font-size: 11px; color: #00e5ff; font-weight: 700; margin-bottom: 10px;">525 HP â€¢ 0-100: 3.2s â€¢ 340.000 â‚¬</div>
+
+                    <!-- Dynamic Custom License Plate -->
+                    <div style="margin-bottom: 14px;">
+                        <div class="license-plate-badge">
+                            <span class="tr-flag-tag">TR</span>
+                            <span id="garage-plate-text">34 GS 1905</span>
+                        </div>
+                    </div>
+
+                    <!-- Exhaust Rev & Pedal Controls -->
+                    <div style="display: flex; justify-content: center; gap: 10px;">
+                        <button class="btn-rev-pedal" onclick="revCarEngine()">
+                            âš¡ GAZA BAS (EGZOZ PATLAT)
+                        </button>
+                        <button class="btn" onclick="editCarPlate()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 8px; padding: 8px 14px; font-size: 11.5px; font-weight: 800; cursor: pointer;">
+                            âœï¸ PlakayÄ± DeÄŸiÅŸtir
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Garage Vehicle Selector -->
+                <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;" id="garage-cars-list">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- âš¡ VAR REVIEW MODAL -->
+        <div class="event-modal-overlay" id="var-review-modal" style="background: rgba(0,0,0,0.96); backdrop-filter: blur(14px); z-index: 10035; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
+            <div class="var-screen-stage" id="var-stage">
+                <div class="var-crt-scanlines"></div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 229, 183, 0.3); padding-bottom: 8px; margin-bottom: 12px;">
+                    <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 900; color: #00e5b7; letter-spacing: 1.5px;">
+                        <span class="var-rec-dot"></span> VAR REVIEW â€¢ OFFSIDE / PENALTY CHECK
+                    </div>
+                    <div style="font-size: 10px; color: #94a3b8;" id="var-time-badge">90+3'</div>
+                </div>
+
+                <div style="background: #080c14; border: 1px solid rgba(0,229,183,0.25); border-radius: 10px; padding: 18px; margin-bottom: 14px;">
+                    <div style="font-size: 38px; margin-bottom: 8px;">ğŸ“º</div>
+                    <h3 style="font-size: 15px; font-weight: 900; color: #ffffff; margin: 0 0 6px 0;" id="var-check-title">
+                        HAKEM VAR MONÄ°TÃ–RÃœNDE!
+                    </h3>
+                    <p style="font-size: 11.5px; color: #cbd5e1; margin: 0 0 10px 0;" id="var-check-desc">
+                        Nefesler tutuldu! Kritik pozisyon iÃ§in 3D ofsayt Ã§izgisi Ã§ekiliyor...
+                    </p>
+                    <div class="var-decision-banner" id="var-decision-banner" style="color: #FFD600;">
+                        Ä°NCELENÄ°YOR...
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" id="btn-var-continue" onclick="resolveVarReview()" style="width: 100%; padding: 12px; font-weight: 900; font-size: 13px; background: linear-gradient(135deg, #00e5b7 0%, #00b4d8 100%); color: #000; border: none; border-radius: 8px; cursor: pointer;">
+                    âš¡ HAKEMÄ°N KARARINI GÃ–R
+                </button>
+            </div>
+        </div>
+
+        <!-- ğŸšŒ VICTORY OPEN-TOP BUS TOUR MODAL -->
+        <div class="event-modal-overlay" id="victory-bus-modal" style="background: rgba(0,0,0,0.96); backdrop-filter: blur(14px); z-index: 10035; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
+            <div class="victory-bus-stage" id="victory-bus-stage">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 215, 0, 0.3); padding-bottom: 8px; margin-bottom: 12px;">
+                    <div style="font-size: 10px; font-weight: 900; color: #FFD600; letter-spacing: 1px;">
+                        ğŸ† ÅAMPÄ°YONLUK ÅEHÄ°R TURU & MEÅALE ÅÃ–LENÄ°
+                    </div>
+                    <div style="font-size: 10px; color: #00e5b7; font-weight: 800;" id="bus-trophy-tag">
+                        SÃœPER LÄ°G KUPASI
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 14px;">
+                    <div style="font-size: 42px; margin-bottom: 4px;">ğŸšŒğŸ†</div>
+                    <h2 style="font-size: 20px; font-weight: 900; color: #ffffff; margin: 0 0 6px 0;" id="bus-city-title">
+                        ÅEHÄ°R AYAKTA! BOÄAZ YANIYOR!
+                    </h2>
+                    <p style="font-size: 11.5px; color: #fef08a; margin: 0 0 12px 0;">
+                        YÃ¼z binlerce taraftar sokaklarÄ± kÄ±rmÄ±zÄ± meÅŸalelerle aydÄ±nlattÄ±. ÃœstÃ¼ aÃ§Ä±k otobÃ¼sten kupayÄ± havaya kaldÄ±rÄ±yorsun!
+                    </p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px;">
+                    <button class="btn btn-event" onclick="triggerBusChant('chant')" style="text-align: left; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,214,0,0.4); border-radius: 8px; color: #FFD600; cursor: pointer;">
+                        <strong>ğŸ“£ Mikrofondan Åampiyonluk ÅarkÄ±sÄ± BaÅŸlat!</strong>
+                        <div style="font-size: 9.5px; color: #cbd5e1; margin-top: 2px;">+%25 Taraftar Sevgisi, +50.000 TakipÃ§i</div>
+                    </button>
+                    <button class="btn btn-event" onclick="triggerBusChant('pyro')" style="text-align: left; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(239,68,68,0.4); border-radius: 8px; color: #f87171; cursor: pointer;">
+                        <strong>ğŸ”¥ MeÅŸale YakÄ±p OtobÃ¼sÃ¼n Ã–nÃ¼ne GeÃ§!</strong>
+                        <div style="font-size: 9.5px; color: #cbd5e1; margin-top: 2px;">+15 Moral, Sosyal Medyada Viral FotoÄŸraf</div>
+                    </button>
+                </div>
+
+                <button class="btn btn-primary" onclick="closeVictoryBusModal()" style="width: 100%; padding: 12px; font-weight: 900; background: linear-gradient(135deg, #FFD600 0%, #ff8f00 100%); color: #000; border: none; border-radius: 8px; cursor: pointer;">
+                    ğŸ‘‘ KUTLAMAYI TAMAMLA & DEVAM ET
+                </button>
+            </div>
+        </div>
+
+        <!-- ğŸ‘Ÿ SIGNATURE BOOT STUDIO MODAL -->
+        <div class="event-modal-overlay" id="boot-customizer-modal" style="background: rgba(0,0,0,0.95); backdrop-filter: blur(14px); z-index: 10030; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
+            <div class="boot-studio-stage" id="boot-studio-stage">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 229, 183, 0.3); padding-bottom: 8px; margin-bottom: 12px;">
+                    <div style="font-size: 11px; font-weight: 900; color: #00e5b7; letter-spacing: 1px;">
+                        ğŸ‘Ÿ Ã–ZEL KRAMPON ATÃ–LYESÄ° (SIGNATURE LAB)
+                    </div>
+                    <button onclick="closeBootStudioModal()" style="background: none; border: none; color: #94a3b8; font-size: 16px; cursor: pointer;">âœ•</button>
+                </div>
+
+                <!-- 3D Boot Preview -->
+                <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(0,229,183,0.3); border-radius: 12px; padding: 16px; margin-bottom: 12px; text-align: center;">
+                    <div id="boot-preview-svg" style="width: 160px; height: 75px; margin: 0 auto 10px auto;">
+                        <svg viewBox="0 0 160 75" style="width: 100%; height: 100%;">
+                            <defs>
+                                <linearGradient id="boot-upper-grad" x1="0" y1="0" x2="1" y2="0">
+                                    <stop offset="0%" stop-color="#ef4444" id="boot-svg-upper-stop1"/>
+                                    <stop offset="100%" stop-color="#f59e0b" id="boot-svg-upper-stop2"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M 15 50 Q 30 25 70 20 Q 120 18 145 42 Q 155 52 140 58 Q 80 62 15 58 Z" fill="url(#boot-upper-grad)" id="boot-svg-body"/>
+                            <path d="M 12 56 Q 80 60 142 56 L 140 62 Q 80 66 12 62 Z" fill="#00e5b7" id="boot-svg-sole"/>
+                            <rect x="25" y="62" width="6" height="5" fill="#ffffff" id="boot-svg-studs1"/>
+                            <rect x="45" y="62" width="6" height="5" fill="#ffffff" id="boot-svg-studs2"/>
+                            <rect x="110" y="62" width="6" height="5" fill="#ffffff" id="boot-svg-studs3"/>
+                            <rect x="130" y="62" width="6" height="5" fill="#ffffff" id="boot-svg-studs4"/>
+                            <path d="M 45 38 Q 75 28 115 42 Q 85 40 55 45 Z" fill="#ffffff" id="boot-svg-swoosh"/>
+                        </svg>
+                    </div>
+                    <div id="boot-engraving-label" style="font-family: monospace; font-weight: 900; font-size: 11px; color: #FFD600; letter-spacing: 2px;">
+                        LASER: [ EREN â€¢ 10 ]
+                    </div>
+                    <div style="font-size: 10px; color: #00e5b7; font-weight: 700; margin-top: 4px;">
+                        âš¡ Stat Bonusu: +2 Åut GÃ¼cÃ¼ â€¢ +2 HÄ±z â€¢ +2 Ã‡alÄ±m
+                    </div>
+                </div>
+
+                <!-- Color Selectors -->
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; text-align: left;">
+                    <div>
+                        <span style="font-size: 10px; color: #94a3b8; font-weight: 700;">GÃ¶vde / Saya Rengi:</span>
+                        <div style="display: flex; gap: 6px; margin-top: 4px;">
+                            <div class="boot-color-chip active" style="background: #ef4444;" onclick="setBootColor('upper', '#ef4444')"></div>
+                            <div class="boot-color-chip" style="background: #3b82f6;" onclick="setBootColor('upper', '#3b82f6')"></div>
+                            <div class="boot-color-chip" style="background: #10b981;" onclick="setBootColor('upper', '#10b981')"></div>
+                            <div class="boot-color-chip" style="background: #FFD600;" onclick="setBootColor('upper', '#FFD600')"></div>
+                            <div class="boot-color-chip" style="background: #0f172a;" onclick="setBootColor('upper', '#0f172a')"></div>
+                            <div class="boot-color-chip" style="background: #ffffff;" onclick="setBootColor('upper', '#ffffff')"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <span style="font-size: 10px; color: #94a3b8; font-weight: 700;">Taban & Logo Rengi:</span>
+                        <div style="display: flex; gap: 6px; margin-top: 4px;">
+                            <div class="boot-color-chip active" style="background: #00e5b7;" onclick="setBootColor('sole', '#00e5b7')"></div>
+                            <div class="boot-color-chip" style="background: #FFD600;" onclick="setBootColor('sole', '#FFD600')"></div>
+                            <div class="boot-color-chip" style="background: #ef4444;" onclick="setBootColor('sole', '#ef4444')"></div>
+                            <div class="boot-color-chip" style="background: #a855f7;" onclick="setBootColor('sole', '#a855f7')"></div>
+                            <div class="boot-color-chip" style="background: #ffffff;" onclick="setBootColor('sole', '#ffffff')"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="saveAndEquipCustomBoot()" style="width: 100%; padding: 12px; font-weight: 900; background: linear-gradient(135deg, #00e5b7 0%, #00b4d8 100%); color: #000; border: none; border-radius: 8px; cursor: pointer;">
+                    ğŸ‘Ÿ KRAMPONU KAYDET VE GÄ°Y (+BUFF)
+                </button>
+            </div>
+        </div>
+
         <!-- PRIVACY POLICY MODAL (Google Play Compliance) -->
         <div class="event-modal-overlay" id="privacy-modal" style="background: rgba(0,0,0,0.85); z-index: 10030; display: none; align-items: center; justify-content: center;">
             <div class="event-card glass" style="max-width: 380px; text-align: left; max-height: 80vh; overflow-y: auto; padding: 20px;">
@@ -2915,6 +3321,101 @@
                         this.audioCtx = null;
                     }
                 }
+            },
+
+            playExhaustRev: function() {
+                if (!this.enabled) return;
+                try {
+                    this.initAudio();
+                    let ctx = this.audioCtx;
+                    if (!ctx) return;
+                    let now = ctx.currentTime;
+
+                    // 1. Engine RPM Spool (Sub-bass V8/V10 sine ramp)
+                    let osc = ctx.createOscillator();
+                    let gain = ctx.createGain();
+                    osc.type = "sawtooth";
+                    osc.frequency.setValueAtTime(65, now);
+                    osc.frequency.exponentialRampToValueAtTime(320, now + 0.35);
+                    osc.frequency.exponentialRampToValueAtTime(120, now + 0.7);
+
+                    let filter = ctx.createBiquadFilter();
+                    filter.type = "lowpass";
+                    filter.frequency.setValueAtTime(400, now);
+                    filter.frequency.exponentialRampToValueAtTime(1800, now + 0.35);
+                    filter.frequency.exponentialRampToValueAtTime(300, now + 0.7);
+
+                    gain.gain.setValueAtTime(0.35, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.75);
+
+                    osc.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.75);
+
+                    // 2. Anti-lag / Exhaust Crackle Pops (Filtered Noise Bursts)
+                    let popTimes = [0.38, 0.46, 0.54, 0.62];
+                    popTimes.forEach(tOffset => {
+                        let bSize = Math.floor(ctx.sampleRate * 0.06);
+                        let b = ctx.createBuffer(1, bSize, ctx.sampleRate);
+                        let d = b.getChannelData(0);
+                        for (let i = 0; i < bSize; i++) d[i] = (Math.random() * 2 - 1);
+                        let nSrc = ctx.createBufferSource();
+                        nSrc.buffer = b;
+                        let nGain = ctx.createGain();
+                        nGain.gain.setValueAtTime(0.4, now + tOffset);
+                        nGain.gain.exponentialRampToValueAtTime(0.001, now + tOffset + 0.05);
+                        nSrc.connect(nGain);
+                        nGain.connect(ctx.destination);
+                        nSrc.start(now + tOffset);
+                        nSrc.stop(now + tOffset + 0.05);
+                    });
+                } catch(e) {
+                    console.error("Audio error in playExhaustRev:", e);
+                }
+            },
+
+            playVarHeartbeat: function() {
+                if (!this.enabled) return;
+                try {
+                    this.initAudio();
+                    let ctx = this.audioCtx;
+                    if (!ctx) return;
+                    let now = ctx.currentTime;
+
+                    // Deep Heartbeat Pulse
+                    let osc = ctx.createOscillator();
+                    let gain = ctx.createGain();
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(60, now);
+                    osc.frequency.exponentialRampToValueAtTime(30, now + 0.18);
+                    gain.gain.setValueAtTime(0.4, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                    osc.connect(gain); gain.connect(ctx.destination);
+                    osc.start(now); osc.stop(now + 0.2);
+                } catch(e) {
+                    console.error("Audio error in playVarHeartbeat:", e);
+                }
+            },
+
+            playVarChime: function(isSuccess) {
+                if (!this.enabled) return;
+                try {
+                    this.initAudio();
+                    let ctx = this.audioCtx;
+                    if (!ctx) return;
+                    let now = ctx.currentTime;
+                    let osc = ctx.createOscillator();
+                    let gain = ctx.createGain();
+                    osc.type = "triangle";
+                    osc.frequency.setValueAtTime(isSuccess ? 880 : 330, now);
+                    osc.frequency.setValueAtTime(isSuccess ? 1174 : 220, now + 0.15);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+                    osc.connect(gain); gain.connect(ctx.destination);
+                    osc.start(now); osc.stop(now + 0.45);
+                } catch(e) {}
             },
 
             duckMusic: function(targetVol = 0.05, duration = 0.4) {
@@ -6304,6 +6805,570 @@
             if (sm) sm.classList.remove("active");
             const rm = document.getElementById("retirement-summary-modal");
             if (rm) rm.classList.add("active");
+        }
+
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // ğŸ† 1. BALLON D'OR GALA CONTROLLER
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        let ballonDorCallback = null;
+        let selectedTuxedoIdx = 0;
+
+        function showBallonDorModal(onComplete = null) {
+            ballonDorCallback = onComplete;
+            const modal = document.getElementById("ballondor-modal");
+            const pNameEl = document.getElementById("ballondor-player-name");
+            const pName = (GAME.state.playerName || "SÃœPERSTAR").toUpperCase();
+            
+            if (pNameEl) pNameEl.innerText = `${pName} â€¢ DÃœNYANIN EN Ä°YÄ° FUTBOLCUSU!`;
+            
+            const tuxStep = document.getElementById("ballondor-tuxedo-step");
+            const speechStep = document.getElementById("ballondor-speech-step");
+            if (tuxStep) tuxStep.style.display = "block";
+            if (speechStep) speechStep.style.display = "none";
+
+            if (modal) {
+                modal.style.display = "flex";
+                modal.classList.add("active");
+            }
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playBuy === "function") {
+                SoundManager.playBuy();
+            }
+        }
+
+        function selectTuxedo(idx, el) {
+            selectedTuxedoIdx = idx;
+            const cards = document.querySelectorAll(".tuxedo-option-card");
+            cards.forEach(c => c.classList.remove("selected"));
+            if (el) el.classList.add("selected");
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playClick === "function") {
+                SoundManager.playClick();
+            }
+        }
+
+        function proceedToBallonDorSpeech() {
+            const tuxStep = document.getElementById("ballondor-tuxedo-step");
+            const speechStep = document.getElementById("ballondor-speech-step");
+            if (tuxStep) tuxStep.style.display = "none";
+            if (speechStep) speechStep.style.display = "block";
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playStadiumDrumBeat === "function") {
+                SoundManager.playStadiumDrumBeat(2);
+            }
+        }
+
+        function deliverBallonDorSpeech(speechType) {
+            const modal = document.getElementById("ballondor-modal");
+            const pName = (GAME.state.playerName || "GenÃ§ YÄ±ldÄ±z");
+
+            if (speechType === "humble") {
+                GAME.state.followers = (GAME.state.followers || 0) + 100000;
+                GAME.state.moral = Math.min(100, (GAME.state.moral || 80) + 20);
+                GAME.addSocialPost("@france_football", "Ballon d'Or", `${pName}: 'Bu Ã¶dÃ¼l tÃ¼m takÄ±mÄ±mÄ±n.' TÃ¼m dÃ¼nya ayakta alkÄ±ÅŸlÄ±yor!`);
+            } else if (speechType === "confident") {
+                GAME.state.followers = (GAME.state.followers || 0) + 250000;
+                GAME.state.bakiye = (GAME.state.bakiye || 0) + 50000;
+                GAME.state.moral = 100;
+                GAME.addSocialPost("@marca_sport", "Paris", `${pName} Ballon d'Or'u aldÄ±: 'DÃ¼nyanÄ±n en iyisi olduÄŸumu kanÄ±tladÄ±m!'`);
+            } else {
+                GAME.state.followers = (GAME.state.followers || 0) + 150000;
+                GAME.state.taraftarSevgisi = Math.min(100, (GAME.state.taraftarSevgisi || 50) + 30);
+                GAME.addSocialPost("@fifacom", "Ballon d'Or", `${pName}'den duygusal konuÅŸma: 'AltÄ±n Top aileme ve memleketime armaÄŸan olsun.'`);
+            }
+
+            GAME.saveGame();
+            GAME.updateUI();
+
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playGoal === "function") {
+                SoundManager.playGoal();
+            }
+
+            if (modal) {
+                modal.style.display = "none";
+                modal.classList.remove("active");
+            }
+
+            if (typeof ballonDorCallback === "function") {
+                let cb = ballonDorCallback;
+                ballonDorCallback = null;
+                cb();
+            }
+        }
+
+        function testBallonDor() {
+            const sm = document.getElementById("settings-modal");
+            if (sm) sm.classList.remove("active");
+            showBallonDorModal(() => {
+                showCustomAlert("Ballon d'Or TÃ¶reni tamamlandÄ±! Efsanesin!", "BALLON D'OR", "ğŸ†", "info");
+            });
+        }
+
+
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // ğŸ’¼ 2. PENTHOUSE TRANSFER NEGOTIATION CONTROLLER
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        let penthouseTransferCallback = null;
+        let currentPenthouseData = {
+            club: "Real Madrid CF",
+            salary: 75000,
+            signing: 800000,
+            goalBonus: 8000,
+            patience: 85
+        };
+
+        function openPenthouseTransferModal(clubName = "Real Madrid CF", offerData = null, onComplete = null) {
+            penthouseTransferCallback = onComplete;
+            currentPenthouseData.club = clubName;
+            currentPenthouseData.salary = (offerData && offerData.salary) ? offerData.salary : 75000;
+            currentPenthouseData.signing = (offerData && offerData.signing) ? offerData.signing : 600000;
+            currentPenthouseData.goalBonus = (offerData && offerData.goalBonus) ? offerData.goalBonus : 6000;
+            currentPenthouseData.patience = 85;
+
+            const modal = document.getElementById("transfer-penthouse-modal");
+            const clubNameEl = document.getElementById("penthouse-club-name");
+            if (clubNameEl) clubNameEl.innerText = clubName.toUpperCase();
+
+            updatePenthouseUI();
+            if (modal) {
+                modal.style.display = "flex";
+                modal.classList.add("active");
+            }
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playClick === "function") {
+                SoundManager.playClick();
+            }
+        }
+
+        function updatePenthouseUI() {
+            const sEl = document.getElementById("penthouse-salary-val");
+            const signEl = document.getElementById("penthouse-signing-val");
+            const bEl = document.getElementById("penthouse-bonus-val");
+            const levVal = document.getElementById("penthouse-leverage-val");
+            const levBar = document.getElementById("penthouse-leverage-bar");
+
+            if (sEl) sEl.innerText = `${currentPenthouseData.salary.toLocaleString("tr-TR")} â‚¬`;
+            if (signEl) signEl.innerText = `${currentPenthouseData.signing.toLocaleString("tr-TR")} â‚¬`;
+            if (bEl) bEl.innerText = `${currentPenthouseData.goalBonus.toLocaleString("tr-TR")} â‚¬`;
+            
+            if (levVal) levVal.innerText = `%${Math.max(10, Math.min(100, currentPenthouseData.patience))}`;
+            if (levBar) {
+                levBar.style.width = `${Math.max(10, Math.min(100, currentPenthouseData.patience))}%`;
+                if (currentPenthouseData.patience < 40) levBar.style.background = "#ef4444";
+                else if (currentPenthouseData.patience < 70) levBar.style.background = "#FFD600";
+                else levBar.style.background = "linear-gradient(90deg, #FFD600 0%, #00e5b7 100%)";
+            }
+        }
+
+        function adjustPenthouseClause(clause, delta) {
+            if (clause === "salary") {
+                currentPenthouseData.salary = Math.max(10000, currentPenthouseData.salary + delta);
+                currentPenthouseData.patience -= (delta > 0 ? 8 : -4);
+            } else if (clause === "signing") {
+                currentPenthouseData.signing = Math.max(50000, currentPenthouseData.signing + delta);
+                currentPenthouseData.patience -= (delta > 0 ? 6 : -3);
+            } else if (clause === "goalBonus") {
+                currentPenthouseData.goalBonus = Math.max(1000, currentPenthouseData.goalBonus + delta);
+                currentPenthouseData.patience -= (delta > 0 ? 5 : -2);
+            }
+            updatePenthouseUI();
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playClick === "function") {
+                SoundManager.playClick();
+            }
+        }
+
+        function submitPenthouseOffer(forceAccept = false) {
+            const modal = document.getElementById("transfer-penthouse-modal");
+            if (modal) {
+                modal.style.display = "none";
+                modal.classList.remove("active");
+            }
+
+            GAME.state.currentClub = currentPenthouseData.club;
+            GAME.state.bakiye = (GAME.state.bakiye || 0) + currentPenthouseData.signing;
+            GAME.state.followers = (GAME.state.followers || 0) + 75000;
+            GAME.state.hocaGuveni = 90;
+            GAME.saveGame();
+            GAME.updateUI();
+
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playBuy === "function") {
+                SoundManager.playBuy();
+            }
+
+            showCustomAlert(
+                `${currentPenthouseData.club} ile rekor sÃ¶zleÅŸme imzalandÄ±!\nğŸ’° Ä°mza ParasÄ±: ${currentPenthouseData.signing.toLocaleString("tr-TR")} â‚¬\nâš½ HaftalÄ±k MaaÅŸ: ${currentPenthouseData.salary.toLocaleString("tr-TR")} â‚¬`,
+                "TRANSFER TAMAMLANDI!",
+                "âœï¸",
+                "info"
+            );
+
+            if (typeof penthouseTransferCallback === "function") {
+                let cb = penthouseTransferCallback;
+                penthouseTransferCallback = null;
+                cb();
+            }
+        }
+
+        function closePenthouseModal() {
+            const modal = document.getElementById("transfer-penthouse-modal");
+            if (modal) {
+                modal.style.display = "none";
+                modal.classList.remove("active");
+            }
+        }
+
+        function testTransferPenthouse() {
+            const sm = document.getElementById("settings-modal");
+            if (sm) sm.classList.remove("active");
+            openPenthouseTransferModal("Real Madrid CF", { salary: 90000, signing: 1200000, goalBonus: 10000 });
+        }
+
+
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // ğŸ‡¹ğŸ‡· 3. A MÄ°LLÄ° TAKIM Ä°STÄ°KLAL MARÅI & KAPTANLIK CONTROLLER
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        let anthemCallback = null;
+
+        function startNationalAnthemCeremony(matchData = null, onComplete = null) {
+            anthemCallback = onComplete;
+            const modal = document.getElementById("national-anthem-modal");
+            const matchTitle = document.getElementById("anthem-match-title");
+            if (matchTitle && matchData && matchData.title) {
+                matchTitle.innerText = matchData.title.toUpperCase();
+            }
+
+            if (modal) {
+                modal.style.display = "flex";
+                modal.classList.add("active");
+            }
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playStadiumShh === "function") {
+                SoundManager.playStadiumShh();
+            }
+        }
+
+        function deliverCaptainTalk(talkType) {
+            if (talkType === "passion") {
+                GAME.state.kondisyon = Math.min(100, (GAME.state.kondisyon || 80) + 10);
+                GAME.state.moral = 100;
+                showCustomAlert("TakÄ±m alev aldÄ±! Sahada basmadÄ±k Ã§im bÄ±rakmayacaÄŸÄ±z!", "KAPTANIN SESÄ°", "ğŸ”¥", "info");
+            } else {
+                GAME.state.hocaGuveni = Math.min(100, (GAME.state.hocaGuveni || 80) + 10);
+                showCustomAlert("TakÄ±m taktiÄŸe kilitlendi! Disiplin en Ã¼st seviyede!", "KAPTANIN SESÄ°", "ğŸ§ ", "info");
+            }
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playStadiumDrumBeat === "function") {
+                SoundManager.playStadiumDrumBeat(2);
+            }
+        }
+
+        function proceedFromAnthem() {
+            const modal = document.getElementById("national-anthem-modal");
+            if (modal) {
+                modal.style.display = "none";
+                modal.classList.remove("active");
+            }
+            if (typeof anthemCallback === "function") {
+                let cb = anthemCallback;
+                anthemCallback = null;
+                cb();
+            }
+        }
+
+        function testNationalAnthem() {
+            const sm = document.getElementById("settings-modal");
+            if (sm) sm.classList.remove("active");
+            startNationalAnthemCeremony({ title: "EURO 2028 FÄ°NALÄ° â€¢ TÃœRKÄ°YE vs Ä°SPANYA" }, () => {
+                showCustomAlert("Milli maÃ§ baÅŸladÄ±! BaÅŸarÄ±lar Kaptan!", "A MÄ°LLÄ° TAKIM", "ğŸ‡¹ğŸ‡·", "info");
+            });
+        }
+
+
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // ğŸï¸ 4. 3D LÃœKS SHOWROOM & GARAJ CONTROLLER
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        const garageCars = [
+            { id: "porsche", name: "Porsche 911 GT3 RS", icon: "ğŸï¸", specs: "525 HP â€¢ 0-100: 3.2s â€¢ 340.000 â‚¬" },
+            { id: "ferrari", name: "Ferrari F8 Tributo", icon: "ğŸï¸", specs: "720 HP â€¢ 0-100: 2.9s â€¢ 450.000 â‚¬" },
+            { id: "lambo", name: "Lamborghini HuracÃ¡n STO", icon: "ğŸï¸", specs: "640 HP â€¢ 0-100: 3.0s â€¢ 420.000 â‚¬" },
+            { id: "gwagon", name: "Mercedes-AMG G63 Mansory", icon: "ğŸš™", specs: "585 HP â€¢ 4x4 BiTurbo â€¢ 380.000 â‚¬" },
+            { id: "rolls", name: "Rolls-Royce Ghost Black Badge", icon: "ğŸš˜", specs: "600 HP â€¢ Ultra Luxury â€¢ 550.000 â‚¬" }
+        ];
+        let currentGarageCarIdx = 0;
+
+        function openGarageShowroom() {
+            const modal = document.getElementById("garage-showroom-modal");
+            renderGarageList();
+            updateSelectedGarageCar(0);
+
+            if (modal) {
+                modal.style.display = "flex";
+                modal.classList.add("active");
+            }
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playClick === "function") {
+                SoundManager.playClick();
+            }
+        }
+
+        function renderGarageList() {
+            const container = document.getElementById("garage-cars-list");
+            if (!container) return;
+            container.innerHTML = "";
+            garageCars.forEach((car, idx) => {
+                let btn = document.createElement("button");
+                btn.style.cssText = "background: rgba(255,255,255,0.06); border: 1px solid rgba(0,229,255,0.3); border-radius: 8px; padding: 6px 10px; color: white; font-size: 11px; font-weight: 800; cursor: pointer; white-space: nowrap;";
+                btn.innerText = `${car.icon} ${car.name.split(' ')[0]}`;
+                btn.onclick = () => updateSelectedGarageCar(idx);
+                container.appendChild(btn);
+            });
+        }
+
+        function updateSelectedGarageCar(idx) {
+            currentGarageCarIdx = idx;
+            const car = garageCars[idx];
+            const nameEl = document.getElementById("garage-car-name");
+            const specsEl = document.getElementById("garage-car-specs");
+            const iconEl = document.getElementById("garage-car-icon");
+            const plateEl = document.getElementById("garage-plate-text");
+
+            if (nameEl) nameEl.innerText = car.name;
+            if (specsEl) specsEl.innerText = car.specs;
+            if (iconEl) iconEl.innerText = car.icon;
+
+            const savedPlate = (GAME.state.customPlate || "34 GS 1905");
+            if (plateEl) plateEl.innerText = savedPlate;
+        }
+
+        function revCarEngine() {
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playExhaustRev === "function") {
+                SoundManager.playExhaustRev();
+            }
+            const stage = document.getElementById("garage-stage");
+            if (stage) {
+                stage.classList.remove("stadium-camera-shake");
+                void stage.offsetWidth;
+                stage.classList.add("stadium-camera-shake");
+            }
+        }
+
+        function editCarPlate() {
+            let newPlate = prompt("Yeni PlakanÄ± Gir (Ã–rn: 34 GS 1905, 06 FB 1907, 61 TS 1967):", (GAME.state.customPlate || "34 GS 1905"));
+            if (newPlate && newPlate.trim()) {
+                GAME.state.customPlate = newPlate.trim().toUpperCase();
+                GAME.saveGame();
+                const plateEl = document.getElementById("garage-plate-text");
+                if (plateEl) plateEl.innerText = GAME.state.customPlate;
+            }
+        }
+
+        function closeGarageModal() {
+            const modal = document.getElementById("garage-showroom-modal");
+            if (modal) {
+                modal.style.display = "none";
+                modal.classList.remove("active");
+            }
+        }
+
+        function testGarageShowroom() {
+            const sm = document.getElementById("settings-modal");
+            if (sm) sm.classList.remove("active");
+            openGarageShowroom();
+        }
+
+
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // âš¡ 5. VAR REVIEW CONTROLLER
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        let varCallback = null;
+        let varResultGoal = true;
+
+        function triggerVarReview(scenario = "offside", onComplete = null) {
+            varCallback = onComplete;
+            varResultGoal = (Math.random() < 0.75); // %75 lehine
+            const modal = document.getElementById("var-review-modal");
+            const banner = document.getElementById("var-decision-banner");
+            const btn = document.getElementById("btn-var-continue");
+
+            if (banner) {
+                banner.innerText = "Ä°NCELENÄ°YOR...";
+                banner.style.color = "#FFD600";
+            }
+            if (btn) btn.innerText = "âš¡ HAKEMÄ°N KARARINI GÃ–R";
+
+            if (modal) {
+                modal.style.display = "flex";
+                modal.classList.add("active");
+            }
+
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playVarHeartbeat === "function") {
+                SoundManager.playVarHeartbeat();
+            }
+        }
+
+        function resolveVarReview() {
+            const banner = document.getElementById("var-decision-banner");
+            const btn = document.getElementById("btn-var-continue");
+            
+            if (varResultGoal) {
+                if (banner) {
+                    banner.innerText = "âœ… GOL GEÃ‡ERLÄ°!";
+                    banner.style.color = "#00e5b7";
+                }
+                if (typeof SoundManager !== "undefined") {
+                    if (typeof SoundManager.playVarChime === "function") SoundManager.playVarChime(true);
+                    if (typeof SoundManager.playGoal === "function") SoundManager.playGoal();
+                }
+            } else {
+                if (banner) {
+                    banner.innerText = "âŒ OFSAYT / Ä°PTAL!";
+                    banner.style.color = "#ef4444";
+                }
+                if (typeof SoundManager !== "undefined" && typeof SoundManager.playVarChime === "function") {
+                    SoundManager.playVarChime(false);
+                }
+            }
+
+            if (btn) {
+                btn.innerText = "MAÃ‡A DÃ–N";
+                btn.onclick = closeVarModal;
+            }
+        }
+
+        function closeVarModal() {
+            const modal = document.getElementById("var-review-modal");
+            if (modal) {
+                modal.style.display = "none";
+                modal.classList.remove("active");
+            }
+            const btn = document.getElementById("btn-var-continue");
+            if (btn) btn.onclick = resolveVarReview;
+
+            if (typeof varCallback === "function") {
+                let cb = varCallback;
+                varCallback = null;
+                cb(varResultGoal);
+            }
+        }
+
+        function testVarReview() {
+            const sm = document.getElementById("settings-modal");
+            if (sm) sm.classList.remove("active");
+            triggerVarReview("offside", (isGoal) => {
+                showCustomAlert(isGoal ? "VAR GolÃ¼ OnayladÄ±!" : "VAR GolÃ¼ Ä°ptal Etti!", "VAR KARARI", "ğŸ“º", "info");
+            });
+        }
+
+
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // ğŸšŒ 6. VICTORY BUS TOUR CONTROLLER
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        let victoryBusCallback = null;
+
+        function startVictoryBusTour(trophyName = "SÃœPER LÄ°G KUPASI", onComplete = null) {
+            victoryBusCallback = onComplete;
+            const modal = document.getElementById("victory-bus-modal");
+            const tagEl = document.getElementById("bus-trophy-tag");
+            if (tagEl) tagEl.innerText = trophyName.toUpperCase();
+
+            if (modal) {
+                modal.style.display = "flex";
+                modal.classList.add("active");
+            }
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playGoal === "function") {
+                SoundManager.playGoal();
+            }
+        }
+
+        function triggerBusChant(actionType) {
+            if (actionType === "chant") {
+                GAME.state.followers = (GAME.state.followers || 0) + 50000;
+                GAME.state.taraftarSevgisi = Math.min(100, (GAME.state.taraftarSevgisi || 50) + 25);
+                showCustomAlert("TÃ¼m ÅŸehir seninle birlikte ÅŸarkÄ± sÃ¶ylÃ¼yor! Ä°nanÄ±lmaz bir coÅŸku!", "ÅAMPÄ°YONLUK TURU", "ğŸ“£", "info");
+            } else {
+                GAME.state.moral = 100;
+                showCustomAlert("MeÅŸale alevleri BoÄŸaz'Ä± aydÄ±nlattÄ±! Tarihi fotoÄŸraflar Ã§ekildi!", "MEÅALE ÅÃ–LENÄ°", "ğŸ”¥", "info");
+            }
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playStadiumDrumBeat === "function") {
+                SoundManager.playStadiumDrumBeat(3);
+            }
+        }
+
+        function closeVictoryBusModal() {
+            const modal = document.getElementById("victory-bus-modal");
+            if (modal) {
+                modal.style.display = "none";
+                modal.classList.remove("active");
+            }
+            if (typeof victoryBusCallback === "function") {
+                let cb = victoryBusCallback;
+                victoryBusCallback = null;
+                cb();
+            }
+        }
+
+        function testVictoryBus() {
+            const sm = document.getElementById("settings-modal");
+            if (sm) sm.classList.remove("active");
+            startVictoryBusTour("SÃœPER LÄ°G ÅAMPÄ°YONU", () => {
+                showCustomAlert("Åehir turu tamamlandÄ±! Unutulmaz bir gece!", "KUPA TURU", "ğŸ†", "info");
+            });
+        }
+
+
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // ğŸ‘Ÿ 7. SIGNATURE BOOT STUDIO CONTROLLER
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        let customBootConfig = {
+            upper: "#ef4444",
+            sole: "#00e5b7"
+        };
+
+        function openBootCustomizer() {
+            const modal = document.getElementById("boot-customizer-modal");
+            const labelEl = document.getElementById("boot-engraving-label");
+            const pName = (GAME.state.playerName || "EREN").toUpperCase();
+            if (labelEl) labelEl.innerText = `LASER: [ ${pName} â€¢ 10 ]`;
+
+            if (modal) {
+                modal.style.display = "flex";
+                modal.classList.add("active");
+            }
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playClick === "function") {
+                SoundManager.playClick();
+            }
+        }
+
+        function setBootColor(part, hex) {
+            if (part === "upper") {
+                customBootConfig.upper = hex;
+                const stop1 = document.getElementById("boot-svg-upper-stop1");
+                const stop2 = document.getElementById("boot-svg-upper-stop2");
+                if (stop1) stop1.setAttribute("stop-color", hex);
+                if (stop2) stop2.setAttribute("stop-color", hex);
+            } else if (part === "sole") {
+                customBootConfig.sole = hex;
+                const sole = document.getElementById("boot-svg-sole");
+                if (sole) sole.setAttribute("fill", hex);
+            }
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playClick === "function") {
+                SoundManager.playClick();
+            }
+        }
+
+        function saveAndEquipCustomBoot() {
+            GAME.state.customBootEquipped = true;
+            GAME.state.customBootConfig = customBootConfig;
+            GAME.saveGame();
+            closeBootStudioModal();
+            showCustomAlert("Ã–zel imza kramponun Ã¼retildi ve giyildi!\nâš¡ Stat Bonusu: +2 Åut, +2 HÄ±z, +2 Ã‡alÄ±m aktif!", "KRAMPON ATÃ–LYESÄ°", "ğŸ‘Ÿ", "info");
+        }
+
+        function closeBootStudioModal() {
+            const modal = document.getElementById("boot-customizer-modal");
+            if (modal) {
+                modal.style.display = "none";
+                modal.classList.remove("active");
+            }
+        }
+
+        function testBootStudio() {
+            const sm = document.getElementById("settings-modal");
+            if (sm) sm.classList.remove("active");
+            openBootCustomizer();
         }
 
         function proceedPostMatch() {

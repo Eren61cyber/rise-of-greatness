@@ -3778,3 +3778,365 @@ input[type="text"]:focus, select:focus {
         opacity: 0;
     }
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   🏆 1. BALLON D'OR & THE BEST PARIS GALA GECESİ
+══════════════════════════════════════════════════════════════════ */
+.ballondor-card-stage {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    background: radial-gradient(circle at 50% 20%, #2a1f07 0%, #150f02 50%, #080601 100%);
+    border: 2px solid #FFD600;
+    border-radius: 20px;
+    box-shadow: 0 0 60px rgba(255, 214, 0, 0.45), inset 0 0 50px rgba(0,0,0,0.85);
+    overflow: hidden;
+    padding: 22px;
+    color: #fff;
+    text-align: center;
+    perspective: 1000px;
+}
+
+.paris-eiffel-halo {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 180px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(255, 214, 0, 0.25) 0%, transparent 75%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.ballondor-trophy-wrap {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 12px auto;
+    z-index: 2;
+}
+
+.ballondor-trophy-sphere {
+    width: 90px;
+    height: 90px;
+    margin: 10px auto;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #fff8db 0%, #ffd700 40%, #b8860b 80%, #5c4002 100%);
+    box-shadow: 0 0 35px #ffd700, inset 0 0 20px rgba(255,255,255,0.7);
+    position: relative;
+    animation: trophyGlowPulse 2.5s infinite alternate ease-in-out;
+}
+
+@keyframes trophyGlowPulse {
+    0% { transform: scale(1) rotate(0deg); box-shadow: 0 0 25px #ffd700; }
+    100% { transform: scale(1.06) rotate(6deg); box-shadow: 0 0 50px #ffea75, 0 0 80px rgba(255,215,0,0.6); }
+}
+
+.tuxedo-select-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 3;
+}
+
+.tuxedo-option-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 10px;
+    padding: 10px 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 11px;
+}
+
+.tuxedo-option-card:hover, .tuxedo-option-card.selected {
+    background: rgba(255, 215, 0, 0.2);
+    border-color: #FFD600;
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   💼 2. LÜKS REZİDANS PENTHOUSE TRANSFER MASASI
+══════════════════════════════════════════════════════════════════ */
+.penthouse-card-stage {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    background: linear-gradient(180deg, #0d131f 0%, #06090e 100%);
+    border: 2px solid #00e5b7;
+    border-radius: 18px;
+    box-shadow: 0 0 55px rgba(0, 229, 183, 0.35), inset 0 0 45px rgba(0,0,0,0.8);
+    overflow: hidden;
+    padding: 20px;
+    color: #fff;
+}
+
+.skyscraper-panorama {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 120px;
+    background: linear-gradient(180deg, rgba(0, 229, 183, 0.12) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+.transfer-clause-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    font-size: 12px;
+}
+
+.transfer-leverage-track {
+    width: 100%;
+    height: 10px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 8px 0 14px 0;
+}
+
+.transfer-leverage-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ef4444 0%, #FFD600 50%, #00e5b7 100%);
+    width: 60%;
+    transition: width 0.4s ease;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   🇹🇷 3. A MİLLİ TAKIM İSTİKLAL MARŞI & KAPTANLIK
+══════════════════════════════════════════════════════════════════ */
+.national-anthem-stage {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    background: radial-gradient(ellipse at 50% 20%, #450a0a 0%, #1f0404 60%, #090101 100%);
+    border: 2px solid #ef4444;
+    border-radius: 18px;
+    box-shadow: 0 0 55px rgba(239, 68, 68, 0.45);
+    overflow: hidden;
+    padding: 20px;
+    color: #fff;
+    text-align: center;
+}
+
+.anthem-flag-waving {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 280px;
+    height: 140px;
+    opacity: 0.22;
+    pointer-events: none;
+    background: radial-gradient(circle, #ef4444 40%, transparent 70%);
+}
+
+.anthem-captain-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: #FFD600;
+    color: #000;
+    font-weight: 900;
+    font-size: 16px;
+    border-radius: 50%;
+    box-shadow: 0 0 15px #FFD600;
+    margin-right: 6px;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   🏎️ 4. 3D LÜKS SHOWROOM & KOLEKSİYON GARAJI
+══════════════════════════════════════════════════════════════════ */
+.garage-card-stage {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    background: linear-gradient(180deg, #10141e 0%, #080a0f 100%);
+    border: 2px solid #00e5ff;
+    border-radius: 18px;
+    box-shadow: 0 0 60px rgba(0, 229, 255, 0.35);
+    overflow: hidden;
+    padding: 20px;
+    color: #fff;
+}
+
+.garage-neon-floor {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 80px;
+    background: linear-gradient(0deg, rgba(0, 229, 255, 0.15) 0%, transparent 100%);
+    border-top: 1px solid rgba(0, 229, 255, 0.3);
+    pointer-events: none;
+}
+
+.license-plate-badge {
+    display: inline-flex;
+    align-items: center;
+    background: #ffffff;
+    color: #000000;
+    border: 2px solid #1e293b;
+    border-radius: 5px;
+    padding: 2px 8px;
+    font-family: 'Space Grotesk', monospace;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.8);
+}
+
+.license-plate-badge .tr-flag-tag {
+    background: #003399;
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 900;
+    padding: 2px 4px;
+    border-radius: 2px;
+    margin-right: 6px;
+}
+
+.btn-rev-pedal {
+    background: linear-gradient(135deg, #ef4444 0%, #ff8f00 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+    transition: transform 0.1s ease;
+}
+
+.btn-rev-pedal:active {
+    transform: scale(0.95);
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   ⚡ 5. VAR MONİTÖRÜ & HAKEM İNCELEME GERİLİMİ
+══════════════════════════════════════════════════════════════════ */
+.var-screen-stage {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    background: #05080e;
+    border: 2px solid #00e5b7;
+    border-radius: 16px;
+    box-shadow: 0 0 50px rgba(0, 229, 183, 0.4), inset 0 0 35px rgba(0,0,0,0.9);
+    overflow: hidden;
+    padding: 18px;
+    color: #fff;
+    text-align: center;
+}
+
+.var-crt-scanlines {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(0deg, rgba(0, 229, 183, 0.03) 0px, rgba(0, 229, 183, 0.03) 1px, transparent 1px, transparent 3px);
+    pointer-events: none;
+    z-index: 5;
+}
+
+.var-rec-dot {
+    width: 10px;
+    height: 10px;
+    background: #ef4444;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #ef4444;
+    display: inline-block;
+    animation: flashBlink 0.8s infinite alternate;
+}
+
+.var-decision-banner {
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 10px 0;
+    text-shadow: 0 0 25px #00e5b7;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   🚌 6. ŞAMPİYONLUK ÜSTÜ AÇIK OTOBÜS ŞEHİR TURU
+══════════════════════════════════════════════════════════════════ */
+.victory-bus-stage {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    background: radial-gradient(ellipse at 50% 20%, #1e112a 0%, #0d0614 60%, #030105 100%);
+    border: 2px solid #FFD600;
+    border-radius: 20px;
+    box-shadow: 0 0 60px rgba(255, 214, 0, 0.45);
+    overflow: hidden;
+    padding: 22px;
+    color: #fff;
+    text-align: center;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   👟 7. ÖZEL KRAMPON TASARIM ATÖLYESİ (SIGNATURE BOOT STUDIO)
+══════════════════════════════════════════════════════════════════ */
+.boot-studio-stage {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    background: linear-gradient(180deg, #141622 0%, #090a10 100%);
+    border: 2px solid #00e5b7;
+    border-radius: 18px;
+    box-shadow: 0 0 50px rgba(0, 229, 183, 0.35);
+    overflow: hidden;
+    padding: 20px;
+    color: #fff;
+}
+
+.boot-color-chip {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.4);
+    cursor: pointer;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.boot-color-chip:hover, .boot-color-chip.active {
+    transform: scale(1.18);
+    border-color: #ffffff;
+    box-shadow: 0 0 12px #00e5b7;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   🎙️ 8. CANLI MAÇ SPİKERİ & TAKIM TEZAHÜRAT MOTORU
+══════════════════════════════════════════════════════════════════ */
+.match-spiker-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid #FFD600;
+    border-left: 4px solid #FFD600;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    box-shadow: 0 4px 15px rgba(255, 214, 0, 0.2);
+    animation: spikerPop 0.3s ease-out;
+}
+
+@keyframes spikerPop {
+    0% { transform: translateY(-8px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
