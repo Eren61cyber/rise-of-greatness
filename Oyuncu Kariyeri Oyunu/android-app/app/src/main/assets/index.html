@@ -3076,11 +3076,11 @@
                     <div style="display: flex; align-items: center; gap: 6px; color: #ef4444;">
                         <span class="var-rec-dot"></span> [ 🔴 VAR REVIEW IN PROGRESS ]
                     </div>
-                    <div style="color: #00e5b7;" id="var-time-badge">MIN 89:24 • UEFA FEED</div>
+                    <div style="color: #00e5b7;" id="var-time-badge">MIN 89:24 • UEFA BROADCAST FEED</div>
                 </div>
 
                 <div style="display: flex; justify-content: space-between; font-size: 8.5px; color: #64748b; font-weight: 800; letter-spacing: 0.8px; margin-bottom: 8px;">
-                    <span>[ CAM 03 • REVERSE ANGLE ]</span>
+                    <span>[ CAM 03 • REVERSE HIGH-ANGLE ]</span>
                     <span>[ 240 FPS ULTRA SLOW-MO ]</span>
                 </div>
 
@@ -3089,31 +3089,70 @@
                     <div class="var-pitch-isometric"></div>
                     <div class="var-radar-scanner"></div>
 
-                    <!-- Defending Player Silhouette & Blue Line -->
-                    <div class="var-blue-line-vertical"></div>
-                    <div class="var-line-tag-blue">DEF: SON SAVUNMACI</div>
-                    <svg viewBox="0 0 100 100" style="position: absolute; left: 38%; top: 35px; width: 35px; height: 80px; z-index: 4; opacity: 0.85;">
-                        <!-- 3D Blue Skeleton Defender Wireframe -->
-                        <circle cx="50" cy="18" r="10" fill="none" stroke="#60a5fa" stroke-width="3"/>
-                        <line x1="50" y1="28" x2="50" y2="65" stroke="#60a5fa" stroke-width="3.5"/>
-                        <line x1="50" y1="38" x2="30" y2="52" stroke="#60a5fa" stroke-width="3"/>
-                        <line x1="50" y1="38" x2="70" y2="50" stroke="#60a5fa" stroke-width="3"/>
-                        <line x1="50" y1="65" x2="38" y2="92" stroke="#60a5fa" stroke-width="3.5"/>
-                        <line x1="50" y1="65" x2="62" y2="92" stroke="#60a5fa" stroke-width="3.5"/>
+                    <!-- Defending Player Laser & Footprint -->
+                    <div class="var-laser-footprint blue" id="var-def-footprint" style="left: 48%;"></div>
+                    <div class="var-vertical-laser-beam blue" id="var-def-line" style="left: 48%;"></div>
+                    <div class="var-line-tag blue" id="var-def-tag" style="left: 48%;">DEF: SON SAVUNMACI</div>
+
+                    <!-- Defender 3D Anatomical Wireframe Mannequin -->
+                    <svg id="var-svg-defender" viewBox="0 0 100 140" style="position: absolute; left: 44%; top: 22px; width: 55px; height: 135px; z-index: 5; transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1); filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.75));">
+                        <!-- 3D Anatomical Mesh Facets -->
+                        <polygon points="50,12 42,22 58,22" fill="rgba(59,130,246,0.35)" stroke="#60a5fa" stroke-width="1.5"/>
+                        <polygon points="42,22 58,22 55,55 45,55" fill="rgba(59,130,246,0.25)" stroke="#60a5fa" stroke-width="1.5"/>
+                        <polygon points="42,24 25,40 32,58 45,55" fill="rgba(59,130,246,0.2)" stroke="#60a5fa" stroke-width="1.2"/>
+                        <polygon points="58,24 75,38 68,56 55,55" fill="rgba(59,130,246,0.2)" stroke="#60a5fa" stroke-width="1.2"/>
+                        <polygon points="45,55 55,55 52,90 40,90" fill="rgba(59,130,246,0.3)" stroke="#60a5fa" stroke-width="1.5"/>
+                        <polygon points="55,55 68,56 66,95 52,90" fill="rgba(59,130,246,0.2)" stroke="#60a5fa" stroke-width="1.2"/>
+                        <polygon points="40,90 52,90 44,128 32,126" fill="rgba(59,130,246,0.35)" stroke="#60a5fa" stroke-width="1.5"/>
+                        <polygon points="52,90 66,95 62,128 50,128" fill="rgba(59,130,246,0.25)" stroke="#60a5fa" stroke-width="1.5"/>
+                        <!-- Joint Tracking Dots -->
+                        <circle cx="50" cy="12" r="3.5" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5" class="var-joint-dot"/>
+                        <circle cx="42" cy="24" r="3" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5" class="var-joint-dot"/>
+                        <circle cx="58" cy="24" r="3" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5" class="var-joint-dot"/>
+                        <circle cx="25" cy="40" r="2.5" fill="#60a5fa"/>
+                        <circle cx="75" cy="38" r="2.5" fill="#60a5fa"/>
+                        <circle cx="45" cy="55" r="3" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5" class="var-joint-dot"/>
+                        <circle cx="55" cy="55" r="3" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5" class="var-joint-dot"/>
+                        <circle cx="40" cy="90" r="3.5" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5" class="var-joint-dot"/>
+                        <circle cx="66" cy="95" r="3.5" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5" class="var-joint-dot"/>
+                        <circle cx="36" cy="128" r="4" fill="#ffffff" stroke="#3b82f6" stroke-width="2" class="var-joint-dot"/>
+                        <circle cx="56" cy="128" r="4" fill="#ffffff" stroke="#3b82f6" stroke-width="2" class="var-joint-dot"/>
                     </svg>
 
-                    <!-- Attacking Player Silhouette & Red Line -->
-                    <div class="var-red-line-vertical"></div>
-                    <div class="var-line-tag-red">ATT: HÜCUM (YILDIZ)</div>
-                    <svg viewBox="0 0 100 100" style="position: absolute; left: 45%; top: 30px; width: 35px; height: 85px; z-index: 4; opacity: 0.95;">
-                        <!-- 3D Red Skeleton Attacker Wireframe -->
-                        <circle cx="58" cy="16" r="10" fill="none" stroke="#f87171" stroke-width="3"/>
-                        <line x1="58" y1="26" x2="50" y2="62" stroke="#f87171" stroke-width="3.5"/>
-                        <line x1="55" y1="35" x2="35" y2="48" stroke="#f87171" stroke-width="3"/>
-                        <line x1="55" y1="35" x2="78" y2="46" stroke="#f87171" stroke-width="3"/>
-                        <line x1="50" y1="62" x2="32" y2="88" stroke="#f87171" stroke-width="3.5"/>
-                        <line x1="50" y1="62" x2="72" y2="90" stroke="#f87171" stroke-width="3.5"/>
+                    <!-- Attacking Player Laser & Footprint -->
+                    <div class="var-laser-footprint green" id="var-att-footprint" style="left: 42%;"></div>
+                    <div class="var-vertical-laser-beam green" id="var-att-line" style="left: 42%;"></div>
+                    <div class="var-line-tag green" id="var-att-tag" style="left: 42%;">ATT: HÜCUM (YILDIZ)</div>
+
+                    <!-- Attacker 3D Anatomical Wireframe Mannequin -->
+                    <svg id="var-svg-attacker" viewBox="0 0 100 140" style="position: absolute; left: 38%; top: 16px; width: 55px; height: 140px; z-index: 5; transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1); filter: drop-shadow(0 0 8px rgba(0, 229, 183, 0.75));">
+                        <!-- Sprinting Athletic Leaning Mesh -->
+                        <polygon id="att-poly-head" points="56,10 46,20 62,20" fill="rgba(0,229,183,0.35)" stroke="#34d399" stroke-width="1.5"/>
+                        <polygon id="att-poly-chest" points="46,20 62,20 66,54 50,56" fill="rgba(0,229,183,0.25)" stroke="#34d399" stroke-width="1.5"/>
+                        <polygon id="att-poly-larm" points="46,22 30,36 40,54 50,56" fill="rgba(0,229,183,0.2)" stroke="#34d399" stroke-width="1.2"/>
+                        <polygon id="att-poly-rarm" points="62,22 82,34 76,52 66,54" fill="rgba(0,229,183,0.2)" stroke="#34d399" stroke-width="1.2"/>
+                        <polygon id="att-poly-hip" points="50,56 66,54 62,88 46,88" fill="rgba(0,229,183,0.3)" stroke="#34d399" stroke-width="1.5"/>
+                        <polygon id="att-poly-rleg" points="66,54 80,56 82,92 62,88" fill="rgba(0,229,183,0.2)" stroke="#34d399" stroke-width="1.2"/>
+                        <polygon id="att-poly-lshin" points="46,88 62,88 56,128 42,126" fill="rgba(0,229,183,0.35)" stroke="#34d399" stroke-width="1.5"/>
+                        <polygon id="att-poly-rshin" points="62,88 82,92 84,130 68,128" fill="rgba(0,229,183,0.25)" stroke="#34d399" stroke-width="1.5"/>
+                        <!-- Joint Tracking Dots -->
+                        <circle id="att-dot-head" cx="56" cy="10" r="3.5" fill="#ffffff" stroke="#00e5b7" stroke-width="1.5" class="var-joint-dot"/>
+                        <circle id="att-dot-lshoulder" cx="46" cy="22" r="3" fill="#ffffff" stroke="#00e5b7" stroke-width="1.5" class="var-joint-dot"/>
+                        <circle id="att-dot-rshoulder" cx="62" cy="22" r="4" fill="#ffffff" stroke="#00e5b7" stroke-width="2" class="var-joint-dot"/>
+                        <circle id="att-dot-lelbow" cx="30" cy="36" r="2.5" fill="#34d399"/>
+                        <circle id="att-dot-relbow" cx="82" cy="34" r="2.5" fill="#34d399"/>
+                        <circle id="att-dot-lhip" cx="50" cy="56" r="3" fill="#ffffff" stroke="#00e5b7" stroke-width="1.5" class="var-joint-dot"/>
+                        <circle id="att-dot-rhip" cx="66" cy="54" r="3" fill="#ffffff" stroke="#00e5b7" stroke-width="1.5" class="var-joint-dot"/>
+                        <circle id="att-dot-lknee" cx="46" cy="88" r="3.5" fill="#ffffff" stroke="#00e5b7" stroke-width="1.5" class="var-joint-dot"/>
+                        <circle id="att-dot-rknee" cx="82" cy="92" r="3.5" fill="#ffffff" stroke="#00e5b7" stroke-width="1.5" class="var-joint-dot"/>
+                        <circle id="att-dot-lboot" cx="48" cy="128" r="4" fill="#ffffff" stroke="#00e5b7" stroke-width="2" class="var-joint-dot"/>
+                        <circle id="att-dot-rboot" cx="76" cy="130" r="4" fill="#ffffff" stroke="#00e5b7" stroke-width="2" class="var-joint-dot"/>
                     </svg>
+
+                    <!-- Laser Delta Distance Measurement Badge -->
+                    <div class="var-delta-measurement-badge onside" id="var-delta-badge" style="left: 45%;">
+                        -14.2 cm • HİZADA / ON-SIDE
+                    </div>
 
                     <!-- Point of Contact Hologram -->
                     <div class="var-contact-point-badge">
@@ -7481,20 +7520,28 @@
         // ══════════════════════════════════════════════════════════════════
         let varCallback = null;
         let varDecisionType = "goal"; // "goal", "offside", "penalty"
+        let varDeltaCm = -14.2;
         let varCalibrationTimer = null;
 
         function triggerVarReview(scenario = "offside", onComplete = null) {
             varCallback = onComplete;
             
-            // Determine outcome: 70% goal, 20% offside, 10% penalty
+            // Determine outcome with 100% mathematical consistency
             let r = Math.random();
             if (scenario === "penalty" || r > 0.88) {
                 varDecisionType = "penalty";
+                varDeltaCm = 0;
             } else if (r < 0.28) {
+                // OFFSIDE: Attacker is strictly forward (> 0 cm)
                 varDecisionType = "offside";
+                varDeltaCm = +(Math.floor(Math.random() * 24) + 8); // +8cm to +32cm
             } else {
+                // LEGAL GOAL / ON-SIDE: Attacker is behind or level (<= 0 cm)
                 varDecisionType = "goal";
+                varDeltaCm = -(Math.floor(Math.random() * 22) + 6); // -6cm to -28cm
             }
+
+            renderVarPitchCoordinates(varDecisionType, varDeltaCm);
 
             const modal = document.getElementById("var-review-modal");
             const calibText = document.getElementById("var-calibration-text");
@@ -7513,12 +7560,12 @@
                 btn.onclick = revealVarDecision;
             }
 
-            // Animate Calibration Status Stream
+            // Dynamic Step-by-Step Telemetry
             const calibSteps = [
-                "📐 [ADIM 1] 12 Özel Stadyum Kamerası Eşlendi...",
-                "🎯 [ADIM 2] Top Ayaktan Çıkış Temas Noktası Kilitlendi...",
-                "⚡ [ADIM 3] 3D Yarı Otomatik İskelet Çizgileri Çekildi...",
-                "⚖️ [ADIM 4] Hakem Kararını Vermek Üzere Monitörde."
+                "📐 [ADIM 1] 12 Özel Stadyum Kamerası Eşlendi & İskelet Ağları Çıkarıldı...",
+                "🎯 [ADIM 2] Top Ayaktan Çıkış Temas Noktası Kilitlendi: 00:48.216...",
+                "⚡ [ADIM 3] 3D Yarı Otomatik İzdüşüm Çizgileri Sahaya İndirildi...",
+                "⚖️ [ADIM 4] Hakem Kararını Vermek Üzere Monitör Başında."
             ];
             let stepIdx = 0;
             if (calibText) calibText.innerText = calibSteps[0];
@@ -7539,6 +7586,137 @@
             }
         }
 
+        function renderVarPitchCoordinates(decisionType, deltaCm) {
+            const defLine = document.getElementById("var-def-line");
+            const attLine = document.getElementById("var-att-line");
+            const defFootprint = document.getElementById("var-def-footprint");
+            const attFootprint = document.getElementById("var-att-footprint");
+            const defTag = document.getElementById("var-def-tag");
+            const attTag = document.getElementById("var-att-tag");
+            const deltaBadge = document.getElementById("var-delta-badge");
+            const defSvg = document.getElementById("var-svg-defender");
+            const attSvg = document.getElementById("var-svg-attacker");
+
+            const baseDefX = 48; // Reference Defender X (48%)
+            let baseAttX = 48;
+
+            if (decisionType === "goal") {
+                // STRICTLY ON-SIDE: Attacker is behind defender by deltaCm
+                let pixelOffset = Math.abs(deltaCm) * 0.32;
+                baseAttX = Math.max(26, baseDefX - pixelOffset);
+
+                if (attLine) {
+                    attLine.style.left = baseAttX + "%";
+                    attLine.className = "var-vertical-laser-beam green";
+                }
+                if (attFootprint) {
+                    attFootprint.style.left = baseAttX + "%";
+                    attFootprint.className = "var-laser-footprint green";
+                }
+                if (attTag) {
+                    attTag.style.left = baseAttX + "%";
+                    attTag.className = "var-line-tag green";
+                    attTag.innerText = "ATT: HÜCUM (ON-SIDE)";
+                }
+                if (attSvg) {
+                    attSvg.style.left = (baseAttX - 4) + "%";
+                    attSvg.style.filter = "drop-shadow(0 0 10px rgba(0, 229, 183, 0.8))";
+                    setAttackerMannequinColor("#00e5b7", "#34d399", "rgba(0, 229, 183, 0.3)");
+                }
+                if (deltaBadge) {
+                    deltaBadge.style.left = ((baseDefX + baseAttX) / 2) + "%";
+                    deltaBadge.className = "var-delta-measurement-badge onside";
+                    deltaBadge.innerText = `${Math.abs(deltaCm)} cm • HİZADA / ON-SIDE`;
+                }
+            } else if (decisionType === "offside") {
+                // STRICTLY OFFSIDE: Attacker is in front of defender by deltaCm
+                let pixelOffset = Math.abs(deltaCm) * 0.32;
+                baseAttX = Math.min(72, baseDefX + pixelOffset);
+
+                if (attLine) {
+                    attLine.style.left = baseAttX + "%";
+                    attLine.className = "var-vertical-laser-beam red";
+                }
+                if (attFootprint) {
+                    attFootprint.style.left = baseAttX + "%";
+                    attFootprint.className = "var-laser-footprint red";
+                }
+                if (attTag) {
+                    attTag.style.left = baseAttX + "%";
+                    attTag.className = "var-line-tag red";
+                    attTag.innerText = "ATT: HÜCUM (OFSAYT)";
+                }
+                if (attSvg) {
+                    attSvg.style.left = (baseAttX - 4) + "%";
+                    attSvg.style.filter = "drop-shadow(0 0 10px rgba(239, 68, 68, 0.8))";
+                    setAttackerMannequinColor("#ef4444", "#f87171", "rgba(239, 68, 68, 0.3)");
+                }
+                if (deltaBadge) {
+                    deltaBadge.style.left = ((baseDefX + baseAttX) / 2) + "%";
+                    deltaBadge.className = "var-delta-measurement-badge offside";
+                    deltaBadge.innerText = `+${deltaCm} cm • OFSAYT / OFFSIDE`;
+                }
+            } else {
+                // PENALTY REVIEW
+                baseAttX = 54;
+                if (attLine) {
+                    attLine.style.left = "54%";
+                    attLine.className = "var-vertical-laser-beam green";
+                }
+                if (attFootprint) {
+                    attFootprint.style.left = "54%";
+                    attFootprint.className = "var-laser-footprint green";
+                }
+                if (attTag) {
+                    attTag.style.left = "54%";
+                    attTag.className = "var-line-tag green";
+                    attTag.innerText = "CEZA SAHASI TEMAS";
+                }
+                if (attSvg) {
+                    attSvg.style.left = "50%";
+                    attSvg.style.filter = "drop-shadow(0 0 10px rgba(255, 214, 0, 0.8))";
+                    setAttackerMannequinColor("#FFD600", "#fde047", "rgba(255, 214, 0, 0.3)");
+                }
+                if (deltaBadge) {
+                    deltaBadge.style.left = "50%";
+                    deltaBadge.className = "var-delta-measurement-badge onside";
+                    deltaBadge.innerText = "TEMAS: CEZA SAHASI İÇİ";
+                }
+            }
+
+            if (defLine) {
+                defLine.style.left = baseDefX + "%";
+                defLine.className = "var-vertical-laser-beam blue";
+            }
+            if (defFootprint) {
+                defFootprint.style.left = baseDefX + "%";
+                defFootprint.className = "var-laser-footprint blue";
+            }
+            if (defTag) {
+                defTag.style.left = baseDefX + "%";
+                defTag.className = "var-line-tag blue";
+            }
+            if (defSvg) {
+                defSvg.style.left = (baseDefX - 4) + "%";
+            }
+        }
+
+        function setAttackerMannequinColor(strokePrimary, strokeSecondary, fillRgba) {
+            const polys = ["att-poly-head", "att-poly-chest", "att-poly-larm", "att-poly-rarm", "att-poly-hip", "att-poly-rleg", "att-poly-lshin", "att-poly-rshin"];
+            polys.forEach(id => {
+                let el = document.getElementById(id);
+                if (el) {
+                    el.setAttribute("fill", fillRgba);
+                    el.setAttribute("stroke", strokeSecondary);
+                }
+            });
+            const dots = ["att-dot-head", "att-dot-lshoulder", "att-dot-rshoulder", "att-dot-lhip", "att-dot-rhip", "att-dot-lknee", "att-dot-rknee", "att-dot-lboot", "att-dot-rboot"];
+            dots.forEach(id => {
+                let el = document.getElementById(id);
+                if (el) el.setAttribute("stroke", strokePrimary);
+            });
+        }
+
         function revealVarDecision() {
             if (varCalibrationTimer) {
                 clearInterval(varCalibrationTimer);
@@ -7552,13 +7730,13 @@
 
             if (calibText) calibText.innerText = "⏳ KARAR AÇIKLANIYOR...";
 
-            // 1.0s Tension Blackout & Suspense Swell
+            // 0.85s Tension & Suspense Swell
             if (typeof SoundManager !== "undefined" && typeof SoundManager.playVarHeartbeat === "function") {
                 SoundManager.playVarHeartbeat();
             }
 
             setTimeout(() => {
-                // Play Referee Whistle & Camera Shake
+                // Referee Whistle Blast & Camera Shake
                 if (typeof SoundManager !== "undefined") {
                     if (typeof SoundManager.playWhistle === "function") SoundManager.playWhistle();
                 }
@@ -7573,7 +7751,7 @@
                     if (varDecisionType === "goal") {
                         stamp.className = "var-decision-stamp goal";
                         stamp.innerText = "⚽ GOL GEÇERLİ!";
-                        if (calibText) calibText.innerText = "✅ İnceleme Tamamlandı: Ofsayt Yok, Gol Onaylandı!";
+                        if (calibText) calibText.innerText = `✅ İnceleme Tamamlandı: Hücumcu ${Math.abs(varDeltaCm)} cm geride, nizami gol onaylandı!`;
                         if (typeof SoundManager !== "undefined") {
                             if (typeof SoundManager.playVarChime === "function") SoundManager.playVarChime(true);
                             if (typeof SoundManager.playGoal === "function") SoundManager.playGoal();
@@ -7581,14 +7759,14 @@
                     } else if (varDecisionType === "offside") {
                         stamp.className = "var-decision-stamp offside";
                         stamp.innerText = "❌ İPTAL: OFSAYT";
-                        if (calibText) calibText.innerText = "⚠️ İnceleme Tamamlandı: +12.4 cm İle Ofsayt Tespit Edildi!";
+                        if (calibText) calibText.innerText = `⚠️ İnceleme Tamamlandı: Hücumcu +${varDeltaCm} cm önde, ofsayt nedeniyle gol iptal!`;
                         if (typeof SoundManager !== "undefined" && typeof SoundManager.playVarChime === "function") {
                             SoundManager.playVarChime(false);
                         }
                     } else {
                         stamp.className = "var-decision-stamp penalty";
                         stamp.innerText = "🎯 PENALTI KARARI!";
-                        if (calibText) calibText.innerText = "⚡ İnceleme Tamamlandı: Ceza Sahasında Açık İhlal, Penaltı!";
+                        if (calibText) calibText.innerText = "⚡ İnceleme Tamamlandı: Ceza sahasında açık ihlal tespit edildi, penaltı!";
                         if (typeof SoundManager !== "undefined") {
                             if (typeof SoundManager.playVarChime === "function") SoundManager.playVarChime(true);
                         }
