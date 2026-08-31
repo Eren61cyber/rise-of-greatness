@@ -3878,60 +3878,298 @@ input[type="text"]:focus, select:focus {
 
 
 /* ══════════════════════════════════════════════════════════════════
-   💼 2. LÜKS REZİDANS PENTHOUSE TRANSFER MASASI (VIP NEGOTIATION)
+   🏢 2. PENTHOUSE TRANSFER ZİRVESİ & LÜKS MASASI (3D BOARDROOM EXPERIENCE)
 ══════════════════════════════════════════════════════════════════ */
 .penthouse-card-stage {
     position: relative;
     width: 100%;
-    max-width: 460px;
-    background: linear-gradient(180deg, #0b111e 0%, #05080f 100%);
-    border: 2px solid #00e5b7;
-    border-radius: 22px;
-    box-shadow: 0 0 60px rgba(0, 229, 183, 0.35), 0 20px 50px rgba(0,0,0,0.9);
+    max-width: 480px;
+    background: radial-gradient(circle at 50% 10%, #151d2a 0%, #0c111a 60%, #06090e 100%);
+    border: 1px solid rgba(255, 215, 0, 0.35);
+    border-radius: 24px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.95), 0 0 45px rgba(255, 215, 0, 0.15);
     overflow: hidden;
-    padding: 22px;
-    color: #fff;
+    padding: 22px 20px;
+    color: #f1f5f9;
+    text-align: center;
 }
 
-.skyscraper-panorama {
+/* Panoramic Night Skyscraper Skyline */
+.penthouse-skyline-bg {
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 130px;
-    background: linear-gradient(180deg, rgba(0, 229, 183, 0.15) 0%, transparent 100%);
+    height: 145px;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(10, 15, 26, 0.8) 70%, transparent 100%);
     pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
 }
 
+.penthouse-skyline-silhouette {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 95px;
+    opacity: 0.28;
+    background-repeat: repeat-x;
+}
+
+/* Ceiling Downlight Spotlight */
+.penthouse-spotlight-beam {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 320px;
+    height: 130px;
+    background: radial-gradient(ellipse at top, rgba(255, 215, 0, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Smoked Marble / Polished Mahogany Desk Surface */
+.penthouse-desk-surface {
+    position: relative;
+    z-index: 3;
+    background: rgba(13, 19, 30, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 16px 14px;
+    margin-bottom: 14px;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5);
+    backdrop-filter: blur(12px);
+}
+
+/* Contract Paper Document Preview */
+.penthouse-contract-sheet {
+    position: relative;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border: 1px solid rgba(255, 215, 0, 0.25);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    text-align: left;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+.penthouse-contract-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed rgba(255, 215, 0, 0.25);
+    padding-bottom: 6px;
+    margin-bottom: 8px;
+}
+
+/* Tactical Stepper Rows */
 .transfer-clause-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 10px;
-    padding: 10px 14px;
+    padding: 8px 12px;
     margin-bottom: 8px;
     font-size: 12px;
-    backdrop-filter: blur(8px);
+    transition: border-color 0.2s ease, background 0.2s ease;
 }
 
+.transfer-clause-row:hover {
+    border-color: rgba(255, 215, 0, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.transfer-stepper-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.transfer-stepper-btn {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    color: #f8fafc;
+    font-weight: 800;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+}
+
+.transfer-stepper-btn:hover {
+    background: linear-gradient(135deg, #475569 0%, #334155 100%);
+    border-color: #FFD700;
+    transform: scale(1.08);
+}
+
+.transfer-stepper-btn:active {
+    transform: scale(0.94);
+    background: #0f172a;
+}
+
+.transfer-value-badge {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 12.5px;
+    font-weight: 800;
+    color: #FFD700;
+    min-width: 95px;
+    text-align: right;
+}
+
+/* Leverage Track & Dynamic Patience Meter */
 .transfer-leverage-track {
     width: 100%;
-    height: 10px;
-    background: rgba(255,255,255,0.1);
+    height: 8px;
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 6px;
     overflow: hidden;
-    margin: 8px 0 14px 0;
-    border: 1px solid rgba(255,255,255,0.15);
+    margin: 6px 0 10px 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .transfer-leverage-fill {
     height: 100%;
-    background: linear-gradient(90deg, #ef4444 0%, #FFD600 50%, #00e5b7 100%);
-    width: 80%;
-    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 0 12px rgba(0, 229, 183, 0.5);
+    background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+    width: 85%;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
 }
 
+.transfer-leverage-fill.warning {
+    background: linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%);
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+}
+
+.transfer-leverage-fill.danger {
+    background: linear-gradient(90deg, #ef4444 0%, #f87171 100%);
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.8);
+    animation: leveragePulse 0.8s infinite alternate;
+}
+
+@keyframes leveragePulse {
+    0% { opacity: 0.8; }
+    100% { opacity: 1; filter: drop-shadow(0 0 6px #ef4444); }
+}
+
+/* 3D Gold Fountain Pen */
+.penthouse-fountain-pen {
+    position: absolute;
+    right: 18px;
+    bottom: 22px;
+    width: 85px;
+    height: 24px;
+    pointer-events: none;
+    z-index: 5;
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.penthouse-fountain-pen.signing {
+    transform: translate(-90px, -8px) rotate(-25deg);
+}
+
+/* Animated Golden Signature Line */
+.penthouse-signature-area {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.12);
+}
+
+.penthouse-signature-svg {
+    width: 130px;
+    height: 32px;
+}
+
+.penthouse-signature-path {
+    stroke-dasharray: 220;
+    stroke-dashoffset: 220;
+    transition: stroke-dashoffset 0.8s ease-in-out;
+}
+
+.penthouse-signature-path.signed {
+    stroke-dashoffset: 0;
+}
+
+/* Official Red Wax Club Stamp */
+.penthouse-seal-stamp {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(2.5) rotate(-15deg);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 10;
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.penthouse-seal-stamp.stamped {
+    transform: translate(-50%, -50%) scale(1) rotate(-12deg);
+    opacity: 1;
+    filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.9));
+}
+
+/* Fullscreen Camera Strobe Flash Overlay */
+.camera-flash-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #ffffff;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.camera-flash-overlay.flashing {
+    animation: flashStrobeSeq 0.6s ease-out;
+}
+
+@keyframes flashStrobeSeq {
+    0% { opacity: 0.95; }
+    20% { opacity: 0.1; }
+    40% { opacity: 0.85; }
+    60% { opacity: 0.15; }
+    80% { opacity: 0.7; }
+    100% { opacity: 0; }
+}
+
+/* Action Signing Button */
+.penthouse-sign-button {
+    width: 100%;
+    padding: 14px;
+    font-size: 13.5px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+    color: #1a1200;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 12px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 20px rgba(234, 179, 8, 0.35);
+    transition: all 0.2s ease;
+    position: relative;
+    z-index: 4;
+}
+
+.penthouse-sign-button:hover {
+    background: linear-gradient(135deg, #facc15 0%, #d97706 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(234, 179, 8, 0.5);
+}
+
+.penthouse-sign-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
 
 /* ══════════════════════════════════════════════════════════════════
    🇹🇷 3. A MİLLİ TAKIM İSTİKLAL MARŞI & KAPTANLIK (CINEMATIC EURO)

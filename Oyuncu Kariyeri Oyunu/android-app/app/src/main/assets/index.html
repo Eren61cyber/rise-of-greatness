@@ -2873,76 +2873,155 @@
         </div>
 
         <!-- 💼 PENTHOUSE TRANSFER NEGOTIATION MODAL -->
-        <div class="event-modal-overlay" id="transfer-penthouse-modal" style="background: rgba(0,0,0,0.95); backdrop-filter: blur(14px); z-index: 10030; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
+        <div class="event-modal-overlay" id="transfer-penthouse-modal" style="background: rgba(0,0,0,0.92); backdrop-filter: blur(16px); z-index: 10030; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
             <div class="penthouse-card-stage" id="penthouse-stage">
-                <div class="skyscraper-panorama"></div>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 229, 183, 0.3); padding-bottom: 8px; margin-bottom: 12px; position: relative; z-index: 3;">
-                    <div style="font-size: 10.5px; font-weight: 900; color: #00e5b7; letter-spacing: 1px;">
-                        🏙️ PENTHOUSE TRANSFER ZİRVESİ
+                <!-- Camera Flash White Strobe Overlay -->
+                <div class="camera-flash-overlay" id="penthouse-flash-overlay"></div>
+
+                <!-- Panoramic Skyscraper Night Backdrop -->
+                <div class="penthouse-skyline-bg">
+                    <svg class="penthouse-skyline-silhouette" viewBox="0 0 800 120" preserveAspectRatio="none" style="width: 100%; height: 100%;">
+                        <rect x="20" y="30" width="35" height="90" fill="#0f172a"/>
+                        <rect x="70" y="15" width="45" height="105" fill="#1e293b"/>
+                        <polygon points="92,5 75,15 110,15" fill="#334155"/>
+                        <rect x="130" y="45" width="30" height="75" fill="#0f172a"/>
+                        <rect x="180" y="25" width="55" height="95" fill="#1e293b"/>
+                        <rect x="250" y="10" width="40" height="110" fill="#0f172a"/>
+                        <rect x="310" y="35" width="60" height="85" fill="#1e293b"/>
+                        <rect x="390" y="20" width="48" height="100" fill="#0f172a"/>
+                        <polygon points="414,2 395,20 433,20" fill="#334155"/>
+                        <rect x="455" y="40" width="35" height="80" fill="#1e293b"/>
+                        <rect x="510" y="15" width="50" height="105" fill="#0f172a"/>
+                        <rect x="580" y="30" width="40" height="90" fill="#1e293b"/>
+                        <rect x="640" y="10" width="55" height="110" fill="#0f172a"/>
+                        <rect x="715" y="25" width="45" height="95" fill="#1e293b"/>
+                        <!-- City Window Sparkles -->
+                        <circle cx="85" cy="40" r="1.5" fill="#facc15" opacity="0.8"/>
+                        <circle cx="100" cy="65" r="1.5" fill="#38bdf8" opacity="0.8"/>
+                        <circle cx="205" cy="50" r="1.5" fill="#facc15" opacity="0.8"/>
+                        <circle cx="270" cy="35" r="1.5" fill="#38bdf8" opacity="0.8"/>
+                        <circle cx="340" cy="60" r="1.5" fill="#facc15" opacity="0.8"/>
+                        <circle cx="410" cy="45" r="1.5" fill="#38bdf8" opacity="0.8"/>
+                        <circle cx="530" cy="35" r="1.5" fill="#facc15" opacity="0.8"/>
+                        <circle cx="660" cy="30" r="1.5" fill="#facc15" opacity="0.8"/>
+                    </svg>
+                </div>
+                <div class="penthouse-spotlight-beam"></div>
+
+                <!-- Header Bar -->
+                <div style="position: relative; z-index: 4; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px; margin-bottom: 14px;">
+                    <div style="font-size: 10.5px; font-weight: 800; color: #94a3b8; letter-spacing: 1px; text-align: left;">
+                        <span style="color: #FFD700;">👑</span> PENTHOUSE TRANSFER ZİRVESİ
                     </div>
-                    <div style="font-size: 10.5px; color: #FFD600; font-weight: 800;" id="penthouse-club-name">
+                    <div style="font-size: 12.5px; font-weight: 900; color: #f8fafc; letter-spacing: 0.5px;" id="penthouse-club-name">
                         REAL MADRID CF
                     </div>
                 </div>
 
-                <div style="display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 10px 12px; margin-bottom: 12px;">
-                    <div style="font-size: 30px;">👔</div>
-                    <div style="text-align: left;">
-                        <div style="font-size: 12.5px; font-weight: 900; color: #ffffff;" id="penthouse-president-name">Kulüp Başkanı & Menajer</div>
-                        <div style="font-size: 10.5px; color: #94a3b8;" id="penthouse-dialogue">"Masaya senin için tarihi bir kontrat koyduk. Şartlarını konuşalım."</div>
-                    </div>
-                </div>
+                <!-- Smoked Marble Boardroom Table Surface -->
+                <div class="penthouse-desk-surface">
+                    <!-- Contract Paper Document -->
+                    <div class="penthouse-contract-sheet">
+                        <div class="penthouse-contract-header">
+                            <div style="font-size: 10px; font-weight: 800; color: #FFD700; letter-spacing: 0.8px;">
+                                📜 RESMİ PROFESYONEL FUTBOLCU SÖZLEŞMESİ
+                            </div>
+                            <div style="font-size: 9.5px; color: #94a3b8; font-family: monospace;">
+                                REF: TR-2028-09
+                            </div>
+                        </div>
 
-                <div style="text-align: left; margin-bottom: 6px;">
-                    <div style="display: flex; justify-content: space-between; font-size: 10.5px; color: #cbd5e1; font-weight: 700;">
-                        <span>Başkanın Kabul Eşiği / Sabrı:</span>
-                        <span id="penthouse-leverage-val" style="color: #00e5b7;">%80</span>
+                        <!-- Stepper Clause Rows -->
+                        <div class="transfer-clause-row">
+                            <span style="color: #cbd5e1; font-weight: 600;">💼 Haftalık Maaş:</span>
+                            <div class="transfer-stepper-control">
+                                <button class="transfer-stepper-btn" onclick="adjustPenthouseValue('salary', -5000)">−</button>
+                                <span class="transfer-value-badge" id="penthouse-salary-val">75.000 €</span>
+                                <button class="transfer-stepper-btn" onclick="adjustPenthouseValue('salary', 5000)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="transfer-clause-row">
+                            <span style="color: #cbd5e1; font-weight: 600;">✍️ İmza Parası:</span>
+                            <div class="transfer-stepper-control">
+                                <button class="transfer-stepper-btn" onclick="adjustPenthouseValue('signing', -50000)">−</button>
+                                <span class="transfer-value-badge" id="penthouse-signing-val">600.000 €</span>
+                                <button class="transfer-stepper-btn" onclick="adjustPenthouseValue('signing', 50000)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="transfer-clause-row">
+                            <span style="color: #cbd5e1; font-weight: 600;">⚽ Gol Başı Prim:</span>
+                            <div class="transfer-stepper-control">
+                                <button class="transfer-stepper-btn" onclick="adjustPenthouseValue('bonus', -1000)">−</button>
+                                <span class="transfer-value-badge" id="penthouse-bonus-val">6.000 €</span>
+                                <button class="transfer-stepper-btn" onclick="adjustPenthouseValue('bonus', 1000)">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Animated Signature Line & 3D Gold Fountain Pen -->
+                        <div class="penthouse-signature-area">
+                            <div style="font-size: 9.5px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;">
+                                Oyuncu İmzası:
+                            </div>
+                            <!-- Gold Signature SVG -->
+                            <svg class="penthouse-signature-svg" viewBox="0 0 130 32">
+                                <path id="penthouse-sign-path" class="penthouse-signature-path" d="M 10 24 Q 25 6 35 22 Q 45 2 55 24 Q 70 8 85 20 Q 98 12 110 26 L 125 18" fill="none" stroke="#FFD700" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- 3D Gold Fountain Pen Graphic -->
+                    <svg id="penthouse-fountain-pen" class="penthouse-fountain-pen" viewBox="0 0 100 30">
+                        <defs>
+                            <linearGradient id="gold-pen-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#78350f"/>
+                                <stop offset="35%" stop-color="#fde047"/>
+                                <stop offset="70%" stop-color="#ca8a04"/>
+                                <stop offset="100%" stop-color="#451a03"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- Pen Body -->
+                        <rect x="25" y="10" width="65" height="10" rx="3" fill="url(#gold-pen-grad)" stroke="#ffffff" stroke-width="0.5"/>
+                        <!-- Gold Ring -->
+                        <rect x="23" y="9" width="3" height="12" rx="1" fill="#fef08a"/>
+                        <!-- Nib Holder -->
+                        <polygon points="23,10 10,13 10,17 23,20" fill="#1e293b"/>
+                        <!-- Gold Nib -->
+                        <polygon points="10,13 0,15 10,17" fill="#facc15" stroke="#ca8a04" stroke-width="0.4"/>
+                    </svg>
+
+                    <!-- Official Red Wax Seal Stamp -->
+                    <div id="penthouse-seal-stamp" class="penthouse-seal-stamp">
+                        <svg viewBox="0 0 100 100" style="width: 110px; height: 110px;">
+                            <circle cx="50" cy="50" r="46" fill="#991b1b" stroke="#ef4444" stroke-width="3" stroke-dasharray="4,2"/>
+                            <circle cx="50" cy="50" r="38" fill="#7f1d1d" stroke="#fca5a5" stroke-width="1.5"/>
+                            <text x="50" y="44" text-anchor="middle" fill="#fecaca" font-family="'Space Grotesk', sans-serif" font-size="10" font-weight="900" letter-spacing="1">RESMİ ONAY</text>
+                            <text x="50" y="58" text-anchor="middle" fill="#ffffff" font-family="'Space Grotesk', sans-serif" font-size="12" font-weight="900" letter-spacing="1">İMZALANDI</text>
+                            <circle cx="50" cy="70" r="3" fill="#FFD700"/>
+                        </svg>
+                    </div>
+
+                    <!-- Leverage & Patience Status Bar -->
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; margin-top: 4px;">
+                        <span style="color: #94a3b8;">Başkanın Kabul Eşiği / Sabrı:</span>
+                        <span id="penthouse-leverage-val" style="color: #10b981;">%85</span>
                     </div>
                     <div class="transfer-leverage-track">
-                        <div class="transfer-leverage-fill" id="penthouse-leverage-bar" style="width: 80%;"></div>
+                        <div class="transfer-leverage-fill" id="penthouse-leverage-bar"></div>
+                    </div>
+                    <div id="penthouse-patience-status" style="font-size: 10.5px; font-weight: 700; color: #10b981; margin-bottom: 2px;">
+                        🟢 Başkan Masada Çok İstekli & Rahat
                     </div>
                 </div>
 
-                <!-- Contract Clauses -->
-                <div style="margin-bottom: 12px;">
-                    <div class="transfer-clause-row">
-                        <span style="color: #94a3b8;">Haftalık Maaş:</span>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <button class="btn btn-sm" onclick="adjustPenthouseClause('salary', -5000)" style="padding: 3px 8px; background: rgba(255,255,255,0.1); color: white; border-radius: 4px;">-</button>
-                            <span id="penthouse-salary-val" style="font-weight: 900; color: #00e5b7;">50.000 €</span>
-                            <button class="btn btn-sm" onclick="adjustPenthouseClause('salary', 5000)" style="padding: 3px 8px; background: rgba(255,255,255,0.1); color: white; border-radius: 4px;">+</button>
-                        </div>
-                    </div>
-                    <div class="transfer-clause-row">
-                        <span style="color: #94a3b8;">İmza Parası:</span>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <button class="btn btn-sm" onclick="adjustPenthouseClause('signing', -50000)" style="padding: 3px 8px; background: rgba(255,255,255,0.1); color: white; border-radius: 4px;">-</button>
-                            <span id="penthouse-signing-val" style="font-weight: 900; color: #FFD600;">500.000 €</span>
-                            <button class="btn btn-sm" onclick="adjustPenthouseClause('signing', 50000)" style="padding: 3px 8px; background: rgba(255,255,255,0.1); color: white; border-radius: 4px;">+</button>
-                        </div>
-                    </div>
-                    <div class="transfer-clause-row">
-                        <span style="color: #94a3b8;">Gol Başına Prim:</span>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <button class="btn btn-sm" onclick="adjustPenthouseClause('goalBonus', -1000)" style="padding: 3px 8px; background: rgba(255,255,255,0.1); color: white; border-radius: 4px;">-</button>
-                            <span id="penthouse-bonus-val" style="font-weight: 900; color: #60a5fa;">5.000 €</span>
-                            <button class="btn btn-sm" onclick="adjustPenthouseClause('goalBonus', 1000)" style="padding: 3px 8px; background: rgba(255,255,255,0.1); color: white; border-radius: 4px;">+</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div style="display: flex; gap: 8px;">
-                    <button class="btn" onclick="submitPenthouseOffer(true)" style="flex: 1; padding: 12px; font-weight: 900; font-size: 12px; background: linear-gradient(135deg, #00e5b7 0%, #00b4d8 100%); color: #000; border: none; border-radius: 10px; cursor: pointer;">
-                        ✍️ KONTRATI İMZALA
-                    </button>
-                    <button class="btn" onclick="closePenthouseModal()" style="padding: 12px 16px; font-weight: 800; font-size: 11px; background: rgba(255,255,255,0.08); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; cursor: pointer;">
-                        Vazgeç
-                    </button>
-                </div>
+                <!-- Action Button -->
+                <button class="penthouse-sign-button" id="btn-penthouse-sign" onclick="signPenthouseContractWithVFX()">
+                    👑 KONTRATI İMZALA VE SAHAYA ÇIK
+                </button>
             </div>
         </div>
 
-        <!-- 🇹🇷 NATIONAL ANTHEM & CAPTAIN TEAM TALK MODAL -->
         <div class="event-modal-overlay" id="national-anthem-modal" style="background: rgba(0,0,0,0.96); backdrop-filter: blur(18px); z-index: 10030; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
             <div class="national-anthem-stage" id="national-anthem-stage">
                 <!-- Stadium Spotlights -->
@@ -3823,6 +3902,82 @@
                 } catch(e) {
                     if (typeof fallbackFn === "function") fallbackFn();
                 }
+            },
+
+            playStepperClick: function() {
+                if (!this.enabled) return;
+                try {
+                    this.initAudio();
+                    let ctx = this.audioCtx;
+                    if (!ctx) return;
+                    let now = ctx.currentTime;
+                    let osc = ctx.createOscillator();
+                    let gain = ctx.createGain();
+                    osc.type = "triangle";
+                    osc.frequency.setValueAtTime(1200, now);
+                    osc.frequency.exponentialRampToValueAtTime(350, now + 0.03);
+                    gain.gain.setValueAtTime(0.16, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.03);
+                } catch(e) {}
+            },
+
+            playPenScratch: function() {
+                if (!this.enabled) return;
+                try {
+                    this.initAudio();
+                    let ctx = this.audioCtx;
+                    if (!ctx) return;
+                    let now = ctx.currentTime;
+                    let bufferSize = Math.floor(ctx.sampleRate * 0.7);
+                    let buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                    let data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        data[i] = (Math.random() * 2 - 1) * (0.4 + 0.6 * Math.sin(i / 150));
+                    }
+                    let noise = ctx.createBufferSource();
+                    noise.buffer = buffer;
+                    let filter = ctx.createBiquadFilter();
+                    filter.type = "bandpass";
+                    filter.frequency.setValueAtTime(2200, now);
+                    filter.Q.setValueAtTime(3.5, now);
+                    let gain = ctx.createGain();
+                    gain.gain.setValueAtTime(0.001, now);
+                    gain.gain.linearRampToValueAtTime(0.25, now + 0.1);
+                    gain.gain.linearRampToValueAtTime(0.18, now + 0.4);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+                    noise.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(ctx.destination);
+                    noise.start(now);
+                } catch(e) {}
+            },
+
+            playCameraShutter: function() {
+                if (!this.enabled) return;
+                try {
+                    this.initAudio();
+                    let ctx = this.audioCtx;
+                    if (!ctx) return;
+                    let now = ctx.currentTime;
+                    [0, 0.12, 0.28, 0.42].forEach((offset) => {
+                        let t = now + offset;
+                        let osc = ctx.createOscillator();
+                        let g = ctx.createGain();
+                        osc.type = "square";
+                        osc.frequency.setValueAtTime(1600, t);
+                        osc.frequency.exponentialRampToValueAtTime(100, t + 0.05);
+                        g.gain.setValueAtTime(0.22, t);
+                        g.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+                        osc.connect(g);
+                        g.connect(ctx.destination);
+                        osc.start(t);
+                        osc.stop(t + 0.05);
+                    });
+                } catch(e) {}
             },
 
             playNationalAnthemChant: function() {
@@ -7345,26 +7500,53 @@
         // ══════════════════════════════════════════════════════════════════
         // 💼 2. PENTHOUSE TRANSFER NEGOTIATION CONTROLLER
         // ══════════════════════════════════════════════════════════════════
+        // 🏢 2. PENTHOUSE TRANSFER ZİRVESİ CONTROLLER (BOARDROOM 3D)
+        // ══════════════════════════════════════════════════════════════════
         let penthouseTransferCallback = null;
         let currentPenthouseData = {
             club: "Real Madrid CF",
             salary: 75000,
-            signing: 800000,
-            goalBonus: 8000,
+            baseSalary: 75000,
+            signing: 600000,
+            baseSigning: 600000,
+            goalBonus: 6000,
+            baseBonus: 6000,
             patience: 85
         };
 
         function openPenthouseTransferModal(clubName = "Real Madrid CF", offerData = null, onComplete = null) {
             penthouseTransferCallback = onComplete;
             currentPenthouseData.club = clubName;
-            currentPenthouseData.salary = (offerData && offerData.salary) ? offerData.salary : 75000;
-            currentPenthouseData.signing = (offerData && offerData.signing) ? offerData.signing : 600000;
-            currentPenthouseData.goalBonus = (offerData && offerData.goalBonus) ? offerData.goalBonus : 6000;
+            
+            const baseSal = (offerData && offerData.salary) ? offerData.salary : 75000;
+            const baseSign = (offerData && offerData.signing) ? offerData.signing : 600000;
+            const baseBon = (offerData && offerData.goalBonus) ? offerData.goalBonus : 6000;
+
+            currentPenthouseData.salary = baseSal;
+            currentPenthouseData.baseSalary = baseSal;
+            currentPenthouseData.signing = baseSign;
+            currentPenthouseData.baseSigning = baseSign;
+            currentPenthouseData.goalBonus = baseBon;
+            currentPenthouseData.baseBonus = baseBon;
             currentPenthouseData.patience = 85;
 
             const modal = document.getElementById("transfer-penthouse-modal");
             const clubNameEl = document.getElementById("penthouse-club-name");
             if (clubNameEl) clubNameEl.innerText = clubName.toUpperCase();
+
+            // Reset visual effects
+            const pen = document.getElementById("penthouse-fountain-pen");
+            const path = document.getElementById("penthouse-sign-path");
+            const stamp = document.getElementById("penthouse-seal-stamp");
+            const btn = document.getElementById("btn-penthouse-sign");
+
+            if (pen) pen.classList.remove("signing");
+            if (path) path.classList.remove("signed");
+            if (stamp) stamp.classList.remove("stamped");
+            if (btn) {
+                btn.disabled = false;
+                btn.innerText = "👑 KONTRATI İMZALA VE SAHAYA ÇIK";
+            }
 
             updatePenthouseUI();
             if (modal) {
@@ -7376,44 +7558,122 @@
             }
         }
 
+        function adjustPenthouseValue(field, delta) {
+            if (field === "salary") {
+                const minSal = Math.floor(currentPenthouseData.baseSalary * 0.7);
+                const maxSal = Math.floor(currentPenthouseData.baseSalary * 1.8);
+                currentPenthouseData.salary = Math.max(minSal, Math.min(maxSal, currentPenthouseData.salary + delta));
+            } else if (field === "signing") {
+                const minSign = Math.floor(currentPenthouseData.baseSigning * 0.5);
+                const maxSign = Math.floor(currentPenthouseData.baseSigning * 2.0);
+                currentPenthouseData.signing = Math.max(minSign, Math.min(maxSign, currentPenthouseData.signing + delta));
+            } else if (field === "bonus") {
+                const minBon = Math.floor(currentPenthouseData.baseBonus * 0.5);
+                const maxBon = Math.floor(currentPenthouseData.baseBonus * 2.0);
+                currentPenthouseData.goalBonus = Math.max(minBon, Math.min(maxBon, currentPenthouseData.goalBonus + delta));
+            }
+
+            // Calculate Board Patience & Leverage
+            const salDemandRatio = currentPenthouseData.salary / currentPenthouseData.baseSalary;
+            const signDemandRatio = currentPenthouseData.signing / currentPenthouseData.baseSigning;
+            const bonDemandRatio = currentPenthouseData.goalBonus / currentPenthouseData.baseBonus;
+
+            const avgDemand = (salDemandRatio * 0.5) + (signDemandRatio * 0.3) + (bonDemandRatio * 0.2);
+            // Patience drops as demands increase
+            currentPenthouseData.patience = Math.round(110 - (avgDemand * 30));
+
+            updatePenthouseUI();
+
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playStepperClick === "function") {
+                SoundManager.playStepperClick();
+            } else if (typeof SoundManager !== "undefined" && typeof SoundManager.playClick === "function") {
+                SoundManager.playClick();
+            }
+        }
+
         function updatePenthouseUI() {
             const sEl = document.getElementById("penthouse-salary-val");
             const signEl = document.getElementById("penthouse-signing-val");
             const bEl = document.getElementById("penthouse-bonus-val");
             const levVal = document.getElementById("penthouse-leverage-val");
             const levBar = document.getElementById("penthouse-leverage-bar");
+            const statusEl = document.getElementById("penthouse-patience-status");
 
             if (sEl) sEl.innerText = `${currentPenthouseData.salary.toLocaleString("tr-TR")} €`;
             if (signEl) signEl.innerText = `${currentPenthouseData.signing.toLocaleString("tr-TR")} €`;
             if (bEl) bEl.innerText = `${currentPenthouseData.goalBonus.toLocaleString("tr-TR")} €`;
             
-            if (levVal) levVal.innerText = `%${Math.max(10, Math.min(100, currentPenthouseData.patience))}`;
+            const patienceClamped = Math.max(10, Math.min(100, currentPenthouseData.patience));
+            if (levVal) levVal.innerText = `%${patienceClamped}`;
+            
             if (levBar) {
-                levBar.style.width = `${Math.max(10, Math.min(100, currentPenthouseData.patience))}%`;
-                if (currentPenthouseData.patience < 40) levBar.style.background = "#ef4444";
-                else if (currentPenthouseData.patience < 70) levBar.style.background = "#FFD600";
-                else levBar.style.background = "linear-gradient(90deg, #FFD600 0%, #00e5b7 100%)";
+                levBar.style.width = `${patienceClamped}%`;
+                levBar.className = "transfer-leverage-fill";
+                
+                if (patienceClamped < 40) {
+                    levBar.classList.add("danger");
+                    if (statusEl) {
+                        statusEl.style.color = "#ef4444";
+                        statusEl.innerHTML = "🔴 Kritik Eşik! Başkan Masadan Kalkmak Üzere!";
+                    }
+                    if (levVal) levVal.style.color = "#ef4444";
+                } else if (patienceClamped < 70) {
+                    levBar.classList.add("warning");
+                    if (statusEl) {
+                        statusEl.style.color = "#f59e0b";
+                        statusEl.innerHTML = "🟡 Pazarlık Kızışıyor • Dikkatli Ol";
+                    }
+                    if (levVal) levVal.style.color = "#f59e0b";
+                } else {
+                    if (statusEl) {
+                        statusEl.style.color = "#10b981";
+                        statusEl.innerHTML = "🟢 Başkan Masada Çok İstekli & Rahat";
+                    }
+                    if (levVal) levVal.style.color = "#10b981";
+                }
             }
         }
 
-        function adjustPenthouseClause(clause, delta) {
-            if (clause === "salary") {
-                currentPenthouseData.salary = Math.max(10000, currentPenthouseData.salary + delta);
-                currentPenthouseData.patience -= (delta > 0 ? 8 : -4);
-            } else if (clause === "signing") {
-                currentPenthouseData.signing = Math.max(50000, currentPenthouseData.signing + delta);
-                currentPenthouseData.patience -= (delta > 0 ? 6 : -3);
-            } else if (clause === "goalBonus") {
-                currentPenthouseData.goalBonus = Math.max(1000, currentPenthouseData.goalBonus + delta);
-                currentPenthouseData.patience -= (delta > 0 ? 5 : -2);
+        function signPenthouseContractWithVFX() {
+            const btn = document.getElementById("btn-penthouse-sign");
+            if (btn) {
+                btn.disabled = true;
+                btn.innerText = "✍️ İMZALANIYOR...";
             }
-            updatePenthouseUI();
-            if (typeof SoundManager !== "undefined" && typeof SoundManager.playClick === "function") {
-                SoundManager.playClick();
+
+            const pen = document.getElementById("penthouse-fountain-pen");
+            const path = document.getElementById("penthouse-sign-path");
+            const stamp = document.getElementById("penthouse-seal-stamp");
+            const flash = document.getElementById("penthouse-flash-overlay");
+
+            // 1. Pen gliding and golden signature stroke
+            if (pen) pen.classList.add("signing");
+            if (path) path.classList.add("signed");
+
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playPenScratch === "function") {
+                SoundManager.playPenScratch();
             }
+
+            // 2. Official Seal Stamp Slam & Paparazzi Camera Flashes after 700ms
+            setTimeout(() => {
+                if (stamp) stamp.classList.add("stamped");
+                if (flash) flash.classList.add("flashing");
+
+                if (typeof SoundManager !== "undefined" && typeof SoundManager.playCameraShutter === "function") {
+                    SoundManager.playCameraShutter();
+                }
+                if (typeof SoundManager !== "undefined" && typeof SoundManager.playBuy === "function") {
+                    SoundManager.playBuy();
+                }
+
+                // 3. Finalize transfer after 1100ms
+                setTimeout(() => {
+                    finalizePenthouseTransfer();
+                }, 1100);
+            }, 700);
         }
 
-        function submitPenthouseOffer(forceAccept = false) {
+        function finalizePenthouseTransfer() {
             const modal = document.getElementById("transfer-penthouse-modal");
             if (modal) {
                 modal.style.display = "none";
@@ -7427,14 +7687,10 @@
             GAME.saveGame();
             GAME.updateUI();
 
-            if (typeof SoundManager !== "undefined" && typeof SoundManager.playBuy === "function") {
-                SoundManager.playBuy();
-            }
-
             showCustomAlert(
-                `${currentPenthouseData.club} ile rekor sözleşme imzalandı!\n💰 İmza Parası: ${currentPenthouseData.signing.toLocaleString("tr-TR")} €\n⚽ Haftalık Maaş: ${currentPenthouseData.salary.toLocaleString("tr-TR")} €`,
-                "TRANSFER TAMAMLANDI!",
-                "✍️",
+                `${currentPenthouseData.club} ile tarihi transfer sözleşmesi imzalandı!\n💰 İmza Parası: ${currentPenthouseData.signing.toLocaleString("tr-TR")} €\n💵 Haftalık Maaş: ${currentPenthouseData.salary.toLocaleString("tr-TR")} €\n⚽ Gol Primi: ${currentPenthouseData.goalBonus.toLocaleString("tr-TR")} €`,
+                "TRANSFER RESMİLEŞTİ!",
+                "👑",
                 "info"
             );
 
@@ -7459,19 +7715,7 @@
             openPenthouseTransferModal("Real Madrid CF", { salary: 90000, signing: 1200000, goalBonus: 10000 });
         }
 
-
-        // ══════════════════════════════════════════════════════════════════
-        // 🇹🇷 3. A MİLLİ TAKIM İSTİKLAL MARŞI & KAPTANLIK CONTROLLER
-        // ══════════════════════════════════════════════════════════════════
-        // 🇹🇷 3. A MİLLİ TAKIM İSTİKLAL MARŞI & KAPTANLIK CONTROLLER (CINEMATIC)
-        // ══════════════════════════════════════════════════════════════════
-        // 🇹🇷 3. A MİLLİ TAKIM İSTİKLAL MARŞI & KAPTANLIK CONTROLLER (CINEMATIC)
-        // ══════════════════════════════════════════════════════════════════
-        let anthemCallback = null;
-        let selectedCaptainTalk = "passion"; // "passion" or "tactical"
-        let flagWaveAnimId = null;
-
-        function startNationalAnthemCeremony(matchData = null, onComplete = null) {
+function startNationalAnthemCeremony(matchData = null, onComplete = null) {
             anthemCallback = onComplete;
             selectedCaptainTalk = "passion";
             
