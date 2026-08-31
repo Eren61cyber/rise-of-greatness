@@ -23,6 +23,7 @@
         }
     </script>
     <base href="./">
+    <script src="three.min.js"></script>
     <link rel="stylesheet" href="styles.css?v=5.8.2">
     <script>
         window.onerror = function(message, source, lineno, colno, error) {
@@ -747,18 +748,18 @@
                     </div>
                 </div>
 
-                <!-- 🏆 KUPA MÜZESİ (TROPHY SHOWCASE) -->
-                <div class="card glass" style="margin-bottom: 12px; padding: 14px; border-radius: 12px;">
-                    <div style="font-size: 11px; font-weight: 800; color: var(--accent-yellow); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-yellow);"><circle cx="12" cy="8" r="7"/><path d="M4 15V9h2v6M20 15V9h-2v6M9 22h6M12 15v7"/></svg> Kupa Müzesi
-                    </div>
-                    <div id="trophy-showcase-container" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
-                        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 4px 0; opacity: 0.3;">
-                            <span style="font-size: 20px;">🏆</span>
-                            <span style="font-size: 20px; transform: scale(1.1);">🏆</span>
-                            <span style="font-size: 20px;">🏆</span>
+                <!-- 🏆 3D HARDWARE-ACCELERATED WEBGL KUPA MÜZESİ & ŞEREF SALONU -->
+                <div class="trophy-museum-card">
+                    <div style="font-size: 11px; font-weight: 800; color: var(--accent-yellow); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <span>🏛️</span> 3D KUPA MÜZESİ & ŞEREF SALONU
                         </div>
-                        <div style="font-size: 10px; font-weight: 800; color: #fff; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">0 Kupa</div>
+                        <span id="trophy-count-badge" style="font-size: 10px; font-weight: 900; color: #04140e; background: #ffd700; padding: 2px 8px; border-radius: 6px;">0 KUPA</span>
+                    </div>
+                    <p style="font-size: 11px; color: #94a3b8; margin: 0 0 10px 0; line-height: 1.35;">Kazandığın şampiyonluk kupaları burada 3D vitrinde sergilenir. Detaylı 360° incelemek ve altın plaketi görmek için kupaya tıkla.</p>
+                    
+                    <div id="trophy-showcase-container" class="trophy-museum-grid">
+                        <!-- Rendered dynamically with 3D WebGL items -->
                     </div>
                 </div>
 
@@ -4118,7 +4119,30 @@
                 } catch(e) {}
             },
 
-            playBusParadeAtmosphere: function() {
+            playTrophyInspect: function() {
+            try {
+                const ctx = this.getContext();
+                if (!ctx) return;
+                const now = ctx.currentTime;
+                
+                // Shimmering chimes & metallic gleam
+                [523.25, 659.25, 783.99, 1046.50, 1318.51].forEach((freq, i) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(freq, now + i * 0.05);
+                    gain.gain.setValueAtTime(0, now + i * 0.05);
+                    gain.gain.linearRampToValueAtTime(0.12, now + i * 0.05 + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.05 + 0.8);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now + i * 0.05);
+                    osc.stop(now + i * 0.05 + 0.9);
+                });
+            } catch(e){}
+        },
+
+        playBusParadeAtmosphere: function() {
                 if (!this.enabled) return;
                 this.duckMusic(0.04);
                 try {
@@ -9710,99 +9734,429 @@ function proceedPostMatch() {
         }
 
 
+        // ══════════════════════════════════════════════════════════════════
+        // 🏛️ 3D HARDWARE-ACCELERATED WEBGL TROPHY ENGINE (THREE.JS)
+        // ══════════════════════════════════════════════════════════════════
+        const WebGLTrophyEngine = {
+            createMesh: function(trophyType) {
+                if (typeof THREE === "undefined") return null;
+                const type = (trophyType || "").toLowerCase();
+                const group = new THREE.Group();
+
+                // Material Palette
+                const goldMat = new THREE.MeshStandardMaterial({
+                    color: 0xffd700,
+                    metalness: 0.96,
+                    roughness: 0.12
+                });
+
+                const chromeMat = new THREE.MeshStandardMaterial({
+                    color: 0xe8eff5,
+                    metalness: 0.98,
+                    roughness: 0.06
+                });
+
+                const bronzeMat = new THREE.MeshStandardMaterial({
+                    color: 0xcd7f32,
+                    metalness: 0.90,
+                    roughness: 0.20
+                });
+
+                const obsidianMat = new THREE.MeshStandardMaterial({
+                    color: 0x0d1117,
+                    metalness: 0.35,
+                    roughness: 0.25
+                });
+
+                const emeraldMat = new THREE.MeshStandardMaterial({
+                    color: 0x00e676,
+                    metalness: 0.85,
+                    roughness: 0.15
+                });
+
+                const cyberMat = new THREE.MeshStandardMaterial({
+                    color: 0x00e5ff,
+                    emissive: 0x00e5ff,
+                    emissiveIntensity: 0.6,
+                    metalness: 0.9,
+                    roughness: 0.1
+                });
+
+                if (type.includes("ballon_or") || type.includes("altın top") || type.includes("altin top")) {
+                    // 👑 BALLON D'OR: Faceted Gold Football + Pyramidal Obsidian Base
+                    const ball = new THREE.Mesh(new THREE.IcosahedronGeometry(1.15, 2), goldMat);
+                    ball.position.y = 1.6;
+
+                    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.4, 0.5, 16), goldMat);
+                    stem.position.y = 0.8;
+
+                    const base = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 1.15, 0.7, 8), obsidianMat);
+                    base.position.y = 0.35;
+
+                    const plate = new THREE.Mesh(new THREE.CylinderGeometry(0.87, 0.87, 0.18, 8), goldMat);
+                    plate.position.y = 0.35;
+
+                    group.add(ball);
+                    group.add(stem);
+                    group.add(base);
+                    group.add(plate);
+
+                } else if (type.includes("champions_league") || type.includes("şampiyonlar ligi") || type.includes("sampiyonlar ligi") || type.includes("ucl")) {
+                    // ⭐ UEFA CHAMPIONS LEAGUE (The Big Ears)
+                    const cup = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 0.35, 1.7, 24), chromeMat);
+                    cup.position.y = 1.35;
+
+                    const cupBottom = new THREE.Mesh(new THREE.SphereGeometry(0.36, 24, 12), chromeMat);
+                    cupBottom.position.y = 0.55;
+
+                    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.25, 0.4, 20), chromeMat);
+                    stem.position.y = 0.35;
+
+                    const base1 = new THREE.Mesh(new THREE.CylinderGeometry(0.65, 0.75, 0.2, 24), chromeMat);
+                    base1.position.y = 0.15;
+
+                    const base2 = new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.85, 0.15, 24), obsidianMat);
+                    base2.position.y = 0.05;
+
+                    // Dual Curved Handles
+                    const handleL = new THREE.Mesh(new THREE.TorusGeometry(0.65, 0.08, 12, 24, Math.PI * 1.15), chromeMat);
+                    handleL.position.set(-0.75, 1.3, 0);
+                    handleL.rotation.z = Math.PI / 4;
+
+                    const handleR = new THREE.Mesh(new THREE.TorusGeometry(0.65, 0.08, 12, 24, Math.PI * 1.15), chromeMat);
+                    handleR.position.set(0.75, 1.3, 0);
+                    handleR.rotation.z = -Math.PI / 4 + Math.PI;
+
+                    group.add(cup);
+                    group.add(cupBottom);
+                    group.add(stem);
+                    group.add(base1);
+                    group.add(base2);
+                    group.add(handleL);
+                    group.add(handleR);
+
+                } else if (type.includes("super_lig") || type.includes("süper lig") || type.includes("super lig")) {
+                    // 🏆 SÜPER LİG TROPHY: Fluted Gold Body with Turkish Star Relief
+                    const cup = new THREE.Mesh(new THREE.CylinderGeometry(1.05, 0.4, 1.8, 16), goldMat);
+                    cup.position.y = 1.4;
+
+                    const starRelief = new THREE.Mesh(new THREE.OctahedronGeometry(0.32, 0), chromeMat);
+                    starRelief.position.set(0, 1.4, 0.7);
+
+                    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.32, 0.45, 16), goldMat);
+                    stem.position.y = 0.45;
+
+                    const base = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 1.05, 0.45, 8), obsidianMat);
+                    base.position.y = 0.22;
+
+                    group.add(cup);
+                    group.add(starRelief);
+                    group.add(stem);
+                    group.add(base);
+
+                } else if (type.includes("super_kupa") || type.includes("süper kupa") || type.includes("super kupa")) {
+                    // 🛡️ TÜRKİYE SÜPER KUPA: 3D Gold Shield with Star Boss
+                    const shield = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.0, 0.22, 6), goldMat);
+                    shield.rotation.x = Math.PI / 2;
+                    shield.position.y = 1.3;
+
+                    const boss = new THREE.Mesh(new THREE.TorusGeometry(0.55, 0.08, 12, 24), chromeMat);
+                    boss.position.set(0, 1.3, 0.12);
+
+                    const base = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.9, 0.4, 16), obsidianMat);
+                    base.position.y = 0.2;
+
+                    group.add(shield);
+                    group.add(boss);
+                    group.add(base);
+
+                } else if (type.includes("turkiye_kupasi") || type.includes("türkiye kupası") || type.includes("turkiye kupasi") || type.includes("kupa")) {
+                    // 🥇 TÜRKİYE KUPASI: Emerald & Silver Goblet
+                    const goblet = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 0.35, 1.6, 20), chromeMat);
+                    goblet.position.y = 1.35;
+
+                    const emeraldRing = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.18, 20), emeraldMat);
+                    emeraldRing.position.y = 0.55;
+
+                    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.25, 0.35, 16), chromeMat);
+                    stem.position.y = 0.35;
+
+                    const base = new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.9, 0.35, 20), obsidianMat);
+                    base.position.y = 0.17;
+
+                    group.add(goblet);
+                    group.add(emeraldRing);
+                    group.add(stem);
+                    group.add(base);
+
+                } else if (type.includes("esport") || type.includes("e-spor")) {
+                    // 🎮 E-SPOR CHAMPIONSHIP: Angular Cyber Crystal Trophy
+                    const topCone = new THREE.Mesh(new THREE.ConeGeometry(0.85, 1.8, 4), obsidianMat);
+                    topCone.rotation.z = Math.PI;
+                    topCone.position.y = 1.4;
+
+                    const core = new THREE.Mesh(new THREE.OctahedronGeometry(0.45, 0), cyberMat);
+                    core.position.y = 1.4;
+
+                    const base = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.85, 0.4, 4), obsidianMat);
+                    base.position.y = 0.2;
+
+                    group.add(topCone);
+                    group.add(core);
+                    group.add(base);
+
+                } else {
+                    // 🥉 LOWER LEAGUES / DEFAULT: Bronze / Silver Classic Trophy
+                    const is1Lig = type.includes("1_lig") || type.includes("1. lig");
+                    const mat = is1Lig ? chromeMat : bronzeMat;
+
+                    const cup = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.3, 1.5, 16), mat);
+                    cup.position.y = 1.25;
+
+                    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.25, 0.35, 16), mat);
+                    stem.position.y = 0.35;
+
+                    const base = new THREE.Mesh(new THREE.CylinderGeometry(0.65, 0.8, 0.35, 16), obsidianMat);
+                    base.position.y = 0.17;
+
+                    group.add(cup);
+                    group.add(stem);
+                    group.add(base);
+                }
+
+                return group;
+            }
+        };
+
+        // 3D TROPHY INSPECTOR STATE & CONTROLLER
+        let inspectScene = null, inspectCamera = null, inspectRenderer = null;
+        let inspectCurrentMesh = null, inspectAnimFrame = null;
+        let inspectActiveTrophyIndex = 0;
+        let inspectIsDragging = false, inspectPrevX = 0, inspectVelocityX = 0;
+
         function updateTrophyShowcase() {
             const container = document.getElementById("trophy-showcase-container");
+            const badge = document.getElementById("trophy-count-badge");
             if (!container) return;
 
-            if (!GAME.state.trophies || GAME.state.trophies.length === 0) {
+            const trophies = GAME.state.trophies || [];
+            if (badge) badge.innerText = `${trophies.length} KUPA`;
+
+            if (trophies.length === 0) {
                 container.innerHTML = `
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 4px 0; opacity: 0.3;">
-                        <span style="font-size: 20px;">🏆</span>
-                        <span style="font-size: 20px; transform: scale(1.1);">🏆</span>
-                        <span style="font-size: 20px;">🏆</span>
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 24px 12px; color: var(--text-muted); font-size: 12px; border: 1px dashed rgba(255,215,0,0.2); border-radius: 12px; background: rgba(0,0,0,0.3);">
+                        <div style="font-size: 28px; margin-bottom: 6px; opacity: 0.4;">🏆</div>
+                        <div style="font-weight: 800; color: #f8fafc; margin-bottom: 2px;">Henüz Kupa Kazanılmadı</div>
+                        <div style="font-size: 11px;">Ligde ve kupalarda zaferler elde ederek şeref salonunu doldur!</div>
                     </div>
-                    <div style="font-size: 10px; font-weight: 800; color: #fff; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">0 Kupa</div>
                 `;
                 return;
             }
 
             container.innerHTML = "";
-            GAME.state.trophies.forEach(trophy => {
-                let badgeColor = "var(--primary)";
-                let glowColor = "rgba(0, 230, 118, 0.15)";
+            trophies.forEach((trophy, idx) => {
+                let name = typeof trophy === "object" ? trophy.name : trophy;
+                let year = typeof trophy === "object" && trophy.year ? trophy.year : (2026 + (GAME.state.age - 17));
+                let tId = typeof trophy === "object" && trophy.id ? trophy.id : String(name).toLowerCase();
+
                 let icon = "🏆";
-                
-                let tId = trophy.id || "";
-                if (typeof trophy === "string") {
-                    tId = trophy.toLowerCase();
-                }
+                if (tId.includes("ballon_or")) icon = "👑";
+                else if (tId.includes("champions_league")) icon = "⭐";
+                else if (tId.includes("super_kupa")) icon = "🛡️";
+                else if (tId.includes("esport")) icon = "🎮";
 
-                if (tId.includes("3_lig")) {
-                    badgeColor = "#b87333";
-                    glowColor = "rgba(184, 115, 51, 0.25)";
-                    icon = "🥉";
-                } else if (tId.includes("2_lig")) {
-                    badgeColor = "#c0c0c0";
-                    glowColor = "rgba(192, 192, 192, 0.3)";
-                    icon = "🥈";
-                } else if (tId.includes("1_lig")) {
-                    badgeColor = "#e5e5e5";
-                    glowColor = "rgba(229, 229, 229, 0.3)";
-                    icon = "🥇";
-                } else if (tId.includes("super_lig")) {
-                    badgeColor = "var(--accent-yellow)";
-                    glowColor = "rgba(255, 214, 0, 0.35)";
-                    icon = "🏆";
-                } else if (tId.includes("super_kupa")) {
-                    badgeColor = "#FFC107";
-                    glowColor = "rgba(255, 193, 7, 0.3)";
-                    icon = "🛡️";
-                } else if (tId.includes("champions_league")) {
-                    badgeColor = "#00b0ff";
-                    glowColor = "rgba(0, 176, 255, 0.4)";
-                    icon = "⭐🏆";
-                } else if (tId.includes("europa_league")) {
-                    badgeColor = "#ffab40";
-                    glowColor = "rgba(255, 171, 64, 0.35)";
-                    icon = "🇪🇺🏆";
-                } else if (tId.includes("ballon_or")) {
-                    badgeColor = "#ffd600";
-                    glowColor = "rgba(255, 214, 0, 0.5)";
-                    icon = "👑";
-                } else if (tId.includes("esports")) {
-                    badgeColor = "#d500f9";
-                    glowColor = "rgba(213, 0, 249, 0.4)";
-                    icon = "🎮🏆";
-                }
-
-                let trophyName = typeof trophy === "object" ? trophy.name : trophy;
-
-                container.innerHTML += `
-                    <div class="trophy-badge glass" style="
-                        display: flex; 
-                        flex-direction: column; 
-                        align-items: center; 
-                        justify-content: center; 
-                        width: 95px; 
-                        padding: 12px 6px; 
-                        border-radius: 12px; 
-                        border: 1.5px solid ${badgeColor}aa; 
-                        background: rgba(0,0,0,0.4); 
-                        box-shadow: 0 0 15px ${glowColor};
-                        text-align: center; 
-                        transition: transform 0.2s ease, box-shadow 0.2s ease;
-                        animation: fadeInUp 0.4s ease-out;
-                        cursor: pointer;
-                    " onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 0 25px ${glowColor.replace('0.35','0.6').replace('0.4','0.7').replace('0.5','0.8')}'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 0 15px ${glowColor}'">
-                        <span style="font-size: 32px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5)); margin-bottom: 6px;">${icon}</span>
-                        <div style="font-size: 9px; font-weight: 800; color: white; line-height: 1.25; margin-bottom: 2px; text-shadow: 0 1px 2px black;">${trophyName.split(" (")[0]}</div>
-                        <div style="font-size: 8px; color: ${badgeColor}; font-weight: bold;">${trophyName.includes("(") ? "(" + trophyName.split("(")[1] : ""}</div>
+                const itemBox = document.createElement("div");
+                itemBox.className = "trophy-item-3d-box";
+                itemBox.onclick = () => openTrophyInspector(idx);
+                itemBox.innerHTML = `
+                    <div style="font-size: 38px; margin: 4px 0 2px 0; filter: drop-shadow(0 4px 10px rgba(255,215,0,0.3));">${icon}</div>
+                    <div class="trophy-thumb-name">${name}</div>
+                    <div class="trophy-thumb-year">${year} Sezonu</div>
+                    <div style="font-size: 9px; color: #00e5ff; font-weight: 800; margin-top: 4px; display: flex; align-items: center; gap: 3px;">
+                        <span>🔍</span> 3D İNCELE
                     </div>
                 `;
+                container.appendChild(itemBox);
             });
         }
 
-        // Lig Bazlı Kariyer Dökümünü Çiz
+        function openTrophyInspector(trophyIndex) {
+            inspectActiveTrophyIndex = trophyIndex || 0;
+            const modal = document.getElementById("trophy-inspect-modal");
+            const canvas = document.getElementById("trophy-inspect-canvas");
+            if (!modal || !canvas) return;
+
+            modal.style.display = "flex";
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playTrophyInspect === "function") {
+                try { SoundManager.playTrophyInspect(); } catch(e){}
+            }
+
+            // Init Three.js Scene if not created
+            if (!inspectRenderer && typeof THREE !== "undefined") {
+                inspectScene = new THREE.Scene();
+                inspectCamera = new THREE.PerspectiveCamera(40, canvas.width / canvas.height, 0.1, 100);
+                inspectCamera.position.set(0, 1.4, 4.8);
+
+                inspectRenderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+                inspectRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+                inspectRenderer.setSize(canvas.clientWidth || 360, canvas.clientHeight || 300);
+
+                // Spot & Ambient Lights
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+                inspectScene.add(ambientLight);
+
+                const spotLight = new THREE.SpotLight(0xfff3c4, 2.5);
+                spotLight.position.set(0, 5, 2);
+                spotLight.angle = Math.PI / 4;
+                spotLight.penumbra = 0.8;
+                inspectScene.add(spotLight);
+
+                const rimLight = new THREE.DirectionalLight(0x00e5ff, 1.2);
+                rimLight.position.set(-3, 2, -2);
+                inspectScene.add(rimLight);
+
+                const warmRim = new THREE.DirectionalLight(0xff9800, 1.2);
+                warmRim.position.set(3, -1, -2);
+                inspectScene.add(warmRim);
+
+                // Touch & Pointer Drag Interaction
+                const wrap = document.getElementById("trophy-inspect-stage-wrap");
+                const onPointerDown = e => {
+                    inspectIsDragging = true;
+                    inspectPrevX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+                    inspectVelocityX = 0;
+                };
+
+                const onPointerMove = e => {
+                    if (!inspectIsDragging || !inspectCurrentMesh) return;
+                    const curX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+                    const deltaX = curX - inspectPrevX;
+                    inspectVelocityX = deltaX * 0.012;
+                    inspectCurrentMesh.rotation.y += inspectVelocityX;
+                    inspectPrevX = curX;
+                };
+
+                const onPointerUp = () => {
+                    inspectIsDragging = false;
+                };
+
+                if (wrap) {
+                    wrap.addEventListener("mousedown", onPointerDown);
+                    window.addEventListener("mousemove", onPointerMove);
+                    window.addEventListener("mouseup", onPointerUp);
+
+                    wrap.addEventListener("touchstart", onPointerDown, { passive: true });
+                    window.addEventListener("touchmove", onPointerMove, { passive: true });
+                    window.addEventListener("touchend", onPointerUp, { passive: true });
+                }
+            }
+
+            renderInspectCurrentTrophy();
+            startInspectAnimationLoop();
+        }
+
+        function renderInspectCurrentTrophy() {
+            const trophies = GAME.state.trophies || [];
+            if (trophies.length === 0) return;
+
+            if (inspectActiveTrophyIndex < 0) inspectActiveTrophyIndex = trophies.length - 1;
+            if (inspectActiveTrophyIndex >= trophies.length) inspectActiveTrophyIndex = 0;
+
+            const trophy = trophies[inspectActiveTrophyIndex];
+            const name = typeof trophy === "object" ? trophy.name : trophy;
+            const year = typeof trophy === "object" && trophy.year ? trophy.year : (2026 + (GAME.state.age - 17));
+            const club = typeof trophy === "object" && trophy.club ? trophy.club : (GAME.state.club || "TÜRKİYE");
+            const apps = typeof trophy === "object" && trophy.apps ? trophy.apps : (GAME.state.seasonApps || 34);
+            const goals = typeof trophy === "object" && trophy.goals ? trophy.goals : (GAME.state.seasonGoals || 25);
+            const assists = typeof trophy === "object" && trophy.assists ? trophy.assists : (GAME.state.seasonAssists || 12);
+            const ovr = typeof trophy === "object" && trophy.ovr ? trophy.ovr : (GAME.state.rating || 82);
+            const tId = typeof trophy === "object" && trophy.id ? trophy.id : String(name).toLowerCase();
+
+            // Update Plaque UI
+            const titleEl = document.getElementById("trophy-plaque-title");
+            const subEl = document.getElementById("trophy-plaque-sub");
+            const appsEl = document.getElementById("trophy-stat-apps");
+            const goalsEl = document.getElementById("trophy-stat-goals");
+            const assistsEl = document.getElementById("trophy-stat-assists");
+            const ovrEl = document.getElementById("trophy-stat-ovr");
+
+            if (titleEl) titleEl.innerText = name.toUpperCase();
+            if (subEl) subEl.innerText = `${year} Sezonu • ${club.toUpperCase()}`;
+            if (appsEl) appsEl.innerText = apps;
+            if (goalsEl) goalsEl.innerText = goals;
+            if (assistsEl) assistsEl.innerText = assists;
+            if (ovrEl) ovrEl.innerText = ovr;
+
+            // Swap 3D Mesh in Scene
+            if (inspectScene) {
+                if (inspectCurrentMesh) inspectScene.remove(inspectCurrentMesh);
+                inspectCurrentMesh = WebGLTrophyEngine.createMesh(tId);
+                if (inspectCurrentMesh) {
+                    inspectCurrentMesh.position.set(0, 0.2, 0);
+                    inspectScene.add(inspectCurrentMesh);
+                }
+            }
+        }
+
+        function startInspectAnimationLoop() {
+            if (inspectAnimFrame) cancelAnimationFrame(inspectAnimFrame);
+
+            const loop = () => {
+                const modal = document.getElementById("trophy-inspect-modal");
+                if (!modal || modal.style.display === "none") return;
+
+                if (inspectCurrentMesh) {
+                    if (!inspectIsDragging) {
+                        inspectVelocityX *= 0.94; // inertia damping
+                        inspectCurrentMesh.rotation.y += 0.007 + inspectVelocityX;
+                    }
+                }
+
+                if (inspectRenderer && inspectScene && inspectCamera) {
+                    inspectRenderer.render(inspectScene, inspectCamera);
+                }
+
+                inspectAnimFrame = requestAnimationFrame(loop);
+            };
+
+            inspectAnimFrame = requestAnimationFrame(loop);
+        }
+
+        function navigateInspectTrophy(direction) {
+            inspectActiveTrophyIndex += direction;
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playTrophyInspect === "function") {
+                try { SoundManager.playTrophyInspect(); } catch(e){}
+            }
+            renderInspectCurrentTrophy();
+        }
+
+        function closeTrophyInspector() {
+            const modal = document.getElementById("trophy-inspect-modal");
+            if (modal) modal.style.display = "none";
+            if (inspectAnimFrame) {
+                cancelAnimationFrame(inspectAnimFrame);
+                inspectAnimFrame = null;
+            }
+        }
+
+        function testTrophyMuseum() {
+            const sm = document.getElementById("settings-modal");
+            if (sm) sm.classList.remove("active");
+
+            // Seed mock test trophies if empty
+            if (!GAME.state.trophies || GAME.state.trophies.length === 0) {
+                GAME.state.trophies = [
+                    { id: "ballon_or", name: "Ballon d'Or (Altın Top)", year: 2028, club: "Real Madrid", apps: 42, goals: 38, assists: 19, ovr: 91 },
+                    { id: "champions_league", name: "UEFA Şampiyonlar Ligi", year: 2028, club: "Real Madrid", apps: 13, goals: 12, assists: 7, ovr: 91 },
+                    { id: "super_lig", name: "Süper Lig Şampiyonluğu", year: 2027, club: "Galatasaray", apps: 36, goals: 31, assists: 15, ovr: 86 },
+                    { id: "super_kupa", name: "Türkiye Süper Kupa", year: 2027, club: "Galatasaray", apps: 1, goals: 2, assists: 1, ovr: 86 },
+                    { id: "turkiye_kupasi", name: "Ziraat Türkiye Kupası", year: 2027, club: "Galatasaray", apps: 6, goals: 5, assists: 4, ovr: 86 }
+                ];
+            }
+            updateTrophyShowcase();
+            openTrophyInspector(0);
+        }
+
         function renderCareerLeagueBreakdown() {
             const container = document.getElementById("career-league-breakdown-container");
             if (!container || !GAME || !GAME.state) return;
@@ -13844,6 +14198,60 @@ function proceedPostMatch() {
             eventModal.classList.add("active");
         }
     </script>
+
+    <!-- 🏆 3D KUPA İNCELEME MODALI (3D TROPHY INSPECTOR MODAL) -->
+    <div id="trophy-inspect-modal">
+        <div class="trophy-inspect-header">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 24px;">🏛️</span>
+                <div>
+                    <div style="font-size: 14px; font-weight: 900; color: #ffffff; letter-spacing: 0.5px;">ŞEREF SALONU</div>
+                    <div style="font-size: 10px; font-weight: 700; color: #ffd700; text-transform: uppercase;">3D Kupa İnceleme Modu</div>
+                </div>
+            </div>
+            <button onclick="closeTrophyInspector()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #ffffff; font-size: 16px; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease;">✕</button>
+        </div>
+
+        <!-- 3D Stage with Touch Orbit -->
+        <div class="trophy-inspect-stage-wrap" id="trophy-inspect-stage-wrap">
+            <div class="trophy-spotlight-beam"></div>
+            <div class="trophy-pedestal-glow"></div>
+            <canvas id="trophy-inspect-canvas" width="400" height="340" style="width: 100%; height: 100%; border-radius: 16px;"></canvas>
+            <div style="position: absolute; bottom: 8px; font-size: 10px; color: #cbd5e1; font-weight: 700; pointer-events: none; background: rgba(0,0,0,0.65); padding: 3px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(8px);">
+                👆 Çevirmek için dokunup sürükle (360°)
+            </div>
+        </div>
+
+        <!-- Engraved Gold Plaque -->
+        <div class="trophy-plaque-card">
+            <h3 id="trophy-plaque-title" class="trophy-plaque-title">SÜPER LİG ŞAMPİYONLUĞU</h3>
+            <div id="trophy-plaque-sub" class="trophy-plaque-sub">2027 Sezonu • GALATASARAY</div>
+            
+            <div class="trophy-plaque-stats-grid">
+                <div class="trophy-plaque-stat-box">
+                    <span id="trophy-stat-apps" class="trophy-plaque-stat-val">34</span>
+                    <span class="trophy-plaque-stat-lbl">Maç</span>
+                </div>
+                <div class="trophy-plaque-stat-box">
+                    <span id="trophy-stat-goals" class="trophy-plaque-stat-val">28</span>
+                    <span class="trophy-plaque-stat-lbl">Gol</span>
+                </div>
+                <div class="trophy-plaque-stat-box">
+                    <span id="trophy-stat-assists" class="trophy-plaque-stat-val">14</span>
+                    <span class="trophy-plaque-stat-lbl">Asist</span>
+                </div>
+                <div class="trophy-plaque-stat-box">
+                    <span id="trophy-stat-ovr" class="trophy-plaque-stat-val">88</span>
+                    <span class="trophy-plaque-stat-lbl">OVR</span>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 8px; margin-top: 12px;">
+                <button class="btn btn-secondary" onclick="navigateInspectTrophy(-1)" style="flex: 1; padding: 10px; font-size: 12px; font-weight: 800; border-radius: 10px;">‹ Önceki</button>
+                <button class="btn btn-primary" onclick="navigateInspectTrophy(1)" style="flex: 1; padding: 10px; font-size: 12px; font-weight: 800; background: linear-gradient(135deg, #ffd700, #ff9800); color: #000; border-radius: 10px;">Sonraki ›</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 

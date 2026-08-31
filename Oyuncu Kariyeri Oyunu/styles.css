@@ -5308,3 +5308,194 @@ input[type="text"]:focus, select:focus {
     0% { transform: translateY(-8px); opacity: 0; }
     100% { transform: translateY(0); opacity: 1; }
 }
+
+
+/* ══════════════════════════════════════════════════════════════════
+   🏛️ 3D HARDWARE-ACCELERATED WEBGL TROPHY MUSEUM & INSPECTOR
+══════════════════════════════════════════════════════════════════ */
+.trophy-museum-card {
+    background: radial-gradient(circle at 50% 15%, rgba(255, 215, 0, 0.08) 0%, rgba(10, 14, 23, 0.95) 100%);
+    border: 1px solid rgba(255, 215, 0, 0.25);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.trophy-museum-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.trophy-item-3d-box {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(0, 0, 0, 0.6) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 12px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.trophy-item-3d-box:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 215, 0, 0.45);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.2);
+}
+
+.trophy-thumb-name {
+    font-size: 11px;
+    font-weight: 800;
+    color: #f8fafc;
+    text-align: center;
+    margin-top: 6px;
+    line-height: 1.25;
+}
+
+.trophy-thumb-year {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #ffd700;
+    margin-top: 2px;
+}
+
+/* 3D TROPHY INSPECTOR MODAL */
+#trophy-inspect-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(4, 6, 10, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 99999;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 16px env(safe-area-inset-bottom, 20px);
+    box-sizing: border-box;
+    animation: fadeInModal 0.3s ease-out;
+}
+
+.trophy-inspect-header {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+}
+
+.trophy-inspect-stage-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    height: 340px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: none;
+    user-select: none;
+    cursor: grab;
+}
+
+.trophy-inspect-stage-wrap:active {
+    cursor: grabbing;
+}
+
+.trophy-spotlight-beam {
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 380px;
+    background: radial-gradient(ellipse at top, rgba(255, 220, 100, 0.22) 0%, rgba(255, 215, 0, 0.04) 50%, transparent 80%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.trophy-pedestal-glow {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 180px;
+    height: 36px;
+    background: radial-gradient(ellipse, rgba(255, 215, 0, 0.35) 0%, rgba(255, 215, 0, 0.08) 60%, transparent 80%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: pedestalPulse 3s infinite ease-in-out;
+}
+
+@keyframes pedestalPulse {
+    0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.8; }
+    50% { transform: translateX(-50%) scale(1.1); opacity: 1; }
+}
+
+.trophy-plaque-card {
+    width: 100%;
+    max-width: 440px;
+    background: linear-gradient(135deg, rgba(20, 24, 33, 0.9) 0%, rgba(10, 12, 18, 0.95) 100%);
+    border: 1px solid rgba(255, 215, 0, 0.35);
+    border-radius: 14px;
+    padding: 14px 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 215, 0, 0.3);
+    z-index: 10;
+    text-align: center;
+}
+
+.trophy-plaque-title {
+    font-size: 16px;
+    font-weight: 900;
+    color: #ffd700;
+    letter-spacing: 0.5px;
+    margin: 0 0 4px 0;
+    text-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+}
+
+.trophy-plaque-sub {
+    font-size: 11.5px;
+    color: #94a3b8;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.trophy-plaque-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.trophy-plaque-stat-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.trophy-plaque-stat-val {
+    font-size: 14px;
+    font-weight: 900;
+    color: #ffffff;
+}
+
+.trophy-plaque-stat-lbl {
+    font-size: 8.5px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    margin-top: 2px;
+}
