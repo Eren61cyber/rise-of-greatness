@@ -2949,16 +2949,9 @@
                 <div class="anthem-spotlight-left"></div>
                 <div class="anthem-spotlight-right"></div>
 
-                <!-- Dalgalanan Türk Bayrağı Silk Backdrop -->
-                <div class="anthem-flag-silk-backdrop">
-                    <svg viewBox="0 0 1200 800" style="width: 100%; height: 100%; max-height: 380px;">
-                        <rect width="1200" height="800" fill="#E30A17"/>
-                        <!-- White Crescent (Hilal) -->
-                        <circle cx="500" cy="400" r="200" fill="#ffffff"/>
-                        <circle cx="550" cy="400" r="160" fill="#E30A17"/>
-                        <!-- White Star (Yıldız) -->
-                        <polygon points="680,400 730,416 711,466 752,434 797,460 770,416 815,385 762,385 745,335 728,385" fill="#ffffff" transform="rotate(-15 745 400)"/>
-                    </svg>
+                <!-- Live 60 FPS Wind Wave Animated Turkish Flag Canvas -->
+                <div class="anthem-flag-canvas-wrapper">
+                    <canvas id="anthem-flag-canvas" width="400" height="280"></canvas>
                 </div>
 
                 <!-- Top Header Bar -->
@@ -7472,8 +7465,11 @@
         // ══════════════════════════════════════════════════════════════════
         // 🇹🇷 3. A MİLLİ TAKIM İSTİKLAL MARŞI & KAPTANLIK CONTROLLER (CINEMATIC)
         // ══════════════════════════════════════════════════════════════════
+        // 🇹🇷 3. A MİLLİ TAKIM İSTİKLAL MARŞI & KAPTANLIK CONTROLLER (CINEMATIC)
+        // ══════════════════════════════════════════════════════════════════
         let anthemCallback = null;
         let selectedCaptainTalk = "passion"; // "passion" or "tactical"
+        let flagWaveAnimId = null;
 
         function startNationalAnthemCeremony(matchData = null, onComplete = null) {
             anthemCallback = onComplete;
@@ -7493,11 +7489,115 @@
                 modal.classList.add("active");
             }
 
+            // Start 60 FPS Realistic Waving Silk Turkish Flag Canvas
+            startWavingTurkishFlagCanvas();
+
             // Play Anthem Choir & Stadium Reverberation Sound
             if (typeof SoundManager !== "undefined" && typeof SoundManager.playNationalAnthemChant === "function") {
                 SoundManager.playNationalAnthemChant();
             } else if (typeof SoundManager !== "undefined" && typeof SoundManager.playStadiumShh === "function") {
                 SoundManager.playStadiumShh();
+            }
+        }
+
+        function startWavingTurkishFlagCanvas() {
+            const canvas = document.getElementById("anthem-flag-canvas");
+            if (!canvas) return;
+            const ctx = canvas.getContext("2d");
+            if (!ctx) return;
+
+            // Generate crisp high-res offscreen Turkish flag template
+            const offCanvas = document.createElement("canvas");
+            offCanvas.width = 400;
+            offCanvas.height = 260;
+            const offCtx = offCanvas.getContext("2d");
+
+            const W = 400, H = 260;
+            // 1. Red Al Zemin
+            offCtx.fillStyle = "#E30A17";
+            offCtx.fillRect(0, 0, W, H);
+
+            // 2. White Crescent (Hilal)
+            offCtx.fillStyle = "#ffffff";
+            offCtx.beginPath();
+            offCtx.arc(170, 130, 68, 0, Math.PI * 2);
+            offCtx.fill();
+
+            // Red Inner Circle
+            offCtx.fillStyle = "#E30A17";
+            offCtx.beginPath();
+            offCtx.arc(186, 130, 54, 0, Math.PI * 2);
+            offCtx.fill();
+
+            // 3. 5-Pointed White Star (Yıldız)
+            function drawFlagStar(cx, cy, spikes, outerRadius, innerRadius, rotation) {
+                let rot = Math.PI / 2 * 3 + rotation;
+                let x = cx;
+                let y = cy;
+                let step = Math.PI / spikes;
+
+                offCtx.beginPath();
+                offCtx.moveTo(cx, cy - outerRadius);
+                for (let i = 0; i < spikes; i++) {
+                    x = cx + Math.cos(rot) * outerRadius;
+                    y = cy + Math.sin(rot) * outerRadius;
+                    offCtx.lineTo(x, y);
+                    rot += step;
+
+                    x = cx + Math.cos(rot) * innerRadius;
+                    y = cy + Math.sin(rot) * innerRadius;
+                    offCtx.lineTo(x, y);
+                    rot += step;
+                }
+                offCtx.lineTo(cx, cy - outerRadius);
+                offCtx.closePath();
+                offCtx.fillStyle = "#ffffff";
+                offCtx.fill();
+            }
+            drawFlagStar(252, 130, 5, 26, 11, -0.26);
+
+            let t = 0;
+            function renderFlagWave() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                t += 0.045;
+
+                const sliceWidth = 2;
+                const slices = Math.floor(W / sliceWidth);
+
+                for (let i = 0; i < slices; i++) {
+                    let x = i * sliceWidth;
+                    // Dynamic wind wave physics (traveling sine wave)
+                    let waveOffset = Math.sin(i * 0.08 - t * 2.2) * 12 + Math.cos(i * 0.04 - t * 1.5) * 6;
+                    
+                    // Dynamic silk light & shadow creases
+                    let slope = Math.cos(i * 0.08 - t * 2.2) * 0.08;
+                    let brightness = 1 + slope * 0.45;
+
+                    ctx.save();
+                    ctx.drawImage(offCanvas, x, 0, sliceWidth, H, x, 10 + waveOffset, sliceWidth, H);
+                    
+                    // Dynamic shadow overlay on wave folds
+                    if (brightness < 0.98) {
+                        ctx.fillStyle = `rgba(0, 0, 0, ${Math.min(0.45, (1 - brightness) * 0.85)})`;
+                        ctx.fillRect(x, 10 + waveOffset, sliceWidth, H);
+                    } else if (brightness > 1.02) {
+                        ctx.fillStyle = `rgba(255, 255, 255, ${Math.min(0.28, (brightness - 1) * 0.65)})`;
+                        ctx.fillRect(x, 10 + waveOffset, sliceWidth, H);
+                    }
+                    ctx.restore();
+                }
+
+                flagWaveAnimId = requestAnimationFrame(renderFlagWave);
+            }
+
+            if (flagWaveAnimId) cancelAnimationFrame(flagWaveAnimId);
+            renderFlagWave();
+        }
+
+        function stopWavingTurkishFlagCanvas() {
+            if (flagWaveAnimId) {
+                cancelAnimationFrame(flagWaveAnimId);
+                flagWaveAnimId = null;
             }
         }
 
@@ -7522,6 +7622,8 @@
         }
 
         function confirmNationalTeamEntry() {
+            stopWavingTurkishFlagCanvas();
+
             if (selectedCaptainTalk === "passion") {
                 GAME.state.kondisyon = Math.min(100, (GAME.state.kondisyon || 80) + 10);
                 GAME.state.moral = 100;

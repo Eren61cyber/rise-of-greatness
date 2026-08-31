@@ -3975,23 +3975,24 @@ input[type="text"]:focus, select:focus {
     z-index: 1;
 }
 
-/* Waving Turkish Silk Flag Backdrop */
-.anthem-flag-silk-backdrop {
+/* Live 60 FPS Wind Wave Animated Turkish Flag Backdrop */
+.anthem-flag-canvas-wrapper {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    opacity: 0.18;
+    opacity: 0.26;
     pointer-events: none;
     z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: flagSilkWaving 7s ease-in-out infinite alternate;
+    overflow: hidden;
+    filter: drop-shadow(0 0 30px rgba(227, 10, 23, 0.7));
 }
 
-@keyframes flagSilkWaving {
-    0% { transform: scale(1) translateY(0) skewX(0deg); opacity: 0.15; }
-    50% { transform: scale(1.04) translateY(-4px) skewX(1.5deg); opacity: 0.22; }
-    100% { transform: scale(1.02) translateY(2px) skewX(-1deg); opacity: 0.16; }
+.anthem-flag-canvas-wrapper canvas {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 /* Realistic Fabric Captain Armband Badge */
