@@ -4202,18 +4202,18 @@ input[type="text"]:focus, select:focus {
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   ⚡ 5. VAR MONİTÖRÜ & HAKEM İNCELEME GERİLİMİ
+   ⚡ 5. 3D YARI OTOMATİK OFSAYT & TV VAR MONİTÖRÜ (AAA BROADCAST)
 ══════════════════════════════════════════════════════════════════ */
 .var-screen-stage {
     position: relative;
     width: 100%;
-    max-width: 460px;
-    background: #05080e;
+    max-width: 480px;
+    background: radial-gradient(circle at 50% 20%, #0d1726 0%, #060a12 60%, #020408 100%);
     border: 2px solid #00e5b7;
-    border-radius: 20px;
-    box-shadow: 0 0 55px rgba(0, 229, 183, 0.4), inset 0 0 40px rgba(0,0,0,0.9);
+    border-radius: 22px;
+    box-shadow: 0 0 65px rgba(0, 229, 183, 0.4), inset 0 0 35px rgba(0,0,0,0.95);
     overflow: hidden;
-    padding: 20px;
+    padding: 18px 16px;
     color: #fff;
     text-align: center;
 }
@@ -4221,9 +4221,9 @@ input[type="text"]:focus, select:focus {
 .var-crt-scanlines {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: repeating-linear-gradient(0deg, rgba(0, 229, 183, 0.04) 0px, rgba(0, 229, 183, 0.04) 1px, transparent 1px, transparent 3px);
+    background: repeating-linear-gradient(0deg, rgba(0, 229, 183, 0.035) 0px, rgba(0, 229, 183, 0.035) 1px, transparent 1px, transparent 3px);
     pointer-events: none;
-    z-index: 5;
+    z-index: 8;
 }
 
 .var-rec-dot {
@@ -4231,20 +4231,210 @@ input[type="text"]:focus, select:focus {
     height: 10px;
     background: #ef4444;
     border-radius: 50%;
-    box-shadow: 0 0 10px #ef4444;
+    box-shadow: 0 0 12px #ef4444;
     display: inline-block;
-    animation: flashBlink 0.8s infinite alternate;
+    animation: flashBlink 0.75s infinite alternate;
 }
 
-.var-decision-banner {
+.var-3d-pitch-stage {
+    position: relative;
+    width: 100%;
+    height: 205px;
+    background: linear-gradient(180deg, #102a1d 0%, #0d3822 45%, #082115 100%);
+    border: 1.5px solid rgba(0, 229, 183, 0.4);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    perspective: 600px;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
+}
+
+.var-pitch-isometric {
+    position: absolute;
+    top: 10px; left: 4%; right: 4%; bottom: 10px;
+    background: repeating-linear-gradient(90deg, rgba(34, 197, 94, 0.15) 0px, rgba(34, 197, 94, 0.15) 24px, rgba(22, 163, 74, 0.25) 24px, rgba(22, 163, 74, 0.25) 48px);
+    border: 1.5px solid rgba(255, 255, 255, 0.35);
+    border-radius: 6px;
+    transform: rotateX(28deg);
+    transform-origin: center bottom;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+}
+
+.var-radar-scanner {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, transparent 0%, #00e5b7 50%, transparent 100%);
+    box-shadow: 0 0 20px #00e5b7, 0 0 40px #00e5b7;
+    animation: radarScan 2.4s ease-in-out infinite alternate;
+    z-index: 3;
+}
+
+@keyframes radarScan {
+    0% { left: 10%; opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { left: 90%; opacity: 0.4; }
+}
+
+.var-blue-line-vertical {
+    position: absolute;
+    left: 42%;
+    top: 25px;
+    bottom: 25px;
+    width: 2.5px;
+    background: #3b82f6;
+    box-shadow: 0 0 15px #3b82f6, 0 0 30px #2563eb;
+    z-index: 4;
+}
+
+.var-red-line-vertical {
+    position: absolute;
+    left: 48%;
+    top: 20px;
+    bottom: 25px;
+    width: 2.5px;
+    background: #ef4444;
+    box-shadow: 0 0 15px #ef4444, 0 0 30px #dc2626;
+    z-index: 4;
+}
+
+.var-line-tag-blue {
+    position: absolute;
+    top: 8px;
+    left: 42%;
+    transform: translateX(-50%);
+    background: #1e3a8a;
+    border: 1px solid #3b82f6;
+    color: #93c5fd;
+    font-size: 8px;
+    font-weight: 900;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    z-index: 5;
+}
+
+.var-line-tag-red {
+    position: absolute;
+    top: 8px;
+    left: 48%;
+    transform: translateX(-50%);
+    background: #7f1d1d;
+    border: 1px solid #ef4444;
+    color: #fca5a5;
+    font-size: 8px;
+    font-weight: 900;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    z-index: 5;
+}
+
+.var-contact-point-badge {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    background: rgba(0, 0, 0, 0.75);
+    border: 1px solid #00e5b7;
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-size: 9.5px;
+    font-weight: 900;
+    color: #00e5b7;
+    letter-spacing: 0.5px;
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.var-osd-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 9.5px;
+    font-weight: 900;
+    color: #94a3b8;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 6;
+}
+
+.var-calibration-box {
+    background: rgba(0, 0, 0, 0.55);
+    border: 1px solid rgba(0, 229, 183, 0.25);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    font-family: 'Space Grotesk', monospace;
+    font-size: 11px;
+    color: #00e5b7;
+    letter-spacing: 0.5px;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 0 0 10px rgba(0, 229, 183, 0.5);
+}
+
+.var-decision-stamp {
     font-size: 26px;
     font-weight: 900;
     letter-spacing: 2px;
     text-transform: uppercase;
-    margin: 10px 0;
-    text-shadow: 0 0 25px #00e5b7;
+    margin: 8px 0;
+    padding: 12px;
+    border-radius: 12px;
+    display: none;
+    animation: stampSlam 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
+.var-decision-stamp.goal {
+    display: block;
+    background: rgba(0, 229, 183, 0.15);
+    border: 2.5px solid #00e5b7;
+    color: #00e5b7;
+    box-shadow: 0 0 45px rgba(0, 229, 183, 0.6), inset 0 0 20px rgba(0, 229, 183, 0.3);
+    text-shadow: 0 0 20px #00e5b7;
+}
+
+.var-decision-stamp.offside {
+    display: block;
+    background: rgba(239, 68, 68, 0.15);
+    border: 2.5px solid #ef4444;
+    color: #ef4444;
+    box-shadow: 0 0 45px rgba(239, 68, 68, 0.6), inset 0 0 20px rgba(239, 68, 68, 0.3);
+    text-shadow: 0 0 20px #ef4444;
+}
+
+.var-decision-stamp.penalty {
+    display: block;
+    background: rgba(255, 214, 0, 0.15);
+    border: 2.5px solid #FFD600;
+    color: #FFD600;
+    box-shadow: 0 0 45px rgba(255, 214, 0, 0.6), inset 0 0 20px rgba(255, 214, 0, 0.3);
+    text-shadow: 0 0 20px #FFD600;
+}
+
+@keyframes stampSlam {
+    0% { transform: scale(2.2) rotate(-6deg); opacity: 0; filter: blur(8px); }
+    70% { transform: scale(0.95) rotate(1deg); opacity: 1; filter: blur(0); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.var-screen-blackout {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 7;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
 
 /* ══════════════════════════════════════════════════════════════════
    🚌 6. ŞAMPİYONLUK ÜSTÜ AÇIK OTOBÜS ŞEHİR TURU

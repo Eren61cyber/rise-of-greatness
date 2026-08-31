@@ -3050,7 +3050,7 @@
                                 <span style="font-size: 7px; opacity: 0.8;">★</span>
                                 <span>TR</span>
                             </div>
-                            <span class="tr-plate-text-embossed" id="garage-plate-text">34 GS 1905</span>
+                            <span class="tr-plate-text-embossed" id="garage-plate-text">61 TS 1967</span>
                         </div>
                     </div>
 
@@ -3070,33 +3070,74 @@
         <div class="event-modal-overlay" id="var-review-modal" style="background: rgba(0,0,0,0.96); backdrop-filter: blur(16px); z-index: 10035; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
             <div class="var-screen-stage" id="var-stage">
                 <div class="var-crt-scanlines"></div>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 229, 183, 0.3); padding-bottom: 8px; margin-bottom: 12px;">
-                    <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 900; color: #00e5b7; letter-spacing: 1.5px;">
-                        <span class="var-rec-dot"></span> VAR REVIEW • OFFSIDE / PENALTY CHECK
+
+                <!-- Broadcast Header OSD -->
+                <div class="var-osd-top">
+                    <div style="display: flex; align-items: center; gap: 6px; color: #ef4444;">
+                        <span class="var-rec-dot"></span> [ 🔴 VAR REVIEW IN PROGRESS ]
                     </div>
-                    <div style="font-size: 10.5px; color: #94a3b8;" id="var-time-badge">90+3'</div>
+                    <div style="color: #00e5b7;" id="var-time-badge">MIN 89:24 • UEFA FEED</div>
                 </div>
 
-                <div style="background: #080c14; border: 1px solid rgba(0,229,183,0.25); border-radius: 12px; padding: 18px; margin-bottom: 14px;">
-                    <div style="font-size: 42px; margin-bottom: 8px;">📺</div>
-                    <h3 style="font-size: 16px; font-weight: 900; color: #ffffff; margin: 0 0 6px 0;" id="var-check-title">
-                        HAKEM VAR MONİTÖRÜNDE!
-                    </h3>
-                    <p style="font-size: 12px; color: #cbd5e1; margin: 0 0 10px 0;" id="var-check-desc">
-                        Nefesler tutuldu! Kritik pozisyon için 3D ofsayt çizgisi çekiliyor...
-                    </p>
-                    <div class="var-decision-banner" id="var-decision-banner" style="color: #FFD600;">
-                        İNCELENİYOR...
+                <div style="display: flex; justify-content: space-between; font-size: 8.5px; color: #64748b; font-weight: 800; letter-spacing: 0.8px; margin-bottom: 8px;">
+                    <span>[ CAM 03 • REVERSE ANGLE ]</span>
+                    <span>[ 240 FPS ULTRA SLOW-MO ]</span>
+                </div>
+
+                <!-- 3D Semi-Automated Offside Pitch Stage -->
+                <div class="var-3d-pitch-stage" id="var-pitch-stage">
+                    <div class="var-pitch-isometric"></div>
+                    <div class="var-radar-scanner"></div>
+
+                    <!-- Defending Player Silhouette & Blue Line -->
+                    <div class="var-blue-line-vertical"></div>
+                    <div class="var-line-tag-blue">DEF: SON SAVUNMACI</div>
+                    <svg viewBox="0 0 100 100" style="position: absolute; left: 38%; top: 35px; width: 35px; height: 80px; z-index: 4; opacity: 0.85;">
+                        <!-- 3D Blue Skeleton Defender Wireframe -->
+                        <circle cx="50" cy="18" r="10" fill="none" stroke="#60a5fa" stroke-width="3"/>
+                        <line x1="50" y1="28" x2="50" y2="65" stroke="#60a5fa" stroke-width="3.5"/>
+                        <line x1="50" y1="38" x2="30" y2="52" stroke="#60a5fa" stroke-width="3"/>
+                        <line x1="50" y1="38" x2="70" y2="50" stroke="#60a5fa" stroke-width="3"/>
+                        <line x1="50" y1="65" x2="38" y2="92" stroke="#60a5fa" stroke-width="3.5"/>
+                        <line x1="50" y1="65" x2="62" y2="92" stroke="#60a5fa" stroke-width="3.5"/>
+                    </svg>
+
+                    <!-- Attacking Player Silhouette & Red Line -->
+                    <div class="var-red-line-vertical"></div>
+                    <div class="var-line-tag-red">ATT: HÜCUM (YILDIZ)</div>
+                    <svg viewBox="0 0 100 100" style="position: absolute; left: 45%; top: 30px; width: 35px; height: 85px; z-index: 4; opacity: 0.95;">
+                        <!-- 3D Red Skeleton Attacker Wireframe -->
+                        <circle cx="58" cy="16" r="10" fill="none" stroke="#f87171" stroke-width="3"/>
+                        <line x1="58" y1="26" x2="50" y2="62" stroke="#f87171" stroke-width="3.5"/>
+                        <line x1="55" y1="35" x2="35" y2="48" stroke="#f87171" stroke-width="3"/>
+                        <line x1="55" y1="35" x2="78" y2="46" stroke="#f87171" stroke-width="3"/>
+                        <line x1="50" y1="62" x2="32" y2="88" stroke="#f87171" stroke-width="3.5"/>
+                        <line x1="50" y1="62" x2="72" y2="90" stroke="#f87171" stroke-width="3.5"/>
+                    </svg>
+
+                    <!-- Point of Contact Hologram -->
+                    <div class="var-contact-point-badge">
+                        <span>⚽</span> TEMAS NOKTASI: 00:48.216
                     </div>
                 </div>
 
-                <button class="btn btn-primary" id="btn-var-continue" onclick="resolveVarReview()" style="width: 100%; padding: 13px; font-weight: 900; font-size: 13px; background: linear-gradient(135deg, #00e5b7 0%, #00b4d8 100%); color: #000; border: none; border-radius: 10px; cursor: pointer;">
+                <!-- Calibration Telemetry Box -->
+                <div class="var-calibration-box" id="var-calibration-text">
+                    ⚡ 3D YARI OTOMATİK OFSAYT KALİBRASYONU AKTİF...
+                </div>
+
+                <!-- 3D Decision Stamp -->
+                <div class="var-decision-stamp" id="var-decision-stamp">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <!-- Action Button -->
+                <button class="btn btn-primary" id="btn-var-continue" onclick="revealVarDecision()" style="width: 100%; padding: 14px; font-weight: 900; font-size: 13.5px; background: linear-gradient(135deg, #00e5b7 0%, #00b4d8 100%); color: #000; border: none; border-radius: 12px; cursor: pointer; box-shadow: 0 0 25px rgba(0,229,183,0.5); letter-spacing: 0.5px;">
                     ⚡ HAKEMİN KARARINI GÖR
                 </button>
             </div>
         </div>
 
-        <!-- 🚌 VICTORY OPEN-TOP BUS TOUR MODAL -->
         <div class="event-modal-overlay" id="victory-bus-modal" style="background: rgba(0,0,0,0.96); backdrop-filter: blur(16px); z-index: 10035; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
             <div class="victory-bus-stage" id="victory-bus-stage">
                 <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 215, 0, 0.3); padding-bottom: 8px; margin-bottom: 12px;">
@@ -3468,6 +3509,54 @@
                     }
                 } catch(e) {
                     console.error("Audio error in synthesizeEngineRev:", e);
+                }
+            },
+
+            playWhistle: function() {
+                if (!this.enabled) return;
+                try {
+                    this.initAudio();
+                    let ctx = this.audioCtx;
+                    if (!ctx) return;
+                    let now = ctx.currentTime;
+
+                    // Dual oscillator authentic referee whistle with trill modulation
+                    let osc1 = ctx.createOscillator();
+                    let osc2 = ctx.createOscillator();
+                    let lfo = ctx.createOscillator();
+                    let lfoGain = ctx.createGain();
+                    let gain = ctx.createGain();
+
+                    osc1.type = "sine";
+                    osc1.frequency.setValueAtTime(2850, now);
+                    osc2.type = "triangle";
+                    osc2.frequency.setValueAtTime(3120, now);
+
+                    // Trill Modulation (28Hz pea spin)
+                    lfo.frequency.setValueAtTime(28, now);
+                    lfoGain.gain.setValueAtTime(140, now);
+                    lfo.connect(lfoGain);
+                    lfoGain.connect(osc1.frequency);
+                    lfoGain.connect(osc2.frequency);
+
+                    gain.gain.setValueAtTime(0.001, now);
+                    gain.gain.linearRampToValueAtTime(0.35, now + 0.05);
+                    gain.gain.setValueAtTime(0.35, now + 0.35);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+
+                    osc1.connect(gain);
+                    osc2.connect(gain);
+                    gain.connect(ctx.destination);
+
+                    lfo.start(now);
+                    osc1.start(now);
+                    osc2.start(now);
+
+                    lfo.stop(now + 0.55);
+                    osc1.stop(now + 0.55);
+                    osc2.stop(now + 0.55);
+                } catch(e) {
+                    console.error("Audio error in playWhistle:", e);
                 }
             },
 
@@ -7292,7 +7381,7 @@
                 imgEl.classList.add("car-switch-anim");
             }
 
-            const savedPlate = (GAME.state.customPlate || "34 GS 1905");
+            const savedPlate = (GAME.state.customPlate || "61 TS 1967");
             if (plateEl) plateEl.innerText = savedPlate;
 
             renderGarageList();
@@ -7326,7 +7415,7 @@
         }
 
         function editCarPlate() {
-            let newPlate = prompt("Yeni Plakanı Gir (Örn: 34 GS 1905, 06 FB 1907, 61 TS 1967):", (GAME.state.customPlate || "34 GS 1905"));
+            let newPlate = prompt("Yeni Plakanı Gir (Örn: 61 TS 1967, 06 FB 1907, 61 TS 1967):", (GAME.state.customPlate || "61 TS 1967"));
             if (newPlate && newPlate.trim()) {
                 GAME.state.customPlate = newPlate.trim().toUpperCase();
                 GAME.saveGame();
@@ -7388,23 +7477,57 @@
         }
 
 // ══════════════════════════════════════════════════════════════════
-        // ⚡ 5. VAR REVIEW CONTROLLER
+        // ⚡ 5. 3D YARI OTOMATİK VAR BROADCAST CONTROLLER (AAA ULTRA)
         // ══════════════════════════════════════════════════════════════════
         let varCallback = null;
-        let varResultGoal = true;
+        let varDecisionType = "goal"; // "goal", "offside", "penalty"
+        let varCalibrationTimer = null;
 
         function triggerVarReview(scenario = "offside", onComplete = null) {
             varCallback = onComplete;
-            varResultGoal = (Math.random() < 0.75); // %75 lehine
+            
+            // Determine outcome: 70% goal, 20% offside, 10% penalty
+            let r = Math.random();
+            if (scenario === "penalty" || r > 0.88) {
+                varDecisionType = "penalty";
+            } else if (r < 0.28) {
+                varDecisionType = "offside";
+            } else {
+                varDecisionType = "goal";
+            }
+
             const modal = document.getElementById("var-review-modal");
-            const banner = document.getElementById("var-decision-banner");
+            const calibText = document.getElementById("var-calibration-text");
+            const stamp = document.getElementById("var-decision-stamp");
             const btn = document.getElementById("btn-var-continue");
 
-            if (banner) {
-                banner.innerText = "İNCELENİYOR...";
-                banner.style.color = "#FFD600";
+            if (stamp) {
+                stamp.className = "var-decision-stamp";
+                stamp.style.display = "none";
+                stamp.innerText = "";
             }
-            if (btn) btn.innerText = "⚡ HAKEMİN KARARINI GÖR";
+
+            if (btn) {
+                btn.style.display = "block";
+                btn.innerText = "⚡ HAKEMİN KARARINI GÖR";
+                btn.onclick = revealVarDecision;
+            }
+
+            // Animate Calibration Status Stream
+            const calibSteps = [
+                "📐 [ADIM 1] 12 Özel Stadyum Kamerası Eşlendi...",
+                "🎯 [ADIM 2] Top Ayaktan Çıkış Temas Noktası Kilitlendi...",
+                "⚡ [ADIM 3] 3D Yarı Otomatik İskelet Çizgileri Çekildi...",
+                "⚖️ [ADIM 4] Hakem Kararını Vermek Üzere Monitörde."
+            ];
+            let stepIdx = 0;
+            if (calibText) calibText.innerText = calibSteps[0];
+
+            if (varCalibrationTimer) clearInterval(varCalibrationTimer);
+            varCalibrationTimer = setInterval(() => {
+                stepIdx = (stepIdx + 1) % calibSteps.length;
+                if (calibText) calibText.innerText = calibSteps[stepIdx];
+            }, 1200);
 
             if (modal) {
                 modal.style.display = "flex";
@@ -7416,61 +7539,99 @@
             }
         }
 
-        function resolveVarReview() {
-            const banner = document.getElementById("var-decision-banner");
-            const btn = document.getElementById("btn-var-continue");
-            
-            if (varResultGoal) {
-                if (banner) {
-                    banner.innerText = "✅ GOL GEÇERLİ!";
-                    banner.style.color = "#00e5b7";
-                }
-                if (typeof SoundManager !== "undefined") {
-                    if (typeof SoundManager.playVarChime === "function") SoundManager.playVarChime(true);
-                    if (typeof SoundManager.playGoal === "function") SoundManager.playGoal();
-                }
-            } else {
-                if (banner) {
-                    banner.innerText = "❌ OFSAYT / İPTAL!";
-                    banner.style.color = "#ef4444";
-                }
-                if (typeof SoundManager !== "undefined" && typeof SoundManager.playVarChime === "function") {
-                    SoundManager.playVarChime(false);
-                }
+        function revealVarDecision() {
+            if (varCalibrationTimer) {
+                clearInterval(varCalibrationTimer);
+                varCalibrationTimer = null;
             }
 
-            if (btn) {
-                btn.innerText = "MAÇA DÖN";
-                btn.onclick = closeVarModal;
+            const calibText = document.getElementById("var-calibration-text");
+            const stamp = document.getElementById("var-decision-stamp");
+            const btn = document.getElementById("btn-var-continue");
+            const stage = document.getElementById("var-stage");
+
+            if (calibText) calibText.innerText = "⏳ KARAR AÇIKLANIYOR...";
+
+            // 1.0s Tension Blackout & Suspense Swell
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playVarHeartbeat === "function") {
+                SoundManager.playVarHeartbeat();
             }
+
+            setTimeout(() => {
+                // Play Referee Whistle & Camera Shake
+                if (typeof SoundManager !== "undefined") {
+                    if (typeof SoundManager.playWhistle === "function") SoundManager.playWhistle();
+                }
+
+                if (stage) {
+                    stage.classList.remove("stadium-camera-shake");
+                    void stage.offsetWidth;
+                    stage.classList.add("stadium-camera-shake");
+                }
+
+                if (stamp) {
+                    if (varDecisionType === "goal") {
+                        stamp.className = "var-decision-stamp goal";
+                        stamp.innerText = "⚽ GOL GEÇERLİ!";
+                        if (calibText) calibText.innerText = "✅ İnceleme Tamamlandı: Ofsayt Yok, Gol Onaylandı!";
+                        if (typeof SoundManager !== "undefined") {
+                            if (typeof SoundManager.playVarChime === "function") SoundManager.playVarChime(true);
+                            if (typeof SoundManager.playGoal === "function") SoundManager.playGoal();
+                        }
+                    } else if (varDecisionType === "offside") {
+                        stamp.className = "var-decision-stamp offside";
+                        stamp.innerText = "❌ İPTAL: OFSAYT";
+                        if (calibText) calibText.innerText = "⚠️ İnceleme Tamamlandı: +12.4 cm İle Ofsayt Tespit Edildi!";
+                        if (typeof SoundManager !== "undefined" && typeof SoundManager.playVarChime === "function") {
+                            SoundManager.playVarChime(false);
+                        }
+                    } else {
+                        stamp.className = "var-decision-stamp penalty";
+                        stamp.innerText = "🎯 PENALTI KARARI!";
+                        if (calibText) calibText.innerText = "⚡ İnceleme Tamamlandı: Ceza Sahasında Açık İhlal, Penaltı!";
+                        if (typeof SoundManager !== "undefined") {
+                            if (typeof SoundManager.playVarChime === "function") SoundManager.playVarChime(true);
+                        }
+                    }
+                }
+
+                if (btn) {
+                    btn.innerText = "MAÇA DEVAM ET";
+                    btn.onclick = closeVarModal;
+                }
+            }, 850);
         }
 
         function closeVarModal() {
+            if (varCalibrationTimer) {
+                clearInterval(varCalibrationTimer);
+                varCalibrationTimer = null;
+            }
+
             const modal = document.getElementById("var-review-modal");
             if (modal) {
                 modal.style.display = "none";
                 modal.classList.remove("active");
             }
             const btn = document.getElementById("btn-var-continue");
-            if (btn) btn.onclick = resolveVarReview;
+            if (btn) btn.onclick = revealVarDecision;
 
             if (typeof varCallback === "function") {
                 let cb = varCallback;
                 varCallback = null;
-                cb(varResultGoal);
+                cb(varDecisionType === "goal" || varDecisionType === "penalty");
             }
         }
 
         function testVarReview() {
             const sm = document.getElementById("settings-modal");
             if (sm) sm.classList.remove("active");
-            triggerVarReview("offside", (isGoal) => {
-                showCustomAlert(isGoal ? "VAR Golü Onayladı!" : "VAR Golü İptal Etti!", "VAR KARARI", "📺", "info");
+            triggerVarReview("offside", (isSuccess) => {
+                showCustomAlert(isSuccess ? "VAR Kararı Takımının Lehine Sonuçlandı!" : "VAR Kararı Aleyhe Sonuçlandı!", "VAR KARARI", "📺", "info");
             });
         }
 
-
-        // ══════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════
         // 🚌 6. VICTORY BUS TOUR CONTROLLER
         // ══════════════════════════════════════════════════════════════════
         let victoryBusCallback = null;
