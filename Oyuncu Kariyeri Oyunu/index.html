@@ -1384,34 +1384,67 @@
                         </div>
                     </div>
 
-                    <!-- Group 2.5: Türk İşi Özellikleri Test Et -->
-                    <!-- Group 2.5: Tüm Mega Özellikleri Test Et -->
+                    <!-- Group 2.5: 3D & MEGA SİNEMATİK ÖZELLİKLER TEST PANELİ -->
                     <div>
-                        <div style="font-size: 11px; font-weight: bold; color: #FFD600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">👑 SÜPERSTAR & MEGA ÖZELLİKLER (HIZLI TEST)</div>
-                        <div style="background: #161b22; border: 1px solid #FFD600; border-radius: 8px; padding: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                            <button onclick="testBallonDor()" style="background: rgba(255,214,0,0.15); color: #FFD600; border: 1px solid #FFD600; padding: 8px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
-                                🏆 Ballon d'Or Galası
+                        <div style="font-size: 11px; font-weight: 800; color: #ffd700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: space-between;">
+                            <span>👑 3D & MEGA ÖZELLİKLER (CANLI TEST)</span>
+                            <span style="font-size: 9.5px; color: #00e5ff; font-weight: 700;">14 MODÜL</span>
+                        </div>
+
+                        <!-- Sub-section: 3D WebGL Odaları -->
+                        <div style="font-size: 10px; font-weight: 800; color: #00e5ff; margin-bottom: 4px; text-transform: uppercase;">🎮 3D WebGL Deneyimleri</div>
+                        <div style="background: #161b22; border: 1px solid rgba(0,229,255,0.3); border-radius: 8px; padding: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px;">
+                            <button onclick="testLockerRoom()" style="background: rgba(0,229,183,0.12); color: #00e5b7; border: 1px solid rgba(0,229,183,0.4); padding: 8px 6px; font-size: 10.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 5px;">
+                                <span>👕</span> 3D Soyunma Odası
                             </button>
-                            <button onclick="testTransferPenthouse()" style="background: rgba(0,229,183,0.15); color: #00e5b7; border: 1px solid #00e5b7; padding: 8px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
-                                💼 Penthouse Transfer
+                            <button onclick="testTrophyMuseum()" style="background: rgba(255,215,0,0.12); color: #ffd700; border: 1px solid rgba(255,215,0,0.4); padding: 8px 6px; font-size: 10.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 5px;">
+                                <span>🏛️</span> 3D Kupa Müzesi
                             </button>
-                            <button onclick="testNationalAnthem()" style="background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid #ef4444; padding: 8px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
-                                🇹🇷 İstiklal Marşı & Kaptan
+                            <button onclick="testGarageShowroom()" style="background: rgba(0,229,255,0.12); color: #00e5ff; border: 1px solid rgba(0,229,255,0.4); padding: 8px 6px; font-size: 10.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 5px;">
+                                <span>🏎️</span> 3D Garaj & Motor
                             </button>
-                            <button onclick="testGarageShowroom()" style="background: rgba(0,229,255,0.15); color: #00e5ff; border: 1px solid #00e5ff; padding: 8px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
-                                🏎️ 3D Lüks Garaj & Ses
+                            <button onclick="testBootStudio()" style="background: rgba(16,185,129,0.12); color: #10b981; border: 1px solid rgba(16,185,129,0.4); padding: 8px 6px; font-size: 10.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 5px;">
+                                <span>👟</span> Krampon Atölyesi
                             </button>
-                            <button onclick="testVarReview()" style="background: rgba(168,85,247,0.15); color: #c084fc; border: 1px solid #a855f7; padding: 8px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
-                                ⚡ VAR Monitörü İncele
+                            <button onclick="testVarReview()" style="grid-column: 1 / -1; background: rgba(168,85,247,0.12); color: #c084fc; border: 1px solid rgba(168,85,247,0.4); padding: 8px 6px; font-size: 10.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 5px;">
+                                <span>⚽</span> 3D Yarı Otomatik UEFA VAR İncelemesi
                             </button>
-                            <button onclick="testVictoryBus()" style="background: rgba(255,214,0,0.15); color: #FFD600; border: 1px solid #FFD600; padding: 8px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
-                                🚌 Şampiyonluk Otobüsü
+                        </div>
+
+                        <!-- Sub-section: Sinematik Seremoniler & Olaylar -->
+                        <div style="font-size: 10px; font-weight: 800; color: #ffd700; margin-bottom: 4px; text-transform: uppercase;">🏆 Sinematik Seremoniler</div>
+                        <div style="background: #161b22; border: 1px solid rgba(255,215,0,0.3); border-radius: 8px; padding: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px;">
+                            <button onclick="testNationalAnthem()" style="background: rgba(239,68,68,0.12); color: #ef4444; border: 1px solid rgba(239,68,68,0.4); padding: 8px 6px; font-size: 10.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 5px;">
+                                <span>🇹🇷</span> İstiklal Marşı
                             </button>
-                            <button onclick="testBootStudio()" style="background: rgba(0,229,183,0.15); color: #00e5b7; border: 1px solid #00e5b7; padding: 8px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
-                                👟 Özel Krampon Tasarla
+                            <button onclick="testTransferPenthouse()" style="background: rgba(0,229,183,0.12); color: #00e5b7; border: 1px solid rgba(0,229,183,0.4); padding: 8px 6px; font-size: 10.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 5px;">
+                                <span>🏢</span> Penthouse Zirvesi
                             </button>
-                            <button onclick="testSiyahFutbol()" style="background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid #ef4444; padding: 8px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left;">
-                                📺 Siyah Futbol Masası
+                            <button onclick="testVictoryBus()" style="background: rgba(255,215,0,0.12); color: #ffd700; border: 1px solid rgba(255,215,0,0.4); padding: 8px 6px; font-size: 10.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 5px;">
+                                <span>🚌</span> Şampiyonluk Turu
+                            </button>
+                            <button onclick="testBallonDor()" style="background: rgba(255,215,0,0.12); color: #ffd700; border: 1px solid rgba(255,215,0,0.4); padding: 8px 6px; font-size: 10.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 5px;">
+                                <span>👑</span> Ballon d'Or Galası
+                            </button>
+                            <button onclick="testTribun()" style="grid-column: 1 / -1; background: rgba(245,158,11,0.12); color: #f59e0b; border: 1px solid rgba(245,158,11,0.4); padding: 8px 6px; font-size: 10.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 5px;">
+                                <span>🗣️</span> 3D Tribün Kapalı Üçlüsü (ŞŞŞŞ... 1-2-3!)
+                            </button>
+                        </div>
+
+                        <!-- Sub-section: Medya & Röportaj -->
+                        <div style="font-size: 10px; font-weight: 800; color: #ef4444; margin-bottom: 4px; text-transform: uppercase;">📺 Medya & TV Programları</div>
+                        <div style="background: #161b22; border: 1px solid rgba(239,68,68,0.3); border-radius: 8px; padding: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                            <button onclick="testSiyahFutbol()" style="background: rgba(239,68,68,0.12); color: #ef4444; border: 1px solid rgba(239,68,68,0.4); padding: 8px 6px; font-size: 10.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 5px;">
+                                <span>📺</span> Siyah Futbol TV
+                            </button>
+                            <button onclick="testInterview()" style="background: rgba(56,189,248,0.12); color: #38bdf8; border: 1px solid rgba(56,189,248,0.4); padding: 8px 6px; font-size: 10.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 5px;">
+                                <span>🎙️</span> Basın Röportajı
+                            </button>
+                            <button onclick="testAirport()" style="background: rgba(251,146,60,0.12); color: #fb923c; border: 1px solid rgba(251,146,60,0.4); padding: 8px 6px; font-size: 10.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 5px;">
+                                <span>📰</span> Gazete Manşeti
+                            </button>
+                            <button onclick="testRetirement()" style="background: rgba(148,163,184,0.12); color: #94a3b8; border: 1px solid rgba(148,163,184,0.4); padding: 8px 6px; font-size: 10.5px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 5px;">
+                                <span>🏁</span> Jübile & Emeklilik
                             </button>
                         </div>
                     </div>
