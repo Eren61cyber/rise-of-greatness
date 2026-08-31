@@ -7559,29 +7559,30 @@
             let t = 0;
             function renderFlagWave() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                t += 0.045;
+                // Majestic slow cinematic wave propagation
+                t += 0.015;
 
                 const sliceWidth = 2;
                 const slices = Math.floor(W / sliceWidth);
 
                 for (let i = 0; i < slices; i++) {
                     let x = i * sliceWidth;
-                    // Dynamic wind wave physics (traveling sine wave)
-                    let waveOffset = Math.sin(i * 0.08 - t * 2.2) * 12 + Math.cos(i * 0.04 - t * 1.5) * 6;
+                    // Gentle, wide, majestic traveling sine waves
+                    let waveOffset = Math.sin(i * 0.042 - t * 0.9) * 10.5 + Math.cos(i * 0.022 - t * 0.5) * 5.5;
                     
-                    // Dynamic silk light & shadow creases
-                    let slope = Math.cos(i * 0.08 - t * 2.2) * 0.08;
-                    let brightness = 1 + slope * 0.45;
+                    // Soft dynamic silk light & shadow creases
+                    let slope = Math.cos(i * 0.042 - t * 0.9) * 0.05;
+                    let brightness = 1 + slope * 0.4;
 
                     ctx.save();
                     ctx.drawImage(offCanvas, x, 0, sliceWidth, H, x, 10 + waveOffset, sliceWidth, H);
                     
-                    // Dynamic shadow overlay on wave folds
+                    // Soft shadow overlay on wave folds
                     if (brightness < 0.98) {
-                        ctx.fillStyle = `rgba(0, 0, 0, ${Math.min(0.45, (1 - brightness) * 0.85)})`;
+                        ctx.fillStyle = `rgba(0, 0, 0, ${Math.min(0.4, (1 - brightness) * 0.8)})`;
                         ctx.fillRect(x, 10 + waveOffset, sliceWidth, H);
                     } else if (brightness > 1.02) {
-                        ctx.fillStyle = `rgba(255, 255, 255, ${Math.min(0.28, (brightness - 1) * 0.65)})`;
+                        ctx.fillStyle = `rgba(255, 255, 255, ${Math.min(0.25, (brightness - 1) * 0.6)})`;
                         ctx.fillRect(x, 10 + waveOffset, sliceWidth, H);
                     }
                     ctx.restore();
