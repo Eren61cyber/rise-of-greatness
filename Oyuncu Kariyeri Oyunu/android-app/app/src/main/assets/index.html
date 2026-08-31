@@ -4119,7 +4119,31 @@
                 } catch(e) {}
             },
 
-            playTrophyInspect: function() {
+            playLockerRoomAmbience: function() {
+            try {
+                const ctx = this.getContext();
+                if (!ctx) return;
+                const now = ctx.currentTime;
+
+                // Sub-bass heartbeat pulse (tum-tum... tum-tum...)
+                [0, 0.28, 1.0, 1.28, 2.0, 2.28].forEach(offset => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(58, now + offset);
+                    osc.frequency.exponentialRampToValueAtTime(32, now + offset + 0.22);
+                    gain.gain.setValueAtTime(0, now + offset);
+                    gain.gain.linearRampToValueAtTime(0.25, now + offset + 0.03);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.24);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now + offset);
+                    osc.stop(now + offset + 0.25);
+                });
+            } catch(e){}
+        },
+
+        playTrophyInspect: function() {
             try {
                 const ctx = this.getContext();
                 if (!ctx) return;
@@ -14197,7 +14221,355 @@ function proceedPostMatch() {
 
             eventModal.classList.add("active");
         }
-    </script>
+    
+        // ══════════════════════════════════════════════════════════════════
+        // 👕 3D HARDWARE-ACCELERATED WEBGL LOCKER ROOM ENGINE (THREE.JS)
+        // ══════════════════════════════════════════════════════════════════
+        let lockerScene = null, lockerCamera = null, lockerRenderer = null;
+        let lockerJerseyMesh = null, lockerAnimFrame = null;
+        let lockerIsDragging = false, lockerPrevX = 0, lockerPrevY = 0;
+        let lockerRotY = 0, lockerRotX = 0;
+        let lockerTargetRotY = 0, lockerTargetRotX = 0;
+        let selectedLockerPrepType = 'focus';
+        let pendingMatchStartExecution = null;
+
+        function openLockerRoomModal(onConfirmStartMatch) {
+            pendingMatchStartExecution = onConfirmStartMatch;
+            const modal = document.getElementById("locker-room-modal");
+            const canvas = document.getElementById("locker-webgl-canvas");
+            if (!modal || !canvas) {
+                if (typeof onConfirmStartMatch === "function") onConfirmStartMatch();
+                return;
+            }
+
+            modal.style.display = "flex";
+
+            // Update Header & Scouting Data
+            const pTeam = GAME.getPlayerTeamObject() || { name: "Takım", color: "#c00000", colorSec: "#ffd700" };
+            const oppTeam = (typeof nextOpponent !== "undefined" && nextOpponent) ? nextOpponent : { name: "Rakip", color: "#002d72" };
+            
+            const teamPill = document.getElementById("locker-team-pill");
+            const matchSub = document.getElementById("locker-match-sub");
+            const scoutInfo = document.getElementById("locker-scout-info");
+            const ledGlow = document.getElementById("locker-led-glow");
+
+            if (teamPill) teamPill.innerText = pTeam.name.toUpperCase();
+            if (matchSub) matchSub.innerText = `${GAME.state.currentLeague || "SÜPER LİG"} • HAFTA ${GAME.state.currentWeek} • ${pTeam.name.toUpperCase()} vs ${oppTeam.name.toUpperCase()}`;
+            if (scoutInfo) scoutInfo.innerText = `${oppTeam.name} (${oppTeam.att || 75} HÜC / ${oppTeam.def || 74} DEF)`;
+            
+            if (ledGlow && pTeam.color) {
+                ledGlow.style.background = `radial-gradient(circle at 50% 20%, ${pTeam.color}aa 0%, transparent 75%)`;
+            }
+
+            // Play Locker Room Sub-Bass & Crowd Murmur Ambience
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playLockerRoomAmbience === "function") {
+                try { SoundManager.playLockerRoomAmbience(); } catch(e){}
+            }
+
+            // Init Three.js Locker Scene
+            initLockerThreeScene(pTeam);
+            startLockerAnimationLoop();
+        }
+
+        function initLockerThreeScene(playerTeam) {
+            const canvas = document.getElementById("locker-webgl-canvas");
+            if (!canvas || typeof THREE === "undefined") return;
+
+            if (!lockerRenderer) {
+                lockerScene = new THREE.Scene();
+                lockerCamera = new THREE.PerspectiveCamera(45, canvas.width / canvas.height, 0.1, 100);
+                lockerCamera.position.set(0, 1.4, 3.6);
+
+                lockerRenderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+                lockerRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+                lockerRenderer.setSize(canvas.clientWidth || 480, canvas.clientHeight || 310);
+
+                // Lighting
+                const ambient = new THREE.AmbientLight(0xffffff, 0.9);
+                lockerScene.add(ambient);
+
+                const spotLight = new THREE.SpotLight(0xfff5db, 2.8);
+                spotLight.position.set(0, 4.5, 2);
+                spotLight.angle = Math.PI / 3.5;
+                spotLight.penumbra = 0.7;
+                lockerScene.add(spotLight);
+
+                const sideLight = new THREE.DirectionalLight(0x00e5ff, 1.0);
+                sideLight.position.set(-3, 2, 0);
+                lockerScene.add(sideLight);
+
+                // Touch & Drag Look Around
+                const wrap = document.getElementById("locker-stage-wrap");
+                const onDown = e => {
+                    lockerIsDragging = true;
+                    lockerPrevX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+                    lockerPrevY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
+                };
+                const onMove = e => {
+                    if (!lockerIsDragging) return;
+                    const curX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+                    const curY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
+                    const deltaX = curX - lockerPrevX;
+                    const deltaY = curY - lockerPrevY;
+
+                    lockerTargetRotY += deltaX * 0.008;
+                    lockerTargetRotX += deltaY * 0.005;
+                    lockerTargetRotX = Math.max(-0.25, Math.min(0.25, lockerTargetRotX));
+                    lockerTargetRotY = Math.max(-0.55, Math.min(0.55, lockerTargetRotY));
+
+                    lockerPrevX = curX;
+                    lockerPrevY = curY;
+                };
+                const onUp = () => { lockerIsDragging = false; };
+
+                if (wrap) {
+                    wrap.addEventListener("mousedown", onDown);
+                    window.addEventListener("mousemove", onMove);
+                    window.addEventListener("mouseup", onUp);
+
+                    wrap.addEventListener("touchstart", onDown, { passive: true });
+                    window.addEventListener("touchmove", onMove, { passive: true });
+                    window.addEventListener("touchend", onUp, { passive: true });
+                }
+            }
+
+            // Build or Rebuild 3D Locker Scene Meshes
+            buildLockerRoomMeshes(playerTeam);
+        }
+
+        function buildLockerRoomMeshes(playerTeam) {
+            if (!lockerScene || typeof THREE === "undefined") return;
+
+            // Clear old meshes
+            while(lockerScene.children.length > 3) { // keep lights
+                lockerScene.remove(lockerScene.children[lockerScene.children.length - 1]);
+            }
+
+            const teamColorHex = parseInt((playerTeam.color || "#c00000").replace("#", "0x"), 16) || 0xc00000;
+            const teamSecHex = parseInt((playerTeam.colorSec || "#ffd700").replace("#", "0x"), 16) || 0xffd700;
+
+            const woodMat = new THREE.MeshStandardMaterial({ color: 0x121620, roughness: 0.65, metalness: 0.25 });
+            const benchMat = new THREE.MeshStandardMaterial({ color: 0x1a1e29, roughness: 0.4, metalness: 0.3 });
+            const goldMetal = new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.95, roughness: 0.15 });
+            const chromeMetal = new THREE.MeshStandardMaterial({ color: 0xe8eef5, metalness: 0.98, roughness: 0.08 });
+            const jerseyMat = new THREE.MeshStandardMaterial({ color: teamColorHex, roughness: 0.45, metalness: 0.1 });
+            const trimMat = new THREE.MeshStandardMaterial({ color: teamSecHex, roughness: 0.3, metalness: 0.2 });
+
+            const roomGroup = new THREE.Group();
+
+            // 1. Back Cubicle Wall & Roof
+            const backWall = new THREE.Mesh(new THREE.BoxGeometry(2.4, 3.2, 0.1), woodMat);
+            backWall.position.set(0, 1.6, -0.6);
+            roomGroup.add(backWall);
+
+            const sideWallL = new THREE.Mesh(new THREE.BoxGeometry(0.08, 3.2, 1.2), woodMat);
+            sideWallL.position.set(-1.2, 1.6, 0);
+            roomGroup.add(sideWallL);
+
+            const sideWallR = new THREE.Mesh(new THREE.BoxGeometry(0.08, 3.2, 1.2), woodMat);
+            sideWallR.position.set(1.2, 1.6, 0);
+            roomGroup.add(sideWallR);
+
+            const roof = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.08, 1.2), woodMat);
+            roof.position.set(0, 3.15, 0);
+            roomGroup.add(roof);
+
+            // LED Strip Halo on Locker Frame
+            const ledBeam = new THREE.Mesh(new THREE.BoxGeometry(2.36, 0.04, 0.04), new THREE.MeshBasicMaterial({ color: teamColorHex }));
+            ledBeam.position.set(0, 3.1, 0.55);
+            roomGroup.add(ledBeam);
+
+            // 2. Leather Bench (Seat)
+            const bench = new THREE.Mesh(new THREE.BoxGeometry(2.3, 0.12, 0.8), benchMat);
+            bench.position.set(0, 0.6, 0.1);
+            roomGroup.add(bench);
+
+            // 3. Hanging Match Kit (Contoured Hanger + Torso + Collar + Sleeves)
+            const kitGroup = new THREE.Group();
+            kitGroup.position.set(0, 1.9, -0.2);
+
+            // Contoured Wooden/Gold Hanger
+            const hanger = new THREE.Mesh(new THREE.TorusGeometry(0.42, 0.025, 8, 16, Math.PI), goldMetal);
+            hanger.position.set(0, 0.65, 0);
+            kitGroup.add(hanger);
+
+            const hangerHook = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.18, 8), chromeMetal);
+            hangerHook.position.set(0, 0.74, 0);
+            kitGroup.add(hangerHook);
+
+            // Jersey Body Torso
+            const jerseyTorso = new THREE.Mesh(new THREE.CylinderGeometry(0.52, 0.44, 1.15, 18), jerseyMat);
+            jerseyTorso.position.set(0, 0.05, 0);
+            kitGroup.add(jerseyTorso);
+
+            // Collar Accent Trim
+            const collar = new THREE.Mesh(new THREE.TorusGeometry(0.24, 0.03, 10, 20), trimMat);
+            collar.rotation.x = Math.PI / 2;
+            collar.position.set(0, 0.62, 0);
+            kitGroup.add(collar);
+
+            // Sleeves
+            const sleeveL = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.14, 0.42, 12), jerseyMat);
+            sleeveL.position.set(-0.54, 0.42, 0);
+            sleeveL.rotation.z = Math.PI / 3.2;
+            kitGroup.add(sleeveL);
+
+            const sleeveR = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.14, 0.42, 12), jerseyMat);
+            sleeveR.position.set(0.54, 0.42, 0);
+            sleeveR.rotation.z = -Math.PI / 3.2;
+            kitGroup.add(sleeveR);
+
+            // Captain Armband on Left Sleeve
+            const cBand = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.17, 0.12, 12), goldMetal);
+            cBand.position.set(-0.54, 0.38, 0);
+            cBand.rotation.z = Math.PI / 3.2;
+            kitGroup.add(cBand);
+
+            // Jersey Back Name/Number Plate
+            const pNumber = (GAME.state.jerseyNumber || "10");
+            const numberPlate = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.35, 0.02), trimMat);
+            numberPlate.position.set(0, 0.12, 0.28);
+            kitGroup.add(numberPlate);
+
+            lockerJerseyMesh = kitGroup;
+            roomGroup.add(kitGroup);
+
+            // 4. Custom Signature Boots on Lower Shelf
+            const bootsGroup = new THREE.Group();
+            bootsGroup.position.set(0, 0.12, 0.2);
+
+            const bootL = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.16, 0.42), goldMetal);
+            bootL.position.set(-0.25, 0.08, 0);
+            bootL.rotation.y = 0.15;
+            bootsGroup.add(bootL);
+
+            const bootR = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.16, 0.42), goldMetal);
+            bootR.position.set(0.25, 0.08, 0);
+            bootR.rotation.y = -0.15;
+            bootsGroup.add(bootR);
+
+            roomGroup.add(bootsGroup);
+
+            // 5. Water Bottle & Carbon Shinguards on Bench
+            const bottle = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.32, 12), chromeMetal);
+            bottle.position.set(0.8, 0.82, 0.1);
+            roomGroup.add(bottle);
+
+            const shinGuard = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.09, 0.35, 12, 1, true, 0, Math.PI), woodMat);
+            shinGuard.position.set(-0.7, 0.72, 0.1);
+            shinGuard.rotation.x = Math.PI / 2;
+            roomGroup.add(shinGuard);
+
+            lockerScene.add(roomGroup);
+        }
+
+        function startLockerAnimationLoop() {
+            if (lockerAnimFrame) cancelAnimationFrame(lockerAnimFrame);
+
+            let t = 0;
+            const loop = () => {
+                const modal = document.getElementById("locker-room-modal");
+                if (!modal || modal.style.display === "none") return;
+
+                t += 0.03;
+
+                // Smooth Camera Orbit Interpolation
+                lockerRotY += (lockerTargetRotY - lockerRotY) * 0.08;
+                lockerRotX += (lockerTargetRotX - lockerRotX) * 0.08;
+
+                if (lockerCamera) {
+                    lockerCamera.position.x = Math.sin(lockerRotY) * 3.6;
+                    lockerCamera.position.z = Math.cos(lockerRotY) * 3.6;
+                    lockerCamera.position.y = 1.4 + lockerRotX * 1.5;
+                    lockerCamera.lookAt(0, 1.4, 0);
+                }
+
+                // Breathing Jersey Fabric Wave
+                if (lockerJerseyMesh) {
+                    lockerJerseyMesh.position.y = 1.9 + Math.sin(t) * 0.015;
+                    lockerJerseyMesh.rotation.y = Math.sin(t * 0.7) * 0.03;
+                }
+
+                if (lockerRenderer && lockerScene && lockerCamera) {
+                    lockerRenderer.render(lockerScene, lockerCamera);
+                }
+
+                lockerAnimFrame = requestAnimationFrame(loop);
+            };
+
+            lockerAnimFrame = requestAnimationFrame(loop);
+        }
+
+        function selectLockerPrep(type) {
+            selectedLockerPrepType = type;
+            
+            const cardFocus = document.getElementById("locker-card-focus");
+            const cardSpeech = document.getElementById("locker-card-speech");
+            const cardMusic = document.getElementById("locker-card-music");
+            const tag = document.getElementById("locker-choice-selected-tag");
+
+            [cardFocus, cardSpeech, cardMusic].forEach(c => {
+                if (c) c.classList.remove("active");
+            });
+
+            if (type === 'focus') {
+                if (cardFocus) cardFocus.classList.add("active");
+                if (tag) tag.innerText = "SEÇİLDİ: ZİHİNSEL ODAK (+10 ENERJİ)";
+            } else if (type === 'speech') {
+                if (cardSpeech) cardSpeech.classList.add("active");
+                if (tag) tag.innerText = "SEÇİLDİ: GAZA GETİR (+15 MORAL)";
+            } else if (type === 'music') {
+                if (cardMusic) cardMusic.classList.add("active");
+                if (tag) tag.innerText = "SEÇİLDİ: MÜZİK & HYPE (%10 İSABET)";
+            }
+
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playClick === "function") {
+                try { SoundManager.playClick(); } catch(e){}
+            }
+        }
+
+        function confirmLockerAndStartMatch() {
+            closeLockerRoomModal();
+
+            // Apply pre-match buff
+            if (selectedLockerPrepType === 'focus') {
+                GAME.state.energy = Math.min(100, (GAME.state.energy || 100) + 10);
+            } else if (selectedLockerPrepType === 'speech') {
+                GAME.state.moral = Math.min(100, (GAME.state.moral || 75) + 15);
+                GAME.state.hocaGuveni = Math.min(100, (GAME.state.hocaGuveni || 75) + 5);
+            } else if (selectedLockerPrepType === 'music') {
+                GAME.state.moral = Math.min(100, (GAME.state.moral || 75) + 10);
+            }
+
+            // Play Stadium Roar Transition
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playStadiumRoar === "function") {
+                try { SoundManager.playStadiumRoar(); } catch(e){}
+            }
+
+            if (typeof pendingMatchStartExecution === "function") {
+                const act = pendingMatchStartExecution;
+                pendingMatchStartExecution = null;
+                act();
+            }
+        }
+
+        function closeLockerRoomModal() {
+            const modal = document.getElementById("locker-room-modal");
+            if (modal) modal.style.display = "none";
+            if (lockerAnimFrame) {
+                cancelAnimationFrame(lockerAnimFrame);
+                lockerAnimFrame = null;
+            }
+        }
+
+        function testLockerRoom() {
+            const sm = document.getElementById("settings-modal");
+            if (sm) sm.classList.remove("active");
+            openLockerRoomModal(() => {
+                showCustomAlert("Tünelden sahaya çıkıldı! Maç atmosferi hazır.", "SOYUNMA ODASI", "👕", "success");
+            });
+        }
+</script>
 
     <!-- 🏆 3D KUPA İNCELEME MODALI (3D TROPHY INSPECTOR MODAL) -->
     <div id="trophy-inspect-modal">
@@ -14250,6 +14622,84 @@ function proceedPostMatch() {
                 <button class="btn btn-secondary" onclick="navigateInspectTrophy(-1)" style="flex: 1; padding: 10px; font-size: 12px; font-weight: 800; border-radius: 10px;">‹ Önceki</button>
                 <button class="btn btn-primary" onclick="navigateInspectTrophy(1)" style="flex: 1; padding: 10px; font-size: 12px; font-weight: 800; background: linear-gradient(135deg, #ffd700, #ff9800); color: #000; border-radius: 10px;">Sonraki ›</button>
             </div>
+        </div>
+    </div>
+
+    <!-- 👕 3D MAÇ ÖNÜ SOYUNMA ODASI & TAKTİK BRİFİNGİ MODALI -->
+    <div id="locker-room-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 7, 12, 0.96); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 99998; flex-direction: column; align-items: center; justify-content: space-between; padding: 16px 16px env(safe-area-inset-bottom, 16px); box-sizing: border-box; overflow-y: auto;">
+        
+        <!-- Header: Match Badge & Tunnel Status -->
+        <div style="width: 100%; max-width: 520px; display: flex; align-items: center; justify-content: space-between; z-index: 10; margin-bottom: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 24px;">👕</span>
+                <div>
+                    <div style="font-size: 14px; font-weight: 900; color: #ffffff; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px;">
+                        <span>SOYUNMA ODASI</span>
+                        <span id="locker-team-pill" style="font-size: 10px; background: rgba(0,229,183,0.15); border: 1px solid #00e5b7; color: #00e5b7; padding: 1px 7px; border-radius: 4px;">GALATASTAR</span>
+                    </div>
+                    <div id="locker-match-sub" style="font-size: 10.5px; font-weight: 700; color: #ffd700; text-transform: uppercase;">SÜPER LİG • 14. HAFTA • DERBİ GECESİ</div>
+                </div>
+            </div>
+            <button onclick="closeLockerRoomModal()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #ffffff; font-size: 16px; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;">✕</button>
+        </div>
+
+        <!-- 3D WebGL Locker Room Stage (Touch Look Around) -->
+        <div id="locker-stage-wrap" style="position: relative; width: 100%; max-width: 480px; height: 310px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 50% 30%, rgba(20,25,35,0.8) 0%, rgba(8,10,15,0.98) 100%); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.8); touch-action: none; user-select: none; cursor: grab;">
+            
+            <!-- LED Backlight Glow & Overhead Spotlight -->
+            <div id="locker-led-glow" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.35; transition: background 0.4s ease;"></div>
+            <div style="position: absolute; top: -30px; left: 50%; transform: translateX(-50%); width: 180px; height: 300px; background: radial-gradient(ellipse at top, rgba(255,255,255,0.2) 0%, transparent 70%); pointer-events: none;"></div>
+            
+            <canvas id="locker-webgl-canvas" width="480" height="310" style="width: 100%; height: 100%;"></canvas>
+
+            <!-- Hologram Tactical Overlay Pill on side -->
+            <div style="position: absolute; top: 12px; right: 12px; background: rgba(0, 229, 255, 0.12); border: 1px solid rgba(0, 229, 255, 0.35); border-radius: 8px; padding: 6px 10px; backdrop-filter: blur(8px); text-align: right; pointer-events: none;">
+                <div style="font-size: 8.5px; font-weight: 800; color: #00e5ff; text-transform: uppercase; letter-spacing: 0.5px;">📡 TAKTİK ANALİZ</div>
+                <div id="locker-scout-info" style="font-size: 11px; font-weight: 900; color: #ffffff;">4-3-3 HÜCUM</div>
+            </div>
+
+            <!-- Touch Drag Hint -->
+            <div style="position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); font-size: 9.5px; color: #94a3b8; font-weight: 700; pointer-events: none; background: rgba(0,0,0,0.65); padding: 3px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(6px); white-space: nowrap;">
+                👆 Odayı 3D incelemek için sürükle
+            </div>
+        </div>
+
+        <!-- Pre-Match Preparation Cards (Tactical Choices) -->
+        <div style="width: 100%; max-width: 520px; margin-top: 10px;">
+            <div style="font-size: 10.5px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between;">
+                <span>🎯 MAÇ ÖNCESİ KONSANTRASYON</span>
+                <span id="locker-choice-selected-tag" style="color: #00e5b7; font-size: 10px;">SEÇİM YAPIN</span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                <!-- Choice 1: Mental Focus -->
+                <div class="locker-prep-card active" id="locker-card-focus" onclick="selectLockerPrep('focus')">
+                    <div style="font-size: 20px; margin-bottom: 2px;">🧘‍♂️</div>
+                    <div style="font-size: 11px; font-weight: 800; color: #ffffff;">Zihinsel Odak</div>
+                    <div style="font-size: 9px; color: #00e5b7; font-weight: 700; margin-top: 2px;">+10 Enerji • +15 Karar</div>
+                </div>
+
+                <!-- Choice 2: Captain Talk -->
+                <div class="locker-prep-card" id="locker-card-speech" onclick="selectLockerPrep('speech')">
+                    <div style="font-size: 20px; margin-bottom: 2px;">🗣️</div>
+                    <div style="font-size: 11px; font-weight: 800; color: #ffffff;">Gaza Getir</div>
+                    <div style="font-size: 9px; color: #ffd700; font-weight: 700; margin-top: 2px;">+15 Moral • +5 Güven</div>
+                </div>
+
+                <!-- Choice 3: Music & Hype -->
+                <div class="locker-prep-card" id="locker-card-music" onclick="selectLockerPrep('music')">
+                    <div style="font-size: 20px; margin-bottom: 2px;">🎧</div>
+                    <div style="font-size: 11px; font-weight: 800; color: #ffffff;">Müzik & Hype</div>
+                    <div style="font-size: 9px; color: #00e5ff; font-weight: 700; margin-top: 2px;">+10 Moral • %10 İsabet</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Master Action Button: Step onto pitch -->
+        <div style="width: 100%; max-width: 520px; margin-top: 10px;">
+            <button id="btn-locker-enter-pitch" class="btn" onclick="confirmLockerAndStartMatch()" style="width: 100%; padding: 14px 20px; font-size: 14px; font-weight: 900; letter-spacing: 0.5px; border-radius: 12px; background: linear-gradient(135deg, #00e5b7 0%, #00b4d8 100%); color: #04140e; border: none; box-shadow: 0 4px 25px rgba(0,229,183,0.35); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease;">
+                <span>🏟️</span> TÜNELDEN SAHAYA ÇIK & MAÇI BAŞLAT
+            </button>
         </div>
     </div>
 </body>
