@@ -4887,22 +4887,219 @@ input[type="text"]:focus, select:focus {
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   🚌 6. ŞAMPİYONLUK ÜSTÜ AÇIK OTOBÜS ŞEHİR TURU
+   🚌 6. ŞAMPİYONLUK ŞEHİR TURU & MEŞALE ŞÖLENİ (3D BOSPHORUS BUS PARADE)
 ══════════════════════════════════════════════════════════════════ */
 .victory-bus-stage {
     position: relative;
     width: 100%;
-    max-width: 460px;
-    background: radial-gradient(ellipse at 50% 20%, #201030 0%, #0e0517 60%, #030105 100%);
-    border: 2px solid #FFD600;
-    border-radius: 22px;
-    box-shadow: 0 0 65px rgba(255, 214, 0, 0.5), 0 20px 50px rgba(0,0,0,0.9);
+    max-width: 480px;
+    background: radial-gradient(ellipse at 50% 15%, #2c123d 0%, #13061d 55%, #06010a 100%);
+    border: 1.5px solid rgba(255, 215, 0, 0.45);
+    border-radius: 24px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.95), 0 0 50px rgba(255, 215, 0, 0.25);
     overflow: hidden;
-    padding: 22px;
-    color: #fff;
+    padding: 22px 20px;
+    color: #f1f5f9;
     text-align: center;
 }
 
+.victory-bus-stage.screen-shake-burst {
+    animation: stageShake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes stageShake {
+    10%, 90% { transform: translate3d(-2px, 0, 0); }
+    20%, 80% { transform: translate3d(3px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+/* Bosphorus Bridge & Night Sky Panorama */
+.bus-bosphorus-panorama {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 155px;
+    background: linear-gradient(180deg, rgba(20, 5, 30, 0.95) 0%, rgba(10, 3, 16, 0.7) 70%, transparent 100%);
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* Red Flare Smoke & Pyro Glow */
+.bus-pyro-glow-left {
+    position: absolute;
+    bottom: 20px;
+    left: -20px;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(239, 68, 68, 0.35) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 2;
+    animation: pyroFlicker 1.8s infinite alternate ease-in-out;
+}
+
+.bus-pyro-glow-right {
+    position: absolute;
+    bottom: 20px;
+    right: -20px;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 2;
+    animation: pyroFlicker 2.1s infinite alternate-reverse ease-in-out;
+}
+
+@keyframes pyroFlicker {
+    0% { opacity: 0.7; transform: scale(0.95) translateY(0); }
+    50% { opacity: 1; transform: scale(1.08) translateY(-6px); }
+    100% { opacity: 0.8; transform: scale(1) translateY(-3px); }
+}
+
+/* 3D Bus Deck Front & Railing Stage */
+.bus-deck-wrapper {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.bus-trophy-3d {
+    animation: trophyGlowFloat 3.2s infinite alternate ease-in-out;
+    filter: drop-shadow(0 10px 20px rgba(255, 215, 0, 0.7));
+}
+
+@keyframes trophyGlowFloat {
+    0% { transform: translateY(0) scale(1); filter: drop-shadow(0 8px 15px rgba(255, 215, 0, 0.5)); }
+    100% { transform: translateY(-7px) scale(1.03); filter: drop-shadow(0 14px 28px rgba(255, 215, 0, 0.85)); }
+}
+
+/* Glassmorphic Celebration Choice Cards */
+.bus-choice-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 4;
+}
+
+.bus-choice-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 13px 14px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+}
+
+.bus-choice-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 215, 0, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.bus-choice-card.selected {
+    background: rgba(255, 215, 0, 0.15);
+    border-color: #FFD700;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4), inset 0 0 10px rgba(255, 215, 0, 0.2);
+}
+
+.bus-choice-card.selected-pyro {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: #ef4444;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.4), inset 0 0 10px rgba(239, 68, 68, 0.2);
+}
+
+.bus-choice-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+}
+
+.bus-choice-title {
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.4px;
+}
+
+.bus-choice-quote {
+    font-size: 11.5px;
+    color: #cbd5e1;
+    line-height: 1.4;
+    margin-bottom: 7px;
+    font-style: italic;
+}
+
+.bus-stat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.3px;
+}
+
+.bus-stat-pill.gold {
+    background: rgba(255, 215, 0, 0.2);
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    color: #fef08a;
+}
+
+.bus-stat-pill.red {
+    background: rgba(239, 68, 68, 0.2);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+}
+
+/* Action Button */
+.bus-finish-button {
+    width: 100%;
+    padding: 14px;
+    font-size: 13.5px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #eab308 0%, #b45309 100%);
+    color: #1a1002;
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    border-radius: 12px;
+    cursor: pointer;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.5), 0 10px 25px rgba(0,0,0,0.8);
+    transition: all 0.2s ease;
+    position: relative;
+    z-index: 4;
+}
+
+.bus-finish-button:hover {
+    background: linear-gradient(135deg, #facc15 0%, #d97706 100%);
+    transform: scale(1.02);
+    box-shadow: 0 0 35px rgba(255, 215, 0, 0.75);
+}
+
+/* White Flash Strobe Overlay */
+.bus-flash-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #ffffff;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.bus-flash-overlay.flashing {
+    animation: flashStrobeSeq 0.6s ease-out;
+}
 
 /* ══════════════════════════════════════════════════════════════════
    👟 7. ÖZEL İMZA KRAMPON ATÖLYESİ (NIKE BY YOU / MINIMALIST STUDIO)

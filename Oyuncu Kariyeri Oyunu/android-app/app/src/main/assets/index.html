@@ -3330,45 +3330,161 @@
             </div>
         </div>
 
-        <div class="event-modal-overlay" id="victory-bus-modal" style="background: rgba(0,0,0,0.96); backdrop-filter: blur(16px); z-index: 10035; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
+        <div class="event-modal-overlay" id="victory-bus-modal" style="background: rgba(0,0,0,0.96); backdrop-filter: blur(18px); z-index: 10035; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
             <div class="victory-bus-stage" id="victory-bus-stage">
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 215, 0, 0.3); padding-bottom: 8px; margin-bottom: 12px;">
-                    <div style="font-size: 10.5px; font-weight: 900; color: #FFD600; letter-spacing: 1px;">
-                        🎆 ŞAMPİYONLUK ŞEHİR TURU & MEŞALE ŞÖLENİ
+                <!-- White Flash Strobe Overlay -->
+                <div class="bus-flash-overlay" id="bus-flash-overlay"></div>
+
+                <!-- Bosphorus Bridge & Night Fireworks Panorama -->
+                <div class="bus-bosphorus-panorama">
+                    <svg viewBox="0 0 800 160" preserveAspectRatio="none" style="width: 100%; height: 100%;">
+                        <!-- Night Sky Gradient -->
+                        <rect width="800" height="160" fill="url(#sky-night)"/>
+                        <defs>
+                            <linearGradient id="sky-night" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#180728"/>
+                                <stop offset="65%" stop-color="#0e0417"/>
+                                <stop offset="100%" stop-color="#020105"/>
+                            </linearGradient>
+                            <linearGradient id="trophy-gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#fef08a"/>
+                                <stop offset="35%" stop-color="#eab308"/>
+                                <stop offset="70%" stop-color="#ca8a04"/>
+                                <stop offset="100%" stop-color="#78350f"/>
+                            </linearGradient>
+                        </defs>
+
+                        <!-- Bosphorus Suspension Bridge Towers & Cables -->
+                        <line x1="260" y1="120" x2="260" y2="35" stroke="#ef4444" stroke-width="3"/>
+                        <line x1="540" y1="120" x2="540" y2="35" stroke="#ef4444" stroke-width="3"/>
+                        <!-- Main Suspension Cables with Golden Light Bulbs -->
+                        <path d="M 0 55 Q 260 110 540 110 Q 700 70 800 55" fill="none" stroke="#FFD700" stroke-width="1.8" opacity="0.85"/>
+                        <path d="M 260 35 Q 400 95 540 35" fill="none" stroke="#FFD700" stroke-width="2" opacity="0.9"/>
+                        <!-- Vertical Support Wires -->
+                        <line x1="310" y1="70" x2="310" y2="120" stroke="#FFD700" stroke-width="0.8" opacity="0.5"/>
+                        <line x1="360" y1="88" x2="360" y2="120" stroke="#FFD700" stroke-width="0.8" opacity="0.5"/>
+                        <line x1="400" y1="95" x2="400" y2="120" stroke="#FFD700" stroke-width="0.8" opacity="0.5"/>
+                        <line x1="440" y1="88" x2="440" y2="120" stroke="#FFD700" stroke-width="0.8" opacity="0.5"/>
+                        <line x1="490" y1="70" x2="490" y2="120" stroke="#FFD700" stroke-width="0.8" opacity="0.5"/>
+                        
+                        <!-- Bridge Red Aviation Beacons -->
+                        <circle cx="260" cy="35" r="2.5" fill="#ef4444"/>
+                        <circle cx="540" cy="35" r="2.5" fill="#ef4444"/>
+
+                        <!-- Exploding Fireworks Starbursts -->
+                        <!-- Burst 1 (Gold) -->
+                        <circle cx="160" cy="40" r="1.5" fill="#facc15"/>
+                        <line x1="160" y1="40" x2="140" y2="25" stroke="#facc15" stroke-width="1" opacity="0.8"/>
+                        <line x1="160" y1="40" x2="180" y2="25" stroke="#facc15" stroke-width="1" opacity="0.8"/>
+                        <line x1="160" y1="40" x2="140" y2="55" stroke="#facc15" stroke-width="1" opacity="0.8"/>
+                        <line x1="160" y1="40" x2="180" y2="55" stroke="#facc15" stroke-width="1" opacity="0.8"/>
+
+                        <!-- Burst 2 (Crimson Red) -->
+                        <circle cx="660" cy="35" r="1.5" fill="#ef4444"/>
+                        <line x1="660" y1="35" x2="640" y2="20" stroke="#ef4444" stroke-width="1" opacity="0.8"/>
+                        <line x1="660" y1="35" x2="680" y2="20" stroke="#ef4444" stroke-width="1" opacity="0.8"/>
+                        <line x1="660" y1="35" x2="640" y2="50" stroke="#ef4444" stroke-width="1" opacity="0.8"/>
+                        <line x1="660" y1="35" x2="680" y2="50" stroke="#ef4444" stroke-width="1" opacity="0.8"/>
+
+                        <!-- Burst 3 (Emerald Green) -->
+                        <circle cx="400" cy="25" r="1.5" fill="#00e5b7"/>
+                        <line x1="400" y1="25" x2="385" y2="12" stroke="#00e5b7" stroke-width="1" opacity="0.8"/>
+                        <line x1="400" y1="25" x2="415" y2="12" stroke="#00e5b7" stroke-width="1" opacity="0.8"/>
+                        <line x1="400" y1="25" x2="385" y2="38" stroke="#00e5b7" stroke-width="1" opacity="0.8"/>
+                        <line x1="400" y1="25" x2="415" y2="38" stroke="#00e5b7" stroke-width="1" opacity="0.8"/>
+
+                        <!-- Sea Water Shimmer Waves -->
+                        <rect x="0" y="125" width="800" height="35" fill="#06020c" opacity="0.95"/>
+                        <ellipse cx="400" cy="140" rx="350" ry="12" fill="#FFD700" opacity="0.08"/>
+                        <ellipse cx="260" cy="145" rx="80" ry="6" fill="#ef4444" opacity="0.12"/>
+                        <ellipse cx="540" cy="145" rx="80" ry="6" fill="#ef4444" opacity="0.12"/>
+                    </svg>
+                </div>
+
+                <!-- Pyro Smoke Flares -->
+                <div class="bus-pyro-glow-left"></div>
+                <div class="bus-pyro-glow-right"></div>
+
+                <!-- Top Header Bar -->
+                <div style="position: relative; z-index: 4; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 215, 0, 0.25); padding-bottom: 10px; margin-bottom: 12px;">
+                    <div style="font-size: 10.5px; font-weight: 900; color: #FFD700; letter-spacing: 1px;">
+                        🎆 ŞAMPİYONLUK ŞEHİR TURU
                     </div>
-                    <div style="font-size: 10.5px; color: #00e5b7; font-weight: 800;" id="bus-trophy-tag">
+                    <div style="font-size: 10.5px; color: #00e5b7; font-weight: 800; background: rgba(0,229,183,0.15); border: 1px solid rgba(0,229,183,0.3); border-radius: 12px; padding: 2px 8px;" id="bus-trophy-tag">
                         SÜPER LİG KUPASI
                     </div>
                 </div>
 
-                <div style="margin-bottom: 14px;">
-                    <div style="font-size: 46px; margin-bottom: 4px;">🚌🏆</div>
-                    <h2 style="font-size: 20px; font-weight: 900; color: #ffffff; margin: 0 0 6px 0;" id="bus-city-title">
+                <!-- 3D Open-Top Bus POV & Floating Golden Trophy -->
+                <div class="bus-deck-wrapper">
+                    <!-- 3D Championship Trophy SVG Graphic -->
+                    <svg class="bus-trophy-3d" viewBox="0 0 120 120" style="width: 100px; height: 100px;">
+                        <!-- Trophy Pedestal / Base -->
+                        <rect x="36" y="98" width="48" height="14" rx="3" fill="#1e293b" stroke="#FFD700" stroke-width="1.2"/>
+                        <rect x="42" y="88" width="36" height="10" rx="2" fill="url(#trophy-gold-grad)"/>
+                        <!-- Stem -->
+                        <polygon points="52,88 68,88 65,70 55,70" fill="url(#trophy-gold-grad)"/>
+                        <!-- Cup Main Body -->
+                        <path d="M 32 24 Q 30 68 60 74 Q 90 68 88 24 Z" fill="url(#trophy-gold-grad)" stroke="#ffffff" stroke-width="0.8"/>
+                        <!-- Handles (Left & Right) -->
+                        <path d="M 32 30 Q 14 36 24 56 Q 30 66 38 64" fill="none" stroke="url(#trophy-gold-grad)" stroke-width="4.5" stroke-linecap="round"/>
+                        <path d="M 88 30 Q 106 36 96 56 Q 90 66 82 64" fill="none" stroke="url(#trophy-gold-grad)" stroke-width="4.5" stroke-linecap="round"/>
+                        <!-- Cup Crown Trim -->
+                        <ellipse cx="60" cy="24" rx="28" ry="6" fill="#fef08a" stroke="#ca8a04" stroke-width="1"/>
+                        <ellipse cx="60" cy="24" rx="22" ry="4" fill="#ca8a04"/>
+                        <!-- Shimmer Star -->
+                        <polygon points="60,40 63,48 71,48 65,53 67,61 60,56 53,61 55,53 49,48 57,48" fill="#ffffff" opacity="0.9"/>
+                    </svg>
+                </div>
+
+                <!-- Hero Title -->
+                <div style="position: relative; z-index: 4; margin-bottom: 16px;">
+                    <h2 style="font-size: 19px; font-weight: 900; color: #ffffff; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px;" id="bus-city-title">
                         ŞEHİR AYAKTA! BOĞAZ YANIYOR!
                     </h2>
-                    <p style="font-size: 12px; color: #fef08a; margin: 0 0 12px 0;">
-                        Yüz binlerce taraftar sokakları kırmızı meşalelerle aydınlattı. Üstü açık otobüsten kupayı havaya kaldırıyorsun!
+                    <p style="font-size: 12px; color: #fef08a; margin: 0; line-height: 1.4;">
+                        Yüz binlerce taraftar sokakları kırmızı meşalelerle aydınlattı. Üstü açık otobüsten kupayı Boğaz'a karşı kaldırıyorsun!
                     </p>
                 </div>
 
-                <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px;">
-                    <button class="btn btn-event" onclick="triggerBusChant('chant')" style="text-align: left; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,214,0,0.4); border-radius: 10px; color: #FFD600; cursor: pointer;">
-                        <strong>📣 Mikrofondan Şampiyonluk Şarkısı Başlat!</strong>
-                        <div style="font-size: 9.5px; color: #cbd5e1; margin-top: 2px;">+%25 Taraftar Sevgisi, +50.000 Takipçi</div>
-                    </button>
-                    <button class="btn btn-event" onclick="triggerBusChant('pyro')" style="text-align: left; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(239,68,68,0.4); border-radius: 10px; color: #f87171; cursor: pointer;">
-                        <strong>🔥 Meşale Yakıp Otobüsün Önüne Geç!</strong>
-                        <div style="font-size: 9.5px; color: #cbd5e1; margin-top: 2px;">+15 Moral, Sosyal Medyada Viral Fotoğraf</div>
-                    </button>
+                <!-- Interactive Celebration Cards -->
+                <div class="bus-choice-grid">
+                    <!-- Option 1: Microphone -->
+                    <div class="bus-choice-card selected" id="card-bus-chant" onclick="selectBusAction('chant')">
+                        <div class="bus-choice-header">
+                            <span style="font-size: 16px;">🎤</span>
+                            <span class="bus-choice-title" style="color: #FFD700;">Mikrofonu Al & Şampiyonluk Şarkısını Başlat</span>
+                        </div>
+                        <div class="bus-choice-quote">
+                            "Yüz binlerle tek ses ol! Bütün şehri coşkuyla inlet!"
+                        </div>
+                        <div class="bus-stat-pill gold">
+                            <span>👑</span> +%25 Taraftar Sevgisi • <span>📈</span> +50.000 Takipçi
+                        </div>
+                    </div>
+
+                    <!-- Option 2: Pyro Flare -->
+                    <div class="bus-choice-card" id="card-bus-pyro" onclick="selectBusAction('pyro')">
+                        <div class="bus-choice-header">
+                            <span style="font-size: 16px;">🔥</span>
+                            <span class="bus-choice-title" style="color: #f87171;">Meşaleyi Ateşle & Otobüsün Önüne Geç</span>
+                        </div>
+                        <div class="bus-choice-quote">
+                            "Kupayı Boğaz'a karşı havaya kaldır! Gece aydınlansın!"
+                        </div>
+                        <div class="bus-stat-pill red">
+                            <span>❤️</span> +15 Moral • <span>📸</span> Viral Manşet Fotoğrafı
+                        </div>
+                    </div>
                 </div>
 
-                <button class="btn btn-primary" onclick="closeVictoryBusModal()" style="width: 100%; padding: 13px; font-weight: 900; background: linear-gradient(135deg, #FFD600 0%, #ff8f00 100%); color: #000; border: none; border-radius: 10px; cursor: pointer;">
-                    👑 KUTLAMAYI TAMAMLA & DEVAM ET
+                <!-- Action Finish Button -->
+                <button class="bus-finish-button" id="btn-bus-finish" onclick="confirmVictoryBusCelebration()">
+                    🏆 KUTLAMAYI ZİRVEYE TAŞI & SEZONU BİTİR
                 </button>
             </div>
         </div>
 
-        <!-- 👟 SIGNATURE BOOT STUDIO MODAL -->
         <div class="event-modal-overlay" id="boot-customizer-modal" style="background: rgba(0,0,0,0.88); backdrop-filter: blur(14px); z-index: 10035; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
             <div class="boot-studio-stage" id="boot-studio-box">
                 <!-- Close Button -->
@@ -3977,6 +4093,124 @@
                         osc.start(t);
                         osc.stop(t + 0.05);
                     });
+                } catch(e) {}
+            },
+
+            playBusParadeAtmosphere: function() {
+                if (!this.enabled) return;
+                this.duckMusic(0.04);
+                try {
+                    this.initAudio();
+                    let ctx = this.audioCtx;
+                    if (!ctx) return;
+                    let now = ctx.currentTime;
+
+                    // 1. Rhythmic Convoy Horns (Düüüt - Düt - Düüüt)
+                    let hornPatterns = [
+                        { time: 0.1, duration: 0.28, freq: 392 },
+                        { time: 0.45, duration: 0.28, freq: 440 },
+                        { time: 0.8, duration: 0.6, freq: 523 }
+                    ];
+
+                    hornPatterns.forEach(h => {
+                        let t = now + h.time;
+                        let osc1 = ctx.createOscillator();
+                        let osc2 = ctx.createOscillator();
+                        let g = ctx.createGain();
+
+                        osc1.type = "sawtooth";
+                        osc2.type = "sawtooth";
+                        osc1.frequency.setValueAtTime(h.freq, t);
+                        osc2.frequency.setValueAtTime(h.freq * 1.25, t);
+
+                        let filter = ctx.createBiquadFilter();
+                        filter.type = "bandpass";
+                        filter.frequency.setValueAtTime(h.freq * 1.1, t);
+                        filter.Q.setValueAtTime(3.0, t);
+
+                        g.gain.setValueAtTime(0.001, t);
+                        g.gain.linearRampToValueAtTime(0.18, t + 0.04);
+                        g.gain.setValueAtTime(0.18, t + h.duration - 0.04);
+                        g.gain.linearRampToValueAtTime(0.001, t + h.duration);
+
+                        osc1.connect(filter);
+                        osc2.connect(filter);
+                        filter.connect(g);
+                        g.connect(ctx.destination);
+
+                        osc1.start(t);
+                        osc2.start(t);
+                        osc1.stop(t + h.duration);
+                        osc2.stop(t + h.duration);
+                    });
+
+                    // 2. Crowd Celebration Roar Noise
+                    let bufferSize = Math.floor(ctx.sampleRate * 2.8);
+                    let buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                    let data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        data[i] = (Math.random() * 2 - 1) * (0.6 + 0.4 * Math.sin(i / 300));
+                    }
+                    let noise = ctx.createBufferSource();
+                    noise.buffer = buffer;
+                    let cFilter = ctx.createBiquadFilter();
+                    cFilter.type = "lowpass";
+                    cFilter.frequency.setValueAtTime(350, now);
+                    cFilter.frequency.linearRampToValueAtTime(600, now + 1.2);
+                    cFilter.frequency.linearRampToValueAtTime(250, now + 2.8);
+
+                    let cGain = ctx.createGain();
+                    cGain.gain.setValueAtTime(0.001, now);
+                    cGain.gain.linearRampToValueAtTime(0.28, now + 0.4);
+                    cGain.gain.exponentialRampToValueAtTime(0.01, now + 2.8);
+
+                    noise.connect(cFilter);
+                    cFilter.connect(cGain);
+                    cGain.connect(ctx.destination);
+                    noise.start(now);
+                } catch(e) {
+                    console.error("Audio error in playBusParadeAtmosphere:", e);
+                }
+            },
+
+            playFireworkExplosion: function() {
+                if (!this.enabled) return;
+                try {
+                    this.initAudio();
+                    let ctx = this.audioCtx;
+                    if (!ctx) return;
+                    let now = ctx.currentTime;
+
+                    let osc = ctx.createOscillator();
+                    let g = ctx.createGain();
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(140, now);
+                    osc.frequency.exponentialRampToValueAtTime(35, now + 0.35);
+                    g.gain.setValueAtTime(0.4, now);
+                    g.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+                    osc.connect(g);
+                    g.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.5);
+
+                    let bufferSize = Math.floor(ctx.sampleRate * 0.9);
+                    let buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                    let data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.35));
+                    }
+                    let noise = ctx.createBufferSource();
+                    noise.buffer = buffer;
+                    let filter = ctx.createBiquadFilter();
+                    filter.type = "highpass";
+                    filter.frequency.setValueAtTime(1800, now);
+                    let nGain = ctx.createGain();
+                    nGain.gain.setValueAtTime(0.25, now);
+                    nGain.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
+                    noise.connect(filter);
+                    filter.connect(nGain);
+                    nGain.connect(ctx.destination);
+                    noise.start(now);
                 } catch(e) {}
             },
 
@@ -8433,35 +8667,114 @@ const garageCars = [
 // ══════════════════════════════════════════════════════════════════
         // 🚌 6. VICTORY BUS TOUR CONTROLLER
         // ══════════════════════════════════════════════════════════════════
+        // 🚌 6. ŞAMPİYONLUK ŞEHİR TURU CONTROLLER (3D BOSPHORUS PARADE)
+        // ══════════════════════════════════════════════════════════════════
         let victoryBusCallback = null;
+        let selectedBusAction = "chant"; // "chant" or "pyro"
 
-        function startVictoryBusTour(trophyName = "SÜPER LİG KUPASI", onComplete = null) {
+        function startVictoryBusTour(trophyName = "SÜPER LİG ŞAMPİYONU", onComplete = null) {
             victoryBusCallback = onComplete;
+            selectedBusAction = "chant";
+
             const modal = document.getElementById("victory-bus-modal");
             const tagEl = document.getElementById("bus-trophy-tag");
+            const stage = document.getElementById("victory-bus-stage");
+            const flash = document.getElementById("bus-flash-overlay");
+            const btn = document.getElementById("btn-bus-finish");
+
             if (tagEl) tagEl.innerText = trophyName.toUpperCase();
+            if (stage) stage.classList.remove("screen-shake-burst");
+            if (flash) flash.classList.remove("flashing");
+            if (btn) {
+                btn.disabled = false;
+                btn.innerText = "🏆 KUTLAMAYI ZİRVEYE TAŞI & SEZONU BİTİR";
+            }
+
+            selectBusAction("chant");
 
             if (modal) {
                 modal.style.display = "flex";
                 modal.classList.add("active");
             }
-            if (typeof SoundManager !== "undefined" && typeof SoundManager.playGoal === "function") {
+
+            // Play Convoy Horns & Crowd Atmosphere
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playBusParadeAtmosphere === "function") {
+                SoundManager.playBusParadeAtmosphere();
+            } else if (typeof SoundManager !== "undefined" && typeof SoundManager.playGoal === "function") {
                 SoundManager.playGoal();
             }
         }
 
-        function triggerBusChant(actionType) {
-            if (actionType === "chant") {
+        function selectBusAction(actionType) {
+            selectedBusAction = actionType;
+            const cChant = document.getElementById("card-bus-chant");
+            const cPyro = document.getElementById("card-bus-pyro");
+
+            if (cChant && cPyro) {
+                if (actionType === "chant") {
+                    cChant.className = "bus-choice-card selected";
+                    cPyro.className = "bus-choice-card";
+                } else {
+                    cChant.className = "bus-choice-card";
+                    cPyro.className = "bus-choice-card selected-pyro";
+                }
+            }
+
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playClick === "function") {
+                SoundManager.playClick();
+            }
+        }
+
+        function confirmVictoryBusCelebration() {
+            const btn = document.getElementById("btn-bus-finish");
+            if (btn) {
+                btn.disabled = true;
+                btn.innerText = "🎆 KUTLAMA ZİRVEDE!";
+            }
+
+            const stage = document.getElementById("victory-bus-stage");
+            const flash = document.getElementById("bus-flash-overlay");
+
+            // 1. Screen Shake Burst & Flash Strobe
+            if (stage) stage.classList.add("screen-shake-burst");
+            if (flash) flash.classList.add("flashing");
+
+            // 2. Play Firework Explosions & Goal Roar
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playFireworkExplosion === "function") {
+                SoundManager.playFireworkExplosion();
+            }
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playGoal === "function") {
+                SoundManager.playGoal();
+            }
+
+            // Apply stats based on choice
+            if (selectedBusAction === "chant") {
                 GAME.state.followers = (GAME.state.followers || 0) + 50000;
                 GAME.state.taraftarSevgisi = Math.min(100, (GAME.state.taraftarSevgisi || 50) + 25);
-                showCustomAlert("Tüm şehir seninle birlikte şarkı söylüyor! İnanılmaz bir coşku!", "ŞAMPİYONLUK TURU", "📣", "info");
             } else {
                 GAME.state.moral = 100;
-                showCustomAlert("Meşale alevleri Boğaz'ı aydınlattı! Tarihi fotoğraflar çekildi!", "MEŞALE ŞÖLENİ", "🔥", "info");
+                GAME.state.followers = (GAME.state.followers || 0) + 35000;
             }
-            if (typeof SoundManager !== "undefined" && typeof SoundManager.playStadiumDrumBeat === "function") {
-                SoundManager.playStadiumDrumBeat(3);
-            }
+
+            GAME.saveGame();
+            GAME.updateUI();
+
+            // 3. Finalize and close modal after 900ms
+            setTimeout(() => {
+                const modal = document.getElementById("victory-bus-modal");
+                if (modal) {
+                    modal.style.display = "none";
+                    modal.classList.remove("active");
+                }
+
+                showCustomAlert("Tarihi şampiyonluk kutlaması tamamlandı! Tüm şehir bu geceyi asla unutmayacak! 🏆🎆", "KUPA KUTLAMASI", "👑", "info");
+
+                if (typeof victoryBusCallback === "function") {
+                    let cb = victoryBusCallback;
+                    victoryBusCallback = null;
+                    cb();
+                }
+            }, 900);
         }
 
         function closeVictoryBusModal() {
@@ -8485,17 +8798,7 @@ const garageCars = [
             });
         }
 
-
-        // ══════════════════════════════════════════════════════════════════
-        // 👟 7. SIGNATURE BOOT STUDIO CONTROLLER
-        // ══════════════════════════════════════════════════════════════════
-        // 👟 7. CUSTOM SIGNATURE BOOT STUDIO CONTROLLER (NIKE BY YOU 3D)
-        // ══════════════════════════════════════════════════════════════════
-        // 👟 7. CUSTOM SIGNATURE BOOT STUDIO CONTROLLER (MERCURIAL ELITE 3D)
-        // ══════════════════════════════════════════════════════════════════
-        // 👟 7. CUSTOM SIGNATURE BOOT STUDIO CONTROLLER (NIKE BY YOU)
-        // ══════════════════════════════════════════════════════════════════
-        let customBootConfig = {
+let customBootConfig = {
             upper: "#111827",
             upperEnd: "#1f2937",
             sole: "#ffffff",
