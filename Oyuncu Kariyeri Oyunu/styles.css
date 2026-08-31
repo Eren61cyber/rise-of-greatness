@@ -3934,49 +3934,204 @@ input[type="text"]:focus, select:focus {
 
 
 /* ══════════════════════════════════════════════════════════════════
-   🇹🇷 3. A MİLLİ TAKIM İSTİKLAL MARŞI & KAPTANLIK
+   🇹🇷 3. A MİLLİ TAKIM İSTİKLAL MARŞI & KAPTANLIK (CINEMATIC EURO)
 ══════════════════════════════════════════════════════════════════ */
 .national-anthem-stage {
     position: relative;
     width: 100%;
-    max-width: 460px;
-    background: radial-gradient(ellipse at 50% 20%, #4a0808 0%, #1f0303 60%, #080101 100%);
-    border: 2px solid #ef4444;
-    border-radius: 22px;
-    box-shadow: 0 0 65px rgba(239, 68, 68, 0.5), 0 20px 50px rgba(0,0,0,0.9);
+    max-width: 480px;
+    background: radial-gradient(ellipse at 50% 15%, #2a0508 0%, #120204 55%, #050102 100%);
+    border: 1.5px solid rgba(239, 68, 68, 0.45);
+    border-radius: 24px;
+    box-shadow: 0 0 65px rgba(239, 68, 68, 0.35), 0 25px 60px rgba(0,0,0,0.95);
     overflow: hidden;
-    padding: 22px;
+    padding: 24px 20px;
     color: #fff;
     text-align: center;
 }
 
-.anthem-flag-waving {
+/* Stadium Spotlight Beams */
+.anthem-spotlight-left {
     position: absolute;
     top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 320px;
-    height: 160px;
-    opacity: 0.25;
+    left: -20px;
+    width: 260px;
+    height: 180px;
+    background: radial-gradient(ellipse at top left, rgba(239, 68, 68, 0.25) 0%, transparent 70%);
+    transform: rotate(25deg);
     pointer-events: none;
-    background: radial-gradient(circle, #ef4444 40%, transparent 70%);
+    z-index: 1;
 }
 
-.anthem-captain-badge {
+.anthem-spotlight-right {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 260px;
+    height: 180px;
+    background: radial-gradient(ellipse at top right, rgba(255, 255, 255, 0.12) 0%, transparent 70%);
+    transform: rotate(-25deg);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Waving Turkish Silk Flag Backdrop */
+.anthem-flag-silk-backdrop {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: flagSilkWaving 7s ease-in-out infinite alternate;
+}
+
+@keyframes flagSilkWaving {
+    0% { transform: scale(1) translateY(0) skewX(0deg); opacity: 0.15; }
+    50% { transform: scale(1.04) translateY(-4px) skewX(1.5deg); opacity: 0.22; }
+    100% { transform: scale(1.02) translateY(2px) skewX(-1deg); opacity: 0.16; }
+}
+
+/* Realistic Fabric Captain Armband Badge */
+.anthem-captain-armband {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 32px;
     height: 32px;
-    background: linear-gradient(135deg, #FFD600 0%, #ff8f00 100%);
+    background: linear-gradient(135deg, #FFD700 0%, #b45309 100%);
+    border: 1.5px solid #fff;
+    border-radius: 6px;
     color: #000;
+    font-family: 'Space Grotesk', sans-serif;
     font-weight: 900;
-    font-size: 16px;
-    border-radius: 50%;
-    box-shadow: 0 0 18px #FFD600;
-    margin-right: 6px;
+    font-size: 18px;
+    box-shadow: 0 0 16px rgba(255, 215, 0, 0.6), inset 0 0 8px rgba(255,255,255,0.4);
 }
 
+/* Match Pill Badge */
+.anthem-match-badge {
+    background: rgba(0, 0, 0, 0.65);
+    border: 1px solid #FFD700;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-family: 'Space Grotesk', monospace;
+    font-size: 10.5px;
+    font-weight: 900;
+    color: #FFD700;
+    letter-spacing: 1px;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
+}
+
+/* Glassmorphic Talk Cards */
+.anthem-choice-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 18px;
+    position: relative;
+    z-index: 4;
+}
+
+.anthem-choice-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 14px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.anthem-choice-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.anthem-choice-card.selected {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: #ef4444;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.4), inset 0 0 10px rgba(239, 68, 68, 0.2);
+}
+
+.anthem-choice-card.selected-tactical {
+    background: rgba(0, 229, 183, 0.15);
+    border-color: #00e5b7;
+    box-shadow: 0 0 20px rgba(0, 229, 183, 0.4), inset 0 0 10px rgba(0, 229, 183, 0.2);
+}
+
+.anthem-choice-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.anthem-choice-title {
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+}
+
+.anthem-choice-quote {
+    font-size: 11.5px;
+    color: #cbd5e1;
+    line-height: 1.4;
+    margin-bottom: 8px;
+    font-style: italic;
+}
+
+.anthem-stat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.3px;
+}
+
+.anthem-stat-pill.red {
+    background: rgba(239, 68, 68, 0.2);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+}
+
+.anthem-stat-pill.blue {
+    background: rgba(0, 229, 183, 0.2);
+    border: 1px solid rgba(0, 229, 183, 0.4);
+    color: #6ee7b7;
+}
+
+/* Action Button */
+.anthem-action-button {
+    width: 100%;
+    padding: 15px;
+    font-size: 14px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ef4444 0%, #991b1b 100%);
+    color: #ffffff;
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    border-radius: 14px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 0 30px rgba(239, 68, 68, 0.6), 0 10px 25px rgba(0,0,0,0.8);
+    transition: all 0.2s ease;
+    position: relative;
+    z-index: 4;
+}
+
+.anthem-action-button:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #7f1d1d 100%);
+    transform: scale(1.02);
+    box-shadow: 0 0 45px rgba(239, 68, 68, 0.85);
+}
 
 /* ══════════════════════════════════════════════════════════════════
    🏎️ 4. 3D LÜKS SHOWROOM & KOLEKSİYON GARAJI (AAA ULTRA)

@@ -2943,52 +2943,85 @@
         </div>
 
         <!-- 🇹🇷 NATIONAL ANTHEM & CAPTAIN TEAM TALK MODAL -->
-        <div class="event-modal-overlay" id="national-anthem-modal" style="background: rgba(0,0,0,0.96); backdrop-filter: blur(16px); z-index: 10030; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
+        <div class="event-modal-overlay" id="national-anthem-modal" style="background: rgba(0,0,0,0.96); backdrop-filter: blur(18px); z-index: 10030; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
             <div class="national-anthem-stage" id="national-anthem-stage">
-                <div class="anthem-flag-waving"></div>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(239, 68, 68, 0.4); padding-bottom: 8px; margin-bottom: 14px; position: relative; z-index: 3;">
-                    <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 900; color: #ef4444; letter-spacing: 1px;">
-                        <span class="anthem-captain-badge">C</span> A MİLLİ TAKIM SEREMONİSİ
+                <!-- Stadium Spotlights -->
+                <div class="anthem-spotlight-left"></div>
+                <div class="anthem-spotlight-right"></div>
+
+                <!-- Dalgalanan Türk Bayrağı Silk Backdrop -->
+                <div class="anthem-flag-silk-backdrop">
+                    <svg viewBox="0 0 1200 800" style="width: 100%; height: 100%; max-height: 380px;">
+                        <rect width="1200" height="800" fill="#E30A17"/>
+                        <!-- White Crescent (Hilal) -->
+                        <circle cx="500" cy="400" r="200" fill="#ffffff"/>
+                        <circle cx="550" cy="400" r="160" fill="#E30A17"/>
+                        <!-- White Star (Yıldız) -->
+                        <polygon points="680,400 730,416 711,466 752,434 797,460 770,416 815,385 762,385 745,335 728,385" fill="#ffffff" transform="rotate(-15 745 400)"/>
+                    </svg>
+                </div>
+
+                <!-- Top Header Bar -->
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.15); padding-bottom: 10px; margin-bottom: 16px; position: relative; z-index: 4;">
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 900; color: #f87171; letter-spacing: 1px;">
+                        <div class="anthem-captain-armband">C</div>
+                        <span>A MİLLİ TAKIM SEREMONİSİ</span>
                     </div>
-                    <div style="font-size: 10.5px; color: #FFD600; font-weight: 800;" id="anthem-match-title">
-                        EURO 2028 FİNALİ
+                    <div class="anthem-match-badge" id="anthem-match-title">
+                        🏆 EURO 2028 FİNALİ
                     </div>
                 </div>
 
-                <div style="margin-bottom: 14px;">
-                    <div style="font-size: 36px; margin-bottom: 4px;">🇹🇷</div>
-                    <h2 style="font-size: 20px; font-weight: 900; color: #ffffff; margin: 0 0 6px 0; text-transform: uppercase;">
+                <!-- Anthem Hero Title -->
+                <div style="position: relative; z-index: 4; margin-bottom: 18px;">
+                    <div style="font-size: 32px; margin-bottom: 4px; filter: drop-shadow(0 0 15px rgba(239,68,68,0.8));">🇹🇷</div>
+                    <h2 style="font-size: 21px; font-weight: 900; color: #ffffff; margin: 0 0 6px 0; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 20px rgba(255,255,255,0.6);">
                         İSTİKLAL MARŞI ÇALIYOR
                     </h2>
-                    <p style="font-size: 12px; color: #cbd5e1; line-height: 1.45; margin: 0 0 10px 0;">
-                        "Korkma, sönmez bu şafaklarda yüzen al sancak..." 50.000 taraftar tek yürek halinde marşı haykırıyor!
+                    <p style="font-size: 12.5px; color: #cbd5e1; line-height: 1.45; margin: 0; font-weight: 600;">
+                        "Korkma, sönmez bu şafaklarda yüzen al sancak..." <br/>
+                        <span style="color: #FFD700; font-weight: 800;">50.000 taraftar tek yürek halinde marşı haykırıyor!</span>
                     </p>
                 </div>
 
-                <!-- Captain Team Talk Step -->
-                <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 14px; padding: 14px; text-align: left; margin-bottom: 14px;">
-                    <div style="font-size: 11px; font-weight: 900; color: #FFD600; margin-bottom: 8px; text-transform: uppercase;">
-                        🔥 Kaptan Olarak Takıma Ateşleyici Konuşma Yap:
+                <!-- Captain Team Talk Step (Glassmorphic Choice Cards) -->
+                <div class="anthem-choice-grid">
+                    <!-- Option 1: Passionate Captain -->
+                    <div class="anthem-choice-card" id="card-talk-passion" onclick="selectCaptainTalk('passion')">
+                        <div class="anthem-choice-header">
+                            <span style="font-size: 16px;">🔥</span>
+                            <span class="anthem-choice-title" style="color: #f87171;">Ateşli & Agresif Kaptan</span>
+                        </div>
+                        <div class="anthem-choice-quote">
+                            "Bu forma için sahada basmadık çim bırakmayacağız! Vatan için son nefese kadar!"
+                        </div>
+                        <div class="anthem-stat-pill red">
+                            <span>⚡</span> +15 Takım Hırsı • +10 Şut Gücü
+                        </div>
                     </div>
-                    <div style="display: flex; flex-direction: column; gap: 8px;">
-                        <button class="btn btn-event" onclick="deliverCaptainTalk('passion')" style="text-align: left; padding: 10px; font-size: 11px; background: rgba(255,255,255,0.05); border: 1px solid rgba(239,68,68,0.4); border-radius: 8px; color: #ef4444; cursor: pointer;">
-                            <strong>"Bu forma için sahada basmadık çim bırakmayacağız! Vatan için!" (Ateşli & Agresif)</strong>
-                            <div style="font-size: 9.5px; color: #cbd5e1; margin-top: 2px;">+15 Takım Hırsı, +10 Şut Gücü</div>
-                        </button>
-                        <button class="btn btn-event" onclick="deliverCaptainTalk('tactical')" style="text-align: left; padding: 10px; font-size: 11px; background: rgba(255,255,255,0.05); border: 1px solid rgba(0,229,183,0.4); border-radius: 8px; color: #00e5b7; cursor: pointer;">
-                            <strong>"Sakin kalacağız, planımıza sadık kalıp rakibi boğacağız." (Taktiksel Lider)</strong>
-                            <div style="font-size: 9.5px; color: #cbd5e1; margin-top: 2px;">+10 Pas & Vizyon, +10 Hoca Güveni</div>
-                        </button>
+
+                    <!-- Option 2: Tactical Leader -->
+                    <div class="anthem-choice-card" id="card-talk-tactical" onclick="selectCaptainTalk('tactical')">
+                        <div class="anthem-choice-header">
+                            <span style="font-size: 16px;">🧠</span>
+                            <span class="anthem-choice-title" style="color: #6ee7b7;">Soğukkanlı & Taktiksel Lider</span>
+                        </div>
+                        <div class="anthem-choice-quote">
+                            "Sakin kalacağız, planımıza sadık kalıp rakibi sahada boğacağız."
+                        </div>
+                        <div class="anthem-stat-pill blue">
+                            <span>🎯</span> +10 Pas & Vizyon • +10 Hoca Güveni
+                        </div>
                     </div>
                 </div>
 
-                <button class="btn btn-primary" onclick="proceedFromAnthem()" style="width: 100%; padding: 13px; font-weight: 900; background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); color: #fff; border: none; border-radius: 10px; cursor: pointer;">
-                    🇹🇷 SAHAYA ÇIK VE MÜCADELE ET
+                <!-- Action Button -->
+                <button class="anthem-action-button" onclick="confirmNationalTeamEntry()">
+                    🇹🇷 TÜRKİYE İÇİN SAHAYA ÇIK
                 </button>
             </div>
         </div>
 
-        <!-- 🏎️ 3D LUXURY GARAGE SHOWROOM MODAL -->
         <div class="event-modal-overlay" id="garage-showroom-modal" style="background: rgba(0,0,0,0.96); backdrop-filter: blur(16px); z-index: 10030; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
             <div class="garage-card-stage" id="garage-stage">
                 <div class="showroom-overhead-lights"></div>
@@ -3796,6 +3829,71 @@
                     }
                 } catch(e) {
                     if (typeof fallbackFn === "function") fallbackFn();
+                }
+            },
+
+            playNationalAnthemChant: function() {
+                if (!this.enabled) return;
+                this.duckMusic(0.04);
+                try {
+                    this.initAudio();
+                    let ctx = this.audioCtx;
+                    if (!ctx) return;
+                    let now = ctx.currentTime;
+
+                    // 1. Deep Stadium Roar & Crowd Reverberation
+                    let bufferSize = Math.floor(ctx.sampleRate * 2.5);
+                    let buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                    let data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 1.2));
+                    }
+                    let noise = ctx.createBufferSource();
+                    noise.buffer = buffer;
+                    let filter = ctx.createBiquadFilter();
+                    filter.type = "lowpass";
+                    filter.frequency.setValueAtTime(260, now);
+                    filter.frequency.linearRampToValueAtTime(450, now + 1.2);
+                    filter.frequency.exponentialRampToValueAtTime(180, now + 2.4);
+
+                    let noiseGain = ctx.createGain();
+                    noiseGain.gain.setValueAtTime(0.001, now);
+                    noiseGain.gain.linearRampToValueAtTime(0.35, now + 0.4);
+                    noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 2.5);
+
+                    noise.connect(filter);
+                    filter.connect(noiseGain);
+                    noiseGain.connect(ctx.destination);
+                    noise.start(now);
+
+                    // 2. Brass / Fanfare Harmonic Swell
+                    let freqs = [196.00, 246.94, 293.66, 392.00]; // G3, B3, D4, G4 major fanfare swell
+                    freqs.forEach((freq, idx) => {
+                        let osc = ctx.createOscillator();
+                        let g = ctx.createGain();
+                        osc.type = "sawtooth";
+                        osc.frequency.setValueAtTime(freq, now);
+
+                        let fLow = ctx.createBiquadFilter();
+                        fLow.type = "lowpass";
+                        fLow.frequency.setValueAtTime(400, now);
+                        fLow.frequency.linearRampToValueAtTime(900, now + 0.8);
+                        fLow.frequency.exponentialRampToValueAtTime(300, now + 2.5);
+
+                        g.gain.setValueAtTime(0.001, now);
+                        g.gain.linearRampToValueAtTime(0.08 / (idx + 1), now + 0.5);
+                        g.gain.setValueAtTime(0.08 / (idx + 1), now + 1.4);
+                        g.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
+
+                        osc.connect(fLow);
+                        fLow.connect(g);
+                        g.connect(ctx.destination);
+
+                        osc.start(now);
+                        osc.stop(now + 2.5);
+                    });
+                } catch(e) {
+                    console.error("Audio error in playNationalAnthemChant:", e);
                 }
             },
 
@@ -7372,45 +7470,77 @@
         // ══════════════════════════════════════════════════════════════════
         // 🇹🇷 3. A MİLLİ TAKIM İSTİKLAL MARŞI & KAPTANLIK CONTROLLER
         // ══════════════════════════════════════════════════════════════════
+        // 🇹🇷 3. A MİLLİ TAKIM İSTİKLAL MARŞI & KAPTANLIK CONTROLLER (CINEMATIC)
+        // ══════════════════════════════════════════════════════════════════
         let anthemCallback = null;
+        let selectedCaptainTalk = "passion"; // "passion" or "tactical"
 
         function startNationalAnthemCeremony(matchData = null, onComplete = null) {
             anthemCallback = onComplete;
+            selectedCaptainTalk = "passion";
+            
             const modal = document.getElementById("national-anthem-modal");
             const matchTitle = document.getElementById("anthem-match-title");
             if (matchTitle && matchData && matchData.title) {
-                matchTitle.innerText = matchData.title.toUpperCase();
+                matchTitle.innerText = "🏆 " + matchData.title.toUpperCase();
             }
+
+            // Default selection
+            selectCaptainTalk("passion");
 
             if (modal) {
                 modal.style.display = "flex";
                 modal.classList.add("active");
             }
-            if (typeof SoundManager !== "undefined" && typeof SoundManager.playStadiumShh === "function") {
+
+            // Play Anthem Choir & Stadium Reverberation Sound
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playNationalAnthemChant === "function") {
+                SoundManager.playNationalAnthemChant();
+            } else if (typeof SoundManager !== "undefined" && typeof SoundManager.playStadiumShh === "function") {
                 SoundManager.playStadiumShh();
             }
         }
 
-        function deliverCaptainTalk(talkType) {
-            if (talkType === "passion") {
-                GAME.state.kondisyon = Math.min(100, (GAME.state.kondisyon || 80) + 10);
-                GAME.state.moral = 100;
-                showCustomAlert("Takım alev aldı! Sahada basmadık çim bırakmayacağız!", "KAPTANIN SESİ", "🔥", "info");
-            } else {
-                GAME.state.hocaGuveni = Math.min(100, (GAME.state.hocaGuveni || 80) + 10);
-                showCustomAlert("Takım taktiğe kilitlendi! Disiplin en üst seviyede!", "KAPTANIN SESİ", "🧠", "info");
+        function selectCaptainTalk(talkType) {
+            selectedCaptainTalk = talkType;
+            const cPassion = document.getElementById("card-talk-passion");
+            const cTactical = document.getElementById("card-talk-tactical");
+
+            if (cPassion && cTactical) {
+                if (talkType === "passion") {
+                    cPassion.className = "anthem-choice-card selected";
+                    cTactical.className = "anthem-choice-card";
+                } else {
+                    cPassion.className = "anthem-choice-card";
+                    cTactical.className = "anthem-choice-card selected-tactical";
+                }
             }
-            if (typeof SoundManager !== "undefined" && typeof SoundManager.playStadiumDrumBeat === "function") {
-                SoundManager.playStadiumDrumBeat(2);
+
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playClick === "function") {
+                SoundManager.playClick();
             }
         }
 
-        function proceedFromAnthem() {
+        function confirmNationalTeamEntry() {
+            if (selectedCaptainTalk === "passion") {
+                GAME.state.kondisyon = Math.min(100, (GAME.state.kondisyon || 80) + 10);
+                GAME.state.moral = 100;
+                showCustomAlert("Takım alev aldı! Sahada basmadık çim bırakmayacağız! 🇹🇷", "KAPTANIN SESİ", "🔥", "info");
+            } else {
+                GAME.state.hocaGuveni = Math.min(100, (GAME.state.hocaGuveni || 80) + 10);
+                showCustomAlert("Takım taktiğe kilitlendi! Disiplin ve vizyon en üst seviyede! 🇹🇷", "KAPTANIN SESİ", "🧠", "info");
+            }
+
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playWhistle === "function") {
+                SoundManager.playWhistle("single");
+            }
+
             const modal = document.getElementById("national-anthem-modal");
             if (modal) {
                 modal.style.display = "none";
                 modal.classList.remove("active");
             }
+
             if (typeof anthemCallback === "function") {
                 let cb = anthemCallback;
                 anthemCallback = null;
@@ -7426,11 +7556,7 @@
             });
         }
 
-
-        // ══════════════════════════════════════════════════════════════════
-        // 🏎️ 4. 3D LÜKS SHOWROOM & GARAJ CONTROLLER (AAA ULTRA)
-        // ══════════════════════════════════════════════════════════════════
-        const garageCars = [
+const garageCars = [
             {
                 id: "porsche",
                 brand: "Porsche",
