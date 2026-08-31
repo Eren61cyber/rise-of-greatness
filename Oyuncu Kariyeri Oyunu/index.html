@@ -3264,28 +3264,26 @@
         </div>
 
         <!-- 👟 SIGNATURE BOOT STUDIO MODAL -->
-        <div class="event-modal-overlay" id="boot-customizer-modal" style="background: rgba(0,0,0,0.96); backdrop-filter: blur(18px); z-index: 10035; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
+        <div class="event-modal-overlay" id="boot-customizer-modal" style="background: rgba(0,0,0,0.88); backdrop-filter: blur(14px); z-index: 10035; display: none; align-items: center; justify-content: center; padding: 14px; overflow-y: auto;">
             <div class="boot-studio-stage" id="boot-studio-box">
                 <!-- Close Button -->
-                <button onclick="closeBootStudioModal()" style="position: absolute; top: 14px; right: 14px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,215,0,0.3); color: #FFD700; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 14px; font-weight: 900; z-index: 10;">✕</button>
+                <button onclick="closeBootStudioModal()" style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 13px; font-weight: 700; z-index: 10;">✕</button>
 
                 <!-- Header Badge -->
-                <div style="font-size: 9.5px; font-weight: 900; color: #FFD700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 2px;">
-                    👑 NIKE MERCURIAL ELITE • SIGNATURE LAB
+                <div style="font-size: 9px; font-weight: 800; color: #8b949e; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 2px;">
+                    NIKE BY YOU • SIGNATURE STUDIO
                 </div>
-                <h3 style="font-size: 18px; font-weight: 900; margin: 0 0 10px 0; letter-spacing: 0.5px; color: #fff;">
-                    Özel İmza Krampon Atölyesi
+                <h3 style="font-size: 17px; font-weight: 800; margin: 0 0 10px 0; letter-spacing: 0.3px; color: #f0f6fc;">
+                    Özel Krampon Atölyesi
                 </h3>
 
                 <!-- 3D Boot Showcase Stage -->
                 <div class="boot-showcase-wrapper">
                     <div class="boot-studio-spotlight"></div>
-                    <div class="boot-holo-ring-outer"></div>
-                    <div class="boot-holo-ring-inner"></div>
-                    <div class="boot-laser-spark-emitter"></div>
+                    <div class="boot-pedestal-platform"></div>
 
                     <!-- 3D Aerodynamic Nike Mercurial Elite Boot SVG -->
-                    <svg id="boot-svg-3d" class="boot-3d-model" viewBox="0 0 250 140" style="width: 230px; height: 130px;">
+                    <svg id="boot-svg-3d" class="boot-3d-model" viewBox="0 0 250 140" style="width: 220px; height: 125px;">
                         <defs>
                             <!-- Upper Dynamic Material Gradient -->
                             <linearGradient id="boot-grad-upper" x1="0%" y1="0%" x2="100%" y2="80%">
@@ -3301,62 +3299,60 @@
                             </linearGradient>
                             <!-- Mercurial Speed Wing Gradient -->
                             <linearGradient id="boot-grad-swoosh" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop id="boot-svg-swoosh-stop1" offset="0%" stop-color="#FFD700"/>
-                                <stop id="boot-svg-swoosh-stop2" offset="100%" stop-color="#f59e0b"/>
+                                <stop id="boot-svg-swoosh-stop1" offset="0%" stop-color="#ffffff"/>
+                                <stop id="boot-svg-swoosh-stop2" offset="100%" stop-color="#e2e8f0"/>
                             </linearGradient>
                             <!-- Flyknit Collar Ribs Texture -->
                             <pattern id="flyknit-ribs" width="4" height="4" patternUnits="userSpaceOnUse">
-                                <line x1="0" y1="0" x2="4" y2="4" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+                                <line x1="0" y1="0" x2="4" y2="4" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
                             </pattern>
                         </defs>
 
                         <!-- Dynamic Fit Flyknit High Sock Collar -->
                         <path d="M 46 44 C 48 20, 60 12, 80 14 C 84 14, 88 28, 92 42 Z" fill="#0f172a" stroke="#334155" stroke-width="1.2"/>
                         <path d="M 46 44 C 48 20, 60 12, 80 14 C 84 14, 88 28, 92 42 Z" fill="url(#flyknit-ribs)"/>
-                        <line x1="56" y1="20" x2="84" y2="22" stroke="rgba(255,215,0,0.6)" stroke-width="1.2"/>
+                        <line x1="56" y1="20" x2="84" y2="22" stroke="rgba(255,255,255,0.4)" stroke-width="1.2"/>
                         <!-- Heel Pull Loop -->
-                        <path d="M 44 26 Q 38 24 44 20" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M 44 26 Q 38 24 44 20" fill="none" stroke="#e2e8f0" stroke-width="1.8" stroke-linecap="round"/>
 
-                        <!-- Upper / Saya (Aggressive Low-Profile Mercurial Aerodynamic Body) -->
-                        <path id="boot-svg-upper" d="M 40 48 Q 50 32 82 34 Q 135 38 185 64 Q 220 78 234 88 Q 222 98 194 98 Q 128 100 68 98 Q 40 96 34 80 Q 32 60 40 48 Z" fill="url(#boot-grad-upper)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+                        <!-- Upper / Saya (Aggressive Low-Profile Mercurial Body) -->
+                        <path id="boot-svg-upper" d="M 40 48 Q 50 32 82 34 Q 135 38 185 64 Q 220 78 234 88 Q 222 98 194 98 Q 128 100 68 98 Q 40 96 34 80 Q 32 60 40 48 Z" fill="url(#boot-grad-upper)" stroke="rgba(255,255,255,0.25)" stroke-width="1.2"/>
 
                         <!-- Micro Speed Ribs Texture (Mercurial Vapor Wings) -->
-                        <path d="M 98 42 Q 132 58 152 82" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="3,2"/>
-                        <path d="M 120 46 Q 154 62 174 86" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="3,2"/>
-                        <path d="M 144 52 Q 176 68 196 90" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="3,2"/>
-                        <path d="M 168 58 Q 198 74 216 94" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="3,2"/>
+                        <path d="M 98 42 Q 132 58 152 82" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.2" stroke-dasharray="3,2"/>
+                        <path d="M 120 46 Q 154 62 174 86" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.2" stroke-dasharray="3,2"/>
+                        <path d="M 144 52 Q 176 68 196 90" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.2" stroke-dasharray="3,2"/>
+                        <path d="M 168 58 Q 198 74 216 94" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.2" stroke-dasharray="3,2"/>
 
                         <!-- Sculpted External Heel Counter (Metalik Topuk Zırhı) -->
-                        <path id="boot-svg-heel" d="M 34 64 Q 32 86 52 98 L 76 98 Q 58 84 56 62 Z" fill="#0f172a" stroke="#FFD700" stroke-width="1.5"/>
+                        <path id="boot-svg-heel" d="M 34 64 Q 32 86 52 98 L 76 98 Q 58 84 56 62 Z" fill="#0f172a" stroke="#cbd5e1" stroke-width="1.2"/>
 
                         <!-- Laser Engraved Signature Name on Heel Counter -->
-                        <text id="boot-svg-laser-text" x="50" y="84" fill="#FFD700" font-family="'Space Grotesk', monospace" font-size="7.5" font-weight="900" transform="rotate(-15 50 84)" letter-spacing="1">EREN #10</text>
+                        <text id="boot-svg-laser-text" x="50" y="84" fill="#ffffff" font-family="'Space Grotesk', monospace" font-size="7.5" font-weight="800" transform="rotate(-15 50 84)" letter-spacing="1">EREN #10</text>
 
-                        <!-- Ghost Lacing System (Modern Gizli Bağcık & Gövde Dikişi) -->
+                        <!-- Ghost Lacing System -->
                         <g id="boot-svg-laces-group">
-                            <line x1="94" y1="38" x2="110" y2="48" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
-                            <line x1="110" y1="42" x2="126" y2="52" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
-                            <line x1="126" y1="47" x2="142" y2="57" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
-                            <line x1="142" y1="52" x2="158" y2="62" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+                            <line x1="94" y1="38" x2="110" y2="48" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+                            <line x1="110" y1="42" x2="126" y2="52" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+                            <line x1="126" y1="47" x2="142" y2="57" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+                            <line x1="142" y1="52" x2="158" y2="62" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
                             <!-- Eyelet Rings -->
-                            <circle cx="94" cy="38" r="2" fill="#FFD700"/>
-                            <circle cx="110" cy="42" r="2" fill="#FFD700"/>
-                            <circle cx="126" cy="47" r="2" fill="#FFD700"/>
-                            <circle cx="142" cy="52" r="2" fill="#FFD700"/>
+                            <circle cx="94" cy="38" r="1.5" fill="#cbd5e1"/>
+                            <circle cx="110" cy="42" r="1.5" fill="#cbd5e1"/>
+                            <circle cx="126" cy="47" r="1.5" fill="#cbd5e1"/>
+                            <circle cx="142" cy="52" r="1.5" fill="#cbd5e1"/>
                         </g>
 
-                        <!-- Aggressive Strike Wing / Mercurial Swoosh -->
-                        <path id="boot-svg-swoosh" d="M 90 68 Q 140 52 202 78 Q 160 82 114 90 Q 98 90 90 68 Z" fill="url(#boot-grad-swoosh)" stroke="rgba(255,255,255,0.7)" stroke-width="1.2" filter="drop-shadow(0 0 8px rgba(255,215,0,0.8))"/>
+                        <!-- Strike Wing / Mercurial Swoosh -->
+                        <path id="boot-svg-swoosh" d="M 90 68 Q 140 52 202 78 Q 160 82 114 90 Q 98 90 90 68 Z" fill="url(#boot-grad-swoosh)" stroke="rgba(255,255,255,0.6)" stroke-width="1"/>
 
-                        <!-- Aerotrak Split Soleplate (Ayna Krom / İridyum Taban) -->
-                        <path id="boot-svg-sole" d="M 30 96 Q 66 100 120 98 Q 170 96 236 90 L 234 98 Q 170 106 120 106 Q 60 106 28 100 Z" fill="url(#boot-grad-sole)" stroke="#ffffff" stroke-width="1.4"/>
+                        <!-- Aerotrak Split Soleplate -->
+                        <path id="boot-svg-sole" d="M 30 96 Q 66 100 120 98 Q 170 96 236 90 L 234 98 Q 170 106 120 106 Q 60 106 28 100 Z" fill="url(#boot-grad-sole)" stroke="#ffffff" stroke-width="1.2"/>
 
-                        <!-- Tri-Star & Chevron Translucent Studs (Metalik + Şeffaf Çiviler) -->
+                        <!-- Tri-Star & Chevron Studs -->
                         <g id="boot-svg-studs-group">
-                            <!-- Heel Studs -->
                             <polygon points="38,100 46,100 42,112 36,112" fill="#00e5b7" stroke="#ffffff" stroke-width="0.8" opacity="0.9"/>
                             <polygon points="56,101 64,101 60,113 54,113" fill="#00e5b7" stroke="#ffffff" stroke-width="0.8" opacity="0.9"/>
-                            <!-- Forefoot Chevron Studs -->
                             <polygon points="152,103 160,103 156,115 148,115" fill="#00e5b7" stroke="#ffffff" stroke-width="0.8" opacity="0.9"/>
                             <polygon points="182,101 190,101 186,114 178,114" fill="#00e5b7" stroke="#ffffff" stroke-width="0.8" opacity="0.9"/>
                             <polygon points="210,98 218,98 214,111 206,111" fill="#00e5b7" stroke="#ffffff" stroke-width="0.8" opacity="0.9"/>
@@ -3364,35 +3360,31 @@
                     </svg>
                 </div>
 
-                <!-- Laser Engraving Signature Badge -->
-                <div>
-                    <div class="boot-laser-tag-badge" id="boot-engraving-label">
-                        <span>⚡ LASER:</span> [ EREN • #10 ]
+                <!-- Laser Engraving Pill & Stat Chips -->
+                <div style="display: flex; justify-content: center; align-items: center; gap: 6px; margin: 10px 0 12px 0; flex-wrap: wrap;">
+                    <div class="boot-laser-pill" id="boot-engraving-label">
+                        [ EREN • #10 ]
                     </div>
+                    <div class="boot-stat-chip"><span style="color:#eab308;">⚡</span> +2 Hız</div>
+                    <div class="boot-stat-chip"><span style="color:#ef4444;">🎯</span> +2 Şut</div>
+                    <div class="boot-stat-chip"><span style="color:#10b981;">👟</span> +2 Çeviklik</div>
                 </div>
 
-                <!-- 3 Categorized Luxury Material Tabs -->
+                <!-- 3 Categorized Capsule Tabs -->
                 <div class="boot-tab-bar">
-                    <button class="boot-tab-btn active" id="boot-tab-upper" onclick="switchBootTab('upper')">👟 SAYA / DOKU</button>
-                    <button class="boot-tab-btn" id="boot-tab-sole" onclick="switchBootTab('sole')">⚡ TABAN / KROM</button>
-                    <button class="boot-tab-btn" id="boot-tab-swoosh" onclick="switchBootTab('swoosh')">✨ ŞERİT / ACCENT</button>
+                    <button class="boot-tab-btn active" id="boot-tab-upper" onclick="switchBootTab('upper')">SAYA / DOKU</button>
+                    <button class="boot-tab-btn" id="boot-tab-sole" onclick="switchBootTab('sole')">TABAN / KROM</button>
+                    <button class="boot-tab-btn" id="boot-tab-swoosh" onclick="switchBootTab('swoosh')">ŞERİT / DETAY</button>
                 </div>
 
-                <!-- Color Palette Grid (Populated Dynamically) -->
-                <div class="boot-palette-grid" id="boot-palette-container">
-                    <!-- Populated by renderBootPalette() -->
+                <!-- Minimalist Color Swatches (28px Circles with Clean White Active Ring) -->
+                <div class="boot-swatches-container" id="boot-palette-container">
+                    <!-- Populated dynamically by renderBootPalette() -->
                 </div>
 
-                <!-- Gold-Framed Compact Glass Buff Badges -->
-                <div style="display: flex; justify-content: center; gap: 8px; margin-bottom: 14px;">
-                    <div class="boot-stat-badge-luxury"><span style="color:#FFD700;">⚡</span> +2 HIZ</div>
-                    <div class="boot-stat-badge-luxury"><span style="color:#ef4444;">🎯</span> +2 ŞUT GÜCÜ</div>
-                    <div class="boot-stat-badge-luxury"><span style="color:#00e5b7;">👟</span> +2 ÇEVİKLİK</div>
-                </div>
-
-                <!-- Save & Equip Action Button -->
-                <button class="boot-save-button-luxury" onclick="saveAndEquipCustomBoot()">
-                    👑 KRAMPONU MÜHÜRLE & SAHAYA ÇIK (+BUFF)
+                <!-- Professional Clean Action Button -->
+                <button class="boot-save-button-clean" onclick="saveAndEquipCustomBoot()">
+                    Kramponu Özelleştir ve Sahaya Çık
                 </button>
             </div>
         </div>
@@ -8028,13 +8020,15 @@
         // ══════════════════════════════════════════════════════════════════
         // 👟 7. CUSTOM SIGNATURE BOOT STUDIO CONTROLLER (MERCURIAL ELITE 3D)
         // ══════════════════════════════════════════════════════════════════
+        // 👟 7. CUSTOM SIGNATURE BOOT STUDIO CONTROLLER (NIKE BY YOU)
+        // ══════════════════════════════════════════════════════════════════
         let customBootConfig = {
             upper: "#111827",
             upperEnd: "#1f2937",
             sole: "#ffffff",
             soleEnd: "#00e5b7",
-            swoosh: "#FFD700",
-            swooshEnd: "#f59e0b",
+            swoosh: "#ffffff",
+            swooshEnd: "#cbd5e1",
             laces: "#ffffff",
             studs: "#00e5b7"
         };
@@ -8044,30 +8038,30 @@
             upper: [
                 { name: "Mat Karbon", hex: "#111827", hex2: "#1f2937" },
                 { name: "Neon Zümrüt", hex: "#00e5b7", hex2: "#047857" },
-                { name: "Altın Yaldız", hex: "#FFD700", hex2: "#b45309" },
+                { name: "Altın Yaldız", hex: "#eab308", hex2: "#a16207" },
                 { name: "İnci Beyazı", hex: "#f8fafc", hex2: "#cbd5e1" },
                 { name: "Alev Kırmızı", hex: "#ef4444", hex2: "#991b1b" },
-                { name: "Safir Kobalt", hex: "#2563eb", hex2: "#1e3a8a" },
+                { name: "Safir Mavi", hex: "#2563eb", hex2: "#1e3a8a" },
                 { name: "Kozmik Mor", hex: "#9333ea", hex2: "#581c87" },
-                { name: "Volkanik Turuncu", hex: "#f97316", hex2: "#c2410c" }
+                { name: "Neon Turuncu", hex: "#f97316", hex2: "#c2410c" }
             ],
             sole: [
                 { name: "Ayna Krom", hex: "#ffffff", hex2: "#94a3b8" },
                 { name: "İridyum Bukalemun", hex: "#00f5d4", hex2: "#7b2cbf" },
                 { name: "Magma Kırmızı", hex: "#ff0055", hex2: "#7f1d1d" },
-                { name: "24K Sıvı Altın", hex: "#ffe600", hex2: "#b45309" },
-                { name: "Neon Zümrüt Cam", hex: "#00e5b7", hex2: "#064e3b" },
-                { name: "Buzul Kristal", hex: "#38bdf8", hex2: "#0369a1" },
+                { name: "24K Saf Altın", hex: "#eab308", hex2: "#a16207" },
+                { name: "Neon Zümrüt", hex: "#00e5b7", hex2: "#064e3b" },
+                { name: "Buz Kristal", hex: "#38bdf8", hex2: "#0369a1" },
                 { name: "Karbon Plaka", hex: "#1e293b", hex2: "#020617" },
-                { name: "Ultraviyole", hex: "#a855f7", hex2: "#581c87" }
+                { name: "Lazer Mor", hex: "#a855f7", hex2: "#581c87" }
             ],
             swoosh: [
-                { name: "Altın Hologram", hex: "#FFD700", hex2: "#f59e0b" },
                 { name: "Saf Beyaz", hex: "#ffffff", hex2: "#e2e8f0" },
+                { name: "Altın Nakış", hex: "#eab308", hex2: "#ca8a04" },
                 { name: "Neon Zümrüt", hex: "#00e5b7", hex2: "#10b981" },
                 { name: "Alev Lazer", hex: "#ef4444", hex2: "#dc2626" },
                 { name: "Buzul Mavi", hex: "#38bdf8", hex2: "#0284c7" },
-                { name: "Karbon Siyah", hex: "#0f172a", hex2: "#1e293b" },
+                { name: "Mat Karbon", hex: "#0f172a", hex2: "#1e293b" },
                 { name: "Neon Mercan", hex: "#f43f5e", hex2: "#be123c" },
                 { name: "Kozmik Mor", hex: "#a855f7", hex2: "#7e22ce" }
             ]
@@ -8080,7 +8074,7 @@
             const pName = (GAME.state.playerName || "EREN").toUpperCase();
             const pNum = (GAME.state.jerseyNumber || 10);
             
-            if (labelEl) labelEl.innerHTML = `<span>⚡ LASER:</span> [ ${pName} • #${pNum} ]`;
+            if (labelEl) labelEl.textContent = `[ ${pName} • #${pNum} ]`;
             if (laserSvg) laserSvg.textContent = `${pName} #${pNum}`;
 
             // If player already customized boots before, load them
@@ -8129,9 +8123,10 @@
                 if (activeBootTab === "swoosh" && customBootConfig.swoosh === opt.hex) isSelected = true;
 
                 html += `
-                    <div class="boot-color-card ${isSelected ? 'active' : ''}" onclick="selectBootColor('${activeBootTab}', '${opt.hex}', '${opt.hex2}')">
-                        <div class="boot-color-swatch" style="background: linear-gradient(135deg, ${opt.hex} 0%, ${opt.hex2} 100%);"></div>
-                        <div class="boot-color-label">${opt.name}</div>
+                    <div class="boot-color-swatch-btn ${isSelected ? 'active' : ''}" 
+                         style="background: linear-gradient(135deg, ${opt.hex} 0%, ${opt.hex2} 100%);"
+                         title="${opt.name}"
+                         onclick="selectBootColor('${activeBootTab}', '${opt.hex}', '${opt.hex2}')">
                     </div>
                 `;
             });
@@ -8155,14 +8150,6 @@
 
             applyBootVisuals();
             renderBootPalette();
-
-            // Trigger Specular Shine Sweep animation
-            const svg = document.getElementById("boot-svg-3d");
-            if (svg) {
-                svg.classList.remove("boot-shine-pass");
-                void svg.offsetWidth;
-                svg.classList.add("boot-shine-pass");
-            }
 
             if (typeof SoundManager !== "undefined" && typeof SoundManager.playClick === "function") {
                 SoundManager.playClick();
@@ -8223,7 +8210,7 @@
                 SoundManager.playWhistle("single");
             }
             
-            showCustomAlert("👑 Mercurial Elite Özel İmza Kramponun Mühürlendi ve Giyildi!\n⚡ Stat Bonusu: +2 Şut Gücü, +2 Hız, +2 Çeviklik kalıcı olarak aktif edildi!", "MERCURIAL ELITE", "👟", "info");
+            showCustomAlert("Özel imza kramponun üretildi ve giyildi!\n⚡ Stat Bonusu: +2 Şut Gücü, +2 Hız, +2 Çeviklik kalıcı olarak eklendi!", "KRAMPON ATÖLYESİ", "👟", "info");
         }
 
         function closeBootStudioModal() {
