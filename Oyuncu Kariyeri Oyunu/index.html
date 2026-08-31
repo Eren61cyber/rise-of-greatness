@@ -3599,51 +3599,74 @@
                 }
             },
 
-            playWhistle: function() {
+            playWhistle: function(type = "single") {
                 if (!this.enabled) return;
+                try {
+                    let sfxFile = (type === "triple" || type === "son_duduk" || type === "full_time") ? "sounds/whistle_triple.mp3" : "sounds/whistle.mp3";
+                    let audio = new Audio(sfxFile);
+                    audio.volume = 0.95;
+                    let playPromise = audio.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(() => {
+                            this.synthesizeWhistle(type);
+                        });
+                    }
+                } catch(e) {
+                    this.synthesizeWhistle(type);
+                }
+            },
+
+            synthesizeWhistle: function(type = "single") {
                 try {
                     this.initAudio();
                     let ctx = this.audioCtx;
                     if (!ctx) return;
                     let now = ctx.currentTime;
 
-                    // Dual oscillator authentic referee whistle with trill modulation
-                    let osc1 = ctx.createOscillator();
-                    let osc2 = ctx.createOscillator();
-                    let lfo = ctx.createOscillator();
-                    let lfoGain = ctx.createGain();
-                    let gain = ctx.createGain();
+                    let blastCount = (type === "triple" || type === "son_duduk") ? 3 : 1;
+                    let blastTimes = (blastCount === 3) ? [0, 0.45, 0.90] : [0];
+                    let blastDurations = (blastCount === 3) ? [0.32, 0.32, 1.0] : [0.65];
 
-                    osc1.type = "sine";
-                    osc1.frequency.setValueAtTime(2850, now);
-                    osc2.type = "triangle";
-                    osc2.frequency.setValueAtTime(3120, now);
+                    for (let b = 0; b < blastCount; b++) {
+                        let tStart = now + blastTimes[b];
+                        let dur = blastDurations[b];
 
-                    // Trill Modulation (28Hz pea spin)
-                    lfo.frequency.setValueAtTime(28, now);
-                    lfoGain.gain.setValueAtTime(140, now);
-                    lfo.connect(lfoGain);
-                    lfoGain.connect(osc1.frequency);
-                    lfoGain.connect(osc2.frequency);
+                        let osc1 = ctx.createOscillator();
+                        let osc2 = ctx.createOscillator();
+                        let lfo = ctx.createOscillator();
+                        let lfoGain = ctx.createGain();
+                        let gain = ctx.createGain();
 
-                    gain.gain.setValueAtTime(0.001, now);
-                    gain.gain.linearRampToValueAtTime(0.35, now + 0.05);
-                    gain.gain.setValueAtTime(0.35, now + 0.35);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+                        osc1.type = "sine";
+                        osc1.frequency.setValueAtTime(2840, tStart);
+                        osc2.type = "triangle";
+                        osc2.frequency.setValueAtTime(3120, tStart);
 
-                    osc1.connect(gain);
-                    osc2.connect(gain);
-                    gain.connect(ctx.destination);
+                        lfo.frequency.setValueAtTime(28, tStart);
+                        lfoGain.gain.setValueAtTime(95, tStart);
+                        lfo.connect(lfoGain);
+                        lfoGain.connect(osc1.frequency);
+                        lfoGain.connect(osc2.frequency);
 
-                    lfo.start(now);
-                    osc1.start(now);
-                    osc2.start(now);
+                        gain.gain.setValueAtTime(0.001, tStart);
+                        gain.gain.linearRampToValueAtTime(0.4, tStart + 0.04);
+                        gain.gain.setValueAtTime(0.4, tStart + dur - 0.08);
+                        gain.gain.exponentialRampToValueAtTime(0.001, tStart + dur);
 
-                    lfo.stop(now + 0.55);
-                    osc1.stop(now + 0.55);
-                    osc2.stop(now + 0.55);
+                        osc1.connect(gain);
+                        osc2.connect(gain);
+                        gain.connect(ctx.destination);
+
+                        lfo.start(tStart);
+                        osc1.start(tStart);
+                        osc2.start(tStart);
+
+                        lfo.stop(tStart + dur);
+                        osc1.stop(tStart + dur);
+                        osc2.stop(tStart + dur);
+                    }
                 } catch(e) {
-                    console.error("Audio error in playWhistle:", e);
+                    console.error("Audio error in synthesizeWhistle:", e);
                 }
             },
 
@@ -7811,9 +7834,9 @@
             }
 
             setTimeout(() => {
-                // Referee Whistle Blast & Camera Shake
+                // Play Real Referee Whistle & Camera Shake (NO electronic wiwu wiwu!)
                 if (typeof SoundManager !== "undefined") {
-                    if (typeof SoundManager.playWhistle === "function") SoundManager.playWhistle();
+                    if (typeof SoundManager.playWhistle === "function") SoundManager.playWhistle("single");
                 }
 
                 if (stage) {
@@ -7827,24 +7850,17 @@
                         stamp.className = "var-decision-stamp goal";
                         stamp.innerText = "⚽ GOL GEÇERLİ!";
                         if (calibText) calibText.innerText = `✅ İnceleme Tamamlandı: Hücumcu ${Math.abs(varDeltaCm)} cm geride, nizami gol onaylandı!`;
-                        if (typeof SoundManager !== "undefined") {
-                            if (typeof SoundManager.playVarChime === "function") SoundManager.playVarChime(true);
-                            if (typeof SoundManager.playGoal === "function") SoundManager.playGoal();
+                        if (typeof SoundManager !== "undefined" && typeof SoundManager.playGoal === "function") {
+                            SoundManager.playGoal();
                         }
                     } else if (varDecisionType === "offside") {
                         stamp.className = "var-decision-stamp offside";
                         stamp.innerText = "❌ İPTAL: OFSAYT";
                         if (calibText) calibText.innerText = `⚠️ İnceleme Tamamlandı: Hücumcu +${varDeltaCm} cm önde, ofsayt nedeniyle gol iptal!`;
-                        if (typeof SoundManager !== "undefined" && typeof SoundManager.playVarChime === "function") {
-                            SoundManager.playVarChime(false);
-                        }
                     } else {
                         stamp.className = "var-decision-stamp penalty";
                         stamp.innerText = "🎯 PENALTI KARARI!";
                         if (calibText) calibText.innerText = "⚡ İnceleme Tamamlandı: Ceza sahasında açık ihlal tespit edildi, penaltı!";
-                        if (typeof SoundManager !== "undefined") {
-                            if (typeof SoundManager.playVarChime === "function") SoundManager.playVarChime(true);
-                        }
                     }
                 }
 
