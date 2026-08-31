@@ -34,7 +34,7 @@ const DATABASE = {
             prestige: 2,
             teams: [
                 { name: "Erzurumspor", att: 66, mid: 65, def: 65, color: "#0D47A1", colorSec: "#FFFFFF" },
-                { name: "Amed", att: 65, mid: 65, def: 64, color: "#1B5E20", colorSec: "#D50000" },
+                { name: "Bursaspor", att: 65, mid: 65, def: 64, color: "#00875A", colorSec: "#FFFFFF" },
                 { name: "Kocaeli FK", att: 68, mid: 67, def: 67, color: "#006400", colorSec: "#000000" },
                 { name: "Çorum", att: 64, mid: 64, def: 63, color: "#D50000", colorSec: "#FFD600" },
                 { name: "Bodrum", att: 63, mid: 63, def: 62, color: "#00875A", colorSec: "#C0C0C0" },
