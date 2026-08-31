@@ -5501,3 +5501,16 @@ input[type="text"]:focus, select:focus {
 }
 
 /* ══════════════════════════════════════════════════════════════════
+
+/* ══════════════════════════════════════════════════════════════════
+   🎯 3D ISOMETRIC PITCH & 1v1 STRIKER SIMULATION STYLES
+══════════════════════════════════════════════════════════════════ */
+@keyframes gk-sway {
+    0% { transform: translateX(-95%); }
+    100% { transform: translateX(-5%); }
+}
+
+.trial-tactical-card:hover {
+    box-shadow: 0 6px 25px rgba(0, 229, 183, 0.25);
+    border-color: rgba(0, 229, 183, 0.6) !important;
+}
