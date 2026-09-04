@@ -303,17 +303,31 @@ const GAME = {
     updateMissionsAfterMatch: function(goals, assists, rating, won) {
         const s = this.state;
 
-        // Update hot streak
-        if (rating >= 7.0) {
-            s.hotStreak = (s.hotStreak || 0) + 1;
+        // Update hot streak (Maç kaybedilirse veya kötü oynanırsa seri anında bozulur!)
+        const prevStreak = s.hotStreak || 0;
+        const isGoodPerformance = (rating >= 6.8 || goals >= 1 || assists >= 1);
+        const isBadPerformance = (rating < 6.2 && goals === 0 && assists === 0);
+
+        if (won && isGoodPerformance) {
+            // Galibiyet + İyi performans = Seri devam eder
+            s.hotStreak = prevStreak + 1;
             s.hotStreakBadRun = 0;
-        } else if (rating < 5.5) {
+            s.lastStreakBroken = false;
+        } else if (!won) {
+            // Mağlubiyet = Seri ANINDA BOZULUR!
+            s.hotStreak = 0;
             s.hotStreakBadRun = (s.hotStreakBadRun || 0) + 1;
-            if (s.hotStreakBadRun >= 2) {
-                s.hotStreak = 0;
-            }
+            s.lastStreakBroken = (prevStreak >= 3);
+        } else if (isBadPerformance) {
+            // Kötü bireysel performans = Seri ANINDA BOZULUR!
+            s.hotStreak = 0;
+            s.hotStreakBadRun = (s.hotStreakBadRun || 0) + 1;
+            s.lastStreakBroken = (prevStreak >= 3);
         } else {
-            // Mediocre - don't break streak but don't extend it
+            // Beraberlik veya vasat oyun = Seri sıfırlanır
+            s.hotStreak = 0;
+            s.hotStreakBadRun = 0;
+            s.lastStreakBroken = (prevStreak >= 3);
         }
 
         // Update weekly missions progress
