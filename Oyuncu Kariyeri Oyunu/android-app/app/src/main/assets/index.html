@@ -8452,6 +8452,8 @@ function startNationalAnthemCeremony(matchData = null, onComplete = null) {
             }
         }
 
+        let flagWaveAnimId = null;
+
         function startWavingTurkishFlagCanvas() {
             const canvas = document.getElementById("anthem-flag-canvas");
             if (!canvas) return;
