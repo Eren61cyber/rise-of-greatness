@@ -9479,7 +9479,22 @@ let customBootConfig = {
             openBootCustomizer();
         }
 
-function proceedPostMatch() {
+function afterWeekAdvanced() {
+            if (typeof GAME !== "undefined" && typeof GAME.updateUI === "function") {
+                GAME.updateUI();
+            }
+            if (typeof updateHomeNewsPreview === "function") {
+                updateHomeNewsPreview();
+            }
+            const restBtn = document.getElementById("btn-rest");
+            if (restBtn) restBtn.disabled = false;
+            const playMatchBtn = document.getElementById("btn-play-match");
+            if (playMatchBtn) playMatchBtn.disabled = false;
+            const simMatchBtn = document.getElementById("btn-sim-match");
+            if (simMatchBtn) simMatchBtn.disabled = false;
+        }
+
+        function proceedPostMatch() {
             GAME.advanceWeek();
             determineNextOpponent();
             afterWeekAdvanced();
