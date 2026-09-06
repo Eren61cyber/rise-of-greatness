@@ -38,6 +38,16 @@
             return false;
         };
     </script>
+<style>
+@keyframes coachBubbleFloat {
+    0% { transform: translateY(0px); box-shadow: 0 6px 20px rgba(0,0,0,0.6), 0 0 15px rgba(0,229,183,0.15); }
+    100% { transform: translateY(-7px); box-shadow: 0 12px 30px rgba(0,0,0,0.8), 0 0 25px rgba(0,229,183,0.3); }
+}
+@keyframes pulse-save {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+}
+</style>
 </head>
 <body>
     <!-- Ambient side glows for tablets/desktops -->
@@ -468,6 +478,10 @@
             </div>
                 <!-- Missions + Settings buttons -->
                 <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+                    <div id="cloud-save-indicator" style="display: inline-flex; align-items: center; gap: 5px; font-size: 9.5px; font-weight: 800; color: #10b981; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); padding: 4px 8px; border-radius: 99px; letter-spacing: 0.3px;" title="Otomatik yerel ve bulut kaydı devrede">
+                        <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 6px #10b981; animation: pulse-save 2s infinite;"></span>
+                        ☁️ OTO KAYIT
+                    </div>
                     <button id="btn-missions-open" class="btn" onclick="openMissionsModal()" title="Haftalık Görevler" style="position:relative; padding: 8px 10px; font-size: 15px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; cursor: pointer; color: white;">
                         📋
                         <span id="missions-badge" style="display:none; position:absolute; top:-4px; right:-4px; background:#f5a623; color:#0a0e17; font-size:9px; font-weight:900; min-width:14px; height:14px; border-radius:99px; padding:0 3px; line-height:14px; text-align:center;">0</span>
@@ -1868,6 +1882,35 @@
                     <h2 style="color: white; margin-bottom: 6px; font-size: 22px; font-weight: 800; font-family: 'Rajdhani', sans-serif; text-transform: uppercase;" id="intro-backstory-title">Memleketten Zirveye</h2>
                     <p style="font-size: 12px; color: #94a3b8; margin-bottom: 14px;">Futbol aşkının filizlendiği ilk günler...</p>
 
+                                        <!-- Story Mode Selector: Auto vs Custom -->
+                    <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                        <button type="button" id="btn-story-mode-auto" onclick="switchStoryMode('auto')" style="flex:1; padding: 9px 10px; font-size: 11px; font-weight: 800; border-radius: 9px; border: 1.5px solid #00e5b7; background: rgba(0,229,183,0.15); color: #00e5b7; cursor: pointer; transition: all 0.2s;">
+                            ğŸ™ï¸ Memleket Hikayesi
+                        </button>
+                        <button type="button" id="btn-story-mode-custom" onclick="switchStoryMode('custom')" style="flex:1; padding: 9px 10px; font-size: 11px; font-weight: 800; border-radius: 9px; border: 1.5px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #94a3b8; cursor: pointer; transition: all 0.2s;">
+                            ğŸ‘‘ Kendi Efsaneni Yaz
+                        </button>
+                    </div>
+
+                    <!-- Custom Story Interactive Builder (Hidden by default) -->
+                    <div id="custom-story-builder-box" style="display: none; background: rgba(15,23,42,0.85); border: 1px solid rgba(0,229,183,0.3); border-radius: 12px; padding: 12px; margin-bottom: 14px; text-align: left;">
+                        <div style="font-size: 10.5px; font-weight: 800; color: #00e5b7; margin-bottom: 6px; text-transform: uppercase;">âš½ Futbola Nerede BaÅŸladÄ±n?</div>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-bottom: 10px;" id="custom-origin-chips">
+                            <button type="button" class="custom-chip active" onclick="selectCustomOrigin(this, 'Mahalledeki Beton Sahalarda')" style="padding: 7px 8px; border-radius: 8px; border: 1.5px solid #00e5b7; background: rgba(0,229,183,0.15); color: #fff; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">ğŸŸï¸ Mahalle Betonu</button>
+                            <button type="button" class="custom-chip" onclick="selectCustomOrigin(this, 'KÃ¶y ve Kasaba AmatÃ¶r Liginde')" style="padding: 7px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #94a3b8; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">ğŸŒ¾ KÃ¶y / Kasaba Ligi</button>
+                            <button type="button" class="custom-chip" onclick="selectCustomOrigin(this, 'Okul TakÄ±mÄ± ve HalÄ± Sahalarda')" style="padding: 7px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #94a3b8; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">âš½ Okul & HalÄ± Saha</button>
+                            <button type="button" class="custom-chip" onclick="selectCustomOrigin(this, 'Gurbette YabancÄ± KulÃ¼p AltyapÄ±sÄ±nda')" style="padding: 7px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #94a3b8; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">ğŸŒ GurbetÃ§i Yetenek</button>
+                        </div>
+
+                        <div style="font-size: 10.5px; font-weight: 800; color: #ffd700; margin-bottom: 6px; text-transform: uppercase;">ğŸŒŸ En BÃ¼yÃ¼k Ã‡ocukluk Hayalin Nedir?</div>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px;" id="custom-dream-chips">
+                            <button type="button" class="custom-chip-dream active" onclick="selectCustomDream(this, 'Ailemi borÃ§tan kurtarÄ±p onlara gurur yaÅŸatmak')" style="padding: 7px 8px; border-radius: 8px; border: 1.5px solid #ffd700; background: rgba(255,215,0,0.15); color: #fff; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">â¤ï¸ Ailemi Kurtarmak</button>
+                            <button type="button" class="custom-chip-dream" onclick="selectCustomDream(this, 'Ballon d\'Or kazanÄ±p dÃ¼nyaya adÄ±mÄ± altÄ±n harflerle yazdÄ±rmak')" style="padding: 7px 8px; border-radius: 8px; border: 1.5px solid #ffd700; background: rgba(255,215,0,0.05); color: #94a3b8; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">ğŸ† Ballon d'Or</button>
+                            <button type="button" class="custom-chip-dream" onclick="selectCustomDream(this, 'DoÄŸup bÃ¼yÃ¼dÃ¼ÄŸÃ¼m ÅŸehrin bayrak futbolcusu ve efsanesi olmak')" style="padding: 7px 8px; border-radius: 8px; border: 1.5px solid #ffd700; background: rgba(255,215,0,0.05); color: #94a3b8; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">ğŸŒŸ Åehrimin Efsanesi</button>
+                            <button type="button" class="custom-chip-dream" onclick="selectCustomDream(this, 'Milli takÄ±m kaptanÄ± olarak kupalar kaldÄ±rmak')" style="padding: 7px 8px; border-radius: 8px; border: 1.5px solid #ffd700; background: rgba(255,215,0,0.05); color: #94a3b8; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">ğŸ‡¹ğŸ‡· Ay-YÄ±ldÄ±zlÄ± Kaptan</button>
+                        </div>
+                    </div>
+
                     <!-- Story Box with Typewriter -->
                     <div style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-glass); border-radius: 14px; padding: 16px; text-align: left; min-height: 140px; max-height: 220px; overflow-y: auto; margin-bottom: 16px;">
                         <p id="intro-story-text" style="font-size: 12.5px; color: #f1f5f9; line-height: 1.6; font-family: 'Courier New', monospace;"></p>
@@ -1997,26 +2040,10 @@
                     <h2 style="color: white; margin-bottom: 6px; font-size: 22px; font-weight: 800; font-family: 'Rajdhani', sans-serif; text-transform: uppercase;">Profesyonel Kariyer Başlıyor!</h2>
                     <p style="font-size: 12px; color: #94a3b8; margin-bottom: 16px;">Seçmelerdeki performansına göre kulüp teklifi masada.</p>
 
-                    <!-- Official Contract Report Box -->
-                    <div style="background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(0, 229, 183, 0.25); border-radius: 14px; padding: 16px; margin-bottom: 20px; text-align: left;">
-                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                            <div id="result-emoji" style="width: 42px; height: 42px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; color: #ffd700; flex-shrink: 0;">
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <div style="font-size: 14px; font-weight: 900; color: #fff;" id="result-club-title">Yıldız Gençlikspor</div>
-                                <div style="font-size: 11px; color: #00e5b7; font-weight: 700;" id="result-league-badge">TFF 2. Lig</div>
-                            </div>
-                        </div>
-                        <p style="font-size: 12.5px; color: #e2e8f0; font-weight: 500; line-height: 1.5; margin-bottom: 12px;" id="result-text">
-                            Harika bir seçme çıkardın! TFF 2. Lig ekiplerinden kulübün seninle ilk profesyonel sözleşmeni imzaladı.
-                        </p>
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; font-size: 11px; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px;">
-                            <div><span style="color: #94a3b8;">Haftalık Maaş:</span> <strong style="color: #ffd700;" id="result-salary-val">₺600 / hf</strong></div>
-                            <div><span style="color: #94a3b8;">Hoca Güveni:</span> <strong style="color: #00e5b7;" id="result-trust-val">%50</strong></div>
-                        </div>
+                    <!-- Official Contract Report Box with 3 Club Offers -->
+                    <div style="font-size: 11px; font-weight: 800; color: #00e5b7; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; text-align: left;">📋 KULÜP TEKLİFLERİ (BİRİNİ SEÇ):</div>
+                    <div id="contract-offers-container" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;">
+                        <!-- Dynamically populated with 3 interactive club cards -->
                     </div>
 
                     <!-- Difficulty Mode Picker -->
@@ -2045,6 +2072,73 @@
             </div>
         </div>
 
+        <!-- 👔 TEKNİK DİREKTÖRÜN ODASI (SİNEMATİK MAÇ ÖNÜ BRİFİNGİ) -->
+        <div id="coach-office-modal" style="position: fixed; inset: 0; z-index: 10030; background: rgba(4, 7, 13, 0.96); backdrop-filter: blur(20px); display: none; align-items: center; justify-content: center; padding: 16px; overflow-y: auto;">
+            <div style="max-width: 480px; width: 100%; background: linear-gradient(180deg, #0f172a 0%, #070a12 100%); border: 1.5px solid rgba(0, 229, 183, 0.35); border-radius: 20px; box-shadow: 0 0 50px rgba(0, 229, 183, 0.2), inset 0 0 30px rgba(0,0,0,0.8); padding: 22px 18px; position: relative; text-align: center;">
+                
+                <!-- Office Top Badge -->
+                <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 14px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 16px;">👔</span>
+                        <span style="font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 800; color: #fff; letter-spacing: 0.8px; text-transform: uppercase;">TEKNİK DİREKTÖRÜN ODASI</span>
+                    </div>
+                    <span id="coach-office-club-tag" style="font-size: 10.5px; font-weight: 800; color: #00e5b7; background: rgba(0,229,183,0.12); border: 1px solid rgba(0,229,183,0.25); padding: 3px 8px; border-radius: 8px;">KULÜP TESİSLERİ</span>
+                </div>
+
+                <!-- Coach Character & Whiteboard Backdrop -->
+                <div style="display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 16px; position: relative;">
+                    <!-- Tactical Board Mini -->
+                    <div style="width: 85px; height: 105px; background: #064e3b; border: 2px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 6px; box-shadow: inset 0 0 15px rgba(0,0,0,0.6); position: relative; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div style="font-size: 8px; color: #a7f3d0; font-weight: 800; text-align: center; letter-spacing: 0.5px;">TAKTİK TAHTASI</div>
+                        <div style="border: 1px dashed rgba(255,255,255,0.3); height: 60px; border-radius: 4px; display: flex; align-items: center; justify-content: center; position: relative;">
+                            <span style="font-size: 9px; color: #ffd700; font-weight: 900;">4-3-3</span>
+                            <div style="position: absolute; width: 6px; height: 6px; background: #ef4444; border-radius: 50%; top: 8px; left: 10px;"></div>
+                            <div style="position: absolute; width: 6px; height: 6px; background: #00e5b7; border-radius: 50%; bottom: 8px; right: 10px;"></div>
+                        </div>
+                        <div style="font-size: 7.5px; color: #cbd5e1; text-align: center;">HÜCUM BASKISI</div>
+                    </div>
+
+                    <!-- Stylized Charismatic Coach Avatar -->
+                    <div style="width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, rgba(0,229,183,0.2) 0%, rgba(15,23,42,0.9) 80%); border: 2.5px solid #00e5b7; box-shadow: 0 0 25px rgba(0,229,183,0.4); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
+                        <svg width="75" height="75" viewBox="0 0 24 24" fill="none" stroke="#00e5b7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                            <path d="M6 11l2 2 4-4" stroke="#ffd700" stroke-width="1.8"></path>
+                        </svg>
+                        <div style="position: absolute; bottom: 0; background: rgba(0,0,0,0.7); width: 100%; font-size: 8.5px; font-weight: 800; color: #ffd700; text-align: center; padding: 1px 0;">TEKNİK PATRON</div>
+                    </div>
+                </div>
+
+                <!-- 💬 HAREKETLİ HOCA BALONCUĞU (ANIMATED FLOATING SPEECH BUBBLE) -->
+                <div id="coach-floating-bubble" style="background: rgba(15, 23, 42, 0.92); border: 1.5px solid #00e5b7; border-radius: 16px; padding: 16px 14px; position: relative; box-shadow: 0 8px 30px rgba(0,0,0,0.7), 0 0 20px rgba(0,229,183,0.2); animation: coachBubbleFloat 3s ease-in-out infinite alternate; text-align: left; margin-bottom: 18px;">
+                    <!-- Bubble Pointer Arrow pointing up -->
+                    <div style="position: absolute; top: -9px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 9px solid transparent; border-right: 9px solid transparent; border-bottom: 9px solid #00e5b7;"></div>
+                    
+                    <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+                        <span style="font-size: 11px;">📢</span>
+                        <strong id="coach-speaker-title" style="font-size: 12px; font-weight: 900; color: #00e5b7; letter-spacing: 0.5px;">HOCA KONUŞUYOR:</strong>
+                    </div>
+                    <p id="coach-office-speech-text" style="font-size: 12.5px; color: #f1f5f9; line-height: 1.6; margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 500;">
+                        <!-- Streaming text will populate here -->
+                    </p>
+                </div>
+
+                <!-- First Opponent Scouting Card Mini -->
+                <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 8px 12px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; font-size: 11.5px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="color: #ffd700; font-weight: 800;">⚔️ İLK RAKİP:</span>
+                        <strong id="coach-next-opp-name" style="color: #fff;">Beyoğlu Yeni Çarşı</strong>
+                    </div>
+                    <span style="color: #94a3b8; font-size: 10.5px; font-weight: 700;">Hafta 1</span>
+                </div>
+
+                <!-- Action Confirmation Button -->
+                <button class="btn btn-primary" onclick="closeCoachOfficeModalAndEnterLobby()" style="width: 100%; padding: 15px 18px; font-size: 13.5px; font-weight: 900; letter-spacing: 0.5px; font-family: 'Space Grotesk', 'Rajdhani', sans-serif; text-transform: uppercase; background: linear-gradient(135deg, #00e5b7 0%, #059669 100%); color: #05140d; border: 1px solid rgba(255,255,255,0.25); border-radius: 12px; box-shadow: 0 4px 25px rgba(0, 229, 183, 0.4); cursor: pointer; transition: all 0.2s ease;">
+                    ANLAŞILDI HOCAM, GÜVENİNİZİ BOŞA ÇIKARMAYACAĞIM! ➔
+                </button>
+            </div>
+        </div>
+
         <!-- 🎴 PACK OPENING ANIMATION OVERLAY MODAL -->
         <div id="pack-modal-overlay" class="event-modal-overlay" style="z-index: 20000; background: rgba(0,0,0,0.96); display: none; align-items: center; justify-content: center; flex-direction: column;">
             <div id="pack-opening-scene" style="perspective: 1000px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
@@ -2055,7 +2149,6 @@
                     <div style="font-size: 48px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); transform: translateZ(20px);">🏆</div>
                     <div style="font-family: 'Inter', sans-serif; font-weight: 900; color: #FFD54F; letter-spacing: 2px; margin-top: 15px; font-size: 16px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); transform: translateZ(15px);">FUT PACK</div>
                     <div style="color: #fff; font-size: 9px; font-weight: 800; background: rgba(0,0,0,0.45); padding: 4px 12px; border-radius: 12px; margin-top: 25px; border: 1px solid rgba(255,255,255,0.15); transform: translateZ(10px);">TIKLA VE AÇ</div>
-                    
                     <div class="glow-sparkle" style="position: absolute; top:0; left:0; width: 100%; height: 100%; border-radius: 10px; box-shadow: inset 0 0 30px rgba(255,215,0,0.5); opacity: 0; pointer-events:none;"></div>
                 </div>
 
@@ -2506,6 +2599,73 @@
         </div>
 
         <!-- 📺 SİYAH FUTBOL 3D SİNEMATİK GECE MASASI MODAL -->
+                <!-- ğŸ‘” TEKNÄ°K DÄ°REKTÃ–RÃœN ODASI (SÄ°NEMATÄ°K MAÃ‡ Ã–NÃœ BRÄ°FÄ°NGÄ°) -->
+        <div id="coach-office-modal" style="position: fixed; inset: 0; z-index: 10030; background: rgba(4, 7, 13, 0.96); backdrop-filter: blur(20px); display: none; align-items: center; justify-content: center; padding: 16px; overflow-y: auto;">
+            <div style="max-width: 480px; width: 100%; background: linear-gradient(180deg, #0f172a 0%, #070a12 100%); border: 1.5px solid rgba(0, 229, 183, 0.35); border-radius: 20px; box-shadow: 0 0 50px rgba(0, 229, 183, 0.2), inset 0 0 30px rgba(0,0,0,0.8); padding: 22px 18px; position: relative; text-align: center;">
+                
+                <!-- Office Top Badge -->
+                <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 14px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 16px;">ğŸ‘”</span>
+                        <span style="font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 800; color: #fff; letter-spacing: 0.8px; text-transform: uppercase;">TEKNÄ°K DÄ°REKTÃ–RÃœN ODASI</span>
+                    </div>
+                    <span id="coach-office-club-tag" style="font-size: 10.5px; font-weight: 800; color: #00e5b7; background: rgba(0,229,183,0.12); border: 1px solid rgba(0,229,183,0.25); padding: 3px 8px; border-radius: 8px;">KULÃœP TESÄ°SLERÄ°</span>
+                </div>
+
+                <!-- Coach Character & Whiteboard Backdrop -->
+                <div style="display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 16px; position: relative;">
+                    <!-- Tactical Board Mini -->
+                    <div style="width: 85px; height: 105px; background: #064e3b; border: 2px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 6px; box-shadow: inset 0 0 15px rgba(0,0,0,0.6); position: relative; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div style="font-size: 8px; color: #a7f3d0; font-weight: 800; text-align: center; letter-spacing: 0.5px;">TAKTÄ°K TAHTASI</div>
+                        <div style="border: 1px dashed rgba(255,255,255,0.3); height: 60px; border-radius: 4px; display: flex; align-items: center; justify-content: center; position: relative;">
+                            <span style="font-size: 9px; color: #ffd700; font-weight: 900;">4-3-3</span>
+                            <div style="position: absolute; width: 6px; height: 6px; background: #ef4444; border-radius: 50%; top: 8px; left: 10px;"></div>
+                            <div style="position: absolute; width: 6px; height: 6px; background: #00e5b7; border-radius: 50%; bottom: 8px; right: 10px;"></div>
+                        </div>
+                        <div style="font-size: 7.5px; color: #cbd5e1; text-align: center;">HÃœCUM BASKISI</div>
+                    </div>
+
+                    <!-- Stylized Charismatic Coach Avatar -->
+                    <div style="width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, rgba(0,229,183,0.2) 0%, rgba(15,23,42,0.9) 80%); border: 2.5px solid #00e5b7; box-shadow: 0 0 25px rgba(0,229,183,0.4); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
+                        <svg width="75" height="75" viewBox="0 0 24 24" fill="none" stroke="#00e5b7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                            <path d="M6 11l2 2 4-4" stroke="#ffd700" stroke-width="1.8"></path>
+                        </svg>
+                        <div style="position: absolute; bottom: 0; background: rgba(0,0,0,0.7); width: 100%; font-size: 8.5px; font-weight: 800; color: #ffd700; text-align: center; padding: 1px 0;">TEKNÄ°K PATRON</div>
+                    </div>
+                </div>
+
+                <!-- ğŸ’¬ HAREKETLÄ° HOCA BALONCUÄU (ANIMATED FLOATING SPEECH BUBBLE) -->
+                <div id="coach-floating-bubble" style="background: rgba(15, 23, 42, 0.92); border: 1.5px solid #00e5b7; border-radius: 16px; padding: 16px 14px; position: relative; box-shadow: 0 8px 30px rgba(0,0,0,0.7), 0 0 20px rgba(0,229,183,0.2); animation: coachBubbleFloat 3s ease-in-out infinite alternate; text-align: left; margin-bottom: 18px;">
+                    <!-- Bubble Pointer Arrow pointing up -->
+                    <div style="position: absolute; top: -9px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 9px solid transparent; border-right: 9px solid transparent; border-bottom: 9px solid #00e5b7;"></div>
+                    
+                    <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+                        <span style="font-size: 11px;">ğŸ“¢</span>
+                        <strong id="coach-speaker-title" style="font-size: 12px; font-weight: 900; color: #00e5b7; letter-spacing: 0.5px;">HOCA KONUÅUYOR:</strong>
+                    </div>
+                    <p id="coach-office-speech-text" style="font-size: 12.5px; color: #f1f5f9; line-height: 1.6; margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 500;">
+                        <!-- Streaming text will populate here -->
+                    </p>
+                </div>
+
+                <!-- First Opponent Scouting Card Mini -->
+                <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 8px 12px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; font-size: 11.5px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="color: #ffd700; font-weight: 800;">âš”ï¸ Ä°LK RAKÄ°P:</span>
+                        <strong id="coach-next-opp-name" style="color: #fff;">BeyoÄŸlu Yeni Ã‡arÅŸÄ±</strong>
+                    </div>
+                    <span style="color: #94a3b8; font-size: 10.5px; font-weight: 700;">Hafta 1</span>
+                </div>
+
+                <!-- Action Confirmation Button -->
+                <button class="btn btn-primary" onclick="closeCoachOfficeModalAndEnterLobby()" style="width: 100%; padding: 15px 18px; font-size: 13.5px; font-weight: 900; letter-spacing: 0.5px; font-family: 'Space Grotesk', 'Rajdhani', sans-serif; text-transform: uppercase; background: linear-gradient(135deg, #00e5b7 0%, #059669 100%); color: #05140d; border: 1px solid rgba(255,255,255,0.25); border-radius: 12px; box-shadow: 0 4px 25px rgba(0, 229, 183, 0.4); cursor: pointer; transition: all 0.2s ease;">
+                    ANLAÅILDI HOCAM, GÃœVENÄ°NÄ°ZÄ° BOÅA Ã‡IKARMAYACAÄIM! â”
+                </button>
+            </div>
+        </div>
+
         <div class="event-modal-overlay" id="siyah-futbol-modal" style="background: rgba(0,0,0,0.96); z-index: 10025; display: none; align-items: center; justify-content: center; overflow-y: auto; padding: 12px;">
             <div class="event-card glass" style="max-width: 450px; text-align: left; border: 2px solid #ef4444; box-shadow: 0 0 45px rgba(239, 68, 68, 0.45); padding: 14px; border-radius: 14px; width: 100%; background: #08090f;">
                 
@@ -5400,70 +5560,115 @@
         }
 
         // --- NARRATIVE INTRO & POSITION-TAILORED TRIAL SELECTION SYSTEM ---
+                // --- NARRATIVE INTRO & 5-STAGE POSITION-TAILORED TRIAL SELECTION SYSTEM ---
         const POSITION_TRIALS = {
             "Forvet": [
                 {
-                    title: "Aşama 1: Ceza Sahasında 1v1 Bitiricilik",
-                    desc: "Ceza sahasında topla buluştun, kaleci açıyı daraltmak için üzerine doğru koşuyor! Nasıl bir vuruş yapacaksın?",
+                    title: "AÅŸama 1: Ceza SahasÄ±nda 1v1 Kaleci KarÅŸÄ±laÅŸmasÄ±",
+                    desc: "Ceza sahasÄ±nda topla buluÅŸtun, kaleci aÃ§Ä±yÄ± daraltmak iÃ§in Ã¼zerine doÄŸru koÅŸuyor! NasÄ±l bir vuruÅŸ yapacaksÄ±n?",
                     options: [
                         {
-                            actionTitle: "Uzak Köşeye Teknik Plase",
-                            actionDesc: "Kalecinin uzanamayacağı uzak köşeye falsolu ve dengeli vuruş yap.",
-                            text: "Uzak köşeye sert ve plase bırak.",
-                            commentarySuccess: "MUHTEŞEM BİTİRİCİLİK! Kalecinin uzanamayacağı köşeye füze gibi plase! Antrenörler not defterini dolduruyor.",
-                            commentaryFail: "Plase köşeyi bulmadı, kaleci kornere çeldi.",
+                            actionTitle: "Uzak KÃ¶ÅŸeye Teknik Plase",
+                            actionDesc: "Kalecinin uzanamayacaÄŸÄ± uzak kÃ¶ÅŸeye falsolu ve dengeli vuruÅŸ yap.",
+                            text: "Uzak kÃ¶ÅŸeye sert ve plase bÄ±rak.",
+                            commentarySuccess: "MUHTEÅEM BÄ°TÄ°RÄ°CÄ°LÄ°K! Kalecinin uzanamayacaÄŸÄ± kÃ¶ÅŸeye fÃ¼ze gibi plase! AntrenÃ¶rler not defterini dolduruyor.",
+                            commentaryFail: "Plase kÃ¶ÅŸeyi bulmadÄ±, kaleci kornere Ã§eldi.",
                             successChance: 0.70
                         },
                         {
-                            actionTitle: "Aşırtma Vuruş (Çip)",
-                            actionDesc: "Öne çıkan kalecinin üstünden topu hafifçe havalandırıp tavana yolla.",
-                            text: "Aşırtma vuruşla kalecinin üstünden yolla.",
-                            commentarySuccess: "KLAS HAREKET! Kalecinin çaresiz bakışları arasında top süzülerek tavana gitti! Tribünler ayakta!",
-                            commentaryFail: "Aşırtma vuruşun ayarı kaçtı, top üst direği yalayarak auta çıktı.",
+                            actionTitle: "AÅŸÄ±rtma VuruÅŸ (Ã‡ip)",
+                            actionDesc: "Ã–ne Ã§Ä±kan kalecinin Ã¼stÃ¼nden topu hafifÃ§e havalandÄ±rÄ±p tavana yolla.",
+                            text: "AÅŸÄ±rtma vuruÅŸla kalecinin Ã¼stÃ¼nden yolla.",
+                            commentarySuccess: "KLAS HAREKET! Kalecinin Ã§aresiz bakÄ±ÅŸlarÄ± arasÄ±nda top sÃ¼zÃ¼lerek tavana gitti! TribÃ¼nler ayakta!",
+                            commentaryFail: "AÅŸÄ±rtma vuruÅŸun ayarÄ± kaÃ§tÄ±, top Ã¼st direÄŸi yalayarak auta Ã§Ä±ktÄ±.",
                             successChance: 0.50
                         }
                     ]
                 },
                 {
-                    title: "Aşama 2: Kanat Ortasına Gelişine Vole & Kafa",
-                    desc: "Sağ kanattan milimetrik bir orta kesildi, ceza sahasında stoperin önünde topla buluşuyorsun!",
+                    title: "AÅŸama 2: Kanat OrtasÄ±na GeliÅŸine Vole & Kafa",
+                    desc: "SaÄŸ kanattan milimetrik bir orta kesildi, ceza sahasÄ±nda stoperin Ã¶nÃ¼nde topla buluÅŸuyorsun!",
                     options: [
                         {
-                            actionTitle: "Gelişine Sert Vole",
-                            actionDesc: "Havadan gelen topa yere inmeden sert ve falsolu vuruş yap.",
-                            text: "Gelişine sert bir vole yapıştır.",
-                            commentarySuccess: "İNANILMAZ BİR VOLE! Top ağları delecek gibi doksana takıldı! Gözlemciler alkışlıyor!",
-                            commentaryFail: "Topa tam oturmadı, vole yan ağlarda kaldı.",
+                            actionTitle: "GeliÅŸine Sert Vole",
+                            actionDesc: "Havadan gelen topa yere inmeden sert ve falsolu vuruÅŸ yap.",
+                            text: "GeliÅŸine sert bir vole yapÄ±ÅŸtÄ±r.",
+                            commentarySuccess: "Ä°NANILMAZ BÄ°R VOLE! Top aÄŸlarÄ± delecek gibi doksana takÄ±ldÄ±! GÃ¶zlemciler alkÄ±ÅŸlÄ±yor!",
+                            commentaryFail: "Topa tam oturmadÄ±, vole yan aÄŸlarda kaldÄ±.",
                             successChance: 0.65
                         },
                         {
-                            actionTitle: "Ön Direğe Kafa Vuruşu",
-                            actionDesc: "Stoperin önüne hızla kat edip köşeye sert kafa şutu çıkar.",
-                            text: "Ön direğe koşup kafayla köşeye bırak.",
-                            commentarySuccess: "TAM BİR SANTRFOR GOLÜ! Ön direkte müthiş kafa vuruşuyla kaleciyi ters ayakta yakaladın!",
-                            commentaryFail: "Stoper hava topunda fizik avantajını kullandı ve topu uzaklaştırdı.",
+                            actionTitle: "Ã–n DireÄŸe Kafa VuruÅŸu",
+                            actionDesc: "Stoperin Ã¶nÃ¼ne hÄ±zla kat edip kÃ¶ÅŸeye sert kafa ÅŸutu Ã§Ä±kar.",
+                            text: "Ã–n direÄŸe koÅŸup kafayla kÃ¶ÅŸeye bÄ±rak.",
+                            commentarySuccess: "TAM BÄ°R SANTRFOR GOLÃœ! Ã–n direkte mÃ¼thiÅŸ kafa vuruÅŸuyla kaleciyi ters ayakta yakaladÄ±n!",
+                            commentaryFail: "Stoper hava topunda fizik avantajÄ±nÄ± kullandÄ± ve topu uzaklaÅŸtÄ±rdÄ±.",
                             successChance: 0.60
                         }
                     ]
                 },
                 {
-                    title: "Aşama 3: Son Beki Çalımlama & Hız Patlaması",
-                    desc: "Son stoperle karşı karşıyasın, arkadan kademe savunması yetişmek üzere!",
+                    title: "AÅŸama 3: 25 Metreden Uzaktan FÃ¼ze Åut",
+                    desc: "Ceza sahasÄ± yayÄ±nÄ±n Ã¶nÃ¼nde top sana sekti, Ã¶nÃ¼n bomboÅŸ!",
                     options: [
                         {
-                            actionTitle: "Dış Kulvardan Depar",
-                            actionDesc: "Ani hız patlamasıyla stoperin ters yönüne sprint at.",
-                            text: "Hız patlamasıyla dış kulvardan sıyrıl.",
-                            commentarySuccess: "ADETA RÜZGAR! Muazzam bir deparla stoperi pazara yolladın ve içeri sokuldun!",
-                            commentaryFail: "Stoper omuz omuza mücadelede dengeni bozdu ve topu kazandı.",
+                            actionTitle: "Doksana Kavisli Plase",
+                            actionDesc: "Topun altÄ±na falso vererek Ã§atala doÄŸru teknik plase yolla.",
+                            text: "Doksana kavisli plase gÃ¶nder.",
+                            commentarySuccess: "DOKSANA ASILDI! 25 metreden Ã§atala giden inanÄ±lmaz bir ÅŸut! AntrenÃ¶rler alkÄ±ÅŸlÄ±yor!",
+                            commentaryFail: "Kavis fazla aÃ§Ä±ldÄ±, top direÄŸin hemen yanÄ±ndan auta Ã§Ä±ktÄ±.",
                             successChance: 0.60
                         },
                         {
-                            actionTitle: "Bilek Çalımı & Bacak Arası",
-                            actionDesc: "Bilek hareketiyle rakibi tereddütte bırakıp topu bacaklarının arasından geçir.",
-                            text: "Bilek çalımıyla bacak arası at.",
-                            commentarySuccess: "ÇALIM RESİTALİ! Mükemmel bir bacak arası! Antrenörlerin gözleri parıldıyor!",
-                            commentaryFail: "Çalım denerken stoper ayak koydu ve atağı kesti.",
+                            actionTitle: "Tam GÃ¼Ã§ Sert Åut",
+                            actionDesc: "Ayak Ã¼stÃ¼yle kalecinin eldivenlerini bÃ¼kecek sertlikte mermi sÄ±k.",
+                            text: "GeliÅŸine tam gÃ¼Ã§le mermi sÄ±k.",
+                            commentarySuccess: "MERMÄ° GÄ°BÄ°! Top kalecinin eldivenlerini delip aÄŸlara yapÄ±ÅŸtÄ±!",
+                            commentaryFail: "Åut savunma duvarÄ±na Ã§arptÄ±.",
+                            successChance: 0.50
+                        }
+                    ]
+                },
+                {
+                    title: "AÅŸama 4: Savunma ArkasÄ±na KaÃ§Ä±ÅŸ & VerkaÃ§",
+                    desc: "Rakip stoperler Ã¶ne Ã§Ä±ktÄ±, orta sahayla verkaÃ§ yapÄ±p arkaya sarkma fÄ±rsatÄ±!",
+                    options: [
+                        {
+                            actionTitle: "HÄ±zlÄ± 1-2 Duvar PasÄ±",
+                            actionDesc: "Tek topla arkadaÅŸÄ±na verip stoperin arkasÄ±na fÄ±rla.",
+                            text: "Tek topla verkaÃ§ yapÄ±p arkaya sark.",
+                            commentarySuccess: "KUSURSUZ ZAMANLAMA! MuhteÅŸem bir verkaÃ§la stoperleri oyundan dÃ¼ÅŸÃ¼rdÃ¼n!",
+                            commentaryFail: "VerkaÃ§ pasÄ± bir parÃ§a sert gitti, kaleci Ã§Ä±ktÄ±.",
+                            successChance: 0.70
+                        },
+                        {
+                            actionTitle: "Ofsayt Ã‡izgisinde Ã‡apraz KoÅŸu",
+                            actionDesc: "Tam ofsayt sÄ±nÄ±rÄ±nda Ã§apraz koÅŸuyla defansÄ± daÄŸÄ±t.",
+                            text: "Ã‡apraz koÅŸuyla defansÄ±n arkasÄ±na sÄ±z.",
+                            commentarySuccess: "OFÅAYT TUZAÄINI YIKTIN! Milimetrik zamanlamayla topla buluÅŸtun!",
+                            commentaryFail: "YardÄ±mcÄ± hakem bayraÄŸÄ± kaldÄ±rdÄ±, ofsayt.",
+                            successChance: 0.55
+                        }
+                    ]
+                },
+                {
+                    title: "AÅŸama 5: Son Adam Ã‡alÄ±mÄ± & HÄ±z PatlamasÄ±",
+                    desc: "Son stoperle karÅŸÄ± karÅŸÄ±yasÄ±n, arkadan kademe savunmasÄ± yetiÅŸmek Ã¼zere!",
+                    options: [
+                        {
+                            actionTitle: "DÄ±ÅŸ Kulvardan Depar",
+                            actionDesc: "Ani hÄ±z patlamasÄ±yla stoperin ters yÃ¶nÃ¼ne sprint at.",
+                            text: "HÄ±z patlamasÄ±yla dÄ±ÅŸ kulvardan sÄ±yrÄ±l.",
+                            commentarySuccess: "ADETA RÃœZGAR! Muazzam bir deparla stoperi pazara yolladÄ±n ve iÃ§eri sokuldun!",
+                            commentaryFail: "Stoper omuz omuza mÃ¼cadelede dengeni bozdu ve topu kazandÄ±.",
+                            successChance: 0.60
+                        },
+                        {
+                            actionTitle: "Bilek Ã‡alÄ±mÄ± & Bacak ArasÄ±",
+                            actionDesc: "Bilek hareketiyle rakibi tereddÃ¼tte bÄ±rakÄ±p topu bacaklarÄ±nÄ±n arasÄ±ndan geÃ§ir.",
+                            text: "Bilek Ã§alÄ±mÄ±yla bacak arasÄ± at.",
+                            commentarySuccess: "Ã‡ALIM RESÄ°TALÄ°! MÃ¼kemmel bir bacak arasÄ±! AntrenÃ¶rlerin gÃ¶zleri parÄ±ldÄ±yor!",
+                            commentaryFail: "Ã‡alÄ±m denerken stoper ayak koydu ve ataÄŸÄ± kesti.",
                             successChance: 0.45
                         }
                     ]
@@ -5471,136 +5676,224 @@
             ],
             "Orta Saha": [
                 {
-                    title: "Aşama 1: Savunma Arkasına Milimetrik Ara Pası",
-                    desc: "Merkezde topu kontrol ettin, forvet oyuncun rakip stoperlerin arkasına koşu yapıyor!",
+                    title: "AÅŸama 1: Savunma ArkasÄ±na Milimetrik Ara PasÄ±",
+                    desc: "Merkezde topu kontrol ettin, forvet oyuncun rakip stoperlerin arkasÄ±na koÅŸu yapÄ±yor!",
                     options: [
                         {
-                            actionTitle: "Yerden İnce Ara Pası",
-                            actionDesc: "Stoperlerin arasındaki koridora falsolu milimetrik top yuvarla.",
-                            text: "Yerden ince ve kavisli bir ara pası yolla.",
-                            commentarySuccess: "MAESTRO VİZYONU! Savunmanın arasından süzülen top forveti kaleciyle karşı karşıya bıraktı! Asist!",
-                            commentaryFail: "Pas bir adım yavaş kaldı, stoper son anda topu kornere çeldi.",
+                            actionTitle: "Yerden Ä°nce Ara PasÄ±",
+                            actionDesc: "Stoperlerin arasÄ±ndaki koridora falsolu milimetrik top yuvarla.",
+                            text: "Yerden ince ve kavisli bir ara pasÄ± yolla.",
+                            commentarySuccess: "MAESTRO VÄ°ZYONU! SavunmanÄ±n arasÄ±ndan sÃ¼zÃ¼len top forveti kaleciyle karÅŸÄ± karÅŸÄ±ya bÄ±raktÄ±! Asist!",
+                            commentaryFail: "Pas bir adÄ±m yavaÅŸ kaldÄ±, stoper son anda topu kornere Ã§eldi.",
                             successChance: 0.70
                         },
                         {
-                            actionTitle: "Havadan Aşırtma Pas",
-                            actionDesc: "Savunma bloğunun üzerinden forvetin koşu yoluna yumuşak aşırtma top at.",
-                            text: "Savunmanın üstünden havadan adrese teslim aşırtma pas at.",
-                            commentarySuccess: "SANAT ESERİ PAS! Top forvetin ayağına adeta konduruldu! İnanılmaz teknik!",
-                            commentaryFail: "Pas fazla havalandı, kaleci çıkarak havada kontrol etti.",
+                            actionTitle: "Havadan AÅŸÄ±rtma Pas",
+                            actionDesc: "Savunma bloÄŸunun Ã¼zerinden forvetin koÅŸu yoluna yumuÅŸak aÅŸÄ±rtma top at.",
+                            text: "SavunmanÄ±n Ã¼stÃ¼nden havadan adrese teslim aÅŸÄ±rtma pas at.",
+                            commentarySuccess: "SANAT ESERÄ° PAS! Top forvetin ayaÄŸÄ±na adeta konduruldu! Ä°nanÄ±lmaz teknik!",
+                            commentaryFail: "Pas fazla havalandÄ±, kaleci Ã§Ä±karak havada kontrol etti.",
                             successChance: 0.55
                         }
                     ]
                 },
                 {
-                    title: "Aşama 2: Ceza Sahası Dışı 25 Metre Füze Şut",
-                    desc: "Rakip ceza sahası önünde seken top sana geldi, kaleci hafif önde!",
+                    title: "AÅŸama 2: Ceza SahasÄ± DÄ±ÅŸÄ± 25 Metre FÃ¼ze Åut",
+                    desc: "Rakip ceza sahasÄ± Ã¶nÃ¼nde seken top sana geldi, kaleci hafif Ã¶nde!",
                     options: [
                         {
                             actionTitle: "Doksana Kavisli Plase",
-                            actionDesc: "Topun altına falso vererek çatala doğru teknik plase yolla.",
-                            text: "Doksana doğru kavisli bir plase yolla.",
-                            commentarySuccess: "DOKSANA ASILDI! 25 metreden çatala giden inanılmaz bir şut! Antrenörler alkışlıyor!",
-                            commentaryFail: "Kavis fazla açıldı, top direğin hemen yanından auta çıktı.",
+                            actionDesc: "Topun altÄ±na falso vererek Ã§atala doÄŸru teknik plase yolla.",
+                            text: "Doksana doÄŸru kavisli bir plase yolla.",
+                            commentarySuccess: "DOKSANA ASILDI! 25 metreden Ã§atala giden inanÄ±lmaz bir ÅŸut! AntrenÃ¶rler alkÄ±ÅŸlÄ±yor!",
+                            commentaryFail: "Kavis fazla aÃ§Ä±ldÄ±, top direÄŸin hemen yanÄ±ndan auta Ã§Ä±ktÄ±.",
                             successChance: 0.60
                         },
                         {
-                            actionTitle: "Gelişine Tam Güç Şut",
-                            actionDesc: "Seken topa ayak üstüyle mermi gibi sert şut çıkar.",
-                            text: "Gelişine tam güçle tavana mermi sık.",
-                            commentarySuccess: "MERMİ GİBİ! Top kalecinin eldivenlerini yakarak ağlarla buluştu!",
-                            commentaryFail: "Şut savunmadan döndü, tehlike savuşturuldu.",
+                            actionTitle: "GeliÅŸine Tam GÃ¼Ã§ Åut",
+                            actionDesc: "Seken topa ayak Ã¼stÃ¼yle mermi gibi sert ÅŸut Ã§Ä±kar.",
+                            text: "GeliÅŸine tam gÃ¼Ã§le tavana mermi sÄ±k.",
+                            commentarySuccess: "MERMÄ° GÄ°BÄ°! Top kalecinin eldivenlerini yakarak aÄŸlarla buluÅŸtu!",
+                            commentaryFail: "Åut savunmadan dÃ¶ndÃ¼, tehlike savuÅŸturuldu.",
                             successChance: 0.50
                         }
                     ]
                 },
                 {
-                    title: "Aşama 3: Pres Altından Çıkış & Tempo Yönetimi",
-                    desc: "Rakip 3 kişiyle seni dar alanda presle sıkıştırdı, pas verecek boş alan arıyorsun!",
+                    title: "AÅŸama 3: Pres AltÄ±ndan Ã‡Ä±kÄ±ÅŸ & Tempo YÃ¶netimi",
+                    desc: "Rakip 3 kiÅŸiyle seni dar alanda presle sÄ±kÄ±ÅŸtÄ±rdÄ±, pas verecek boÅŸ alan arÄ±yorsun!",
                     options: [
                         {
                             actionTitle: "Diyagonal Uzun Pas",
-                            actionDesc: "Presi tek topla ters kanattaki boş arkadaşına açarak oyunu rahatlat.",
-                            text: "Tek topla boşta kalan ters kanada uzun diyagonal pas at.",
-                            commentarySuccess: "OYUN KURUCU DEHASI! Presi tek pasla boşa çıkarıp takımı atağa kaldırdın!",
-                            commentaryFail: "Pasın yönü isabetsiz oldu, top doğrudan taca çıktı.",
+                            actionDesc: "Presi tek topla ters kanattaki boÅŸ arkadaÅŸÄ±na aÃ§arak oyunu rahatlat.",
+                            text: "Tek topla boÅŸta kalan ters kanada uzun diyagonal pas at.",
+                            commentarySuccess: "OYUN KURUCU DEHASI! Presi tek pasla boÅŸa Ã§Ä±karÄ±p takÄ±mÄ± ataÄŸa kaldÄ±rdÄ±n!",
+                            commentaryFail: "PasÄ±n yÃ¶nÃ¼ isabetsiz oldu, top doÄŸrudan taca Ã§Ä±ktÄ±.",
                             successChance: 0.65
                         },
                         {
-                            actionTitle: "Vücut Çalımı & Dönüş",
-                            actionDesc: "Dar alanda ani gövde çalımıyla iki rakibin arasından sıyrıl.",
-                            text: "Dar alanda vücut çalımıyla iki kişinin arasından sıyrıl.",
-                            commentarySuccess: "BÜYÜLEYİCİ TEKNİK! İki rakip birbirine çarptı, topu tereyağından kıl çeker gibi çıkardın!",
-                            commentaryFail: "Pres çok sert geldi, topu ayağından açınca kaptırdın.",
+                            actionTitle: "VÃ¼cut Ã‡alÄ±mÄ± & DÃ¶nÃ¼ÅŸ",
+                            actionDesc: "Dar alanda ani gÃ¶vde Ã§alÄ±mÄ±yla iki rakibin arasÄ±ndan sÄ±yrÄ±l.",
+                            text: "Dar alanda vÃ¼cut Ã§alÄ±mÄ±yla iki kiÅŸinin arasÄ±ndan sÄ±yrÄ±l.",
+                            commentarySuccess: "BÃœYÃœLEYÄ°CÄ° TEKNÄ°K! Ä°ki rakip birbirine Ã§arptÄ±, topu tereyaÄŸÄ±ndan kÄ±l Ã§eker gibi Ã§Ä±kardÄ±n!",
+                            commentaryFail: "Pres Ã§ok sert geldi, topu ayaÄŸÄ±ndan aÃ§Ä±nca kaptÄ±rdÄ±n.",
                             successChance: 0.45
+                        }
+                    ]
+                },
+                {
+                    title: "AÅŸama 4: Kontratak BaÅŸlatma & Tek DokunuÅŸ Vizyon",
+                    desc: "KazanÄ±lan topla hÄ±zla hÃ¼cuma Ã§Ä±kÄ±yorsun, forvet depar attÄ±!",
+                    options: [
+                        {
+                            actionTitle: "Topukla Ters Kanat PasÄ±",
+                            actionDesc: "Arkana bakmadan topukla ters kanattaki boÅŸ beki kaÃ§Ä±r.",
+                            text: "Beklenmedik bir topuk pasÄ±yla ters kanadÄ± kaÃ§Ä±r.",
+                            commentarySuccess: "SÄ°HÄ°RBAZ PASI! BÃ¼tÃ¼n tribÃ¼n ayaÄŸa kalktÄ±, rakip savunma ters ayakta yakalandÄ±!",
+                            commentaryFail: "Pas zayÄ±f kaldÄ±, rakip araya girdi.",
+                            successChance: 0.65
+                        },
+                        {
+                            actionTitle: "Derinlemesine Kavisli Ara PasÄ±",
+                            actionDesc: "Ä°ki stoperin arasÄ±ndan falsoyla forveti kaleciyle burun buruna getir.",
+                            text: "Falsolu ara pasÄ±yla forvete gol pozisyonu hazÄ±rla.",
+                            commentarySuccess: "MÄ°METRÄ°K ASÄ°ST! Forvet topa sadece dokundu ve GOOOL!",
+                            commentaryFail: "Stoper son anda kornere Ã§eldi.",
+                            successChance: 0.60
+                        }
+                    ]
+                },
+                {
+                    title: "AÅŸama 5: Ceza SahasÄ±na Gizli KoÅŸu & Bitiricilik",
+                    desc: "Kanat oyuncusu Ã§izgiye indi, ceza sahasÄ± yayÄ±ndan iÃ§eri doÄŸru gizli koÅŸu yapÄ±yorsun!",
+                    options: [
+                        {
+                            actionTitle: "Geriye Ã‡Ä±karÄ±lan Topa GeliÅŸine Åut",
+                            actionDesc: "PenaltÄ± noktasÄ±na geriye Ã§Ä±karÄ±lan pasa ayak iÃ§iyle kÃ¶ÅŸeye plase bÄ±rak.",
+                            text: "Geriye Ã§Ä±karÄ±lan topa kÃ¶ÅŸeye net plase bÄ±rak.",
+                            commentarySuccess: "GÄ°ZLÄ° SANTRFOR GOLÃœ! Ceza sahasÄ±na sÄ±zÄ±p kÃ¶ÅŸeye bÄ±raktÄ±n, kaleci kÄ±pÄ±rdayamadÄ±!",
+                            commentaryFail: "VuruÅŸ kalecinin kucaÄŸÄ±na gitti.",
+                            successChance: 0.70
+                        },
+                        {
+                            actionTitle: "Ã–n DireÄŸe SÄ±zÄ±p DokunuÅŸ",
+                            actionDesc: "Ã–n direÄŸe hÄ±zla fÄ±rlayÄ±p yerden gelen sert ortaya dokun.",
+                            text: "Ã–n direÄŸe koÅŸup ayak ucuyla dokun.",
+                            commentarySuccess: "ZEKÄ°CE DOKUNUÅ! Ã–n direkte kaleciyi ters kÃ¶ÅŸe yaptÄ±n, harika gol!",
+                            commentaryFail: "Kaleci aÃ§Ä±yÄ± iyi kapattÄ±.",
+                            successChance: 0.55
                         }
                     ]
                 }
             ],
             "Defans": [
                 {
-                    title: "Aşama 1: Son Adam 1v1 Kayarak Müdahale",
-                    desc: "Rakip hızlı forvet süratle kalene doğru geliyor, ceza sahasına girmeden müdahale etmelisin!",
+                    title: "AÅŸama 1: Son Adam 1v1 Kayarak MÃ¼dahale",
+                    desc: "Rakip hÄ±zlÄ± forvet sÃ¼ratle kalene doÄŸru geliyor, ceza sahasÄ±na girmeden mÃ¼dahale etmelisin!",
                     options: [
                         {
-                            actionTitle: "Zamanlamalı Kayarak Müdahale",
-                            actionDesc: "Ceza sahasına girmeden tertemiz bir hamleyle topu söküp al.",
-                            text: "Kusursuz zamanlamayla kayarak topa müdahale et.",
-                            commentarySuccess: "KUSURSUZ MÜDAHALE! Tertemiz bir kayarak müdahaleyle topu söküp aldın! Alkışlar sana!",
-                            commentaryFail: "Zamanlamayı biraz kaçırdın, forvet son anda sıyrıldı.",
+                            actionTitle: "ZamanlamalÄ± Kayarak MÃ¼dahale",
+                            actionDesc: "Ceza sahasÄ±na girmeden tertemiz bir hamleyle topu sÃ¶kÃ¼p al.",
+                            text: "Kusursuz zamanlamayla kayarak topa mÃ¼dahale et.",
+                            commentarySuccess: "KUSURSUZ MÃœDAHALE! Tertemiz bir kayarak mÃ¼dahaleyle topu sÃ¶kÃ¼p aldÄ±n! AlkÄ±ÅŸlar sana!",
+                            commentaryFail: "ZamanlamayÄ± biraz kaÃ§Ä±rdÄ±n, forvet son anda sÄ±yrÄ±ldÄ±.",
                             successChance: 0.70
                         },
                         {
-                            actionTitle: "Ayakta Kal & Omuz Omuza Karşıla",
-                            actionDesc: "Fizik gücünü kullanarak forveti dış kulvara sür ve hücumu kes.",
-                            text: "Ayakta kal, omuz omuza mücadeleyle forveti dışarı sür.",
-                            commentarySuccess: "GEÇİLMEZ DUVAR! Güçlü fiziğinle forveti ezdin ve topu taca yolladın!",
-                            commentaryFail: "Rakip çeviklikle yön değiştirdi ve atağı sürdürdü.",
+                            actionTitle: "Ayakta Kal & Omuz Omuza KarÅŸÄ±la",
+                            actionDesc: "Fizik gÃ¼cÃ¼nÃ¼ kullanarak forveti dÄ±ÅŸ kulvara sÃ¼r ve hÃ¼cumu kes.",
+                            text: "Ayakta kal, omuz omuza mÃ¼cadeleyle forveti dÄ±ÅŸarÄ± sÃ¼r.",
+                            commentarySuccess: "GEÃ‡Ä°LMEZ DUVAR! GÃ¼Ã§lÃ¼ fiziÄŸinle forveti ezdin ve topu taca yolladÄ±n!",
+                            commentaryFail: "Rakip Ã§eviklikle yÃ¶n deÄŸiÅŸtirdi ve ataÄŸÄ± sÃ¼rdÃ¼rdÃ¼.",
                             successChance: 0.60
                         }
                     ]
                 },
                 {
-                    title: "Aşama 2: Korner Savunmasında Hava Topu Hakimiyeti",
-                    desc: "Rakip takım tehlikeli bir korner ortası kullandı, penaltı noktasına doğru yüksek bir top geliyor!",
+                    title: "AÅŸama 2: Korner SavunmasÄ±nda Hava Topu Hakimiyeti",
+                    desc: "Rakip takÄ±m tehlikeli bir korner ortasÄ± kullandÄ±, penaltÄ± noktasÄ±na doÄŸru yÃ¼ksek bir top geliyor!",
                     options: [
                         {
-                            actionTitle: "Yükselerek Kafayla Temizle",
-                            actionDesc: "Ceza sahasında havada asılı kalarak topu tehlike bölgesinden uzaklaştır.",
-                            text: "Yüksel ve kafayla topu ceza sahası dışına uzaklaştır.",
-                            commentarySuccess: "HAVA HAKİMİ! Havada adeta asılı kaldın ve topu tehlike bölgesinden uzaklaştırdın!",
-                            commentaryFail: "Rakip santrfor arkadan yükseldi ve kafa vuruşunu yaptı.",
+                            actionTitle: "YÃ¼kselerek Kafayla Temizle",
+                            actionDesc: "Ceza sahasÄ±nda havada asÄ±lÄ± kalarak topu tehlike bÃ¶lgesinden uzaklaÅŸtÄ±r.",
+                            text: "YÃ¼ksel ve kafayla topu ceza sahasÄ± dÄ±ÅŸÄ±na uzaklaÅŸtÄ±r.",
+                            commentarySuccess: "HAVA HAKÄ°MÄ°! Havada adeta asÄ±lÄ± kaldÄ±n ve topu tehlike bÃ¶lgesinden uzaklaÅŸtÄ±rdÄ±n!",
+                            commentaryFail: "Rakip santrfor arkadan yÃ¼kseldi ve kafa vuruÅŸunu yaptÄ±.",
                             successChance: 0.65
                         },
                         {
-                            actionTitle: "Kafayla Kontra Atak Başlat",
-                            actionDesc: "Hava topunu kanat oyuncunun koşu yoluna indirip takımı atağa çıkar.",
-                            text: "Kafayla topu hücuma kalkan kanat oyuncunun koşu yoluna indir.",
-                            commentarySuccess: "SAVUNMADAN HÜCUMA! Kafayla indirdiğin top takımı 3'e 2 kontraya çıkardı! Harika vizyon!",
-                            commentaryFail: "İndirdiğin top rakip orta sahaya gitti.",
+                            actionTitle: "Kafayla Kontra Atak BaÅŸlat",
+                            actionDesc: "Hava topunu kanat oyuncunun koÅŸu yoluna indirip takÄ±mÄ± ataÄŸa Ã§Ä±kar.",
+                            text: "Kafayla topu hÃ¼cuma kalkan kanat oyuncunun koÅŸu yoluna indir.",
+                            commentarySuccess: "SAVUNMADAN HÃœCUMA! Kafayla indirdiÄŸin top takÄ±mÄ± 3'e 2 kontraya Ã§Ä±kardÄ±! Harika vizyon!",
+                            commentaryFail: "Ä°ndirdiÄŸin top rakip orta sahaya gitti.",
                             successChance: 0.50
                         }
                     ]
                 },
                 {
-                    title: "Aşama 3: Geriden 50 Metrelik Nokta Oyun Kurma",
-                    desc: "Topu kazandın, rakip savunma önde yakalandı, forvetin ileri koşu gösteriyor!",
+                    title: "AÅŸama 3: Geriden 50 Metrelik Nokta Oyun Kurma",
+                    desc: "Topu kazandÄ±n, rakip savunma Ã¶nde yakalandÄ±, forvetin ileri koÅŸu gÃ¶steriyor!",
                     options: [
                         {
                             actionTitle: "50 Metrelik Nokta Pas",
-                            actionDesc: "Geriden ileri forvetin koşu yoluna adrese teslim uzun top at.",
-                            text: "Forvetin koşu yoluna 50 metrelik uzun ve isabetli diyagonal pas at.",
-                            commentarySuccess: "ADRESE TESLİM! Geriden attığın muhteşem pas forveti kaleciyle karşı karşıya bıraktı!",
-                            commentaryFail: "Pas fazla hızlı gitti, doğrudan rakip kaleciye ulaştı.",
+                            actionDesc: "Geriden ileri forvetin koÅŸu yoluna adrese teslim uzun top at.",
+                            text: "Forvetin koÅŸu yoluna 50 metrelik uzun ve isabetli diyagonal pas at.",
+                            commentarySuccess: "ADRESE TESLÄ°M! Geriden attÄ±ÄŸÄ±n muhteÅŸem pas forveti kaleciyle karÅŸÄ± karÅŸÄ±ya bÄ±raktÄ±!",
+                            commentaryFail: "Pas fazla hÄ±zlÄ± gitti, doÄŸrudan rakip kaleciye ulaÅŸtÄ±.",
                             successChance: 0.60
                         },
                         {
-                            actionTitle: "Öne Kat Edip Verkaç Yap",
-                            actionDesc: "Boş alana topla çıkıp orta sahayla güvenli paslaşarak hücumu kur.",
-                            text: "Önündeki boş alanı sürüp orta sahayla güvenli verkaç yap.",
-                            commentarySuccess: "MODERN STOPER! Soğukkanlılıkla takımı atağa kaldırdın, antrenörler takdir etti!",
-                            commentaryFail: "Pasın zamanlaması gecikti, rakip hücum hattı baskı yaptı.",
+                            actionTitle: "Ã–ne Kat Edip VerkaÃ§ Yap",
+                            actionDesc: "BoÅŸ alana topla Ã§Ä±kÄ±p orta sahayla gÃ¼venli paslaÅŸarak hÃ¼cumu kur.",
+                            text: "Ã–nÃ¼ndeki boÅŸ alanÄ± sÃ¼rÃ¼p orta sahayla gÃ¼venli verkaÃ§ yap.",
+                            commentarySuccess: "MODERN STOPER! SoÄŸukkanlÄ±lÄ±kla takÄ±mÄ± ataÄŸa kaldÄ±rdÄ±n, antrenÃ¶rler takdir etti!",
+                            commentaryFail: "PasÄ±n zamanlamasÄ± gecikti, rakip hÃ¼cum hattÄ± baskÄ± yaptÄ±.",
                             successChance: 0.70
+                        }
+                    ]
+                },
+                {
+                    title: "AÅŸama 4: Ã‡izgiden Top Ã‡Ä±karma & Son Hamle",
+                    desc: "Kaleci maÄŸlup oldu, top kaleye doÄŸru yuvarlanÄ±yor! Ã‡izgiye yetiÅŸmelisin!",
+                    options: [
+                        {
+                            actionTitle: "Kayarak Ã‡izgiden Ã‡Ä±kar",
+                            actionDesc: "Son anda yetiÅŸip ayaÄŸÄ±nÄ± uzatarak topu Ã§izgiden kornere Ã§el.",
+                            text: "Uzanarak topu Ã§izgiden kornere tokatla.",
+                            commentarySuccess: "KAHRAMANCA KURTARIÅ! GolÃ¼ Ã§izgiden Ã§Ä±kardÄ±n, bÃ¼tÃ¼n takÄ±m Ã¼zerine koÅŸuyor!",
+                            commentaryFail: "Saliseyle yetiÅŸemedin, top Ã§izgiyi geÃ§ti.",
+                            successChance: 0.65
+                        },
+                        {
+                            actionTitle: "Direk Dibinde VÃ¼cut Siperi",
+                            actionDesc: "VÃ¼cudunu siper ederek topun kaleye giriÅŸini engelle.",
+                            text: "VÃ¼cudunu siper edip ÅŸutu gÃ¶ÄŸsÃ¼nle durdur.",
+                            commentarySuccess: "KAYA GÄ°BÄ° SÄ°PER! Åutu gÃ¶ÄŸsÃ¼nle bloke edip tehlikeyi Ã¶nledin!",
+                            commentaryFail: "Top Ã§arpÄ±p yÃ¶n deÄŸiÅŸtirdi.",
+                            successChance: 0.60
+                        }
+                    ]
+                },
+                {
+                    title: "AÅŸama 5: YÃ¼ksek Pres & Rakip YarÄ± Sahada Top Kapma",
+                    desc: "TakÄ±mÄ±n Ã¶nde pres yapÄ±yor, rakip stoper baskÄ± altÄ±nda pas atmaya Ã§alÄ±ÅŸÄ±yor!",
+                    options: [
+                        {
+                            actionTitle: "Ã–nceden Sezip Araya Gir",
+                            actionDesc: "PasÄ±n atÄ±lacaÄŸÄ± yÃ¶nÃ¼ tahmin edip yÄ±ldÄ±rÄ±m hÄ±zÄ±yla araya gir.",
+                            text: "Pas yoluna aniden sÃ¼zÃ¼lÃ¼p topu kap.",
+                            commentarySuccess: "OYUN OKUMA RESÄ°TALÄ°! PasÄ± Ã¶nceden sezerek kaptÄ±n ve takÄ±mÄ± gol pozisyonuna soktun!",
+                            commentaryFail: "Rakip stoper Ã§alÄ±mla sÄ±yrÄ±ldÄ±.",
+                            successChance: 0.65
+                        },
+                        {
+                            actionTitle: "Fiziksel BaskÄ±yla Hataya Zorla",
+                            actionDesc: "Rakibin arkasÄ±ndan omuz bindirerek topu kaybetmesini saÄŸla.",
+                            text: "Fiziksel baskÄ±yla rakibi hataya zorla.",
+                            commentarySuccess: "YILDIRICI BASKI! Rakip panikle topu taca dikti, pres sonuÃ§ verdi!",
+                            commentaryFail: "Hakem hafif temas iÃ§in faul dÃ¼dÃ¼ÄŸÃ¼ Ã§aldÄ±.",
+                            successChance: 0.55
                         }
                     ]
                 }
@@ -5786,41 +6079,55 @@
 
             const pw = pitchPlane.clientWidth || 320;
             const midX = pw / 2;
-            const startX = midX, startY = 175; // Ball location at player's feet
+            const startX = midX, startY = 175;
             let endX = midX, endY = 10, ctrlX = midX, ctrlY = 80, color = "#ffd700";
 
             if (trialStage === 0) {
                 if (optIndex === 0) {
-                    // Plase: Curled shot directly inside the Right Corner of Goal Net (midX + 34px)
                     endX = midX + 34; endY = 8;
                     ctrlX = midX + 60; ctrlY = 75;
                     color = "#00e5b7";
                 } else {
-                    // Aşırtma: High Parabolic Chip Lob into Center Roof of Net (midX, top 4px)
                     endX = midX; endY = 4;
                     ctrlX = midX; ctrlY = 35;
                     color = "#00e5ff";
                 }
             } else if (trialStage === 1) {
                 if (optIndex === 0) {
-                    // Vole: Rocket shot directly inside Left Corner of Goal Net (midX - 34px)
                     endX = midX - 34; endY = 8;
                     ctrlX = midX - 55; ctrlY = 70;
                     color = "#ffd700";
                 } else {
-                    // Header directly inside Right Post (midX + 28px)
                     endX = midX + 28; endY = 10;
                     ctrlX = midX + 45; ctrlY = 75;
-                    color = "#f59e0b";
+                    color = "#00e5b7";
                 }
             } else if (trialStage === 2) {
                 if (optIndex === 0) {
-                    // Sprint past defender to flank
+                    endX = midX + 30; endY = 6;
+                    ctrlX = midX + 45; ctrlY = 65;
+                    color = "#ffd700";
+                } else {
+                    endX = midX - 25; endY = 6;
+                    ctrlX = midX - 10; ctrlY = 45;
+                    color = "#ef4444";
+                }
+            } else if (trialStage === 3) {
+                if (optIndex === 0) {
+                    endX = midX + 45; endY = 55;
+                    ctrlX = midX + 60; ctrlY = 100;
+                    color = "#00e5b7";
+                } else {
+                    endX = midX - 45; endY = 45;
+                    ctrlX = midX - 20; ctrlY = 80;
+                    color = "#3b82f6";
+                }
+            } else if (trialStage === 4) {
+                if (optIndex === 0) {
                     endX = midX - 60; endY = 65;
                     ctrlX = midX - 70; ctrlY = 120;
                     color = "#00e5b7";
                 } else {
-                    // Nutmeg through center
                     endX = midX; endY = 60;
                     ctrlX = midX; ctrlY = 110;
                     color = "#a855f7";
@@ -5879,24 +6186,21 @@
 
             const posTrials = POSITION_TRIALS[selectedIntroPosition] || POSITION_TRIALS["Forvet"];
 
-            // Update user jersey number on striker token
             const customNum = document.getElementById("intro-number-input") ? document.getElementById("intro-number-input").value.trim() : "10";
             if (playerNum) playerNum.innerText = customNum || "10";
 
-            if (scorePill) scorePill.innerText = `Skor: ${trialScore} / 3`;
+            if (scorePill) scorePill.innerText = `Skor: ${trialScore} / 5`;
 
-            // Setup pitch positions for current stage
-            if (trialStage < 3) {
-                const currentTrial = posTrials[trialStage];
+            if (trialStage < 5) {
+                const currentTrial = posTrials[trialStage] || posTrials[0];
                 if (titleEl) titleEl.innerText = currentTrial.title;
                 if (descEl) descEl.innerText = currentTrial.desc;
                 if (commEl) {
-                    commEl.innerText = "🎯 Taktiksel vuruşunu seç. Yörüngeyi incelemek için kartların üzerine gel.";
+                    commEl.innerText = "ğŸ¯ Taktiksel tercihini seÃ§. UÃ§uÅŸ rotasÄ±nÄ± gÃ¶rmek iÃ§in seÃ§eneklerin Ã¼zerine gel.";
                     commEl.style.color = "var(--accent-blue)";
                 }
                 if (container) container.innerHTML = "";
 
-                // Reset positions and transitions to initial stage setup
                 if (player) {
                     player.style.transition = "none";
                     player.style.top = "190px";
@@ -5927,10 +6231,9 @@
                 }
                 hideTrialTrajectoryPreview();
 
+                // Pitch setup for stage
                 if (trialStage === 0) {
-                    // Stage 1 (1v1 Striker vs Keeper)
                     if (playerDir) playerDir.style.transform = "translateX(-50%) rotate(0deg)";
-
                     if (opponent) {
                         opponent.style.display = "flex";
                         opponent.style.top = "24px";
@@ -5938,86 +6241,87 @@
                         if (opponentText) opponentText.innerText = "K";
                         opponent.style.animation = "gk-sway 1.5s infinite alternate ease-in-out";
                     }
-
                     if (defender) defender.style.display = "none";
                     if (teammate) teammate.style.display = "none";
                 } else if (trialStage === 1) {
-                    // Stage 2 (Wing Play / Volley Cross)
                     if (playerDir) playerDir.style.transform = "translateX(-50%) rotate(-15deg)";
-
                     if (opponent) {
                         opponent.style.display = "flex";
                         opponent.style.top = "24px";
                         opponent.style.left = "50%";
                         if (opponentText) opponentText.innerText = "K";
                     }
-
                     if (defender) {
                         defender.style.display = "flex";
                         defender.style.top = "70px";
                         defender.style.left = "42%";
                     }
-
                     if (teammate) {
                         teammate.style.display = "flex";
                         teammate.style.top = "75px";
                         teammate.style.left = "16%";
                     }
                 } else if (trialStage === 2) {
-                    // Stage 3 (Final Defender Dribble & Burst)
+                    if (playerDir) playerDir.style.transform = "translateX(-50%) rotate(0deg)";
+                    if (opponent) {
+                        opponent.style.display = "flex";
+                        opponent.style.top = "24px";
+                        opponent.style.left = "50%";
+                        if (opponentText) opponentText.innerText = "K";
+                    }
+                    if (defender) {
+                        defender.style.display = "flex";
+                        defender.style.top = "90px";
+                        defender.style.left = "48%";
+                    }
+                    if (teammate) teammate.style.display = "none";
+                } else if (trialStage === 3) {
                     if (playerDir) playerDir.style.transform = "translateX(-50%) rotate(15deg)";
-
+                    if (opponent) opponent.style.display = "none";
+                    if (defender) {
+                        defender.style.display = "flex";
+                        defender.style.top = "80px";
+                        defender.style.left = "45%";
+                    }
+                    if (teammate) {
+                        teammate.style.display = "flex";
+                        teammate.style.top = "100px";
+                        teammate.style.left = "68%";
+                    }
+                } else if (trialStage === 4) {
+                    if (playerDir) playerDir.style.transform = "translateX(-50%) rotate(15deg)";
                     if (opponent) {
                         opponent.style.display = "flex";
                         opponent.style.top = "75px";
                         opponent.style.left = "50%";
                         if (opponentText) opponentText.innerText = "D";
                     }
-
                     if (defender) defender.style.display = "none";
                     if (teammate) teammate.style.display = "none";
                 }
 
-                // Render Decision Cards with Hover Flight Path Preview
                 currentTrial.options.forEach((opt, idx) => {
                     const btn = document.createElement("button");
                     btn.className = "trial-tactical-card";
-                    btn.style.padding = "13px 16px";
+                    btn.style.padding = "12px 15px";
                     btn.style.borderRadius = "14px";
                     btn.style.background = "rgba(15, 23, 42, 0.85)";
                     btn.style.border = "1.5px solid rgba(255, 255, 255, 0.1)";
                     btn.style.textAlign = "left";
                     btn.style.cursor = "pointer";
-                    btn.style.transition = "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)";
-                    btn.style.display = "flex";
-                    btn.style.alignItems = "center";
-                    btn.style.justifyContent = "space-between";
-                    btn.style.marginBottom = "8px";
-                    btn.style.backdropFilter = "blur(10px)";
+                    btn.style.transition = "all 0.2s ease";
 
                     btn.innerHTML = `
-                        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                            <div style="display: flex; align-items: center; gap: 12px;">
-                                <div style="width: 32px; height: 32px; border-radius: 9px; background: linear-gradient(135deg, rgba(0, 229, 183, 0.2), rgba(0, 180, 216, 0.15)); border: 1.5px solid #00e5b7; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', monospace; font-size: 12px; font-weight: 900; color: #00e5b7; flex-shrink: 0; box-shadow: 0 0 10px rgba(0,229,183,0.3);">
-                                    ${idx === 0 ? 'A' : 'B'}
-                                </div>
-                                <div>
-                                    <div style="font-size: 13.5px; font-weight: 800; color: #ffffff; font-family: 'Space Grotesk', sans-serif;">
-                                        ${opt.actionTitle || opt.text}
-                                    </div>
-                                    <div style="font-size: 11px; color: #94a3b8; margin-top: 2px; line-height: 1.3;">
-                                        ${opt.actionDesc || opt.text}
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="color: #00e5b7; font-size: 15px; font-weight: 800; margin-left: 8px; flex-shrink: 0;">➔</div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <strong style="color: #fff; font-size: 13.5px; font-family: 'Space Grotesk', sans-serif;">${opt.actionTitle}</strong>
+                            <span style="font-size: 10px; font-weight: 800; color: #00e5b7; background: rgba(0,229,183,0.12); padding: 2px 7px; border-radius: 6px;">%${Math.round(opt.successChance * 100)} Ä°htimal</span>
                         </div>
+                        <div style="font-size: 11.5px; color: #94a3b8; line-height: 1.35;">${opt.actionDesc}</div>
                     `;
 
-                    // Hover Trajectory Preview
                     btn.addEventListener("mouseenter", () => {
-                        btn.style.borderColor = "rgba(0, 229, 183, 0.5)";
-                        btn.style.background = "rgba(20, 30, 48, 0.95)";
+                        btn.style.borderColor = "#00e5b7";
+                        btn.style.background = "rgba(0, 229, 183, 0.08)";
                         btn.style.transform = "translateY(-2px)";
                         showTrialTrajectoryPreview(idx);
                     });
@@ -6027,8 +6331,7 @@
                         btn.style.transform = "translateY(0)";
                         hideTrialTrajectoryPreview();
                     });
-                    
-                    // Click: Sequential Async Shot Physics & Net Impact Flow
+
                     btn.addEventListener("click", () => {
                         hideTrialTrajectoryPreview();
                         container.querySelectorAll("button").forEach(b => {
@@ -6038,19 +6341,14 @@
                         btn.style.opacity = "1";
                         btn.style.borderColor = "#00e5b7";
                         btn.style.background = "linear-gradient(135deg, rgba(0, 229, 183, 0.2) 0%, rgba(15, 23, 42, 0.95) 100%)";
-                        btn.style.boxShadow = "0 0 20px rgba(0, 229, 183, 0.35)";
-                        
-                        // Dynamic Success Probability
+
                         const success = Math.random() < (opt.successChance || 0.65);
-                        
-                        // STEP 1: Kick Impact SFX
+
                         if (typeof SoundManager !== "undefined" && typeof SoundManager.playKickShot === "function") {
                             try { SoundManager.playKickShot(); } catch(e){}
                         }
 
-                        // STEP 2: Async Physics Simulation
                         if (trialStage === 0) {
-                            // 1v1 FINISHING SIMULATION
                             if (opponent) opponent.style.animation = "none";
                             if (player) {
                                 player.style.transition = "top 0.25s ease-out";
@@ -6058,15 +6356,11 @@
                             }
 
                             if (success) {
-                                // EXACT INSIDE THE GOAL NET TARGET:
-                                // Option 0 (Plase): Right corner of net -> calc(50% + 34px), top 8px
-                                // Option 1 (Aşırtma): Center roof of net -> 50%, top 4px
                                 const isFarRight = (idx === 0);
                                 const targetX = isFarRight ? "calc(50% + 34px)" : "50%";
                                 const targetY = isFarRight ? "8px" : "4px";
-                                const diveSide = isFarRight ? "calc(50% - 32px)" : "calc(50% + 35px)"; // Keeper dives wrong way
+                                const diveSide = isFarRight ? "calc(50% - 32px)" : "calc(50% + 35px)";
 
-                                // Keeper dives the wrong direction
                                 setTimeout(() => {
                                     if (opponent) {
                                         opponent.style.transition = "all 0.45s ease-out";
@@ -6075,15 +6369,13 @@
                                     }
                                 }, 180);
 
-                                // Ball flight deep into the goal net
                                 if (ball) {
                                     ball.style.transition = "left 0.7s cubic-bezier(0.25, 1, 0.5, 1), top 0.7s cubic-bezier(0.25, 1, 0.5, 1), transform 0.7s ease-in-out";
                                     ball.style.left = targetX;
-                                    ball.style.top = targetY; // Deep inside goal net
-                                    ball.style.transform = "translateX(-50%) scale(0.62)"; // Depth scaling
+                                    ball.style.top = targetY;
+                                    ball.style.transform = "translateX(-50%) scale(0.62)";
                                 }
 
-                                // STEP 3: Net Impact & Ripple (T = 700ms)
                                 setTimeout(() => {
                                     if (typeof SoundManager !== "undefined" && typeof SoundManager.playNetSwish === "function") {
                                         try { SoundManager.playNetSwish(); } catch(e){}
@@ -6093,76 +6385,51 @@
                                         net.style.transform = "translateX(-50%) translateY(-6px) scaleY(1.45)";
                                         setTimeout(() => { if (net) net.style.transform = "translateX(-50%)"; }, 250);
                                     }
-                                    
-                                    // Ball drops inside the net
                                     if (ball) {
                                         ball.style.transition = "top 0.25s ease-in";
                                         ball.style.top = "18px";
                                     }
                                 }, 700);
 
-                                // STEP 4: Goal Banner & Score Sync (T = 1100ms)
                                 setTimeout(() => {
                                     if (resultBanner) {
                                         resultBanner.innerText = "🎯 KUSURSUZ GOL!";
                                         resultBanner.style.borderColor = "#00e5b7";
                                         resultBanner.style.color = "#00e5b7";
-                                        resultBanner.style.boxShadow = "0 0 30px rgba(0,229,183,0.7)";
                                         resultBanner.style.transform = "translate(-50%, -50%) scale(1.05)";
                                         resultBanner.style.opacity = "1";
                                     }
-
                                     trialScore++;
-                                    if (scorePill) {
-                                        scorePill.innerText = `Skor: ${trialScore} / 3`;
-                                        scorePill.style.transform = "scale(1.2)";
-                                        scorePill.style.transition = "transform 0.2s ease";
-                                        setTimeout(() => { if (scorePill) scorePill.style.transform = "scale(1)"; }, 200);
-                                    }
-
+                                    if (scorePill) scorePill.innerText = `Skor: ${trialScore} / 5`;
                                     if (commEl) {
                                         commEl.innerText = opt.commentarySuccess;
                                         commEl.style.color = "#00e5b7";
                                     }
-                                }, 1100);
-
+                                }, 1000);
                             } else {
-                                // Shot Saved by Goalkeeper (Never enters net!)
                                 if (opponent) {
                                     opponent.style.transition = "all 0.35s ease-out";
                                     opponent.style.left = "calc(50% + 15px)";
                                     opponent.style.top = "35px";
                                 }
-
                                 if (ball) {
                                     ball.style.transition = "left 0.5s ease-out, top 0.5s ease-out, transform 0.5s ease-out";
                                     ball.style.left = "calc(50% + 15px)";
-                                    ball.style.top = "42px"; // Hits keeper at the 6-yard line
+                                    ball.style.top = "42px";
                                     ball.style.transform = "translateX(-50%) scale(0.82)";
                                 }
-
                                 setTimeout(() => {
                                     if (typeof SoundManager !== "undefined" && typeof SoundManager.playKeeperSave === "function") {
                                         try { SoundManager.playKeeperSave(); } catch(e){}
                                     }
                                     triggerTrialShockwave("calc(50% + 15px)", "42px", "#f43f5e");
-
-                                    // Ball deflects away to the sideline
-                                    if (ball) {
-                                        ball.style.transition = "all 0.4s ease-out";
-                                        ball.style.left = "calc(50% + 75px)";
-                                        ball.style.top = "90px";
-                                    }
-
                                     if (resultBanner) {
                                         resultBanner.innerText = "🧤 KALECİ KURTARDI!";
                                         resultBanner.style.borderColor = "#f43f5e";
                                         resultBanner.style.color = "#f43f5e";
-                                        resultBanner.style.boxShadow = "0 0 30px rgba(244,63,94,0.7)";
                                         resultBanner.style.transform = "translate(-50%, -50%) scale(1.05)";
                                         resultBanner.style.opacity = "1";
                                     }
-
                                     if (commEl) {
                                         commEl.innerText = opt.commentaryFail;
                                         commEl.style.color = "#f43f5e";
@@ -6170,7 +6437,7 @@
                                 }, 500);
                             }
                         } else if (trialStage === 1) {
-                            // WING PLAY & VOLLEY
+                            // Stage 2: Wing Cross & Volley / Header (Bug Fixed: Distinct text for header vs volley)
                             if (player) player.style.top = "175px";
                             if (ball) {
                                 ball.style.transition = "all 0.4s ease-out";
@@ -6186,10 +6453,9 @@
                                 }
 
                                 if (success) {
-                                    // Cross into box -> Rocket volley directly into Left Corner of Net (midX - 34px)
                                     if (ball) {
                                         ball.style.transition = "all 0.45s cubic-bezier(0.25, 1, 0.5, 1)";
-                                        ball.style.left = "calc(50% - 34px)";
+                                        ball.style.left = (idx === 0) ? "calc(50% - 34px)" : "calc(50% + 30px)";
                                         ball.style.top = "8px";
                                         ball.style.transform = "translateX(-50%) scale(0.62)";
                                     }
@@ -6198,34 +6464,34 @@
                                         if (typeof SoundManager !== "undefined" && typeof SoundManager.playNetSwish === "function") {
                                             try { SoundManager.playNetSwish(); } catch(e){}
                                         }
-                                        triggerTrialShockwave("calc(50% - 34px)", "8px", "#ffd700");
+                                        triggerTrialShockwave("50%", "8px", "#ffd700");
                                         if (net) {
                                             net.style.transform = "translateX(-50%) translateY(-6px) scaleY(1.45)";
                                             setTimeout(() => { if (net) net.style.transform = "translateX(-50%)"; }, 250);
                                         }
-                                        if (ball) {
-                                            ball.style.transition = "top 0.25s ease-in";
-                                            ball.style.top = "18px";
-                                        }
 
                                         if (resultBanner) {
-                                            resultBanner.innerText = "🚀 MÜTHİŞ VOLE GOL!";
-                                            resultBanner.style.borderColor = "#ffd700";
-                                            resultBanner.style.color = "#ffd700";
-                                            resultBanner.style.boxShadow = "0 0 30px rgba(255,215,0,0.7)";
+                                            if (idx === 0) {
+                                                resultBanner.innerText = "🚀 MÜTHİŞ VOLE GOL!";
+                                                resultBanner.style.borderColor = "#ffd700";
+                                                resultBanner.style.color = "#ffd700";
+                                            } else {
+                                                resultBanner.innerText = "👑 HARİKA KAFA GOLÜ!";
+                                                resultBanner.style.borderColor = "#00e5b7";
+                                                resultBanner.style.color = "#00e5b7";
+                                            }
                                             resultBanner.style.transform = "translate(-50%, -50%) scale(1.05)";
                                             resultBanner.style.opacity = "1";
                                         }
 
                                         trialScore++;
-                                        if (scorePill) scorePill.innerText = `Skor: ${trialScore} / 3`;
+                                        if (scorePill) scorePill.innerText = `Skor: ${trialScore} / 5`;
                                         if (commEl) {
                                             commEl.innerText = opt.commentarySuccess;
                                             commEl.style.color = "#00e5b7";
                                         }
                                     }, 450);
                                 } else {
-                                    // Defender clears header
                                     if (defender) defender.style.left = "35%";
                                     if (ball) {
                                         ball.style.left = "35%";
@@ -6251,7 +6517,101 @@
                                 }
                             }, 400);
                         } else if (trialStage === 2) {
-                            // DRIBBLE & SPEED BURST
+                            // Stage 3: Long Range Shot
+                            if (success) {
+                                if (ball) {
+                                    ball.style.transition = "all 0.5s cubic-bezier(0.25, 1, 0.5, 1)";
+                                    ball.style.left = (idx === 0) ? "calc(50% + 32px)" : "calc(50% - 25px)";
+                                    ball.style.top = "6px";
+                                    ball.style.transform = "translateX(-50%) scale(0.6)";
+                                }
+                                setTimeout(() => {
+                                    triggerTrialShockwave("50%", "6px", "#ffd700");
+                                    if (resultBanner) {
+                                        resultBanner.innerText = "⚡ 90'A FÜZE GOL!";
+                                        resultBanner.style.borderColor = "#ffd700";
+                                        resultBanner.style.color = "#ffd700";
+                                        resultBanner.style.transform = "translate(-50%, -50%) scale(1.05)";
+                                        resultBanner.style.opacity = "1";
+                                    }
+                                    trialScore++;
+                                    if (scorePill) scorePill.innerText = `Skor: ${trialScore} / 5`;
+                                    if (commEl) {
+                                        commEl.innerText = opt.commentarySuccess;
+                                        commEl.style.color = "#00e5b7";
+                                    }
+                                }, 500);
+                            } else {
+                                if (ball) {
+                                    ball.style.transition = "all 0.4s ease-out";
+                                    ball.style.left = "calc(50% + 60px)";
+                                    ball.style.top = "2px";
+                                }
+                                setTimeout(() => {
+                                    if (resultBanner) {
+                                        resultBanner.innerText = "💨 AZ FARKLA AUT!";
+                                        resultBanner.style.borderColor = "#f43f5e";
+                                        resultBanner.style.color = "#f43f5e";
+                                        resultBanner.style.transform = "translate(-50%, -50%) scale(1.05)";
+                                        resultBanner.style.opacity = "1";
+                                    }
+                                    if (commEl) {
+                                        commEl.innerText = opt.commentaryFail;
+                                        commEl.style.color = "#f43f5e";
+                                    }
+                                }, 400);
+                            }
+                        } else if (trialStage === 3) {
+                            // Stage 4: Through Ball / Defense Split
+                            if (success) {
+                                if (player) {
+                                    player.style.transition = "all 0.5s ease-out";
+                                    player.style.top = "100px";
+                                    player.style.left = "55%";
+                                }
+                                if (ball) {
+                                    ball.style.transition = "all 0.5s ease-out";
+                                    ball.style.left = "55%";
+                                    ball.style.top = "80px";
+                                }
+                                setTimeout(() => {
+                                    triggerTrialShockwave("55%", "80px", "#00e5b7");
+                                    if (resultBanner) {
+                                        resultBanner.innerText = "🎯 KUSURSUZ ASİST / PAS!";
+                                        resultBanner.style.borderColor = "#00e5b7";
+                                        resultBanner.style.color = "#00e5b7";
+                                        resultBanner.style.transform = "translate(-50%, -50%) scale(1.05)";
+                                        resultBanner.style.opacity = "1";
+                                    }
+                                    trialScore++;
+                                    if (scorePill) scorePill.innerText = `Skor: ${trialScore} / 5`;
+                                    if (commEl) {
+                                        commEl.innerText = opt.commentarySuccess;
+                                        commEl.style.color = "#00e5b7";
+                                    }
+                                }, 500);
+                            } else {
+                                if (ball) {
+                                    ball.style.transition = "all 0.35s ease-out";
+                                    ball.style.left = "45%";
+                                    ball.style.top = "80px";
+                                }
+                                setTimeout(() => {
+                                    if (resultBanner) {
+                                        resultBanner.innerText = "🛑 DEFANS KESTİ";
+                                        resultBanner.style.borderColor = "#f43f5e";
+                                        resultBanner.style.color = "#f43f5e";
+                                        resultBanner.style.transform = "translate(-50%, -50%) scale(1.05)";
+                                        resultBanner.style.opacity = "1";
+                                    }
+                                    if (commEl) {
+                                        commEl.innerText = opt.commentaryFail;
+                                        commEl.style.color = "#f43f5e";
+                                    }
+                                }, 350);
+                            }
+                        } else if (trialStage === 4) {
+                            // Stage 5: Final Dribble
                             if (success) {
                                 if (player) {
                                     player.style.transition = "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
@@ -6267,19 +6627,17 @@
                                     opponent.style.transition = "all 0.5s ease-out";
                                     opponent.style.left = "58%";
                                 }
-
                                 setTimeout(() => {
                                     triggerTrialShockwave("35%", "75px", "#00e5b7");
                                     if (resultBanner) {
                                         resultBanner.innerText = "⚡ HARİKA ÇALIM & PAS!";
                                         resultBanner.style.borderColor = "#00e5b7";
                                         resultBanner.style.color = "#00e5b7";
-                                        resultBanner.style.boxShadow = "0 0 30px rgba(0,229,183,0.7)";
                                         resultBanner.style.transform = "translate(-50%, -50%) scale(1.05)";
                                         resultBanner.style.opacity = "1";
                                     }
                                     trialScore++;
-                                    if (scorePill) scorePill.innerText = `Skor: ${trialScore} / 3`;
+                                    if (scorePill) scorePill.innerText = `Skor: ${trialScore} / 5`;
                                     if (commEl) {
                                         commEl.innerText = opt.commentarySuccess;
                                         commEl.style.color = "#00e5b7";
@@ -6309,60 +6667,265 @@
                             }
                         }
 
-                        // STEP 5: Smooth Transition to Next Stage (T = 2400ms)
                         setTimeout(() => {
                             trialStage++;
                             runTrial();
-                        }, 2400);
+                        }, 2300);
                     });
 
                     container.appendChild(btn);
                 });
 
             } else {
-                // ALL 3 STAGES COMPLETED -> GO TO CONTRACT STEP
+                // ALL 5 STAGES COMPLETED -> GO TO CONTRACT STEP WITH 3 CLUB OFFERS
                 goToIntroStep('contract');
-
-                const resText = document.getElementById("result-text");
-                const resTag = document.getElementById("result-tag");
-                const resClubTitle = document.getElementById("result-club-title");
-                const resLeagueBadge = document.getElementById("result-league-badge");
-                const resSalaryVal = document.getElementById("result-salary-val");
-                const resTrustVal = document.getElementById("result-trust-val");
-
-                let name = document.getElementById("intro-name-input") ? document.getElementById("intro-name-input").value.trim() : "Genç Yetenek";
-                let city = document.getElementById("intro-city-input") ? document.getElementById("intro-city-input").value.trim() : "Sinop";
-                let district = document.getElementById("intro-district-input") ? document.getElementById("intro-district-input").value.trim() : "Gerze";
-
-                const bs = getBackstory(city, district);
-                const startingClub = (typeof DATABASE !== "undefined" && DATABASE.getRandomAmateurClub) ? DATABASE.getRandomAmateurClub() : { name: "Yıldız Gençlikspor" };
-                selectedStartingClub = startingClub.name;
-
-                if (resClubTitle) resClubTitle.innerText = selectedStartingClub;
-
-                if (trialScore === 3) {
-                    if (resTag) { resTag.innerText = "EFSANE SEÇME (3/3)"; resTag.style.background = "rgba(255,215,0,0.15)"; resTag.style.borderColor = "rgba(255,215,0,0.4)"; resTag.style.color = "#ffd700"; }
-                    if (resLeagueBadge) resLeagueBadge.innerText = "TFF 2. Lig";
-                    if (resSalaryVal) resSalaryVal.innerText = "₺600 / hf";
-                    if (resTrustVal) resTrustVal.innerText = "%50";
-                    if (resText) resText.innerHTML = `MÜKEMMEL SEÇMELER (3/3)! Gözlemciler yeteneğine hayran kaldı.<br><br><strong>TFF 2. Lig</strong> ekiplerinden <strong>${selectedStartingClub}</strong> sana doğrudan ilk 11 sözleşmesi sundu!`;
-                } else if (trialScore >= 1) {
-                    if (resTag) { resTag.innerText = "PROFESYONEL LİSANS (" + trialScore + "/3)"; resTag.style.background = "rgba(16,185,129,0.15)"; resTag.style.borderColor = "rgba(16,185,129,0.4)"; resTag.style.color = "#00e5b7"; }
-                    if (resLeagueBadge) resLeagueBadge.innerText = "TFF 3. Lig";
-                    if (resSalaryVal) resSalaryVal.innerText = "₺350 / hf";
-                    if (resTrustVal) resTrustVal.innerText = "%40";
-                    if (resText) resText.innerHTML = `BAŞARILI SEÇME (${trialScore}/3)! Antrenörler sende büyük bir potansiyel gördü.<br><br><strong>TFF 3. Lig</strong> ekibi <strong>${selectedStartingClub}</strong> ile ilk profesyonel sözleşmeni imzaladın!`;
-                } else {
-                    if (resTag) { resTag.innerText = "YEDEK KADRO (0/3)"; resTag.style.background = "rgba(245,158,11,0.15)"; resTag.style.borderColor = "rgba(245,158,11,0.4)"; resTag.style.color = "#f59e0b"; }
-                    if (resLeagueBadge) resLeagueBadge.innerText = "TFF 3. Lig";
-                    if (resSalaryVal) resSalaryVal.innerText = "₺250 / hf";
-                    if (resTrustVal) resTrustVal.innerText = "%20";
-                    if (resText) resText.innerHTML = `ZOR BAŞLANGIÇ (0/3)! Heyecanına yenik düştün ama kulüp sendeki ham yeteneğe inandı.<br><br><strong>TFF 3. Lig</strong> ekibi <strong>${selectedStartingClub}</strong> seni yedek kadroya aldı. Antrenmanlarda kendini ispatla!`;
-                }
+                renderThreeClubOffers();
             }
         }
 
+        let clubOffersList = [];
+        window.selectClubOffer = function(index) {
+            clubOffersList.forEach((c, i) => {
+                const card = document.getElementById(`offer-card-${i}`);
+                const btn = document.getElementById(`offer-btn-${i}`);
+                if (card) {
+                    if (i === index) {
+                        card.style.borderColor = "#00e5b7";
+                        card.style.background = "linear-gradient(135deg, rgba(0,229,183,0.15) 0%, rgba(15,23,42,0.95) 100%)";
+                        card.style.boxShadow = "0 0 25px rgba(0,229,183,0.3)";
+                        if (btn) {
+                            btn.innerText = "✓ SEÇİLDİ";
+                            btn.style.background = "#00e5b7";
+                            btn.style.color = "#04100c";
+                        }
+                    } else {
+                        card.style.borderColor = "rgba(255,255,255,0.1)";
+                        card.style.background = "rgba(15,23,42,0.75)";
+                        card.style.boxShadow = "none";
+                        if (btn) {
+                            btn.innerText = "SEÇ";
+                            btn.style.background = "rgba(255,255,255,0.08)";
+                            btn.style.color = "#cbd5e1";
+                        }
+                    }
+                }
+            });
+
+            const chosen = clubOffersList[index];
+            selectedStartingClub = chosen.name;
+            window._selectedOfferData = chosen;
+        };
+
+        function renderThreeClubOffers() {
+            const container = document.getElementById("contract-offers-container");
+            const resTag = document.getElementById("result-tag");
+            if (!container) return;
+
+            let tierName = "TFF 3. Lig";
+            let baseSalary = 350;
+            let baseTrust = 40;
+
+            if (trialScore >= 4) {
+                tierName = "TFF 2. Lig";
+                baseSalary = 600;
+                baseTrust = 50;
+                if (resTag) {
+                    resTag.innerText = `EFSANE SEÇME (${trialScore}/5)`;
+                    resTag.style.background = "rgba(255,215,0,0.15)";
+                    resTag.style.borderColor = "rgba(255,215,0,0.4)";
+                    resTag.style.color = "#ffd700";
+                }
+            } else if (trialScore >= 2) {
+                tierName = "TFF 3. Lig";
+                baseSalary = 400;
+                baseTrust = 40;
+                if (resTag) {
+                    resTag.innerText = `PROFESYONEL LİSANS (${trialScore}/5)`;
+                    resTag.style.background = "rgba(0,229,183,0.15)";
+                    resTag.style.borderColor = "rgba(0,229,183,0.4)";
+                    resTag.style.color = "#00e5b7";
+                }
+            } else {
+                tierName = "TFF 3. Lig";
+                baseSalary = 280;
+                baseTrust = 25;
+                if (resTag) {
+                    resTag.innerText = `GELİŞİM SÖZLEŞMESİ (${trialScore}/5)`;
+                    resTag.style.background = "rgba(245,158,11,0.15)";
+                    resTag.style.borderColor = "rgba(245,158,11,0.4)";
+                    resTag.style.color = "#f59e0b";
+                }
+            }
+
+            clubOffersList = [
+                {
+                    name: "Maden SK",
+                    league: tierName,
+                    role: "Gelişim & İlk 11 Rolü",
+                    salary: baseSalary,
+                    trust: baseTrust,
+                    tagColor: "#10b981",
+                    badge: "MSK",
+                    desc: "Genç yeteneklere güvenen, gelişimin için ideal kulüp."
+                },
+                {
+                    name: "Sarıyer SK",
+                    league: (trialScore >= 3 ? "TFF 2. Lig" : "TFF 3. Lig"),
+                    role: "Şampiyonluk Hedefi (Rotasyon)",
+                    salary: Math.round(baseSalary * 1.35),
+                    trust: Math.max(20, baseTrust - 10),
+                    tagColor: "#3b82f6",
+                    badge: "SRY",
+                    desc: "Yüksek maaş bütçesi, yoğun rekabet ve şampiyonluk baskısı."
+                },
+                {
+                    name: "Karşıyaka",
+                    league: tierName,
+                    role: "Ateşli Tribün & Bayrak Adam",
+                    salary: Math.round(baseSalary * 1.15),
+                    trust: baseTrust + 5,
+                    tagColor: "#f59e0b",
+                    badge: "KSK",
+                    desc: "Büyük taraftar desteği, yüksek hoca güveni ve sevgi."
+                }
+            ];
+
+            container.innerHTML = "";
+            clubOffersList.forEach((offer, idx) => {
+                const card = document.createElement("div");
+                card.id = `offer-card-${idx}`;
+                card.style.background = (idx === 0) ? "linear-gradient(135deg, rgba(0,229,183,0.15) 0%, rgba(15,23,42,0.95) 100%)" : "rgba(15,23,42,0.75)";
+                card.style.border = (idx === 0) ? "1.5px solid #00e5b7" : "1.5px solid rgba(255,255,255,0.1)";
+                card.style.borderRadius = "12px";
+                card.style.padding = "12px 14px";
+                card.style.cursor = "pointer";
+                card.style.transition = "all 0.2s ease";
+
+                card.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 900; background: ${offer.tagColor}; color: #000; padding: 3px 7px; border-radius: 6px;">${offer.badge}</span>
+                            <strong style="font-size: 13.5px; color: #fff;">${offer.name}</strong>
+                            <span style="font-size: 10px; color: ${offer.tagColor}; font-weight: 700;">${offer.league}</span>
+                        </div>
+                        <button type="button" id="offer-btn-${idx}" style="padding: 4px 10px; font-size: 10.5px; font-weight: 800; border-radius: 6px; border: none; background: ${idx === 0 ? '#00e5b7' : 'rgba(255,255,255,0.08)'}; color: ${idx === 0 ? '#04100c' : '#cbd5e1'}; cursor: pointer;">
+                            ${idx === 0 ? '✓ SEÇİLDİ' : 'SEÇ'}
+                        </button>
+                    </div>
+                    <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">${offer.desc}</div>
+                    <div style="display: flex; gap: 14px; font-size: 10.5px;">
+                        <div><span style="color: #64748b;">Maaş:</span> <strong style="color: #ffd700;">₺${offer.salary} / hf</strong></div>
+                        <div><span style="color: #64748b;">Güven:</span> <strong style="color: #00e5b7;">%${offer.trust}</strong></div>
+                        <div><span style="color: #64748b;">Rol:</span> <strong style="color: #e2e8f0;">${offer.role}</strong></div>
+                    </div>
+                `;
+
+                card.addEventListener("click", () => selectClubOffer(idx));
+                container.appendChild(card);
+            });
+
+            selectClubOffer(0);
+        }
+
         window.startCareerFromIntro = function() {
+            let name = (document.getElementById("intro-name-input") ? document.getElementById("intro-name-input").value.trim() : "") || "Genç Yetenek";
+            let city = (document.getElementById("intro-city-input") ? document.getElementById("intro-city-input").value.trim() : "") || "Sinop";
+            let district = (document.getElementById("intro-district-input") ? document.getElementById("intro-district-input").value.trim() : "") || "Gerze";
+            let jerseyNumber = parseInt(document.getElementById("intro-number-input") ? document.getElementById("intro-number-input").value : 10) || 10;
+            
+            const chosenOffer = window._selectedOfferData || (clubOffersList.length > 0 ? clubOffersList[0] : { name: "Maden SK", league: "3. Lig", salary: 350, trust: 40 });
+            selectedStartingClub = chosenOffer.name;
+
+            try {
+                localStorage.removeItem(GAME.saveKey);
+            } catch(e){}
+
+            if (typeof GAME !== "undefined") {
+                GAME.resetGame(name, chosenOffer.league, chosenOffer.salary, chosenOffer.trust, city, district, selectedStartingClub, selectedIntroPosition);
+                GAME.state.jerseyNumber = jerseyNumber;
+                GAME.state.difficulty = window._selectedDifficulty || "normal";
+                
+                // Save custom story state if selected
+                if (currentStoryMode === "custom") {
+                    GAME.state.customStory = {
+                        enabled: true,
+                        origin: selectedCustomOrigin,
+                        dream: selectedCustomDream
+                    };
+                }
+
+                if (typeof tempAvatarCustomization !== "undefined") {
+                    GAME.state.avatarCustomization = tempAvatarCustomization;
+                }
+                GAME.saveGame();
+                GAME.updateUI();
+            }
+
+            const introModal = document.getElementById("intro-modal");
+            if (introModal) {
+                introModal.classList.remove("active");
+                introModal.style.display = "none";
+            }
+
+            if (typeof determineNextOpponent === "function") determineNextOpponent();
+            if (typeof renderLeagueTable === "function") renderLeagueTable();
+            if (typeof renderSocialFeed === "function") renderSocialFeed();
+            if (typeof init3dFutCardEffects === "function") init3dFutCardEffects();
+
+            // Open Animated Coach Office Modal
+            openCoachOfficeModal();
+        };
+
+        window.openCoachOfficeModal = function() {
+            const modal = document.getElementById("coach-office-modal");
+            if (!modal) {
+                if (typeof checkAndStartTutorial === "function") checkAndStartTutorial();
+                return;
+            }
+
+            const clubTag = document.getElementById("coach-office-club-tag");
+            const oppNameEl = document.getElementById("coach-next-opp-name");
+            const speechTextEl = document.getElementById("coach-office-speech-text");
+
+            const clubName = (GAME && GAME.state && GAME.state.club) || "Kulüp";
+            const playerName = (GAME && GAME.state && GAME.state.playerName) || "Evlat";
+            const nextOpp = (typeof determineNextOpponent === "function" && GAME.state.nextOpponent) ? GAME.state.nextOpponent.name : "Beyoğlu Yeni Çarşı";
+
+            if (clubTag) clubTag.innerText = `${clubName.toUpperCase()} TESİSLERİ`;
+            if (oppNameEl) oppNameEl.innerText = nextOpp;
+
+            const fullSpeech = `Evlat hoş geldin! Ben bu takımın teknik direktörüyüm. Seçmelerdeki yeteneğin, hırsın ve sahadaki dik duruşun ekibimin çok dikkatini çekti.\n\nSözleşmen hayırlı olsun! Bu hafta ligin 1. haftasında ${nextOpp} ile çok kritik bir maça çıkıyoruz.\n\nSeni maç kadrosuna dahil ettim. Sahaya çıktığında taktik disiplinden asla kopma, arkadaşlarına destek ol ve ayağına fırsat geldiğinde affetme! Forma aslanın ağzında, güvenimi boşa çıkarma!`;
+
+            if (speechTextEl) {
+                speechTextEl.innerText = "";
+                let charIdx = 0;
+                const typeTimer = setInterval(() => {
+                    if (charIdx < fullSpeech.length) {
+                        speechTextEl.innerText += fullSpeech.charAt(charIdx);
+                        charIdx++;
+                    } else {
+                        clearInterval(typeTimer);
+                    }
+                }, 16);
+            }
+
+            modal.style.display = "flex";
+        };
+
+        window.closeCoachOfficeModalAndEnterLobby = function() {
+            const modal = document.getElementById("coach-office-modal");
+            if (modal) modal.style.display = "none";
+
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playWhistle === "function") {
+                try { SoundManager.playWhistle(); } catch(e){}
+            }
+
+            if (typeof checkAndStartTutorial === "function") {
+                checkAndStartTutorial();
+            }
+        };
+
+        window.startCareerFromIntro_Original = function() {
             const introModal = document.getElementById("intro-modal");
             let name = (document.getElementById("intro-name-input") ? document.getElementById("intro-name-input").value.trim() : "") || "Genç Yetenek";
             let city = (document.getElementById("intro-city-input") ? document.getElementById("intro-city-input").value.trim() : "") || "Sinop";
@@ -13797,7 +14360,7 @@ function afterWeekAdvanced() {
                                 
                                 if (MatchEngine.hasYellowCard) {
                                     MatchEngine.isSentOff = true;
-                                    GAME.state.suspendedWeeks = 2;
+                                    GAME.state.suspendedWeeks = 1;
                                     return `formasını çıkarıp sallıyor! Ama o da ne? Zaten sarı kartı vardı! Hakem ikinci sarıdan kırmızı kartı çıkarıyor! Oyundan ihraç edildin ama tribünler çılgınlar gibi ismini haykırıyor!`;
                                 } else {
                                     MatchEngine.hasYellowCard = true;
