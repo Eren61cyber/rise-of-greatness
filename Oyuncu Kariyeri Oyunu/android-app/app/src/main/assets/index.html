@@ -6011,6 +6011,119 @@
 
         let currentBackstoryText = "";
         let typeWriterTimeout = null;
+        let currentStoryMode = "auto";
+        let selectedCustomOrigin = "Mahalledeki Beton Sahalarda";
+        let selectedCustomDream = "Ailemi borçtan kurtarıp onlara gurur yaşatmak";
+
+        window.switchStoryMode = function(mode) {
+            currentStoryMode = mode;
+            const btnAuto = document.getElementById("btn-story-mode-auto");
+            const btnCustom = document.getElementById("btn-story-mode-custom");
+            const builderBox = document.getElementById("custom-story-builder-box");
+            const titleEl = document.getElementById("intro-backstory-title");
+            
+            if (mode === "auto") {
+                if (btnAuto) {
+                    btnAuto.style.border = "1.5px solid #00e5b7";
+                    btnAuto.style.background = "rgba(0,229,183,0.15)";
+                    btnAuto.style.color = "#00e5b7";
+                }
+                if (btnCustom) {
+                    btnCustom.style.border = "1.5px solid rgba(255,255,255,0.15)";
+                    btnCustom.style.background = "rgba(255,255,255,0.05)";
+                    btnCustom.style.color = "#94a3b8";
+                }
+                if (builderBox) builderBox.style.display = "none";
+                
+                const city = (document.getElementById("intro-city-input") && document.getElementById("intro-city-input").value.trim()) || "Sinop";
+                const district = (document.getElementById("intro-district-input") && document.getElementById("intro-district-input").value.trim()) || "Gerze";
+                const bs = getBackstory(city, district);
+                currentBackstoryText = bs.storyText;
+                if (titleEl) titleEl.innerText = bs.title || "Memleketten Zirveye";
+                
+                const storyEl = document.getElementById("intro-story-text");
+                if (storyEl) storyEl.innerText = "";
+                const nextBtn2 = document.getElementById("intro-btn-next-2");
+                if (nextBtn2) nextBtn2.style.display = "none";
+                if (typeWriterTimeout) clearTimeout(typeWriterTimeout);
+                typeWriter(bs.storyText, "intro-story-text", 20, () => {
+                    if (nextBtn2) nextBtn2.style.display = "block";
+                });
+            } else {
+                if (btnCustom) {
+                    btnCustom.style.border = "1.5px solid #00e5b7";
+                    btnCustom.style.background = "rgba(0,229,183,0.15)";
+                    btnCustom.style.color = "#00e5b7";
+                }
+                if (btnAuto) {
+                    btnAuto.style.border = "1.5px solid rgba(255,255,255,0.15)";
+                    btnAuto.style.background = "rgba(255,255,255,0.05)";
+                    btnAuto.style.color = "#94a3b8";
+                }
+                if (builderBox) builderBox.style.display = "block";
+                updateCustomStory();
+            }
+        };
+
+        window.selectCustomOrigin = function(btn, originText) {
+            selectedCustomOrigin = originText;
+            const container = document.getElementById("custom-origin-chips");
+            if (container) {
+                const buttons = container.querySelectorAll("button");
+                buttons.forEach(b => {
+                    b.style.border = "1px solid rgba(255,255,255,0.15)";
+                    b.style.background = "rgba(255,255,255,0.05)";
+                    b.style.color = "#94a3b8";
+                });
+            }
+            if (btn) {
+                btn.style.border = "1.5px solid #00e5b7";
+                btn.style.background = "rgba(0,229,183,0.15)";
+                btn.style.color = "#fff";
+            }
+            updateCustomStory();
+        };
+
+        window.selectCustomDream = function(btn, dreamText) {
+            selectedCustomDream = dreamText;
+            const container = document.getElementById("custom-dream-chips");
+            if (container) {
+                const buttons = container.querySelectorAll("button");
+                buttons.forEach(b => {
+                    b.style.border = "1px solid rgba(255,255,255,0.15)";
+                    b.style.background = "rgba(255,255,255,0.05)";
+                    b.style.color = "#94a3b8";
+                });
+            }
+            if (btn) {
+                btn.style.border = "1.5px solid #ffd700";
+                btn.style.background = "rgba(255,215,0,0.15)";
+                btn.style.color = "#fff";
+            }
+            updateCustomStory();
+        };
+
+        function updateCustomStory() {
+            const city = (document.getElementById("intro-city-input") && document.getElementById("intro-city-input").value.trim()) || "Sinop";
+            const district = (document.getElementById("intro-district-input") && document.getElementById("intro-district-input").value.trim()) || "Gerze";
+            const pName = (document.getElementById("intro-name-input") && document.getElementById("intro-name-input").value.trim()) || "Genç Yetenek";
+            
+            const titleEl = document.getElementById("intro-backstory-title");
+            if (titleEl) titleEl.innerText = `👑 Kendi Efsaneni Yaz: ${city} / ${district}`;
+
+            const customStory = `${city} ili ${district} ilçesinde doğup büyüyen ${pName}, futbol aşkını ${selectedCustomOrigin.toLowerCase()} top koştururken kazandı.\n\nToz toprak içinde yırtılan ayakkabılarına, kanayan dizlerine aldırış etmeden gün batana kadar meşin yuvarlağın peşinden koştun. En büyük çocukluk hayalin ise her zaman tek bir şeydi: ${selectedCustomDream}!\n\nMahalle arasındaki o saf yeteneğin amatör kulüplerin ve profesyonel scoutların dikkatini çekmeyi başardı. Bugün, çocukluk hayallerine giden ilk adımı atmak üzere kulüp seçmelerine çıkıyorsun! Sahada bütün gözler senin üzerinde olacak!`;
+            
+            currentBackstoryText = customStory;
+            const storyEl = document.getElementById("intro-story-text");
+            if (storyEl) storyEl.innerText = "";
+            const nextBtn2 = document.getElementById("intro-btn-next-2");
+            if (nextBtn2) nextBtn2.style.display = "none";
+            if (typeWriterTimeout) clearTimeout(typeWriterTimeout);
+            
+            typeWriter(customStory, "intro-story-text", 15, () => {
+                if (nextBtn2) nextBtn2.style.display = "block";
+            });
+        }
 
         window.goToBackstoryStep = function() {
             const city = document.getElementById("intro-city-input").value.trim() || "Sinop";
@@ -6018,6 +6131,11 @@
             
             goToIntroStep('backstory');
             
+            if (currentStoryMode === "custom") {
+                updateCustomStory();
+                return;
+            }
+
             const bs = getBackstory(city, district);
             currentBackstoryText = bs.storyText;
             
