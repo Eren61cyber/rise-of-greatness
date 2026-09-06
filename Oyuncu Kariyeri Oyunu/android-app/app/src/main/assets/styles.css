@@ -2283,7 +2283,7 @@ input[type="text"]:focus, select:focus {
     background: rgba(255, 255, 255, 0.03) !important;
     border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
     color: white !important;
-    font-size: 14px !important;
+    font-size: 16px !important;
     font-weight: 700 !important;
     outline: none;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -2295,6 +2295,11 @@ input[type="text"]:focus, select:focus {
     box-shadow: 0 0 14px rgba(0, 230, 118, 0.2) !important;
 }
 
+/* Mobile Keyboard & Auto-Zoom Prevention */
+input:not([type="checkbox"]):not([type="radio"]), textarea, select {
+    font-size: 16px !important;
+    touch-action: manipulation;
+}
 
 /* ==========================================================================
    PREMIUM DARK TEAL UI OVERHAUL (COMPETITOR MATCHED REDESIGN)

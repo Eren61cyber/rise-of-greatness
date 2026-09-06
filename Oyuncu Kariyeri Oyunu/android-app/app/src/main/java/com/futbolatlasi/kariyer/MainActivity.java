@@ -88,11 +88,14 @@ public class MainActivity extends Activity implements PurchasesUpdatedListener {
         settings.setLoadWithOverviewMode(true);
         settings.setUseWideViewPort(true);
         settings.setSupportZoom(false);                // Zoom kapalı (oyun için)
+        settings.setBuiltInZoomControls(false);
+        settings.setDisplayZoomControls(false);
+        settings.setTextZoom(100);                     // Sistem yazı boyutunun oyunu büyütmesini engelle
 
         // JavaScript Interface Bağlantısı (Android <-> Web Oyunu)
         webView.addJavascriptInterface(new WebAppInterface(), "Android");
 
-        // Chrome client (alert/confirm özelleştirildi)
+        // Chrome client (alert/confirm/prompt özelleştirildi)
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onJsAlert(WebView view, String url, String message, final android.webkit.JsResult result) {
@@ -119,6 +122,43 @@ public class MainActivity extends Activity implements PurchasesUpdatedListener {
                         .setMessage(message)
                         .setPositiveButton("Evet", (dialog, which) -> result.confirm())
                         .setNegativeButton("Hayır", (dialog, which) -> result.cancel())
+                        .setCancelable(false)
+                        .create()
+                        .show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    result.cancel();
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, final android.webkit.JsPromptResult result) {
+                try {
+                    final android.widget.EditText input = new android.widget.EditText(MainActivity.this);
+                    input.setText(defaultValue);
+                    input.setSingleLine(true);
+                    input.setTextColor(android.graphics.Color.WHITE);
+                    input.setHintTextColor(android.graphics.Color.GRAY);
+
+                    android.widget.FrameLayout container = new android.widget.FrameLayout(MainActivity.this);
+                    android.widget.FrameLayout.LayoutParams params = new android.widget.FrameLayout.LayoutParams(
+                        android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                        android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+                    );
+                    params.leftMargin = 48;
+                    params.rightMargin = 48;
+                    params.topMargin = 16;
+                    params.bottomMargin = 16;
+                    input.setLayoutParams(params);
+                    container.addView(input);
+
+                    new android.app.AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Rise Of Greatness")
+                        .setMessage(message)
+                        .setView(container)
+                        .setPositiveButton("Tamam", (dialog, which) -> result.confirm(input.getText().toString()))
+                        .setNegativeButton("İptal", (dialog, which) -> result.cancel())
                         .setCancelable(false)
                         .create()
                         .show();
