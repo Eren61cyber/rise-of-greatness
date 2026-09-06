@@ -248,7 +248,9 @@ const DATABASE = {
         { name: "Belde Gençlikspor", att: 43, mid: 42, def: 44, color: "#880E4F", colorSec: "#FFFFFF" },
         { name: "Deniz Spor", att: 45, mid: 44, def: 42, color: "#006064", colorSec: "#FFFFFF" },
         { name: "Yurt Spor Kulübü", att: 43, mid: 43, def: 45, color: "#B71C1C", colorSec: "#FFFFFF" },
-        { name: "Fabrika Gençlik SK", att: 44, mid: 43, def: 44, color: "#212121", colorSec: "#FFD600" }
+        { name: "Fabrika Gençlik SK", att: 44, mid: 43, def: 44, color: "#212121", colorSec: "#FFD600" },
+        { name: "Sarıyer SK", att: 54, mid: 53, def: 53, color: "#0D47A1", colorSec: "#FFFFFF" },
+        { name: "Karşıyaka", att: 46, mid: 45, def: 45, color: "#1B5E20", colorSec: "#D50000" }
     ],
 
     CHAMPIONS_LEAGUE_TEAMS: [

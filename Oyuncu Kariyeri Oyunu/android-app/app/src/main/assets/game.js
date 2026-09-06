@@ -55,9 +55,51 @@ const GAME = {
     },
 
     resetGame: function(customName, startingLeague, startingSalary, startingTrust, hometownCity, hometownDistrict, startingClubName, customPosition) {
-        const startingClub = startingClubName ? DATABASE.AMATEUR_CLUBS.find(c => c.name === startingClubName) : DATABASE.getRandomAmateurClub();
+        // Robust club resolution across AMATEUR_CLUBS, all leagues in DATABASE.LEAGUES, or custom fallback
+        let startingClub = null;
+        if (startingClubName) {
+            if (typeof DATABASE !== "undefined") {
+                if (DATABASE.AMATEUR_CLUBS) {
+                    startingClub = DATABASE.AMATEUR_CLUBS.find(c => c.name === startingClubName || c.name.replace(" SK", "") === startingClubName.replace(" SK", ""));
+                }
+                if (!startingClub && DATABASE.LEAGUES) {
+                    for (const lg in DATABASE.LEAGUES) {
+                        if (DATABASE.LEAGUES[lg].teams) {
+                            const found = DATABASE.LEAGUES[lg].teams.find(t => t.name === startingClubName || t.name.replace(" SK", "") === startingClubName.replace(" SK", ""));
+                            if (found) {
+                                startingClub = found;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            if (!startingClub) {
+                startingClub = {
+                    name: startingClubName,
+                    att: 45,
+                    mid: 45,
+                    def: 45,
+                    color: "#00e5b7",
+                    colorSec: "#0f172a"
+                };
+            }
+        }
+        if (!startingClub) {
+            startingClub = (typeof DATABASE !== "undefined" && typeof DATABASE.getRandomAmateurClub === "function")
+                ? DATABASE.getRandomAmateurClub()
+                : (typeof DATABASE !== "undefined" && DATABASE.AMATEUR_CLUBS && DATABASE.AMATEUR_CLUBS[0])
+                    ? DATABASE.AMATEUR_CLUBS[0]
+                    : { name: "Maden SK", att: 43, mid: 43, def: 44, color: "#4E342E", colorSec: "#FFFFFF" };
+        }
+
         const pName = customName || "Genç Yetenek";
-        const sLeague = startingLeague || "3. Lig";
+        let sLeague = startingLeague || "3. Lig";
+        if (sLeague.includes("3. Lig")) sLeague = "3. Lig";
+        else if (sLeague.includes("2. Lig")) sLeague = "2. Lig";
+        else if (sLeague.includes("1. Lig")) sLeague = "1. Lig";
+        else if (sLeague.includes("Süper Lig")) sLeague = "Süper Lig";
+
         const pos = customPosition || "Forvet";
 
         let initShooting = 54;
@@ -122,7 +164,7 @@ const GAME = {
             injuryRiskReduction: 40,
             ownedItems: [],
             currentLeague: sLeague,
-            currentClub: startingClub.name,
+            currentClub: (startingClub && startingClub.name) ? startingClub.name : (startingClubName || "Maden SK"),
             currentWeek: 1,
             transferredThisWindow: false,
             lastTransferredWeek: 0,
@@ -237,7 +279,7 @@ const GAME = {
                 {
                     handle: "@turk_futbol",
                     name: "Türk Futbol Günlüğü",
-                    text: `TFF ${sLeague} ekiplerinden ${startingClub.name}, altyapısından yetiştirdiği 17 yaşındaki genç yetenek ${pName}'ye profesyonel lisans çıkardı! Haydi hayırlısı. 🇹🇷⚽`,
+                    text: `TFF ${sLeague} ekiplerinden ${(startingClub && startingClub.name) ? startingClub.name : (startingClubName || "kulübün")}, altyapısından yetiştirdiği 17 yaşındaki genç yetenek ${pName}'ye profesyonel lisans çıkardı! Haydi hayırlısı. 🇹🇷⚽`,
                     time: "1s önce"
                 }
             ]
@@ -3448,35 +3490,49 @@ const GAME = {
 
 
     getTeamAverageRating: function(teamName) {
+        if (!teamName) return 60;
         // Check amateur clubs pool first
-        const amateurClub = DATABASE.AMATEUR_CLUBS.find(c => c.name === teamName);
-        if (amateurClub) {
-            return (amateurClub.att + amateurClub.mid + amateurClub.def) / 3;
+        if (typeof DATABASE !== "undefined" && DATABASE.AMATEUR_CLUBS) {
+            const amateurClub = DATABASE.AMATEUR_CLUBS.find(c => c.name === teamName || c.name.replace(" SK", "") === teamName.replace(" SK", ""));
+            if (amateurClub) {
+                return (amateurClub.att + amateurClub.mid + amateurClub.def) / 3;
+            }
         }
         // Search all leagues
-        for (const leagueName in DATABASE.LEAGUES) {
-            let tObj = DATABASE.LEAGUES[leagueName].teams.find(t => t.name === teamName);
-            if (tObj) return (tObj.att + tObj.mid + tObj.def) / 3;
+        if (typeof DATABASE !== "undefined" && DATABASE.LEAGUES) {
+            for (const leagueName in DATABASE.LEAGUES) {
+                if (DATABASE.LEAGUES[leagueName].teams) {
+                    let tObj = DATABASE.LEAGUES[leagueName].teams.find(t => t.name === teamName || t.name.replace(" SK", "") === teamName.replace(" SK", ""));
+                    if (tObj) return (tObj.att + tObj.mid + tObj.def) / 3;
+                }
+            }
         }
-        return 70;
+        return 50;
     },
 
     getPlayerTeamObject: function() {
+        const cClub = (this.state && this.state.currentClub) || "Maden SK";
         // Check amateur clubs pool
-        const amateurClub = DATABASE.AMATEUR_CLUBS.find(c => c.name === this.state.currentClub);
-        if (amateurClub) return amateurClub;
+        if (typeof DATABASE !== "undefined" && DATABASE.AMATEUR_CLUBS) {
+            const amateurClub = DATABASE.AMATEUR_CLUBS.find(c => c.name === cClub || c.name.replace(" SK", "") === cClub.replace(" SK", ""));
+            if (amateurClub) return amateurClub;
+        }
         // Check professional leagues
-        let league = DATABASE.LEAGUES[this.state.currentLeague];
-        if (league) {
-            const found = league.teams.find(t => t.name === this.state.currentClub);
-            if (found) return found;
+        if (typeof DATABASE !== "undefined" && DATABASE.LEAGUES) {
+            let league = DATABASE.LEAGUES[this.state.currentLeague];
+            if (league && league.teams) {
+                const found = league.teams.find(t => t.name === cClub || t.name.replace(" SK", "") === cClub.replace(" SK", ""));
+                if (found) return found;
+            }
+            // Fallback: search all leagues
+            for (const leagueName in DATABASE.LEAGUES) {
+                if (DATABASE.LEAGUES[leagueName].teams) {
+                    const found = DATABASE.LEAGUES[leagueName].teams.find(t => t.name === cClub || t.name.replace(" SK", "") === cClub.replace(" SK", ""));
+                    if (found) return found;
+                }
+            }
         }
-        // Fallback: search all leagues
-        for (const leagueName in DATABASE.LEAGUES) {
-            const found = DATABASE.LEAGUES[leagueName].teams.find(t => t.name === this.state.currentClub);
-            if (found) return found;
-        }
-        return DATABASE.AMATEUR_CLUBS[0];
+        return (typeof DATABASE !== "undefined" && DATABASE.AMATEUR_CLUBS && DATABASE.AMATEUR_CLUBS[0]) || { name: cClub, att: 45, mid: 45, def: 45, color: "#10b981", colorSec: "#ffffff" };
     },
 
     generateSeasonFixtures: function() {
