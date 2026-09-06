@@ -2125,7 +2125,7 @@
 
                     <!-- Scrollable text box prevents overflow -->
                     <div id="coach-speech-scroll-box" style="max-height: 130px; min-height: 75px; overflow-y: auto; overflow-x: hidden; padding-right: 4px; scrollbar-width: thin; scrollbar-color: #00e5b7 rgba(15,23,42,0.6); -webkit-overflow-scrolling: touch;">
-                        <p id="coach-office-speech-text" style="font-size: 12px; color: #f1f5f9; line-height: 1.6; margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 500; white-space: pre-line; word-break: break-word; overflow-wrap: break-word;">
+                        <p id="coach-office-speech-text" style="font-size: 12px; color: #f1f5f9; line-height: 1.6; margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 500; white-space: pre-wrap; word-break: break-word; overflow-wrap: break-word;">
                             <!-- Streaming text will populate here -->
                         </p>
                     </div>
@@ -6968,7 +6968,7 @@
                     window.coachOfficeTypeTimer = null;
                 }
                 if (speechTextEl) {
-                    speechTextEl.innerText = fullSpeech;
+                    speechTextEl.textContent = fullSpeech;
                     if (scrollBox) {
                         scrollBox.scrollTop = scrollBox.scrollHeight;
                     }
@@ -6976,13 +6976,13 @@
             };
 
             if (speechTextEl) {
-                speechTextEl.innerText = "";
+                speechTextEl.textContent = "";
                 if (scrollBox) scrollBox.scrollTop = 0;
                 let charIdx = 0;
                 window.coachOfficeTypeTimer = setInterval(() => {
                     if (charIdx < fullSpeech.length) {
-                        speechTextEl.innerText += fullSpeech.charAt(charIdx);
                         charIdx++;
+                        speechTextEl.textContent = fullSpeech.slice(0, charIdx);
                         if (scrollBox) {
                             scrollBox.scrollTop = scrollBox.scrollHeight;
                         }
