@@ -2074,7 +2074,7 @@
 
         <!-- 👔 TEKNİK DİREKTÖRÜN ODASI (SİNEMATİK MAÇ ÖNÜ BRİFİNGİ) -->
         <div id="coach-office-modal" style="position: fixed; inset: 0; z-index: 10030; background: rgba(4, 7, 13, 0.96); backdrop-filter: blur(20px); display: none; align-items: center; justify-content: center; padding: 16px; overflow-y: auto;">
-            <div style="max-width: 480px; width: 100%; background: linear-gradient(180deg, #0f172a 0%, #070a12 100%); border: 1.5px solid rgba(0, 229, 183, 0.35); border-radius: 20px; box-shadow: 0 0 50px rgba(0, 229, 183, 0.2), inset 0 0 30px rgba(0,0,0,0.8); padding: 22px 18px; position: relative; text-align: center;">
+            <div style="max-width: 480px; width: 100%; max-height: 92vh; display: flex; flex-direction: column; background: linear-gradient(180deg, #0f172a 0%, #070a12 100%); border: 1.5px solid rgba(0, 229, 183, 0.35); border-radius: 20px; box-shadow: 0 0 50px rgba(0, 229, 183, 0.2), inset 0 0 30px rgba(0,0,0,0.8); padding: 20px 18px; position: relative; text-align: center; box-sizing: border-box; overflow-y: auto;">
                 
                 <!-- Office Top Badge -->
                 <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 14px;">
@@ -2086,21 +2086,21 @@
                 </div>
 
                 <!-- Coach Character & Whiteboard Backdrop -->
-                <div style="display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 16px; position: relative;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 14px; position: relative;">
                     <!-- Tactical Board Mini -->
-                    <div style="width: 85px; height: 105px; background: #064e3b; border: 2px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 6px; box-shadow: inset 0 0 15px rgba(0,0,0,0.6); position: relative; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div style="width: 85px; height: 95px; background: #064e3b; border: 2px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 6px; box-shadow: inset 0 0 15px rgba(0,0,0,0.6); position: relative; display: flex; flex-direction: column; justify-content: space-between;">
                         <div style="font-size: 8px; color: #a7f3d0; font-weight: 800; text-align: center; letter-spacing: 0.5px;">TAKTİK TAHTASI</div>
-                        <div style="border: 1px dashed rgba(255,255,255,0.3); height: 60px; border-radius: 4px; display: flex; align-items: center; justify-content: center; position: relative;">
+                        <div style="border: 1px dashed rgba(255,255,255,0.3); height: 52px; border-radius: 4px; display: flex; align-items: center; justify-content: center; position: relative;">
                             <span style="font-size: 9px; color: #ffd700; font-weight: 900;">4-3-3</span>
-                            <div style="position: absolute; width: 6px; height: 6px; background: #ef4444; border-radius: 50%; top: 8px; left: 10px;"></div>
-                            <div style="position: absolute; width: 6px; height: 6px; background: #00e5b7; border-radius: 50%; bottom: 8px; right: 10px;"></div>
+                            <div style="position: absolute; width: 6px; height: 6px; background: #ef4444; border-radius: 50%; top: 6px; left: 8px;"></div>
+                            <div style="position: absolute; width: 6px; height: 6px; background: #00e5b7; border-radius: 50%; bottom: 6px; right: 8px;"></div>
                         </div>
                         <div style="font-size: 7.5px; color: #cbd5e1; text-align: center;">HÜCUM BASKISI</div>
                     </div>
 
                     <!-- Stylized Charismatic Coach Avatar -->
-                    <div style="width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, rgba(0,229,183,0.2) 0%, rgba(15,23,42,0.9) 80%); border: 2.5px solid #00e5b7; box-shadow: 0 0 25px rgba(0,229,183,0.4); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
-                        <svg width="75" height="75" viewBox="0 0 24 24" fill="none" stroke="#00e5b7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <div style="width: 95px; height: 95px; border-radius: 50%; background: radial-gradient(circle, rgba(0,229,183,0.2) 0%, rgba(15,23,42,0.9) 80%); border: 2.5px solid #00e5b7; box-shadow: 0 0 25px rgba(0,229,183,0.4); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
+                        <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#00e5b7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                             <circle cx="12" cy="7" r="4"></circle>
                             <path d="M6 11l2 2 4-4" stroke="#ffd700" stroke-width="1.8"></path>
@@ -2110,21 +2110,29 @@
                 </div>
 
                 <!-- 💬 HAREKETLİ HOCA BALONCUĞU (ANIMATED FLOATING SPEECH BUBBLE) -->
-                <div id="coach-floating-bubble" style="background: rgba(15, 23, 42, 0.92); border: 1.5px solid #00e5b7; border-radius: 16px; padding: 16px 14px; position: relative; box-shadow: 0 8px 30px rgba(0,0,0,0.7), 0 0 20px rgba(0,229,183,0.2); animation: coachBubbleFloat 3s ease-in-out infinite alternate; text-align: left; margin-bottom: 18px;">
+                <div id="coach-floating-bubble" onclick="if(window.skipCoachSpeech) window.skipCoachSpeech();" style="background: rgba(15, 23, 42, 0.95); border: 1.5px solid #00e5b7; border-radius: 16px; padding: 14px 16px; position: relative; box-shadow: 0 8px 30px rgba(0,0,0,0.7), 0 0 20px rgba(0,229,183,0.2); animation: coachBubbleFloat 3s ease-in-out infinite alternate; text-align: left; margin-bottom: 14px; box-sizing: border-box; cursor: pointer;">
                     <!-- Bubble Pointer Arrow pointing up -->
-                    <div style="position: absolute; top: -9px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 9px solid transparent; border-right: 9px solid transparent; border-bottom: 9px solid #00e5b7;"></div>
+                    <div style="position: absolute; top: -9px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 9px solid transparent; border-right: 9px solid transparent; border-bottom: 9px solid #00e5b7; pointer-events: none; z-index: 2;"></div>
+                    <div style="position: absolute; top: -7px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-bottom: 8px solid #0f172a; pointer-events: none; z-index: 3;"></div>
                     
-                    <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
-                        <span style="font-size: 11px;">📢</span>
-                        <strong id="coach-speaker-title" style="font-size: 12px; font-weight: 900; color: #00e5b7; letter-spacing: 0.5px;">HOCA KONUŞUYOR:</strong>
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <span style="font-size: 13px;">📢</span>
+                            <strong id="coach-speaker-title" style="font-size: 12px; font-weight: 900; color: #00e5b7; letter-spacing: 0.5px;">HOCA KONUŞUYOR:</strong>
+                        </div>
+                        <span style="font-size: 9px; color: #64748b; font-weight: 700; letter-spacing: 0.3px;">⚡ GEÇMEK İÇİN DOKUN</span>
                     </div>
-                    <p id="coach-office-speech-text" style="font-size: 12.5px; color: #f1f5f9; line-height: 1.6; margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 500;">
-                        <!-- Streaming text will populate here -->
-                    </p>
+
+                    <!-- Scrollable text box prevents overflow -->
+                    <div id="coach-speech-scroll-box" style="max-height: 130px; min-height: 75px; overflow-y: auto; overflow-x: hidden; padding-right: 4px; scrollbar-width: thin; scrollbar-color: #00e5b7 rgba(15,23,42,0.6); -webkit-overflow-scrolling: touch;">
+                        <p id="coach-office-speech-text" style="font-size: 12px; color: #f1f5f9; line-height: 1.6; margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 500; white-space: pre-line; word-break: break-word; overflow-wrap: break-word;">
+                            <!-- Streaming text will populate here -->
+                        </p>
+                    </div>
                 </div>
 
                 <!-- First Opponent Scouting Card Mini -->
-                <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 8px 12px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; font-size: 11.5px;">
+                <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 8px 12px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; font-size: 11.5px;">
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <span style="color: #ffd700; font-weight: 800;">⚔️ İLK RAKİP:</span>
                         <strong id="coach-next-opp-name" style="color: #fff;">Beyoğlu Yeni Çarşı</strong>
@@ -2133,7 +2141,7 @@
                 </div>
 
                 <!-- Action Confirmation Button -->
-                <button class="btn btn-primary" onclick="closeCoachOfficeModalAndEnterLobby()" style="width: 100%; padding: 15px 18px; font-size: 13.5px; font-weight: 900; letter-spacing: 0.5px; font-family: 'Space Grotesk', 'Rajdhani', sans-serif; text-transform: uppercase; background: linear-gradient(135deg, #00e5b7 0%, #059669 100%); color: #05140d; border: 1px solid rgba(255,255,255,0.25); border-radius: 12px; box-shadow: 0 4px 25px rgba(0, 229, 183, 0.4); cursor: pointer; transition: all 0.2s ease;">
+                <button class="btn btn-primary" onclick="closeCoachOfficeModalAndEnterLobby()" style="width: 100%; padding: 14px 18px; font-size: 13px; font-weight: 900; letter-spacing: 0.5px; font-family: 'Space Grotesk', 'Rajdhani', sans-serif; text-transform: uppercase; background: linear-gradient(135deg, #00e5b7 0%, #059669 100%); color: #05140d; border: 1px solid rgba(255,255,255,0.25); border-radius: 12px; box-shadow: 0 4px 25px rgba(0, 229, 183, 0.4); cursor: pointer; transition: all 0.2s ease;">
                     ANLAŞILDI HOCAM, GÜVENİNİZİ BOŞA ÇIKARMAYACAĞIM! ➔
                 </button>
             </div>
@@ -2599,72 +2607,6 @@
         </div>
 
         <!-- 📺 SİYAH FUTBOL 3D SİNEMATİK GECE MASASI MODAL -->
-        <!-- 👔 TEKNİK DİREKTÖRÜN ODASI (SİNEMATİK MAÇ ÖNÜ BRİFİNGİ) -->
-        <div id="coach-office-modal" style="position: fixed; inset: 0; z-index: 10030; background: rgba(4, 7, 13, 0.96); backdrop-filter: blur(20px); display: none; align-items: center; justify-content: center; padding: 16px; overflow-y: auto;">
-            <div style="max-width: 480px; width: 100%; background: linear-gradient(180deg, #0f172a 0%, #070a12 100%); border: 1.5px solid rgba(0, 229, 183, 0.35); border-radius: 20px; box-shadow: 0 0 50px rgba(0, 229, 183, 0.2), inset 0 0 30px rgba(0,0,0,0.8); padding: 22px 18px; position: relative; text-align: center;">
-                
-                <!-- Office Top Badge -->
-                <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 14px;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="font-size: 16px;">👔</span>
-                        <span style="font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 800; color: #fff; letter-spacing: 0.8px; text-transform: uppercase;">TEKNİK DİREKTÖRÜN ODASI</span>
-                    </div>
-                    <span id="coach-office-club-tag" style="font-size: 10.5px; font-weight: 800; color: #00e5b7; background: rgba(0,229,183,0.12); border: 1px solid rgba(0,229,183,0.25); padding: 3px 8px; border-radius: 8px;">KULÜP TESİSLERİ</span>
-                </div>
-
-                <!-- Coach Character & Whiteboard Backdrop -->
-                <div style="display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 16px; position: relative;">
-                    <!-- Tactical Board Mini -->
-                    <div style="width: 85px; height: 105px; background: #064e3b; border: 2px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 6px; box-shadow: inset 0 0 15px rgba(0,0,0,0.6); position: relative; display: flex; flex-direction: column; justify-content: space-between;">
-                        <div style="font-size: 8px; color: #a7f3d0; font-weight: 800; text-align: center; letter-spacing: 0.5px;">TAKTİK TAHTASI</div>
-                        <div style="border: 1px dashed rgba(255,255,255,0.3); height: 60px; border-radius: 4px; display: flex; align-items: center; justify-content: center; position: relative;">
-                            <span style="font-size: 9px; color: #ffd700; font-weight: 900;">4-3-3</span>
-                            <div style="position: absolute; width: 6px; height: 6px; background: #ef4444; border-radius: 50%; top: 8px; left: 10px;"></div>
-                            <div style="position: absolute; width: 6px; height: 6px; background: #00e5b7; border-radius: 50%; bottom: 8px; right: 10px;"></div>
-                        </div>
-                        <div style="font-size: 7.5px; color: #cbd5e1; text-align: center;">HÜCUM BASKISI</div>
-                    </div>
-
-                    <!-- Stylized Charismatic Coach Avatar -->
-                    <div style="width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, rgba(0,229,183,0.2) 0%, rgba(15,23,42,0.9) 80%); border: 2.5px solid #00e5b7; box-shadow: 0 0 25px rgba(0,229,183,0.4); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
-                        <svg width="75" height="75" viewBox="0 0 24 24" fill="none" stroke="#00e5b7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="12" cy="7" r="4"></circle>
-                            <path d="M6 11l2 2 4-4" stroke="#ffd700" stroke-width="1.8"></path>
-                        </svg>
-                        <div style="position: absolute; bottom: 0; background: rgba(0,0,0,0.7); width: 100%; font-size: 8.5px; font-weight: 800; color: #ffd700; text-align: center; padding: 1px 0;">TEKNİK PATRON</div>
-                    </div>
-                </div>
-
-                <!-- 💬 HAREKETLİ HOCA BALONCUĞU (ANIMATED FLOATING SPEECH BUBBLE) -->
-                <div id="coach-floating-bubble" style="background: rgba(15, 23, 42, 0.92); border: 1.5px solid #00e5b7; border-radius: 16px; padding: 16px 14px; position: relative; box-shadow: 0 8px 30px rgba(0,0,0,0.7), 0 0 20px rgba(0,229,183,0.2); animation: coachBubbleFloat 3s ease-in-out infinite alternate; text-align: left; margin-bottom: 18px;">
-                    <!-- Bubble Pointer Arrow pointing up -->
-                    <div style="position: absolute; top: -9px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 9px solid transparent; border-right: 9px solid transparent; border-bottom: 9px solid #00e5b7;"></div>
-                    
-                    <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
-                        <span style="font-size: 11px;">📢</span>
-                        <strong id="coach-speaker-title" style="font-size: 12px; font-weight: 900; color: #00e5b7; letter-spacing: 0.5px;">HOCA KONUŞUYOR:</strong>
-                    </div>
-                    <p id="coach-office-speech-text" style="font-size: 12.5px; color: #f1f5f9; line-height: 1.6; margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 500;">
-                        <!-- Streaming text will populate here -->
-                    </p>
-                </div>
-
-                <!-- First Opponent Scouting Card Mini -->
-                <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 8px 12px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; font-size: 11.5px;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="color: #ffd700; font-weight: 800;">⚔️ İLK RAKİP:</span>
-                        <strong id="coach-next-opp-name" style="color: #fff;">Beyoğlu Yeni Çarşı</strong>
-                    </div>
-                    <span style="color: #94a3b8; font-size: 10.5px; font-weight: 700;">Hafta 1</span>
-                </div>
-
-                <!-- Action Confirmation Button -->
-                <button class="btn btn-primary" onclick="closeCoachOfficeModalAndEnterLobby()" style="width: 100%; padding: 15px 18px; font-size: 13.5px; font-weight: 900; letter-spacing: 0.5px; font-family: 'Space Grotesk', 'Rajdhani', sans-serif; text-transform: uppercase; background: linear-gradient(135deg, #00e5b7 0%, #059669 100%); color: #05140d; border: 1px solid rgba(255,255,255,0.25); border-radius: 12px; box-shadow: 0 4px 25px rgba(0, 229, 183, 0.4); cursor: pointer; transition: all 0.2s ease;">
-                    ANLAŞILDI HOCAM, GÜVENİNİZİ BOŞA ÇIKARMAYACAĞIM! ➔
-                </button>
-            </div>
-        </div>
 
         <div class="event-modal-overlay" id="siyah-futbol-modal" style="background: rgba(0,0,0,0.96); z-index: 10025; display: none; align-items: center; justify-content: center; overflow-y: auto; padding: 12px;">
             <div class="event-card glass" style="max-width: 450px; text-align: left; border: 2px solid #ef4444; box-shadow: 0 0 45px rgba(239, 68, 68, 0.45); padding: 14px; border-radius: 14px; width: 100%; background: #08090f;">
@@ -7004,6 +6946,7 @@
             const clubTag = document.getElementById("coach-office-club-tag");
             const oppNameEl = document.getElementById("coach-next-opp-name");
             const speechTextEl = document.getElementById("coach-office-speech-text");
+            const scrollBox = document.getElementById("coach-speech-scroll-box");
 
             const clubName = (GAME && GAME.state && GAME.state.club) || "Kulüp";
             const playerName = (GAME && GAME.state && GAME.state.playerName) || "Evlat";
@@ -7014,15 +6957,38 @@
 
             const fullSpeech = `Evlat hoş geldin! Ben bu takımın teknik direktörüyüm. Seçmelerdeki yeteneğin, hırsın ve sahadaki dik duruşun ekibimin çok dikkatini çekti.\n\nSözleşmen hayırlı olsun! Bu hafta ligin 1. haftasında ${nextOpp} ile çok kritik bir maça çıkıyoruz.\n\nSeni maç kadrosuna dahil ettim. Sahaya çıktığında taktik disiplinden asla kopma, arkadaşlarına destek ol ve ayağına fırsat geldiğinde affetme! Forma aslanın ağzında, güvenimi boşa çıkarma!`;
 
+            if (window.coachOfficeTypeTimer) {
+                clearInterval(window.coachOfficeTypeTimer);
+                window.coachOfficeTypeTimer = null;
+            }
+
+            window.skipCoachSpeech = function() {
+                if (window.coachOfficeTypeTimer) {
+                    clearInterval(window.coachOfficeTypeTimer);
+                    window.coachOfficeTypeTimer = null;
+                }
+                if (speechTextEl) {
+                    speechTextEl.innerText = fullSpeech;
+                    if (scrollBox) {
+                        scrollBox.scrollTop = scrollBox.scrollHeight;
+                    }
+                }
+            };
+
             if (speechTextEl) {
                 speechTextEl.innerText = "";
+                if (scrollBox) scrollBox.scrollTop = 0;
                 let charIdx = 0;
-                const typeTimer = setInterval(() => {
+                window.coachOfficeTypeTimer = setInterval(() => {
                     if (charIdx < fullSpeech.length) {
                         speechTextEl.innerText += fullSpeech.charAt(charIdx);
                         charIdx++;
+                        if (scrollBox) {
+                            scrollBox.scrollTop = scrollBox.scrollHeight;
+                        }
                     } else {
-                        clearInterval(typeTimer);
+                        clearInterval(window.coachOfficeTypeTimer);
+                        window.coachOfficeTypeTimer = null;
                     }
                 }, 16);
             }
@@ -7031,6 +6997,10 @@
         };
 
         window.closeCoachOfficeModalAndEnterLobby = function() {
+            if (window.coachOfficeTypeTimer) {
+                clearInterval(window.coachOfficeTypeTimer);
+                window.coachOfficeTypeTimer = null;
+            }
             const modal = document.getElementById("coach-office-modal");
             if (modal) modal.style.display = "none";
 
