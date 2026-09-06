@@ -38,6 +38,7 @@ const MatchEngine = {
         this.activeChoice = null;
         this.hasTriggeredCardDispute = false;
         this.hasTriggeredSetPiece = false;
+        this.hasTriggeredVar = false;
         this.isSentOff = false;
         this.hasYellowCard = false;
         this.isSubbedOff = false; // New flag for early substitutions
@@ -2329,24 +2330,79 @@ const MatchEngine = {
             }
         }
 
-        if (hasScored && this.callbacks.onGoalScoredCelebration) {
-            this.isPausedForChoice = true;
-            this.activeChoice = null;
-            this.callbacks.onGoalScoredCelebration(this.min, (celebrationText, celebrationCommentary) => {
-                this.callbacks.onMinuteUpdate(this.min, this.score, celebrationCommentary);
-                if (this.callbacks.onEventPause) {
-                    this.callbacks.onEventPause(`⚽ ${this.min}' GOOOL SEVİNCİ!`, `Muhteşem bir sevinç! Maça devam etmek için dokunun.`, () => {
+        if (hasScored) {
+            const shouldTriggerVar = !this.hasTriggeredVar && (typeof window !== "undefined" && typeof window.triggerVarReview === "function") && (Math.random() < 0.22);
+            if (shouldTriggerVar) {
+                this.hasTriggeredVar = true;
+                this.isPausedForChoice = true;
+                this.activeChoice = null;
+                this.callbacks.onMinuteUpdate(this.min, this.score, `📺 ${this.min}' Hakem kulaklığına dokunuyor! Gol pozisyonunda potansiyel ofsayt için 3D UEFA VAR incelemesi başlatıldı...`);
+
+                const self = this;
+                window.triggerVarReview("offside", (isVarGoal) => {
+                    if (isVarGoal) {
+                        self.callbacks.onMinuteUpdate(self.min, self.score, `✅ ${self.min}' VAR ONAYLADI! Milimetrik incelemede hücumcu geride, GOL GEÇERLİ!`);
+                        if (self.callbacks.onGoalScoredCelebration) {
+                            self.callbacks.onGoalScoredCelebration(self.min, (celebrationText, celebrationCommentary) => {
+                                self.callbacks.onMinuteUpdate(self.min, self.score, celebrationCommentary);
+                                if (self.callbacks.onEventPause) {
+                                    self.callbacks.onEventPause(`⚽ ${self.min}' GOOOL SEVİNCİ!`, `Muhteşem bir sevinç! Maça devam etmek için dokunun.`, () => {
+                                        self.isPausedForChoice = false;
+                                        self.resumeTick();
+                                    });
+                                } else {
+                                    self.isPausedForChoice = false;
+                                    self.timer = setTimeout(function() {
+                                        self.resumeTick();
+                                    }, 3000 / self.currentSpeed);
+                                }
+                            });
+                        } else {
+                            self.isPausedForChoice = false;
+                            self.timer = setTimeout(function() {
+                                self.resumeTick();
+                            }, 2500 / self.currentSpeed);
+                        }
+                    } else {
+                        // Goal canceled for offside!
+                        self.score.player = Math.max(0, self.score.player - 1);
+                        self.playerStats.goals = previousGoals;
+                        self.callbacks.onMinuteUpdate(self.min, self.score, `❌ ${self.min}' VAR KARARI: İPTAL! 3D izdüşüm çizgisine göre pozisyon ofsayt, gol iptal edildi!`);
+                        self.isPausedForChoice = false;
+                        self.timer = setTimeout(function() {
+                            self.resumeTick();
+                        }, 2500 / self.currentSpeed);
+                    }
+                });
+                return;
+            }
+
+            if (this.callbacks.onGoalScoredCelebration) {
+                this.isPausedForChoice = true;
+                this.activeChoice = null;
+                this.callbacks.onGoalScoredCelebration(this.min, (celebrationText, celebrationCommentary) => {
+                    this.callbacks.onMinuteUpdate(this.min, this.score, celebrationCommentary);
+                    if (this.callbacks.onEventPause) {
+                        this.callbacks.onEventPause(`⚽ ${this.min}' GOOOL SEVİNCİ!`, `Muhteşem bir sevinç! Maça devam etmek için dokunun.`, () => {
+                            this.isPausedForChoice = false;
+                            this.resumeTick();
+                        });
+                    } else {
                         this.isPausedForChoice = false;
-                        this.resumeTick();
-                    });
-                } else {
-                    this.isPausedForChoice = false;
-                    const self = this;
-                    this.timer = setTimeout(function() {
-                        self.resumeTick();
-                    }, 3000 / this.currentSpeed);
-                }
-            });
+                        const self = this;
+                        this.timer = setTimeout(function() {
+                            self.resumeTick();
+                        }, 3000 / this.currentSpeed);
+                    }
+                });
+            } else {
+                this.isPausedForChoice = false;
+                this.activeChoice = null;
+                const self = this;
+                this.timer = setTimeout(function() {
+                    self.resumeTick();
+                }, 3000 / this.currentSpeed);
+            }
         } else {
             this.isPausedForChoice = false;
             this.activeChoice = null;

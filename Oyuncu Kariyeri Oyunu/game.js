@@ -2716,10 +2716,32 @@ const GAME = {
         this.saveGame();
         this.updateUI();
 
-        if (window.showSeasonSummaryModal) {
-            window.showSeasonSummaryModal(title, message, seasonStats);
+        const proceedToEndFlow = () => {
+            if (window.showSeasonSummaryModal) {
+                window.showSeasonSummaryModal(title, message, seasonStats);
+            } else {
+                alert(`Sezon sona erdi! Yaşın ${this.state.age} oldu. Ligi ${rank}. sırada tamamladın.`);
+            }
+        };
+
+        const checkBallonDorFlow = () => {
+            if (wonBallonOr && typeof window.showBallonDorModal === "function") {
+                window.showBallonDorModal(() => {
+                    proceedToEndFlow();
+                });
+            } else {
+                proceedToEndFlow();
+            }
+        };
+
+        // If team won championship, celebrate on the Victory Bus Tour first
+        if (rank === 1 && typeof window.startVictoryBusTour === "function") {
+            const leagueTitle = (this.state.currentLeague || "SÜPER LİG") + " ŞAMPİYONU";
+            window.startVictoryBusTour(leagueTitle, () => {
+                checkBallonDorFlow();
+            });
         } else {
-            alert(`Sezon sona erdi! Yaşın ${this.state.age} oldu. Ligi ${rank}. sırada tamamladın.`);
+            checkBallonDorFlow();
         }
     },
 
