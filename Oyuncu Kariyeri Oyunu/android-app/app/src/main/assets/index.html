@@ -1882,32 +1882,32 @@
                     <h2 style="color: white; margin-bottom: 6px; font-size: 22px; font-weight: 800; font-family: 'Rajdhani', sans-serif; text-transform: uppercase;" id="intro-backstory-title">Memleketten Zirveye</h2>
                     <p style="font-size: 12px; color: #94a3b8; margin-bottom: 14px;">Futbol aşkının filizlendiği ilk günler...</p>
 
-                                        <!-- Story Mode Selector: Auto vs Custom -->
+                    <!-- Story Mode Selector: Auto vs Custom -->
                     <div style="display: flex; gap: 8px; margin-bottom: 12px;">
                         <button type="button" id="btn-story-mode-auto" onclick="switchStoryMode('auto')" style="flex:1; padding: 9px 10px; font-size: 11px; font-weight: 800; border-radius: 9px; border: 1.5px solid #00e5b7; background: rgba(0,229,183,0.15); color: #00e5b7; cursor: pointer; transition: all 0.2s;">
-                            ğŸ™ï¸ Memleket Hikayesi
+                            🏙️ Memleket Hikayesi
                         </button>
                         <button type="button" id="btn-story-mode-custom" onclick="switchStoryMode('custom')" style="flex:1; padding: 9px 10px; font-size: 11px; font-weight: 800; border-radius: 9px; border: 1.5px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #94a3b8; cursor: pointer; transition: all 0.2s;">
-                            ğŸ‘‘ Kendi Efsaneni Yaz
+                            👑 Kendi Efsaneni Yaz
                         </button>
                     </div>
 
                     <!-- Custom Story Interactive Builder (Hidden by default) -->
                     <div id="custom-story-builder-box" style="display: none; background: rgba(15,23,42,0.85); border: 1px solid rgba(0,229,183,0.3); border-radius: 12px; padding: 12px; margin-bottom: 14px; text-align: left;">
-                        <div style="font-size: 10.5px; font-weight: 800; color: #00e5b7; margin-bottom: 6px; text-transform: uppercase;">âš½ Futbola Nerede BaÅŸladÄ±n?</div>
+                        <div style="font-size: 10.5px; font-weight: 800; color: #00e5b7; margin-bottom: 6px; text-transform: uppercase;">⚽ Futbola Nerede Başladın?</div>
                         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-bottom: 10px;" id="custom-origin-chips">
-                            <button type="button" class="custom-chip active" onclick="selectCustomOrigin(this, 'Mahalledeki Beton Sahalarda')" style="padding: 7px 8px; border-radius: 8px; border: 1.5px solid #00e5b7; background: rgba(0,229,183,0.15); color: #fff; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">ğŸŸï¸ Mahalle Betonu</button>
-                            <button type="button" class="custom-chip" onclick="selectCustomOrigin(this, 'KÃ¶y ve Kasaba AmatÃ¶r Liginde')" style="padding: 7px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #94a3b8; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">ğŸŒ¾ KÃ¶y / Kasaba Ligi</button>
-                            <button type="button" class="custom-chip" onclick="selectCustomOrigin(this, 'Okul TakÄ±mÄ± ve HalÄ± Sahalarda')" style="padding: 7px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #94a3b8; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">âš½ Okul & HalÄ± Saha</button>
-                            <button type="button" class="custom-chip" onclick="selectCustomOrigin(this, 'Gurbette YabancÄ± KulÃ¼p AltyapÄ±sÄ±nda')" style="padding: 7px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #94a3b8; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">ğŸŒ GurbetÃ§i Yetenek</button>
+                            <button type="button" class="custom-chip active" onclick="selectCustomOrigin(this, 'Mahalledeki Beton Sahalarda')" style="padding: 7px 8px; border-radius: 8px; border: 1.5px solid #00e5b7; background: rgba(0,229,183,0.15); color: #fff; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">🏟️ Mahalle Betonu</button>
+                            <button type="button" class="custom-chip" onclick="selectCustomOrigin(this, 'Köy ve Kasaba Amatör Liginde')" style="padding: 7px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #94a3b8; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">🌾 Köy / Kasaba Ligi</button>
+                            <button type="button" class="custom-chip" onclick="selectCustomOrigin(this, 'Okul Takımı ve Halı Sahalarda')" style="padding: 7px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #94a3b8; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">⚽ Okul & Halı Saha</button>
+                            <button type="button" class="custom-chip" onclick="selectCustomOrigin(this, 'Gurbette Yabancı Kulüp Altyapısında')" style="padding: 7px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #94a3b8; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">🌍 Gurbetçi Yetenek</button>
                         </div>
 
-                        <div style="font-size: 10.5px; font-weight: 800; color: #ffd700; margin-bottom: 6px; text-transform: uppercase;">ğŸŒŸ En BÃ¼yÃ¼k Ã‡ocukluk Hayalin Nedir?</div>
+                        <div style="font-size: 10.5px; font-weight: 800; color: #ffd700; margin-bottom: 6px; text-transform: uppercase;">🌟 En Büyük Çocukluk Hayalin Nedir?</div>
                         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px;" id="custom-dream-chips">
-                            <button type="button" class="custom-chip-dream active" onclick="selectCustomDream(this, 'Ailemi borÃ§tan kurtarÄ±p onlara gurur yaÅŸatmak')" style="padding: 7px 8px; border-radius: 8px; border: 1.5px solid #ffd700; background: rgba(255,215,0,0.15); color: #fff; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">â¤ï¸ Ailemi Kurtarmak</button>
-                            <button type="button" class="custom-chip-dream" onclick="selectCustomDream(this, 'Ballon d\'Or kazanÄ±p dÃ¼nyaya adÄ±mÄ± altÄ±n harflerle yazdÄ±rmak')" style="padding: 7px 8px; border-radius: 8px; border: 1.5px solid #ffd700; background: rgba(255,215,0,0.05); color: #94a3b8; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">ğŸ† Ballon d'Or</button>
-                            <button type="button" class="custom-chip-dream" onclick="selectCustomDream(this, 'DoÄŸup bÃ¼yÃ¼dÃ¼ÄŸÃ¼m ÅŸehrin bayrak futbolcusu ve efsanesi olmak')" style="padding: 7px 8px; border-radius: 8px; border: 1.5px solid #ffd700; background: rgba(255,215,0,0.05); color: #94a3b8; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">ğŸŒŸ Åehrimin Efsanesi</button>
-                            <button type="button" class="custom-chip-dream" onclick="selectCustomDream(this, 'Milli takÄ±m kaptanÄ± olarak kupalar kaldÄ±rmak')" style="padding: 7px 8px; border-radius: 8px; border: 1.5px solid #ffd700; background: rgba(255,215,0,0.05); color: #94a3b8; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">ğŸ‡¹ğŸ‡· Ay-YÄ±ldÄ±zlÄ± Kaptan</button>
+                            <button type="button" class="custom-chip-dream active" onclick="selectCustomDream(this, 'Ailemi borçtan kurtarıp onlara gurur yaşatmak')" style="padding: 7px 8px; border-radius: 8px; border: 1.5px solid #ffd700; background: rgba(255,215,0,0.15); color: #fff; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">❤️ Ailemi Kurtarmak</button>
+                            <button type="button" class="custom-chip-dream" onclick="selectCustomDream(this, 'Ballon d\'Or kazanıp dünyaya adımı altın harflerle yazdırmak')" style="padding: 7px 8px; border-radius: 8px; border: 1.5px solid #ffd700; background: rgba(255,215,0,0.05); color: #94a3b8; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">🏆 Ballon d'Or</button>
+                            <button type="button" class="custom-chip-dream" onclick="selectCustomDream(this, 'Doğup büyüdüğüm şehrin bayrak futbolcusu ve efsanesi olmak')" style="padding: 7px 8px; border-radius: 8px; border: 1.5px solid #ffd700; background: rgba(255,215,0,0.05); color: #94a3b8; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">🌟 Şehrimin Efsanesi</button>
+                            <button type="button" class="custom-chip-dream" onclick="selectCustomDream(this, 'Milli takım kaptanı olarak kupalar kaldırmak')" style="padding: 7px 8px; border-radius: 8px; border: 1.5px solid #ffd700; background: rgba(255,215,0,0.05); color: #94a3b8; font-size: 10px; font-weight: 700; text-align: left; cursor: pointer;">🇹🇷 Ay-Yıldızlı Kaptan</button>
                         </div>
                     </div>
 
@@ -2599,30 +2599,30 @@
         </div>
 
         <!-- 📺 SİYAH FUTBOL 3D SİNEMATİK GECE MASASI MODAL -->
-                <!-- ğŸ‘” TEKNÄ°K DÄ°REKTÃ–RÃœN ODASI (SÄ°NEMATÄ°K MAÃ‡ Ã–NÃœ BRÄ°FÄ°NGÄ°) -->
+        <!-- 👔 TEKNİK DİREKTÖRÜN ODASI (SİNEMATİK MAÇ ÖNÜ BRİFİNGİ) -->
         <div id="coach-office-modal" style="position: fixed; inset: 0; z-index: 10030; background: rgba(4, 7, 13, 0.96); backdrop-filter: blur(20px); display: none; align-items: center; justify-content: center; padding: 16px; overflow-y: auto;">
             <div style="max-width: 480px; width: 100%; background: linear-gradient(180deg, #0f172a 0%, #070a12 100%); border: 1.5px solid rgba(0, 229, 183, 0.35); border-radius: 20px; box-shadow: 0 0 50px rgba(0, 229, 183, 0.2), inset 0 0 30px rgba(0,0,0,0.8); padding: 22px 18px; position: relative; text-align: center;">
                 
                 <!-- Office Top Badge -->
                 <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 14px;">
                     <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="font-size: 16px;">ğŸ‘”</span>
-                        <span style="font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 800; color: #fff; letter-spacing: 0.8px; text-transform: uppercase;">TEKNÄ°K DÄ°REKTÃ–RÃœN ODASI</span>
+                        <span style="font-size: 16px;">👔</span>
+                        <span style="font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 800; color: #fff; letter-spacing: 0.8px; text-transform: uppercase;">TEKNİK DİREKTÖRÜN ODASI</span>
                     </div>
-                    <span id="coach-office-club-tag" style="font-size: 10.5px; font-weight: 800; color: #00e5b7; background: rgba(0,229,183,0.12); border: 1px solid rgba(0,229,183,0.25); padding: 3px 8px; border-radius: 8px;">KULÃœP TESÄ°SLERÄ°</span>
+                    <span id="coach-office-club-tag" style="font-size: 10.5px; font-weight: 800; color: #00e5b7; background: rgba(0,229,183,0.12); border: 1px solid rgba(0,229,183,0.25); padding: 3px 8px; border-radius: 8px;">KULÜP TESİSLERİ</span>
                 </div>
 
                 <!-- Coach Character & Whiteboard Backdrop -->
                 <div style="display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 16px; position: relative;">
                     <!-- Tactical Board Mini -->
                     <div style="width: 85px; height: 105px; background: #064e3b; border: 2px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 6px; box-shadow: inset 0 0 15px rgba(0,0,0,0.6); position: relative; display: flex; flex-direction: column; justify-content: space-between;">
-                        <div style="font-size: 8px; color: #a7f3d0; font-weight: 800; text-align: center; letter-spacing: 0.5px;">TAKTÄ°K TAHTASI</div>
+                        <div style="font-size: 8px; color: #a7f3d0; font-weight: 800; text-align: center; letter-spacing: 0.5px;">TAKTİK TAHTASI</div>
                         <div style="border: 1px dashed rgba(255,255,255,0.3); height: 60px; border-radius: 4px; display: flex; align-items: center; justify-content: center; position: relative;">
                             <span style="font-size: 9px; color: #ffd700; font-weight: 900;">4-3-3</span>
                             <div style="position: absolute; width: 6px; height: 6px; background: #ef4444; border-radius: 50%; top: 8px; left: 10px;"></div>
                             <div style="position: absolute; width: 6px; height: 6px; background: #00e5b7; border-radius: 50%; bottom: 8px; right: 10px;"></div>
                         </div>
-                        <div style="font-size: 7.5px; color: #cbd5e1; text-align: center;">HÃœCUM BASKISI</div>
+                        <div style="font-size: 7.5px; color: #cbd5e1; text-align: center;">HÜCUM BASKISI</div>
                     </div>
 
                     <!-- Stylized Charismatic Coach Avatar -->
@@ -2632,18 +2632,18 @@
                             <circle cx="12" cy="7" r="4"></circle>
                             <path d="M6 11l2 2 4-4" stroke="#ffd700" stroke-width="1.8"></path>
                         </svg>
-                        <div style="position: absolute; bottom: 0; background: rgba(0,0,0,0.7); width: 100%; font-size: 8.5px; font-weight: 800; color: #ffd700; text-align: center; padding: 1px 0;">TEKNÄ°K PATRON</div>
+                        <div style="position: absolute; bottom: 0; background: rgba(0,0,0,0.7); width: 100%; font-size: 8.5px; font-weight: 800; color: #ffd700; text-align: center; padding: 1px 0;">TEKNİK PATRON</div>
                     </div>
                 </div>
 
-                <!-- ğŸ’¬ HAREKETLÄ° HOCA BALONCUÄU (ANIMATED FLOATING SPEECH BUBBLE) -->
+                <!-- 💬 HAREKETLİ HOCA BALONCUĞU (ANIMATED FLOATING SPEECH BUBBLE) -->
                 <div id="coach-floating-bubble" style="background: rgba(15, 23, 42, 0.92); border: 1.5px solid #00e5b7; border-radius: 16px; padding: 16px 14px; position: relative; box-shadow: 0 8px 30px rgba(0,0,0,0.7), 0 0 20px rgba(0,229,183,0.2); animation: coachBubbleFloat 3s ease-in-out infinite alternate; text-align: left; margin-bottom: 18px;">
                     <!-- Bubble Pointer Arrow pointing up -->
                     <div style="position: absolute; top: -9px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 9px solid transparent; border-right: 9px solid transparent; border-bottom: 9px solid #00e5b7;"></div>
                     
                     <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
-                        <span style="font-size: 11px;">ğŸ“¢</span>
-                        <strong id="coach-speaker-title" style="font-size: 12px; font-weight: 900; color: #00e5b7; letter-spacing: 0.5px;">HOCA KONUÅUYOR:</strong>
+                        <span style="font-size: 11px;">📢</span>
+                        <strong id="coach-speaker-title" style="font-size: 12px; font-weight: 900; color: #00e5b7; letter-spacing: 0.5px;">HOCA KONUŞUYOR:</strong>
                     </div>
                     <p id="coach-office-speech-text" style="font-size: 12.5px; color: #f1f5f9; line-height: 1.6; margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 500;">
                         <!-- Streaming text will populate here -->
@@ -2653,15 +2653,15 @@
                 <!-- First Opponent Scouting Card Mini -->
                 <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 8px 12px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; font-size: 11.5px;">
                     <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="color: #ffd700; font-weight: 800;">âš”ï¸ Ä°LK RAKÄ°P:</span>
-                        <strong id="coach-next-opp-name" style="color: #fff;">BeyoÄŸlu Yeni Ã‡arÅŸÄ±</strong>
+                        <span style="color: #ffd700; font-weight: 800;">⚔️ İLK RAKİP:</span>
+                        <strong id="coach-next-opp-name" style="color: #fff;">Beyoğlu Yeni Çarşı</strong>
                     </div>
                     <span style="color: #94a3b8; font-size: 10.5px; font-weight: 700;">Hafta 1</span>
                 </div>
 
                 <!-- Action Confirmation Button -->
                 <button class="btn btn-primary" onclick="closeCoachOfficeModalAndEnterLobby()" style="width: 100%; padding: 15px 18px; font-size: 13.5px; font-weight: 900; letter-spacing: 0.5px; font-family: 'Space Grotesk', 'Rajdhani', sans-serif; text-transform: uppercase; background: linear-gradient(135deg, #00e5b7 0%, #059669 100%); color: #05140d; border: 1px solid rgba(255,255,255,0.25); border-radius: 12px; box-shadow: 0 4px 25px rgba(0, 229, 183, 0.4); cursor: pointer; transition: all 0.2s ease;">
-                    ANLAÅILDI HOCAM, GÃœVENÄ°NÄ°ZÄ° BOÅA Ã‡IKARMAYACAÄIM! â”
+                    ANLAŞILDI HOCAM, GÜVENİNİZİ BOŞA ÇIKARMAYACAĞIM! ➔
                 </button>
             </div>
         </div>
@@ -5564,111 +5564,111 @@
         const POSITION_TRIALS = {
             "Forvet": [
                 {
-                    title: "AÅŸama 1: Ceza SahasÄ±nda 1v1 Kaleci KarÅŸÄ±laÅŸmasÄ±",
-                    desc: "Ceza sahasÄ±nda topla buluÅŸtun, kaleci aÃ§Ä±yÄ± daraltmak iÃ§in Ã¼zerine doÄŸru koÅŸuyor! NasÄ±l bir vuruÅŸ yapacaksÄ±n?",
+                    title: "Aşama 1: Ceza Sahasında 1v1 Kaleci Karşılaşması",
+                    desc: "Ceza sahasında topla buluştun, kaleci açıyı daraltmak için üzerine doğru koşuyor! Nasıl bir vuruş yapacaksın?",
                     options: [
                         {
-                            actionTitle: "Uzak KÃ¶ÅŸeye Teknik Plase",
-                            actionDesc: "Kalecinin uzanamayacaÄŸÄ± uzak kÃ¶ÅŸeye falsolu ve dengeli vuruÅŸ yap.",
-                            text: "Uzak kÃ¶ÅŸeye sert ve plase bÄ±rak.",
-                            commentarySuccess: "MUHTEÅEM BÄ°TÄ°RÄ°CÄ°LÄ°K! Kalecinin uzanamayacaÄŸÄ± kÃ¶ÅŸeye fÃ¼ze gibi plase! AntrenÃ¶rler not defterini dolduruyor.",
-                            commentaryFail: "Plase kÃ¶ÅŸeyi bulmadÄ±, kaleci kornere Ã§eldi.",
+                            actionTitle: "Uzak Köşeye Teknik Plase",
+                            actionDesc: "Kalecinin uzanamayacağı uzak köşeye falsolu ve dengeli vuruş yap.",
+                            text: "Uzak köşeye sert ve plase bırak.",
+                            commentarySuccess: "MUHTEŞEM BİTİRİCİLİK! Kalecinin uzanamayacağı köşeye füze gibi plase! Antrenörler not defterini dolduruyor.",
+                            commentaryFail: "Plase köşeyi bulmadı, kaleci kornere çeldi.",
                             successChance: 0.70
                         },
                         {
-                            actionTitle: "AÅŸÄ±rtma VuruÅŸ (Ã‡ip)",
-                            actionDesc: "Ã–ne Ã§Ä±kan kalecinin Ã¼stÃ¼nden topu hafifÃ§e havalandÄ±rÄ±p tavana yolla.",
-                            text: "AÅŸÄ±rtma vuruÅŸla kalecinin Ã¼stÃ¼nden yolla.",
-                            commentarySuccess: "KLAS HAREKET! Kalecinin Ã§aresiz bakÄ±ÅŸlarÄ± arasÄ±nda top sÃ¼zÃ¼lerek tavana gitti! TribÃ¼nler ayakta!",
-                            commentaryFail: "AÅŸÄ±rtma vuruÅŸun ayarÄ± kaÃ§tÄ±, top Ã¼st direÄŸi yalayarak auta Ã§Ä±ktÄ±.",
+                            actionTitle: "Aşırtma Vuruş (Çip)",
+                            actionDesc: "Öne çıkan kalecinin üstünden topu hafifçe havalandırıp tavana yolla.",
+                            text: "Aşırtma vuruşla kalecinin üstünden yolla.",
+                            commentarySuccess: "KLAS HAREKET! Kalecinin çaresiz bakışları arasında top süzülerek tavana gitti! Tribünler ayakta!",
+                            commentaryFail: "Aşırtma vuruşun ayarı kaçtı, top üst direği yalayarak auta çıktı.",
                             successChance: 0.50
                         }
                     ]
                 },
                 {
-                    title: "AÅŸama 2: Kanat OrtasÄ±na GeliÅŸine Vole & Kafa",
-                    desc: "SaÄŸ kanattan milimetrik bir orta kesildi, ceza sahasÄ±nda stoperin Ã¶nÃ¼nde topla buluÅŸuyorsun!",
+                    title: "Aşama 2: Kanat Ortasına Gelişine Vole & Kafa",
+                    desc: "Sağ kanattan milimetrik bir orta kesildi, ceza sahasında stoperin önünde topla buluşuyorsun!",
                     options: [
                         {
-                            actionTitle: "GeliÅŸine Sert Vole",
-                            actionDesc: "Havadan gelen topa yere inmeden sert ve falsolu vuruÅŸ yap.",
-                            text: "GeliÅŸine sert bir vole yapÄ±ÅŸtÄ±r.",
-                            commentarySuccess: "Ä°NANILMAZ BÄ°R VOLE! Top aÄŸlarÄ± delecek gibi doksana takÄ±ldÄ±! GÃ¶zlemciler alkÄ±ÅŸlÄ±yor!",
-                            commentaryFail: "Topa tam oturmadÄ±, vole yan aÄŸlarda kaldÄ±.",
+                            actionTitle: "Gelişine Sert Vole",
+                            actionDesc: "Havadan gelen topa yere inmeden sert ve falsolu vuruş yap.",
+                            text: "Gelişine sert bir vole yapıştır.",
+                            commentarySuccess: "İNANILMAZ BİR VOLE! Top ağları delecek gibi doksana takıldı! Gözlemciler alkışlıyor!",
+                            commentaryFail: "Topa tam oturmadı, vole yan ağlarda kaldı.",
                             successChance: 0.65
                         },
                         {
-                            actionTitle: "Ã–n DireÄŸe Kafa VuruÅŸu",
-                            actionDesc: "Stoperin Ã¶nÃ¼ne hÄ±zla kat edip kÃ¶ÅŸeye sert kafa ÅŸutu Ã§Ä±kar.",
-                            text: "Ã–n direÄŸe koÅŸup kafayla kÃ¶ÅŸeye bÄ±rak.",
-                            commentarySuccess: "TAM BÄ°R SANTRFOR GOLÃœ! Ã–n direkte mÃ¼thiÅŸ kafa vuruÅŸuyla kaleciyi ters ayakta yakaladÄ±n!",
-                            commentaryFail: "Stoper hava topunda fizik avantajÄ±nÄ± kullandÄ± ve topu uzaklaÅŸtÄ±rdÄ±.",
+                            actionTitle: "Ön Direğe Kafa Vuruşu",
+                            actionDesc: "Stoperin önüne hızla kat edip köşeye sert kafa şutu çıkar.",
+                            text: "Ön direğe koşup kafayla köşeye bırak.",
+                            commentarySuccess: "TAM BİR SANTRFOR GOLÜ! Ön direkte müthiş kafa vuruşuyla kaleciyi ters ayakta yakaladın!",
+                            commentaryFail: "Stoper hava topunda fizik avantajını kullandı ve topu uzaklaştırdı.",
                             successChance: 0.60
                         }
                     ]
                 },
                 {
-                    title: "AÅŸama 3: 25 Metreden Uzaktan FÃ¼ze Åut",
-                    desc: "Ceza sahasÄ± yayÄ±nÄ±n Ã¶nÃ¼nde top sana sekti, Ã¶nÃ¼n bomboÅŸ!",
+                    title: "Aşama 3: 25 Metreden Uzaktan Füze Şut",
+                    desc: "Ceza sahası yayının önünde top sana sekti, önün bomboş!",
                     options: [
                         {
                             actionTitle: "Doksana Kavisli Plase",
-                            actionDesc: "Topun altÄ±na falso vererek Ã§atala doÄŸru teknik plase yolla.",
-                            text: "Doksana kavisli plase gÃ¶nder.",
-                            commentarySuccess: "DOKSANA ASILDI! 25 metreden Ã§atala giden inanÄ±lmaz bir ÅŸut! AntrenÃ¶rler alkÄ±ÅŸlÄ±yor!",
-                            commentaryFail: "Kavis fazla aÃ§Ä±ldÄ±, top direÄŸin hemen yanÄ±ndan auta Ã§Ä±ktÄ±.",
+                            actionDesc: "Topun altına falso vererek çatala doğru teknik plase yolla.",
+                            text: "Doksana kavisli plase gönder.",
+                            commentarySuccess: "DOKSANA ASILDI! 25 metreden çatala giden inanılmaz bir şut! Antrenörler alkışlıyor!",
+                            commentaryFail: "Kavis fazla açıldı, top direğin hemen yanından auta çıktı.",
                             successChance: 0.60
                         },
                         {
-                            actionTitle: "Tam GÃ¼Ã§ Sert Åut",
-                            actionDesc: "Ayak Ã¼stÃ¼yle kalecinin eldivenlerini bÃ¼kecek sertlikte mermi sÄ±k.",
-                            text: "GeliÅŸine tam gÃ¼Ã§le mermi sÄ±k.",
-                            commentarySuccess: "MERMÄ° GÄ°BÄ°! Top kalecinin eldivenlerini delip aÄŸlara yapÄ±ÅŸtÄ±!",
-                            commentaryFail: "Åut savunma duvarÄ±na Ã§arptÄ±.",
+                            actionTitle: "Tam Güç Sert Şut",
+                            actionDesc: "Ayak üstüyle kalecinin eldivenlerini bükecek sertlikte mermi sık.",
+                            text: "Gelişine tam güçle mermi sık.",
+                            commentarySuccess: "MERMİ GİBİ! Top kalecinin eldivenlerini delip ağlara yapıştı!",
+                            commentaryFail: "Şut savunma duvarına çarptı.",
                             successChance: 0.50
                         }
                     ]
                 },
                 {
-                    title: "AÅŸama 4: Savunma ArkasÄ±na KaÃ§Ä±ÅŸ & VerkaÃ§",
-                    desc: "Rakip stoperler Ã¶ne Ã§Ä±ktÄ±, orta sahayla verkaÃ§ yapÄ±p arkaya sarkma fÄ±rsatÄ±!",
+                    title: "Aşama 4: Savunma Arkasına Kaçış & Verkaç",
+                    desc: "Rakip stoperler öne çıktı, orta sahayla verkaç yapıp arkaya sarkma fırsatı!",
                     options: [
                         {
-                            actionTitle: "HÄ±zlÄ± 1-2 Duvar PasÄ±",
-                            actionDesc: "Tek topla arkadaÅŸÄ±na verip stoperin arkasÄ±na fÄ±rla.",
-                            text: "Tek topla verkaÃ§ yapÄ±p arkaya sark.",
-                            commentarySuccess: "KUSURSUZ ZAMANLAMA! MuhteÅŸem bir verkaÃ§la stoperleri oyundan dÃ¼ÅŸÃ¼rdÃ¼n!",
-                            commentaryFail: "VerkaÃ§ pasÄ± bir parÃ§a sert gitti, kaleci Ã§Ä±ktÄ±.",
+                            actionTitle: "Hızlı 1-2 Duvar Pası",
+                            actionDesc: "Tek topla arkadaşına verip stoperin arkasına fırla.",
+                            text: "Tek topla verkaç yapıp arkaya sark.",
+                            commentarySuccess: "KUSURSUZ ZAMANLAMA! Muhteşem bir verkaçla stoperleri oyundan düşürdün!",
+                            commentaryFail: "Verkaç pası bir parça sert gitti, kaleci çıktı.",
                             successChance: 0.70
                         },
                         {
-                            actionTitle: "Ofsayt Ã‡izgisinde Ã‡apraz KoÅŸu",
-                            actionDesc: "Tam ofsayt sÄ±nÄ±rÄ±nda Ã§apraz koÅŸuyla defansÄ± daÄŸÄ±t.",
-                            text: "Ã‡apraz koÅŸuyla defansÄ±n arkasÄ±na sÄ±z.",
-                            commentarySuccess: "OFÅAYT TUZAÄINI YIKTIN! Milimetrik zamanlamayla topla buluÅŸtun!",
-                            commentaryFail: "YardÄ±mcÄ± hakem bayraÄŸÄ± kaldÄ±rdÄ±, ofsayt.",
+                            actionTitle: "Ofsayt Çizgisinde Çapraz Koşu",
+                            actionDesc: "Tam ofsayt sınırında çapraz koşuyla defansı dağıt.",
+                            text: "Çapraz koşuyla defansın arkasına sız.",
+                            commentarySuccess: "OFSAYT TUZAĞINI YIKTIN! Milimetrik zamanlamayla topla buluştun!",
+                            commentaryFail: "Yardımcı hakem bayrağı kaldırdı, ofsayt.",
                             successChance: 0.55
                         }
                     ]
                 },
                 {
-                    title: "AÅŸama 5: Son Adam Ã‡alÄ±mÄ± & HÄ±z PatlamasÄ±",
-                    desc: "Son stoperle karÅŸÄ± karÅŸÄ±yasÄ±n, arkadan kademe savunmasÄ± yetiÅŸmek Ã¼zere!",
+                    title: "Aşama 5: Son Adam Çalımı & Hız Patlaması",
+                    desc: "Son stoperle karşı karşıyasın, arkadan kademe savunması yetişmek üzere!",
                     options: [
                         {
-                            actionTitle: "DÄ±ÅŸ Kulvardan Depar",
-                            actionDesc: "Ani hÄ±z patlamasÄ±yla stoperin ters yÃ¶nÃ¼ne sprint at.",
-                            text: "HÄ±z patlamasÄ±yla dÄ±ÅŸ kulvardan sÄ±yrÄ±l.",
-                            commentarySuccess: "ADETA RÃœZGAR! Muazzam bir deparla stoperi pazara yolladÄ±n ve iÃ§eri sokuldun!",
-                            commentaryFail: "Stoper omuz omuza mÃ¼cadelede dengeni bozdu ve topu kazandÄ±.",
+                            actionTitle: "Dış Kulvardan Depar",
+                            actionDesc: "Ani hız patlamasıyla stoperin ters yönüne sprint at.",
+                            text: "Hız patlamasıyla dış kulvardan sıyrıl.",
+                            commentarySuccess: "ADETA RÜZGAR! Muazzam bir deparla stoperi pazara yolladın ve içeri sokuldun!",
+                            commentaryFail: "Stoper omuz omuza mücadelede dengeni bozdu ve topu kazandı.",
                             successChance: 0.60
                         },
                         {
-                            actionTitle: "Bilek Ã‡alÄ±mÄ± & Bacak ArasÄ±",
-                            actionDesc: "Bilek hareketiyle rakibi tereddÃ¼tte bÄ±rakÄ±p topu bacaklarÄ±nÄ±n arasÄ±ndan geÃ§ir.",
-                            text: "Bilek Ã§alÄ±mÄ±yla bacak arasÄ± at.",
-                            commentarySuccess: "Ã‡ALIM RESÄ°TALÄ°! MÃ¼kemmel bir bacak arasÄ±! AntrenÃ¶rlerin gÃ¶zleri parÄ±ldÄ±yor!",
-                            commentaryFail: "Ã‡alÄ±m denerken stoper ayak koydu ve ataÄŸÄ± kesti.",
+                            actionTitle: "Bilek Çalımı & Bacak Arası",
+                            actionDesc: "Bilek hareketiyle rakibi tereddütte bırakıp topu bacaklarının arasından geçir.",
+                            text: "Bilek çalımıyla bacak arası at.",
+                            commentarySuccess: "ÇALIM RESİTALİ! Mükemmel bir bacak arası! Antrenörlerin gözleri parıldıyor!",
+                            commentaryFail: "Çalım denerken stoper ayak koydu ve atağı kesti.",
                             successChance: 0.45
                         }
                     ]
@@ -5676,111 +5676,111 @@
             ],
             "Orta Saha": [
                 {
-                    title: "AÅŸama 1: Savunma ArkasÄ±na Milimetrik Ara PasÄ±",
-                    desc: "Merkezde topu kontrol ettin, forvet oyuncun rakip stoperlerin arkasÄ±na koÅŸu yapÄ±yor!",
+                    title: "Aşama 1: Savunma Arkasına Milimetrik Ara Pası",
+                    desc: "Merkezde topu kontrol ettin, forvet oyuncun rakip stoperlerin arkasına koşu yapıyor!",
                     options: [
                         {
-                            actionTitle: "Yerden Ä°nce Ara PasÄ±",
-                            actionDesc: "Stoperlerin arasÄ±ndaki koridora falsolu milimetrik top yuvarla.",
-                            text: "Yerden ince ve kavisli bir ara pasÄ± yolla.",
-                            commentarySuccess: "MAESTRO VÄ°ZYONU! SavunmanÄ±n arasÄ±ndan sÃ¼zÃ¼len top forveti kaleciyle karÅŸÄ± karÅŸÄ±ya bÄ±raktÄ±! Asist!",
-                            commentaryFail: "Pas bir adÄ±m yavaÅŸ kaldÄ±, stoper son anda topu kornere Ã§eldi.",
+                            actionTitle: "Yerden İnce Ara Pası",
+                            actionDesc: "Stoperlerin arasındaki koridora falsolu milimetrik top yuvarla.",
+                            text: "Yerden ince ve kavisli bir ara pası yolla.",
+                            commentarySuccess: "MAESTRO VİZYONU! Savunmanın arasından süzülen top forveti kaleciyle karşı karşıya bıraktı! Asist!",
+                            commentaryFail: "Pas bir adım yavaş kaldı, stoper son anda topu kornere çeldi.",
                             successChance: 0.70
                         },
                         {
-                            actionTitle: "Havadan AÅŸÄ±rtma Pas",
-                            actionDesc: "Savunma bloÄŸunun Ã¼zerinden forvetin koÅŸu yoluna yumuÅŸak aÅŸÄ±rtma top at.",
-                            text: "SavunmanÄ±n Ã¼stÃ¼nden havadan adrese teslim aÅŸÄ±rtma pas at.",
-                            commentarySuccess: "SANAT ESERÄ° PAS! Top forvetin ayaÄŸÄ±na adeta konduruldu! Ä°nanÄ±lmaz teknik!",
-                            commentaryFail: "Pas fazla havalandÄ±, kaleci Ã§Ä±karak havada kontrol etti.",
+                            actionTitle: "Havadan Aşırtma Pas",
+                            actionDesc: "Savunma bloğunun üzerinden forvetin koşu yoluna yumuşak aşırtma top at.",
+                            text: "Savunmanın üstünden havadan adrese teslim aşırtma pas at.",
+                            commentarySuccess: "SANAT ESERİ PAS! Top forvetin ayağına adeta konduruldu! İnanılmaz teknik!",
+                            commentaryFail: "Pas fazla havalandı, kaleci çıkarak havada kontrol etti.",
                             successChance: 0.55
                         }
                     ]
                 },
                 {
-                    title: "AÅŸama 2: Ceza SahasÄ± DÄ±ÅŸÄ± 25 Metre FÃ¼ze Åut",
-                    desc: "Rakip ceza sahasÄ± Ã¶nÃ¼nde seken top sana geldi, kaleci hafif Ã¶nde!",
+                    title: "Aşama 2: Ceza Sahası Dışı 25 Metre Füze Şut",
+                    desc: "Rakip ceza sahası önünde seken top sana geldi, kaleci hafif önde!",
                     options: [
                         {
                             actionTitle: "Doksana Kavisli Plase",
-                            actionDesc: "Topun altÄ±na falso vererek Ã§atala doÄŸru teknik plase yolla.",
-                            text: "Doksana doÄŸru kavisli bir plase yolla.",
-                            commentarySuccess: "DOKSANA ASILDI! 25 metreden Ã§atala giden inanÄ±lmaz bir ÅŸut! AntrenÃ¶rler alkÄ±ÅŸlÄ±yor!",
-                            commentaryFail: "Kavis fazla aÃ§Ä±ldÄ±, top direÄŸin hemen yanÄ±ndan auta Ã§Ä±ktÄ±.",
+                            actionDesc: "Topun altına falso vererek çatala doğru teknik plase yolla.",
+                            text: "Doksana doğru kavisli bir plase yolla.",
+                            commentarySuccess: "DOKSANA ASILDI! 25 metreden çatala giden inanılmaz bir şut! Antrenörler alkışlıyor!",
+                            commentaryFail: "Kavis fazla açıldı, top direğin hemen yanından auta çıktı.",
                             successChance: 0.60
                         },
                         {
-                            actionTitle: "GeliÅŸine Tam GÃ¼Ã§ Åut",
-                            actionDesc: "Seken topa ayak Ã¼stÃ¼yle mermi gibi sert ÅŸut Ã§Ä±kar.",
-                            text: "GeliÅŸine tam gÃ¼Ã§le tavana mermi sÄ±k.",
-                            commentarySuccess: "MERMÄ° GÄ°BÄ°! Top kalecinin eldivenlerini yakarak aÄŸlarla buluÅŸtu!",
-                            commentaryFail: "Åut savunmadan dÃ¶ndÃ¼, tehlike savuÅŸturuldu.",
+                            actionTitle: "Gelişine Tam Güç Şut",
+                            actionDesc: "Seken topa ayak üstüyle mermi gibi sert şut çıkar.",
+                            text: "Gelişine tam güçle tavana mermi sık.",
+                            commentarySuccess: "MERMİ GİBİ! Top kalecinin eldivenlerini yakarak ağlarla buluştu!",
+                            commentaryFail: "Şut savunmadan döndü, tehlike savuşturuldu.",
                             successChance: 0.50
                         }
                     ]
                 },
                 {
-                    title: "AÅŸama 3: Pres AltÄ±ndan Ã‡Ä±kÄ±ÅŸ & Tempo YÃ¶netimi",
-                    desc: "Rakip 3 kiÅŸiyle seni dar alanda presle sÄ±kÄ±ÅŸtÄ±rdÄ±, pas verecek boÅŸ alan arÄ±yorsun!",
+                    title: "Aşama 3: Pres Altından Çıkış & Tempo Yönetimi",
+                    desc: "Rakip 3 kişiyle seni dar alanda presle sıkıştırdı, pas verecek boş alan arıyorsun!",
                     options: [
                         {
                             actionTitle: "Diyagonal Uzun Pas",
-                            actionDesc: "Presi tek topla ters kanattaki boÅŸ arkadaÅŸÄ±na aÃ§arak oyunu rahatlat.",
-                            text: "Tek topla boÅŸta kalan ters kanada uzun diyagonal pas at.",
-                            commentarySuccess: "OYUN KURUCU DEHASI! Presi tek pasla boÅŸa Ã§Ä±karÄ±p takÄ±mÄ± ataÄŸa kaldÄ±rdÄ±n!",
-                            commentaryFail: "PasÄ±n yÃ¶nÃ¼ isabetsiz oldu, top doÄŸrudan taca Ã§Ä±ktÄ±.",
+                            actionDesc: "Presi tek topla ters kanattaki boş arkadaşına açarak oyunu rahatlat.",
+                            text: "Tek topla boşta kalan ters kanada uzun diyagonal pas at.",
+                            commentarySuccess: "OYUN KURUCU DEHASI! Presi tek pasla boşa çıkarıp takımı atağa kaldırdın!",
+                            commentaryFail: "Pasın yönü isabetsiz oldu, top doğrudan taca çıktı.",
                             successChance: 0.65
                         },
                         {
-                            actionTitle: "VÃ¼cut Ã‡alÄ±mÄ± & DÃ¶nÃ¼ÅŸ",
-                            actionDesc: "Dar alanda ani gÃ¶vde Ã§alÄ±mÄ±yla iki rakibin arasÄ±ndan sÄ±yrÄ±l.",
-                            text: "Dar alanda vÃ¼cut Ã§alÄ±mÄ±yla iki kiÅŸinin arasÄ±ndan sÄ±yrÄ±l.",
-                            commentarySuccess: "BÃœYÃœLEYÄ°CÄ° TEKNÄ°K! Ä°ki rakip birbirine Ã§arptÄ±, topu tereyaÄŸÄ±ndan kÄ±l Ã§eker gibi Ã§Ä±kardÄ±n!",
-                            commentaryFail: "Pres Ã§ok sert geldi, topu ayaÄŸÄ±ndan aÃ§Ä±nca kaptÄ±rdÄ±n.",
+                            actionTitle: "Vücut Çalımı & Dönüş",
+                            actionDesc: "Dar alanda ani gövde çalımıyla iki rakibin arasından sıyrıl.",
+                            text: "Dar alanda vücut çalımıyla iki kişinin arasından sıyrıl.",
+                            commentarySuccess: "BÜYÜLEYİCİ TEKNİK! İki rakip birbirine çarptı, topu tereyağından kıl çeker gibi çıkardın!",
+                            commentaryFail: "Pres çok sert geldi, topu ayağından açınca kaptırdın.",
                             successChance: 0.45
                         }
                     ]
                 },
                 {
-                    title: "AÅŸama 4: Kontratak BaÅŸlatma & Tek DokunuÅŸ Vizyon",
-                    desc: "KazanÄ±lan topla hÄ±zla hÃ¼cuma Ã§Ä±kÄ±yorsun, forvet depar attÄ±!",
+                    title: "Aşama 4: Kontratak Başlatma & Tek Dokunuş Vizyon",
+                    desc: "Kazanılan topla hızla hücuma çıkıyorsun, forvet depar attı!",
                     options: [
                         {
-                            actionTitle: "Topukla Ters Kanat PasÄ±",
-                            actionDesc: "Arkana bakmadan topukla ters kanattaki boÅŸ beki kaÃ§Ä±r.",
-                            text: "Beklenmedik bir topuk pasÄ±yla ters kanadÄ± kaÃ§Ä±r.",
-                            commentarySuccess: "SÄ°HÄ°RBAZ PASI! BÃ¼tÃ¼n tribÃ¼n ayaÄŸa kalktÄ±, rakip savunma ters ayakta yakalandÄ±!",
-                            commentaryFail: "Pas zayÄ±f kaldÄ±, rakip araya girdi.",
+                            actionTitle: "Topukla Ters Kanat Pası",
+                            actionDesc: "Arkana bakmadan topukla ters kanattaki boş beki kaçır.",
+                            text: "Beklenmedik bir topuk pasıyla ters kanadı kaçır.",
+                            commentarySuccess: "SİHİRBAZ PASI! Bütün tribün ayağa kalktı, rakip savunma ters ayakta yakalandı!",
+                            commentaryFail: "Pas zayıf kaldı, rakip araya girdi.",
                             successChance: 0.65
                         },
                         {
-                            actionTitle: "Derinlemesine Kavisli Ara PasÄ±",
-                            actionDesc: "Ä°ki stoperin arasÄ±ndan falsoyla forveti kaleciyle burun buruna getir.",
-                            text: "Falsolu ara pasÄ±yla forvete gol pozisyonu hazÄ±rla.",
-                            commentarySuccess: "MÄ°METRÄ°K ASÄ°ST! Forvet topa sadece dokundu ve GOOOL!",
-                            commentaryFail: "Stoper son anda kornere Ã§eldi.",
+                            actionTitle: "Derinlemesine Kavisli Ara Pası",
+                            actionDesc: "İki stoperin arasından falsoyla forveti kaleciyle burun buruna getir.",
+                            text: "Falsolu ara pasıyla forvete gol pozisyonu hazırla.",
+                            commentarySuccess: "MİMETRİK ASİST! Forvet topa sadece dokundu ve GOOOL!",
+                            commentaryFail: "Stoper son anda kornere çeldi.",
                             successChance: 0.60
                         }
                     ]
                 },
                 {
-                    title: "AÅŸama 5: Ceza SahasÄ±na Gizli KoÅŸu & Bitiricilik",
-                    desc: "Kanat oyuncusu Ã§izgiye indi, ceza sahasÄ± yayÄ±ndan iÃ§eri doÄŸru gizli koÅŸu yapÄ±yorsun!",
+                    title: "Aşama 5: Ceza Sahasına Gizli Koşu & Bitiricilik",
+                    desc: "Kanat oyuncusu çizgiye indi, ceza sahası yayından içeri doğru gizli koşu yapıyorsun!",
                     options: [
                         {
-                            actionTitle: "Geriye Ã‡Ä±karÄ±lan Topa GeliÅŸine Åut",
-                            actionDesc: "PenaltÄ± noktasÄ±na geriye Ã§Ä±karÄ±lan pasa ayak iÃ§iyle kÃ¶ÅŸeye plase bÄ±rak.",
-                            text: "Geriye Ã§Ä±karÄ±lan topa kÃ¶ÅŸeye net plase bÄ±rak.",
-                            commentarySuccess: "GÄ°ZLÄ° SANTRFOR GOLÃœ! Ceza sahasÄ±na sÄ±zÄ±p kÃ¶ÅŸeye bÄ±raktÄ±n, kaleci kÄ±pÄ±rdayamadÄ±!",
-                            commentaryFail: "VuruÅŸ kalecinin kucaÄŸÄ±na gitti.",
+                            actionTitle: "Geriye Çıkarılan Topa Gelişine Şut",
+                            actionDesc: "Penaltı noktasına geriye çıkarılan pasa ayak içiyle köşeye plase bırak.",
+                            text: "Geriye çıkarılan topa köşeye net plase bırak.",
+                            commentarySuccess: "GİZLİ SANTRFOR GOLÜ! Ceza sahasına sızıp köşeye bıraktın, kaleci kıpırdayamadı!",
+                            commentaryFail: "Vuruş kalecinin kucağına gitti.",
                             successChance: 0.70
                         },
                         {
-                            actionTitle: "Ã–n DireÄŸe SÄ±zÄ±p DokunuÅŸ",
-                            actionDesc: "Ã–n direÄŸe hÄ±zla fÄ±rlayÄ±p yerden gelen sert ortaya dokun.",
-                            text: "Ã–n direÄŸe koÅŸup ayak ucuyla dokun.",
-                            commentarySuccess: "ZEKÄ°CE DOKUNUÅ! Ã–n direkte kaleciyi ters kÃ¶ÅŸe yaptÄ±n, harika gol!",
-                            commentaryFail: "Kaleci aÃ§Ä±yÄ± iyi kapattÄ±.",
+                            actionTitle: "Ön Direğe Sızıp Dokunuş",
+                            actionDesc: "Ön direğe hızla fırlayıp yerden gelen sert ortaya dokun.",
+                            text: "Ön direğe koşup ayak ucuyla dokun.",
+                            commentarySuccess: "ZEKİCE DOKUNUŞ! Ön direkte kaleciyi ters köşe yaptın, harika gol!",
+                            commentaryFail: "Kaleci açıyı iyi kapattı.",
                             successChance: 0.55
                         }
                     ]
@@ -5788,111 +5788,111 @@
             ],
             "Defans": [
                 {
-                    title: "AÅŸama 1: Son Adam 1v1 Kayarak MÃ¼dahale",
-                    desc: "Rakip hÄ±zlÄ± forvet sÃ¼ratle kalene doÄŸru geliyor, ceza sahasÄ±na girmeden mÃ¼dahale etmelisin!",
+                    title: "Aşama 1: Son Adam 1v1 Kayarak Müdahale",
+                    desc: "Rakip hızlı forvet süratle kalene doğru geliyor, ceza sahasına girmeden müdahale etmelisin!",
                     options: [
                         {
-                            actionTitle: "ZamanlamalÄ± Kayarak MÃ¼dahale",
-                            actionDesc: "Ceza sahasÄ±na girmeden tertemiz bir hamleyle topu sÃ¶kÃ¼p al.",
-                            text: "Kusursuz zamanlamayla kayarak topa mÃ¼dahale et.",
-                            commentarySuccess: "KUSURSUZ MÃœDAHALE! Tertemiz bir kayarak mÃ¼dahaleyle topu sÃ¶kÃ¼p aldÄ±n! AlkÄ±ÅŸlar sana!",
-                            commentaryFail: "ZamanlamayÄ± biraz kaÃ§Ä±rdÄ±n, forvet son anda sÄ±yrÄ±ldÄ±.",
+                            actionTitle: "Zamanlamalı Kayarak Müdahale",
+                            actionDesc: "Ceza sahasına girmeden tertemiz bir hamleyle topu söküp al.",
+                            text: "Kusursuz zamanlamayla kayarak topa müdahale et.",
+                            commentarySuccess: "KUSURSUZ MÜDAHALE! Tertemiz bir kayarak müdahaleyle topu söküp aldın! Alkışlar sana!",
+                            commentaryFail: "Zamanlamayı biraz kaçırdın, forvet son anda sıyrıldı.",
                             successChance: 0.70
                         },
                         {
-                            actionTitle: "Ayakta Kal & Omuz Omuza KarÅŸÄ±la",
-                            actionDesc: "Fizik gÃ¼cÃ¼nÃ¼ kullanarak forveti dÄ±ÅŸ kulvara sÃ¼r ve hÃ¼cumu kes.",
-                            text: "Ayakta kal, omuz omuza mÃ¼cadeleyle forveti dÄ±ÅŸarÄ± sÃ¼r.",
-                            commentarySuccess: "GEÃ‡Ä°LMEZ DUVAR! GÃ¼Ã§lÃ¼ fiziÄŸinle forveti ezdin ve topu taca yolladÄ±n!",
-                            commentaryFail: "Rakip Ã§eviklikle yÃ¶n deÄŸiÅŸtirdi ve ataÄŸÄ± sÃ¼rdÃ¼rdÃ¼.",
+                            actionTitle: "Ayakta Kal & Omuz Omuza Karşıla",
+                            actionDesc: "Fizik gücünü kullanarak forveti dış kulvara sür ve hücumu kes.",
+                            text: "Ayakta kal, omuz omuza mücadeleyle forveti dışarı sür.",
+                            commentarySuccess: "GEÇİLMEZ DUVAR! Güçlü fiziğinle forveti ezdin ve topu taca yolladın!",
+                            commentaryFail: "Rakip çeviklikle yön değiştirdi ve atağı sürdürdü.",
                             successChance: 0.60
                         }
                     ]
                 },
                 {
-                    title: "AÅŸama 2: Korner SavunmasÄ±nda Hava Topu Hakimiyeti",
-                    desc: "Rakip takÄ±m tehlikeli bir korner ortasÄ± kullandÄ±, penaltÄ± noktasÄ±na doÄŸru yÃ¼ksek bir top geliyor!",
+                    title: "Aşama 2: Korner Savunmasında Hava Topu Hakimiyeti",
+                    desc: "Rakip takım tehlikeli bir korner ortası kullandı, penaltı noktasına doğru yüksek bir top geliyor!",
                     options: [
                         {
-                            actionTitle: "YÃ¼kselerek Kafayla Temizle",
-                            actionDesc: "Ceza sahasÄ±nda havada asÄ±lÄ± kalarak topu tehlike bÃ¶lgesinden uzaklaÅŸtÄ±r.",
-                            text: "YÃ¼ksel ve kafayla topu ceza sahasÄ± dÄ±ÅŸÄ±na uzaklaÅŸtÄ±r.",
-                            commentarySuccess: "HAVA HAKÄ°MÄ°! Havada adeta asÄ±lÄ± kaldÄ±n ve topu tehlike bÃ¶lgesinden uzaklaÅŸtÄ±rdÄ±n!",
-                            commentaryFail: "Rakip santrfor arkadan yÃ¼kseldi ve kafa vuruÅŸunu yaptÄ±.",
+                            actionTitle: "Yükselerek Kafayla Temizle",
+                            actionDesc: "Ceza sahasında havada asılı kalarak topu tehlike bölgesinden uzaklaştır.",
+                            text: "Yüksel ve kafayla topu ceza sahası dışına uzaklaştır.",
+                            commentarySuccess: "HAVA HAKİMİ! Havada adeta asılı kaldın ve topu tehlike bölgesinden uzaklaştırdın!",
+                            commentaryFail: "Rakip santrfor arkadan yükseldi ve kafa vuruşunu yaptı.",
                             successChance: 0.65
                         },
                         {
-                            actionTitle: "Kafayla Kontra Atak BaÅŸlat",
-                            actionDesc: "Hava topunu kanat oyuncunun koÅŸu yoluna indirip takÄ±mÄ± ataÄŸa Ã§Ä±kar.",
-                            text: "Kafayla topu hÃ¼cuma kalkan kanat oyuncunun koÅŸu yoluna indir.",
-                            commentarySuccess: "SAVUNMADAN HÃœCUMA! Kafayla indirdiÄŸin top takÄ±mÄ± 3'e 2 kontraya Ã§Ä±kardÄ±! Harika vizyon!",
-                            commentaryFail: "Ä°ndirdiÄŸin top rakip orta sahaya gitti.",
+                            actionTitle: "Kafayla Kontra Atak Başlat",
+                            actionDesc: "Hava topunu kanat oyuncunun koşu yoluna indirip takımı atağa çıkar.",
+                            text: "Kafayla topu hücuma kalkan kanat oyuncunun koşu yoluna indir.",
+                            commentarySuccess: "SAVUNMADAN HÜCUMA! Kafayla indirdiğin top takımı 3'e 2 kontraya çıkardı! Harika vizyon!",
+                            commentaryFail: "İndirdiğin top rakip orta sahaya gitti.",
                             successChance: 0.50
                         }
                     ]
                 },
                 {
-                    title: "AÅŸama 3: Geriden 50 Metrelik Nokta Oyun Kurma",
-                    desc: "Topu kazandÄ±n, rakip savunma Ã¶nde yakalandÄ±, forvetin ileri koÅŸu gÃ¶steriyor!",
+                    title: "Aşama 3: Geriden 50 Metrelik Nokta Oyun Kurma",
+                    desc: "Topu kazandın, rakip savunma önde yakalandı, forvetin ileri koşu gösteriyor!",
                     options: [
                         {
                             actionTitle: "50 Metrelik Nokta Pas",
-                            actionDesc: "Geriden ileri forvetin koÅŸu yoluna adrese teslim uzun top at.",
-                            text: "Forvetin koÅŸu yoluna 50 metrelik uzun ve isabetli diyagonal pas at.",
-                            commentarySuccess: "ADRESE TESLÄ°M! Geriden attÄ±ÄŸÄ±n muhteÅŸem pas forveti kaleciyle karÅŸÄ± karÅŸÄ±ya bÄ±raktÄ±!",
-                            commentaryFail: "Pas fazla hÄ±zlÄ± gitti, doÄŸrudan rakip kaleciye ulaÅŸtÄ±.",
+                            actionDesc: "Geriden ileri forvetin koşu yoluna adrese teslim uzun top at.",
+                            text: "Forvetin koşu yoluna 50 metrelik uzun ve isabetli diyagonal pas at.",
+                            commentarySuccess: "ADRESE TESLİM! Geriden attığın muhteşem pas forveti kaleciyle karşı karşıya bıraktı!",
+                            commentaryFail: "Pas fazla hızlı gitti, doğrudan rakip kaleciye ulaştı.",
                             successChance: 0.60
                         },
                         {
-                            actionTitle: "Ã–ne Kat Edip VerkaÃ§ Yap",
-                            actionDesc: "BoÅŸ alana topla Ã§Ä±kÄ±p orta sahayla gÃ¼venli paslaÅŸarak hÃ¼cumu kur.",
-                            text: "Ã–nÃ¼ndeki boÅŸ alanÄ± sÃ¼rÃ¼p orta sahayla gÃ¼venli verkaÃ§ yap.",
-                            commentarySuccess: "MODERN STOPER! SoÄŸukkanlÄ±lÄ±kla takÄ±mÄ± ataÄŸa kaldÄ±rdÄ±n, antrenÃ¶rler takdir etti!",
-                            commentaryFail: "PasÄ±n zamanlamasÄ± gecikti, rakip hÃ¼cum hattÄ± baskÄ± yaptÄ±.",
+                            actionTitle: "Öne Kat Edip Verkaç Yap",
+                            actionDesc: "Boş alana topla çıkıp orta sahayla güvenli paslaşarak hücumu kur.",
+                            text: "Önündeki boş alanı sürüp orta sahayla güvenli verkaç yap.",
+                            commentarySuccess: "MODERN STOPER! Soğukkanlılıkla takımı atağa kaldırdın, antrenörler takdir etti!",
+                            commentaryFail: "Pasın zamanlaması gecikti, rakip hücum hattı baskı yaptı.",
                             successChance: 0.70
                         }
                     ]
                 },
                 {
-                    title: "AÅŸama 4: Ã‡izgiden Top Ã‡Ä±karma & Son Hamle",
-                    desc: "Kaleci maÄŸlup oldu, top kaleye doÄŸru yuvarlanÄ±yor! Ã‡izgiye yetiÅŸmelisin!",
+                    title: "Aşama 4: Çizgiden Top Çıkarma & Son Hamle",
+                    desc: "Kaleci mağlup oldu, top kaleye doğru yuvarlanıyor! Çizgiye yetişmelisin!",
                     options: [
                         {
-                            actionTitle: "Kayarak Ã‡izgiden Ã‡Ä±kar",
-                            actionDesc: "Son anda yetiÅŸip ayaÄŸÄ±nÄ± uzatarak topu Ã§izgiden kornere Ã§el.",
-                            text: "Uzanarak topu Ã§izgiden kornere tokatla.",
-                            commentarySuccess: "KAHRAMANCA KURTARIÅ! GolÃ¼ Ã§izgiden Ã§Ä±kardÄ±n, bÃ¼tÃ¼n takÄ±m Ã¼zerine koÅŸuyor!",
-                            commentaryFail: "Saliseyle yetiÅŸemedin, top Ã§izgiyi geÃ§ti.",
+                            actionTitle: "Kayarak Çizgiden Çıkar",
+                            actionDesc: "Son anda yetişip ayağını uzatarak topu çizgiden kornere çel.",
+                            text: "Uzanarak topu çizgiden kornere tokatla.",
+                            commentarySuccess: "KAHRAMANCA KURTARIŞ! Golü çizgiden çıkardın, bütün takım üzerine koşuyor!",
+                            commentaryFail: "Saliseyle yetişemedin, top çizgiyi geçti.",
                             successChance: 0.65
                         },
                         {
-                            actionTitle: "Direk Dibinde VÃ¼cut Siperi",
-                            actionDesc: "VÃ¼cudunu siper ederek topun kaleye giriÅŸini engelle.",
-                            text: "VÃ¼cudunu siper edip ÅŸutu gÃ¶ÄŸsÃ¼nle durdur.",
-                            commentarySuccess: "KAYA GÄ°BÄ° SÄ°PER! Åutu gÃ¶ÄŸsÃ¼nle bloke edip tehlikeyi Ã¶nledin!",
-                            commentaryFail: "Top Ã§arpÄ±p yÃ¶n deÄŸiÅŸtirdi.",
+                            actionTitle: "Direk Dibinde Vücut Siperi",
+                            actionDesc: "Vücudunu siper ederek topun kaleye girişini engelle.",
+                            text: "Vücudunu siper edip şutu göğsünle durdur.",
+                            commentarySuccess: "KAYA GİBİ SİPER! Şutu göğsünle bloke edip tehlikeyi önledin!",
+                            commentaryFail: "Top çarpıp yön değiştirdi.",
                             successChance: 0.60
                         }
                     ]
                 },
                 {
-                    title: "AÅŸama 5: YÃ¼ksek Pres & Rakip YarÄ± Sahada Top Kapma",
-                    desc: "TakÄ±mÄ±n Ã¶nde pres yapÄ±yor, rakip stoper baskÄ± altÄ±nda pas atmaya Ã§alÄ±ÅŸÄ±yor!",
+                    title: "Aşama 5: Yüksek Pres & Rakip Yarı Sahada Top Kapma",
+                    desc: "Takımın önde pres yapıyor, rakip stoper baskı altında pas atmaya çalışıyor!",
                     options: [
                         {
-                            actionTitle: "Ã–nceden Sezip Araya Gir",
-                            actionDesc: "PasÄ±n atÄ±lacaÄŸÄ± yÃ¶nÃ¼ tahmin edip yÄ±ldÄ±rÄ±m hÄ±zÄ±yla araya gir.",
-                            text: "Pas yoluna aniden sÃ¼zÃ¼lÃ¼p topu kap.",
-                            commentarySuccess: "OYUN OKUMA RESÄ°TALÄ°! PasÄ± Ã¶nceden sezerek kaptÄ±n ve takÄ±mÄ± gol pozisyonuna soktun!",
-                            commentaryFail: "Rakip stoper Ã§alÄ±mla sÄ±yrÄ±ldÄ±.",
+                            actionTitle: "Önceden Sezip Araya Gir",
+                            actionDesc: "Pasın atılacağı yönü tahmin edip yıldırım hızıyla araya gir.",
+                            text: "Pas yoluna aniden süzülüp topu kap.",
+                            commentarySuccess: "OYUN OKUMA RESİTALİ! Pası önceden sezerek kaptın ve takımı gol pozisyonuna soktun!",
+                            commentaryFail: "Rakip stoper çalımla sıyrıldı.",
                             successChance: 0.65
                         },
                         {
-                            actionTitle: "Fiziksel BaskÄ±yla Hataya Zorla",
-                            actionDesc: "Rakibin arkasÄ±ndan omuz bindirerek topu kaybetmesini saÄŸla.",
-                            text: "Fiziksel baskÄ±yla rakibi hataya zorla.",
-                            commentarySuccess: "YILDIRICI BASKI! Rakip panikle topu taca dikti, pres sonuÃ§ verdi!",
-                            commentaryFail: "Hakem hafif temas iÃ§in faul dÃ¼dÃ¼ÄŸÃ¼ Ã§aldÄ±.",
+                            actionTitle: "Fiziksel Baskıyla Hataya Zorla",
+                            actionDesc: "Rakibin arkasından omuz bindirerek topu kaybetmesini sağla.",
+                            text: "Fiziksel baskıyla rakibi hataya zorla.",
+                            commentarySuccess: "YILDIRICI BASKI! Rakip panikle topu taca dikti, pres sonuç verdi!",
+                            commentaryFail: "Hakem hafif temas için faul düdüğü çaldı.",
                             successChance: 0.55
                         }
                     ]
@@ -6314,7 +6314,7 @@
                 if (titleEl) titleEl.innerText = currentTrial.title;
                 if (descEl) descEl.innerText = currentTrial.desc;
                 if (commEl) {
-                    commEl.innerText = "ğŸ¯ Taktiksel tercihini seÃ§. UÃ§uÅŸ rotasÄ±nÄ± gÃ¶rmek iÃ§in seÃ§eneklerin Ã¼zerine gel.";
+                    commEl.innerText = "🎯 Taktiksel tercihini seç. Uçuş rotasını görmek için seçeneklerin üzerine gel.";
                     commEl.style.color = "var(--accent-blue)";
                 }
                 if (container) container.innerHTML = "";
@@ -6432,7 +6432,7 @@
                     btn.innerHTML = `
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
                             <strong style="color: #fff; font-size: 13.5px; font-family: 'Space Grotesk', sans-serif;">${opt.actionTitle}</strong>
-                            <span style="font-size: 10px; font-weight: 800; color: #00e5b7; background: rgba(0,229,183,0.12); padding: 2px 7px; border-radius: 6px;">%${Math.round(opt.successChance * 100)} Ä°htimal</span>
+                            <span style="font-size: 10px; font-weight: 800; color: #00e5b7; background: rgba(0,229,183,0.12); padding: 2px 7px; border-radius: 6px;">%${Math.round(opt.successChance * 100)} İhtimal</span>
                         </div>
                         <div style="font-size: 11.5px; color: #94a3b8; line-height: 1.35;">${opt.actionDesc}</div>
                     `;
