@@ -6377,7 +6377,6 @@
                     btn.innerHTML = `
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
                             <strong style="color: #fff; font-size: 13.5px; font-family: 'Space Grotesk', sans-serif;">${opt.actionTitle}</strong>
-                            <span style="font-size: 10px; font-weight: 800; color: #00e5b7; background: rgba(0,229,183,0.12); padding: 2px 7px; border-radius: 6px;">%${Math.round(opt.successChance * 100)} İhtimal</span>
                         </div>
                         <div style="font-size: 11.5px; color: #94a3b8; line-height: 1.35;">${opt.actionDesc}</div>
                     `;
@@ -11674,6 +11673,413 @@ function afterWeekAdvanced() {
                     </div>
                 `;
             });
+        }
+
+        function renderInvestmentsAndCrypto() {
+            const container = document.getElementById("social-invest-container");
+            if (!container) return;
+            container.innerHTML = "";
+
+            let totalCryptoValue = 0;
+            const cryptoAssets = (DATABASE && DATABASE.CRYPTO_ASSETS) || [
+                { id: "btc", name: "Bitcoin (BTC)", symbol: "BTC", basePrice: 52000, desc: "Borsanın en büyük ve güvenli limanı." },
+                { id: "eth", name: "Ethereum (ETH)", symbol: "ETH", basePrice: 3200, desc: "Akıllı sözleşmelerin lideri." },
+                { id: "doge", name: "Dogecoin (DOGE)", symbol: "DOGE", basePrice: 0.15, desc: "Sosyal medya spekülasyonlarıyla dalgalanan coin." },
+                { id: "atl", name: "Atlas Coin (ATL)", symbol: "ATL", basePrice: 1.0, desc: "Kariyerine bağlı resmi taraftar tokenı." }
+            ];
+
+            if (GAME && GAME.state && GAME.state.cryptoPortfolio && GAME.state.cryptoPrices) {
+                cryptoAssets.forEach(coin => {
+                    const entry = GAME.state.cryptoPortfolio[coin.id];
+                    const curP = GAME.state.cryptoPrices[coin.id] || coin.basePrice;
+                    if (entry && entry.amount) {
+                        totalCryptoValue += entry.amount * curP;
+                    }
+                });
+            }
+
+            let totalWeeklyPassive = 0;
+            const hometownInvestments = (DATABASE && DATABASE.HOMETOWN_INVESTMENTS) || [];
+            if (GAME && GAME.state && GAME.state.ownedInvestments) {
+                GAME.state.ownedInvestments.forEach(invId => {
+                    const inv = hometownInvestments.find(i => i.id === invId);
+                    if (inv && inv.weeklyYield) totalWeeklyPassive += inv.weeklyYield;
+                });
+            }
+
+            container.innerHTML += `
+                <div class="card glass" style="padding: 16px; border-radius: 14px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(15, 23, 42, 0.9) 100%); border: 1.5px solid rgba(16, 185, 129, 0.35); margin-bottom: 6px;">
+                    <div style="font-size: 11px; font-weight: 800; color: #10b981; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px;">📈 Finans & Yatırım Portföyü</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div style="background: rgba(0,0,0,0.4); padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06);">
+                            <div style="font-size: 10px; color: #94a3b8; font-weight: 600;">TOPLAM KRİPTO</div>
+                            <div style="font-size: 16px; font-weight: 900; color: #f8fafc; font-family: 'Space Grotesk', sans-serif;">${Math.round(totalCryptoValue).toLocaleString()} €</div>
+                        </div>
+                        <div style="background: rgba(0,0,0,0.4); padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06);">
+                            <div style="font-size: 10px; color: #94a3b8; font-weight: 600;">HAFTALIK PASİF GELİR</div>
+                            <div style="font-size: 16px; font-weight: 900; color: #38bdf8; font-family: 'Space Grotesk', sans-serif;">+${totalWeeklyPassive.toLocaleString()} €</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML += `
+                <div style="margin-top: 10px; margin-bottom: 6px;">
+                    <h3 style="margin: 0 0 8px 0; font-size: 13.5px; font-weight: 800; color: #f8fafc; display: flex; align-items: center; gap: 6px;">
+                        <span>⚡</span> Canlı Kripto Para Piyasası
+                    </h3>
+                </div>
+            `;
+
+            cryptoAssets.forEach(coin => {
+                const curPrice = (GAME.state.cryptoPrices && GAME.state.cryptoPrices[coin.id]) ? GAME.state.cryptoPrices[coin.id] : coin.basePrice;
+                const portfolio = (GAME.state.cryptoPortfolio && GAME.state.cryptoPortfolio[coin.id]) ? GAME.state.cryptoPortfolio[coin.id] : { amount: 0, avgPrice: 0 };
+                const ownedAmount = portfolio.amount || 0;
+                const avgPrice = portfolio.avgPrice || 0;
+                const holdingValue = Math.round(ownedAmount * curPrice);
+                
+                let pnlBadge = "";
+                if (ownedAmount > 0 && avgPrice > 0) {
+                    const pnlPct = (((curPrice - avgPrice) / avgPrice) * 100);
+                    const isProfit = pnlPct >= 0;
+                    pnlBadge = `<span style="font-size: 10px; font-weight: 800; color: ${isProfit ? '#10b981' : '#ef4444'}; background: ${isProfit ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)'}; padding: 2px 6px; border-radius: 4px;">${isProfit ? '▲ +' : '▼ '}${pnlPct.toFixed(1)}%</span>`;
+                }
+
+                container.innerHTML += `
+                    <div class="shop-card glass" style="display: flex; flex-direction: column; gap: 10px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border-glass); background: #131822; margin-bottom: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div>
+                                <div style="font-size: 13.5px; font-weight: 800; color: #f8fafc;">${coin.name}</div>
+                                <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">${coin.desc}</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 14px; font-weight: 900; color: #ffd700; font-family: 'Space Grotesk', sans-serif;">${curPrice >= 1 ? curPrice.toLocaleString() : curPrice.toFixed(4)} €</div>
+                                <div style="margin-top: 2px;">${pnlBadge}</div>
+                            </div>
+                        </div>
+
+                        ${ownedAmount > 0 ? `
+                            <div style="background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 8px; font-size: 11px; color: #cbd5e1; display: flex; justify-content: space-between; align-items: center;">
+                                <span>Portföyünüz: <strong>${ownedAmount.toFixed(4)} ${coin.symbol}</strong></span>
+                                <span style="font-weight: 700; color: #00e5ff;">(${holdingValue.toLocaleString()} €)</span>
+                            </div>
+                        ` : ''}
+
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-primary" onclick="promptBuyCrypto('${coin.id}', '${coin.symbol}')" style="flex: 1; padding: 8px 12px; font-size: 11.5px; font-weight: 700; border-radius: 8px;">💵 Satın Al</button>
+                            ${ownedAmount > 0 ? `
+                                <button class="btn" onclick="GAME.sellCrypto('${coin.id}'); renderInvestmentsAndCrypto();" style="padding: 8px 14px; font-size: 11.5px; font-weight: 700; border-radius: 8px; background: rgba(239, 68, 68, 0.15); color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.35);">Tümünü Sat</button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML += `
+                <div style="margin-top: 14px; margin-bottom: 6px;">
+                    <h3 style="margin: 0 0 4px 0; font-size: 13.5px; font-weight: 800; color: #f8fafc; display: flex; align-items: center; gap: 6px;">
+                        <span>🏢</span> Memleket & Girişim Yatırımları
+                    </h3>
+                    <div style="font-size: 11px; color: #94a3b8;">Her hafta maaşınıza düzenli pasif gelir katar.</div>
+                </div>
+            `;
+
+            hometownInvestments.forEach(inv => {
+                const isOwned = GAME.state.ownedInvestments && GAME.state.ownedInvestments.includes(inv.id);
+                const canAfford = GAME.state.money >= inv.cost;
+                
+                let actionBtn = "";
+                if (isOwned) {
+                    actionBtn = `<span style="font-size: 11px; font-weight: 800; color: #10b981; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); padding: 6px 12px; border-radius: 8px; display: inline-flex; align-items: center; gap: 4px;">✅ Aktif Ortaksınız</span>`;
+                } else {
+                    const btnClass = canAfford ? "btn-primary" : "btn-disabled";
+                    const disabledAttr = !canAfford ? "disabled" : "";
+                    const opacityStyle = !canAfford ? "opacity: 0.4; cursor: not-allowed;" : "";
+                    actionBtn = `<button class="btn ${btnClass}" ${disabledAttr} onclick="GAME.buyInvestment('${inv.id}'); renderInvestmentsAndCrypto();" style="padding: 8px 14px; font-size: 11.5px; font-weight: 700; border-radius: 8px; flex-shrink: 0; white-space: nowrap; ${opacityStyle}">${inv.cost.toLocaleString()} € Yatırım Yap</button>`;
+                }
+
+                container.innerHTML += `
+                    <div class="shop-card glass" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border-glass); background: #131822; margin-bottom: 8px;">
+                        <div class="details" style="flex: 1; padding-right: 12px;">
+                            <h4 style="margin: 0 0 3px 0; font-size: 13.5px; font-weight: 700; color: #f8fafc;">${inv.name}</h4>
+                            <p style="margin: 0 0 4px 0; font-size: 11.5px; color: var(--text-muted); line-height: 1.35;">${inv.desc}</p>
+                            <span style="font-size: 11px; font-weight: 800; color: #38bdf8;">+${inv.weeklyYield.toLocaleString()} € / Hafta</span>
+                        </div>
+                        ${actionBtn}
+                    </div>
+                `;
+            });
+        }
+
+        function promptBuyCrypto(coinId, symbol) {
+            const currentBalance = (GAME && GAME.state && GAME.state.money) || 0;
+            const input = prompt(`Kaç € değerinde ${symbol} almak istiyorsunuz?\nMevcut Bakiye: ${currentBalance.toLocaleString()} €`, "10000");
+            if (!input) return;
+            const amount = parseInt(input);
+            if (isNaN(amount) || amount <= 0) {
+                alert("Geçersiz miktar girdiniz.");
+                return;
+            }
+            if (amount > currentBalance) {
+                alert("Bunun için yeterli bakiyeniz bulunmuyor.");
+                return;
+            }
+            if (GAME.buyCrypto(coinId, amount)) {
+                renderInvestmentsAndCrypto();
+            }
+        }
+
+        function renderTefeciPanel() {
+            const container = document.getElementById("social-tefeci-container");
+            if (!container) return;
+            container.innerHTML = "";
+
+            const borc = (GAME && GAME.state && GAME.state.tefeciBorc) || 0;
+            const haftalikKesinti = (GAME && GAME.state && GAME.state.tefeciHaftalikGeriOdeme) || 0;
+            const hasDebt = borc > 0;
+
+            container.innerHTML += `
+                <div class="card glass" style="padding: 16px; border-radius: 14px; background: linear-gradient(135deg, ${hasDebt ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.12)'} 0%, rgba(15, 23, 42, 0.95) 100%); border: 1.5px solid ${hasDebt ? 'rgba(239, 68, 68, 0.4)' : 'rgba(16, 185, 129, 0.35)'}; margin-bottom: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <div style="font-size: 11px; font-weight: 800; color: ${hasDebt ? '#ef4444' : '#10b981'}; letter-spacing: 0.5px; text-transform: uppercase;">
+                            ${hasDebt ? '🚨 AKTİF YERALTI BORCU' : '🛡️ TEMİZ HESAP'}
+                        </div>
+                        <span style="font-size: 10px; font-weight: 700; color: #94a3b8;">TEFECİ RIZA</span>
+                    </div>
+
+                    ${hasDebt ? `
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+                            <div style="background: rgba(0,0,0,0.5); padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(239, 68, 68, 0.2);">
+                                <div style="font-size: 10px; color: #94a3b8; font-weight: 600;">KALAN TOPLAM BORÇ</div>
+                                <div style="font-size: 16px; font-weight: 900; color: #ef4444; font-family: 'Space Grotesk', sans-serif;">${borc.toLocaleString()} €</div>
+                            </div>
+                            <div style="background: rgba(0,0,0,0.5); padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(239, 68, 68, 0.2);">
+                                <div style="font-size: 10px; color: #94a3b8; font-weight: 600;">HAFTALIK ZORUNLU TAKSİT</div>
+                                <div style="font-size: 16px; font-weight: 900; color: #f59e0b; font-family: 'Space Grotesk', sans-serif;">${haftalikKesinti.toLocaleString()} €</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 11px; color: #fca5a5; line-height: 1.4; margin-bottom: 12px; background: rgba(239,68,68,0.1); padding: 8px 12px; border-radius: 8px;">
+                            ⚠️ <strong>DİKKAT:</strong> Haftalık taksiti ödeyecek paranız olmazsa borcunuza %25 gecikme faizi biner ve mafya lüks araçlarınıza el koyar!
+                        </div>
+                        <button class="btn" onclick="repayTefeciCustom()" style="width: 100%; background: #10b981; color: #000; font-weight: 900; padding: 11px; font-size: 12.5px; border-radius: 8px; cursor: pointer; border: none;">
+                            💵 Borcu Erken Kapat (Ödeme Yap)
+                        </button>
+                    ` : `
+                        <div style="font-size: 13.5px; font-weight: 700; color: #f8fafc; margin-bottom: 4px;">Tefeciye herhangi bir borcunuz bulunmuyor.</div>
+                        <div style="font-size: 11.5px; color: #94a3b8; line-height: 1.4;">Büyük transferler veya acil nakit ihtiyaçlarınız için aşağıdaki paketlerden borç alabilirsiniz. Ancak ödemelerinizi geciktirirseniz bedeli ağır olur!</div>
+                    `}
+                </div>
+            `;
+
+            container.innerHTML += `
+                <div style="margin-top: 10px; margin-bottom: 8px;">
+                    <h3 style="margin: 0 0 4px 0; font-size: 13.5px; font-weight: 800; color: #f8fafc; display: flex; align-items: center; gap: 6px;">
+                        <span>💼</span> Yeraltı Kredi Paketleri
+                    </h3>
+                </div>
+            `;
+
+            const loanPackages = [
+                {
+                    name: "Küçük Tezgâh Borcu",
+                    cash: 25000,
+                    totalDebt: 32500,
+                    weekly: 4000,
+                    desc: "Hızlı harcamalar için ufak nakit desteği. Toplam geri ödeme: 32.500 €"
+                },
+                {
+                    name: "Büyük Yatırım / Kumar Finansı",
+                    cash: 100000,
+                    totalDebt: 135000,
+                    weekly: 15000,
+                    desc: "Gayrimenkul ve borsa alımları için ciddi borç. Toplam geri ödeme: 135.000 €"
+                },
+                {
+                    name: "Yeraltı Baronu Kredisi",
+                    cash: 500000,
+                    totalDebt: 700000,
+                    weekly: 70000,
+                    desc: "En üst limit! Hata kabul etmez. Toplam geri ödeme: 700.000 €"
+                }
+            ];
+
+            loanPackages.forEach(pkg => {
+                container.innerHTML += `
+                    <div class="shop-card glass" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border-glass); background: #131822; margin-bottom: 8px;">
+                        <div class="details" style="flex: 1; padding-right: 12px;">
+                            <h4 style="margin: 0 0 3px 0; font-size: 13px; font-weight: 700; color: #f8fafc;">${pkg.name}</h4>
+                            <p style="margin: 0 0 4px 0; font-size: 11px; color: var(--text-muted); line-height: 1.35;">${pkg.desc}</p>
+                            <span style="font-size: 11.5px; font-weight: 800; color: #00e5ff;">Alınan: +${pkg.cash.toLocaleString()} €</span>
+                            <span style="font-size: 11px; color: #f59e0b; margin-left: 8px;">(Haftalık: ${pkg.weekly.toLocaleString()} €)</span>
+                        </div>
+                        <button class="btn" onclick="takeTefeciLoan(${pkg.cash}, ${pkg.totalDebt}, ${pkg.weekly})" style="padding: 8px 14px; font-size: 11.5px; font-weight: 800; border-radius: 8px; flex-shrink: 0; background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); color: #fff; border: none; cursor: pointer;">
+                            Borç Al
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        function repayTefeciCustom() {
+            const borc = (GAME && GAME.state && GAME.state.tefeciBorc) || 0;
+            const money = (GAME && GAME.state && GAME.state.money) || 0;
+            if (borc <= 0) return alert("Ödenecek aktif borcunuz bulunmuyor.");
+            
+            const input = prompt(`Ne kadar borç ödemek istiyorsunuz?\nToplam Borç: ${borc.toLocaleString()} €\nCüzdandaki Nakit: ${money.toLocaleString()} €`, Math.min(borc, money));
+            if (!input) return;
+            const payAmt = parseInt(input);
+            if (isNaN(payAmt) || payAmt <= 0) return alert("Geçersiz miktar.");
+            if (payAmt > money) return alert("Cüzdanınızda bu kadar nakit bulunmuyor.");
+
+            const actualPay = Math.min(payAmt, borc);
+            GAME.state.money -= actualPay;
+            GAME.state.tefeciBorc = Math.max(0, GAME.state.tefeciBorc - actualPay);
+
+            if (GAME.state.tefeciBorc <= 0) {
+                GAME.state.tefeciBorc = 0;
+                GAME.state.tefeciFaiz = 0;
+                GAME.state.tefeciHaftalikGeriOdeme = 0;
+                alert("Tebrikler! Tefeciye olan tüm borcunuz tamamen kapatıldı.");
+            } else {
+                GAME.state.tefeciHaftalikGeriOdeme = Math.round(GAME.state.tefeciBorc * 0.15);
+                alert(`${actualPay.toLocaleString()} € borç ödendi. Kalan borcunuz: ${GAME.state.tefeciBorc.toLocaleString()} €`);
+            }
+
+            GAME.saveGame();
+            GAME.updateUI();
+            renderTefeciPanel();
+        }
+
+        function takeTefeciLoan(cash, totalDebt, weeklyPay) {
+            if (GAME.state.tefeciBorc > 0) {
+                alert("Tefeci Rıza: 'Daha önceki borcunu kapatmadın koçum! Önce eskisini öde, sonra konuşalım!'");
+                return;
+            }
+
+            if (!confirm(`Tefeciden ${cash.toLocaleString()} € borç almak istediğinizden emin misiniz?\nToplam Geri Ödeme: ${totalDebt.toLocaleString()} €\nHaftalık Kesinti: ${weeklyPay.toLocaleString()} €`)) {
+                return;
+            }
+
+            GAME.state.money = (GAME.state.money || 0) + cash;
+            GAME.state.tefeciBorc = totalDebt;
+            GAME.state.tefeciFaiz = 0.30;
+            GAME.state.tefeciHaftalikGeriOdeme = weeklyPay;
+
+            GAME.saveGame();
+            GAME.updateUI();
+            renderTefeciPanel();
+
+            alert(`Tefeci çantayı masaya bıraktı!\n+${cash.toLocaleString()} € hesabınıza geçti.\nHaftaya ilk taksit olan ${weeklyPay.toLocaleString()} € otomatik olarak maaşınızdan kesilecektir.`);
+        }
+
+        function renderEsportsPanel() {
+            const container = document.getElementById("social-esports-container");
+            if (!container) return;
+            container.innerHTML = "";
+
+            const team = (GAME && GAME.state && GAME.state.esportsTeam);
+
+            if (!team) {
+                container.innerHTML = `
+                    <div class="card glass" style="padding: 18px; border-radius: 14px; background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1.5px solid rgba(168, 85, 247, 0.4); text-align: center;">
+                        <div style="font-size: 32px; margin-bottom: 8px;">🎮</div>
+                        <h3 style="margin: 0 0 6px 0; font-size: 16px; font-weight: 800; color: #f8fafc;">Kendi E-Spor Kulübünü Kur!</h3>
+                        <p style="font-size: 11.5px; color: #94a3b8; line-height: 1.5; margin: 0 0 16px 0;">
+                            EA FC ve Valorant turnuvalarında yarışacak profesyonel e-spor takımını kur. Kulübün maç kazandıkça kupa kaldır, turnuva para ödülleri kazan ve yüz binlerce hayran topla!
+                        </p>
+                        <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px; margin-bottom: 14px; font-size: 12px; color: #c084fc; font-weight: 700;">
+                            Kurulum Maliyeti: 50.000 € (Gaming House + 5 Pro Oyuncu)
+                        </div>
+                        <button class="btn btn-primary" onclick="foundEsportsTeam()" style="padding: 12px 24px; font-size: 13px; font-weight: 800; border-radius: 10px; width: 100%;">
+                            👑 Kulübü Kur (50.000 €)
+                        </button>
+                    </div>
+                `;
+            } else {
+                const tourney = team.tournament || { name: "Türkiye E-Spor Ligi", points: 0, week: 1 };
+                const stats = team.stats || { wins: 0, losses: 0, trophies: 0 };
+
+                container.innerHTML = `
+                    <div class="card glass" style="padding: 16px; border-radius: 14px; background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1.5px solid rgba(168, 85, 247, 0.4); margin-bottom: 12px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <div>
+                                <div style="font-size: 10px; font-weight: 800; color: #c084fc; text-transform: uppercase;">E-SPOR KULÜBÜNÜZ</div>
+                                <h3 style="margin: 0; font-size: 18px; font-weight: 900; color: #f8fafc;">${team.name}</h3>
+                            </div>
+                            <span style="font-size: 11px; font-weight: 800; color: #ffd700; background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.3); padding: 4px 8px; border-radius: 6px;">
+                                Seviye ${team.level || 1}
+                            </span>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px;">
+                            <div style="background: rgba(0,0,0,0.4); padding: 8px 10px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 9.5px; color: #94a3b8; font-weight: 600;">TURNUVA</div>
+                                <div style="font-size: 11px; font-weight: 800; color: #38bdf8; margin-top: 2px;">${tourney.name}</div>
+                            </div>
+                            <div style="background: rgba(0,0,0,0.4); padding: 8px 10px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 9.5px; color: #94a3b8; font-weight: 600;">PUAN / GALİBİYET</div>
+                                <div style="font-size: 11.5px; font-weight: 800; color: #10b981; margin-top: 2px;">${tourney.points || 0} P (${stats.wins}G - ${stats.losses}M)</div>
+                            </div>
+                            <div style="background: rgba(0,0,0,0.4); padding: 8px 10px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 9.5px; color: #94a3b8; font-weight: 600;">KUPA SAYISI</div>
+                                <div style="font-size: 11.5px; font-weight: 800; color: #ffd700; margin-top: 2px;">🏆 ${stats.trophies || 0}</div>
+                            </div>
+                        </div>
+
+                        <button class="btn" onclick="upgradeEsportsGamingHouse()" style="width: 100%; background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); font-weight: 700; padding: 10px; font-size: 11.5px; border-radius: 8px; cursor: pointer;">
+                            ⚡ Gaming House & Ekipmanı Geliştir (25.000 €)
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function foundEsportsTeam() {
+            const cost = 50000;
+            if ((GAME.state.money || 0) < cost) {
+                alert("E-Spor kulübü kurmak için en az 50.000 € bakiyeniz olmalıdır.");
+                return;
+            }
+
+            const defaultName = (GAME.state.playerName || "Apex") + " Esports";
+            const teamName = prompt("E-Spor Kulübünüzün adını belirleyin:", defaultName);
+            if (!teamName || teamName.trim() === "") return;
+
+            GAME.state.money -= cost;
+            GAME.state.esportsTeam = {
+                name: teamName.trim(),
+                level: 1,
+                players: 5,
+                fans: 15000,
+                stats: { wins: 0, losses: 0, trophies: 0 },
+                tournament: { name: "Türkiye E-Spor Ligi", points: 0, week: 1 }
+            };
+
+            GAME.saveGame();
+            GAME.updateUI();
+            renderEsportsPanel();
+
+            alert(`Tebrikler! ${teamName} E-Spor Kulübü resmen kuruldu!\nTakımınız her hafta lig maçlarına çıkacak ve başarılarıyla kulübünüzü büyütecektir.`);
+        }
+
+        function upgradeEsportsGamingHouse() {
+            const team = GAME.state.esportsTeam;
+            if (!team) return;
+            const cost = 25000;
+            if ((GAME.state.money || 0) < cost) {
+                alert("Gaming House geliştirmesi için 25.000 € bakiyeniz bulunmuyor.");
+                return;
+            }
+
+            GAME.state.money -= cost;
+            team.level = (team.level || 1) + 1;
+            team.fans = (team.fans || 10000) + 20000;
+
+            GAME.saveGame();
+            GAME.updateUI();
+            renderEsportsPanel();
+
+            alert(`Gaming House Seviye ${team.level}'e yükseltildi!\nOyuncuların performansı ve takımın taraftar kitlesi arttı!`);
         }
 
         function renderNutritionAndRecovery() {
