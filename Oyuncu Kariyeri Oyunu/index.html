@@ -3925,6 +3925,124 @@
             
             showCustomAlert(msg, title, icon, type);
         };
+
+        // ══════════════════════════════════════════════════════════
+        // 📳 HAPTIC FEEDBACK & NATIVE ANDROID BRIDGE (Mobile Enhanced)
+        // ══════════════════════════════════════════════════════════
+        window.HAPTIC = {
+            vibrate: function(ms) {
+                try {
+                    if (window.Android && typeof window.Android.vibrate === "function") {
+                        window.Android.vibrate(ms);
+                    } else if (navigator && navigator.vibrate) {
+                        navigator.vibrate(ms);
+                    }
+                } catch (e) {}
+            },
+            pattern: function(arr) {
+                try {
+                    if (window.Android && typeof window.Android.vibratePattern === "function") {
+                        window.Android.vibratePattern(arr.join(","));
+                    } else if (navigator && navigator.vibrate) {
+                        navigator.vibrate(arr);
+                    }
+                } catch (e) {}
+            },
+            goal: function() { this.vibrate(280); },
+            crossbar: function() { this.pattern([70, 70, 90]); },
+            card: function() { this.vibrate(420); },
+            heartbeat: function() { this.pattern([50, 160, 70]); },
+            click: function() { this.vibrate(18); },
+            trophy: function() { this.pattern([100, 80, 100, 80, 300]); }
+        };
+
+        // 🔙 ANDROID HARDWARE BACK BUTTON / GESTURE HANDLER
+        window.handleAndroidBack = function() {
+            try {
+                // 1. Check if any active modal overlay is currently visible
+                const overlays = Array.from(document.querySelectorAll('.event-modal-overlay'));
+                const visibleModals = overlays.filter(modal => {
+                    const style = window.getComputedStyle(modal);
+                    return style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0';
+                });
+
+                if (visibleModals.length > 0) {
+                    const topModal = visibleModals[visibleModals.length - 1];
+                    const id = topModal.id;
+
+                    if (id === 'settings-modal') {
+                        topModal.classList.remove('active');
+                        topModal.style.display = 'none';
+                    } else if (id === 'newspaper-modal' && typeof closeNewspaper === 'function') {
+                        closeNewspaper();
+                    } else if (id === 'chat-modal' && typeof closeChatModal === 'function') {
+                        closeChatModal();
+                    } else if (id === 'avatar-change-modal' && typeof closeAvatarChangeModal === 'function') {
+                        closeAvatarChangeModal();
+                    } else if (id === 'privacy-modal' && typeof closePrivacyPolicyModal === 'function') {
+                        closePrivacyPolicyModal();
+                    } else if (id === 'missions-modal' && typeof closeMissionsModal === 'function') {
+                        closeMissionsModal();
+                    } else if (id === 'achievements-modal' && typeof closeAchievementsModal === 'function') {
+                        closeAchievementsModal();
+                    } else if (id === 'hof-modal' && typeof closeHofModal === 'function') {
+                        closeHofModal();
+                    } else if (id === 'garage-showroom-modal' && typeof closeShowroomModal === 'function') {
+                        closeShowroomModal();
+                    } else if (id === 'boot-customizer-modal' && typeof closeBootCustomizer === 'function') {
+                        closeBootCustomizer();
+                    } else if (id === 'custom-alert-modal') {
+                        topModal.style.display = 'none';
+                    } else {
+                        topModal.classList.remove('active');
+                        topModal.style.display = 'none';
+                    }
+                    if (window.HAPTIC) window.HAPTIC.click();
+                    return true;
+                }
+
+                // 2. If inside Match Overlay, do not abruptly quit match
+                const matchOverlay = document.getElementById('match-view');
+                if (matchOverlay && window.getComputedStyle(matchOverlay).display !== 'none') {
+                    return true;
+                }
+
+                // 3. If in another tab, navigate back to Ana Sayfa (panel-career)
+                const activeNav = document.querySelector('.nav-tab.active');
+                if (activeNav && activeNav.getAttribute('data-target') !== 'panel-career') {
+                    const homeTab = document.querySelector('.nav-tab[data-target="panel-career"]');
+                    if (homeTab) {
+                        homeTab.click();
+                        if (window.HAPTIC) window.HAPTIC.click();
+                        return true;
+                    }
+                }
+
+                // 4. Return false -> Let native Android double-back toast handle app exit
+                return false;
+            } catch (err) {
+                console.error("handleAndroidBack error:", err);
+                return false;
+            }
+        };
+
+        // 🔋 LIFECYCLE (Battery & Audio Pause on app minimize)
+        window.onAppPause = function() {
+            try {
+                if (window.SoundManager && SoundManager.bgMusicElement) {
+                    SoundManager.bgMusicElement.pause();
+                }
+            } catch (e) {}
+        };
+
+        window.onAppResume = function() {
+            try {
+                if (window.SoundManager && SoundManager.musicEnabled && SoundManager.bgMusicElement) {
+                    SoundManager.bgMusicElement.play().catch(() => {});
+                }
+            } catch (e) {}
+        };
+
         const SoundManager = {
             enabled: true,
             musicEnabled: false,
@@ -4145,6 +4263,7 @@
                     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
                     osc.connect(gain); gain.connect(ctx.destination);
                     osc.start(now); osc.stop(now + 0.2);
+                    if (window.HAPTIC) window.HAPTIC.heartbeat();
                 } catch(e) {
                     console.error("Audio error in playVarHeartbeat:", e);
                 }
@@ -14675,10 +14794,12 @@ function afterWeekAdvanced() {
                         textEl.innerText = "GOL!";
                         overlay.classList.add("scored");
                         matchView.classList.add("shake-subtle");
+                        if (window.HAPTIC) window.HAPTIC.goal();
                     } else {
                         textEl.innerText = "GOL YEDİK!";
                         overlay.classList.add("conceded");
                         matchView.classList.add("shake-heavy");
+                        if (window.HAPTIC) window.HAPTIC.vibrate(180);
                     }
                     
                     setTimeout(() => {

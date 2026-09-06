@@ -2,7 +2,11 @@ package com.futbolatlasi.kariyer;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -40,6 +44,8 @@ public class MainActivity extends Activity implements PurchasesUpdatedListener {
     private WebView webView;
     private BillingClient billingClient;
     private boolean isBillingConnected = false;
+    private long lastBackPressTime = 0;
+    private Toast exitToast;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -315,20 +321,101 @@ public class MainActivity extends Activity implements PurchasesUpdatedListener {
         public boolean isAndroidApp() {
             return true;
         }
+
+        @JavascriptInterface
+        public void vibrate(long milliseconds) {
+            try {
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                if (v != null && v.hasVibrator()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        v.vibrate(VibrationEffect.createOneShot(milliseconds, VibrationEffect.DEFAULT_AMPLITUDE));
+                    } else {
+                        v.vibrate(milliseconds);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @JavascriptInterface
+        public void vibratePattern(String patternStr) {
+            try {
+                if (patternStr == null || patternStr.isEmpty()) return;
+                String[] parts = patternStr.split(",");
+                long[] timings = new long[parts.length];
+                for (int i = 0; i < parts.length; i++) {
+                    timings[i] = Long.parseLong(parts[i].trim());
+                }
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                if (v != null && v.hasVibrator()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        v.vibrate(VibrationEffect.createWaveform(timings, -1));
+                    } else {
+                        v.vibrate(timings, -1);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
     public void onBackPressed() {
-        // Geri tuşunu devre dışı bırak
+        if (webView != null) {
+            webView.evaluateJavascript("window.handleAndroidBack ? window.handleAndroidBack() : false", value -> {
+                if ("true".equalsIgnoreCase(value)) {
+                    // Web tarafında modal veya açık panel kapatıldı
+                    return;
+                }
+                // Ana ekranda: Çift basarak çıkış mekaniği
+                long currentTime = System.currentTimeMillis();
+                if (currentTime - lastBackPressTime < 2000) {
+                    if (exitToast != null) exitToast.cancel();
+                    finish();
+                } else {
+                    lastBackPressTime = currentTime;
+                    exitToast = Toast.makeText(MainActivity.this, "Çıkmak için tekrar basın", Toast.LENGTH_SHORT);
+                    exitToast.show();
+                }
+            });
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (webView != null) {
+            webView.onPause();
+            webView.evaluateJavascript("if (window.onAppPause) { window.onAppPause(); }", null);
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         hideSystemUI();
+        if (webView != null) {
+            webView.onResume();
+            webView.evaluateJavascript("if (window.onAppResume) { window.onAppResume(); }", null);
+        }
         if (billingClient != null && billingClient.isReady()) {
             checkExistingPurchases();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (billingClient != null) {
+            billingClient.endConnection();
+        }
+        if (webView != null) {
+            webView.destroy();
+        }
+        super.onDestroy();
     }
 }
 

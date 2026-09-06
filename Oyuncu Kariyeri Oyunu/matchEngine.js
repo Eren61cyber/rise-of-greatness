@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Rise Of Greatness: Kariyer Efsanesi - Interactive Match Engine Module
  * Manages text-based choice scenarios and match ticking.
  */
@@ -2035,6 +2035,7 @@ const MatchEngine = {
             this.playerState.hocaGuveni = Math.max(10, (this.playerState.hocaGuveni || 40) - 15);
             
             this.hasYellowCard = false; // Kırmızı yendiği için sarı kart silindi
+            if (window.HAPTIC) window.HAPTIC.card();
             
             this.isPausedForChoice = false;
             this.activeChoice = null;
@@ -2054,6 +2055,7 @@ const MatchEngine = {
 
         this.isPausedForChoice = true;
         this.hasYellowCard = true; // İlk sarı kart yenir
+        if (window.HAPTIC) window.HAPTIC.vibrate(180);
         
         const disputeChances = 0.60 + (this.playerState.physical * 0.002) - (this.playerState.moral * 0.001); // high physical increases aggro, high morale keeps cool
         
@@ -2084,6 +2086,7 @@ const MatchEngine = {
                     },
                     onFail: () => {
                         this.isSentOff = true;
+                        if (window.HAPTIC) window.HAPTIC.card();
                         GAME.state.suspendedWeeks = 1;
                         this.hasYellowCard = false;
                         this.playerState.moral = Math.max(10, (this.playerState.moral || 100) - 20);
@@ -2103,6 +2106,7 @@ const MatchEngine = {
                     },
                     onFail: () => {
                         this.isSentOff = true;
+                        if (window.HAPTIC) window.HAPTIC.card();
                         GAME.state.suspendedWeeks = 1;
                         this.hasYellowCard = false;
                         this.playerState.moral = Math.max(10, (this.playerState.moral || 100) - 20);
