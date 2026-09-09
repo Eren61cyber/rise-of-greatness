@@ -4,8 +4,9 @@
  */
 const ANALYTICS = {
     events: [],
+    DEFAULT_SHEETS_URL: "https://script.google.com/macros/s/AKfycbzKMjeyEacygpGb5Ge95_pxovL2FrIoxc-arhh0sIgpP38m1xFJzsLqQBBjSzxzcBcU/exec",
     getSheetsUrl: function() {
-        return localStorage.getItem('rog_sheets_url') || "";
+        return localStorage.getItem('rog_sheets_url') || this.DEFAULT_SHEETS_URL;
     },
     setSheetsUrl: function(url) {
         if (url && typeof url === "string") {
