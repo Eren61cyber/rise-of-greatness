@@ -2881,6 +2881,10 @@ const GAME = {
         }
 
         this.state.pendingAwardCeremony = awards.length > 0 ? { awards, season: this.state.age } : null;
+
+        if (typeof ANALYTICS !== "undefined") {
+            ANALYTICS.logEvent("season_end", { age: this.state.age, rank: rank, goals: seasonStats.goals, assists: seasonStats.assists });
+        }
         
         this.saveGame();
         this.updateUI();
