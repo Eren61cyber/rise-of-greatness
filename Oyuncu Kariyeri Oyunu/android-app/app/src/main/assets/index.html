@@ -1243,49 +1243,46 @@
             </div>
         </section>
 
-        <!-- 3D SET-PIECE ENGINE MODAL (BEHIND-THE-BALL CINEMATIC FREE KICK & PENALTY) -->
-        <div class="event-modal-overlay" id="nss-duel-modal" style="display: none; align-items: center; justify-content: center; z-index: 100000; background: rgba(2, 6, 18, 0.94); backdrop-filter: blur(14px); padding: 10px;">
-            <div class="glass" style="width: 100%; max-width: 440px; background: linear-gradient(180deg, rgba(13, 22, 38, 0.96) 0%, rgba(4, 9, 18, 0.98) 100%); border: 1.5px solid rgba(0, 229, 183, 0.35); border-radius: 20px; padding: 14px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 20px 60px rgba(0,0,0,0.95), 0 0 35px rgba(0, 229, 183, 0.15); position: relative; user-select: none;">
+        <!-- ZERO-SVG 3D SET-PIECE ENGINE MODAL (UEFA CHAMPIONS LEAGUE BROADCAST HUD) -->
+        <div class="event-modal-overlay" id="nss-duel-modal" style="display: none; align-items: center; justify-content: center; z-index: 100000; background: rgba(3, 7, 18, 0.96); backdrop-filter: blur(18px); padding: 8px;">
+            <div class="glass" style="width: 100%; max-width: 460px; background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(5, 10, 20, 0.98) 100%); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; padding: 12px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 25px 70px rgba(0,0,0,0.95), 0 0 30px rgba(234, 179, 8, 0.12); position: relative; user-select: none;">
                 
-                <!-- Broadcast Scoreboard Header -->
-                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 8px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 6px 12px;">
+                <!-- Official UEFA Champions League TV Broadcast Banner -->
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 8px; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 7px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);">
                     <div style="display: flex; align-items: center; gap: 8px;">
-                        <span id="nss-duel-icon" style="font-size: 16px;">📐</span>
-                        <div>
-                            <div style="color: #f8fafc; font-size: 11px; font-weight: 900; letter-spacing: 0.8px; text-transform: uppercase;" id="nss-duel-badge">90' SERBEST VURUŞ</div>
-                            <div style="color: #00e5b7; font-size: 9px; font-weight: 800; letter-spacing: 0.5px;" id="nss-duel-subbadge">24.5 METRE • BARİYER VAR</div>
-                        </div>
+                        <span style="font-size: 14px; color: #fbbf24;">⭐</span>
+                        <div style="color: #f8fafc; font-size: 11px; font-weight: 900; letter-spacing: 0.9px; text-transform: uppercase; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;" id="nss-duel-badge">[ 90' SERBEST VURUŞ • 24.5 METRE • DUVAR: 4 KİŞİ ]</div>
                     </div>
                     <div style="display: flex; align-items: center; gap: 6px;">
-                        <div style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); color: #38bdf8; font-size: 10px; font-weight: 900; padding: 3px 8px; border-radius: 6px; letter-spacing: 0.5px;" id="nss-duel-stat">ŞUT: 82</div>
-                        <button onclick="closeNssDuel()" style="background: none; border: none; color: #64748b; font-size: 16px; cursor: pointer; padding: 2px 6px; line-height: 1; border-radius: 4px;" title="Kapat">✕</button>
+                        <div style="background: rgba(234, 179, 8, 0.15); border: 1px solid rgba(234, 179, 8, 0.35); color: #facc15; font-size: 9.5px; font-weight: 900; padding: 3px 8px; border-radius: 5px; letter-spacing: 0.5px;" id="nss-duel-stat">ŞUT: 82</div>
+                        <button onclick="closeNssDuel()" style="background: none; border: none; color: #94a3b8; font-size: 16px; cursor: pointer; padding: 2px 6px; line-height: 1; border-radius: 4px;" title="Kapat">✕</button>
                     </div>
                 </div>
 
                 <!-- Guidance prompt / HUD status -->
-                <div id="nss-duel-instruction" style="font-size: 11.5px; font-weight: 800; color: #00e5b7; margin-bottom: 8px; text-align: center; min-height: 20px; line-height: 1.3; text-transform: uppercase; letter-spacing: 0.5px;">
-                    🎯 AŞAMA 1: HEDEF NİŞANGAHI KÖŞEYE GELDİĞİNDE EKRANA DOKUN!
+                <div id="nss-duel-instruction" style="font-size: 11px; font-weight: 800; color: #facc15; margin-bottom: 8px; text-align: center; min-height: 18px; line-height: 1.3; text-transform: uppercase; letter-spacing: 0.6px;">
+                    🎯 AŞAMA 1: HEDEF NİŞANGAHI KÖŞEYE GELDİĞİNDE EKRANA DOKUN VEYA KİLİTLE!
                 </div>
 
-                <!-- The Interactive 3D Canvas Arena -->
-                <div style="position: relative; width: 100%; border-radius: 14px; overflow: hidden; border: 1.5px solid rgba(0, 229, 183, 0.3); box-shadow: inset 0 0 35px rgba(0,0,0,0.9), 0 6px 25px rgba(0,0,0,0.7); background: #050b14;">
-                    <canvas id="nss-canvas" width="400" height="280" style="display: block; width: 100%; height: auto; cursor: crosshair; touch-action: none;"></canvas>
+                <!-- The Interactive Photo-Realistic Compositing Arena -->
+                <div style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: inset 0 0 35px rgba(0,0,0,0.9), 0 8px 30px rgba(0,0,0,0.8); background: #020617;">
+                    <canvas id="nss-canvas" width="440" height="290" style="display: block; width: 100%; height: auto; cursor: crosshair; touch-action: none;"></canvas>
                 </div>
 
                 <!-- Bottom Broadcast Result Banner -->
-                <div id="nss-result-banner" style="display: none; width: 100%; margin-top: 10px; padding: 10px 14px; border-radius: 10px; font-size: 13.5px; font-weight: 900; text-align: center; letter-spacing: 0.5px; animation: fadeIn 0.25s ease;"></div>
+                <div id="nss-result-banner" style="display: none; width: 100%; margin-top: 10px; padding: 10px 14px; border-radius: 10px; font-size: 13px; font-weight: 900; text-align: center; letter-spacing: 0.5px; animation: fadeIn 0.25s ease;"></div>
 
-                <!-- Broadcast Style Glassmorphism Action Controls -->
+                <!-- Champions League Matte Smoked Glass Action Controls -->
                 <div id="nss-action-controls" style="display: flex; gap: 8px; width: 100%; margin-top: 10px;">
-                    <button id="nss-btn-strike" class="btn" style="flex: 2; padding: 11px; font-size: 12px; font-weight: 900; letter-spacing: 0.8px; border-radius: 10px; background: linear-gradient(135deg, #00e5b7 0%, #059669 100%); color: #022c22; border: none; box-shadow: 0 4px 15px rgba(0,229,183,0.35); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                    <button id="nss-btn-strike" class="btn" style="flex: 2; padding: 11px; font-size: 12px; font-weight: 900; letter-spacing: 0.8px; border-radius: 10px; background: linear-gradient(135deg, rgba(234, 179, 8, 0.25) 0%, rgba(180, 83, 9, 0.2) 100%); color: #fef08a; border: 1.5px solid rgba(234, 179, 8, 0.6); box-shadow: 0 4px 18px rgba(234, 179, 8, 0.25); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
                         <span>⚡</span>
-                        <span id="nss-strike-btn-text">VURUŞU YAP / DOKUN</span>
+                        <span id="nss-strike-btn-text">[ ⚡ VURUŞU GERÇEKLEŞTİR ]</span>
                     </button>
-                    <button id="nss-btn-retry" class="btn" style="display: none; flex: 1; padding: 11px; font-size: 11.5px; font-weight: 800; border-radius: 10px; background: rgba(255,255,255,0.06); color: #f8fafc; border: 1px solid rgba(255,255,255,0.12); cursor: pointer;" onclick="resetNssDuelPractice()">
-                        🔄 TEKRAR
+                    <button id="nss-btn-retry" class="btn" style="display: none; flex: 1; padding: 11px; font-size: 11px; font-weight: 800; border-radius: 10px; background: rgba(255,255,255,0.06); color: #f8fafc; border: 1px solid rgba(255,255,255,0.15); cursor: pointer;" onclick="resetNssDuelPractice()">
+                        [ 🔄 TEKRAR DENE ]
                     </button>
-                    <button id="nss-btn-cancel" class="btn" style="flex: 1; padding: 11px; font-size: 11.5px; font-weight: 800; border-radius: 10px; background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.25); cursor: pointer;" onclick="closeNssDuel()">
-                        ✖ ÇIKIŞ
+                    <button id="nss-btn-cancel" class="btn" style="flex: 1; padding: 11px; font-size: 11px; font-weight: 800; border-radius: 10px; background: rgba(239,68,68,0.08); color: #fca5a5; border: 1px solid rgba(239,68,68,0.25); cursor: pointer;" onclick="closeNssDuel()">
+                        [ ✕ ÇIKIŞ ]
                     </button>
                 </div>
             </div>
@@ -16210,91 +16207,105 @@ function afterWeekAdvanced() {
             }
         };
 
+        // =========================================================================
+        // ZERO-SVG PHOTO-REALISTIC 3D SET-PIECE COMPOSITING ENGINE
+        // Champions League Broadcast Architecture & Web Audio FX
+        // =========================================================================
+
+        const NssAssets = {
+            stadium: new Image(),
+            goal: new Image(),
+            wall: new Image(),
+            keeperReady: new Image(),
+            keeperDive: new Image(),
+            ball: new Image(),
+            loaded: false,
+            init: function() {
+                if (this.loaded) return;
+                this.stadium.src = "stadium_bg.png";
+                this.goal.src = "assets/nss_goal.png";
+                this.wall.src = "assets/nss_wall.png";
+                this.keeperReady.src = "assets/nss_keeper_ready.png";
+                this.keeperDive.src = "assets/nss_keeper_dive.png";
+                this.ball.src = "assets/nss_ball.png";
+                this.loaded = true;
+            }
+        };
+
+        // Preload assets immediately
+        NssAssets.init();
+
         const NssDuel = {
             active: false,
             isPractice: false,
             duelType: 'freekick', // 'freekick' | 'penalty'
-            stage: 1, // 1: Holographic Aiming, 2: Strike & Falso, 3: Ball Flight, 4: Finished
+            stage: 1, // 1: Golden Laser Aiming, 2: Strike & Falso, 3: Ball Flight, 4: Finished
             canvas: null,
             ctx: null,
             animId: null,
 
-            W: 400,
-            H: 280,
-            horizonY: 92,
+            W: 440,
+            H: 290,
 
-            // 3D Camera placed behind player's shoulder looking toward goal
-            camera: { x: 0, y: 1.30, z: -2.2, fov: 680 },
-
-            // Goal in 3D (meters)
-            goal: {
-                width: 7.32,  // X: -3.66m to +3.66m
-                height: 2.44, // Y: 0m to 2.44m
-                depth: 1.8,   // Z: goalZ to goalZ + 1.8m
-                z: 24.5       // 24.5m for freekick, 11.0m for penalty
-            },
-
-            // Holographic Aim HUD
+            // Aiming State
             aim: {
                 angle: 0,
                 direction: 1,
                 speed: 0.012,
-                x: 0,
-                y: 1.8,
-                lockedX: 0,
-                lockedY: 1.8
+                x: 220,
+                y: 120,
+                lockedX: 220,
+                lockedY: 120
             },
 
-            // Ball 3D state
+            // Ball Flight State
             ball: {
-                x: 0, y: 0.11, z: 0,
-                r: 0.11,
-                startX: 0, startY: 0.11, startZ: 0,
-                targetX: 0, targetY: 1.8, targetZ: 24.5,
+                startX: 220,
+                startY: 244,
+                startSize: 72,
+                targetX: 220,
+                targetY: 120,
+                targetSize: 18,
                 progress: 0,
-                curveOffset: 0,
-                arcHeight: 0,
-                rotation: 0,
+                falsoOffset: 0,
+                arcHeight: 28,
+                rot: 0,
                 spinSpeed: 0,
                 trail: []
             },
 
-            strikePoint: { x: 0, y: 0 },
+            strikePoint: { x: 0, y: 0.45 },
 
-            // Athletic Goalkeeper
+            // Goalkeeper AI
             keeper: {
-                x: 0, y: 0, z: 24.5,
-                baseX: 0, baseY: 0,
-                diveTargetX: 0, diveTargetY: 0,
+                baseX: 220,
+                baseY: 158,
+                x: 220,
+                y: 158,
+                diveTargetX: 220,
+                diveTargetY: 158,
                 isDiving: false,
-                reach: 1.55 // athletic dive reach in meters
+                reach: 48
             },
 
-            // Defender Wall
-            wall: [],
+            // Defensive Wall (Free Kick)
+            wall: {
+                x: 136,
+                y: 155,
+                w: 168,
+                h: 94,
+                jumpY: 0
+            },
 
-            // Net ripple deformation
-            netDeform: {
+            // Net deformation / shake on goal
+            netShake: {
                 active: false,
-                impactX: 0,
-                impactY: 0,
-                amount: 0
-            },
-
-            // Project 3D World (X lateral, Y vertical, Z depth) to 2D Canvas Screen
-            project3D: function(x, y, z) {
-                const relZ = z - this.camera.z;
-                if (relZ <= 0.05) return { x: 200, y: 350, scale: 0, visible: false };
-                const scale = this.camera.fov / relZ;
-                return {
-                    x: this.W / 2 + (x - this.camera.x) * scale,
-                    y: this.horizonY - (y - this.camera.y) * scale,
-                    scale: scale,
-                    visible: true
-                };
+                amp: 0,
+                time: 0
             },
 
             init: function() {
+                NssAssets.init();
                 this.canvas = document.getElementById("nss-canvas");
                 if (!this.canvas) return;
                 this.ctx = this.canvas.getContext("2d");
@@ -16328,73 +16339,72 @@ function afterWeekAdvanced() {
 
                 const modal = document.getElementById("nss-duel-modal");
                 const badge = document.getElementById("nss-duel-badge");
-                const subbadge = document.getElementById("nss-duel-subbadge");
-                const icon = document.getElementById("nss-duel-icon");
                 const statEl = document.getElementById("nss-duel-stat");
                 const instrEl = document.getElementById("nss-duel-instruction");
                 const bannerEl = document.getElementById("nss-result-banner");
                 const retryBtn = document.getElementById("nss-btn-retry");
+                const strikeBtn = document.getElementById("nss-btn-strike");
                 const strikeBtnText = document.getElementById("nss-strike-btn-text");
 
                 if (modal) modal.style.display = "flex";
                 if (bannerEl) bannerEl.style.display = "none";
                 if (retryBtn) retryBtn.style.display = practice ? "block" : "none";
-                if (strikeBtnText) strikeBtnText.innerText = "KÖŞEYİ KİLİTLE";
+                if (strikeBtn) {
+                    strikeBtn.style.display = "flex";
+                    strikeBtn.disabled = false;
+                }
+                if (strikeBtnText) strikeBtnText.innerText = "[ 🎯 KÖŞEYİ KİLİTLE ]";
 
                 const shootingStat = (window.GAME && GAME.state && GAME.state.shooting) || 72;
                 if (statEl) statEl.innerText = "ŞUT: " + shootingStat;
 
-                // Setup 3D Distance & Wall
                 if (type === 'penalty') {
-                    this.goal.z = 11.0; // 11 meters
-                    this.wall = [];
-                    if (badge) badge.innerText = "KRİTİK PENALTI";
-                    if (subbadge) subbadge.innerText = "11.0 METRE • BİREBİR KALECİ DÜELLOSU";
-                    if (icon) icon.innerText = "🧤";
+                    if (badge) badge.innerText = "[ 90' KRİTİK PENALTI • 11.0 METRE • BİREBİR ]";
+                    this.ball.targetSize = 24;
+                    this.keeper.baseX = 220;
+                    this.keeper.baseY = 175;
+                    this.keeper.reach = 65;
                 } else {
-                    this.goal.z = 24.5; // 24.5 meters
-                    // 4-man defender wall positioned at 9.15m regulation distance
-                    this.wall = [
-                        { x: -0.95, y: 0, z: 9.15, jumpY: 0 },
-                        { x: -0.32, y: 0, z: 9.15, jumpY: 0 },
-                        { x: 0.32, y: 0, z: 9.15, jumpY: 0 },
-                        { x: 0.95, y: 0, z: 9.15, jumpY: 0 }
-                    ];
-                    if (badge) badge.innerText = "90' SERBEST VURUŞ";
-                    if (subbadge) subbadge.innerText = "24.5 METRE • 4 KİŞİLİK BARAJ";
-                    if (icon) icon.innerText = "📐";
+                    if (badge) badge.innerText = "[ 90' SERBEST VURUŞ • 24.5 METRE • DUVAR: 4 KİŞİ ]";
+                    this.ball.targetSize = 18;
+                    this.keeper.baseX = 220;
+                    this.keeper.baseY = 158;
+                    this.keeper.reach = 46;
                 }
 
                 if (instrEl) {
-                    instrEl.innerText = "🎯 AŞAMA 1: HEDEF NİŞANGAHI KÖŞEYE GELDİĞİNDE EKRANA DOKUN!";
-                    instrEl.style.color = "#00e5b7";
+                    instrEl.innerText = "🎯 AŞAMA 1: HEDEF NİŞANGAHI KÖŞEYE GELDİĞİNDE EKRANA DOKUN VEYA KİLİTLE!";
+                    instrEl.style.color = "#facc15";
                 }
 
                 // Reset Aim
                 this.aim.angle = 0;
                 this.aim.direction = 1;
-                this.aim.lockedX = 0;
-                this.aim.lockedY = 1.8;
+                this.aim.x = 220;
+                this.aim.y = 120;
+                this.aim.lockedX = 220;
+                this.aim.lockedY = 120;
 
                 // Reset Ball
-                this.ball.x = 0;
-                this.ball.y = 0.11;
-                this.ball.z = 0;
+                this.ball.startX = 220;
+                this.ball.startY = 244;
+                this.ball.startSize = 72;
                 this.ball.progress = 0;
+                this.ball.rot = 0;
                 this.ball.trail = [];
-                this.strikePoint = { x: 0, y: 0.45 }; // Default sweet spot
+                this.strikePoint = { x: 0, y: 0.45 };
 
                 // Reset Keeper
-                this.keeper.z = this.goal.z + 0.1;
-                this.keeper.x = 0;
-                this.keeper.y = 0;
-                this.keeper.baseX = 0;
-                this.keeper.baseY = 0;
+                this.keeper.x = this.keeper.baseX;
+                this.keeper.y = this.keeper.baseY;
                 this.keeper.isDiving = false;
 
-                // Reset Net deformation
-                this.netDeform.active = false;
-                this.netDeform.amount = 0;
+                // Reset Wall
+                this.wall.jumpY = 0;
+
+                // Reset Net Shake
+                this.netShake.active = false;
+                this.netShake.amp = 0;
 
                 NssAudio.playTension();
 
@@ -16422,10 +16432,10 @@ function afterWeekAdvanced() {
                 const instrEl = document.getElementById("nss-duel-instruction");
                 const strikeBtnText = document.getElementById("nss-strike-btn-text");
                 if (instrEl) {
-                    instrEl.innerText = "⚽ AŞAMA 2: FALSO & YÜKSEKLİK İÇİN TOPA DOKUN (ALT: 90'A AS, ÜST: YERDEN, YAN: FALSO)";
-                    instrEl.style.color = "#f59e0b";
+                    instrEl.innerText = "⚽ AŞAMA 2: FALSO VE YÜKSEKLİK İÇİN TOPA DOKUN (ALT: 90'A AS, ÜST: YERDEN, YAN: FALSO)";
+                    instrEl.style.color = "#fbbf24";
                 }
-                if (strikeBtnText) strikeBtnText.innerText = "⚽ VURUŞU YAP!";
+                if (strikeBtnText) strikeBtnText.innerText = "[ ⚡ VURUŞU GERÇEKLEŞTİR ]";
             },
 
             handleCanvasClick: function(e) {
@@ -16438,10 +16448,10 @@ function afterWeekAdvanced() {
                 if (this.stage === 1) {
                     this.lockAim();
                 } else if (this.stage === 2) {
-                    // Touch on foreground ball (Ball center: X=200, Y=235, radius=38)
-                    const bx = 200;
-                    const by = 235;
-                    const br = 38;
+                    // Contact on foreground ball (center 220, 244, radius 36)
+                    const bx = 220;
+                    const by = 244;
+                    const br = 36;
                     const dx = clickX - bx;
                     const dy = clickY - by;
 
@@ -16464,70 +16474,62 @@ function afterWeekAdvanced() {
                 const instrEl = document.getElementById("nss-duel-instruction");
                 const strikeBtn = document.getElementById("nss-btn-strike");
                 if (instrEl) {
-                    instrEl.innerText = "🚀 VURUŞ YAPILDI! TOP 3D PERSPEKTİFLE KALEYE SÜZÜLÜYOR...";
-                    instrEl.style.color = "#38bdf8";
+                    instrEl.innerText = "⚡ VURUŞ GERÇEKLEŞTİRİLDİ! TOP 3D DERİNLİKLE 90'A SÜZÜLÜYOR...";
+                    instrEl.style.color = "#fef08a";
                 }
                 if (strikeBtn) strikeBtn.disabled = true;
 
-                // Physics calculations:
-                this.ball.startX = 0;
-                this.ball.startY = 0.11;
-                this.ball.startZ = 0;
-                this.ball.targetZ = this.goal.z;
+                // Physics calculations
+                this.ball.startX = 220;
+                this.ball.startY = 244;
+                this.ball.startSize = 72;
 
-                // Falso (lateral Magnus bend):
-                // Kicking left of ball (hitX < 0) -> bends right (+X)
-                // Kicking right of ball (hitX > 0) -> bends left (-X)
-                this.ball.curveOffset = -hitX * 2.6; // meters of lateral curl
-                this.ball.targetX = this.aim.lockedX + (-hitX * 1.2);
-                this.ball.targetX = Math.max(-4.2, Math.min(4.2, this.ball.targetX));
-                this.ball.spinSpeed = -hitX * 0.35;
+                // Lateral Magnus Falso:
+                this.ball.falsoOffset = -hitX * 42; // Curve displacement in pixels
+                this.ball.targetX = this.aim.lockedX + (-hitX * 18);
+                this.ball.spinSpeed = -hitX * 0.28;
 
-                // Height & Flight curve:
-                // hitY > 0: Player touched underneath ball (lifts UP!)
-                // hitY < 0: Player touched on top of ball (drives DOWN along turf)
+                // Height & Ballistic Arc:
                 if (hitY > 0.72) {
                     // Extreme bottom -> Sky ball over crossbar
-                    this.ball.targetY = 3.6; // well over 2.44m crossbar
-                    this.ball.arcHeight = 1.9;
+                    this.ball.targetY = 40;
+                    this.ball.arcHeight = 45;
                 } else if (hitY >= 0.20) {
-                    // Sweet spot for 90 & upper corners! (hitY 0.20 to 0.72)
-                    const norm = (hitY - 0.20) / 0.52; // 0.0 to 1.0
-                    this.ball.targetY = 1.2 + (norm * 1.05); // 1.2m up to 2.25m (perfect 90 height!)
-                    this.ball.arcHeight = (this.duelType === 'freekick') ? 1.6 : 0.6; // High looping arc over wall
+                    // Sweet spot for 90 & upper corners (Lift over wall)
+                    const norm = (hitY - 0.20) / 0.52;
+                    this.ball.targetY = (this.duelType === 'freekick') ? (115 - norm * 26) : (105 - norm * 35);
+                    this.ball.arcHeight = (this.duelType === 'freekick') ? 34 : 14;
                 } else if (hitY >= -0.20) {
-                    // Bullet driven mid-height rocket
-                    const norm = (hitY + 0.20) / 0.40;
-                    this.ball.targetY = 0.6 + (norm * 0.7); // 0.6m to 1.3m
-                    this.ball.arcHeight = 0.45;
+                    // Driven mid-height rocket
+                    this.ball.targetY = (this.duelType === 'freekick') ? 140 : 150;
+                    this.ball.arcHeight = 12;
                 } else if (hitY >= -0.75) {
-                    // Low grass-cutter along turf
-                    this.ball.targetY = 0.18;
-                    this.ball.arcHeight = 0.15;
+                    // Low grass cutter
+                    this.ball.targetY = (this.duelType === 'freekick') ? 180 : 210;
+                    this.ball.arcHeight = 4;
                 } else {
-                    // Scuffed roller
-                    this.ball.targetY = 0.12;
-                    this.ball.arcHeight = 0.05;
+                    // Scuffed ground roller
+                    this.ball.targetY = (this.duelType === 'freekick') ? 186 : 215;
+                    this.ball.arcHeight = 0;
                 }
 
-                // Setup Goalkeeper diving AI
+                // Goalkeeper AI prediction
                 const playerShoot = (window.GAME && GAME.state && GAME.state.shooting) || 72;
                 const keeperRoll = Math.random();
-                const predictsCorrect = (keeperRoll < (0.45 - (playerShoot / 360)));
+                const predictsCorrect = (keeperRoll < (0.42 - (playerShoot / 380)));
 
                 if (predictsCorrect) {
-                    this.keeper.diveTargetX = this.ball.targetX + (Math.random() * 0.7 - 0.35);
-                    this.keeper.diveTargetY = Math.min(2.1, Math.max(0.3, this.ball.targetY));
+                    this.keeper.diveTargetX = this.ball.targetX + (Math.random() * 16 - 8);
+                    this.keeper.diveTargetY = Math.min(this.duelType === 'freekick' ? 180 : 210, Math.max(90, this.ball.targetY));
                 } else {
-                    // Dives wrong direction or stays rooted
-                    this.keeper.diveTargetX = (this.ball.targetX > 0) ? -2.2 : 2.2;
-                    this.keeper.diveTargetY = 0.9;
+                    this.keeper.diveTargetX = (this.ball.targetX > 220) ? 170 : 270;
+                    this.keeper.diveTargetY = (this.duelType === 'freekick') ? 155 : 180;
                 }
             },
 
             update: function(now) {
                 if (this.stage === 1) {
-                    // Oscillating HUD Aiming Reticle
+                    // Minimalist Gold Laser Reticle Sweeping Motion
                     this.aim.angle += this.aim.speed * this.aim.direction;
                     if (this.aim.angle > 0.65) {
                         this.aim.angle = 0.65;
@@ -16537,34 +16539,28 @@ function afterWeekAdvanced() {
                         this.aim.direction = 1;
                     }
 
-                    // Sweep across goal mouth (-3.3m to +3.3m) and upper/lower corners
-                    this.aim.x = Math.sin(this.aim.angle) * 3.35;
-                    const vertOsc = (Math.cos(this.aim.angle * 2) + 1) / 2;
-                    this.aim.y = 0.7 + vertOsc * 1.5; // sweeps between 0.7m and 2.2m (90's)
+                    if (this.duelType === 'freekick') {
+                        // Sweep between Left Post (142px) and Right Post (298px)
+                        this.aim.x = 220 + Math.sin(this.aim.angle) * 82;
+                        const vertOsc = (Math.cos(this.aim.angle * 2) + 1) / 2;
+                        this.aim.y = 92 + vertOsc * 66; // 92px (90's) down to 158px
+                    } else {
+                        // Penalty goal is larger
+                        this.aim.x = 220 + Math.sin(this.aim.angle) * 115;
+                        const vertOsc = (Math.cos(this.aim.angle * 2) + 1) / 2;
+                        this.aim.y = 75 + vertOsc * 95;
+                    }
                 } else if (this.stage === 3) {
                     // Ball flight
-                    this.ball.progress += (this.duelType === 'penalty') ? 0.026 : 0.021;
+                    this.ball.progress += (this.duelType === 'penalty') ? 0.026 : 0.020;
                     const p = Math.min(1.0, this.ball.progress);
 
-                    // 3D Depth Z
-                    this.ball.z = (1 - p) * this.ball.startZ + p * this.ball.targetZ;
-
-                    // Lateral X with Magnus curve
-                    const curve = Math.sin(p * Math.PI) * this.ball.curveOffset;
-                    this.ball.x = (1 - p) * this.ball.startX + p * this.ball.targetX + curve;
-
-                    // Vertical Y with ballistic arc
-                    const baseY = (1 - p) * this.ball.startY + p * this.ball.targetY;
-                    const arc = Math.sin(p * Math.PI) * this.ball.arcHeight;
-                    this.ball.y = Math.max(0.11, baseY + arc);
-
-                    this.ball.rotation += this.ball.spinSpeed;
-
-                    // Record trail
-                    const pProj = this.project3D(this.ball.x, this.ball.y, this.ball.z);
-                    if (pProj.visible) {
-                        this.ball.trail.push({ x: pProj.x, y: pProj.y, r: Math.max(2, 0.11 * pProj.scale) });
-                        if (this.ball.trail.length > 18) this.ball.trail.shift();
+                    // Wall jump in unison
+                    if (this.duelType === 'freekick' && p >= 0.12 && p <= 0.68) {
+                        const jumpP = Math.sin(((p - 0.12) / 0.56) * Math.PI);
+                        this.wall.jumpY = -jumpP * 24;
+                    } else {
+                        this.wall.jumpY = 0;
                     }
 
                     // Goalkeeper dive timing
@@ -16575,53 +16571,65 @@ function afterWeekAdvanced() {
                         this.keeper.isDiving = true;
                     }
 
-                    // Wall jump timing (Free kick only)
-                    if (this.wall.length > 0 && p > 0.15 && p < 0.70) {
-                        const jumpP = Math.sin(((p - 0.15) / 0.55) * Math.PI);
-                        this.wall.forEach(w => w.jumpY = jumpP * 0.65);
-                    }
+                    // Ball trail
+                    const curSize = (1 - p) * this.ball.startSize + p * this.ball.targetSize;
+                    const falsoOffset = Math.sin(p * Math.PI) * this.ball.falsoOffset;
+                    const arcOffset = Math.sin(p * Math.PI) * this.ball.arcHeight;
+                    const curX = (1 - p) * this.ball.startX + p * this.ball.targetX + falsoOffset;
+                    const curY = (1 - p) * this.ball.startY + p * this.ball.targetY - arcOffset;
 
-                    // Arrival at goal
+                    this.ball.trail.push({ x: curX, y: curY, r: curSize * 0.4 });
+                    if (this.ball.trail.length > 14) this.ball.trail.shift();
+
+                    this.ball.rot += this.ball.spinSpeed;
+
                     if (p >= 1.0) {
                         this.stage = 4;
                         this.evaluateResult();
                     }
                 }
 
-                // Spring decay for net ripple
-                if (this.netDeform.active) {
-                    this.netDeform.amount *= 0.92;
-                    if (this.netDeform.amount < 0.02) this.netDeform.active = false;
+                // Net shake decay
+                if (this.netShake.active) {
+                    this.netShake.time += 1;
+                    this.netShake.amp *= 0.92;
+                    if (this.netShake.amp < 0.2) {
+                        this.netShake.active = false;
+                        this.netShake.amp = 0;
+                    }
                 }
             },
 
             evaluateResult: function() {
                 const bx = this.ball.targetX;
                 const by = this.ball.targetY;
-                const gw = 3.66; // half width of goal
-                const gh = 2.44; // height of goal
 
-                // Inside goal rectangle
-                const inGoalX = (bx >= -gw + 0.15 && bx <= gw - 0.15);
-                const inGoalY = (by >= 0.12 && by <= gh - 0.08);
-                const isSkyBall = (by > gh + 0.1);
+                let goalLeft = 135, goalRight = 305, goalTop = 82, goalBottom = 186;
+                if (this.duelType === 'penalty') {
+                    goalLeft = 90; goalRight = 350; goalTop = 62; goalBottom = 218;
+                }
 
-                // Hit post/crossbar
+                const inGoalX = (bx >= goalLeft + 8 && bx <= goalRight - 8);
+                const inGoalY = (by >= goalTop + 6 && by <= goalBottom - 6);
+                const isSkyBall = (by < goalTop - 8);
+
+                // Hit post
                 const isHitPost = (!inGoalX || !inGoalY) && (
-                    (Math.abs(Math.abs(bx) - gw) < 0.35 && by <= gh + 0.2) ||
-                    (Math.abs(by - gh) < 0.35 && Math.abs(bx) <= gw + 0.2)
+                    (Math.abs(bx - goalLeft) < 14 && by <= goalBottom + 8) ||
+                    (Math.abs(bx - goalRight) < 14 && by <= goalBottom + 8) ||
+                    (Math.abs(by - goalTop) < 14 && bx >= goalLeft - 8 && bx <= goalRight + 8)
                 );
 
-                // Check Wall Collision in Free kick
+                // Hit wall (Free kick only)
                 let isHitWall = false;
-                if (this.duelType === 'freekick' && this.ball.arcHeight < 0.9 && Math.abs(bx) < 1.2 && by < 1.85) {
+                if (this.duelType === 'freekick' && this.ball.arcHeight < 18 && Math.abs(bx - 220) < 55 && by > 145) {
                     isHitWall = true;
                 }
 
-                // Check Goalkeeper Save
-                const isTrue90 = inGoalX && inGoalY && (Math.abs(bx) >= gw - 1.1) && (by >= gh - 0.85);
+                // Check 90
+                const isTrue90 = inGoalX && inGoalY && (bx <= goalLeft + 35 || bx >= goalRight - 35) && (by <= goalTop + 35);
                 const distToKeeper = Math.sqrt(Math.pow(bx - this.keeper.x, 2) + Math.pow(by - this.keeper.y, 2));
-                const effectiveReach = isTrue90 ? 0.75 : this.keeper.reach;
+                const effectiveReach = isTrue90 ? (this.keeper.reach * 0.45) : this.keeper.reach;
                 const isSaved = inGoalX && inGoalY && (distToKeeper < effectiveReach) && !isHitWall;
 
                 const isGoal = inGoalX && inGoalY && !isSaved && !isHitPost && !isSkyBall && !isHitWall;
@@ -16638,10 +16646,9 @@ function afterWeekAdvanced() {
                 let resultComment = "";
 
                 if (isGoal) {
-                    this.netDeform.active = true;
-                    this.netDeform.impactX = bx;
-                    this.netDeform.impactY = by;
-                    this.netDeform.amount = 0.95;
+                    this.netShake.active = true;
+                    this.netShake.amp = 6.0;
+                    this.netShake.time = 0;
 
                     NssAudio.playNet();
                     if (typeof SoundManager !== "undefined") {
@@ -16649,7 +16656,7 @@ function afterWeekAdvanced() {
                         if (typeof SoundManager.playCrowdCheer === "function") SoundManager.playCrowdCheer();
                     }
 
-                    bannerEl.style.background = "linear-gradient(135deg, #059669 0%, #10b981 100%)";
+                    bannerEl.style.background = "linear-gradient(135deg, rgba(5, 150, 105, 0.95) 0%, rgba(16, 185, 129, 0.9) 100%)";
                     bannerEl.style.color = "#022c22";
                     bannerEl.innerText = isTrue90 ? "🎯 90'A ASILDI! ÇATALDAKI AĞLARI ALDIN! 🔥" : "⚽ GOOOOOOL! HARİKA VURUŞ! 🔥";
                     if (instrEl) instrEl.innerText = isTrue90 ? "KUSURSUZ 3D FALSO VE 90! KALECİ ÇARESİZCE İZLEDİ." : "TOP FİLELERİ SARSARAK AĞLARLA BULUŞTU!";
@@ -16662,7 +16669,7 @@ function afterWeekAdvanced() {
                     if (typeof SoundManager !== "undefined" && typeof SoundManager.playMiss === "function") {
                         SoundManager.playMiss();
                     }
-                    bannerEl.style.background = "linear-gradient(135deg, #dc2626 0%, #ef4444 100%)";
+                    bannerEl.style.background = "linear-gradient(135deg, rgba(220, 38, 38, 0.95) 0%, rgba(239, 68, 68, 0.9) 100%)";
                     bannerEl.style.color = "#ffffff";
                     bannerEl.innerText = "🧤 KALECİ UZANDI VE ÇIKARDI!";
                     if (instrEl) instrEl.innerText = "HARİKA BİR ŞUT AMA KALECİ KÖŞEYE UÇARAK TOPU ÇELDİ!";
@@ -16672,21 +16679,21 @@ function afterWeekAdvanced() {
                     if (typeof SoundManager !== "undefined" && typeof SoundManager.playMiss === "function") {
                         SoundManager.playMiss();
                     }
-                    bannerEl.style.background = "linear-gradient(135deg, #d97706 0%, #f59e0b 100%)";
+                    bannerEl.style.background = "linear-gradient(135deg, rgba(217, 119, 6, 0.95) 0%, rgba(245, 158, 11, 0.9) 100%)";
                     bannerEl.style.color = "#000000";
-                    bannerEl.innerText = "💥 DİREKTEN DÖNDÜ! (ÇAT sesi stadyumu inletti!)";
+                    bannerEl.innerText = "💥 DİREKTEN DÖNDÜ! (Çat sesi stadyumu inletti!)";
                     if (instrEl) instrEl.innerText = "MİLİMETRELERLE DİREĞE TAKILDI!";
                     resultComment = "İnanılmaz an! Çatala çarpan top direkten sahaya geri döndü!";
                 } else if (isHitWall) {
                     NssAudio.playKick();
-                    bannerEl.style.background = "linear-gradient(135deg, #475569 0%, #64748b 100%)";
+                    bannerEl.style.background = "linear-gradient(135deg, rgba(71, 85, 105, 0.95) 0%, rgba(100, 116, 139, 0.9) 100%)";
                     bannerEl.style.color = "#ffffff";
                     bannerEl.innerText = "🛡️ BARAJA TAKILDI! (Top barajdan döndü)";
                     if (instrEl) instrEl.innerText = "VURUŞ BARAJI GEÇEMEDİ! BİRAZ DAHA ALTINA GİRMELİSİN.";
                     resultComment = "Serbest vuruş baraja çarpıp oyun alanına geri döndü.";
                 } else {
                     NssAudio.playTension();
-                    bannerEl.style.background = "linear-gradient(135deg, #334155 0%, #475569 100%)";
+                    bannerEl.style.background = "linear-gradient(135deg, rgba(51, 65, 85, 0.95) 0%, rgba(71, 85, 105, 0.9) 100%)";
                     bannerEl.style.color = "#ffffff";
                     bannerEl.innerText = isSkyBall ? "💨 DAĞLARA TAŞLARA! (Üstten Aut)" : "❌ AUTA GİTTİ!";
                     if (instrEl) instrEl.innerText = isSkyBall ? "TOPUN ÇOK DİBİNE GİRDİN, ÜSTTEN TRİBÜNLERE FIRLADI!" : "FALSO VE YÖN HESAPLANAMADI, YANDAN DIŞARI!";
@@ -16712,6 +16719,9 @@ function afterWeekAdvanced() {
                 if (modal) modal.style.display = "none";
             },
 
+            // =========================================================================
+            // ZERO-SVG LAYER COMPOSITING RENDER PIPELINE
+            // =========================================================================
             render: function(now) {
                 const ctx = this.ctx;
                 const W = this.W;
@@ -16719,538 +16729,273 @@ function afterWeekAdvanced() {
 
                 ctx.clearRect(0, 0, W, H);
 
-                // 1. Stadium Night Sky
-                const skyGrad = ctx.createLinearGradient(0, 0, 0, this.horizonY);
-                skyGrad.addColorStop(0, "#030712");
-                skyGrad.addColorStop(0.65, "#081528");
-                skyGrad.addColorStop(1, "#0f233a");
-                ctx.fillStyle = skyGrad;
-                ctx.fillRect(0, 0, W, this.horizonY);
-
-                // Stadium Grandstand Silhouette & Distant Crowd
-                ctx.fillStyle = "#071220";
-                ctx.beginPath();
-                ctx.moveTo(0, this.horizonY);
-                ctx.lineTo(0, 45);
-                ctx.lineTo(80, 40);
-                ctx.lineTo(200, 38);
-                ctx.lineTo(320, 40);
-                ctx.lineTo(W, 45);
-                ctx.lineTo(W, this.horizonY);
-                ctx.closePath();
-                ctx.fill();
-
-                // Subtle flashing stadium crowd lights
-                ctx.fillStyle = "rgba(255, 255, 255, 0.45)";
-                for (let i = 0; i < 8; i++) {
-                    const fx = (Math.sin(now * 0.003 + i * 2.1) * 0.5 + 0.5) * W;
-                    const fy = 45 + (Math.cos(i * 3.7) * 0.5 + 0.5) * 35;
-                    ctx.fillRect(fx, fy, 1.5, 1.5);
-                }
-
-                // 4 Stadium Floodlight Glow Halos
-                const lights = [
-                    { x: 35, y: 30 },
-                    { x: 110, y: 25 },
-                    { x: 290, y: 25 },
-                    { x: 365, y: 30 }
-                ];
-                lights.forEach(l => {
-                    const grad = ctx.createRadialGradient(l.x, l.y, 0, l.x, l.y, 45);
-                    grad.addColorStop(0, "rgba(224, 242, 254, 0.85)");
-                    grad.addColorStop(0.25, "rgba(186, 230, 253, 0.4)");
-                    grad.addColorStop(1, "rgba(14, 165, 233, 0)");
+                // LAYER 1: Photo-realistic Night Stadium Background
+                if (NssAssets.stadium.complete && NssAssets.stadium.naturalWidth > 0) {
+                    // Frame floodlights at top and grass pitch at bottom
+                    ctx.drawImage(NssAssets.stadium, 0, 260, 1024, 660, 0, 0, W, H);
+                } else {
+                    // Elegant dark stadium fallback
+                    const grad = ctx.createLinearGradient(0, 0, 0, H);
+                    grad.addColorStop(0, "#030712");
+                    grad.addColorStop(0.4, "#081528");
+                    grad.addColorStop(1, "#0d351e");
                     ctx.fillStyle = grad;
-                    ctx.beginPath();
-                    ctx.arc(l.x, l.y, 45, 0, Math.PI * 2);
-                    ctx.fill();
-                });
-
-                // Digital LED Perimeter Boards Behind Goal
-                const boardZ = this.goal.z + 2.5;
-                const bL = this.project3D(-11, 0.9, boardZ);
-                const bR = this.project3D(11, 0.9, boardZ);
-                const bLb = this.project3D(-11, 0, boardZ);
-                const bRb = this.project3D(11, 0, boardZ);
-
-                if (bL.visible && bR.visible) {
-                    ctx.fillStyle = "#020617";
-                    ctx.beginPath();
-                    ctx.moveTo(bL.x, bL.y);
-                    ctx.lineTo(bR.x, bR.y);
-                    ctx.lineTo(bRb.x, bRb.y);
-                    ctx.lineTo(bLb.x, bLb.y);
-                    ctx.closePath();
-                    ctx.fill();
-
-                    // LED glow line
-                    ctx.strokeStyle = "rgba(0, 229, 183, 0.7)";
-                    ctx.lineWidth = 1.5;
-                    ctx.beginPath();
-                    ctx.moveTo(bL.x, bL.y);
-                    ctx.lineTo(bR.x, bR.y);
-                    ctx.stroke();
+                    ctx.fillRect(0, 0, W, H);
                 }
 
-                // 2. 3D Perspective Pitch with Alternating Green Stripes
-                const maxZ = this.goal.z + 3.0;
-                const stripCount = 10;
-                for (let i = 0; i < stripCount; i++) {
-                    const z1 = (i / stripCount) * maxZ;
-                    const z2 = ((i + 1) / stripCount) * maxZ;
-                    const p1L = this.project3D(-16, 0, z1);
-                    const p1R = this.project3D(16, 0, z1);
-                    const p2L = this.project3D(-16, 0, z2);
-                    const p2R = this.project3D(16, 0, z2);
+                // Cinematic TV broadcast vignette
+                const vig = ctx.createRadialGradient(W / 2, H / 2, W * 0.3, W / 2, H / 2, W * 0.7);
+                vig.addColorStop(0, "rgba(0, 0, 0, 0)");
+                vig.addColorStop(1, "rgba(2, 6, 18, 0.65)");
+                ctx.fillStyle = vig;
+                ctx.fillRect(0, 0, W, H);
 
-                    ctx.fillStyle = (i % 2 === 0) ? "#0e3820" : "#134a2b";
-                    ctx.beginPath();
-                    ctx.moveTo(p1L.x, p1L.y);
-                    ctx.lineTo(p1R.x, p1R.y);
-                    ctx.lineTo(p2R.x, p2R.y);
-                    ctx.lineTo(p2L.x, p2L.y);
-                    ctx.closePath();
-                    ctx.fill();
+                // LAYER 2: 3D Transparent Goal & Hexagonal Net
+                ctx.save();
+                let gx = 105, gy = 66, gw = 230, gh = 126;
+                if (this.duelType === 'penalty') {
+                    gx = 60; gy = 44; gw = 320; gh = 176;
                 }
 
-                // 3. 3D White Pitch Markings
-                ctx.strokeStyle = "rgba(255, 255, 255, 0.65)";
-                ctx.lineWidth = 2;
-
-                // Goal Line
-                const glL = this.project3D(-10, 0, this.goal.z);
-                const glR = this.project3D(10, 0, this.goal.z);
-                ctx.beginPath();
-                ctx.moveTo(glL.x, glL.y);
-                ctx.lineTo(glR.x, glR.y);
-                ctx.stroke();
-
-                // 6-Yard Box
-                const b6L1 = this.project3D(-4.5, 0, this.goal.z);
-                const b6L2 = this.project3D(-4.5, 0, this.goal.z - 5.5);
-                const b6R2 = this.project3D(4.5, 0, this.goal.z - 5.5);
-                const b6R1 = this.project3D(4.5, 0, this.goal.z);
-                ctx.beginPath();
-                ctx.moveTo(b6L1.x, b6L1.y);
-                ctx.lineTo(b6L2.x, b6L2.y);
-                ctx.lineTo(b6R2.x, b6R2.y);
-                ctx.lineTo(b6R1.x, b6R1.y);
-                ctx.stroke();
-
-                // 18-Yard Penalty Box
-                const pBoxL1 = this.project3D(-8.5, 0, this.goal.z);
-                const pBoxL2 = this.project3D(-8.5, 0, this.goal.z - 16.5);
-                const pBoxR2 = this.project3D(8.5, 0, this.goal.z - 16.5);
-                const pBoxR1 = this.project3D(8.5, 0, this.goal.z);
-                ctx.beginPath();
-                ctx.moveTo(pBoxL1.x, pBoxL1.y);
-                ctx.lineTo(pBoxL2.x, pBoxL2.y);
-                ctx.lineTo(pBoxR2.x, pBoxR2.y);
-                ctx.lineTo(pBoxR1.x, pBoxR1.y);
-                ctx.stroke();
-
-                // 11-Meter Penalty Spot
-                const penSpot = this.project3D(0, 0, this.goal.z - 11.0);
-                if (penSpot.visible) {
-                    ctx.fillStyle = "#ffffff";
-                    ctx.beginPath();
-                    ctx.ellipse(penSpot.x, penSpot.y, Math.max(2, 0.15 * penSpot.scale), Math.max(1, 0.06 * penSpot.scale), 0, 0, Math.PI * 2);
-                    ctx.fill();
+                // Net shake on goal impact
+                if (this.netShake.active) {
+                    const shakeX = Math.sin(this.netShake.time * 30) * this.netShake.amp;
+                    const shakeY = Math.cos(this.netShake.time * 24) * this.netShake.amp * 0.5;
+                    ctx.translate(shakeX, shakeY);
                 }
 
-                // 4. 3D Goal Frame & Hexagonal Sagging Net
-                this.draw3DGoal(ctx);
-
-                // 5. Defender Wall (Free Kick mode)
-                if (this.wall.length > 0) {
-                    this.draw3DWall(ctx);
+                if (NssAssets.goal.complete && NssAssets.goal.naturalWidth > 0) {
+                    ctx.drawImage(NssAssets.goal, gx, gy, gw, gh);
                 }
+                ctx.restore();
 
-                // 6. Athletic Goalkeeper
-                this.draw3DGoalkeeper(ctx, now);
+                // LAYER 3: Goalkeeper
+                ctx.save();
+                if (this.keeper.isDiving) {
+                    // Diving Goalkeeper (Full extension stretch)
+                    if (NssAssets.keeperDive.complete && NssAssets.keeperDive.naturalWidth > 0) {
+                        const dw = (this.duelType === 'penalty') ? 136 : 94;
+                        const dh = (this.duelType === 'penalty') ? 76 : 52;
+                        const isDivingLeft = (this.keeper.diveTargetX < 220);
 
-                // 7. Ball Flight Trail in 3D
-                if (this.stage >= 3 && this.ball.trail.length > 1) {
-                    ctx.save();
-                    for (let i = 1; i < this.ball.trail.length; i++) {
-                        const t1 = this.ball.trail[i - 1];
-                        const t2 = this.ball.trail[i];
-                        const alpha = (i / this.ball.trail.length) * 0.75;
-                        ctx.strokeStyle = `rgba(0, 229, 183, ${alpha})`;
-                        ctx.lineWidth = Math.max(1.5, t2.r * 0.7);
+                        ctx.save();
+                        ctx.translate(this.keeper.x, this.keeper.y);
+                        if (isDivingLeft) {
+                            ctx.scale(-1, 1); // Flip horizontally for left corner dive
+                        }
+                        // Drop shadow beneath airborne keeper
+                        ctx.fillStyle = "rgba(0, 0, 0, 0.45)";
                         ctx.beginPath();
-                        ctx.moveTo(t1.x, t1.y);
-                        ctx.lineTo(t2.x, t2.y);
-                        ctx.stroke();
+                        ctx.ellipse(0, dh * 0.65, dw * 0.4, dh * 0.16, 0, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        ctx.drawImage(NssAssets.keeperDive, -dw / 2, -dh / 2, dw, dh);
+                        ctx.restore();
                     }
+                } else {
+                    // Ready Crouch Goalkeeper (Bobbing in goal mouth)
+                    if (NssAssets.keeperReady.complete && NssAssets.keeperReady.naturalWidth > 0) {
+                        const kw = (this.duelType === 'penalty') ? 64 : 44;
+                        const kh = (this.duelType === 'penalty') ? 64 : 44;
+                        const bob = Math.sin(now * 0.006) * 1.5;
+
+                        // Turf ground shadow
+                        ctx.fillStyle = "rgba(0, 0, 0, 0.45)";
+                        ctx.beginPath();
+                        ctx.ellipse(this.keeper.x, this.keeper.y + kh * 0.85, kw * 0.38, kw * 0.12, 0, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        ctx.drawImage(NssAssets.keeperReady, this.keeper.x - kw / 2, this.keeper.y - kh * 0.45 + bob, kw, kh);
+                    }
+                }
+                ctx.restore();
+
+                // LAYER 4: 4-Man Defensive Wall (Free Kick only)
+                if (this.duelType === 'freekick' && NssAssets.wall.complete && NssAssets.wall.naturalWidth > 0) {
+                    ctx.save();
+                    const w = this.wall;
+                    const wy = w.y + w.jumpY;
+
+                    // 4 Soft ground shadows cast by players onto the pitch
+                    const shadowY = w.y + w.h - 5;
+                    const shadowAlpha = (w.jumpY < 0) ? 0.25 : 0.45;
+                    ctx.fillStyle = `rgba(0, 0, 0, ${shadowAlpha})`;
+                    const shadowPositions = [w.x + w.w * 0.15, w.x + w.w * 0.38, w.x + w.w * 0.63, w.x + w.w * 0.86];
+                    shadowPositions.forEach(sx => {
+                        ctx.beginPath();
+                        ctx.ellipse(sx, shadowY, 15, 4.5, -0.1, 0, Math.PI * 2);
+                        ctx.fill();
+                    });
+
+                    // Draw the 4 athletic players render
+                    ctx.drawImage(NssAssets.wall, w.x, wy, w.w, w.h);
                     ctx.restore();
                 }
 
-                // 8. Ball Rendering
+                // LAYER 5: Ball Flight & Trail (Stage >= 3)
                 if (this.stage >= 3) {
-                    // Ball in 3D flight
-                    const ballProj = this.project3D(this.ball.x, this.ball.y, this.ball.z);
-                    const shadowProj = this.project3D(this.ball.x, 0.02, this.ball.z);
+                    const p = Math.min(1.0, this.ball.progress);
+                    const curSize = (1 - p) * this.ball.startSize + p * this.ball.targetSize;
+                    const falsoOffset = Math.sin(p * Math.PI) * this.ball.falsoOffset;
+                    const arcOffset = Math.sin(p * Math.PI) * this.ball.arcHeight;
+                    const curX = (1 - p) * this.ball.startX + p * this.ball.targetX + falsoOffset;
+                    const curY = (1 - p) * this.ball.startY + p * this.ball.targetY - arcOffset;
 
-                    // Drop shadow on pitch
-                    if (shadowProj.visible) {
+                    // Luminous trail
+                    if (this.ball.trail.length > 1) {
                         ctx.save();
-                        ctx.fillStyle = "rgba(0, 0, 0, 0.45)";
-                        const sr = Math.max(2, this.ball.r * shadowProj.scale);
-                        ctx.beginPath();
-                        ctx.ellipse(shadowProj.x, shadowProj.y, sr * 1.1, sr * 0.4, 0, 0, Math.PI * 2);
-                        ctx.fill();
+                        for (let i = 1; i < this.ball.trail.length; i++) {
+                            const t1 = this.ball.trail[i - 1];
+                            const t2 = this.ball.trail[i];
+                            const alpha = (i / this.ball.trail.length) * 0.75;
+                            ctx.strokeStyle = `rgba(250, 204, 21, ${alpha})`;
+                            ctx.lineWidth = Math.max(1.5, t2.r * 0.4);
+                            ctx.beginPath();
+                            ctx.moveTo(t1.x, t1.y);
+                            ctx.lineTo(t2.x, t2.y);
+                            ctx.stroke();
+                        }
                         ctx.restore();
                     }
 
-                    // 3D Flying Ball
-                    if (ballProj.visible) {
-                        const br = Math.max(3, this.ball.r * ballProj.scale);
-                        this.renderDetailedBall(ctx, ballProj.x, ballProj.y, br, this.ball.rotation);
-                    }
-                } else {
-                    // Foreground 3D Ball (Camera perspective right in front of kicker)
-                    const fbx = 200;
-                    const fby = 235;
-                    const fbr = 38;
-
-                    // Foreground ball drop shadow
+                    // Ball ground shadow on turf
+                    const groundY = (1 - p) * 274 + p * (this.duelType === 'freekick' ? 190 : 218);
                     ctx.save();
-                    ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
+                    ctx.fillStyle = "rgba(0, 0, 0, 0.45)";
                     ctx.beginPath();
-                    ctx.ellipse(fbx, fby + 36, 44, 12, 0, 0, Math.PI * 2);
+                    ctx.ellipse(curX, groundY, curSize * 0.45, curSize * 0.16, 0, 0, Math.PI * 2);
                     ctx.fill();
                     ctx.restore();
 
-                    // Detailed 3D leather ball
-                    this.renderDetailedBall(ctx, fbx, fby, fbr, 0);
+                    // Flying 3D Ball
+                    if (NssAssets.ball.complete && NssAssets.ball.naturalWidth > 0) {
+                        ctx.save();
+                        ctx.translate(curX, curY);
+                        ctx.rotate(this.ball.rot);
+                        ctx.drawImage(NssAssets.ball, -curSize / 2, -curSize / 2, curSize, curSize);
+                        ctx.restore();
+                    }
+                } else {
+                    // Foreground 3D Champions League Match Ball (Stage 1 & 2)
+                    const bx = 220;
+                    const by = 244;
+                    const br = 34;
 
-                    // Holographic Strike HUD overlay on foreground ball
-                    this.renderBallStrikeHUD(ctx, fbx, fby, fbr);
+                    // Turf contact shadow
+                    ctx.save();
+                    ctx.fillStyle = "rgba(0, 0, 0, 0.65)";
+                    ctx.beginPath();
+                    ctx.ellipse(bx, by + 32, 40, 10, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+
+                    // High-resolution Match Ball
+                    if (NssAssets.ball.complete && NssAssets.ball.naturalWidth > 0) {
+                        ctx.drawImage(NssAssets.ball, bx - br, by - br, br * 2, br * 2);
+                    }
+
+                    // Minimalist Contact Touch HUD
+                    this.renderBallTouchHUD(ctx, bx, by, br);
                 }
 
-                // 9. Stage 1 Holographic Aiming HUD Reticle
+                // LAYER 6: Stage 1 Minimalist Golden Laser Reticle
                 if (this.stage === 1) {
-                    this.drawHolographicAimHUD(ctx, now);
+                    this.drawGoldenLaserReticle(ctx, now);
                 }
 
-                // 10. Stage 2 Falso Flight Preview Trail
+                // LAYER 7: Stage 2 Golden Trajectory Arc Preview
                 if (this.stage === 2) {
-                    this.drawTrajectoryPreviewTrail(ctx);
+                    this.drawGoldenTrajectoryArc(ctx);
                 }
             },
 
-            // 3D Goal & Realistic Sagging Net
-            draw3DGoal: function(ctx) {
-                const gz = this.goal.z;
-                const bz = gz + this.goal.depth;
-                const gw = this.goal.width / 2;
-                const gh = this.goal.height;
-
-                // Front Goalposts
-                const flB = this.project3D(-gw, 0, gz);
-                const flT = this.project3D(-gw, gh, gz);
-                const frB = this.project3D(gw, 0, gz);
-                const frT = this.project3D(gw, gh, gz);
-
-                // Back Depth Posts
-                const blB = this.project3D(-gw, 0, bz);
-                const blT = this.project3D(-gw, gh * 0.85, bz);
-                const brB = this.project3D(gw, 0, bz);
-                const brT = this.project3D(gw, gh * 0.85, bz);
-
-                // Draw Net Depth Grid
-                ctx.save();
-                ctx.strokeStyle = "rgba(255, 255, 255, 0.22)";
-                ctx.lineWidth = 1;
-
-                // Vertical net cords
-                const netSegments = 16;
-                for (let i = 0; i <= netSegments; i++) {
-                    const frac = i / netSegments;
-                    const x = -gw + frac * (gw * 2);
-                    const topF = this.project3D(x, gh, gz);
-                    const topB = this.project3D(x, gh * 0.85, bz);
-                    const botB = this.project3D(x, 0, bz);
-
-                    // Dynamic Net Ripple Bulge
-                    if (this.netDeform.active) {
-                        const distToHit = Math.abs(x - this.netDeform.impactX);
-                        if (distToHit < 1.8) {
-                            const bulge = Math.sin(((1.8 - distToHit) / 1.8) * Math.PI) * this.netDeform.amount * 12;
-                            topB.y += bulge;
-                            botB.y += bulge;
-                        }
-                    }
-
-                    ctx.beginPath();
-                    ctx.moveTo(topF.x, topF.y);
-                    ctx.lineTo(topB.x, topB.y);
-                    ctx.lineTo(botB.x, botB.y);
-                    ctx.stroke();
-                }
-
-                // Horizontal net cords
-                const horizSegments = 7;
-                for (let j = 0; j <= horizSegments; j++) {
-                    const frac = j / horizSegments;
-                    const y = frac * (gh * 0.85);
-                    const pL = this.project3D(-gw, y, bz);
-                    const pR = this.project3D(gw, y, bz);
-                    ctx.beginPath();
-                    ctx.moveTo(pL.x, pL.y);
-                    ctx.lineTo(pR.x, pR.y);
-                    ctx.stroke();
-                }
-                ctx.restore();
-
-                // Stanchions (Connecting front to back)
-                ctx.strokeStyle = "rgba(203, 213, 225, 0.7)";
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.moveTo(flT.x, flT.y);
-                ctx.lineTo(blT.x, blT.y);
-                ctx.moveTo(frT.x, frT.y);
-                ctx.lineTo(brT.x, brT.y);
-                ctx.moveTo(blT.x, blT.y);
-                ctx.lineTo(blB.x, blB.y);
-                ctx.moveTo(brT.x, brT.y);
-                ctx.lineTo(brB.x, brB.y);
-                ctx.stroke();
-
-                // Front Tubular White Posts & Crossbar
-                ctx.save();
-                const postGrad = ctx.createLinearGradient(flB.x - 3, 0, flB.x + 3, 0);
-                postGrad.addColorStop(0, "#cbd5e1");
-                postGrad.addColorStop(0.4, "#ffffff");
-                postGrad.addColorStop(1, "#94a3b8");
-
-                ctx.strokeStyle = postGrad;
-                ctx.lineWidth = Math.max(3.5, 0.12 * flB.scale);
-                ctx.lineCap = "round";
-
-                // Left upright
-                ctx.beginPath();
-                ctx.moveTo(flB.x, flB.y);
-                ctx.lineTo(flT.x, flT.y);
-                ctx.stroke();
-
-                // Right upright
-                ctx.beginPath();
-                ctx.moveTo(frB.x, frB.y);
-                ctx.lineTo(frT.x, frT.y);
-                ctx.stroke();
-
-                // Crossbar
-                ctx.beginPath();
-                ctx.moveTo(flT.x, flT.y);
-                ctx.lineTo(frT.x, frT.y);
-                ctx.stroke();
-
-                // Specular gloss shine running across the crossbar
-                ctx.strokeStyle = "rgba(255, 255, 255, 0.9)";
-                ctx.lineWidth = 1.2;
-                ctx.beginPath();
-                ctx.moveTo(flT.x + 2, flT.y - 1);
-                ctx.lineTo(frT.x - 2, frT.y - 1);
-                ctx.stroke();
-                ctx.restore();
-            },
-
-            // 3D Defender Wall
-            draw3DWall: function(ctx) {
-                this.wall.forEach((def, idx) => {
-                    const p = this.project3D(def.x, def.jumpY, def.z);
-                    if (!p.visible) return;
-
-                    const h = 1.85 * p.scale; // 1.85m tall defender
-                    const w = 0.55 * p.scale;
-
-                    ctx.save();
-                    // Shadow beneath jumper
-                    const sh = this.project3D(def.x, 0.02, def.z);
-                    ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
-                    ctx.beginPath();
-                    ctx.ellipse(sh.x, sh.y, w * 0.7, w * 0.25, 0, 0, Math.PI * 2);
-                    ctx.fill();
-
-                    // Jersey (Navy/Cyan striped)
-                    ctx.fillStyle = (idx % 2 === 0) ? "#1e3a8a" : "#0284c7";
-                    ctx.fillRect(p.x - w / 2, p.y - h * 0.75, w, h * 0.4);
-
-                    // Shorts
-                    ctx.fillStyle = "#ffffff";
-                    ctx.fillRect(p.x - w / 2 + 1, p.y - h * 0.35, w - 2, h * 0.2);
-
-                    // Head
-                    ctx.fillStyle = "#f5d0a9";
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y - h * 0.88, w * 0.3, 0, Math.PI * 2);
-                    ctx.fill();
-
-                    // Hair
-                    ctx.fillStyle = "#1e1b4b";
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y - h * 0.92, w * 0.3, Math.PI, Math.PI * 2);
-                    ctx.fill();
-
-                    // Legs / Socks
-                    ctx.fillStyle = "#1e3a8a";
-                    ctx.fillRect(p.x - w * 0.35, p.y - h * 0.15, w * 0.28, h * 0.15);
-                    ctx.fillRect(p.x + w * 0.07, p.y - h * 0.15, w * 0.28, h * 0.15);
-                    ctx.restore();
-                });
-            },
-
-            // 3D Athletic Goalkeeper
-            draw3DGoalkeeper: function(ctx, now) {
-                const k = this.keeper;
-                const p = this.project3D(k.x, k.y, k.z);
-                if (!p.visible) return;
-
-                const h = 1.90 * p.scale;
-                const w = 0.60 * p.scale;
+            // Minimalist Golden Laser Reticle (UEFA Broadcast Style)
+            drawGoldenLaserReticle: function(ctx, now) {
+                const ax = this.aim.x;
+                const ay = this.aim.y;
 
                 ctx.save();
-                ctx.translate(p.x, p.y);
-
-                // If diving, rotate athletic keeper body along dive vector
-                if (k.isDiving) {
-                    const diveAngle = (k.x > 0) ? 0.65 : -0.65;
-                    ctx.rotate(diveAngle);
-                }
-
-                // Shadow
-                const sh = this.project3D(k.x, 0.02, k.z);
-                ctx.fillStyle = "rgba(0, 0, 0, 0.45)";
-                ctx.beginPath();
-                ctx.ellipse(0, k.isDiving ? 4 : h * 0.05, w * 0.8, w * 0.25, 0, 0, Math.PI * 2);
-                ctx.fill();
-
-                // Goalkeeper Neon Jersey (Electric Emerald)
-                ctx.fillStyle = "#10b981";
-                ctx.fillRect(-w / 2, -h * 0.72, w, h * 0.38);
-
-                // Shorts
-                ctx.fillStyle = "#0f172a";
-                ctx.fillRect(-w / 2 + 1, -h * 0.34, w - 2, h * 0.2);
-
-                // Head
-                ctx.fillStyle = "#fed7aa";
-                ctx.beginPath();
-                ctx.arc(0, -h * 0.86, w * 0.28, 0, Math.PI * 2);
-                ctx.fill();
-
-                // Hair
-                ctx.fillStyle = "#3e2723";
-                ctx.beginPath();
-                ctx.arc(0, -h * 0.90, w * 0.28, Math.PI, Math.PI * 2);
-                ctx.fill();
-
-                // Padded Goalkeeper Gloves (White & Neon)
-                ctx.fillStyle = "#ffffff";
-                if (k.isDiving) {
-                    // Outstretched diving arms
-                    ctx.fillRect(-w * 0.85, -h * 0.95, w * 0.32, w * 0.32);
-                    ctx.fillRect(w * 0.53, -h * 0.95, w * 0.32, w * 0.32);
-                } else {
-                    // Ready crouch stance
-                    const bob = Math.sin(now * 0.007) * 2;
-                    ctx.fillRect(-w * 0.75, -h * 0.55 + bob, w * 0.28, w * 0.28);
-                    ctx.fillRect(w * 0.47, -h * 0.55 + bob, w * 0.28, w * 0.28);
-                }
-
-                // Boots
-                ctx.fillStyle = "#f59e0b";
-                ctx.fillRect(-w * 0.35, -h * 0.14, w * 0.26, h * 0.14);
-                ctx.fillRect(w * 0.09, -h * 0.14, w * 0.26, h * 0.14);
-
-                ctx.restore();
-            },
-
-            // High-Tech Holographic Aiming HUD (Stage 1)
-            drawHolographicAimHUD: function(ctx, now) {
-                const aimProj = this.project3D(this.aim.x, this.aim.y, this.goal.z);
-                if (!aimProj.visible) return;
-
-                const ax = aimProj.x;
-                const ay = aimProj.y;
-
-                ctx.save();
-                // Rotating outer segmented cyan ring
-                const rot = now * 0.004;
+                // Rotating dashed outer golden ring
+                const rot = now * 0.0035;
                 ctx.translate(ax, ay);
                 ctx.rotate(rot);
 
-                ctx.strokeStyle = "#00e5b7";
-                ctx.lineWidth = 2;
-                ctx.setLineDash([9, 5]);
+                ctx.strokeStyle = "#fbbf24";
+                ctx.lineWidth = 1.6;
+                ctx.setLineDash([7, 4]);
                 ctx.beginPath();
-                ctx.arc(0, 0, 16, 0, Math.PI * 2);
+                ctx.arc(0, 0, 15, 0, Math.PI * 2);
                 ctx.stroke();
 
                 ctx.restore();
 
-                // Inner crosshair & lock target
+                // Inner crosshairs
                 ctx.save();
-                ctx.strokeStyle = "#ffffff";
-                ctx.lineWidth = 1.5;
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.9)";
+                ctx.lineWidth = 1.2;
                 ctx.beginPath();
-                ctx.moveTo(ax - 7, ay);
-                ctx.lineTo(ax + 7, ay);
-                ctx.moveTo(ax, ay - 7);
-                ctx.lineTo(ax, ay + 7);
+                ctx.moveTo(ax - 6, ay);
+                ctx.lineTo(ax + 6, ay);
+                ctx.moveTo(ax, ay - 6);
+                ctx.lineTo(ax, ay + 6);
                 ctx.stroke();
 
-                // Center pulsating dot
-                const pulseR = 2.5 + Math.sin(now * 0.012) * 1.0;
-                ctx.fillStyle = "#ef4444";
+                // Center pulsating gold laser dot
+                const pulseR = 2.4 + Math.sin(now * 0.012) * 1.1;
+                ctx.fillStyle = "#f59e0b";
                 ctx.beginPath();
                 ctx.arc(ax, ay, pulseR, 0, Math.PI * 2);
                 ctx.fill();
 
+                // Luminous laser bloom halo
+                const halo = ctx.createRadialGradient(ax, ay, 0, ax, ay, 12);
+                halo.addColorStop(0, "rgba(250, 204, 21, 0.5)");
+                halo.addColorStop(1, "rgba(250, 204, 21, 0)");
+                ctx.fillStyle = halo;
+                ctx.beginPath();
+                ctx.arc(ax, ay, 12, 0, Math.PI * 2);
+                ctx.fill();
+
                 // Telemetry range tag
-                ctx.fillStyle = "#00e5b7";
+                ctx.fillStyle = "#fde047";
                 ctx.font = "900 8.5px sans-serif";
                 ctx.textAlign = "center";
-                const is90Corner = (Math.abs(this.aim.x) > 2.2 && this.aim.y > 1.6);
-                const tagText = is90Corner ? "🎯 90° CORNER LOCKED" : `HUD • ${this.goal.z}M`;
-                ctx.fillText(tagText, ax, ay - 22);
+                const is90Corner = (ay < (this.duelType === 'freekick' ? 115 : 95) && (ax < 165 || ax > 275));
+                const tagText = is90Corner ? "🎯 90° ÇATAL KİLİTLİ" : (this.duelType === 'freekick' ? "HUD • 24.5 METRE" : "HUD • 11.0 METRE");
+                ctx.fillText(tagText, ax, ay - 20);
                 ctx.restore();
             },
 
-            // Stage 2 Neon Trajectory Preview Trail
-            drawTrajectoryPreviewTrail: function(ctx) {
+            // Golden Trajectory Arc Preview (Stage 2)
+            drawGoldenTrajectoryArc: function(ctx) {
                 ctx.save();
-                ctx.strokeStyle = "rgba(0, 229, 183, 0.75)";
-                ctx.lineWidth = 2.5;
-                ctx.setLineDash([6, 5]);
+                ctx.strokeStyle = "rgba(250, 204, 21, 0.85)";
+                ctx.lineWidth = 2.2;
+                ctx.setLineDash([5, 4]);
 
                 const steps = 14;
                 ctx.beginPath();
                 for (let i = 0; i <= steps; i++) {
                     const p = i / steps;
-                    const z = p * this.goal.z;
-                    const curve = Math.sin(p * Math.PI) * (-this.strikePoint.x * 2.6);
-                    const x = p * this.aim.lockedX + curve;
-                    const arc = Math.sin(p * Math.PI) * ((this.duelType === 'freekick') ? 1.6 : 0.6);
-                    const y = (1 - p) * 0.11 + p * this.aim.lockedY + arc;
-                    const pt = this.project3D(x, y, z);
-                    if (i === 0) ctx.moveTo(pt.x, pt.y);
-                    else ctx.lineTo(pt.x, pt.y);
+                    const curve = Math.sin(p * Math.PI) * (-this.strikePoint.x * 42);
+                    const arc = Math.sin(p * Math.PI) * ((this.duelType === 'freekick') ? 34 : 14);
+                    const x = (1 - p) * 220 + p * this.aim.lockedX + curve;
+                    const y = (1 - p) * 244 + p * this.aim.lockedY - arc;
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
                 }
                 ctx.stroke();
                 ctx.restore();
             },
 
-            // Foreground Ball Interactive Holographic Strike HUD
-            renderBallStrikeHUD: function(ctx, bx, by, br) {
+            // Minimalist Foreground Ball Touch HUD
+            renderBallTouchHUD: function(ctx, bx, by, br) {
                 ctx.save();
 
-                // Dashed target reticles
-                ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
-                ctx.lineWidth = 1.2;
-                ctx.setLineDash([4, 3]);
+                // Subtle dashed reticles
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
+                ctx.lineWidth = 1;
+                ctx.setLineDash([3, 3]);
 
                 ctx.beginPath();
                 ctx.moveTo(bx - br + 4, by);
@@ -17264,105 +17009,43 @@ function afterWeekAdvanced() {
                 ctx.setLineDash([]);
 
                 // Top label: YERDEN
-                ctx.fillStyle = "rgba(255, 255, 255, 0.75)";
-                ctx.font = "800 8px sans-serif";
+                ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+                ctx.font = "800 7.5px sans-serif";
                 ctx.textAlign = "center";
                 ctx.fillText("YERDEN", bx, by - br * 0.45);
 
-                // Bottom Sweet Spot circle: 90'A AS
+                // Bottom sweet spot circle: 90'A AS
                 const swY = by + br * 0.45;
-                ctx.fillStyle = "rgba(0, 229, 183, 0.3)";
-                ctx.strokeStyle = "#00e5b7";
-                ctx.lineWidth = 2;
+                ctx.fillStyle = "rgba(250, 204, 21, 0.28)";
+                ctx.strokeStyle = "#fbbf24";
+                ctx.lineWidth = 1.8;
                 ctx.beginPath();
-                ctx.arc(bx, swY, 13, 0, Math.PI * 2);
+                ctx.arc(bx, swY, 12, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.stroke();
 
-                ctx.fillStyle = "#00e5b7";
-                ctx.font = "900 8px sans-serif";
+                ctx.fillStyle = "#fbbf24";
+                ctx.font = "900 7.5px sans-serif";
                 ctx.fillText("90'A AS", bx, swY + 3);
 
                 // Falso arrows
                 ctx.fillStyle = "#38bdf8";
-                ctx.font = "800 7.5px sans-serif";
+                ctx.font = "800 7px sans-serif";
                 ctx.fillText("↶ FALSO", bx - br * 0.58, by + 3);
                 ctx.fillText("FALSO ↷", bx + br * 0.58, by + 3);
 
-                // If user selected contact point, show glowing marker
+                // If user selected contact point, show laser marker
                 if (this.strikePoint) {
                     const spX = bx + this.strikePoint.x * br;
                     const spY = by + this.strikePoint.y * br;
                     ctx.fillStyle = "#ef4444";
                     ctx.strokeStyle = "#ffffff";
-                    ctx.lineWidth = 2;
+                    ctx.lineWidth = 1.8;
                     ctx.beginPath();
-                    ctx.arc(spX, spY, 5, 0, Math.PI * 2);
+                    ctx.arc(spX, spY, 4.5, 0, Math.PI * 2);
                     ctx.fill();
                     ctx.stroke();
                 }
-                ctx.restore();
-            },
-
-            // High-detail shaded soccer ball rendering
-            renderDetailedBall: function(ctx, x, y, r, rot) {
-                ctx.save();
-                ctx.translate(x, y);
-                ctx.rotate(rot);
-
-                // Sphere base gradient (3D diffuse lighting)
-                const ballGrad = ctx.createRadialGradient(-r * 0.35, -r * 0.35, r * 0.1, 0, 0, r);
-                ballGrad.addColorStop(0, "#ffffff");
-                ballGrad.addColorStop(0.7, "#e2e8f0");
-                ballGrad.addColorStop(1, "#64748b");
-
-                ctx.fillStyle = ballGrad;
-                ctx.beginPath();
-                ctx.arc(0, 0, r, 0, Math.PI * 2);
-                ctx.fill();
-
-                // Outer seam
-                ctx.strokeStyle = "rgba(100, 116, 139, 0.6)";
-                ctx.lineWidth = Math.max(1, r * 0.06);
-                ctx.stroke();
-
-                // Black Pentagons & Seams
-                ctx.fillStyle = "#0f172a";
-                ctx.beginPath();
-                const pr = r * 0.42;
-                for (let i = 0; i < 5; i++) {
-                    const a = (i * Math.PI * 2) / 5 - Math.PI / 2;
-                    const px = Math.cos(a) * pr;
-                    const py = Math.sin(a) * pr;
-                    if (i === 0) ctx.moveTo(px, py);
-                    else ctx.lineTo(px, py);
-                }
-                ctx.closePath();
-                ctx.fill();
-
-                // Seam connector lines
-                ctx.strokeStyle = "#0f172a";
-                ctx.lineWidth = Math.max(1, r * 0.05);
-                for (let i = 0; i < 5; i++) {
-                    const a = (i * Math.PI * 2) / 5 - Math.PI / 2;
-                    const px = Math.cos(a) * pr;
-                    const py = Math.sin(a) * pr;
-                    const ox = Math.cos(a) * r;
-                    const oy = Math.sin(a) * r;
-                    ctx.beginPath();
-                    ctx.moveTo(px, py);
-                    ctx.lineTo(ox, oy);
-                    ctx.stroke();
-                }
-
-                // Specular highlight gloss
-                const gloss = ctx.createRadialGradient(-r * 0.35, -r * 0.35, 0, -r * 0.35, -r * 0.35, r * 0.4);
-                gloss.addColorStop(0, "rgba(255, 255, 255, 0.7)");
-                gloss.addColorStop(1, "rgba(255, 255, 255, 0)");
-                ctx.fillStyle = gloss;
-                ctx.beginPath();
-                ctx.arc(-r * 0.35, -r * 0.35, r * 0.4, 0, Math.PI * 2);
-                ctx.fill();
 
                 ctx.restore();
             }
