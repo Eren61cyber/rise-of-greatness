@@ -3341,13 +3341,15 @@
                     </div>
 
                     <!-- Action Controls -->
-                    <div style="display: flex; justify-content: center; gap: 10px;">
-                        <button class="btn-rev-pedal" onclick="revCarEngine()" style="flex: 1.2;">
-                            ⚡ GAZA BAS (EGZOZ PATLAT)
-                        </button>
-                        <button class="btn" onclick="editCarPlate()" style="flex: 0.8; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 12px; padding: 12px; font-size: 11.5px; font-weight: 800; cursor: pointer;">
-                            ✏️ Plaka Değiştir
-                        </button>
+                    <div id="garage-action-controls" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+                        <div style="display: flex; justify-content: center; gap: 10px; width: 100%;">
+                            <button class="btn-rev-pedal" onclick="revCarEngine()" style="flex: 1.2;">
+                                ⚡ GAZA BAS (EGZOZ PATLAT)
+                            </button>
+                            <button class="btn" onclick="editCarPlate()" style="flex: 0.8; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 12px; padding: 12px; font-size: 11.5px; font-weight: 800; cursor: pointer;">
+                                ✏️ Plaka Değiştir
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -8566,33 +8568,83 @@
             const pName = (typeof GAME !== "undefined" && GAME.state && GAME.state.playerName) || "Genç Yıldız";
             const goals = (ctx && ctx.goals) || 0;
             const rating = (ctx && ctx.rating) || 6.5;
+            const currentLeague = (typeof GAME !== "undefined" && GAME.state && GAME.state.currentLeague) || "3. Lig";
+            const currentClub = (typeof GAME !== "undefined" && GAME.state && GAME.state.currentClub) || "Kulüp";
+
+            const abroadLeagues = ["Premier League", "La Liga", "Serie A", "Bundesliga", "Ligue 1", "Eredivisie", "Liga Portugal"];
+            const isAbroad = abroadLeagues.includes(currentLeague);
+            const isLowerLeague = ["3. Lig", "2. Lig", "1. Lig"].includes(currentLeague);
 
             const ledTopic = document.getElementById("siyah-led-topic");
 
-            if (goals >= 2 || rating >= 8.5) {
-                if (ledTopic) ledTopic.innerText = `${pName.toUpperCase()} ŞOVU & ZAFER GECESİ`;
-                currentSiyahQuotes = [
-                    { name: "Ahmet Hoca", role: "Eski Hakem", tension: 50, quote: `Bakın ben açık ve net konuşayım. Bu ${pName}'de öyle bir kumaş, öyle bir ciğer var ki... Böyle devam ederse Avrupa devleri kapısında yatar! Hakem de pozisyonları iyi süzdü bu arada.` },
-                    { name: "Rasim", role: "Ateşli Yorumcu", tension: 78, quote: `Hocaaam hocaaam! Çıldırtma beni canlı yayında! Bu çocuk bu gece sahada adeta bir terminatör, bir futbol canavarı gibiydi! Türkiye seninle gurur duyuyor be çocuk!` },
-                    { name: "Sinan Abi", role: "Eski Futbolcu", tension: 90, quote: `Kardeşim ben bu çocuğa kefilim. Sezon başından beri söylüyorum; bu çocukta saf kalite, doğuştan klas var. Çocuğun önünü kesmeyin, bırakın aksın gitsin.` },
-                    { name: "Ertem", role: "Moderatör", tension: 98, quote: `Evet sevgili seyirciler, stüdyo resmen alev alev! Şimdi soruyorum: ${pName} önümüzdeki sezon Ballon d'Or listesine ilk 10'dan girer mi? Canlı yayında oyluyoruz!` }
+            if (isAbroad) {
+                // 🇹🇷 YURT DIŞI / AVRUPA LİGLERİ ÖZEL DİYALOG HAVUZU
+                const euroTopics = [
+                    `🇹🇷 ÜLKEMİZİN GURURU: ${pName.toUpperCase()} AVRUPA'YI SALLIYOR!`,
+                    `🌍 DEVLER LİGİNDE ${pName.toUpperCase()} RESİTALİ!`,
+                    `👑 TÜRK BAYRAĞINI DALGALANDIRAN ADAM: ${pName.toUpperCase()}`,
+                    `🔥 AVRUPA BASINI AYAKTA: ${pName.toUpperCase()}!`,
+                    `⚡ DÜNYANIN EN ZOR LİGİNDE BİR TÜRK DESTANI!`
                 ];
-            } else if (rating <= 5.8) {
-                if (ledTopic) ledTopic.innerText = `KRİZ MASASI: ${pName.toUpperCase()}`;
+                if (ledTopic) ledTopic.innerText = euroTopics[Math.floor(Math.random() * euroTopics.length)];
+
+                const euroScenarios = [
+                    [
+                        { name: "Ahmet Hoca", role: "Eski Hakem", tension: 65, quote: `Beyler bakın buraya açık ve net yazıyorum! ${pName} Avrupa'nın göbeğinde, dünyanın en zor liginde resital sundu! Real Madrid'e, City'ye tek başına kafa tuttu! Ülkemizin gururu be!` },
+                        { name: "Rasim", role: "Ateşli Yorumcu", tension: 88, quote: `Hocaaam hocaaam! Çıldırtma beni canlı yayında! Ben hayatımda böyle bir şey görmedim! Avrupa basını şu an ${pName}'yi manşet yaptı! Bizim çocuğumuz Avrupa'yı dize getirdi!` },
+                        { name: "Sinan Abi", role: "Eski Futbolcu", tension: 92, quote: `Kardeşim helal olsun çocuğa. Biz boşuna övmüyoruz, adam Avrupa'da Türk bayrağını dalgalandırıyor, aslanlar gibi savaşıyor. Önünde şapka çıkarıyorum.` },
+                        { name: "Ertem", role: "Moderatör", tension: 98, quote: `Aman Allahım! Sevgili seyirciler ekran başından bir saniye ayrılmayın, ${pName} Avrupa'da yine destan yazdı! Şimdi canlı yayında soruyoruz: Ballon d'Or listesine girer mi?` }
+                    ],
+                    [
+                        { name: "Ahmet Hoca", role: "Eski Hakem", tension: 70, quote: `Ertem dinle beni! Türkiye'den çıkıp Avrupa'da bu yaşta böyle bir liderlik sergileyen ikinci bir futbolcu tarihte yok! Hakem bile maç sonu çocuğun elini sıktı hayranlıktan!` },
+                        { name: "Rasim", role: "Ateşli Yorumcu", tension: 95, quote: `Hocam ağlayacağım ya! Türk futbol tarihinin en büyük gururu şu an ${currentClub}'da oynuyor! Dünya devleri kapısında 100 milyon Euro ile nöbet tutuyor!` },
+                        { name: "Sinan Abi", role: "Eski Futbolcu", tension: 85, quote: `Kardeşim bakın çocuk sadece gol atmıyor, sahada bir maestro gibi tüm takımı yönetiyor. Böyle devam ederse Şampiyonlar Ligi'ni tek başına alır.` },
+                        { name: "Ertem", role: "Moderatör", tension: 100, quote: `İşte Türk gencinin gücü! Tüm Türkiye bu gece ${pName}'nin zaferiyle sokaklara döküldü, tebrikler büyük usta!` }
+                    ],
+                    [
+                        { name: "Ahmet Hoca", role: "Eski Hakem", tension: 60, quote: `Bakın ben kolay kolay övmem bilirsiniz. Ama ${pName}'deki bu oyun aklı, bu soğukkanlılık dünya standartlarında. Avrupa'nın en iyi savunmacılarını pazara yolladı!` },
+                        { name: "Rasim", role: "Ateşli Yorumcu", tension: 90, quote: `Hocam bırak Allah aşkına savunmayı falan, çocuk adeta bir uzaylı gibi oynadı bu akşam! Avrupa televizyonları sadece ${pName}'yi gösteriyor!` },
+                        { name: "Sinan Abi", role: "Eski Futbolcu", tension: 88, quote: `Kardeşim helal süt emmiş çocuk. Disipliniyle, efendiliğiyle, attığı gollerle Avrupa'ya futbol dersi veriyor.` },
+                        { name: "Ertem", role: "Moderatör", tension: 96, quote: `Sevgili seyirciler, Siyah Futbol masası bu gece ülkemizin gururu ${pName} için tek yürek oldu!` }
+                    ]
+                ];
+                currentSiyahQuotes = euroScenarios[Math.floor(Math.random() * euroScenarios.length)];
+            } else if (isLowerLeague) {
+                // 💎 ALT LİGLER ÖZEL DİYALOGLARI
+                if (ledTopic) ledTopic.innerText = `ALT LİGLERDE BİR ELMAS: ${pName.toUpperCase()}`;
                 currentSiyahQuotes = [
-                    { name: "Ahmet Hoca", role: "Eski Hakem", tension: 60, quote: `Ben ne dedim Ertem? Genç çocuklara erkenden yıldız muamelesi yapıp gazı veriyorsunuz! Bu gece sahada hayalet gibiydi, tek bir olumlu hareketi yok!` },
-                    { name: "Rasim", role: "Ateşli Yorumcu", tension: 85, quote: `Hocam insaf ya, yapma etme! Çocuğun üzerine bu kadar acımasızca gitmeyin! Bir maç kötü oynadı diye linç mi edelim geleceğimizi!` },
-                    { name: "Sinan Abi", role: "Eski Futbolcu", tension: 94, quote: `Kardeşim geceleri gezmeyi tozmayı bırakıp tesiste yatıp kalkacak. Yoksa bu lig insanı yer bitirir, benden söylemesi.` },
-                    { name: "Ertem", role: "Moderatör", tension: 100, quote: `Evet stüdyoda büyük fikir ayrılığı var! Bakalım ${pName} önümüzdeki hafta sahada nasıl bir reaksiyon verecek?` }
+                    { name: "Ahmet Hoca", role: "Eski Hakem", tension: 60, quote: `Yahu arkadaş bu çocuk ${currentLeague}'de ne arıyor? Süper Lig devlerinin scoutları uyuyor mu? Göz göre göre bir elmas parlıyor orada, hemen büyük takımlar kapmalı!` },
+                    { name: "Rasim", role: "Ateşli Yorumcu", tension: 82, quote: `Hocam yerden göğe kadar haklısın! Bu yeteneği alt liglerde tutamazsınız! Çocuk tek başına takımı sırtlıyor, 3. Lig falan dinlemiyor her hafta şov yapıyor!` },
+                    { name: "Sinan Abi", role: "Eski Futbolcu", tension: 88, quote: `Kardeşim ben söyledim, büyük kulüplerden biri devre arasında bu çocuğu kapmazsa seneye 20 milyon Euro'ya alamazlar. Kumaşı çok kaliteli.` },
+                    { name: "Ertem", role: "Moderatör", tension: 95, quote: `Gerçekten inanılmaz! Alt liglerin tozunu atan ${pName} için Süper Lig kulüpleri sıraya girdi bile!` }
                 ];
             } else {
-                if (ledTopic) ledTopic.innerText = `CANLI TARTIŞMA: ${pName.toUpperCase()}`;
-                currentSiyahQuotes = [
-                    { name: "Ahmet Hoca", role: "Eski Hakem", tension: 45, quote: `İyi kumaş, yetenekli çocuk ama daha çok fırın ekmek yemesi lazım. Kendini hemen dünya yıldızı zannetmesin.` },
-                    { name: "Rasim", role: "Ateşli Yorumcu", tension: 70, quote: `Hocaaaam! Bu çocuk bu ligin en heyecan verici yeteneğidir, sahada top ayağına gelince tribünler ayağa kalkıyor!` },
-                    { name: "Sinan Abi", role: "Eski Futbolcu", tension: 86, quote: `Kardeşim hocası ona taktik tahtasında daha fazla özgürlük tanımalı. Bırakın çocuk hissettiği gibi oynasın.` },
-                    { name: "Ertem", role: "Moderatör", tension: 95, quote: `Siyah Futbol masasında tansiyon zirvede! Reklamların ardından özel kulis bilgileriyle devam edeceğiz!` }
-                ];
+                // 🇹🇷 SÜPER LİG DİYALOGLARI
+                if (goals >= 2 || rating >= 8.5) {
+                    if (ledTopic) ledTopic.innerText = `${pName.toUpperCase()} ŞOVU & ZAFER GECESİ`;
+                    currentSiyahQuotes = [
+                        { name: "Ahmet Hoca", role: "Eski Hakem", tension: 50, quote: `Bakın ben açık ve net konuşayım. Bu ${pName}'de öyle bir kumaş, öyle bir ciğer var ki... Böyle devam ederse Avrupa devleri kapısında yatar! Hakem de pozisyonları iyi süzdü bu arada.` },
+                        { name: "Rasim", role: "Ateşli Yorumcu", tension: 78, quote: `Hocaaam hocaaam! Çıldırtma beni canlı yayında! Bu çocuk bu gece sahada adeta bir terminatör, bir futbol canavarı gibiydi! Türkiye seninle gurur duyuyor be çocuk!` },
+                        { name: "Sinan Abi", role: "Eski Futbolcu", tension: 90, quote: `Kardeşim ben bu çocuğa kefilim. Sezon başından beri söylüyorum; bu çocukta saf kalite, doğuştan klas var. Çocuğun önünü kesmeyin, bırakın aksın gitsin.` },
+                        { name: "Ertem", role: "Moderatör", tension: 98, quote: `Evet sevgili seyirciler, stüdyo resmen alev alev! Şimdi soruyorum: ${pName} önümüzdeki sezon Ballon d'Or listesine ilk 10'dan girer mi? Canlı yayında oyluyoruz!` }
+                    ];
+                } else if (rating <= 5.8) {
+                    if (ledTopic) ledTopic.innerText = `KRİZ MASASI: ${pName.toUpperCase()}`;
+                    currentSiyahQuotes = [
+                        { name: "Ahmet Hoca", role: "Eski Hakem", tension: 60, quote: `Ben ne dedim Ertem? Genç çocuklara erkenden yıldız muamelesi yapıp gazı veriyorsunuz! Bu gece sahada hayalet gibiydi, tek bir olumlu hareketi yok!` },
+                        { name: "Rasim", role: "Ateşli Yorumcu", tension: 85, quote: `Hocam insaf ya, yapma etme! Çocuğun üzerine bu kadar acımasızca gitmeyin! Bir maç kötü oynadı diye linç mi edelim geleceğimizi!` },
+                        { name: "Sinan Abi", role: "Eski Futbolcu", tension: 94, quote: `Kardeşim geceleri gezmeyi tozmayı bırakıp tesiste yatıp kalkacak. Yoksa bu lig insanı yer bitirir, benden söylemesi.` },
+                        { name: "Ertem", role: "Moderatör", tension: 100, quote: `Evet stüdyoda büyük fikir ayrılığı var! Bakalım ${pName} önümüzdeki hafta sahada nasıl bir reaksiyon verecek?` }
+                    ];
+                } else {
+                    if (ledTopic) ledTopic.innerText = `CANLI TARTIŞMA: ${pName.toUpperCase()}`;
+                    currentSiyahQuotes = [
+                        { name: "Ahmet Hoca", role: "Eski Hakem", tension: 45, quote: `İyi kumaş, yetenekli çocuk ama daha çok fırın ekmek yemesi lazım. Kendini hemen dünya yıldızı zannetmesin.` },
+                        { name: "Rasim", role: "Ateşli Yorumcu", tension: 70, quote: `Hocaaaam! Bu çocuk bu ligin en heyecan verici yeteneğidir, sahada top ayağına gelince tribünler ayağa kalkıyor!` },
+                        { name: "Sinan Abi", role: "Eski Futbolcu", tension: 86, quote: `Kardeşim hocası ona taktik tahtasında daha fazla özgürlük tanımalı. Bırakın çocuk hissettiği gibi oynasın.` },
+                        { name: "Ertem", role: "Moderatör", tension: 95, quote: `Siyah Futbol masasında tansiyon zirvede! Reklamların ardından özel kulis bilgileriyle devam edeceğiz!` }
+                    ];
+                }
             }
 
             modal.style.display = "flex";
@@ -9426,7 +9478,7 @@ function startNationalAnthemCeremony(matchData = null, onComplete = null) {
             });
         }
 
-const garageCars = [
+        const garageCars = [
             {
                 id: "porsche",
                 brand: "Porsche",
@@ -9435,6 +9487,7 @@ const garageCars = [
                 accel: "3.2 sn",
                 topSpeed: "296 km/s",
                 price: "340.000 €",
+                cost: 340000,
                 soundType: "porsche",
                 img: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=800&q=85",
                 edition: "STUTTGART • TRACK EDITION"
@@ -9447,6 +9500,7 @@ const garageCars = [
                 accel: "2.9 sn",
                 topSpeed: "340 km/s",
                 price: "450.000 €",
+                cost: 450000,
                 soundType: "ferrari",
                 img: "https://images.unsplash.com/photo-1592198084033-aade902d1aae?auto=format&fit=crop&w=800&q=85",
                 edition: "MARANELLO • V8 TWIN TURBO"
@@ -9459,6 +9513,7 @@ const garageCars = [
                 accel: "3.0 sn",
                 topSpeed: "310 km/s",
                 price: "420.000 €",
+                cost: 420000,
                 soundType: "lambo",
                 img: "https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=800&q=85",
                 edition: "SANT'AGATA • V10 SQUADRA CORSE"
@@ -9471,6 +9526,7 @@ const garageCars = [
                 accel: "4.5 sn",
                 topSpeed: "240 km/s",
                 price: "380.000 €",
+                cost: 380000,
                 soundType: "gwagon",
                 img: "https://images.unsplash.com/photo-1520031441872-265e4ff70366?auto=format&fit=crop&w=800&q=85",
                 edition: "AFFALTERBACH • 4X4 BITURBO"
@@ -9483,6 +9539,7 @@ const garageCars = [
                 accel: "4.8 sn",
                 topSpeed: "250 km/s",
                 price: "550.000 €",
+                cost: 550000,
                 soundType: "rolls",
                 img: "https://images.unsplash.com/photo-1631295868223-63265b40d9e4?auto=format&fit=crop&w=800&q=85",
                 edition: "GOODWOOD • V12 BLACK BADGE"
@@ -9508,10 +9565,12 @@ const garageCars = [
             const container = document.getElementById("garage-cars-list");
             if (!container) return;
             container.innerHTML = "";
+            const owned = (GAME.state && GAME.state.ownedCars) ? GAME.state.ownedCars : [];
             garageCars.forEach((car, idx) => {
                 let btn = document.createElement("button");
+                const isOwned = owned.includes(car.id);
                 btn.className = `car-nav-tab ${idx === currentGarageCarIdx ? "active" : ""}`;
-                btn.innerText = car.brand;
+                btn.innerText = isOwned ? `${car.brand} ✓` : car.brand;
                 btn.onclick = () => updateSelectedGarageCar(idx);
                 container.appendChild(btn);
             });
@@ -9529,6 +9588,7 @@ const garageCars = [
             const priceEl = document.getElementById("garage-spec-price");
             const imgEl = document.getElementById("garage-car-img");
             const plateEl = document.getElementById("garage-plate-text");
+            const actionContainer = document.getElementById("garage-action-controls");
 
             if (nameEl) nameEl.innerText = car.name;
             if (brandEl) brandEl.innerText = car.edition;
@@ -9547,11 +9607,96 @@ const garageCars = [
             const savedPlate = (GAME.state.customPlate || "61 TS 1967");
             if (plateEl) plateEl.innerText = savedPlate;
 
+            if (!GAME.state.ownedCars) GAME.state.ownedCars = [];
+            const isOwned = GAME.state.ownedCars.includes(car.id);
+            const canAfford = (GAME.state.money >= car.cost);
+
+            if (actionContainer) {
+                if (isOwned) {
+                    actionContainer.innerHTML = `
+                        <div style="width: 100%; text-align: center; margin-bottom: 8px;">
+                            <span style="font-size: 11px; font-weight: 800; color: #10b981; background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.35); padding: 4px 12px; border-radius: 6px; display: inline-flex; align-items: center; gap: 5px;">
+                                ✅ GARAJINIZDA • BU ARACIN SAHİBİSİNİZ
+                            </span>
+                        </div>
+                        <div style="display: flex; justify-content: center; gap: 10px; width: 100%;">
+                            <button class="btn-rev-pedal" onclick="revCarEngine()" style="flex: 1.2;">
+                                ⚡ GAZA BAS (EGZOZ PATLAT)
+                            </button>
+                            <button class="btn" onclick="editCarPlate()" style="flex: 0.8; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 12px; padding: 12px; font-size: 11.5px; font-weight: 800; cursor: pointer;">
+                                ✏️ Plaka Değiştir
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    const btnClass = canAfford ? "btn-primary" : "btn-disabled";
+                    const disabledAttr = canAfford ? "" : "disabled";
+                    const btnText = canAfford ? `🛒 SATIN AL (${car.price})` : `YETERSİZ BAKİYE (${car.price})`;
+                    actionContainer.innerHTML = `
+                        <div style="width: 100%; text-align: center; margin-bottom: 8px;">
+                            <span style="font-size: 11px; font-weight: 800; color: #f59e0b; background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.35); padding: 4px 12px; border-radius: 6px; display: inline-flex; align-items: center; gap: 5px;">
+                                🔒 KİLİTLİ • SATIN ALINMADI (Bakiye: ${GAME.state.money.toLocaleString()} €)
+                            </span>
+                        </div>
+                        <div style="display: flex; justify-content: center; gap: 10px; width: 100%;">
+                            <button class="btn ${btnClass}" ${disabledAttr} onclick="buyGarageCar('${car.id}')" style="flex: 1.4; padding: 12px; font-size: 12.5px; font-weight: 900; border-radius: 12px; text-transform: uppercase;">
+                                ${btnText}
+                            </button>
+                            <button class="btn" onclick="alert('Bu süper aracı kullanmak ve egzozunu patlatmak için önce satın almalısınız!');" style="flex: 0.6; opacity: 0.5; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: #94a3b8; border-radius: 12px; padding: 12px; font-size: 11px; font-weight: 700;">
+                                🔒 Kilitli
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+
             renderGarageList();
+        }
+
+        function buyGarageCar(carId) {
+            const car = garageCars.find(c => c.id === carId);
+            if (!car) return;
+
+            if (!GAME.state.ownedCars) GAME.state.ownedCars = [];
+            if (GAME.state.ownedCars.includes(carId)) {
+                alert("Bu araca zaten sahipsiniz!");
+                return;
+            }
+
+            if (GAME.state.money < car.cost) {
+                alert(`Yetersiz Bakiye! Bu aracı satın almak için ${car.price} paranız olmalı. Mevcut bakiye: ${GAME.state.money.toLocaleString()} €`);
+                return;
+            }
+
+            GAME.state.money -= car.cost;
+            GAME.state.ownedCars.push(carId);
+            GAME.state.followers = (GAME.state.followers || 0) + 30000;
+            GAME.state.moral = Math.min(100, (GAME.state.moral || 70) + 15);
+
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playBuy === "function") {
+                SoundManager.playBuy();
+            }
+
+            GAME.saveGame();
+            GAME.updateUI();
+
+            updateSelectedGarageCar(currentGarageCarIdx);
+
+            if (typeof showCustomAlert === "function") {
+                showCustomAlert(`Hayırlı olsun! ${car.name} koleksiyon garajınıza eklendi!\n\n+30.000 Takipçi & +15 Moral kazandınız! 🏎️💨`, "YENİ SÜPER ARAÇ ALINDI", "🏎️", "success");
+            } else {
+                alert(`Tebrikler! ${car.name} garajınıza eklendi!`);
+            }
         }
 
         function revCarEngine() {
             const car = garageCars[currentGarageCarIdx] || garageCars[0];
+            const owned = (GAME.state && GAME.state.ownedCars) ? GAME.state.ownedCars : [];
+            if (!owned.includes(car.id)) {
+                alert("Bu süper aracı sürmek ve egzoz patlatmak için önce satın almalısınız!");
+                return;
+            }
+
             if (typeof SoundManager !== "undefined" && typeof SoundManager.playExhaustRev === "function") {
                 SoundManager.playExhaustRev(car.soundType);
             }
@@ -9578,7 +9723,13 @@ const garageCars = [
         }
 
         function editCarPlate() {
-            let newPlate = prompt("Yeni Plakanı Gir (Örn: 61 TS 1967, 06 FB 1907, 61 TS 1967):", (GAME.state.customPlate || "61 TS 1967"));
+            const car = garageCars[currentGarageCarIdx] || garageCars[0];
+            const owned = (GAME.state && GAME.state.ownedCars) ? GAME.state.ownedCars : [];
+            if (!owned.includes(car.id)) {
+                alert("Plaka özelleştirmek için önce araca sahip olmalısınız!");
+                return;
+            }
+            let newPlate = prompt("Yeni Plakanı Gir (Örn: 61 TS 1967, 06 FB 1907, 34 GS 1905):", (GAME.state.customPlate || "61 TS 1967"));
             if (newPlate && newPlate.trim()) {
                 GAME.state.customPlate = newPlate.trim().toUpperCase();
                 GAME.saveGame();
@@ -10317,37 +10468,55 @@ function afterWeekAdvanced() {
             if (!GAME.state.matchesSinceLastInterview) GAME.state.matchesSinceLastInterview = 0;
             GAME.state.matchesSinceLastInterview++;
 
-            const isPlayerOfTheMatch = (rating >= 8.5 || goals >= 2);
-            const shouldTriggerSiyahFutbol = (rating >= 8.5 || rating <= 5.8 || (GAME.state.matchesSinceLastInterview % 4 === 0));
-            const isRegularInterviewTime = (GAME.state.matchesSinceLastInterview >= 5 && (rating >= 7.3 || goals > 0));
+            const currentLeague = (GAME.state && GAME.state.currentLeague) || "3. Lig";
+            const isLowerLeague = ["3. Lig", "2. Lig", "1. Lig"].includes(currentLeague);
+            const isStandoutMatch = (rating >= 8.5 || goals >= 2);
 
-            const continueFlow = () => {
-                if (shouldTriggerSiyahFutbol) {
-                    showSiyahFutbolModal({ rating, goals, assists }, proceedPostMatch);
+            // ALT LİGLER (3. Lig, 2. Lig, 1. Lig):
+            // Kullanıcı isteği: "Üst liglere çıkmadan önce sadece röportaj çıksın sonra superlige falan çıktığımızda o Ahmet hocalar falan gelsin"
+            // Oyuncuyu boğmamak için alt liglerde MVP olunduğunda yalnızca tek bir flaş röportaj açılır.
+            if (isLowerLeague) {
+                if (isStandoutMatch) {
+                    GAME.state.matchesSinceLastInterview = 0;
+                    openInterviewModal(rating, goals, assists, proceedPostMatch);
+                    return;
+                } else if (GAME.state.matchesSinceLastInterview >= 6 && (rating >= 7.2 || goals > 0)) {
+                    GAME.state.matchesSinceLastInterview = 0;
+                    openInterviewModal(rating, goals, assists, proceedPostMatch);
+                    return;
                 } else {
                     proceedPostMatch();
+                    return;
                 }
-            };
+            }
 
-            // Eğer Maçın Oyuncusu isek önce 3'lü çektir, sonra gazeteye çık, sonra röportaj ver
-            if (isPlayerOfTheMatch) {
+            // SÜPER LİG & AVRUPA LİGLERİ:
+            // ASLA 4 modalı birden ard arda zincirleme!
+            // Standout maçlarda en fazla TEK bir ilgi çekici spotlight gösterilir.
+            if (isStandoutMatch) {
                 GAME.state.matchesSinceLastInterview = 0;
-                startTribun3lu(() => {
+                const roll = Math.random();
+                if (roll < 0.40) {
+                    // Siyah Futbol canlı stüdyo masası
+                    showSiyahFutbolModal({ rating, goals, assists }, proceedPostMatch);
+                } else if (roll < 0.70) {
+                    // Gazete manşeti
                     showNewspaperModal(
                         `HAFTA ${GAME.state.currentWeek}`,
                         `${GAME.state.playerName.toUpperCase()} MAÇIN OYUNCUSU!`,
                         "Muhteşem Oyunuyla Gazete Manşetlerinde!",
-                        `Bugün sahada adeta devleşen genç yetenek ${GAME.state.playerName}, sergilediği olağanüstü performansla futbol severleri büyüledi. Maçın Oyuncusu seçilen ${GAME.state.playerName} için basın mensupları ve gözlemciler sıraya girdi. Karşılaşma sonrasında kameraların karşısına geçmeye hazırlanan genç futbolcunun ne diyeceği merakla bekleniyor.`,
-                        () => {
-                            openInterviewModal(rating, goals, assists, continueFlow);
-                        }
+                        `Bugün sahada adeta devleşen genç yetenek ${GAME.state.playerName}, sergilediği olağanüstü performansla futbol severleri büyüledi. Maçın Oyuncusu seçilen ${GAME.state.playerName} için basın mensupları ve gözlemciler sıraya girdi.`,
+                        proceedPostMatch
                     );
-                });
-            } else if (isRegularInterviewTime) {
+                } else {
+                    // Flaş maç sonu röportajı
+                    openInterviewModal(rating, goals, assists, proceedPostMatch);
+                }
+            } else if (GAME.state.matchesSinceLastInterview >= 5 && (rating >= 7.3 || goals > 0)) {
                 GAME.state.matchesSinceLastInterview = 0;
-                openInterviewModal(rating, goals, assists, continueFlow);
+                openInterviewModal(rating, goals, assists, proceedPostMatch);
             } else {
-                continueFlow();
+                proceedPostMatch();
             }
         }
 
@@ -11577,6 +11746,451 @@ function afterWeekAdvanced() {
                     </div>
                 `;
             });
+        }
+
+        // ==========================================
+        // CONSUMABLES & PACKS SYSTEM
+        // ==========================================
+        let activePackType = 'silver';
+        let packedPlayer = null;
+        let promoPacksRemaining = 0;
+
+        function renderConsumableItems() {
+            const container = document.getElementById("shop-consumables-container");
+            if (!container) return;
+            container.innerHTML = "";
+
+            if (typeof DATABASE === "undefined" || !DATABASE.CONSUMABLES) return;
+
+            DATABASE.CONSUMABLES.forEach(item => {
+                let canAfford = (GAME.state.money >= item.cost);
+                let btnClass = canAfford ? "btn-primary" : "btn-disabled";
+                let disabledAttr = canAfford ? "" : "disabled";
+                let opacityStyle = canAfford ? "" : "opacity: 0.4; cursor: not-allowed;";
+
+                container.innerHTML += `
+                    <div class="shop-card glass" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border-glass); background: #131822; margin-bottom: 8px;">
+                        <div class="details" style="flex: 1; padding-right: 12px;">
+                            <h3 style="margin: 0 0 3px 0; font-size: 13.5px; font-weight: 700; color: #f8fafc; font-family: var(--font-heading);">${item.name}</h3>
+                            <p class="desc" style="margin: 0; font-size: 11.5px; color: var(--text-muted); line-height: 1.35;">${item.desc}</p>
+                        </div>
+                        <button class="btn ${btnClass}" ${disabledAttr} onclick="GAME.buyConsumable('${item.id}'); renderConsumableItems();" style="padding: 8px 14px; font-size: 12px; border-radius: 8px; flex-shrink: 0; white-space: nowrap; ${opacityStyle}">
+                            ${item.cost.toLocaleString()} € Tüket
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        function renderPacksPanel() {
+            const container = document.getElementById("shop-packs-container");
+            if (!container) return;
+            container.innerHTML = "";
+
+            const myCollection = GAME.state.collection || [];
+            const inGameCashCount = myCollection.filter(c => !c.isPremium).length;
+            const isLimitReached = inGameCashCount >= 10;
+
+            let limitWarningHtml = "";
+            if (isLimitReached) {
+                limitWarningHtml = `
+                    <div style="background: rgba(244,67,54,0.15); border: 1.5px solid rgba(244,67,54,0.3); color: #FF8A80; padding: 10px 14px; border-radius: 12px; font-size: 11.5px; margin-bottom: 12px; font-weight: bold; text-align: center; line-height: 1.4;">
+                        ⚠️ KOLEKSİYON LİMİTİ DOLU!<br>
+                        <span style="font-size: 10px; font-weight: 500; opacity: 0.9;">Oyun parasıyla en fazla 10 karta sahip olabilirsin (Kalan: ${10 - inGameCashCount}). Yeni paket açabilmek için albümündeki kartlardan birini satmalısın.</span>
+                    </div>
+                `;
+            } else {
+                limitWarningHtml = `
+                    <div style="background: rgba(0,230,118,0.06); border: 1px solid rgba(0,230,118,0.15); color: #00E676; padding: 6px 12px; border-radius: 8px; font-size: 11px; margin-bottom: 12px; font-weight: bold; text-align: center;">
+                        🪙 Oyun Parası Koleksiyon Durumu: ${inGameCashCount} / 10
+                    </div>
+                `;
+            }
+
+            let storeHtml = limitWarningHtml + `
+                <div class="card glass" style="padding: 14px; margin-bottom: 12px;">
+                    <h3 style="color: var(--accent-yellow); margin: 0 0 12px 0; font-size: 14px; font-weight: 800; border-left: 3px solid var(--accent-yellow); padding-left: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <span>🛒 PAKET MAĞAZASI</span>
+                        <span style="font-size: 11px; color: var(--text-muted); font-weight: 800;">Bakiye: ${GAME.state.money.toLocaleString()} €</span>
+                    </h3>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        
+                        <!-- Silver Pack -->
+                        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 10px 14px; border-radius: 12px; opacity: ${isLimitReached ? '0.6' : '1'};">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="font-size: 24px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">⚪</div>
+                                <div>
+                                    <h4 style="color: white; font-size: 13px; font-weight: 700; margin: 0;">Gümüş Oyuncu Paketi</h4>
+                                    <p style="color: var(--text-muted); font-size: 10.5px; margin: 2px 0 0 0;">Düşük bütçeli yetenek kartı fırsatı</p>
+                                </div>
+                            </div>
+                            <button class="btn btn-event" onclick="buyPack('silver')" ${isLimitReached ? 'disabled' : ''} style="padding: 6px 12px; font-size: 11px; font-weight: bold; background: rgba(255,255,255,0.05); color: #FFF; border: 1px solid var(--border-glass);">10.000 €</button>
+                        </div>
+
+                        <!-- Gold Pack -->
+                        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 10px 14px; border-radius: 12px; opacity: ${isLimitReached ? '0.6' : '1'};">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="font-size: 24px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">💛</div>
+                                <div>
+                                    <h4 style="color: white; font-size: 13px; font-weight: 700; margin: 0;">Altın Oyuncu Paketi</h4>
+                                    <p style="color: var(--text-muted); font-size: 10.5px; margin: 2px 0 0 0;">İcardi, Dzeko, Muslera vb. elit süperstarlar</p>
+                                </div>
+                            </div>
+                            <button class="btn btn-event" onclick="buyPack('gold')" ${isLimitReached ? 'disabled' : ''} style="padding: 6px 12px; font-size: 11px; font-weight: bold; background: rgba(255,215,0,0.1); color: var(--accent-yellow); border: 1px solid rgba(255,215,0,0.25);">50.000 €</button>
+                        </div>
+
+                        <!-- Icon Pack -->
+                        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 10px 14px; border-radius: 12px; opacity: ${isLimitReached ? '0.6' : '1'};">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="font-size: 24px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">💜</div>
+                                <div>
+                                    <h4 style="color: white; font-size: 13px; font-weight: 700; margin: 0;">Efsane İkon Paketi</h4>
+                                    <p style="color: var(--text-muted); font-size: 10.5px; margin: 2px 0 0 0;">Hagi, Alex, Sergen, Rüştü efsaneleri</p>
+                                </div>
+                            </div>
+                            <button class="btn btn-event" onclick="buyPack('icon')" ${isLimitReached ? 'disabled' : ''} style="padding: 6px 12px; font-size: 11px; font-weight: bold; background: rgba(156,39,176,0.15); color: #E040FB; border: 1px solid rgba(156,39,176,0.3);">150.000 €</button>
+                        </div>
+
+                        <!-- Special Offer (3x Mega Fırsat Paketi) -->
+                        <div style="display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, rgba(0,230,118,0.05), rgba(0,0,0,0.25)); border: 1px solid rgba(0,230,118,0.25); padding: 10px 14px; border-radius: 12px;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="font-size: 24px; filter: drop-shadow(0 2px 4px rgba(0,230,118,0.4));">🔥</div>
+                                <div>
+                                    <h4 style="color: #00E676; font-size: 13px; font-weight: 800; margin: 0;">3x Mega Fırsat Paketi</h4>
+                                    <p style="color: var(--text-muted); font-size: 10.5px; margin: 2px 0 0 0;">3 adet süper kartı sınırsız limit ile aç</p>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="buyPack('promo')" style="padding: 6px 12px; font-size: 11px; font-weight: 900; background: #00E676; color: #000; border: none; box-shadow: 0 0 10px rgba(0,230,118,0.35);">250.000 €</button>
+                        </div>
+
+                    </div>
+                </div>
+            `;
+
+            let collectionHtml = `
+                <div class="card glass" style="padding: 14px;">
+                    <h3 style="color: white; margin: 0 0 12px 0; font-size: 14px; font-weight: 800; border-left: 3px solid var(--secondary); padding-left: 8px;">
+                        🏆 KART ALBÜMÜM (${myCollection.length} / ${(DATABASE.PACK_PLAYERS || []).length})
+                    </h3>
+            `;
+
+            if (myCollection.length === 0) {
+                collectionHtml += `
+                    <div style="text-align: center; padding: 25px 15px; color: var(--text-muted); font-size: 12px; border: 1px dashed rgba(255,255,255,0.06); border-radius: 8px;">
+                        <span style="font-size: 24px;">🃏</span>
+                        <p style="margin: 6px 0 0 0;">Henüz paket açıp kart çıkarmadın. Yukarıdan paket açarak süperstarları kadrona kat ve kalıcı güçlendirmeler kazan!</p>
+                    </div>
+                `;
+            } else {
+                collectionHtml += `
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 12px 10px; margin-bottom: 12px;">
+                `;
+
+                myCollection.forEach((player, idx) => {
+                    const dbPlayer = (DATABASE.PACK_PLAYERS || []).find(p => p.id === player.id) || player;
+                    let borderCol = dbPlayer.isLegend ? "#E040FB" : "#FFC107";
+                    let glow = dbPlayer.isLegend ? "0 0 8px rgba(224,64,251,0.5)" : "0 0 8px rgba(255,193,7,0.4)";
+                    
+                    let sellValue = 5000;
+                    if (dbPlayer.isLegend) sellValue = 100000;
+                    else if (!dbPlayer.isCommon && !dbPlayer.isRareGold) sellValue = 40000; // Elite
+                    else if (dbPlayer.isRareGold) sellValue = 25000;
+
+                    const sourceBadge = player.isPremium ? "💎 PREMIUM" : "🪙 NAKİT";
+
+                    collectionHtml += `
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; background: rgba(255,255,255,0.02); padding: 6px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.04);">
+                            <div class="fut-mini-card" style="aspect-ratio: 2/3; background: ${dbPlayer.bg || '#1e293b'}; border: 1.5px solid ${borderCol}; border-radius: 8px; box-shadow: ${glow}; padding: 6px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; position: relative; overflow: hidden; clip-path: polygon(10% 0%, 90% 0%, 100% 10%, 100% 85%, 50% 100%, 0% 85%, 0% 10%); width: 100%;">
+                                <div style="display: flex; justify-content: space-between; width: 100%; font-size: 8px; font-weight: bold; color: white;">
+                                    <span>${dbPlayer.rating || 75}</span>
+                                    <span>${dbPlayer.pos || 'OOS'}</span>
+                                </div>
+                                
+                                <div style="font-family: 'Inter', sans-serif; font-weight: 900; font-size: 9px; color: white; text-align: center; text-transform: uppercase; margin: 4px 0; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">${(dbPlayer.name || 'YILDIZ').split(' ').pop()}</div>
+                                
+                                <div style="font-size: 7.5px; font-weight: 800; background: rgba(0,0,0,0.6); color: #00E676; padding: 1px 4px; border-radius: 4px; border: 0.5px solid rgba(255,255,255,0.1); width: fit-content; text-align: center; text-transform: uppercase;">
+                                    +${dbPlayer.buff || 1} ${(dbPlayer.stat || 'gen').substring(0,3)}
+                                </div>
+                            </div>
+                            <div style="font-size: 7px; color: var(--text-muted); font-weight: bold; margin-top: 2px; text-transform: uppercase;">${sourceBadge}</div>
+                            <button class="btn" onclick="sellPackPlayerCard(${idx})" style="padding: 4px 6px; font-size: 9px; background: rgba(244,67,54,0.12); border: 1px solid rgba(244,67,54,0.25); color: #FF8A80; font-weight: bold; width: 100%; border-radius: 4px; cursor: pointer; transition: 0.2s;">Sat: ${sellValue.toLocaleString()} €</button>
+                        </div>
+                    `;
+                });
+
+                collectionHtml += `
+                    </div>
+                `;
+            }
+
+            collectionHtml += `</div>`;
+            container.innerHTML = storeHtml + collectionHtml;
+        }
+
+        function buyPack(type) {
+            let cost = 0;
+            if (type === 'silver') cost = 10000;
+            else if (type === 'gold') cost = 50000;
+            else if (type === 'icon') cost = 150000;
+            else if (type === 'promo') cost = 250000;
+
+            const myCollection = GAME.state.collection || [];
+            const inGameCashCount = myCollection.filter(c => !c.isPremium).length;
+
+            if (type !== 'promo') {
+                if (inGameCashCount >= 10) {
+                    alert("❌ Koleksiyonunuzda en fazla 10 adet oyun parası kartı bulundurabilirsiniz! Yeni kart almak için albümünüzdeki kartlardan bazılarını satmalısınız.");
+                    return;
+                }
+            }
+
+            if (GAME.state.money < cost) {
+                alert(`❌ Yetersiz Bakiye! Bu paketi açmak için en az ${cost.toLocaleString()} € bakiyeniz olmalıdır.`);
+                return;
+            }
+
+            GAME.state.money -= cost;
+            if (window.SoundManager && typeof window.SoundManager.playBuy === "function") window.SoundManager.playBuy();
+            GAME.saveGame();
+            GAME.updateUI();
+
+            activePackType = type;
+            packedPlayer = rollPackedPlayer(type);
+
+            const overlay = document.getElementById("pack-modal-overlay");
+            if (overlay) {
+                overlay.style.display = "flex";
+                document.getElementById("pack-graphic-wrapper").style.display = "flex";
+                document.getElementById("pack-graphic-wrapper").style.transform = "scale(1)";
+                document.getElementById("pack-graphic-wrapper").style.opacity = "1";
+                document.getElementById("pack-reveal-card-wrapper").style.display = "none";
+                document.getElementById("pack-actions").style.display = "none";
+                
+                if (type === 'promo') {
+                    promoPacksRemaining = 3;
+                    document.getElementById("pack-opening-title").innerText = `Kalan Paket Sayınız: ${promoPacksRemaining}`;
+                } else {
+                    document.getElementById("pack-opening-title").innerText = "Paket Açılıyor...";
+                }
+            }
+        }
+
+        function sellPackPlayerCard(index) {
+            if (!GAME.state.collection || !GAME.state.collection[index]) return;
+            const card = GAME.state.collection[index];
+            const dbPlayer = (DATABASE.PACK_PLAYERS || []).find(p => p.id === card.id);
+            if (!dbPlayer) return;
+
+            let sellValue = 5000;
+            if (dbPlayer.isLegend) sellValue = 100000;
+            else if (!dbPlayer.isCommon && !dbPlayer.isRareGold) sellValue = 40000; // Elite
+            else if (dbPlayer.isRareGold) sellValue = 25000;
+
+            if (!confirm(`${dbPlayer.name} kartını ${sellValue.toLocaleString()} € karşılığında satmak istiyor musunuz? (Kartın sağladığı kalıcı yetenek bonusu silinecektir!)`)) {
+                return;
+            }
+
+            GAME.state.money += sellValue;
+            GAME.state.collection.splice(index, 1);
+
+            // Remove stat buff if no longer owns any copy of this card
+            const stillOwns = GAME.state.collection.some(p => p.id === card.id);
+            if (!stillOwns) {
+                const stat = dbPlayer.stat;
+                const buff = dbPlayer.buff;
+                if (stat && GAME.state[stat] !== undefined) {
+                    GAME.state[stat] = Math.max(30, (GAME.state[stat] || 50) - buff);
+                }
+                
+                if (card.id === "guler") {
+                    GAME.state.followers = Math.max(0, (GAME.state.followers || 0) - 15000);
+                } else if (dbPlayer.isLegend) {
+                    GAME.state.followers = Math.max(0, (GAME.state.followers || 0) - 50000);
+                } else {
+                    GAME.state.followers = Math.max(0, (GAME.state.followers || 0) - 10000);
+                }
+            }
+
+            GAME.saveGame();
+            GAME.updateUI();
+            renderPacksPanel();
+        }
+
+        function rollPackedPlayer(type) {
+            const db = DATABASE.PACK_PLAYERS || [];
+            const rand = Math.random();
+
+            if (type === 'silver') {
+                if (rand < 0.50) return null;
+                const pool = db.filter(p => p.isCommon || p.isRareGold);
+                return pool.length > 0 ? pool[Math.floor(Math.random() * pool.length)] : null;
+            } else if (type === 'gold') {
+                if (rand < 0.20) return null;
+                const subRand = Math.random();
+                if (subRand < 0.50) {
+                    const pool = db.filter(p => p.isCommon || p.isRareGold);
+                    return pool.length > 0 ? pool[Math.floor(Math.random() * pool.length)] : null;
+                } else if (subRand < 0.95) {
+                    const pool = db.filter(p => !p.isCommon && !p.isRareGold && !p.isLegend);
+                    return pool.length > 0 ? pool[Math.floor(Math.random() * pool.length)] : null;
+                } else {
+                    const pool = db.filter(p => p.isLegend);
+                    return pool.length > 0 ? pool[Math.floor(Math.random() * pool.length)] : null;
+                }
+            } else if (type === 'icon') {
+                const pool = db.filter(p => p.isLegend);
+                return pool.length > 0 ? pool[Math.floor(Math.random() * pool.length)] : null;
+            } else if (type === 'promo') {
+                if (rand < 0.15) return null;
+                const subRand = Math.random();
+                if (subRand < 0.40) {
+                    const pool = db.filter(p => p.isCommon || p.isRareGold);
+                    return pool.length > 0 ? pool[Math.floor(Math.random() * pool.length)] : null;
+                } else if (subRand < 0.85) {
+                    const pool = db.filter(p => !p.isCommon && !p.isRareGold && !p.isLegend);
+                    return pool.length > 0 ? pool[Math.floor(Math.random() * pool.length)] : null;
+                } else {
+                    const pool = db.filter(p => p.isLegend);
+                    return pool.length > 0 ? pool[Math.floor(Math.random() * pool.length)] : null;
+                }
+            }
+            return null;
+        }
+
+        function triggerPackReveal() {
+            const pack = document.getElementById("pack-graphic-wrapper");
+            if (!pack) return;
+
+            pack.style.animation = "shake 0.5s ease-in-out infinite";
+            try { if (window.SoundManager && typeof SoundManager.playWhistle === "function") SoundManager.playWhistle(); } catch(e){}
+
+            setTimeout(() => {
+                pack.style.animation = "none";
+                pack.style.transform = "scale(0)";
+                pack.style.opacity = "0";
+
+                setTimeout(() => {
+                    pack.style.display = "none";
+
+                    const revealContainer = document.getElementById("pack-reveal-card-wrapper");
+                    if (revealContainer) {
+                        if (packedPlayer) {
+                            let borderCol = packedPlayer.isLegend ? "#E040FB" : (packedPlayer.isRareGold ? "#ECEFF1" : (packedPlayer.isCommon ? "#78909C" : "#FFC107"));
+                            let glow = packedPlayer.isLegend ? "0 0 25px rgba(224,64,251,0.8)" : "0 0 20px rgba(255,193,7,0.6)";
+                            
+                            revealContainer.innerHTML = `
+                                <div class="fut-card" style="background: ${packedPlayer.bg || '#1e293b'}; border-color: ${borderCol}; box-shadow: ${glow}; width: 230px; height: 330px;">
+                                    <div class="fut-card-top-left" style="top: 15px; left: 20px;">
+                                        <div class="rating" style="font-size: 30px; color: ${borderCol}; font-weight: 900;">${packedPlayer.rating || 80}</div>
+                                        <div class="pos" style="font-size: 11px; font-weight: bold; color: white;">${packedPlayer.pos || 'OOS'}</div>
+                                        <div class="nation-flag">${packedPlayer.nation || '🇹🇷'}</div>
+                                    </div>
+                                    
+                                    <div class="fut-card-avatar" style="margin-top: 15px; margin-left: 40px; font-size: 48px; width: 85px; height: 85px; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));">
+                                        ${packedPlayer.isLegend ? "👑" : (packedPlayer.isRareGold ? "✨" : "⚽")}
+                                    </div>
+                                    
+                                    <div class="fut-card-name" style="font-size: 14px; font-weight: 900; margin-top: 15px; color: white; letter-spacing: 1px;">${packedPlayer.name}</div>
+                                    <div class="fut-card-divider" style="margin: 6px 0;"></div>
+                                    
+                                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 10px; background: rgba(0,0,0,0.55); border-radius: 12px; border: 1.5px solid rgba(255,255,255,0.06); width: 85%;">
+                                        <div style="font-size: 12px; font-weight: 900; color: #00E676; margin-bottom: 2px;">KALICI ETKİ:</div>
+                                        <div style="font-size: 11px; font-weight: 800; color: white;">${packedPlayer.desc}</div>
+                                    </div>
+                                    
+                                    <div class="fut-card-footer" style="bottom: 12px; font-size: 9px; color: #FFE082;">
+                                        <strong>FUT PACK COLLECTIBLE</strong>
+                                    </div>
+                                </div>
+                            `;
+                            document.getElementById("pack-opening-title").innerText = packedPlayer.isLegend ? "🔥 EFSANE KART ÇIKTI! 🔥" : "⚽ OYUNCU ÇIKTI!";
+                        } else {
+                            revealContainer.innerHTML = `
+                                <div class="fut-card" style="background: linear-gradient(135deg, #37474F 0%, #212121 100%); border-color: #90A4AE; box-shadow: 0 0 20px rgba(144,164,174,0.4); width: 230px; height: 330px; border-style: dashed;">
+                                    <div class="fut-card-top-left" style="top: 15px; left: 20px;">
+                                        <div class="rating" style="font-size: 30px; color: #B0BEC5; font-weight: 900;">00</div>
+                                        <div class="pos" style="font-size: 11px; font-weight: bold; color: #B0BEC5;">BOŞ</div>
+                                    </div>
+                                    
+                                    <div class="fut-card-avatar" style="margin-top: 25px; margin-left: 45px; font-size: 48px; width: 85px; height: 85px; display: flex; align-items: center; justify-content: center; opacity: 0.35;">
+                                        💨
+                                    </div>
+                                    
+                                    <div class="fut-card-name" style="font-size: 14px; font-weight: 900; margin-top: 15px; color: #B0BEC5; letter-spacing: 1px;">BOŞ PAKET</div>
+                                    <div class="fut-card-divider" style="margin: 6px 0; background: rgba(255,255,255,0.05);"></div>
+                                    
+                                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 10px; background: rgba(0,0,0,0.45); border-radius: 12px; border: 1.5px solid rgba(255,255,255,0.03); width: 85%;">
+                                        <div style="font-size: 11px; font-weight: 700; color: #B0BEC5;">Sadece antrenman dubaları çıktı. Kayda değer bir kart yok.</div>
+                                    </div>
+                                    
+                                    <div class="fut-card-footer" style="bottom: 12px; font-size: 9px; color: #B0BEC5;">
+                                        <strong>BOŞ KUTU</strong>
+                                    </div>
+                                </div>
+                            `;
+                            document.getElementById("pack-opening-title").innerText = "💨 BOŞ PAKET ÇIKTI...";
+                        }
+                        
+                        revealContainer.style.display = "block";
+                        void revealContainer.offsetWidth;
+                        revealContainer.style.transform = "scale(1) rotateY(0deg)";
+                        revealContainer.style.opacity = "1";
+                    }
+
+                    if (packedPlayer) {
+                        applyPackPlayerBuffs(packedPlayer);
+                    }
+
+                    document.getElementById("pack-actions").style.display = "block";
+                }, 400);
+            }, 1200);
+        }
+
+        function applyPackPlayerBuffs(player) {
+            if (!GAME.state.collection) GAME.state.collection = [];
+            const isOwned = GAME.state.collection.some(p => p.id === player.id);
+
+            const isPremium = (activePackType === 'promo');
+            GAME.state.collection.push({ id: player.id, date: Date.now(), isPremium: isPremium });
+
+            if (!isOwned) {
+                const stat = player.stat;
+                const buff = player.buff;
+                if (stat && GAME.state[stat] !== undefined) {
+                    GAME.state[stat] = Math.min(100, (GAME.state[stat] || 50) + buff);
+                }
+                
+                if (player.id === "guler") {
+                    GAME.state.followers = (GAME.state.followers || 0) + 15000;
+                } else if (player.isLegend) {
+                    GAME.state.followers = (GAME.state.followers || 0) + 50000;
+                } else {
+                    GAME.state.followers = (GAME.state.followers || 0) + 10000;
+                }
+
+                GAME.saveGame();
+                GAME.updateUI();
+            }
+        }
+
+        function closePackModal() {
+            if (activePackType === 'promo' && promoPacksRemaining > 1) {
+                promoPacksRemaining--;
+                packedPlayer = rollPackedPlayer('promo');
+                
+                document.getElementById("pack-reveal-card-wrapper").style.display = "none";
+                document.getElementById("pack-reveal-card-wrapper").style.transform = "scale(0.4) rotateY(180deg)";
+                document.getElementById("pack-reveal-card-wrapper").style.opacity = "0";
+                
+                document.getElementById("pack-graphic-wrapper").style.display = "flex";
+                document.getElementById("pack-graphic-wrapper").style.transform = "scale(1)";
+                document.getElementById("pack-graphic-wrapper").style.opacity = "1";
+                document.getElementById("pack-actions").style.display = "none";
+                document.getElementById("pack-opening-title").innerText = `Kalan Paket Sayınız: ${promoPacksRemaining}`;
+            } else {
+                document.getElementById("pack-modal-overlay").style.display = "none";
+                renderPacksPanel();
+            }
         }
 
         window.scrollShopTabs = function(offset) {

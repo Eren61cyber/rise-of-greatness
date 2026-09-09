@@ -1,7 +1,42 @@
 /**
- * Rise Of Greatness: Kariyer Efsanesi - Core Game State & Manager Module
- * Coordinates UI, save/load state, training, purchases, and transfer logic.
+ * Rise Of Greatness: Game Analytics & Telemetry Layer
+ * Lightweight tracking for retention, economy checkpoints, match completion, and game loops.
  */
+const ANALYTICS = {
+    events: [],
+    logEvent: function(eventName, params = {}) {
+        const payload = {
+            event: eventName,
+            timestamp: Date.now(),
+            week: (typeof GAME !== "undefined" && GAME.state) ? GAME.state.currentWeek : 0,
+            league: (typeof GAME !== "undefined" && GAME.state) ? GAME.state.currentLeague : "",
+            club: (typeof GAME !== "undefined" && GAME.state) ? GAME.state.currentClub : "",
+            money: (typeof GAME !== "undefined" && GAME.state) ? GAME.state.money : 0,
+            stamina: (typeof GAME !== "undefined" && GAME.state) ? GAME.state.kondisyon : 0,
+            rating: (typeof GAME !== "undefined" && GAME.state) ? GAME.state.rating : 0,
+            params: params
+        };
+        this.events.push(payload);
+        try {
+            let existing = JSON.parse(localStorage.getItem('rog_analytics_events') || '[]');
+            existing.push(payload);
+            if (existing.length > 300) existing = existing.slice(-300);
+            localStorage.setItem('rog_analytics_events', JSON.stringify(existing));
+        } catch(e){}
+        if (typeof window !== "undefined" && window.GameAnalytics && typeof window.GameAnalytics.addDesignEvent === "function") {
+            try {
+                window.GameAnalytics.addDesignEvent(eventName, params.value || 1);
+            } catch(e){}
+        }
+    },
+    logProgression: function(status, step1, step2, step3) {
+        this.logEvent('progression_' + status.toLowerCase(), { step1, step2, step3 });
+    },
+    logEconomy: function(flowType, currency, amount, itemType, itemId) {
+        this.logEvent('economy_' + flowType.toLowerCase(), { currency, amount, itemType, itemId });
+    }
+};
+if (typeof window !== "undefined") window.ANALYTICS = ANALYTICS;
 
 const GAME = {
     state: {
@@ -26,6 +61,7 @@ const GAME = {
         kondisyonRegenBonus: 0,
         injuryRiskReduction: 0,
         ownedItems: [],
+        ownedCars: [],
 
         // Career history
         currentLeague: "Süper Lig",
@@ -525,6 +561,47 @@ const GAME = {
                   if (!this.state.leagueTable || this.state.leagueTable.length === 0) {
                       this.initLeagueTable();
                       this.saveGame();
+                  } else {
+                      // Self-heal leagueTable if teams played count is out of sync or team count is odd/duplicated
+                      let pTeam = this.state.leagueTable.find(t => t.name === this.state.currentClub);
+                      let targetPlayed = pTeam ? pTeam.played : 0;
+                      let repairedFixtures = false;
+
+                      // If team count is odd and > 18, trim to 18
+                      let curLeague = (typeof DATABASE !== "undefined" && DATABASE.LEAGUES) ? DATABASE.LEAGUES[this.state.currentLeague] : null;
+                      let maxTeams = curLeague && curLeague.teams ? curLeague.teams.length : 18;
+                      if (this.state.leagueTable.length > maxTeams) {
+                          let pIdx = this.state.leagueTable.findIndex(t => t.name === this.state.currentClub);
+                          let playerEntry = pIdx >= 0 ? this.state.leagueTable.splice(pIdx, 1)[0] : null;
+                          this.state.leagueTable = this.state.leagueTable.slice(0, maxTeams - 1);
+                          if (playerEntry) this.state.leagueTable.unshift(playerEntry);
+                          repairedFixtures = true;
+                      }
+
+                      // Synchronize played counts if disparity exists (e.g. 25 vs 19)
+                      if (targetPlayed > 0) {
+                          this.state.leagueTable.forEach(team => {
+                              if (team.played < targetPlayed) {
+                                  let missing = targetPlayed - team.played;
+                                  for (let k = 0; k < missing; k++) {
+                                      team.played++;
+                                      let gScored = Math.floor(Math.random() * 3);
+                                      let gConceded = Math.floor(Math.random() * 3);
+                                      team.gf += gScored;
+                                      team.ga += gConceded;
+                                      if (gScored > gConceded) { team.won++; team.points += 3; }
+                                      else if (gScored < gConceded) { team.lost++; }
+                                      else { team.drawn++; team.points += 1; }
+                                  }
+                                  repairedFixtures = true;
+                              }
+                          });
+                      }
+
+                      if (repairedFixtures) {
+                          this.state.leagueTable.sort((a, b) => b.points - a.points || (b.gf - b.ga) - (a.gf - a.ga) || b.gf - a.gf);
+                          this.saveGame();
+                      }
                   }
 
                   // Automatically match scorers to the current active league
@@ -2964,16 +3041,15 @@ const GAME = {
         if (!league) return;
 
         let teamNames = [];
-        
-        // Add current club first
-        teamNames.push(this.state.currentClub);
+        let leagueClubs = league.teams.map(t => t.name);
 
-        // Add other teams in the league
-        league.teams.forEach(t => {
-            if (t.name !== this.state.currentClub && !teamNames.includes(t.name)) {
-                teamNames.push(t.name);
-            }
-        });
+        if (leagueClubs.includes(this.state.currentClub)) {
+            // Player's club is already in this league
+            teamNames = [...leagueClubs];
+        } else {
+            // Player's club is from outside or amateur: replace the last team so total stays strictly 18
+            teamNames = [this.state.currentClub, ...leagueClubs.slice(0, leagueClubs.length - 1)];
+        }
 
         this.state.leagueTable = teamNames.map(name => {
             return {
@@ -3284,6 +3360,13 @@ const GAME = {
             return;
         }
 
+        const week = this.state.currentWeek;
+        const isNatBreak = (week === 12 || week === 24 || week === 32);
+        if (isNatBreak) {
+            this.saveGame();
+            return;
+        }
+
         if (!this.state.leagueTable || this.state.leagueTable.length === 0) {
             this.initLeagueTable();
         }
@@ -3291,10 +3374,15 @@ const GAME = {
         let playerClub = this.state.currentClub;
         let opponentClub = this.state.nextOpponentName;
 
+        // Ensure weeklyFixtures exist
+        if (!this.state.weeklyFixtures || this.state.weeklyFixtures.length === 0 || this.state.weeklyFixturesWeek !== week) {
+            this.generateWeeklyFixtures();
+        }
+
         let pTeam = this.state.leagueTable.find(t => t.name === playerClub);
         let oTeam = opponentClub ? this.state.leagueTable.find(t => t.name === opponentClub) : null;
 
-        if (pTeam && oTeam) {
+        if (pTeam && oTeam && opponentClub !== "BAY Geçilen Hafta" && opponentClub !== "Milli Ara Dinlenmesi" && opponentClub !== "Lig Bitti") {
             pTeam.played++;
             pTeam.gf += playerMatchGoals;
             pTeam.ga += opponentMatchGoals;
@@ -3315,17 +3403,24 @@ const GAME = {
             }
         }
 
-        // Use weeklyFixtures if defined, otherwise fall back to random
+        // Use weeklyFixtures if defined
         if (this.state.weeklyFixtures && this.state.weeklyFixtures.length > 0) {
             this.state.weeklyFixtures.forEach(fix => {
                 if (fix.home === playerClub || fix.away === playerClub) {
                     // Update player's match in weeklyFixtures for reference
                     fix.played = true;
-                    fix.scoreHome = fix.home === playerClub ? playerMatchGoals : opponentMatchGoals;
-                    fix.scoreAway = fix.away === playerClub ? playerMatchGoals : opponentMatchGoals;
+                    if (fix.home === playerClub) {
+                        fix.scoreHome = playerMatchGoals;
+                        fix.scoreAway = opponentMatchGoals;
+                    } else {
+                        fix.scoreHome = opponentMatchGoals;
+                        fix.scoreAway = playerMatchGoals;
+                    }
                     return;
                 }
                 
+                if (fix.played) return;
+
                 let teamA = this.state.leagueTable.find(t => t.name === fix.home);
                 let teamB = this.state.leagueTable.find(t => t.name === fix.away);
                 if (!teamA || !teamB) return;
@@ -3366,47 +3461,26 @@ const GAME = {
                     teamB.drawn++; teamB.points += 1;
                 }
             });
-        } else {
-            // Pair up other teams randomly (fallback)
-            let remainingTeams = this.state.leagueTable.filter(t => t.name !== playerClub && t.name !== opponentClub);
-            remainingTeams.sort(() => Math.random() - 0.5);
+        }
 
-            for (let i = 0; i < remainingTeams.length; i += 2) {
-                if (i + 1 >= remainingTeams.length) break;
-                let teamA = remainingTeams[i];
-                let teamB = remainingTeams[i+1];
-
-                let ratingA = this.getTeamAverageRating(teamA.name);
-                let ratingB = this.getTeamAverageRating(teamB.name);
-
-                let probA = ratingA / (ratingA + ratingB);
-                let goalsA = 0;
-                let goalsB = 0;
-
-                for (let g = 0; g < 4; g++) {
-                    if (Math.random() < probA * 0.45) goalsA++;
-                    if (Math.random() < (1 - probA) * 0.45) goalsB++;
+        // 3. Robust Self-Healing Sync: Ensure every team in the league plays exactly in sync with the player
+        if (pTeam) {
+            let targetPlayed = pTeam.played;
+            this.state.leagueTable.forEach(team => {
+                if (team.name !== playerClub && team.played < targetPlayed) {
+                    let diff = targetPlayed - team.played;
+                    for (let k = 0; k < diff; k++) {
+                        team.played++;
+                        let gScored = Math.floor(Math.random() * 3);
+                        let gConceded = Math.floor(Math.random() * 3);
+                        team.gf += gScored;
+                        team.ga += gConceded;
+                        if (gScored > gConceded) { team.won++; team.points += 3; }
+                        else if (gScored < gConceded) { team.lost++; }
+                        else { team.drawn++; team.points += 1; }
+                    }
                 }
-
-                teamA.played++;
-                teamA.gf += goalsA;
-                teamA.ga += goalsB;
-
-                teamB.played++;
-                teamB.gf += goalsB;
-                teamB.ga += goalsA;
-
-                if (goalsA > goalsB) {
-                    teamA.won++; teamA.points += 3;
-                    teamB.lost++;
-                } else if (goalsA < goalsB) {
-                    teamB.won++; teamB.points += 3;
-                    teamA.lost++;
-                } else {
-                    teamA.drawn++; teamA.points += 1;
-                    teamB.drawn++; teamB.points += 1;
-                }
-            }
+            });
         }
 
         // Sort table: points -> GD -> GF (robust numerical comparison)
@@ -3453,15 +3527,7 @@ const GAME = {
 
     generateWeeklyFixtures: function() {
         if (!this.state.currentClub) return;
-        if (!this.state.nextOpponentName) return;
         
-        // If already generated for this week, do nothing
-        if (this.state.weeklyFixtures && 
-            this.state.weeklyFixtures.length > 0 && 
-            this.state.weeklyFixturesWeek === this.state.currentWeek) {
-            return;
-        }
-
         // If it's a national break, clear fixtures
         const week = this.state.currentWeek;
         const isNatBreak = (week === 12 || week === 24 || week === 32);
@@ -3471,42 +3537,62 @@ const GAME = {
             return;
         }
 
+        // If already generated for this week, do nothing
+        if (this.state.weeklyFixtures && 
+            this.state.weeklyFixtures.length > 0 && 
+            this.state.weeklyFixturesWeek === week) {
+            return;
+        }
+
         let league = DATABASE.LEAGUES[this.state.currentLeague];
         if (!league) return;
 
-        let fixtures = [];
-        
-        // 1. Add player's match
-        fixtures.push({
-            home: this.state.currentClub,
-            away: this.state.nextOpponentName,
-            played: false,
-            scoreHome: null,
-            scoreAway: null
-        });
-
-        // 2. Add other matches in the same league
-        let remainingTeams = league.teams.filter(t => t.name !== this.state.currentClub && t.name !== this.state.nextOpponentName);
-        
-        // Shuffle remaining teams
-        let shuff = [...remainingTeams];
-        shuff.sort(() => Math.random() - 0.5);
-
-        for (let i = 0; i < shuff.length; i += 2) {
-            if (i + 1 < shuff.length) {
-                fixtures.push({
-                    home: shuff[i].name,
-                    away: shuff[i+1].name,
-                    played: false,
-                    scoreHome: null,
-                    scoreAway: null
-                });
-            }
+        if (!this.state.seasonFixtures || this.state.seasonFixtures.length === 0) {
+            this.generateSeasonFixtures();
         }
 
-        this.state.weeklyFixtures = fixtures;
-        this.state.weeklyFixturesWeek = week;
-        this.saveGame();
+        let fixtureIndex = week - 1;
+        if (week > 32) fixtureIndex -= 3;
+        else if (week > 24) fixtureIndex -= 2;
+        else if (week > 12) fixtureIndex -= 1;
+
+        if (fixtureIndex >= 0 && fixtureIndex < this.state.seasonFixtures.length) {
+            let weeklyMatchups = this.state.seasonFixtures[fixtureIndex];
+            let fixtures = [];
+            weeklyMatchups.forEach(m => {
+                if (m.home !== "BAY" && m.away !== "BAY") {
+                    fixtures.push({
+                        home: m.home,
+                        away: m.away,
+                        played: false,
+                        scoreHome: null,
+                        scoreAway: null
+                    });
+                }
+            });
+            this.state.weeklyFixtures = fixtures;
+            this.state.weeklyFixturesWeek = week;
+            this.saveGame();
+        } else {
+            // Fallback if beyond scheduled weeks
+            let fixtures = [];
+            let allTeams = this.state.leagueTable ? this.state.leagueTable.map(t => t.name) : league.teams.map(t => t.name);
+            let shuff = [...allTeams].sort(() => Math.random() - 0.5);
+            for (let i = 0; i < shuff.length; i += 2) {
+                if (i + 1 < shuff.length) {
+                    fixtures.push({
+                        home: shuff[i],
+                        away: shuff[i+1],
+                        played: false,
+                        scoreHome: null,
+                        scoreAway: null
+                    });
+                }
+            }
+            this.state.weeklyFixtures = fixtures;
+            this.state.weeklyFixturesWeek = week;
+            this.saveGame();
+        }
     },
 
 
