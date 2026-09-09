@@ -71,11 +71,12 @@ const ANALYTICS = {
                 event: this.formatEventName(payload.event),
                 details: this.formatEventDetails(payload.event, payload.params)
             };
+            const jsonStr = JSON.stringify(rowData);
             fetch(url, {
                 method: "POST",
                 mode: "no-cors",
-                headers: { "Content-Type": "text/plain;charset=utf-8" },
-                body: JSON.stringify(rowData)
+                headers: { "Content-Type": "application/x-www-form-urlencoded;charset=utf-8" },
+                body: "data=" + encodeURIComponent(jsonStr)
             }).catch(() => {});
         } catch(e) {}
     },
