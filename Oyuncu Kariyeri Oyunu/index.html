@@ -1398,6 +1398,24 @@
                         </div>
                     </div>
 
+                    <!-- Group 2.5: Google E-Tablo Canlı Analitik -->
+                    <div>
+                        <div style="font-size: 11px; font-weight: bold; color: #10b981; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: space-between;">
+                            <span>📊 Google E-Tablo Analitik</span>
+                            <span style="font-size: 9px; font-weight: normal; color: #8b949e;">Canlı Telemetri</span>
+                        </div>
+                        <div style="background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+                            <div style="font-size: 10.5px; color: #8b949e; line-height: 1.4;">
+                                Maç ve ekonomi verilerini kendi Google E-Tablonuza anlık satır satır aktarmak için Webhook URL'nizi bağlayın.
+                            </div>
+                            <input type="text" id="settings-sheets-url" placeholder="https://script.google.com/macros/s/.../exec" style="width: 100%; background: #0d1117; border: 1px solid #30363d; color: #c9d1d9; padding: 8px 10px; font-size: 11px; border-radius: 6px; box-sizing: border-box;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 2px;">
+                                <button onclick="saveGoogleSheetsUrl()" style="background: #10b981; color: #022c22; border: none; padding: 8px; font-size: 11px; font-weight: 700; border-radius: 6px; cursor: pointer;">💾 Bağlantıyı Kaydet</button>
+                                <button onclick="testGoogleSheetsConnection()" style="background: #21262d; color: #38bdf8; border: 1px solid #30363d; padding: 8px; font-size: 11px; font-weight: 700; border-radius: 6px; cursor: pointer;">🧪 Test Verisi At</button>
+                            </div>
+                            <div id="settings-sheets-status" style="font-size: 10px; text-align: center; display: none;"></div>
+                        </div>
+                    </div>
 
                     <!-- Group 3: Tehlikeli Bölge -->
 
@@ -9677,6 +9695,10 @@ function startNationalAnthemCeremony(matchData = null, onComplete = null) {
                 SoundManager.playBuy();
             }
 
+            if (typeof ANALYTICS !== "undefined") {
+                ANALYTICS.logEvent("car_purchased", { car: car.name, cost: car.cost, remaining: GAME.state.money });
+            }
+
             GAME.saveGame();
             GAME.updateUI();
 
@@ -15091,8 +15113,51 @@ function afterWeekAdvanced() {
             soundToggle.checked = SoundManager.enabled;
             musicToggle.checked = SoundManager.musicEnabled;
             fpsToggle.checked = (localStorage.getItem("performance_mode") !== "disabled");
+            initGoogleSheetsSettings();
             settingsModal.classList.add("active");
         });
+
+        function initGoogleSheetsSettings() {
+            const input = document.getElementById("settings-sheets-url");
+            if (input && typeof ANALYTICS !== "undefined") {
+                input.value = ANALYTICS.getSheetsUrl();
+            }
+        }
+
+        function saveGoogleSheetsUrl() {
+            const input = document.getElementById("settings-sheets-url");
+            const status = document.getElementById("settings-sheets-status");
+            if (input && typeof ANALYTICS !== "undefined") {
+                const url = input.value.trim();
+                ANALYTICS.setSheetsUrl(url);
+                if (status) {
+                    status.style.display = "block";
+                    status.style.color = "#10b981";
+                    status.innerText = url ? "✅ Google E-Tablo adresi kaydedildi!" : "Bağlantı temizlendi.";
+                    setTimeout(() => { status.style.display = "none"; }, 3500);
+                }
+            }
+        }
+
+        function testGoogleSheetsConnection() {
+            const input = document.getElementById("settings-sheets-url");
+            const status = document.getElementById("settings-sheets-status");
+            const url = input ? input.value.trim() : (typeof ANALYTICS !== "undefined" ? ANALYTICS.getSheetsUrl() : "");
+            if (!url || !url.startsWith("http")) {
+                alert("Lütfen önce geçerli bir Google Apps Script Web App URL'si girin!\n\nÖrnek: https://script.google.com/macros/s/.../exec");
+                return;
+            }
+            if (typeof ANALYTICS !== "undefined") {
+                ANALYTICS.setSheetsUrl(url);
+                ANALYTICS.logEvent("test_connection", { message: "Test verisi başarıyla iletildi!" });
+                if (status) {
+                    status.style.display = "block";
+                    status.style.color = "#38bdf8";
+                    status.innerText = "🚀 Test verisi gönderildi! Google E-Tablonuzu kontrol edin.";
+                    setTimeout(() => { status.style.display = "none"; }, 4000);
+                }
+            }
+        }
 
         settingsClose.addEventListener("click", () => {
             settingsModal.classList.remove("active");

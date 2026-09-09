@@ -4,16 +4,54 @@
  */
 const ANALYTICS = {
     events: [],
+    getSheetsUrl: function() {
+        return localStorage.getItem('rog_sheets_url') || "";
+    },
+    setSheetsUrl: function(url) {
+        if (url && typeof url === "string") {
+            localStorage.setItem('rog_sheets_url', url.trim());
+        } else {
+            localStorage.removeItem('rog_sheets_url');
+        }
+    },
+    sendToGoogleSheets: function(payload) {
+        const url = this.getSheetsUrl();
+        if (!url || !url.startsWith("http")) return;
+        try {
+            const p = (typeof GAME !== "undefined" && GAME.state) ? GAME.state : {};
+            const rowData = {
+                date: new Date().toLocaleString("tr-TR"),
+                player: payload.playerName || p.playerName || "Genç Semih",
+                week: payload.week || p.currentWeek || 0,
+                age: p.age || 17,
+                league: payload.league || p.currentLeague || "",
+                club: payload.club || p.currentClub || "",
+                money: typeof payload.money !== "undefined" ? payload.money : (p.money || 0),
+                stamina: typeof payload.stamina !== "undefined" ? payload.stamina : (p.kondisyon || 0),
+                rating: typeof payload.rating !== "undefined" ? payload.rating : (p.rating || 0),
+                event: payload.event || "",
+                details: typeof payload.params === "object" ? JSON.stringify(payload.params) : String(payload.params || "")
+            };
+            fetch(url, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(rowData)
+            }).catch(() => {});
+        } catch(e) {}
+    },
     logEvent: function(eventName, params = {}) {
+        const p = (typeof GAME !== "undefined" && GAME.state) ? GAME.state : {};
         const payload = {
             event: eventName,
             timestamp: Date.now(),
-            week: (typeof GAME !== "undefined" && GAME.state) ? GAME.state.currentWeek : 0,
-            league: (typeof GAME !== "undefined" && GAME.state) ? GAME.state.currentLeague : "",
-            club: (typeof GAME !== "undefined" && GAME.state) ? GAME.state.currentClub : "",
-            money: (typeof GAME !== "undefined" && GAME.state) ? GAME.state.money : 0,
-            stamina: (typeof GAME !== "undefined" && GAME.state) ? GAME.state.kondisyon : 0,
-            rating: (typeof GAME !== "undefined" && GAME.state) ? GAME.state.rating : 0,
+            playerName: p.playerName || "Bilinmiyor",
+            week: p.currentWeek || 0,
+            league: p.currentLeague || "",
+            club: p.currentClub || "",
+            money: p.money || 0,
+            stamina: p.kondisyon || 0,
+            rating: p.rating || 0,
             params: params
         };
         this.events.push(payload);
@@ -23,6 +61,10 @@ const ANALYTICS = {
             if (existing.length > 300) existing = existing.slice(-300);
             localStorage.setItem('rog_analytics_events', JSON.stringify(existing));
         } catch(e){}
+
+        // Send to Google Sheets Webhook
+        this.sendToGoogleSheets(payload);
+
         if (typeof window !== "undefined" && window.GameAnalytics && typeof window.GameAnalytics.addDesignEvent === "function") {
             try {
                 window.GameAnalytics.addDesignEvent(eventName, params.value || 1);
@@ -1546,6 +1588,16 @@ const GAME = {
             ];
             const quote = rivalQuotes[Math.floor(Math.random() * rivalQuotes.length)];
             this.addSocialPost(rival.handle || "@rakip_forvet", `${rival.name} (${rival.club})`, quote);
+        }
+
+        // Telemetry Logging
+        if (typeof ANALYTICS !== "undefined") {
+            ANALYTICS.logEvent("week_advanced", {
+                week: this.state.currentWeek,
+                money: this.state.money,
+                stamina: this.state.kondisyon,
+                rating: this.state.rating
+            });
         }
     },
 
@@ -3517,6 +3569,21 @@ const GAME = {
                         }
                     }
                 });
+            }
+        }
+
+        // Telemetry Logging
+        if (typeof ANALYTICS !== "undefined") {
+            ANALYTICS.logEvent("match_finished", {
+                myGoals: playerMatchGoals,
+                oppGoals: opponentMatchGoals,
+                opponent: opponentClub || "Rakip"
+            });
+            if (this.state.money < 500) {
+                ANALYTICS.logEvent("critical_money", { balance: this.state.money });
+            }
+            if (this.state.kondisyon < 30) {
+                ANALYTICS.logEvent("critical_stamina", { stamina: this.state.kondisyon });
             }
         }
 
