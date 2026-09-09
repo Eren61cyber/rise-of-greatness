@@ -2148,6 +2148,8 @@ const MatchEngine = {
             }
             choiceData = {
                 title: "🎯 PENALTI KAZANDINIZ!",
+                isNssDuel: true,
+                duelType: "penalty",
                 description: "Hakem beyaz noktayı gösterdi! Topun başına geçtin. Hangi köşeyi ve vuruş tarzını hedefleyeceksin?",
                 options: [
                     {
@@ -2219,6 +2221,8 @@ const MatchEngine = {
         } else {
             choiceData = {
                 title: "📐 FRİKİK KAZANDINIZ!",
+                isNssDuel: true,
+                duelType: "freekick",
                 description: "Ceza sahası yayının hemen dışından kritik bir frikik! Topun arkasındasın. Hangi hedefi seçeceksin?",
                 options: [
                     {
@@ -2433,6 +2437,46 @@ const MatchEngine = {
 
     makeChoiceWithTiming: function(optionIdx, timingResult) {
         this.makeChoice(optionIdx, timingResult);
+    },
+
+    resolveNssDuel: function(isGoal, comment) {
+        let previousGoals = this.playerStats.goals;
+        this.playerStats.shots++;
+        if (isGoal) {
+            this.score.player++;
+            this.playerStats.goals++;
+            this.callbacks.onMinuteUpdate(this.min, this.score, comment || "GOOOL! İnanılmaz bir falsoyla topu 90'a astın!");
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playSpiker === "function") {
+                SoundManager.playSpiker("gol");
+            }
+            if (this.callbacks.onGoalScoredCelebration) {
+                const self = this;
+                this.callbacks.onGoalScoredCelebration(this.min, (celebrationText, celebrationCommentary) => {
+                    self.callbacks.onMinuteUpdate(self.min, self.score, celebrationCommentary);
+                    if (self.callbacks.onEventPause) {
+                        self.callbacks.onEventPause(`⚽ ${self.min}' GOOOL SEVİNCİ!`, `Muhteşem bir sevinç! Maça devam etmek için dokunun.`, () => {
+                            self.isPausedForChoice = false;
+                            self.resumeTick();
+                        });
+                    } else {
+                        self.isPausedForChoice = false;
+                        self.timer = setTimeout(function() { self.resumeTick(); }, 3000 / self.currentSpeed);
+                    }
+                });
+            } else {
+                this.isPausedForChoice = false;
+                const self = this;
+                this.timer = setTimeout(function() { self.resumeTick(); }, 2500 / self.currentSpeed);
+            }
+        } else {
+            this.callbacks.onMinuteUpdate(this.min, this.score, comment || "KAÇTI! Top kalecide kaldı!");
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playSpiker === "function") {
+                SoundManager.playSpiker("kurtaris");
+            }
+            this.isPausedForChoice = false;
+            const self = this;
+            this.timer = setTimeout(function() { self.resumeTick(); }, 2500 / self.currentSpeed);
+        }
     },
 
     resumeTick: function() {

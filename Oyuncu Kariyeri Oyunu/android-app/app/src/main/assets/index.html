@@ -888,6 +888,14 @@
                     </div>
                 </div>
 
+                <!-- NSS Style Practice Duel Banner -->
+                <div style="margin-bottom: 12px;">
+                    <button class="btn" style="width: 100%; padding: 13px 16px; border-radius: 12px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #020617; font-weight: 900; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 18px rgba(245,158,11,0.35); border: none; cursor: pointer; text-transform: uppercase;" onclick="openNssDuel('freekick', true)">
+                        <span style="font-size: 18px;">🎯</span>
+                        <span>NSS FRİKİK & PENALTI TALİMİ YAP (FALSO & ŞUT)</span>
+                    </button>
+                </div>
+
                 <div class="training-list" id="training-drills-container" style="display: flex; flex-direction: column; gap: 10px;">
                     <!-- Dynamically populated based on player position -->
                 </div>
@@ -1280,6 +1288,36 @@
                 <button id="btn-match-continue" class="btn btn-primary" style="padding: 10px 22px; font-weight: 900; font-size: 13px; letter-spacing: 0.5px; background: #00e5b7; color: #04140e; border: none; border-radius: 8px; cursor: pointer; flex-shrink: 0; box-shadow: 0 0 15px rgba(0,229,183,0.5);">DEVAM ET ➔</button>
             </div>
         </section>
+
+        <!-- NSS DUEL CANVAS MODAL (FREE KICK & PENALTY ENGINE) -->
+        <div class="event-modal-overlay" id="nss-duel-modal" style="display: none; align-items: center; justify-content: center; z-index: 100000; background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(8px); padding: 12px;">
+            <div class="glass" style="width: 100%; max-width: 420px; background: #070e1c; border: 2px solid #f59e0b; border-radius: 18px; padding: 16px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.95), 0 0 30px rgba(245, 158, 11, 0.25); position: relative; user-select: none;">
+                <!-- Header -->
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 8px;">
+                    <div style="background: linear-gradient(90deg, #f59e0b, #ef4444); color: #000; font-size: 11px; font-weight: 900; padding: 4px 12px; border-radius: 6px; letter-spacing: 0.8px; text-transform: uppercase;" id="nss-duel-badge">📐 FRİKİK DÜELLOSU</div>
+                    <div style="font-size: 11px; font-weight: 800; color: #38bdf8;" id="nss-duel-stat">ŞUT: 82</div>
+                </div>
+
+                <!-- Guidance prompt -->
+                <div id="nss-duel-instruction" style="font-size: 12.5px; font-weight: 800; color: #fff; margin-bottom: 10px; text-align: center; min-height: 22px; line-height: 1.3;">
+                    🎯 Aşama 1: Hedef oku köşeleri gösterirken EKRANA DOKUN!
+                </div>
+
+                <!-- The Interactive Canvas -->
+                <div style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; border: 1.5px solid rgba(255,255,255,0.2); box-shadow: inset 0 0 20px rgba(0,0,0,0.8); background: #0b1a12;">
+                    <canvas id="nss-canvas" width="380" height="270" style="display: block; width: 100%; height: auto; cursor: crosshair; touch-action: none;"></canvas>
+                </div>
+
+                <!-- Bottom Status / Result Banner -->
+                <div id="nss-result-banner" style="display: none; width: 100%; margin-top: 12px; padding: 10px; border-radius: 10px; font-size: 14px; font-weight: 900; text-align: center; letter-spacing: 0.5px;"></div>
+
+                <!-- Action buttons for practice mode -->
+                <div id="nss-practice-controls" style="display: none; gap: 8px; width: 100%; margin-top: 10px;">
+                    <button class="btn btn-primary" style="flex: 1; padding: 10px; font-size: 12px; font-weight: 900;" onclick="resetNssDuelPractice()">🔄 TEKRAR VUR</button>
+                    <button class="btn btn-secondary" style="flex: 1; padding: 10px; font-size: 12px; font-weight: 800;" onclick="closeNssDuel()">KAPAT ✕</button>
+                </div>
+            </div>
+        </div>
 
         <!-- RANDOM RPG EVENT MODAL -->
         <div class="event-modal-overlay" id="event-modal">
@@ -15652,6 +15690,10 @@ function afterWeekAdvanced() {
                     },
 
                 onMatchChoice: function(minute, choiceData) {
+                    if (choiceData && choiceData.isNssDuel) {
+                        openNssDuel(choiceData.duelType || "freekick", false);
+                        return;
+                    }
                     const decCard = document.getElementById("match-decision-card");
                     document.getElementById("decision-title").innerText = `${minute}' KRİTİK POZİSYON`;
                     document.getElementById("decision-desc").innerText = choiceData.description;
@@ -16186,6 +16228,659 @@ function afterWeekAdvanced() {
                 MatchEngine.makeChoice(currentTimingOptionIdx, timingResult);
             }, 550);
         }
+
+        // ==========================================
+        // NSS (NEW STAR SOCCER) STYLE DUEL ENGINE
+        // Frikik & Penaltı Çizim & Falso Fiziği Modülü
+        // ==========================================
+        const NssDuel = {
+            active: false,
+            isPractice: false,
+            duelType: 'freekick',
+            stage: 1, // 1: Aiming, 2: Ball Strike, 3: Flight, 4: Finished
+            canvas: null,
+            ctx: null,
+            animId: null,
+
+            W: 380,
+            H: 270,
+
+            goal: { left: 85, right: 295, top: 55, bottom: 130 },
+
+            aimAngle: 0,
+            aimDirection: 1,
+            aimSpeed: 0.035,
+            lockedAimX: null,
+
+            ballScreen: { x: 190, y: 215, r: 42 },
+            strikePoint: { x: 0, y: 0 },
+
+            ball: {
+                x: 190, y: 220, r: 22,
+                targetX: 190, targetY: 90,
+                progress: 0,
+                curveOffset: 0,
+                arcHeight: 35,
+                rotation: 0,
+                spinSpeed: 0
+            },
+
+            keeper: {
+                x: 190, y: 122,
+                baseX: 190, baseY: 122,
+                diveTargetX: 190, diveTargetY: 122,
+                isDiving: false,
+                reach: 34
+            },
+
+            wall: [],
+
+            init: function() {
+                this.canvas = document.getElementById("nss-canvas");
+                if (!this.canvas) return;
+                this.ctx = this.canvas.getContext("2d");
+
+                this.canvas.onpointerdown = (e) => {
+                    e.preventDefault();
+                    this.handleCanvasClick(e);
+                };
+            },
+
+            start: function(type = 'freekick', practice = false) {
+                this.init();
+                if (!this.canvas) return;
+
+                this.active = true;
+                this.isPractice = practice;
+                this.duelType = type;
+                this.stage = 1;
+                this.aimAngle = 0;
+                this.aimDirection = 1;
+                this.lockedAimX = null;
+                this.strikePoint = { x: 0, y: 0 };
+
+                const modal = document.getElementById("nss-duel-modal");
+                const badge = document.getElementById("nss-duel-badge");
+                const statEl = document.getElementById("nss-duel-stat");
+                const instrEl = document.getElementById("nss-duel-instruction");
+                const bannerEl = document.getElementById("nss-result-banner");
+                const practiceControls = document.getElementById("nss-practice-controls");
+
+                if (modal) modal.style.display = "flex";
+                if (bannerEl) bannerEl.style.display = "none";
+                if (practiceControls) practiceControls.style.display = practice ? "flex" : "none";
+
+                const shootingStat = (window.GAME && GAME.state && GAME.state.shooting) || 65;
+                if (statEl) statEl.innerText = "ŞUT: " + shootingStat;
+
+                if (badge) {
+                    badge.innerText = type === 'penalty' ? "🧤 KRİTİK PENALTI NOKTASI" : "📐 90' FRİKİK DÜELLOSU";
+                }
+
+                if (instrEl) {
+                    instrEl.innerText = "🎯 AŞAMA 1: Hedef oku kaleyi gösterirken EKRANA DOKUN!";
+                    instrEl.style.color = "#00e5b7";
+                }
+
+                // Setup Goalkeeper
+                this.keeper.x = 190;
+                this.keeper.y = 122;
+                this.keeper.baseX = 190;
+                this.keeper.baseY = 122;
+                this.keeper.isDiving = false;
+
+                // Setup Free Kick Wall
+                this.wall = [];
+                if (type === 'freekick') {
+                    this.wall = [
+                        { x: 155, y: 155, jumpOffset: 0 },
+                        { x: 185, y: 153, jumpOffset: 0 },
+                        { x: 215, y: 155, jumpOffset: 0 }
+                    ];
+                }
+
+                if (this.animId) cancelAnimationFrame(this.animId);
+                const loop = (now) => {
+                    if (!this.active) return;
+                    this.update(now);
+                    this.render(now);
+                    this.animId = requestAnimationFrame(loop);
+                };
+                this.animId = requestAnimationFrame(loop);
+            },
+
+            handleCanvasClick: function(e) {
+                const rect = this.canvas.getBoundingClientRect();
+                const scaleX = this.W / rect.width;
+                const scaleY = this.H / rect.height;
+                const clickX = (e.clientX - rect.left) * scaleX;
+                const clickY = (e.clientY - rect.top) * scaleY;
+
+                if (this.stage === 1) {
+                    this.stage = 2;
+                    this.lockedAimX = 190 + Math.sin(this.aimAngle) * 160;
+                    this.lockedAimX = Math.max(70, Math.min(310, this.lockedAimX));
+
+                    const instrEl = document.getElementById("nss-duel-instruction");
+                    if (instrEl) {
+                        instrEl.innerText = "⚽ AŞAMA 2: Falso ve yükseklik için TOPA DOKUN! (Altı: Yüksek/90, Yanı: Falso)";
+                        instrEl.style.color = "#f59e0b";
+                    }
+
+                    if (typeof SoundManager !== "undefined" && typeof SoundManager.playClick === "function") {
+                        try { SoundManager.playClick(); } catch(err){}
+                    }
+                } else if (this.stage === 2) {
+                    const dx = clickX - this.ballScreen.x;
+                    const dy = clickY - this.ballScreen.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    let hitX = Math.max(-1, Math.min(1, dx / this.ballScreen.r));
+                    let hitY = Math.max(-1, Math.min(1, dy / this.ballScreen.r));
+
+                    if (dist > this.ballScreen.r) {
+                        hitX = dx / dist;
+                        hitY = dy / dist;
+                    }
+
+                    this.strikePoint = { x: hitX, y: hitY };
+                    this.stage = 3;
+
+                    const instrEl = document.getElementById("nss-duel-instruction");
+                    if (instrEl) {
+                        instrEl.innerText = "🚀 Vuruş yapıldı! Top falso alarak kaleye süzülüyor...";
+                        instrEl.style.color = "#38bdf8";
+                    }
+
+                    this.ball.x = 190;
+                    this.ball.y = 220;
+                    this.ball.r = 22;
+                    this.ball.progress = 0;
+
+                    this.ball.curveOffset = -hitX * 55;
+                    this.ball.targetX = this.lockedAimX + (-hitX * 35);
+                    this.ball.spinSpeed = -hitX * 0.25;
+
+                    if (hitY < -0.75) {
+                        this.ball.targetY = 28;
+                        this.ball.arcHeight = 65;
+                    } else if (hitY > 0.35) {
+                        this.ball.targetY = 124;
+                        this.ball.arcHeight = 12;
+                    } else {
+                        const norm = (hitY + 0.75) / 1.1;
+                        this.ball.targetY = 60 + norm * 48;
+                        this.ball.arcHeight = 40;
+                    }
+
+                    const playerShoot = (window.GAME && GAME.state && GAME.state.shooting) || 65;
+                    const keeperRoll = Math.random();
+                    const predictsCorrect = (keeperRoll < (0.52 - (playerShoot / 320)));
+                    if (predictsCorrect) {
+                        this.keeper.diveTargetX = this.ball.targetX + (Math.random() * 20 - 10);
+                        this.keeper.diveTargetY = Math.min(125, Math.max(65, this.ball.targetY));
+                    } else {
+                        this.keeper.diveTargetX = (this.ball.targetX > 190) ? 120 : 260;
+                        this.keeper.diveTargetY = 95;
+                    }
+
+                    if (typeof SoundManager !== "undefined" && typeof SoundManager.playKickShot === "function") {
+                        try { SoundManager.playKickShot(); } catch(err){}
+                    }
+                    if (navigator.vibrate) {
+                        try { navigator.vibrate(35); } catch(err){}
+                    }
+                }
+            },
+
+            update: function(now) {
+                if (this.stage === 1) {
+                    this.aimAngle += this.aimSpeed * this.aimDirection;
+                    if (this.aimAngle > 0.52) {
+                        this.aimAngle = 0.52;
+                        this.aimDirection = -1;
+                    } else if (this.aimAngle < -0.52) {
+                        this.aimAngle = -0.52;
+                        this.aimDirection = 1;
+                    }
+                } else if (this.stage === 3) {
+                    this.ball.progress += 0.025;
+                    const p = this.ball.progress;
+
+                    const curve = Math.sin(p * Math.PI) * this.ball.curveOffset;
+                    this.ball.x = (1 - p) * 190 + p * this.ball.targetX + curve;
+
+                    const baseH = (1 - p) * 220 + p * this.ball.targetY;
+                    const arc = Math.sin(p * Math.PI) * this.ball.arcHeight;
+                    this.ball.y = baseH - arc;
+
+                    this.ball.r = Math.max(7, 22 * (1 - p * 0.68));
+                    this.ball.rotation += this.ball.spinSpeed;
+
+                    if (p > 0.35) {
+                        const diveP = (p - 0.35) / 0.65;
+                        this.keeper.x = (1 - diveP) * this.keeper.baseX + diveP * this.keeper.diveTargetX;
+                        this.keeper.y = (1 - diveP) * this.keeper.baseY + diveP * this.keeper.diveTargetY;
+                        this.keeper.isDiving = true;
+                    }
+
+                    if (this.wall.length > 0 && p > 0.15 && p < 0.65) {
+                        const jumpP = Math.sin(((p - 0.15) / 0.5) * Math.PI);
+                        this.wall.forEach(w => w.jumpOffset = jumpP * 14);
+                    }
+
+                    if (p >= 1.0) {
+                        this.ball.progress = 1.0;
+                        this.stage = 4;
+                        this.evaluateResult();
+                    }
+                }
+            },
+
+            evaluateResult: function() {
+                const bx = this.ball.targetX;
+                const by = this.ball.targetY;
+                const g = this.goal;
+
+                const inGoalX = (bx >= (g.left + 5) && bx <= (g.right - 5));
+                const inGoalY = (by >= (g.top + 4) && by <= g.bottom);
+                const isSkyBall = (by < g.top);
+                const isHitPost = (!inGoalX || !inGoalY) && (
+                    (Math.abs(bx - g.left) < 9 && by >= g.top && by <= g.bottom) ||
+                    (Math.abs(bx - g.right) < 9 && by >= g.top && by <= g.bottom) ||
+                    (Math.abs(by - g.top) < 9 && bx >= g.left && bx <= g.right)
+                );
+
+                const distToKeeper = Math.sqrt(Math.pow(bx - this.keeper.x, 2) + Math.pow(by - this.keeper.y, 2));
+                const isSaved = inGoalX && inGoalY && (distToKeeper < this.keeper.reach);
+
+                let isGoal = inGoalX && inGoalY && !isSaved && !isHitPost && !isSkyBall;
+
+                const bannerEl = document.getElementById("nss-result-banner");
+                const instrEl = document.getElementById("nss-duel-instruction");
+
+                if (bannerEl) bannerEl.style.display = "block";
+
+                let resultComment = "";
+
+                if (isGoal) {
+                    bannerEl.style.background = "linear-gradient(135deg, #059669 0%, #10b981 100%)";
+                    bannerEl.style.color = "#ffffff";
+                    bannerEl.innerText = "⚽ GOOOOOOL! (90'A ASTIN!) 🔥";
+                    if (instrEl) instrEl.innerText = "Şapka çıkarılacak muazzam bir vuruş!";
+
+                    resultComment = (this.duelType === 'penalty') ?
+                        "GOOOL! Soğukkanlılıkla köşeyi seçtin, kaleciyi ters köşeye yatırarak penaltıyı gole çevirdin!" :
+                        "MÜTHİŞ FRİKİK GOLÜ! Top barajı aşıp tam 90'a adeta asıldı! Kaleci sadece izleyebildi!";
+
+                    if (typeof SoundManager !== "undefined") {
+                        if (typeof SoundManager.playNetSwish === "function") SoundManager.playNetSwish();
+                        if (typeof SoundManager.playGoal === "function") SoundManager.playGoal();
+                        if (typeof SoundManager.playCrowdCheer === "function") SoundManager.playCrowdCheer();
+                    }
+                    if (navigator.vibrate) {
+                        try { navigator.vibrate([60, 40, 60]); } catch(e){}
+                    }
+                } else if (isSaved) {
+                    bannerEl.style.background = "linear-gradient(135deg, #dc2626 0%, #ef4444 100%)";
+                    bannerEl.style.color = "#ffffff";
+                    bannerEl.innerText = "🧤 KALECİ UZANDI VE ÇIKARDI!";
+                    if (instrEl) instrEl.innerText = "Harika bir plase ama kaleci devleşti!";
+                    resultComment = "Vuruşun çok etkiliydi ama kaleci olağanüstü uzanarak köşeden topu çeldi!";
+
+                    if (typeof SoundManager !== "undefined" && typeof SoundManager.playMiss === "function") {
+                        SoundManager.playMiss();
+                    }
+                } else if (isHitPost) {
+                    bannerEl.style.background = "linear-gradient(135deg, #d97706 0%, #f59e0b 100%)";
+                    bannerEl.style.color = "#000000";
+                    bannerEl.innerText = "💥 DİREKTEN DÖNDÜ! (Stadyum inledi!)";
+                    if (instrEl) instrEl.innerText = "Milimetrelerle direğe takıldı!";
+                    resultComment = "İnanılmaz an! Çatala çarpan top direkten sahaya geri döndü!";
+
+                    if (typeof SoundManager !== "undefined" && typeof SoundManager.playMiss === "function") {
+                        SoundManager.playMiss();
+                    }
+                } else {
+                    bannerEl.style.background = "linear-gradient(135deg, #475569 0%, #64748b 100%)";
+                    bannerEl.style.color = "#ffffff";
+                    bannerEl.innerText = isSkyBall ? "💨 DAĞLARA TAŞLARA! (Üstten Aut)" : "❌ AUTA GİTTİ!";
+                    if (instrEl) instrEl.innerText = isSkyBall ? "Topun çok fazla altına vurdun!" : "Falso fazla kaçtı, yandan dışarı!";
+                    resultComment = isSkyBall ?
+                        "Topun altına çok sert girdin, top üstten stadyumun çatısına fırladı!" :
+                        "Frikik falsolu gitti ama direğin yanından auta çıktı.";
+
+                    if (typeof SoundManager !== "undefined" && typeof SoundManager.playMiss === "function") {
+                        SoundManager.playMiss();
+                    }
+                }
+
+                if (!this.isPractice) {
+                    setTimeout(() => {
+                        this.close();
+                        if (window.MatchEngine && typeof MatchEngine.resolveNssDuel === "function") {
+                            MatchEngine.resolveNssDuel(isGoal, resultComment);
+                        }
+                    }, 2000);
+                }
+            },
+
+            close: function() {
+                this.active = false;
+                if (this.animId) cancelAnimationFrame(this.animId);
+                const modal = document.getElementById("nss-duel-modal");
+                if (modal) modal.style.display = "none";
+            },
+
+            render: function(now) {
+                const ctx = this.ctx;
+                const W = this.W;
+                const H = this.H;
+
+                ctx.clearRect(0, 0, W, H);
+
+                // Pitch
+                const grassGrad = ctx.createLinearGradient(0, 50, 0, H);
+                grassGrad.addColorStop(0, "#0f4229");
+                grassGrad.addColorStop(0.4, "#135434");
+                grassGrad.addColorStop(1, "#186a41");
+                ctx.fillStyle = grassGrad;
+                ctx.fillRect(0, 0, W, H);
+
+                ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
+                for (let y = 70; y < H; y += 30) {
+                    ctx.fillRect(0, y, W, 15);
+                }
+
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(50, 130);
+                ctx.lineTo(330, 130);
+                ctx.stroke();
+
+                ctx.fillStyle = "#ffffff";
+                ctx.beginPath();
+                ctx.arc(190, 190, 3, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Goal Net
+                const g = this.goal;
+                ctx.fillStyle = "rgba(10, 30, 20, 0.65)";
+                ctx.fillRect(g.left, g.top, g.right - g.left, g.bottom - g.top);
+
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.18)";
+                ctx.lineWidth = 1;
+                for (let x = g.left + 15; x < g.right; x += 14) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, g.top);
+                    ctx.lineTo(x, g.bottom);
+                    ctx.stroke();
+                }
+                for (let y = g.top + 10; y < g.bottom; y += 10) {
+                    ctx.beginPath();
+                    ctx.moveTo(g.left, y);
+                    ctx.lineTo(g.right, y);
+                    ctx.stroke();
+                }
+
+                // Goalposts
+                ctx.strokeStyle = "#ffffff";
+                ctx.lineWidth = 5;
+                ctx.beginPath();
+                ctx.moveTo(g.left, g.bottom);
+                ctx.lineTo(g.left, g.top);
+                ctx.lineTo(g.right, g.top);
+                ctx.lineTo(g.right, g.bottom);
+                ctx.stroke();
+
+                ctx.strokeStyle = "rgba(200, 240, 255, 0.6)";
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(g.left + 2, g.bottom);
+                ctx.lineTo(g.left + 2, g.top + 2);
+                ctx.lineTo(g.right - 2, g.top + 2);
+                ctx.lineTo(g.right - 2, g.bottom);
+                ctx.stroke();
+
+                // Goalkeeper
+                this.drawGoalkeeper(ctx, this.keeper.x, this.keeper.y, this.keeper.isDiving);
+
+                // Wall
+                if (this.wall.length > 0) {
+                    this.wall.forEach(w => {
+                        this.drawDefender(ctx, w.x, w.y - w.jumpOffset);
+                    });
+                }
+
+                // Overlays
+                if (this.stage === 1) {
+                    this.drawAimArrow(ctx);
+                } else if (this.stage === 2) {
+                    this.drawStrikeBall(ctx);
+                } else if (this.stage >= 3) {
+                    this.drawFlyingBall(ctx);
+                }
+            },
+
+            drawGoalkeeper: function(ctx, x, y, diving) {
+                ctx.save();
+                ctx.translate(x, y);
+
+                ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+                ctx.beginPath();
+                ctx.ellipse(0, diving ? 8 : 14, diving ? 20 : 12, 5, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                if (diving) {
+                    const angle = (x > 190) ? 0.45 : -0.45;
+                    ctx.rotate(angle);
+                }
+
+                ctx.fillStyle = "#eab308";
+                ctx.fillRect(-8, -14, 16, 18);
+
+                ctx.fillStyle = "#f5d0a9";
+                ctx.beginPath();
+                ctx.arc(0, -20, 6, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = "#3e2723";
+                ctx.beginPath();
+                ctx.arc(0, -22, 5.5, Math.PI, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = "#ffffff";
+                if (diving) {
+                    ctx.fillRect(-16, -18, 6, 7);
+                    ctx.fillRect(10, -18, 6, 7);
+                } else {
+                    ctx.fillRect(-12, -7, 5, 6);
+                    ctx.fillRect(7, -7, 5, 6);
+                }
+
+                ctx.fillStyle = "#0f172a";
+                ctx.fillRect(-7, 4, 14, 8);
+
+                ctx.restore();
+            },
+
+            drawDefender: function(ctx, x, y) {
+                ctx.save();
+                ctx.translate(x, y);
+
+                ctx.fillStyle = "rgba(0,0,0,0.35)";
+                ctx.beginPath();
+                ctx.ellipse(0, 18, 10, 4, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = "#1e3a8a";
+                ctx.fillRect(-7, -10, 14, 16);
+
+                ctx.fillStyle = "#f5d0a9";
+                ctx.beginPath();
+                ctx.arc(0, -16, 5.5, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(-6, 6, 12, 8);
+
+                ctx.restore();
+            },
+
+            drawAimArrow: function(ctx) {
+                const originX = 190;
+                const originY = 220;
+                const length = 150;
+
+                const targetX = originX + Math.sin(this.aimAngle) * length;
+                const targetY = originY - Math.cos(this.aimAngle) * length;
+
+                ctx.save();
+                ctx.strokeStyle = "#ffd700";
+                ctx.lineWidth = 3;
+                ctx.setLineDash([8, 6]);
+                ctx.beginPath();
+                ctx.moveTo(originX, originY);
+                ctx.lineTo(targetX, targetY);
+                ctx.stroke();
+
+                ctx.setLineDash([]);
+                ctx.fillStyle = "#00e5b7";
+                ctx.beginPath();
+                ctx.arc(targetX, targetY, 9, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = "#ffffff";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                this.drawClassicBall(ctx, originX, originY, 18, 0);
+                ctx.restore();
+            },
+
+            drawStrikeBall: function(ctx) {
+                const bx = this.ballScreen.x;
+                const by = this.ballScreen.y;
+                const r = this.ballScreen.r;
+
+                if (this.lockedAimX !== null) {
+                    ctx.save();
+                    ctx.strokeStyle = "rgba(0, 229, 183, 0.4)";
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([6, 6]);
+                    ctx.beginPath();
+                    ctx.moveTo(bx, by);
+                    ctx.lineTo(this.lockedAimX, 65);
+                    ctx.stroke();
+                    ctx.restore();
+                }
+
+                ctx.save();
+                ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+                ctx.beginPath();
+                ctx.arc(bx, by, r + 8, 0, Math.PI * 2);
+                ctx.fill();
+
+                this.drawClassicBall(ctx, bx, by, r, 0);
+
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.7)";
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([4, 4]);
+
+                ctx.beginPath();
+                ctx.moveTo(bx - r + 4, by);
+                ctx.lineTo(bx + r - 4, by);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(bx, by - r + 4);
+                ctx.lineTo(bx, by + r - 4);
+                ctx.stroke();
+
+                ctx.setLineDash([]);
+                ctx.fillStyle = "rgba(0, 229, 183, 0.25)";
+                ctx.strokeStyle = "#00e5b7";
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(bx, by + (r * 0.45), 14, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.fillStyle = "#00e5b7";
+                ctx.font = "900 8.5px sans-serif";
+                ctx.textAlign = "center";
+                ctx.fillText("90'A VUR", bx, by + (r * 0.5) + 3);
+
+                ctx.restore();
+            },
+
+            drawFlyingBall: function(ctx) {
+                const b = this.ball;
+                ctx.save();
+                ctx.fillStyle = "rgba(0, 0, 0, 0.35)";
+                ctx.beginPath();
+                ctx.ellipse(b.x, b.y + (b.r * 1.2), b.r * 0.9, b.r * 0.35, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                this.drawClassicBall(ctx, b.x, b.y, b.r, b.rotation);
+                ctx.restore();
+            },
+
+            drawClassicBall: function(ctx, x, y, r, rot) {
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(rot);
+
+                ctx.fillStyle = "#ffffff";
+                ctx.beginPath();
+                ctx.arc(0, 0, r, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = "#cbd5e1";
+                ctx.lineWidth = Math.max(1, r * 0.08);
+                ctx.stroke();
+
+                ctx.fillStyle = "#0f172a";
+                ctx.beginPath();
+                const pr = r * 0.45;
+                for (let i = 0; i < 5; i++) {
+                    const a = (i * Math.PI * 2) / 5 - Math.PI / 2;
+                    const px = Math.cos(a) * pr;
+                    const py = Math.sin(a) * pr;
+                    if (i === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                }
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.strokeStyle = "#0f172a";
+                ctx.lineWidth = Math.max(1, r * 0.07);
+                for (let i = 0; i < 5; i++) {
+                    const a = (i * Math.PI * 2) / 5 - Math.PI / 2;
+                    const px = Math.cos(a) * pr;
+                    const py = Math.sin(a) * pr;
+                    const ox = Math.cos(a) * r;
+                    const oy = Math.sin(a) * r;
+                    ctx.beginPath();
+                    ctx.moveTo(px, py);
+                    ctx.lineTo(ox, oy);
+                    ctx.stroke();
+                }
+
+                ctx.restore();
+            }
+        };
+
+        window.openNssDuel = function(type = 'freekick', isPractice = false) {
+            NssDuel.start(type, isPractice);
+        };
+
+        window.closeNssDuel = function() {
+            NssDuel.close();
+        };
+
+        window.resetNssDuelPractice = function() {
+            NssDuel.start(NssDuel.duelType, true);
+        };
 
         // WhatsApp dialogue modals triggers
         function triggerWhatsAppChat(scenario) {
