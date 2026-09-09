@@ -15,6 +15,44 @@ const ANALYTICS = {
             localStorage.removeItem('rog_sheets_url');
         }
     },
+    formatEventName: function(evt) {
+        const map = {
+            "match_finished": "⚽ Maç Tamamlandı",
+            "week_advanced": "📅 Hafta İlerlemesi",
+            "car_purchased": "🏎️ Araba Satın Alımı",
+            "critical_money": "⚠️ Kritik Düşük Bakiye",
+            "critical_stamina": "⚠️ Aşırı Yorgunluk",
+            "season_end": "🏆 Sezon Sonu",
+            "test_connection": "🧪 Sistem Testi"
+        };
+        return map[evt] || evt;
+    },
+    formatEventDetails: function(evt, params) {
+        if (!params || typeof params !== "object") return String(params || "");
+        if (evt === "match_finished") {
+            const res = (params.myGoals > params.oppGoals) ? "Galibiyet" : (params.myGoals < params.oppGoals ? "Mağlubiyet" : "Beraberlik");
+            return `${res} (${params.myGoals}-${params.oppGoals}) vs ${params.opponent || "Rakip"}`;
+        }
+        if (evt === "car_purchased") {
+            return `${params.car || "Süper Araba"} alındı (-${(params.cost || 0).toLocaleString()} €) • Kalan: ${(params.remaining || 0).toLocaleString()} €`;
+        }
+        if (evt === "critical_money") {
+            return `Kritik Bakiye: Oyuncunun sadece ${(params.balance || 0).toLocaleString()} € parası kaldı!`;
+        }
+        if (evt === "critical_stamina") {
+            return `Aşırı Yorgunluk: Kondisyon %${params.stamina || 0} seviyesine indi!`;
+        }
+        if (evt === "week_advanced") {
+            return `Hafta ${params.week || 0} tamamlandı.`;
+        }
+        if (evt === "season_end") {
+            return `Sezon bitti. Yaş: ${params.age}, Sıralama: ${params.rank}.`;
+        }
+        if (evt === "test_connection") {
+            return params.message || "Test bağlantısı başarılı.";
+        }
+        return JSON.stringify(params);
+    },
     sendToGoogleSheets: function(payload) {
         const url = this.getSheetsUrl();
         if (!url || !url.startsWith("http")) return;
@@ -30,13 +68,13 @@ const ANALYTICS = {
                 money: typeof payload.money !== "undefined" ? payload.money : (p.money || 0),
                 stamina: typeof payload.stamina !== "undefined" ? payload.stamina : (p.kondisyon || 0),
                 rating: typeof payload.rating !== "undefined" ? payload.rating : (p.rating || 0),
-                event: payload.event || "",
-                details: typeof payload.params === "object" ? JSON.stringify(payload.params) : String(payload.params || "")
+                event: this.formatEventName(payload.event),
+                details: this.formatEventDetails(payload.event, payload.params)
             };
             fetch(url, {
                 method: "POST",
                 mode: "no-cors",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
                 body: JSON.stringify(rowData)
             }).catch(() => {});
         } catch(e) {}
