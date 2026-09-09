@@ -16053,7 +16053,7 @@ function afterWeekAdvanced() {
 
             aimAngle: 0,
             aimDirection: 1,
-            aimSpeed: 0.035,
+            aimSpeed: 0.011,
             lockedAimX: null,
 
             ballScreen: { x: 190, y: 215, r: 42 },
@@ -16162,12 +16162,12 @@ function afterWeekAdvanced() {
 
                 if (this.stage === 1) {
                     this.stage = 2;
-                    this.lockedAimX = 190 + Math.sin(this.aimAngle) * 160;
-                    this.lockedAimX = Math.max(70, Math.min(310, this.lockedAimX));
+                    this.lockedAimX = 190 + Math.sin(this.aimAngle) * 165;
+                    this.lockedAimX = Math.max(75, Math.min(305, this.lockedAimX));
 
                     const instrEl = document.getElementById("nss-duel-instruction");
                     if (instrEl) {
-                        instrEl.innerText = "⚽ AŞAMA 2: Falso ve yükseklik için TOPA DOKUN! (Altı: Yüksek/90, Yanı: Falso)";
+                        instrEl.innerText = "⚽ AŞAMA 2: Falso & Yükseklik için TOPA DOKUN! (Alt: 90'a As, Üst: Yerden, Yan: Falso)";
                         instrEl.style.color = "#f59e0b";
                     }
 
@@ -16201,31 +16201,50 @@ function afterWeekAdvanced() {
                     this.ball.r = 22;
                     this.ball.progress = 0;
 
-                    this.ball.curveOffset = -hitX * 55;
-                    this.ball.targetX = this.lockedAimX + (-hitX * 35);
-                    this.ball.spinSpeed = -hitX * 0.25;
+                    // Lateral spin & curve:
+                    // Hitting left side (hitX < 0) -> curves to the right
+                    // Hitting right side (hitX > 0) -> curves to the left
+                    this.ball.curveOffset = -hitX * 52;
+                    this.ball.targetX = this.lockedAimX + (-hitX * 32);
+                    this.ball.targetX = Math.max(65, Math.min(315, this.ball.targetX));
+                    this.ball.spinSpeed = -hitX * 0.22;
 
-                    if (hitY < -0.75) {
-                        this.ball.targetY = 28;
+                    // Vertical height & flight physics:
+                    // hitY > 0 means user touched BELOW the center of the ball (boot under the ball -> lifts UP!)
+                    // hitY < 0 means user touched ABOVE the center of the ball (boot on top of ball -> drives DOWN!)
+                    if (hitY > 0.72) {
+                        // Extreme bottom strike -> sky ball / over crossbar (Aut)
+                        this.ball.targetY = 28; // above crossbar (top is 55)
                         this.ball.arcHeight = 65;
-                    } else if (hitY > 0.35) {
-                        this.ball.targetY = 124;
-                        this.ball.arcHeight = 12;
+                    } else if (hitY >= 0.20) {
+                        // Sweet spot for 90 & upper corners! (hitY 0.20 to 0.72)
+                        const norm = (hitY - 0.20) / 0.52; // 0.0 to 1.0
+                        this.ball.targetY = 82 - (norm * 24); // from 82 down to 58 (exact 90 level!)
+                        this.ball.arcHeight = 35 + (norm * 14); // 35 to 49
+                    } else if (hitY >= -0.20) {
+                        // Dead center strike -> powerful mid-height driven shot
+                        const norm = (hitY + 0.20) / 0.40; // 0.0 to 1.0
+                        this.ball.targetY = 108 - (norm * 22); // 108 down to 86
+                        this.ball.arcHeight = 18 + (norm * 8);
+                    } else if (hitY >= -0.75) {
+                        // Top of ball strike -> driven along the turf / ground shot
+                        this.ball.targetY = 124; // grass level (ground is 130)
+                        this.ball.arcHeight = 8;
                     } else {
-                        const norm = (hitY + 0.75) / 1.1;
-                        this.ball.targetY = 60 + norm * 48;
-                        this.ball.arcHeight = 40;
+                        // Extreme top strike -> scuffed ground roller
+                        this.ball.targetY = 127;
+                        this.ball.arcHeight = 2;
                     }
 
                     const playerShoot = (window.GAME && GAME.state && GAME.state.shooting) || 65;
                     const keeperRoll = Math.random();
-                    const predictsCorrect = (keeperRoll < (0.52 - (playerShoot / 320)));
+                    const predictsCorrect = (keeperRoll < (0.48 - (playerShoot / 350)));
                     if (predictsCorrect) {
-                        this.keeper.diveTargetX = this.ball.targetX + (Math.random() * 20 - 10);
-                        this.keeper.diveTargetY = Math.min(125, Math.max(65, this.ball.targetY));
+                        this.keeper.diveTargetX = this.ball.targetX + (Math.random() * 16 - 8);
+                        this.keeper.diveTargetY = Math.min(125, Math.max(68, this.ball.targetY));
                     } else {
-                        this.keeper.diveTargetX = (this.ball.targetX > 190) ? 120 : 260;
-                        this.keeper.diveTargetY = 95;
+                        this.keeper.diveTargetX = (this.ball.targetX > 190) ? 125 : 255;
+                        this.keeper.diveTargetY = 98;
                     }
 
                     if (typeof SoundManager !== "undefined" && typeof SoundManager.playKickShot === "function") {
@@ -16240,11 +16259,11 @@ function afterWeekAdvanced() {
             update: function(now) {
                 if (this.stage === 1) {
                     this.aimAngle += this.aimSpeed * this.aimDirection;
-                    if (this.aimAngle > 0.52) {
-                        this.aimAngle = 0.52;
+                    if (this.aimAngle > 0.60) {
+                        this.aimAngle = 0.60;
                         this.aimDirection = -1;
-                    } else if (this.aimAngle < -0.52) {
-                        this.aimAngle = -0.52;
+                    } else if (this.aimAngle < -0.60) {
+                        this.aimAngle = -0.60;
                         this.aimDirection = 1;
                     }
                 } else if (this.stage === 3) {
@@ -16295,8 +16314,10 @@ function afterWeekAdvanced() {
                     (Math.abs(by - g.top) < 9 && bx >= g.left && bx <= g.right)
                 );
 
+                const isTrue90 = inGoalX && inGoalY && ((bx <= g.left + 28) || (bx >= g.right - 28)) && (by <= g.top + 22);
                 const distToKeeper = Math.sqrt(Math.pow(bx - this.keeper.x, 2) + Math.pow(by - this.keeper.y, 2));
-                const isSaved = inGoalX && inGoalY && (distToKeeper < this.keeper.reach);
+                const effectiveReach = isTrue90 ? 16 : this.keeper.reach;
+                const isSaved = inGoalX && inGoalY && (distToKeeper < effectiveReach);
 
                 let isGoal = inGoalX && inGoalY && !isSaved && !isHitPost && !isSkyBall;
 
@@ -16310,12 +16331,12 @@ function afterWeekAdvanced() {
                 if (isGoal) {
                     bannerEl.style.background = "linear-gradient(135deg, #059669 0%, #10b981 100%)";
                     bannerEl.style.color = "#ffffff";
-                    bannerEl.innerText = "⚽ GOOOOOOL! (90'A ASTIN!) 🔥";
-                    if (instrEl) instrEl.innerText = "Şapka çıkarılacak muazzam bir vuruş!";
+                    bannerEl.innerText = isTrue90 ? "🎯 90'A ASILDI! ÇATALDAKI AĞLARI ALDIN! 🔥" : "⚽ GOOOOOOL! HARİKA VURUŞ! 🔥";
+                    if (instrEl) instrEl.innerText = isTrue90 ? "Kusursuz falso ve mükemmel 90! Kaleci çaresiz kaldı." : "Top ağlarla buluştu!";
 
                     resultComment = (this.duelType === 'penalty') ?
                         "GOOOL! Soğukkanlılıkla köşeyi seçtin, kaleciyi ters köşeye yatırarak penaltıyı gole çevirdin!" :
-                        "MÜTHİŞ FRİKİK GOLÜ! Top barajı aşıp tam 90'a adeta asıldı! Kaleci sadece izleyebildi!";
+                        (isTrue90 ? "MÜTHİŞ FRİKİK GOLÜ! Top barajı aşıp tam 90'a adeta asıldı! Kaleci sadece izleyebildi!" : "GOOOL! Falsolu nefis bir serbest vuruşla topu ağlara yolladın!");
 
                     if (typeof SoundManager !== "undefined") {
                         if (typeof SoundManager.playNetSwish === "function") SoundManager.playNetSwish();
@@ -16349,7 +16370,7 @@ function afterWeekAdvanced() {
                     bannerEl.style.background = "linear-gradient(135deg, #475569 0%, #64748b 100%)";
                     bannerEl.style.color = "#ffffff";
                     bannerEl.innerText = isSkyBall ? "💨 DAĞLARA TAŞLARA! (Üstten Aut)" : "❌ AUTA GİTTİ!";
-                    if (instrEl) instrEl.innerText = isSkyBall ? "Topun çok fazla altına vurdun!" : "Falso fazla kaçtı, yandan dışarı!";
+                    if (instrEl) instrEl.innerText = isSkyBall ? "Topun çok fazla altına vurdun, üstten dışarı!" : "Falso fazla kaçtı, yandan dışarı!";
                     resultComment = isSkyBall ?
                         "Topun altına çok sert girdin, top üstten stadyumun çatısına fırladı!" :
                         "Frikik falsolu gitti ama direğin yanından auta çıktı.";
@@ -16535,7 +16556,7 @@ function afterWeekAdvanced() {
             drawAimArrow: function(ctx) {
                 const originX = 190;
                 const originY = 220;
-                const length = 150;
+                const length = 155;
 
                 const targetX = originX + Math.sin(this.aimAngle) * length;
                 const targetY = originY - Math.cos(this.aimAngle) * length;
@@ -16556,6 +16577,16 @@ function afterWeekAdvanced() {
                 ctx.fill();
                 ctx.strokeStyle = "#ffffff";
                 ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Crosshair reticle inside aim dot
+                ctx.strokeStyle = "#022c22";
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(targetX - 5, targetY);
+                ctx.lineTo(targetX + 5, targetY);
+                ctx.moveTo(targetX, targetY - 5);
+                ctx.lineTo(targetX, targetY + 5);
                 ctx.stroke();
 
                 this.drawClassicBall(ctx, originX, originY, 18, 0);
@@ -16587,7 +16618,8 @@ function afterWeekAdvanced() {
 
                 this.drawClassicBall(ctx, bx, by, r, 0);
 
-                ctx.strokeStyle = "rgba(255, 255, 255, 0.7)";
+                // Dashed cross lines
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.65)";
                 ctx.lineWidth = 1.5;
                 ctx.setLineDash([4, 4]);
 
@@ -16602,7 +16634,15 @@ function afterWeekAdvanced() {
                 ctx.stroke();
 
                 ctx.setLineDash([]);
-                ctx.fillStyle = "rgba(0, 229, 183, 0.25)";
+
+                // Top Area Label (Yerden)
+                ctx.fillStyle = "rgba(255, 255, 255, 0.75)";
+                ctx.font = "800 8px sans-serif";
+                ctx.textAlign = "center";
+                ctx.fillText("YERDEN", bx, by - (r * 0.45) + 3);
+
+                // Bottom Target Circle: 90'a As (Sweet spot for lift & top corners!)
+                ctx.fillStyle = "rgba(0, 229, 183, 0.28)";
                 ctx.strokeStyle = "#00e5b7";
                 ctx.lineWidth = 2;
                 ctx.beginPath();
@@ -16611,9 +16651,29 @@ function afterWeekAdvanced() {
                 ctx.stroke();
 
                 ctx.fillStyle = "#00e5b7";
-                ctx.font = "900 8.5px sans-serif";
+                ctx.font = "900 8px sans-serif";
                 ctx.textAlign = "center";
-                ctx.fillText("90'A VUR", bx, by + (r * 0.5) + 3);
+                ctx.fillText("90'A AS", bx, by + (r * 0.45) + 3);
+
+                // Side curve indicators
+                ctx.fillStyle = "#38bdf8";
+                ctx.font = "800 7.5px sans-serif";
+                ctx.textAlign = "center";
+                ctx.fillText("↶ FALSO", bx - (r * 0.58), by + 3);
+                ctx.fillText("FALSO ↷", bx + (r * 0.58), by + 3);
+
+                // If user clicked, highlight the exact touch point with glowing marker
+                if (this.stage >= 3 && this.strikePoint) {
+                    const spX = bx + (this.strikePoint.x * r);
+                    const spY = by + (this.strikePoint.y * r);
+                    ctx.fillStyle = "#ef4444";
+                    ctx.strokeStyle = "#ffffff";
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.arc(spX, spY, 5, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+                }
 
                 ctx.restore();
             },
