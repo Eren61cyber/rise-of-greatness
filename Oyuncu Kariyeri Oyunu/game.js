@@ -53,6 +53,73 @@ const ANALYTICS = {
         }
         return JSON.stringify(params);
     },
+    getPendingQueue: function() {
+        try {
+            return JSON.parse(localStorage.getItem('rog_pending_telemetry') || '[]');
+        } catch(e) {
+            return [];
+        }
+    },
+    savePendingQueue: function(queue) {
+        try {
+            if (queue.length > 150) queue = queue.slice(-150);
+            localStorage.setItem('rog_pending_telemetry', JSON.stringify(queue));
+        } catch(e) {}
+    },
+    isFlushing: false,
+    flushQueue: function() {
+        if (this.isFlushing) return;
+        const url = this.getSheetsUrl();
+        if (!url || !url.startsWith("http")) return;
+        if (typeof navigator !== "undefined" && navigator.onLine === false) return;
+
+        const queue = this.getPendingQueue();
+        if (!queue || queue.length === 0) return;
+
+        this.isFlushing = true;
+
+        const sendNext = () => {
+            const currentQueue = this.getPendingQueue();
+            if (!currentQueue || currentQueue.length === 0) {
+                this.isFlushing = false;
+                return;
+            }
+            const item = currentQueue[0];
+            const jsonStr = JSON.stringify(item);
+
+            fetch(url, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/x-www-form-urlencoded;charset=utf-8" },
+                body: "data=" + encodeURIComponent(jsonStr)
+            }).then(() => {
+                const q = this.getPendingQueue();
+                q.shift();
+                this.savePendingQueue(q);
+                setTimeout(sendNext, 350);
+            }).catch(() => {
+                this.isFlushing = false;
+            });
+        };
+
+        sendNext();
+    },
+    init: function() {
+        if (typeof window !== "undefined") {
+            window.addEventListener('online', () => {
+                this.flushQueue();
+            });
+            window.addEventListener('focus', () => {
+                this.flushQueue();
+            });
+            setInterval(() => {
+                this.flushQueue();
+            }, 60000);
+            setTimeout(() => {
+                this.flushQueue();
+            }, 2500);
+        }
+    },
     sendToGoogleSheets: function(payload) {
         const url = this.getSheetsUrl();
         if (!url || !url.startsWith("http")) return;
@@ -71,13 +138,10 @@ const ANALYTICS = {
                 event: this.formatEventName(payload.event),
                 details: this.formatEventDetails(payload.event, payload.params)
             };
-            const jsonStr = JSON.stringify(rowData);
-            fetch(url, {
-                method: "POST",
-                mode: "no-cors",
-                headers: { "Content-Type": "application/x-www-form-urlencoded;charset=utf-8" },
-                body: "data=" + encodeURIComponent(jsonStr)
-            }).catch(() => {});
+            const queue = this.getPendingQueue();
+            queue.push(rowData);
+            this.savePendingQueue(queue);
+            this.flushQueue();
         } catch(e) {}
     },
     logEvent: function(eventName, params = {}) {
@@ -118,7 +182,10 @@ const ANALYTICS = {
         this.logEvent('economy_' + flowType.toLowerCase(), { currency, amount, itemType, itemId });
     }
 };
-if (typeof window !== "undefined") window.ANALYTICS = ANALYTICS;
+if (typeof window !== "undefined") {
+    window.ANALYTICS = ANALYTICS;
+    try { ANALYTICS.init(); } catch(e) {}
+}
 
 const GAME = {
     state: {
