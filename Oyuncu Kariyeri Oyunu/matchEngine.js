@@ -2276,12 +2276,20 @@ const MatchEngine = {
         }
     },
 
-    makeChoice: function(optionIdx) {
+    makeChoice: function(optionIdx, timingResult = "GOOD") {
         if (!this.activeChoice || !this.activeChoice.options[optionIdx]) return;
 
         let opt = this.activeChoice.options[optionIdx];
         let rand = Math.random();
-        let success = rand < opt.successChance;
+
+        let successChance = opt.successChance;
+        if (timingResult === "PERFECT") {
+            successChance = Math.max(0.95, successChance + 0.40);
+        } else if (timingResult === "POOR") {
+            successChance = Math.min(0.18, successChance * 0.3);
+        }
+
+        let success = rand < successChance;
         
         let previousGoals = this.playerStats.goals;
         let previousAssists = this.playerStats.assists;
@@ -2289,8 +2297,14 @@ const MatchEngine = {
         let resultComment = "";
         if (success) {
             resultComment = opt.onSuccess();
+            if (timingResult === "PERFECT") {
+                resultComment = `🔥 [MÜKEMMEL VURUŞ!] ` + resultComment;
+            }
         } else {
             resultComment = opt.onFail();
+            if (timingResult === "POOR") {
+                resultComment = `❌ [ZAMANLAMA HATASI!] ` + resultComment;
+            }
         }
 
         // Display results in commentary
@@ -2415,6 +2429,10 @@ const MatchEngine = {
                 self.resumeTick();
             }, 3000 / this.currentSpeed);
         }
+    },
+
+    makeChoiceWithTiming: function(optionIdx, timingResult) {
+        this.makeChoice(optionIdx, timingResult);
     },
 
     resumeTick: function() {

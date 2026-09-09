@@ -1233,6 +1233,43 @@
                 </div>
             </div>
 
+            <!-- Interactive Shot Timing / Sweet Spot Meter Card -->
+            <div id="match-timing-card" style="display: none; padding: 16px; margin-bottom: 10px; background: linear-gradient(180deg, #0b1329 0%, #030712 100%); border: 2px solid #00e5b7; border-radius: 16px; box-shadow: 0 10px 35px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 229, 183, 0.25); text-align: center; animation: fadeIn 0.2s ease; user-select: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <div style="background: linear-gradient(90deg, #00e5b7, #38bdf8); color: #020617; font-size: 10.5px; font-weight: 900; padding: 4px 10px; border-radius: 6px; letter-spacing: 0.8px; text-transform: uppercase;" id="timing-badge">⚡ VURUŞ ZAMANLAMASI</div>
+                    <div style="font-size: 11px; font-weight: 800; color: #94a3b8;" id="timing-stat-hint">ŞUT: 78</div>
+                </div>
+                <div id="timing-action-title" style="font-size: 14px; font-weight: 800; color: #f8fafc; margin-bottom: 4px;">Kaleyi Gör ve Sert Vur!</div>
+                <div style="font-size: 11px; color: #94a3b8; margin-bottom: 12px;">İbre tam yeşil alandayken ekrana veya butona dokun!</div>
+
+                <!-- Timing Track Bar -->
+                <div id="timing-bar-track" style="position: relative; width: 100%; height: 28px; background: #0f172a; border-radius: 14px; border: 2px solid rgba(255,255,255,0.2); overflow: hidden; box-shadow: inset 0 2px 8px rgba(0,0,0,0.8); margin-bottom: 14px; cursor: pointer;">
+                    <!-- Red left zone -->
+                    <div style="position: absolute; left: 0; top: 0; width: 25%; height: 100%; background: linear-gradient(90deg, rgba(239,68,68,0.75), rgba(239,68,68,0.35));"></div>
+                    <!-- Yellow left zone -->
+                    <div style="position: absolute; left: 25%; top: 0; width: 15%; height: 100%; background: linear-gradient(90deg, rgba(245,158,11,0.5), rgba(245,158,11,0.85));"></div>
+                    <!-- Green Sweet Spot center zone (Dynamic width & position based on skill) -->
+                    <div id="timing-sweet-spot" style="position: absolute; left: 40%; top: 0; width: 20%; height: 100%; background: linear-gradient(90deg, #00e5b7, #10b981); box-shadow: 0 0 15px rgba(0,229,183,0.85); border-left: 2px solid #fff; border-right: 2px solid #fff; display: flex; align-items: center; justify-content: center;">
+                        <span style="font-size: 9px; font-weight: 900; color: #022c22; letter-spacing: 0.5px;">SWEET SPOT</span>
+                    </div>
+                    <!-- Yellow right zone -->
+                    <div style="position: absolute; left: 60%; top: 0; width: 15%; height: 100%; background: linear-gradient(90deg, rgba(245,158,11,0.85), rgba(245,158,11,0.5));"></div>
+                    <!-- Red right zone -->
+                    <div style="position: absolute; left: 75%; top: 0; width: 25%; height: 100%; background: linear-gradient(90deg, rgba(239,68,68,0.35), rgba(239,68,68,0.75));"></div>
+
+                    <!-- Oscillating Needle / Indicator -->
+                    <div id="timing-needle" style="position: absolute; left: 50%; top: -2px; width: 6px; height: 32px; background: #ffffff; border-radius: 3px; transform: translateX(-50%); box-shadow: 0 0 12px #fff, 0 0 20px #00e5b7; pointer-events: none; z-index: 10;"></div>
+                </div>
+
+                <!-- Big Touch Hit Button -->
+                <button id="btn-timing-strike" class="btn" style="width: 100%; padding: 14px; font-size: 15px; font-weight: 900; letter-spacing: 1px; border-radius: 12px; background: linear-gradient(135deg, #00e5b7 0%, #059669 100%); color: #022c22; border: none; box-shadow: 0 4px 20px rgba(0,229,183,0.4); cursor: pointer; text-transform: uppercase;">
+                    ⚽ VUR / HAREKETİ YAP!
+                </button>
+
+                <!-- Feedback Toast (Mükemmel / İyi / Kötü) -->
+                <div id="timing-feedback" style="display: none; margin-top: 10px; font-size: 13.5px; font-weight: 900; letter-spacing: 0.5px;"></div>
+            </div>
+
 
             <!-- Interactive Match Continue / Goal Pause Banner -->
             <div id="match-continue-banner" class="glass" style="display: none; padding: 14px 18px; margin-bottom: 10px; border: 2px solid #00e5b7; background: linear-gradient(135deg, rgba(0,229,183,0.18), rgba(4,20,14,0.9)); border-radius: 12px; box-shadow: 0 4px 25px rgba(0, 229, 183, 0.35); align-items: center; justify-content: space-between; gap: 12px; animation: pulse 1.8s infinite;">
@@ -15973,9 +16010,181 @@ function afterWeekAdvanced() {
         }
 
 
+        // Interactive Shot & Action Timing Meter System
+        let timingAnimFrame = null;
+        let timingActive = false;
+        let currentTimingOptionIdx = null;
+        let timingStartTime = 0;
+        let timingNeedlePos = 50; // 0 to 100
+        let timingSweetSpotRange = { min: 40, max: 60 };
+
         function chooseMatchOption(optionIdx) {
-            document.getElementById("match-decision-card").style.display = "none";
-            MatchEngine.makeChoice(optionIdx);
+            openTimingMeter(optionIdx);
+        }
+
+        function openTimingMeter(optionIdx) {
+            currentTimingOptionIdx = optionIdx;
+            const choiceData = MatchEngine && MatchEngine.activeChoice;
+            if (!choiceData || !choiceData.options || !choiceData.options[optionIdx]) {
+                const decCard = document.getElementById("match-decision-card");
+                if (decCard) decCard.style.display = "none";
+                MatchEngine.makeChoice(optionIdx);
+                return;
+            }
+
+            const opt = choiceData.options[optionIdx];
+            const decCard = document.getElementById("match-decision-card");
+            const timingCard = document.getElementById("match-timing-card");
+            const feedback = document.getElementById("timing-feedback");
+            const strikeBtn = document.getElementById("btn-timing-strike");
+
+            if (!timingCard) {
+                if (decCard) decCard.style.display = "none";
+                MatchEngine.makeChoice(optionIdx);
+                return;
+            }
+
+            decCard.style.display = "none";
+            timingCard.style.display = "block";
+            if (feedback) feedback.style.display = "none";
+            if (strikeBtn) strikeBtn.disabled = false;
+
+            // Detect action type
+            const rawText = (opt.text || "").toLowerCase();
+            let badgeText = "⚡ VURUŞ ZAMANLAMASI";
+            let btnText = "⚽ VURUŞU YAP!";
+            let relevantStat = (window.GAME && GAME.state && GAME.state.shooting) || 60;
+            let statLabel = "ŞUT: " + relevantStat;
+
+            if (rawText.includes("pas") || rawText.includes("orta") || rawText.includes("kaçır") || rawText.includes("al da at")) {
+                badgeText = "🎯 PAS ZAMANLAMASI";
+                btnText = "👟 PASI ÇIKAR!";
+                relevantStat = (window.GAME && GAME.state && GAME.state.passing) || 60;
+                statLabel = "PAS: " + relevantStat;
+            } else if (rawText.includes("çalım") || rawText.includes("sakla") || rawText.includes("hız") || rawText.includes("depar")) {
+                badgeText = "⚡ ÇALIM & HIZ ZAMANLAMASI";
+                btnText = "💨 ÇALIMI AT!";
+                relevantStat = (window.GAME && GAME.state && (GAME.state.speed || GAME.state.dribbling)) || 60;
+                statLabel = "HIZ: " + relevantStat;
+            } else if (rawText.includes("kay") || rawText.includes("kap") || rawText.includes("müdahale") || rawText.includes("savunma")) {
+                badgeText = "🛡️ MÜDAHALE ZAMANLAMASI";
+                btnText = "🛑 TOPU KAP!";
+                relevantStat = (window.GAME && GAME.state && (GAME.state.defense || GAME.state.physical)) || 60;
+                statLabel = "SAVUNMA: " + relevantStat;
+            }
+
+            const badgeEl = document.getElementById("timing-badge");
+            const titleEl = document.getElementById("timing-action-title");
+            const hintEl = document.getElementById("timing-stat-hint");
+            if (badgeEl) badgeEl.innerText = badgeText;
+            if (titleEl) titleEl.innerText = opt.text || "Aksiyon Seçildi";
+            if (hintEl) hintEl.innerText = statLabel;
+            if (strikeBtn) strikeBtn.innerText = btnText;
+
+            // Calculate Sweet Spot width based on stat (Rating 40 -> 14% width, Rating 99 -> 26% width)
+            const sweetWidth = Math.min(26, Math.max(13, Math.round(10 + (relevantStat / 100) * 16)));
+            const sweetLeft = Math.round((100 - sweetWidth) / 2);
+            timingSweetSpotRange = { min: sweetLeft, max: sweetLeft + sweetWidth };
+
+            const sweetEl = document.getElementById("timing-sweet-spot");
+            if (sweetEl) {
+                sweetEl.style.left = sweetLeft + "%";
+                sweetEl.style.width = sweetWidth + "%";
+            }
+
+            // Reset needle styling
+            const needleEl = document.getElementById("timing-needle");
+            if (needleEl) {
+                needleEl.style.boxShadow = "0 0 12px #fff, 0 0 20px #00e5b7";
+            }
+
+            // Start Needle Animation (Sinusoidal swing between 2% and 98%)
+            timingActive = true;
+            timingStartTime = performance.now();
+            const cycleDuration = 700; // ms for one back-and-forth cycle
+
+            function animateNeedle(now) {
+                if (!timingActive) return;
+                const elapsed = now - timingStartTime;
+                const normalized = (Math.sin((elapsed / cycleDuration) * Math.PI * 2 - Math.PI / 2) + 1) / 2;
+                timingNeedlePos = 2 + normalized * 96; // 2% to 98%
+                if (needleEl) needleEl.style.left = timingNeedlePos + "%";
+
+                // Timeout safety: after 4.5s of no tap, auto-fire
+                if (elapsed > 4500) {
+                    triggerTimingStrike();
+                    return;
+                }
+
+                timingAnimFrame = requestAnimationFrame(animateNeedle);
+            }
+
+            if (timingAnimFrame) cancelAnimationFrame(timingAnimFrame);
+            timingAnimFrame = requestAnimationFrame(animateNeedle);
+
+            // Bind click to button and track bar
+            if (strikeBtn) strikeBtn.onclick = triggerTimingStrike;
+            const trackEl = document.getElementById("timing-bar-track");
+            if (trackEl) trackEl.onclick = triggerTimingStrike;
+        }
+
+        function triggerTimingStrike() {
+            if (!timingActive) return;
+            timingActive = false;
+            if (timingAnimFrame) cancelAnimationFrame(timingAnimFrame);
+
+            const pos = timingNeedlePos;
+            const { min, max } = timingSweetSpotRange;
+            const strikeBtn = document.getElementById("btn-timing-strike");
+            const feedback = document.getElementById("timing-feedback");
+            const needleEl = document.getElementById("timing-needle");
+            if (strikeBtn) strikeBtn.disabled = true;
+
+            let timingResult = "GOOD";
+            let feedbackText = "👍 İYİ VURUŞ!";
+            let feedbackColor = "#f59e0b";
+
+            // Check zones
+            if (pos >= min && pos <= max) {
+                timingResult = "PERFECT";
+                feedbackText = "🔥 MÜKEMMEL VURUŞ! (90'A ASILDI!)";
+                feedbackColor = "#00e5b7";
+                if (typeof SoundManager !== "undefined" && typeof SoundManager.playWhistle === "function") {
+                    try { SoundManager.playWhistle(); } catch(e){}
+                }
+                if (navigator.vibrate) {
+                    try { navigator.vibrate([40, 30, 40]); } catch(e){}
+                }
+            } else if (pos < (min - 14) || pos > (max + 14)) {
+                timingResult = "POOR";
+                feedbackText = "❌ ZAMANLAMA HATASI! (Top ayağa oturmadı)";
+                feedbackColor = "#ef4444";
+                if (navigator.vibrate) {
+                    try { navigator.vibrate(30); } catch(e){}
+                }
+            } else {
+                timingResult = "GOOD";
+                feedbackText = "⚡ İYİ ZAMANLAMA!";
+                feedbackColor = "#f59e0b";
+            }
+
+            if (feedback) {
+                feedback.style.display = "block";
+                feedback.style.color = feedbackColor;
+                feedback.innerText = feedbackText;
+            }
+
+            // Freeze needle and flash
+            if (needleEl) {
+                needleEl.style.boxShadow = `0 0 25px ${feedbackColor}, 0 0 10px #fff`;
+            }
+
+            // Brief suspense pause, then resolve choice with MatchEngine
+            setTimeout(() => {
+                const timingCard = document.getElementById("match-timing-card");
+                if (timingCard) timingCard.style.display = "none";
+                MatchEngine.makeChoice(currentTimingOptionIdx, timingResult);
+            }, 550);
         }
 
         // WhatsApp dialogue modals triggers
