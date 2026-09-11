@@ -16259,6 +16259,21 @@ const Nss3DEngine = {
     ambientLight: null,
     rimLight: null,
 
+    // Dynamic Opponent Context
+    currentOpponent: null,
+
+    // Broadcast Slow-Mo Replay State
+    replay: {
+        active: false,
+        progress: 0.65,
+        speed: 0.007,
+        timer: 0,
+        isTrue90: false,
+        resultComment: "",
+        origCamPos: null,
+        origCamTarget: null
+    },
+
     // Aiming State (3D Coordinates on the goal line)
     aim: {
         angle: 0,
@@ -16275,7 +16290,7 @@ const Nss3DEngine = {
     // Ball Flight State
     ball: {
         startX: 0,
-        startY: 0.22,
+        startY: 0.26,
         startZ: 0,
         targetX: 0,
         targetY: 1.5,
@@ -16294,7 +16309,7 @@ const Nss3DEngine = {
 
     strikePoint: { x: 0, y: 0.45 }, // Lateral [-1, 1], Vertical [-1, 1]
 
-    // Goalkeeper AI
+    // Goalkeeper AI & Freeze Reaction
     keeper: {
         baseX: 0,
         baseY: 0,
@@ -16305,6 +16320,7 @@ const Nss3DEngine = {
         diveTargetX: 0,
         diveTargetY: 1.4,
         isDiving: false,
+        isFrozen: false, // Freeze reaction ("Gözleriyle izledi!")
         reach: 1.75,
         diveAngle: 0,
         idleBounce: 0
@@ -16329,7 +16345,7 @@ const Nss3DEngine = {
         pitch: null,
         ball: null,
         net: null,
-        wallJersey: null,
+        wallJerseys: [],
         keeperJersey: null,
         stadium: null
     },
@@ -16473,57 +16489,11 @@ const Nss3DEngine = {
         this.textures.net.wrapT = THREE.RepeatWrapping;
         this.textures.net.repeat.set(16, 8);
 
-        // 4. Wall Player Blue Jersey Textures with unique squad numbers (4, 5, 6, 8)
-        this.textures.wallJerseys = [];
-        [4, 5, 6, 8].forEach(num => {
-            const wCanvas = document.createElement("canvas");
-            wCanvas.width = 256;
-            wCanvas.height = 256;
-            const wCtx = wCanvas.getContext("2d");
-            wCtx.fillStyle = "#1d4ed8"; // Royal blue
-            wCtx.fillRect(0, 0, 256, 256);
-            wCtx.fillStyle = "#1e3a8a"; // Dark blue side stripes
-            wCtx.fillRect(0, 0, 48, 256);
-            wCtx.fillRect(208, 0, 48, 256);
-            // Chest sponsor & crest
-            wCtx.fillStyle = "#fbbf24";
-            wCtx.beginPath();
-            wCtx.arc(80, 70, 14, 0, Math.PI * 2);
-            wCtx.fill();
-            wCtx.fillStyle = "#ffffff";
-            wCtx.font = "900 22px sans-serif";
-            wCtx.textAlign = "center";
-            wCtx.fillText("EMIRATES", 128, 140);
-            // Bold Back Number
-            wCtx.font = "900 82px sans-serif";
-            wCtx.fillStyle = "#ffffff";
-            wCtx.fillText(String(num), 128, 230);
-            this.textures.wallJerseys.push(new THREE.CanvasTexture(wCanvas));
-        });
+        // 4. Initial Wall & Goalkeeper Kits
+        this.buildWallJerseys(this.currentOpponent);
+        this.buildKeeperJersey(this.currentOpponent);
 
-        // 5. Goalkeeper Neon Volt Green Jersey Texture (256x256)
-        const gCanvas = document.createElement("canvas");
-        gCanvas.width = 256;
-        gCanvas.height = 256;
-        const gCtx = gCanvas.getContext("2d");
-        gCtx.fillStyle = "#22c55e"; // Fluorescent volt green
-        gCtx.fillRect(0, 0, 256, 256);
-        // Dynamic black chevron shoulder pattern
-        gCtx.fillStyle = "#0f172a";
-        gCtx.beginPath();
-        gCtx.moveTo(0, 0);
-        gCtx.lineTo(256, 0);
-        gCtx.lineTo(128, 80);
-        gCtx.closePath();
-        gCtx.fill();
-        // Number 1
-        gCtx.fillStyle = "#ffffff";
-        gCtx.font = "900 84px sans-serif";
-        gCtx.textAlign = "center";
-        gCtx.fillText("1", 128, 210);
-        this.textures.keeperJersey = new THREE.CanvasTexture(gCanvas);
-
-        // 6. Stadium Grandstand Backdrop Texture (1024x256)
+        // 5. Stadium Grandstand Backdrop Texture (1024x256)
         const sCanvas = document.createElement("canvas");
         sCanvas.width = 1024;
         sCanvas.height = 256;
@@ -16554,6 +16524,125 @@ const Nss3DEngine = {
         this.textures.stadium = new THREE.CanvasTexture(sCanvas);
         this.textures.stadium.wrapS = THREE.RepeatWrapping;
         this.textures.stadium.repeat.x = -1; // Un-mirror text inside cylinder
+    },
+
+    // =========================================================================
+    // 👕 DYNAMIC OPPONENT KITS BUILDER (GALATASARAY, FENERBAHÇE, BEŞİKTAŞ VS.)
+    // =========================================================================
+    buildWallJerseys: function(opponent) {
+        const pColor = (opponent && opponent.color) || "#1d4ed8";
+        const sColor = (opponent && opponent.colorSec) || "#ffffff";
+        const teamName = ((opponent && opponent.name) || "").toLowerCase();
+
+        const isGalatasaray = teamName.includes("galatasaray");
+        const isFenerbahce = teamName.includes("fenerbah");
+        const isBesiktas = teamName.includes("beşiktaş") || teamName.includes("besiktas");
+        const isTrabzon = teamName.includes("trabzon");
+        const isStriped = isFenerbahce || isBesiktas || isTrabzon;
+
+        this.textures.wallJerseys = [];
+        [4, 5, 6, 8].forEach(num => {
+            const wCanvas = document.createElement("canvas");
+            wCanvas.width = 256;
+            wCanvas.height = 256;
+            const wCtx = wCanvas.getContext("2d");
+
+            if (isGalatasaray) {
+                // Parçalı Kit (Halves: Claret Red on Left, Vivid Gold on Right)
+                wCtx.fillStyle = pColor;
+                wCtx.fillRect(0, 0, 128, 256);
+                wCtx.fillStyle = sColor;
+                wCtx.fillRect(128, 0, 128, 256);
+            } else if (isStriped) {
+                // Classic Çubuklu Kit (Vertical stripes)
+                const stripeW = 32;
+                for (let sx = 0; sx < 256; sx += stripeW * 2) {
+                    wCtx.fillStyle = pColor;
+                    wCtx.fillRect(sx, 0, stripeW, 256);
+                    wCtx.fillStyle = sColor;
+                    wCtx.fillRect(sx + stripeW, 0, stripeW, 256);
+                }
+            } else {
+                // Modern base with dynamic side accent panels
+                wCtx.fillStyle = pColor;
+                wCtx.fillRect(0, 0, 256, 256);
+                wCtx.fillStyle = sColor;
+                wCtx.fillRect(0, 0, 48, 256);
+                wCtx.fillRect(208, 0, 48, 256);
+            }
+
+            // Chest Sponsor & Crest
+            wCtx.fillStyle = "#ffffff";
+            wCtx.strokeStyle = "rgba(0,0,0,0.4)";
+            wCtx.lineWidth = 3;
+            wCtx.font = "900 20px sans-serif";
+            wCtx.textAlign = "center";
+            wCtx.strokeText("SPONSOR", 128, 140);
+            wCtx.fillText("SPONSOR", 128, 140);
+
+            // Bold Back Squad Number with high contrast badge
+            wCtx.fillStyle = "rgba(0, 0, 0, 0.45)";
+            wCtx.beginPath();
+            wCtx.arc(128, 205, 46, 0, Math.PI * 2);
+            wCtx.fill();
+
+            wCtx.fillStyle = "#ffffff";
+            wCtx.font = "900 82px sans-serif";
+            wCtx.fillText(String(num), 128, 232);
+
+            const tex = new THREE.CanvasTexture(wCanvas);
+            this.textures.wallJerseys.push(tex);
+        });
+
+        // Update active wall player meshes if already instantiated
+        if (this.wallPlayers && this.wallPlayers.length > 0) {
+            this.wallPlayers.forEach((pGroup, idx) => {
+                pGroup.children.forEach(child => {
+                    if (child.geometry && child.geometry.type === "CylinderGeometry" && child.position.y > 1.2 && child.position.y < 1.5) {
+                        child.material.map = this.textures.wallJerseys[idx % this.textures.wallJerseys.length];
+                        child.material.needsUpdate = true;
+                    }
+                });
+            });
+        }
+    },
+
+    buildKeeperJersey: function(opponent) {
+        const pColor = (((opponent && opponent.color) || "#1d4ed8") + "").toLowerCase();
+        let keeperColor = "#22c55e"; // Volt neon green default
+        if (pColor.includes("22c55e") || pColor.includes("green") || pColor.includes("15803d") || pColor.includes("0d421d")) {
+            keeperColor = "#f97316"; // Neon orange
+        } else if (pColor.includes("a90432") || pColor.includes("red") || pColor.includes("ffff00")) {
+            keeperColor = "#06b6d4"; // Electric cyan
+        }
+
+        const gCanvas = document.createElement("canvas");
+        gCanvas.width = 256;
+        gCanvas.height = 256;
+        const gCtx = gCanvas.getContext("2d");
+        gCtx.fillStyle = keeperColor;
+        gCtx.fillRect(0, 0, 256, 256);
+
+        // Dynamic black chevron shoulder pattern
+        gCtx.fillStyle = "#0f172a";
+        gCtx.beginPath();
+        gCtx.moveTo(0, 0);
+        gCtx.lineTo(256, 0);
+        gCtx.lineTo(128, 80);
+        gCtx.closePath();
+        gCtx.fill();
+
+        // Number 1
+        gCtx.fillStyle = "#ffffff";
+        gCtx.font = "900 84px sans-serif";
+        gCtx.textAlign = "center";
+        gCtx.fillText("1", 128, 210);
+
+        this.textures.keeperJersey = new THREE.CanvasTexture(gCanvas);
+        if (this.keeperBody) {
+            this.keeperBody.material.map = this.textures.keeperJersey;
+            this.keeperBody.material.needsUpdate = true;
+        }
     },
 
     // =========================================================================
@@ -16647,7 +16736,9 @@ const Nss3DEngine = {
         if (strikeBtn) {
             strikeBtn.onclick = (e) => {
                 e.preventDefault();
-                if (this.stage === 1) {
+                if (this.replay.active) {
+                    this.skipReplay();
+                } else if (this.stage === 1) {
                     this.lockAim();
                 } else if (this.stage === 2) {
                     this.fireStrike(this.strikePoint.x, this.strikePoint.y);
@@ -16789,23 +16880,9 @@ const Nss3DEngine = {
         const skinTones = [0xe0a97a, 0xd4976a, 0x8d5524, 0xc68642];
         const hairColors = [0x171717, 0x2e1b12, 0x1f2937, 0x3d2314];
 
-        const jerseyMat = new THREE.MeshStandardMaterial({
-            map: this.textures.wallJersey,
-            roughness: 0.5
-        });
-        const shortsMat = new THREE.MeshStandardMaterial({
-            color: 0xffffff,
-            roughness: 0.6
-        });
-        const bootMat = new THREE.MeshStandardMaterial({
-            color: 0x0f172a,
-            roughness: 0.3
-        });
-        const shadowMat = new THREE.MeshBasicMaterial({
-            color: 0x000000,
-            transparent: true,
-            opacity: 0.5
-        });
+        const shortsMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.6 });
+        const bootMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.3 });
+        const shadowMat = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.5 });
 
         const playerXOffsets = [-1.35, -0.45, 0.45, 1.35];
 
@@ -16813,7 +16890,7 @@ const Nss3DEngine = {
             const pGroup = new THREE.Group();
 
             const jerseyMat = new THREE.MeshStandardMaterial({
-                map: (this.textures.wallJerseys && this.textures.wallJerseys[idx % this.textures.wallJerseys.length]) || this.textures.wallJersey,
+                map: (this.textures.wallJerseys && this.textures.wallJerseys[idx % this.textures.wallJerseys.length]) || null,
                 roughness: 0.5
             });
             const skinMat = new THREE.MeshStandardMaterial({
@@ -16884,7 +16961,7 @@ const Nss3DEngine = {
             this.wallPlayers.push(pGroup);
         });
 
-        this.wallGroup.position.set(0, 0, 9.15);
+        this.wallGroup.position.set(0.95, 0, 9.15);
         this.scene.add(this.wallGroup);
     },
 
@@ -16963,7 +17040,7 @@ const Nss3DEngine = {
         this.keeperShadow.position.set(0, 0.005, 0);
         this.keeperGroup.add(this.keeperShadow);
 
-        this.keeperGroup.position.set(0, 0, 24.3);
+        this.keeperGroup.position.set(-1.1, 0, 24.3);
         this.scene.add(this.keeperGroup);
     },
 
@@ -17011,7 +17088,7 @@ const Nss3DEngine = {
     // =========================================================================
     // 🎮 GAME LIFECYCLE & STAGE CONTROLLER
     // =========================================================================
-    start: function(type = 'freekick', practice = false) {
+    start: function(type = 'freekick', practice = false, opponent = null) {
         this.init();
         if (!this.canvas) return;
 
@@ -17019,6 +17096,7 @@ const Nss3DEngine = {
         this.isPractice = practice;
         this.duelType = type;
         this.stage = 1;
+        this.replay.active = false;
 
         const modal = document.getElementById("nss-duel-modal");
         const badge = document.getElementById("nss-duel-badge");
@@ -17041,9 +17119,16 @@ const Nss3DEngine = {
         const shootingStat = (window.GAME && GAME.state && GAME.state.shooting) || 75;
         if (statEl) statEl.innerText = "ŞUT: " + shootingStat;
 
+        // Dynamic Opponent Kit Integration
+        const opp = opponent || (window.MatchEngine && MatchEngine.teamOpponent) || { name: "Antrenman", color: "#1d4ed8", colorSec: "#ffffff" };
+        this.currentOpponent = opp;
+        this.buildWallJerseys(opp);
+        this.buildKeeperJersey(opp);
+
         // Position Goal, Wall, Keeper and Camera based on Free Kick vs Penalty
         if (type === 'penalty') {
-            if (badge) badge.innerText = "[ 90' KRİTİK PENALTI • 11.0 METRE • BİREBİR ]";
+            const oppTag = practice ? "BİREBİR" : (opp.name ? opp.name.toUpperCase() : "BİREBİR");
+            if (badge) badge.innerText = `[ 90' KRİTİK PENALTI vs ${oppTag} • 11.0 METRE ]`;
             this.goalGroup.position.set(0, 0, 11.0);
             this.wallGroup.visible = false;
             this.keeper.baseZ = 10.9;
@@ -17053,7 +17138,8 @@ const Nss3DEngine = {
             this.camera.lookAt(0, 1.35, 7.5);
             this.ball.targetZ = 11.0;
         } else {
-            if (badge) badge.innerText = "[ 90' SERBEST VURUŞ • 24.5 METRE • DUVAR: 4 KİŞİ ]";
+            const oppTag = practice ? "DUVAR: 4 KİŞİ" : (opp.name ? opp.name.toUpperCase() : "DUVAR: 4 KİŞİ");
+            if (badge) badge.innerText = `[ 90' SERBEST VURUŞ vs ${oppTag} • 24.5 METRE ]`;
             this.goalGroup.position.set(0, 0, 24.4);
             this.wallGroup.visible = true;
             this.wallGroup.position.set(0.95, 0, 9.15); // Authentic tactical wall covering right side
@@ -17088,11 +17174,13 @@ const Nss3DEngine = {
         this.ballTrailCount = 0;
 
         // Reset Keeper
-        this.keeperGroup.position.set(0, 0, this.keeper.baseZ);
+        this.keeperGroup.position.set(this.keeper.baseX, 0, this.keeper.baseZ);
         this.keeperGroup.rotation.set(0, 0, 0);
         this.keeperLeftArm.rotation.z = -0.55;
         this.keeperRightArm.rotation.z = 0.55;
+        if (this.keeperHead) this.keeperHead.rotation.set(0, 0, 0);
         this.keeper.isDiving = false;
+        this.keeper.isFrozen = false;
 
         // Reset Wall
         this.wallGroup.position.y = 0;
@@ -17135,6 +17223,11 @@ const Nss3DEngine = {
     },
 
     handleCanvasClick: function(e) {
+        if (this.replay.active) {
+            this.skipReplay();
+            return;
+        }
+
         const rect = this.canvas.getBoundingClientRect();
         const scaleX = this.W / rect.width;
         const scaleY = this.H / rect.height;
@@ -17179,7 +17272,7 @@ const Nss3DEngine = {
 
         // 3D Physics Trajectory Parameters
         this.ball.startX = 0;
-        this.ball.startY = 0.22;
+        this.ball.startY = 0.26;
         this.ball.startZ = 0;
 
         // Lateral Falso Displacement in meters (Magnus Curve)
@@ -17215,18 +17308,27 @@ const Nss3DEngine = {
             this.ball.arcHeight = 0.05;
         }
 
-        // Goalkeeper AI Prediction
+        // Goalkeeper AI & Freeze Reaction Decision
         const shootingStat = (window.GAME && GAME.state && GAME.state.shooting) || 75;
-        const keeperRoll = Math.random();
-        const predictsCorrect = (keeperRoll < (0.42 - (shootingStat / 380)));
+        const isHeadingTo90 = (Math.abs(this.ball.targetX) >= 2.2 && this.ball.targetY >= 1.7);
+        const freezeChance = isHeadingTo90 ? Math.min(0.55, 0.25 + (shootingStat / 250)) : 0;
 
-        if (predictsCorrect) {
-            this.keeper.diveTargetX = this.ball.targetX + (Math.random() * 0.6 - 0.3);
-            this.keeper.diveTargetY = Math.min(2.3, Math.max(0.4, this.ball.targetY));
+        if (Math.random() < freezeChance) {
+            // Goalkeeper is frozen in disbelief! Rooted to the spot!
+            this.keeper.isFrozen = true;
         } else {
-            // Dives wrong direction or too late
-            this.keeper.diveTargetX = (this.ball.targetX > 0) ? -2.2 : 2.2;
-            this.keeper.diveTargetY = 1.2;
+            this.keeper.isFrozen = false;
+            const keeperRoll = Math.random();
+            const predictsCorrect = (keeperRoll < (0.42 - (shootingStat / 380)));
+
+            if (predictsCorrect) {
+                this.keeper.diveTargetX = this.ball.targetX + (Math.random() * 0.6 - 0.3);
+                this.keeper.diveTargetY = Math.min(2.3, Math.max(0.4, this.ball.targetY));
+            } else {
+                // Dives wrong direction or too late
+                this.keeper.diveTargetX = (this.ball.targetX > this.keeper.baseX) ? (this.keeper.baseX - 1.8) : (this.keeper.baseX + 1.8);
+                this.keeper.diveTargetY = 1.2;
+            }
         }
     },
 
@@ -17235,6 +17337,41 @@ const Nss3DEngine = {
     // =========================================================================
     update: function(time) {
         const goalZ = (this.duelType === 'freekick') ? 24.4 : 11.0;
+
+        // Slow-Mo Broadcast Replay Playback
+        if (this.replay.active) {
+            this.replay.progress += this.replay.speed;
+            const p = Math.min(1.0, this.replay.progress);
+
+            const curZ = (1 - p) * this.ball.startZ + p * this.ball.targetZ;
+            const lateralFalso = Math.sin(p * Math.PI) * this.ball.falsoOffset;
+            const curX = (1 - p) * this.ball.startX + p * this.ball.targetX + lateralFalso;
+            const arcY = Math.sin(p * Math.PI) * this.ball.arcHeight;
+            const curY = (1 - p) * this.ball.startY + p * this.ball.targetY + arcY;
+
+            this.ballMesh.position.set(curX, curY, curZ);
+            this.ballMesh.rotation.x += this.ball.spinX * 0.35;
+            this.ballMesh.rotation.y += this.ball.spinY * 0.35;
+            this.ballMesh.rotation.z += this.ball.spinZ * 0.35;
+            this.ballShadow.position.set(curX, 0.005, curZ);
+
+            // Net Ripple Trigger in Slow-Mo
+            if (p >= 0.96 && !this.netRipple.active) {
+                this.netRipple.active = true;
+                this.netRipple.time = 0;
+                this.netRipple.hitX = Math.max(-3.5, Math.min(3.5, curX));
+                this.netRipple.hitY = Math.max(0.2, Math.min(2.3, curY));
+            }
+
+            if (p >= 1.0) {
+                this.replay.timer += 0.016;
+                if (this.replay.timer > 1.4) {
+                    this.endReplay();
+                }
+            }
+            this.updateNetPhysics();
+            return;
+        }
 
         if (this.stage === 1) {
             // Sweeping Reticle across the goal mouth
@@ -17254,7 +17391,7 @@ const Nss3DEngine = {
             // Goalkeeper idle bounce
             this.keeper.idleBounce = Math.sin(time * 0.006) * 0.04;
             this.keeperGroup.position.y = this.keeper.idleBounce;
-            this.keeperGroup.position.x = Math.sin(time * 0.003) * 0.25;
+            this.keeperGroup.position.x = this.keeper.baseX + Math.sin(time * 0.003) * 0.25;
 
             // Project 3D aim to 2D screen coordinates
             const p3 = new THREE.Vector3(this.aim.x, this.aim.y, goalZ);
@@ -17286,7 +17423,7 @@ const Nss3DEngine = {
 
             // Ball Ground Contact Shadow
             this.ballShadow.position.set(curX, 0.005, curZ);
-            const shadowScale = Math.max(0.4, 1.0 - (curY - 0.22) * 0.25);
+            const shadowScale = Math.max(0.4, 1.0 - (curY - 0.26) * 0.25);
             this.ballShadow.scale.set(shadowScale, shadowScale, 1);
 
             // Wall synchronized vertical jump (Free kick only)
@@ -17298,23 +17435,35 @@ const Nss3DEngine = {
                 this.wallGroup.position.y = 0;
             }
 
-            // Goalkeeper Dive Mechanics
+            // Goalkeeper Dive & Freeze Reaction Mechanics
             if (p > 0.28) {
-                const diveP = Math.min(1.0, (p - 0.28) / 0.72);
-                this.keeper.isDiving = true;
-                this.keeperGroup.position.x = (1 - diveP) * 0 + diveP * this.keeper.diveTargetX;
-                this.keeperGroup.position.y = (1 - diveP) * 0 + diveP * this.keeper.diveTargetY;
+                if (this.keeper.isFrozen) {
+                    // Keeper is rooted to turf in shock, only head rotates watching the ball fly into 90!
+                    this.keeperGroup.position.x = this.keeper.baseX;
+                    this.keeperGroup.position.y = -0.06; // slight shock buckle
+                    this.keeperGroup.rotation.z = 0;
+                    if (this.keeperHead) {
+                        const lookDirX = (this.ball.targetX - this.keeper.baseX) > 0 ? 0.65 : -0.65;
+                        this.keeperHead.rotation.y = lookDirX * Math.min(1.0, (p - 0.28) / 0.45);
+                        this.keeperHead.rotation.x = -0.45 * Math.min(1.0, (p - 0.28) / 0.45); // looks up
+                    }
+                } else {
+                    const diveP = Math.min(1.0, (p - 0.28) / 0.72);
+                    this.keeper.isDiving = true;
+                    this.keeperGroup.position.x = (1 - diveP) * this.keeper.baseX + diveP * this.keeper.diveTargetX;
+                    this.keeperGroup.position.y = (1 - diveP) * 0 + diveP * this.keeper.diveTargetY;
 
-                // Dynamic body tilt toward corner
-                const diveDir = (this.keeper.diveTargetX < 0) ? 1 : -1;
-                this.keeperGroup.rotation.z = (diveDir * Math.min(1.15, diveP * 1.35));
-                this.keeperLeftArm.rotation.z = -1.8;
-                this.keeperRightArm.rotation.z = 1.8;
+                    // Dynamic body tilt toward corner
+                    const diveDir = (this.keeper.diveTargetX < this.keeper.baseX) ? 1 : -1;
+                    this.keeperGroup.rotation.z = (diveDir * Math.min(1.15, diveP * 1.35));
+                    this.keeperLeftArm.rotation.z = -1.8;
+                    this.keeperRightArm.rotation.z = 1.8;
+                }
             }
 
             // Dynamic Forward Camera Tracking (EA Sports FC / Score! Hero sensation)
-            const baseCamZ = (this.duelType === 'freekick') ? -2.6 : -2.4;
-            const baseCamY = (this.duelType === 'freekick') ? 1.28 : 1.18;
+            const baseCamZ = (this.duelType === 'freekick') ? -2.15 : -2.1;
+            const baseCamY = (this.duelType === 'freekick') ? 1.16 : 1.15;
             this.camera.position.z = baseCamZ + p * 4.2;
             this.camera.position.y = baseCamY + p * 0.35;
             this.camera.lookAt(curX * 0.35, curY * 0.45 + 1.2, curZ + 5.0);
@@ -17335,7 +17484,10 @@ const Nss3DEngine = {
             }
         }
 
-        // Net Ripple Vertex Wave Animation
+        this.updateNetPhysics();
+    },
+
+    updateNetPhysics: function() {
         if (this.netRipple.active && this.backNetMesh) {
             this.netRipple.time += 0.04;
             const pos = this.backNetMesh.geometry.attributes.position;
@@ -17351,7 +17503,7 @@ const Nss3DEngine = {
             pos.needsUpdate = true;
             this.backNetMesh.geometry.computeVertexNormals();
 
-            if (this.netRipple.time > 1.2) {
+            if (this.netRipple.time > 1.4) {
                 this.netRipple.active = false;
                 this.resetNetVertices();
             }
@@ -17369,7 +17521,7 @@ const Nss3DEngine = {
     },
 
     // =========================================================================
-    // 🏆 EVALUATE OUTCOME & PLAY BROADCAST EFFECTS
+    // 🏆 EVALUATE OUTCOME & BROADCAST SLOW-MO REPLAY CONTROLLER
     // =========================================================================
     evaluateResult: function() {
         const bx = this.ball.targetX;
@@ -17399,23 +17551,13 @@ const Nss3DEngine = {
         // Goalkeeper reach check
         const distToKeeper = Math.hypot(bx - this.keeperGroup.position.x, by - this.keeperGroup.position.y);
         const effectiveReach = isTrue90 ? (this.keeper.reach * 0.45) : this.keeper.reach;
-        const isSaved = inGoalX && inGoalY && (distToKeeper < effectiveReach) && !isHitWall;
+        const isSaved = inGoalX && inGoalY && (distToKeeper < effectiveReach) && !isHitWall && !this.keeper.isFrozen;
 
         const isGoal = inGoalX && inGoalY && !isSaved && !isHitPost && !isSkyBall && !isHitWall;
-
-        const bannerEl = document.getElementById("nss-result-banner");
-        const instrEl = document.getElementById("nss-duel-instruction");
-        const retryBtn = document.getElementById("nss-btn-retry");
-        const strikeBtn = document.getElementById("nss-btn-strike");
-
-        if (bannerEl) bannerEl.style.display = "block";
-        if (retryBtn) retryBtn.style.display = "block";
-        if (strikeBtn) strikeBtn.style.display = "none";
 
         let resultComment = "";
 
         if (isGoal) {
-            // Trigger 3D Dynamic Net Ripple Physics
             this.netRipple.active = true;
             this.netRipple.time = 0;
             this.netRipple.hitX = Math.max(-3.5, Math.min(3.5, bx));
@@ -17427,51 +17569,127 @@ const Nss3DEngine = {
                 if (typeof SoundManager.playCrowdCheer === "function") SoundManager.playCrowdCheer();
             }
 
-            bannerEl.style.background = "linear-gradient(135deg, rgba(5, 150, 105, 0.95) 0%, rgba(16, 185, 129, 0.9) 100%)";
-            bannerEl.style.color = "#022c22";
-            bannerEl.innerText = isTrue90 ? "🎯 90'A ASILDI! ÇATALDAKI AĞLARI ALDIN! 🔥" : "⚽ GOOOOOOL! HARİKA VURUŞ! 🔥";
-            if (instrEl) instrEl.innerText = isTrue90 ? "KUSURSUZ 3D FALSO VE 90! KALECİ ÇARESİZCE İZLEDİ." : "TOP FİLELERİ SARSARAK AĞLARLA BULUŞTU!";
+            if (this.keeper.isFrozen) {
+                resultComment = "İNANILMAZ BİR VURUŞ! Top barajı aşıp tam 90'a adeta asıldı! Kaleci olduğu yere çakılı kaldı, sadece gözleriyle izleyebildi!";
+            } else {
+                resultComment = (this.duelType === 'penalty') ?
+                    "GOOOL! Soğukkanlılıkla köşeyi seçtin, kaleciyi ters köşeye yatırarak penaltıyı gole çevirdin!" :
+                    (isTrue90 ? "MÜTHİŞ FRİKİK GOLÜ! Top barajı aşıp tam 90'a adeta asıldı! Kaleci sadece izleyebildi!" : "GOOOL! Falsolu nefis bir serbest vuruşla topu ağlara yolladın!");
+            }
 
-            resultComment = (this.duelType === 'penalty') ?
-                "GOOOL! Soğukkanlılıkla köşeyi seçtin, kaleciyi ters köşeye yatırarak penaltıyı gole çevirdin!" :
-                (isTrue90 ? "MÜTHİŞ FRİKİK GOLÜ! Top barajı aşıp tam 90'a adeta asıldı! Kaleci sadece izleyebildi!" : "GOOOL! Falsolu nefis bir serbest vuruşla topu ağlara yolladın!");
+            // Launch Broadcast Slow-Motion Replay!
+            this.startReplay(isTrue90, resultComment);
+
         } else if (isSaved) {
             NssAudio.playGlove();
             if (typeof SoundManager !== "undefined" && typeof SoundManager.playMiss === "function") {
                 SoundManager.playMiss();
             }
-            bannerEl.style.background = "linear-gradient(135deg, rgba(220, 38, 38, 0.95) 0%, rgba(239, 68, 68, 0.9) 100%)";
-            bannerEl.style.color = "#ffffff";
-            bannerEl.innerText = "🧤 KALECİ UZANDI VE ÇIKARDI!";
-            if (instrEl) instrEl.innerText = "HARİKA BİR ŞUT AMA KALECİ KÖŞEYE UÇARAK TOPU ÇELDİ!";
             resultComment = "Vuruşun çok etkiliydi ama kaleci olağanüstü uzanarak köşeden topu çeldi!";
+            this.showResultBanner(false, false, "🧤 KALECİ UZANDI VE ÇIKARDI!", "HARİKA BİR ŞUT AMA KALECİ KÖŞEYE UÇARAK TOPU ÇELDİ!", resultComment);
+
         } else if (isHitPost) {
             NssAudio.playPost();
             if (typeof SoundManager !== "undefined" && typeof SoundManager.playMiss === "function") {
                 SoundManager.playMiss();
             }
-            bannerEl.style.background = "linear-gradient(135deg, rgba(217, 119, 6, 0.95) 0%, rgba(245, 158, 11, 0.9) 100%)";
-            bannerEl.style.color = "#000000";
-            bannerEl.innerText = "💥 DİREKTEN DÖNDÜ! (Çat sesi stadyumu inletti!)";
-            if (instrEl) instrEl.innerText = "MİLİMETRELERLE DİREĞE TAKILDI!";
             resultComment = "İnanılmaz an! Çatala çarpan top direkten sahaya geri döndü!";
+            this.showResultBanner(false, false, "💥 DİREKTEN DÖNDÜ! (Çat sesi stadyumu inletti!)", "MİLİMETRELERLE DİREĞE TAKILDI!", resultComment);
+
         } else if (isHitWall) {
             NssAudio.playKick();
-            bannerEl.style.background = "linear-gradient(135deg, rgba(71, 85, 105, 0.95) 0%, rgba(100, 116, 139, 0.9) 100%)";
-            bannerEl.style.color = "#ffffff";
-            bannerEl.innerText = "🛡️ BARAJA TAKILDI! (Top barajdan döndü)";
-            if (instrEl) instrEl.innerText = "VURUŞ BARAJI GEÇEMEDİ! BİRAZ DAHA ALTINA GİRMELİSİN.";
             resultComment = "Serbest vuruş baraja çarpıp oyun alanına geri döndü.";
+            this.showResultBanner(false, false, "🛡️ BARAJA TAKILDI! (Top barajdan döndü)", "VURUŞ BARAJI GEÇEMEDİ! BİRAZ DAHA ALTINA GİRMELİSİN.", resultComment);
+
         } else {
             NssAudio.playTension();
-            bannerEl.style.background = "linear-gradient(135deg, rgba(51, 65, 85, 0.95) 0%, rgba(71, 85, 105, 0.9) 100%)";
-            bannerEl.style.color = "#ffffff";
-            bannerEl.innerText = isSkyBall ? "💨 DAĞLARA TAŞLARA! (Üstten Aut)" : "❌ AUTA GİTTİ!";
-            if (instrEl) instrEl.innerText = isSkyBall ? "TOPUN ÇOK DİBİNE GİRDİN, ÜSTTEN TRİBÜNLERE FIRLADI!" : "FALSO VE YÖN HESAPLANAMADI, YANDAN DIŞARI!";
             resultComment = isSkyBall ?
                 "Topun altına çok sert girdin, top üstten stadyumun çatısına fırladı!" :
                 "Frikik falsolu gitti ama direğin yanından auta çıktı.";
+            const head = isSkyBall ? "💨 DAĞLARA TAŞLARA! (Üstten Aut)" : "❌ AUTA GİTTİ!";
+            const sub = isSkyBall ? "TOPUN ÇOK DİBİNE GİRDİN, ÜSTTEN TRİBÜNLERE FIRLADI!" : "FALSO VE YÖN HESAPLANAMADI, YANDAN DIŞARI!";
+            this.showResultBanner(false, false, head, sub, resultComment);
         }
+    },
+
+    // 🎬 Start Broadcast Slow-Motion Replay
+    startReplay: function(isTrue90, resultComment) {
+        this.replay.active = true;
+        this.replay.progress = 0.65; // Replays final 35% of flight
+        this.replay.timer = 0;
+        this.replay.isTrue90 = isTrue90;
+        this.replay.resultComment = resultComment;
+        this.replay.origCamPos = this.camera.position.clone();
+
+        const goalZ = (this.duelType === 'freekick') ? 24.4 : 11.0;
+        // Cinematic Behind-The-Net Close-Up Angle (Looking through the net into the pitch)
+        const camX = this.ball.targetX * 0.70;
+        const camY = Math.max(1.8, this.ball.targetY + 0.35);
+        const camZ = goalZ + 2.2;
+        this.camera.position.set(camX, camY, camZ);
+        this.camera.lookAt(this.ball.targetX, this.ball.targetY, goalZ - 2.5);
+
+        const instrEl = document.getElementById("nss-duel-instruction");
+        if (instrEl) {
+            instrEl.innerText = "🔴 REPLAY: AĞIR ÇEKİM GOL TEKRARI (GEÇMEK İÇİN EKRANA DOKUN)";
+            instrEl.style.color = "#f43f5e";
+        }
+    },
+
+    skipReplay: function() {
+        if (!this.replay.active) return;
+        this.endReplay();
+    },
+
+    endReplay: function() {
+        this.replay.active = false;
+        // Restore Camera
+        if (this.replay.origCamPos) {
+            this.camera.position.copy(this.replay.origCamPos);
+            const goalZ = (this.duelType === 'freekick') ? 24.4 : 11.0;
+            this.camera.lookAt(0, 1.45, goalZ * 0.5);
+        }
+
+        let title = this.keeper.isFrozen ? "😱 KALECİ DONDU KALDI! SADECE İZLEDİ! 🔥" :
+            (this.replay.isTrue90 ? "🎯 90'A ASILDI! ÇATALDAKİ AĞLARI ALDIN! 🔥" : "⚽ GOOOOOOL! HARİKA VURUŞ! 🔥");
+        let sub = this.keeper.isFrozen ? "KUSURSUZ 90! KALECİ ÇARESİZCE ÇAKILI KALDI, SADECE İZLEDİ!" :
+            (this.replay.isTrue90 ? "KUSURSUZ 3D FALSO VE 90! KALECİ ÇARESİZCE İZLEDİ." : "TOP FİLELERİ SARSARAK AĞLARLA BULUŞTU!");
+
+        this.showResultBanner(true, this.replay.isTrue90, title, sub, this.replay.resultComment);
+    },
+
+    showResultBanner: function(isGoal, isTrue90, title, subtitle, resultComment) {
+        const bannerEl = document.getElementById("nss-result-banner");
+        const instrEl = document.getElementById("nss-duel-instruction");
+        const retryBtn = document.getElementById("nss-btn-retry");
+        const strikeBtn = document.getElementById("nss-btn-strike");
+
+        if (bannerEl) {
+            bannerEl.style.display = "block";
+            bannerEl.innerText = title;
+            if (isGoal) {
+                bannerEl.style.background = this.keeper.isFrozen ?
+                    "linear-gradient(135deg, rgba(234, 179, 8, 0.95) 0%, rgba(202, 138, 4, 0.9) 100%)" :
+                    "linear-gradient(135deg, rgba(5, 150, 105, 0.95) 0%, rgba(16, 185, 129, 0.9) 100%)";
+                bannerEl.style.color = this.keeper.isFrozen ? "#020617" : "#022c22";
+            } else if (title.includes("DİREK")) {
+                bannerEl.style.background = "linear-gradient(135deg, rgba(217, 119, 6, 0.95) 0%, rgba(245, 158, 11, 0.9) 100%)";
+                bannerEl.style.color = "#000000";
+            } else if (title.includes("KALECİ")) {
+                bannerEl.style.background = "linear-gradient(135deg, rgba(220, 38, 38, 0.95) 0%, rgba(239, 68, 68, 0.9) 100%)";
+                bannerEl.style.color = "#ffffff";
+            } else if (title.includes("BARAJ")) {
+                bannerEl.style.background = "linear-gradient(135deg, rgba(71, 85, 105, 0.95) 0%, rgba(100, 116, 139, 0.9) 100%)";
+                bannerEl.style.color = "#ffffff";
+            } else {
+                bannerEl.style.background = "linear-gradient(135deg, rgba(51, 65, 85, 0.95) 0%, rgba(71, 85, 105, 0.9) 100%)";
+                bannerEl.style.color = "#ffffff";
+            }
+        }
+
+        if (instrEl) instrEl.innerText = subtitle;
+        if (retryBtn) retryBtn.style.display = this.isPractice ? "block" : "none";
+        if (strikeBtn) strikeBtn.style.display = "none";
 
         if (!this.isPractice) {
             setTimeout(() => {
@@ -17485,6 +17703,7 @@ const Nss3DEngine = {
 
     close: function() {
         this.active = false;
+        this.replay.active = false;
         if (this.animId) cancelAnimationFrame(this.animId);
         const modal = document.getElementById("nss-duel-modal");
         if (modal) modal.style.display = "none";
@@ -17504,6 +17723,12 @@ const Nss3DEngine = {
         const ctx = this.hudCtx;
         ctx.clearRect(0, 0, this.W, this.H);
 
+        // Slow-Mo Replay Telemetry HUD
+        if (this.replay.active) {
+            this.renderReplayHUD(ctx, time);
+            return;
+        }
+
         // Stage 1: Golden Laser Aiming Crosshair
         if (this.stage === 1) {
             this.renderGoldenLaserReticle(ctx, time);
@@ -17520,6 +17745,48 @@ const Nss3DEngine = {
             this.renderTrajectoryPreview(ctx, bx, by);
             this.renderBallTouchHUD(ctx, bx, by, br);
         }
+    },
+
+    // Replay Television Bug & Skip Button
+    renderReplayHUD: function(ctx, time) {
+        ctx.save();
+        // Pulsing Red Rec Dot
+        const pulse = (Math.sin(time * 0.008) + 1) / 2;
+        ctx.fillStyle = `rgba(239, 68, 68, ${0.7 + pulse * 0.3})`;
+        ctx.beginPath();
+        ctx.arc(28, 24, 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Replay Smoked Glass Pill
+        ctx.fillStyle = "rgba(15, 23, 42, 0.88)";
+        ctx.strokeStyle = "rgba(239, 68, 68, 0.6)";
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(40, 14, 134, 20, 5);
+        else ctx.rect(40, 14, 134, 20);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "900 9.5px sans-serif";
+        ctx.textAlign = "left";
+        ctx.fillText("REPLAY • AĞIR ÇEKİM", 48, 28);
+
+        // Skip Button on top-right
+        ctx.fillStyle = "rgba(15, 23, 42, 0.88)";
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(this.W - 75, 14, 60, 20, 5);
+        else ctx.rect(this.W - 75, 14, 60, 20);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = "#cbd5e1";
+        ctx.font = "800 9px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("GEÇ ➔", this.W - 45, 28);
+        ctx.restore();
     },
 
     // Holographic Laser Crosshair (Stage 1)
@@ -17547,7 +17814,7 @@ const Nss3DEngine = {
         ctx.moveTo(ax - 8, ay);
         ctx.lineTo(ax + 8, ay);
         ctx.moveTo(ax, ay - 8);
-        ctx.lineTo(ax, ay + 8);
+        ctx.lineTo(ax + 8, ay);
         ctx.stroke();
 
         // Central pulsating laser dot
