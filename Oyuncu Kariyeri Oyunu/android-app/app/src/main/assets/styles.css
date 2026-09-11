@@ -6013,3 +6013,122 @@ input:not([type="checkbox"]):not([type="radio"]), textarea, select {
     box-shadow: 0 6px 25px rgba(0, 229, 183, 0.25);
     border-color: rgba(0, 229, 183, 0.6) !important;
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   🏟️ STADIUM PITCH-SIDE DYNAMIC LED ADVERTISING RIBBON
+══════════════════════════════════════════════════════════════════ */
+.stadium-led-ribbon {
+    width: 100%;
+    overflow: hidden;
+    background: #050b14;
+    border-top: 1px solid rgba(0, 229, 183, 0.4);
+    border-bottom: 1px solid rgba(0, 229, 183, 0.4);
+    box-shadow: 0 0 15px rgba(0, 229, 183, 0.2), inset 0 0 8px rgba(0,0,0,0.8);
+    position: relative;
+    padding: 5px 0;
+    margin: 4px 0 10px 0;
+    user-select: none;
+}
+
+.stadium-led-ribbon::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size: 4px 4px;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.led-ribbon-track {
+    display: flex;
+    gap: 36px;
+    width: max-content;
+    animation: led-scroll 24s linear infinite;
+}
+
+.led-ribbon-track:hover {
+    animation-play-state: paused;
+}
+
+@keyframes led-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.led-item {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.led-item.gold { color: #ffd700; text-shadow: 0 0 8px rgba(255, 215, 0, 0.6); }
+.led-item.cyan { color: #00e5ff; text-shadow: 0 0 8px rgba(0, 229, 255, 0.6); }
+.led-item.green { color: #00e676; text-shadow: 0 0 8px rgba(0, 230, 118, 0.6); }
+.led-item.red { color: #ff3d00; text-shadow: 0 0 8px rgba(255, 61, 0, 0.6); }
+.led-item.purple { color: #e040fb; text-shadow: 0 0 8px rgba(224, 64, 251, 0.6); }
+
+/* ══════════════════════════════════════════════════════════════════
+   🎬 REWARDED ADS BROADCAST MODAL & BUTTONS
+══════════════════════════════════════════════════════════════════ */
+.btn-reward-ad {
+    background: linear-gradient(135deg, #00e676 0%, #00b0ff 100%);
+    color: #050b14 !important;
+    font-weight: 900 !important;
+    border: none !important;
+    box-shadow: 0 4px 18px rgba(0, 230, 118, 0.35);
+    transition: all 0.25s ease;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-reward-ad:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(0, 230, 118, 0.55);
+}
+
+.btn-reward-ad:active {
+    transform: scale(0.97);
+}
+
+.reward-pulsing-glow {
+    animation: rewardPulse 2s infinite ease-in-out;
+}
+
+@keyframes rewardPulse {
+    0%, 100% { box-shadow: 0 0 10px rgba(0, 230, 118, 0.3); }
+    50% { box-shadow: 0 0 25px rgba(0, 230, 118, 0.7); }
+}
+
+.ad-commercial-box {
+    background: radial-gradient(circle at center, #1e293b 0%, #090d16 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
+}
+
+.ad-commercial-scanline {
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(0, 229, 183, 0.8), transparent);
+    animation: scanline 2.5s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes scanline {
+    0% { top: 0%; opacity: 0; }
+    50% { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+}
