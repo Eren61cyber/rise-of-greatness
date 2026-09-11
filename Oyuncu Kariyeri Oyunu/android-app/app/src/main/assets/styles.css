@@ -1609,143 +1609,242 @@ body {
 
 
 
-/* ⚽ FUT CARD STYLES */
+/* ⚽ EA SPORTS FC / FUT CONSOLE-GRADE CARD STYLES */
 .fut-card-wrapper {
-    perspective: 1000px;
+    perspective: 1200px;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+/* Master Shield Card */
 .fut-card {
     width: 250px;
     height: 380px;
-    background: linear-gradient(135deg, rgba(30, 30, 30, 0.8) 0%, rgba(10, 10, 10, 0.95) 100%),
-                linear-gradient(45deg, rgba(212, 175, 55, 0.15) 0%, transparent 40%, rgba(212, 175, 55, 0.05) 100%);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(212, 175, 55, 0.4);
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.2);
-    padding: 15px;
+    position: relative;
+    padding: 2.5px; /* Outer metallic bevel width */
+    clip-path: polygon(0% 0%, 100% 0%, 100% 85%, 50% 100%, 0% 85%);
+    background: linear-gradient(145deg, #FFE082 0%, #FFD700 35%, #B78103 70%, #FFF8E1 100%);
+    box-shadow: 0 18px 45px rgba(0,0,0,0.9), 0 0 30px rgba(255,215,0,0.35);
+    transform-style: preserve-3d;
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+    cursor: pointer;
+    user-select: none;
+}
+
+.fut-card-inner {
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 85%, 50% 100%, 0% 85%);
+    background: radial-gradient(ellipse at 50% 25%, #2a2016 0%, #15100b 55%, #0a0705 100%);
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     overflow: hidden;
-    transform-style: preserve-3d;
-    transition: transform 0.2s ease-out, box-shadow 0.3s ease;
 }
 
-.fut-card::after {
-    content: '';
+/* Dynamic Holographic Foil Light Sweep */
+.fut-card-holo {
     position: absolute;
-    top: -50%;
-    left: -150%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.08) 50%, transparent 60%);
+    top: -60%;
+    left: -160%;
+    width: 240%;
+    height: 240%;
+    background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.15) 45%, rgba(255, 215, 0, 0.25) 50%, rgba(0, 229, 183, 0.2) 55%, transparent 65%);
     transform: rotate(-25deg);
     pointer-events: none;
-    z-index: 8;
+    z-index: 15;
+    animation: holo-sweep 6s infinite ease-in-out;
+}
+
+@keyframes holo-sweep {
+    0%, 70% { transform: translateY(-100%) rotate(-25deg); opacity: 0; }
+    75% { opacity: 0.8; }
+    90% { transform: translateY(100%) rotate(-25deg); opacity: 0.8; }
+    95%, 100% { opacity: 0; }
 }
 
 .fut-card:hover {
-    box-shadow: 0 15px 40px rgba(0,0,0,0.95), 0 0 35px rgba(212, 175, 55, 0.4);
-    transform: translateY(-4px) rotateX(2deg);
+    box-shadow: 0 22px 55px rgba(0,0,0,0.98), 0 0 45px rgba(255, 215, 0, 0.5);
+    transform: translateY(-6px) scale(1.02);
 }
 
+/* Tier Variants: Legend (Icon) */
+.fut-card.tier-legend {
+    background: linear-gradient(145deg, #FFE57F 0%, #FFD700 25%, #8E24AA 50%, #FFD700 75%, #FFF9C4 100%);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.95), 0 0 35px rgba(224, 64, 251, 0.6), 0 0 20px rgba(255, 215, 0, 0.5);
+}
+.fut-card.tier-legend .fut-card-inner {
+    background: radial-gradient(ellipse at 50% 25%, #3d145c 0%, #1e0930 45%, #0a0112 100%);
+}
+
+/* Tier Variants: Elite Champions */
+.fut-card.tier-elite {
+    background: linear-gradient(145deg, #00E5FF 0%, #FFD700 30%, #0D47A1 60%, #64FFDA 85%, #FFFFFF 100%);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.95), 0 0 35px rgba(0, 229, 255, 0.5), 0 0 20px rgba(255, 215, 0, 0.4);
+}
+.fut-card.tier-elite .fut-card-inner {
+    background: radial-gradient(ellipse at 50% 25%, #0f3460 0%, #081a33 50%, #020914 100%);
+}
+
+/* Tier Variants: Rare Gold */
+.fut-card.tier-rareGold {
+    background: linear-gradient(145deg, #FFF9C4 0%, #FFD54F 30%, #B78103 65%, #FFE082 100%);
+    box-shadow: 0 18px 45px rgba(0,0,0,0.9), 0 0 30px rgba(255, 213, 79, 0.45);
+}
+.fut-card.tier-rareGold .fut-card-inner {
+    background: radial-gradient(ellipse at 50% 25%, #332314 0%, #1c130b 55%, #0d0805 100%);
+}
+
+/* Tier Variants: Silver Talent */
+.fut-card.tier-common {
+    background: linear-gradient(145deg, #FFFFFF 0%, #CFD8DC 30%, #546E7A 70%, #ECEFF1 100%);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.85), 0 0 25px rgba(176, 190, 197, 0.35);
+}
+.fut-card.tier-common .fut-card-inner {
+    background: radial-gradient(ellipse at 50% 25%, #263238 0%, #151c20 55%, #090c0e 100%);
+}
+
+/* Top Left Meta (Rating, Pos, Flag, Club) */
 .fut-card-top-left {
     position: absolute;
-    top: 15px;
-    left: 15px;
+    top: 14px;
+    left: 14px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Rajdhani', 'Space Grotesk', sans-serif;
     line-height: 1;
     z-index: 10;
-    transform: translateZ(20px);
+    transform: translateZ(25px);
 }
 
 .fut-card-top-left .rating {
-    font-size: 44px;
+    font-size: 38px;
     font-weight: 900;
-    color: #D4AF37;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    color: #FFD700;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.9);
     letter-spacing: -1px;
 }
+.fut-card.tier-legend .fut-card-top-left .rating { color: #FFE57F; }
+.fut-card.tier-elite .fut-card-top-left .rating { color: #00E5FF; }
+.fut-card.tier-rareGold .fut-card-top-left .rating { color: #FFD54F; }
+.fut-card.tier-common .fut-card-top-left .rating { color: #ECEFF1; }
 
 .fut-card-top-left .pos {
     font-size: 13px;
     font-weight: 800;
-    color: #fff;
+    color: #FFFFFF;
     text-transform: uppercase;
-    margin-top: 4px;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    margin-top: 3px;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.9);
+    letter-spacing: 0.5px;
 }
 
 .fut-card-top-left .nation-flag {
-    font-size: 18px;
-    margin-top: 6px;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+    font-size: 17px;
+    margin-top: 5px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.7));
 }
 
 .fut-card-top-left .club-initials-badge {
-    font-size: 10px;
-    font-weight: 800;
-    background: rgba(212, 175, 55, 0.15);
-    border: 1px solid rgba(212, 175, 55, 0.4);
-    padding: 2px 5px;
+    font-size: 9px;
+    font-weight: 900;
+    background: rgba(0,0,0,0.65);
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 1.5px 4px;
     border-radius: 4px;
-    color: #D4AF37;
-    margin-top: 6px;
+    color: #FFFFFF;
+    margin-top: 5px;
+    letter-spacing: 0.5px;
 }
 
+/* Top Right Tier Insignia */
+.fut-card-tier-badge {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    font-size: 9px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(0,0,0,0.65);
+    border: 1px solid rgba(255,215,0,0.4);
+    color: #FFD700;
+    z-index: 10;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+.fut-card.tier-legend .fut-card-tier-badge {
+    color: #E040FB;
+    border-color: rgba(224,64,251,0.5);
+    background: rgba(49,27,146,0.5);
+}
+.fut-card.tier-elite .fut-card-tier-badge {
+    color: #00E5FF;
+    border-color: rgba(0,229,255,0.5);
+    background: rgba(13,71,161,0.5);
+}
+.fut-card.tier-common .fut-card-tier-badge {
+    color: #B0BEC5;
+    border-color: rgba(176,190,197,0.4);
+}
+
+/* Center Player Artwork Container */
 .fut-card-avatar {
-    width: 120px;
-    height: 120px;
+    width: 145px;
+    height: 140px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     margin-top: 10px;
-    margin-left: 45px;
-    filter: drop-shadow(0 8px 15px rgba(0,0,0,0.6));
+    margin-left: 35px;
+    filter: drop-shadow(0 8px 18px rgba(0,0,0,0.85));
     z-index: 5;
-    transform: translateZ(30px);
+    transform: translateZ(20px);
+    position: relative;
 }
 
 .fut-card-avatar svg {
-    width: 110px;
-    height: 110px;
+    width: 135px;
+    height: 135px;
 }
 
+/* Player Name Plate */
 .fut-card-name {
-    font-family: 'Inter', sans-serif;
-    font-size: 17px;
+    font-family: 'Rajdhani', 'Space Grotesk', sans-serif;
+    font-size: 16px;
     font-weight: 900;
-    color: #fff;
+    color: #FFFFFF;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    margin-top: 15px;
+    margin-top: 6px;
     text-align: center;
-    text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+    text-shadow: 0 2px 6px rgba(0,0,0,0.9);
     z-index: 10;
-    transform: translateZ(20px);
+    transform: translateZ(25px);
+    width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-bottom: 1.5px solid rgba(255,215,0,0.35);
+    padding-bottom: 4px;
 }
+.fut-card.tier-legend .fut-card-name { border-bottom-color: rgba(224,64,251,0.5); }
+.fut-card.tier-elite .fut-card-name { border-bottom-color: rgba(0,229,255,0.5); }
+.fut-card.tier-common .fut-card-name { border-bottom-color: rgba(176,190,197,0.4); }
 
-.fut-card-divider {
-    width: 85%;
-    height: 1px;
-    background: linear-gradient(to right, rgba(212, 175, 55, 0), rgba(212, 175, 55, 0.6) 50%, rgba(212, 175, 55, 0));
-    margin: 12px 0;
-    z-index: 10;
-}
-
+/* 6-Stat Matrix Grid (PAC SHO PAS | DRI DEF PHY) */
 .fut-card-stats-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: 30px;
-    row-gap: 8px;
-    width: 85%;
+    column-gap: 20px;
+    row-gap: 3px;
+    width: 82%;
+    margin-top: 7px;
     z-index: 10;
     transform: translateZ(15px);
 }
@@ -1753,17 +1852,15 @@ body {
 .fut-card-stats-grid .stat-col {
     display: flex;
     flex-direction: column;
-}
-
-.fut-card-stats-grid .line-divider {
-    display: none;
+    gap: 3px;
 }
 
 .fut-card-stats-grid .stat-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 13px;
+    font-size: 11px;
+    font-family: 'Rajdhani', 'Space Grotesk', sans-serif;
 }
 
 .fut-card-stats-grid .stat-row .val {
@@ -1775,25 +1872,61 @@ body {
 }
 
 .fut-card-stats-grid .stat-row .lbl {
-    color: #D4AF37;
+    color: #FFD54F;
     font-weight: 800;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.9);
     text-align: right;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+}
+.fut-card.tier-legend .fut-card-stats-grid .stat-row .lbl { color: #E1BEE7; }
+.fut-card.tier-elite .fut-card-stats-grid .stat-row .lbl { color: #80D8FF; }
+.fut-card.tier-common .fut-card-stats-grid .stat-row .lbl { color: #CFD8DC; }
+
+/* Bottom Permanent Buff Ribbon */
+.fut-card-buff-ribbon {
+    margin-top: 8px;
+    z-index: 10;
+    transform: translateZ(20px);
+    width: 88%;
+    background: rgba(0, 230, 118, 0.12);
+    border: 1px solid rgba(0, 230, 118, 0.35);
+    border-radius: 8px;
+    padding: 5px 8px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 
+.fut-card-buff-ribbon .buff-title {
+    font-size: 8.5px;
+    font-weight: 900;
+    color: #00E676;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: 'Rajdhani', sans-serif;
+}
+
+.fut-card-buff-ribbon .buff-desc {
+    font-size: 10px;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin-top: 1px;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Footer Tag */
 .fut-card-footer {
     position: absolute;
-    bottom: 15px;
+    bottom: 8px;
     display: flex;
     justify-content: center;
-    gap: 15px;
-    font-size: 10px;
-    color: #D4AF37;
-    background: rgba(0,0,0,0.6);
-    padding: 4px 15px;
-    border-radius: 8px;
-    border: 1px solid rgba(212, 175, 55, 0.2);
+    font-size: 8px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
     z-index: 10;
+    font-family: 'Rajdhani', sans-serif;
 }
 
 .fut-card-footer strong {
@@ -1873,15 +2006,68 @@ body {
   100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
 
+/* FUT Mini Card for Album */
 .fut-mini-card {
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    cursor: default;
+    aspect-ratio: 2 / 3.1;
+    width: 100%;
+    position: relative;
+    padding: 1.5px;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 86%, 50% 100%, 0% 86%);
+    background: linear-gradient(145deg, #FFE082 0%, #FFD700 35%, #B78103 70%, #FFF8E1 100%);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.7), 0 0 10px rgba(255,215,0,0.25);
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease;
+    cursor: pointer;
+    user-select: none;
+}
+
+.fut-mini-card.mini-tier-legend {
+    background: linear-gradient(145deg, #FFE57F 0%, #FFD700 30%, #8E24AA 60%, #FFD700 85%, #FFF9C4 100%);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.8), 0 0 12px rgba(224, 64, 251, 0.4);
+}
+.fut-mini-card.mini-tier-elite {
+    background: linear-gradient(145deg, #00E5FF 0%, #FFD700 35%, #0D47A1 70%, #64FFDA 100%);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.8), 0 0 12px rgba(0, 229, 255, 0.35);
+}
+.fut-mini-card.mini-tier-rareGold {
+    background: linear-gradient(145deg, #FFF9C4 0%, #FFD54F 35%, #B78103 70%, #FFE082 100%);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.8), 0 0 10px rgba(255, 213, 79, 0.3);
+}
+.fut-mini-card.mini-tier-common {
+    background: linear-gradient(145deg, #FFFFFF 0%, #CFD8DC 35%, #546E7A 75%, #ECEFF1 100%);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.7), 0 0 8px rgba(176, 190, 197, 0.2);
 }
 
 .fut-mini-card:hover {
     transform: scale(1.08) translateY(-4px);
-    box-shadow: 0 8px 20px rgba(255,215,0,0.5);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.9), 0 0 20px rgba(255,215,0,0.6);
     z-index: 10;
+}
+
+.fut-mini-card-inner {
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 86%, 50% 100%, 0% 86%);
+    background: radial-gradient(ellipse at 50% 25%, #2a2016 0%, #15100b 55%, #0a0705 100%);
+    padding: 6px 5px 8px 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+
+.fut-mini-card.mini-tier-legend .fut-mini-card-inner {
+    background: radial-gradient(ellipse at 50% 25%, #3d145c 0%, #1e0930 55%, #0a0112 100%);
+}
+.fut-mini-card.mini-tier-elite .fut-mini-card-inner {
+    background: radial-gradient(ellipse at 50% 25%, #0f3460 0%, #081a33 55%, #020914 100%);
+}
+.fut-mini-card.mini-tier-rareGold .fut-mini-card-inner {
+    background: radial-gradient(ellipse at 50% 25%, #332314 0%, #1c130b 55%, #0d0805 100%);
+}
+.fut-mini-card.mini-tier-common .fut-mini-card-inner {
+    background: radial-gradient(ellipse at 50% 25%, #263238 0%, #151c20 55%, #090c0e 100%);
 }
 
 /* Styled select option dropdown text color visibility fix */
