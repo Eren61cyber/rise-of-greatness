@@ -1266,8 +1266,8 @@
 
                 <!-- The Interactive Photo-Realistic Compositing Arena -->
                 <div style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: inset 0 0 35px rgba(0,0,0,0.9), 0 8px 30px rgba(0,0,0,0.8); background: #020617;">
-                    <canvas id="nss-canvas" width="440" height="290" style="display: block; width: 100%; height: auto; cursor: crosshair; touch-action: none;"></canvas>
-                    <canvas id="nss-hud-canvas" width="440" height="290" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+                    <canvas id="nss-canvas" width="460" height="330" style="display: block; width: 100%; height: auto; aspect-ratio: 460 / 330; cursor: crosshair; touch-action: none;"></canvas>
+                    <canvas id="nss-hud-canvas" width="460" height="330" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
                 </div>
 
                 <!-- Bottom Broadcast Result Banner -->
@@ -16366,7 +16366,7 @@ const Nss3DEngine = {
         const stripeCount = 20;
         const stripeH = 1024 / stripeCount;
         for (let i = 0; i < stripeCount; i++) {
-            pCtx.fillStyle = (i % 2 === 0) ? "#0d421d" : "#124e24";
+            pCtx.fillStyle = (i % 2 === 0) ? "#0f421f" : "#155728";
             pCtx.fillRect(0, i * stripeH, 1024, stripeH);
         }
 
@@ -16597,9 +16597,14 @@ const Nss3DEngine = {
         // Update active wall player meshes if already instantiated
         if (this.wallPlayers && this.wallPlayers.length > 0) {
             this.wallPlayers.forEach((pGroup, idx) => {
-                pGroup.children.forEach(child => {
-                    if (child.geometry && child.geometry.type === "CylinderGeometry" && child.position.y > 1.2 && child.position.y < 1.5) {
-                        child.material.map = this.textures.wallJerseys[idx % this.textures.wallJerseys.length];
+                const tex = this.textures.wallJerseys[idx % this.textures.wallJerseys.length];
+                if (pGroup.userData && pGroup.userData.jerseyMesh) {
+                    pGroup.userData.jerseyMesh.material.map = tex;
+                    pGroup.userData.jerseyMesh.material.needsUpdate = true;
+                }
+                pGroup.traverse(child => {
+                    if (child.userData && child.userData.isJersey) {
+                        child.material.map = tex;
                         child.material.needsUpdate = true;
                     }
                 });
@@ -16666,7 +16671,7 @@ const Nss3DEngine = {
             powerPreference: "high-performance"
         });
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-        this.renderer.setSize(this.W, this.H);
+        this.renderer.setSize(this.W, this.H, false);
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
@@ -16676,10 +16681,10 @@ const Nss3DEngine = {
         this.scene.fog = new THREE.FogExp2(0x050c1e, 0.015);
 
         // Perspective Camera (Behind-the-ball shoulder view)
-        this.camera = new THREE.PerspectiveCamera(46, this.W / this.H, 0.1, 100);
+        this.camera = new THREE.PerspectiveCamera(50, this.W / this.H, 0.1, 100);
 
         // Stadium Lighting
-        this.ambientLight = new THREE.AmbientLight(0x182436, 0.7);
+        this.ambientLight = new THREE.AmbientLight(0x22364c, 0.85);
         this.scene.add(this.ambientLight);
 
         // Soft front key light for ball and kicker area
@@ -16749,7 +16754,7 @@ const Nss3DEngine = {
 
     // 1. 3D Grass Pitch
     buildPitch: function() {
-        const geo = new THREE.PlaneGeometry(36, 50, 24, 24);
+        const geo = new THREE.PlaneGeometry(60, 90, 24, 24);
         const mat = new THREE.MeshStandardMaterial({
             map: this.textures.pitch,
             roughness: 0.82,
@@ -16757,7 +16762,7 @@ const Nss3DEngine = {
         });
         this.pitchMesh = new THREE.Mesh(geo, mat);
         this.pitchMesh.rotation.x = -Math.PI / 2;
-        this.pitchMesh.position.set(0, 0, 15);
+        this.pitchMesh.position.set(0, 0, 10);
         this.pitchMesh.receiveShadow = true;
         this.scene.add(this.pitchMesh);
     },
@@ -16872,6 +16877,277 @@ const Nss3DEngine = {
         this.scene.add(this.goalGroup);
     },
 
+// =========================================================================
+    // ğŸ§ HIGH-FIDELITY 3D ATHLETIC FOOTBALLER GENERATOR (EA FC / CONSOLE GRADE)
+    // =========================================================================
+    createDetailed3DPlayer: function(options) {
+        const pGroup = new THREE.Group();
+
+        const skinColor = options.skinColor || 0xd4976a;
+        const skinMat = new THREE.MeshStandardMaterial({
+            color: skinColor,
+            roughness: 0.65,
+            metalness: 0.05
+        });
+
+        const jerseyMat = options.jerseyMat || new THREE.MeshStandardMaterial({ color: 0x1d4ed8, roughness: 0.5 });
+        const shortsColor = options.shortsColor || 0xffffff;
+        const shortsMat = new THREE.MeshStandardMaterial({ color: shortsColor, roughness: 0.6 });
+        const sockColor = options.sockColor || (options.isKeeper ? 0x22c55e : 0x1d4ed8);
+        const sockMat = new THREE.MeshStandardMaterial({ color: sockColor, roughness: 0.7 });
+        const bootColor = options.bootColor || 0x0f172a;
+        const bootMat = new THREE.MeshStandardMaterial({ color: bootColor, roughness: 0.3, metalness: 0.2 });
+        const soleMat = new THREE.MeshStandardMaterial({ color: 0xfacc15, roughness: 0.2, metalness: 0.8 }); // Chrome / gold studs soleplate
+        const hairMat = new THREE.MeshStandardMaterial({ color: options.hairColor || 0x18181b, roughness: 0.85 });
+        const shadowMat = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.55 });
+        const tapeMat = new THREE.MeshStandardMaterial({ color: 0xf1f5f9, roughness: 0.7 }); // Pro athletic wrist tape
+        const trimMat = new THREE.MeshStandardMaterial({ color: options.trimColor || 0xffffff, roughness: 0.5 });
+
+        // Root height scaling
+        const hScale = options.heightScale || 1.0;
+        pGroup.scale.set(1.0, hScale, 1.0);
+
+        // ==========================================
+        // 1. HEAD, NECK & FACE
+        // ==========================================
+        const headGroup = new THREE.Group();
+        headGroup.position.y = 1.76;
+
+        // Neck
+        const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.078, 0.13, 14), skinMat);
+        neck.position.y = -0.10;
+        neck.castShadow = true;
+        headGroup.add(neck);
+
+        // Cranium / Face
+        const head = new THREE.Mesh(new THREE.SphereGeometry(0.118, 16, 16), skinMat);
+        head.scale.set(0.88, 1.05, 0.98);
+        head.castShadow = true;
+        headGroup.add(head);
+
+        // Ears
+        const earL = new THREE.Mesh(new THREE.SphereGeometry(0.026, 8, 8), skinMat);
+        earL.position.set(-0.11, 0, 0.01);
+        earL.scale.set(0.6, 1.2, 0.8);
+        headGroup.add(earL);
+
+        const earR = new THREE.Mesh(new THREE.SphereGeometry(0.026, 8, 8), skinMat);
+        earR.position.set(0.11, 0, 0.01);
+        earR.scale.set(0.6, 1.2, 0.8);
+        headGroup.add(earR);
+
+        // 3D Nose Bridge & Athletic Brow
+        const nose = new THREE.Mesh(new THREE.ConeGeometry(0.022, 0.05, 5), skinMat);
+        nose.rotation.x = -Math.PI / 2;
+        nose.position.set(0, -0.01, 0.122);
+        headGroup.add(nose);
+
+        // 3D Hair / Style Variations
+        const hairStyle = options.hairStyle !== undefined ? options.hairStyle : 0;
+        if (hairStyle === 0) {
+            // Modern High Fade & Textured Top
+            const fadeSides = new THREE.Mesh(new THREE.CylinderGeometry(0.122, 0.125, 0.075, 16), hairMat);
+            fadeSides.position.y = 0.02;
+            headGroup.add(fadeSides);
+
+            const topDome = new THREE.Mesh(new THREE.SphereGeometry(0.123, 16, 12, 0, Math.PI * 2, 0, Math.PI * 0.55), hairMat);
+            topDome.position.y = 0.035;
+            topDome.scale.set(0.95, 1.1, 1.05);
+            headGroup.add(topDome);
+        } else if (hairStyle === 1) {
+            // Textured Curls / Afro
+            const curlyTop = new THREE.Mesh(new THREE.SphereGeometry(0.134, 16, 14, 0, Math.PI * 2, 0, Math.PI * 0.65), hairMat);
+            curlyTop.position.y = 0.03;
+            curlyTop.scale.set(0.98, 1.15, 1.08);
+            headGroup.add(curlyTop);
+        } else if (hairStyle === 2) {
+            // Sleek Buzz / Taper
+            const buzz = new THREE.Mesh(new THREE.SphereGeometry(0.122, 16, 12, 0, Math.PI * 2, 0, Math.PI * 0.52), hairMat);
+            buzz.position.y = 0.015;
+            buzz.scale.set(0.90, 1.06, 1.0);
+            headGroup.add(buzz);
+        } else {
+            // Swept Undercut / Headband (Goalkeeper style)
+            const swept = new THREE.Mesh(new THREE.SphereGeometry(0.125, 16, 12, 0, Math.PI * 2, 0, Math.PI * 0.55), hairMat);
+            swept.position.set(0, 0.035, -0.02);
+            swept.scale.set(0.94, 1.12, 1.1);
+            headGroup.add(swept);
+
+            if (options.isKeeper) {
+                // Athletic Headband
+                const band = new THREE.Mesh(new THREE.TorusGeometry(0.116, 0.016, 8, 20), trimMat);
+                band.rotation.x = Math.PI / 2;
+                band.position.y = 0.04;
+                headGroup.add(band);
+            }
+        }
+
+        pGroup.add(headGroup);
+        pGroup.userData.head = headGroup;
+
+        // ==========================================
+        // 2. TORSO, SHOULDERS & JERSEY
+        // ==========================================
+        const torsoGroup = new THREE.Group();
+
+        // Ribbed Neck Collar
+        const collar = new THREE.Mesh(new THREE.TorusGeometry(0.082, 0.018, 8, 18), trimMat);
+        collar.rotation.x = Math.PI / 2;
+        collar.position.y = 1.56;
+        torsoGroup.add(collar);
+
+        // Broad Deltoid Shoulders (Creates instant athletic footballer V-taper)
+        const shoulderL = new THREE.Mesh(new THREE.SphereGeometry(0.088, 12, 12), jerseyMat);
+        shoulderL.position.set(-0.25, 1.48, 0);
+        shoulderL.castShadow = true;
+        torsoGroup.add(shoulderL);
+
+        const shoulderR = new THREE.Mesh(new THREE.SphereGeometry(0.088, 12, 12), jerseyMat);
+        shoulderR.position.set(0.25, 1.48, 0);
+        shoulderR.castShadow = true;
+        torsoGroup.add(shoulderR);
+
+        // Trapezius / Clavicle Bridge
+        const traps = new THREE.Mesh(new THREE.CylinderGeometry(0.23, 0.26, 0.10, 16), jerseyMat);
+        traps.position.y = 1.48;
+        torsoGroup.add(traps);
+
+        // Muscular Chest (Mapped with kit texture & squad number)
+        const chest = new THREE.Mesh(new THREE.CylinderGeometry(0.255, 0.225, 0.28, 16), jerseyMat);
+        chest.position.y = 1.34;
+        chest.castShadow = true;
+        chest.userData.isJersey = true;
+        torsoGroup.add(chest);
+        pGroup.userData.jerseyMesh = chest;
+
+        // Tapered Waist / Core
+        const waist = new THREE.Mesh(new THREE.CylinderGeometry(0.215, 0.185, 0.24, 16), jerseyMat);
+        waist.position.y = 1.10;
+        waist.castShadow = true;
+        waist.userData.isJersey = true;
+        torsoGroup.add(waist);
+
+        pGroup.add(torsoGroup);
+        pGroup.userData.torso = torsoGroup;
+
+        // ==========================================
+        // 3. REALISTIC SPLIT-LEG SHORTS
+        // ==========================================
+        const shortsGroup = new THREE.Group();
+
+        // Pelvic Waistband
+        const pelvis = new THREE.Mesh(new THREE.CylinderGeometry(0.20, 0.19, 0.11, 16), shortsMat);
+        pelvis.position.y = 0.94;
+        pelvis.castShadow = true;
+        shortsGroup.add(pelvis);
+
+        // Left Short Leg (Flared tube angled slightly)
+        const shortLegL = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.138, 0.25, 14), shortsMat);
+        shortLegL.position.set(-0.11, 0.81, 0);
+        shortLegL.rotation.z = 0.05;
+        shortLegL.castShadow = true;
+        shortsGroup.add(shortLegL);
+
+        // Right Short Leg
+        const shortLegR = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.138, 0.25, 14), shortsMat);
+        shortLegR.position.set(0.11, 0.81, 0);
+        shortLegR.rotation.z = -0.05;
+        shortLegR.castShadow = true;
+        shortsGroup.add(shortLegR);
+
+        // Contrasting Shorts Hem Trim
+        [-0.11, 0.11].forEach((sx) => {
+            const hemTrim = new THREE.Mesh(new THREE.TorusGeometry(0.136, 0.012, 6, 16), trimMat);
+            hemTrim.rotation.x = Math.PI / 2;
+            hemTrim.position.set(sx, 0.69, 0);
+            shortsGroup.add(hemTrim);
+        });
+
+        pGroup.add(shortsGroup);
+
+        // ==========================================
+        // 4. MUSCULAR LEGS, SOCKS & 3D CLEATS
+        // ==========================================
+        const stanceSpread = options.isKeeper ? 0.16 : 0.11;
+
+        [-stanceSpread, stanceSpread].forEach((lx) => {
+            const legGroup = new THREE.Group();
+
+            // Muscular Thigh (Quads)
+            const thigh = new THREE.Mesh(new THREE.CylinderGeometry(0.088, 0.072, 0.28, 14), skinMat);
+            thigh.position.set(lx, 0.64, 0);
+            thigh.castShadow = true;
+            legGroup.add(thigh);
+
+            // Patella Knee Cap
+            const knee = new THREE.Mesh(new THREE.SphereGeometry(0.065, 12, 12), skinMat);
+            knee.position.set(lx, 0.48, 0.01);
+            knee.castShadow = true;
+            legGroup.add(knee);
+
+            // Football Sock Turnover Cuff (Ribbed)
+            const sockCuff = new THREE.Mesh(new THREE.TorusGeometry(0.074, 0.016, 8, 16), trimMat);
+            sockCuff.rotation.x = Math.PI / 2;
+            sockCuff.position.set(lx, 0.45, 0);
+            legGroup.add(sockCuff);
+
+            // Muscular High Football Sock (Calf)
+            const calf = new THREE.Mesh(new THREE.CylinderGeometry(0.072, 0.052, 0.38, 14), sockMat);
+            calf.position.set(lx, 0.26, 0);
+            calf.castShadow = true;
+            legGroup.add(calf);
+
+            // 3D Pro Football Cleats (Modern Aerodynamic Boot)
+            const bootGroup = new THREE.Group();
+            bootGroup.position.set(lx, 0, 0);
+
+            // Heel Counter & Ankle Collar
+            const heel = new THREE.Mesh(new THREE.BoxGeometry(0.095, 0.075, 0.11), bootMat);
+            heel.position.set(0, 0.05, -0.02);
+            heel.castShadow = true;
+            bootGroup.add(heel);
+
+            // Midfoot & Lacing Bridge
+            const mid = new THREE.Mesh(new THREE.BoxGeometry(0.092, 0.065, 0.10), bootMat);
+            mid.position.set(0, 0.045, 0.06);
+            mid.castShadow = true;
+            bootGroup.add(mid);
+
+            // Sleek Curved Toe Box
+            const toe = new THREE.Mesh(new THREE.SphereGeometry(0.048, 12, 10), bootMat);
+            toe.scale.set(0.98, 0.65, 1.45);
+            toe.position.set(0, 0.035, 0.14);
+            toe.castShadow = true;
+            bootGroup.add(toe);
+
+            // Metallic Soleplate
+            const sole = new THREE.Mesh(new THREE.BoxGeometry(0.096, 0.014, 0.25), soleMat);
+            sole.position.set(0, 0.01, 0.06);
+            bootGroup.add(sole);
+
+            // Molded 3D Studs (Front & Rear)
+            [
+                [-0.03, -0.04], [0.03, -0.04],
+                [-0.03, 0.12], [0.03, 0.12]
+            ].forEach(([sx, sz]) => {
+                const stud = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.008, 0.018, 6), soleMat);
+                stud.position.set(sx, 0.002, sz);
+                bootGroup.add(stud);
+            });
+
+            legGroup.add(bootGroup);
+            pGroup.add(legGroup);
+        });
+
+        // Contact Ground Shadow
+        const shadow = new THREE.Mesh(new THREE.CircleGeometry(options.isKeeper ? 0.48 : 0.38, 16), shadowMat);
+        shadow.rotation.x = -Math.PI / 2;
+        shadow.position.set(0, 0.005, 0);
+        pGroup.add(shadow);
+
+        return pGroup;
+    },
+
     // 4. 3D Wall Players (Free Kick)
     buildWall: function() {
         this.wallGroup = new THREE.Group();
@@ -16879,166 +17155,201 @@ const Nss3DEngine = {
 
         const skinTones = [0xe0a97a, 0xd4976a, 0x8d5524, 0xc68642];
         const hairColors = [0x171717, 0x2e1b12, 0x1f2937, 0x3d2314];
+        const bootColors = [0x0f172a, 0x2563eb, 0xdc2626, 0xd97706];
+        const heightScales = [0.98, 1.03, 1.04, 0.99]; // Realistic subtle height variation across the barrier
 
-        const shortsMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.6 });
-        const bootMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.3 });
-        const shadowMat = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.5 });
-
-        const playerXOffsets = [-1.35, -0.45, 0.45, 1.35];
+        const playerXOffsets = [-0.78, -0.26, 0.26, 0.78]; // Tight shoulder-to-shoulder Champions League barrier
 
         playerXOffsets.forEach((px, idx) => {
-            const pGroup = new THREE.Group();
-
             const jerseyMat = new THREE.MeshStandardMaterial({
                 map: (this.textures.wallJerseys && this.textures.wallJerseys[idx % this.textures.wallJerseys.length]) || null,
                 roughness: 0.5
             });
+
+            const pGroup = this.createDetailed3DPlayer({
+                skinColor: skinTones[idx % skinTones.length],
+                hairColor: hairColors[idx % hairColors.length],
+                hairStyle: idx % 4,
+                jerseyMat: jerseyMat,
+                shortsColor: 0xffffff,
+                sockColor: 0x1d4ed8,
+                bootColor: bootColors[idx % bootColors.length],
+                heightScale: heightScales[idx % heightScales.length],
+                isKeeper: false
+            });
+
             const skinMat = new THREE.MeshStandardMaterial({
                 color: skinTones[idx % skinTones.length],
                 roughness: 0.65
             });
-            const hairMat = new THREE.MeshStandardMaterial({
-                color: hairColors[idx % hairColors.length],
-                roughness: 0.9
-            });
+            const tapeMat = new THREE.MeshStandardMaterial({ color: 0xf1f5f9, roughness: 0.7 });
 
-            // Head & Hair
-            const head = new THREE.Mesh(new THREE.SphereGeometry(0.12, 14, 14), skinMat);
-            head.position.y = 1.74;
-            head.castShadow = true;
-            pGroup.add(head);
+            // Arm Sleeves
+            const sleeveL = new THREE.Mesh(new THREE.CylinderGeometry(0.072, 0.065, 0.16, 12), jerseyMat);
+            sleeveL.position.set(-0.25, 1.42, 0.02);
+            sleeveL.rotation.z = -0.30;
+            pGroup.add(sleeveL);
 
-            const hair = new THREE.Mesh(new THREE.SphereGeometry(0.125, 12, 12, 0, Math.PI * 2, 0, Math.PI / 2), hairMat);
-            hair.position.y = 1.76;
-            pGroup.add(hair);
+            const sleeveR = new THREE.Mesh(new THREE.CylinderGeometry(0.072, 0.065, 0.16, 12), jerseyMat);
+            sleeveR.position.set(0.25, 1.42, 0.02);
+            sleeveR.rotation.z = 0.30;
+            pGroup.add(sleeveR);
 
-            // Torso (Jersey)
-            const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.20, 0.62, 14), jerseyMat);
-            torso.position.y = 1.35;
-            torso.castShadow = true;
-            pGroup.add(torso);
-
-            // Arms (Protective wall posture)
-            const armL = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.055, 0.55, 10), skinMat);
-            armL.rotation.z = -0.35;
-            armL.rotation.x = 0.4;
-            armL.position.set(-0.24, 1.25, 0.12);
+            // Upper Arms
+            const armL = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.052, 0.25, 12), skinMat);
+            armL.position.set(-0.26, 1.30, 0.06);
+            armL.rotation.z = -0.25;
+            armL.rotation.x = 0.35;
             pGroup.add(armL);
 
-            const armR = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.055, 0.55, 10), skinMat);
-            armR.rotation.z = 0.35;
-            armR.rotation.x = 0.4;
-            armR.position.set(0.24, 1.25, 0.12);
+            const armR = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.052, 0.25, 12), skinMat);
+            armR.position.set(0.26, 1.30, 0.06);
+            armR.rotation.z = 0.25;
+            armR.rotation.x = 0.35;
             pGroup.add(armR);
 
-            // Shorts
-            const shorts = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.23, 0.32, 14), shortsMat);
-            shorts.position.y = 0.90;
-            shorts.castShadow = true;
-            pGroup.add(shorts);
+            // Forearms bent protectively in front of pelvis
+            const foreL = new THREE.Mesh(new THREE.CylinderGeometry(0.052, 0.042, 0.28, 12), skinMat);
+            foreL.position.set(-0.14, 1.08, 0.18);
+            foreL.rotation.z = -0.75;
+            foreL.rotation.x = 0.55;
+            pGroup.add(foreL);
 
-            // Legs & Boots
-            [-0.10, 0.10].forEach(lx => {
-                const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.06, 0.70, 10), skinMat);
-                leg.position.set(lx, 0.45, 0);
-                leg.castShadow = true;
-                pGroup.add(leg);
+            const foreR = new THREE.Mesh(new THREE.CylinderGeometry(0.052, 0.042, 0.28, 12), skinMat);
+            foreR.position.set(0.14, 1.08, 0.18);
+            foreR.rotation.z = 0.75;
+            foreR.rotation.x = 0.55;
+            pGroup.add(foreR);
 
-                const boot = new THREE.Mesh(new THREE.BoxGeometry(0.10, 0.07, 0.22), bootMat);
-                boot.position.set(lx, 0.04, 0.04);
-                boot.castShadow = true;
-                pGroup.add(boot);
-            });
+            // Athletic Wrist Tape
+            const tapeL = new THREE.Mesh(new THREE.CylinderGeometry(0.044, 0.043, 0.05, 12), tapeMat);
+            tapeL.position.set(-0.06, 0.98, 0.21);
+            tapeL.rotation.z = -0.75;
+            pGroup.add(tapeL);
 
-            // Contact Shadow
-            const shadow = new THREE.Mesh(new THREE.CircleGeometry(0.35, 16), shadowMat);
-            shadow.rotation.x = -Math.PI / 2;
-            shadow.position.set(0, 0.005, 0);
-            pGroup.add(shadow);
+            const tapeR = new THREE.Mesh(new THREE.CylinderGeometry(0.044, 0.043, 0.05, 12), tapeMat);
+            tapeR.position.set(0.06, 0.98, 0.21);
+            tapeR.rotation.z = 0.75;
+            pGroup.add(tapeR);
+
+            // Clasped Hands in Authentic Defensive Barrier Pose
+            const handClasp = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.10, 0.06), skinMat);
+            handClasp.position.set(0, 0.94, 0.22);
+            handClasp.castShadow = true;
+            pGroup.add(handClasp);
 
             pGroup.position.set(px, 0, 0);
             this.wallGroup.add(pGroup);
             this.wallPlayers.push(pGroup);
         });
 
-        this.wallGroup.position.set(0.95, 0, 9.15);
+        this.wallGroup.position.set(1.20, 0, 9.15);
         this.scene.add(this.wallGroup);
     },
 
     // 5. 3D Goalkeeper
     buildGoalkeeper: function() {
-        this.keeperGroup = new THREE.Group();
-
+        const keeperJerseyMat = new THREE.MeshStandardMaterial({
+            map: this.textures.keeperJersey,
+            roughness: 0.4
+        });
         const skinMat = new THREE.MeshStandardMaterial({ color: 0xd4976a, roughness: 0.6 });
-        const keeperJerseyMat = new THREE.MeshStandardMaterial({ map: this.textures.keeperJersey, roughness: 0.4 });
-        const shortsMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.5 });
-        const gloveMat = new THREE.MeshStandardMaterial({ color: 0xf97316, roughness: 0.2, metalness: 0.1 });
-        const shadowMat = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.55 });
+        const gloveMat = new THREE.MeshStandardMaterial({ color: 0xf97316, roughness: 0.25, metalness: 0.1 });
+        const palmMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.3 }); // Pro white latex grip palm
 
-        // Head
-        this.keeperHead = new THREE.Mesh(new THREE.SphereGeometry(0.12, 14, 14), skinMat);
-        this.keeperHead.position.y = 1.74;
-        this.keeperHead.castShadow = true;
-        this.keeperGroup.add(this.keeperHead);
-
-        // Hair / Headband
-        const hair = new THREE.Mesh(new THREE.SphereGeometry(0.125, 12, 12, 0, Math.PI * 2, 0, Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0x111827 }));
-        hair.position.y = 1.76;
-        this.keeperGroup.add(hair);
-
-        // Body / Torso (Neon green kit)
-        this.keeperBody = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.20, 0.62, 14), keeperJerseyMat);
-        this.keeperBody.position.y = 1.35;
-        this.keeperBody.castShadow = true;
-        this.keeperGroup.add(this.keeperBody);
-
-        // Arms & Large Padded Goalkeeper Gloves
-        this.keeperLeftArm = new THREE.Group();
-        const armL = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.055, 0.52, 10), keeperJerseyMat);
-        armL.position.y = -0.26;
-        this.keeperLeftArm.add(armL);
-        const gloveL = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.16, 0.06), gloveMat);
-        gloveL.position.y = -0.56;
-        this.keeperLeftArm.add(gloveL);
-        this.keeperLeftArm.position.set(-0.25, 1.55, 0);
-        this.keeperLeftArm.rotation.z = -0.55;
-        this.keeperGroup.add(this.keeperLeftArm);
-
-        this.keeperRightArm = new THREE.Group();
-        const armR = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.055, 0.52, 10), keeperJerseyMat);
-        armR.position.y = -0.26;
-        this.keeperRightArm.add(armR);
-        const gloveR = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.16, 0.06), gloveMat);
-        gloveR.position.y = -0.56;
-        this.keeperRightArm.add(gloveR);
-        this.keeperRightArm.position.set(0.25, 1.55, 0);
-        this.keeperRightArm.rotation.z = 0.55;
-        this.keeperGroup.add(this.keeperRightArm);
-
-        // Shorts
-        const shorts = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.23, 0.32, 14), shortsMat);
-        shorts.position.y = 0.90;
-        shorts.castShadow = true;
-        this.keeperGroup.add(shorts);
-
-        // Legs
-        [-0.12, 0.12].forEach(lx => {
-            const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.06, 0.70, 10), skinMat);
-            leg.position.set(lx, 0.45, 0);
-            leg.castShadow = true;
-            this.keeperGroup.add(leg);
-
-            const boot = new THREE.Mesh(new THREE.BoxGeometry(0.10, 0.07, 0.22), new THREE.MeshStandardMaterial({ color: 0x22c55e }));
-            boot.position.set(lx, 0.04, 0.04);
-            boot.castShadow = true;
-            this.keeperGroup.add(boot);
+        this.keeperGroup = this.createDetailed3DPlayer({
+            skinColor: 0xd4976a,
+            hairColor: 0x111827,
+            hairStyle: 3, // Swept undercut with athletic headband
+            jerseyMat: keeperJerseyMat,
+            shortsColor: 0x0f172a,
+            sockColor: 0x22c55e,
+            bootColor: 0x22c55e,
+            heightScale: 1.05, // Authentic tall agile keeper
+            isKeeper: true
         });
 
-        // Contact Shadow
-        this.keeperShadow = new THREE.Mesh(new THREE.CircleGeometry(0.48, 16), shadowMat);
-        this.keeperShadow.rotation.x = -Math.PI / 2;
-        this.keeperShadow.position.set(0, 0.005, 0);
-        this.keeperGroup.add(this.keeperShadow);
+        // Store reference to keeper body and head for animations & textures
+        this.keeperBody = this.keeperGroup.userData.jerseyMesh;
+        this.keeperHead = this.keeperGroup.userData.head;
+
+        // Ready Crouch: Knees and torso angled slightly forward
+        this.keeperGroup.rotation.x = 0.08;
+
+        // Goalkeeper articulated arm pivots so dive & idle animations work seamlessly!
+        this.keeperLeftArm = new THREE.Group();
+        this.keeperLeftArm.position.set(-0.25, 1.50, 0);
+
+        const kSleeveL = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.065, 0.18, 12), keeperJerseyMat);
+        kSleeveL.position.y = -0.09;
+        this.keeperLeftArm.add(kSleeveL);
+
+        const kUpperArmL = new THREE.Mesh(new THREE.CylinderGeometry(0.062, 0.055, 0.28, 12), keeperJerseyMat);
+        kUpperArmL.position.y = -0.22;
+        this.keeperLeftArm.add(kUpperArmL);
+
+        const kForearmL = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.046, 0.26, 12), skinMat);
+        kForearmL.position.y = -0.42;
+        this.keeperLeftArm.add(kForearmL);
+
+        // Pro Goalkeeper Glove Left
+        const gloveLGroup = new THREE.Group();
+        gloveLGroup.position.y = -0.60;
+
+        const gloveBackL = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.16, 0.055), gloveMat);
+        gloveBackL.castShadow = true;
+        gloveLGroup.add(gloveBackL);
+
+        const glovePalmL = new THREE.Mesh(new THREE.BoxGeometry(0.124, 0.154, 0.015), palmMat);
+        glovePalmL.position.z = 0.03;
+        gloveLGroup.add(glovePalmL);
+
+        const thumbL = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.075, 0.045), gloveMat);
+        thumbL.position.set(0.07, -0.02, 0.02);
+        thumbL.rotation.z = -0.45;
+        gloveLGroup.add(thumbL);
+
+        this.keeperLeftArm.add(gloveLGroup);
+        this.keeperLeftArm.rotation.z = -0.65;
+        this.keeperLeftArm.rotation.x = 0.35;
+        this.keeperGroup.add(this.keeperLeftArm);
+
+        // Pro Goalkeeper Glove Right
+        this.keeperRightArm = new THREE.Group();
+        this.keeperRightArm.position.set(0.25, 1.50, 0);
+
+        const kSleeveR = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.065, 0.18, 12), keeperJerseyMat);
+        kSleeveR.position.y = -0.09;
+        this.keeperRightArm.add(kSleeveR);
+
+        const kUpperArmR = new THREE.Mesh(new THREE.CylinderGeometry(0.062, 0.055, 0.28, 12), keeperJerseyMat);
+        kUpperArmR.position.y = -0.22;
+        this.keeperRightArm.add(kUpperArmR);
+
+        const kForearmR = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.046, 0.26, 12), skinMat);
+        kForearmR.position.y = -0.42;
+        this.keeperRightArm.add(kForearmR);
+
+        const gloveRGroup = new THREE.Group();
+        gloveRGroup.position.y = -0.60;
+
+        const gloveBackR = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.16, 0.055), gloveMat);
+        gloveBackR.castShadow = true;
+        gloveRGroup.add(gloveBackR);
+
+        const glovePalmR = new THREE.Mesh(new THREE.BoxGeometry(0.124, 0.154, 0.015), palmMat);
+        glovePalmR.position.z = 0.03;
+        gloveRGroup.add(glovePalmR);
+
+        const thumbR = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.075, 0.045), gloveMat);
+        thumbR.position.set(-0.07, -0.02, 0.02);
+        thumbR.rotation.z = 0.45;
+        gloveRGroup.add(thumbR);
+
+        this.keeperRightArm.add(gloveRGroup);
+        this.keeperRightArm.rotation.z = 0.65;
+        this.keeperRightArm.rotation.x = 0.35;
+        this.keeperGroup.add(this.keeperRightArm);
 
         this.keeperGroup.position.set(-1.1, 0, 24.3);
         this.scene.add(this.keeperGroup);
@@ -17134,20 +17445,24 @@ const Nss3DEngine = {
             this.keeper.baseZ = 10.9;
             this.keeper.baseX = 0;
             this.keeperGroup.position.set(0, 0, 10.9);
-            this.camera.position.set(0, 1.15, -2.1);
-            this.camera.lookAt(0, 1.35, 7.5);
+            this.camera.fov = 50;
+            this.camera.position.set(0, 1.68, -3.10);
+            this.camera.lookAt(0, 0.65, 9.5);
+            this.camera.updateProjectionMatrix();
             this.ball.targetZ = 11.0;
         } else {
             const oppTag = practice ? "DUVAR: 4 KİŞİ" : (opp.name ? opp.name.toUpperCase() : "DUVAR: 4 KİŞİ");
             if (badge) badge.innerText = `[ 90' SERBEST VURUŞ vs ${oppTag} • 24.5 METRE ]`;
             this.goalGroup.position.set(0, 0, 24.4);
             this.wallGroup.visible = true;
-            this.wallGroup.position.set(0.95, 0, 9.15); // Authentic tactical wall covering right side
+            this.wallGroup.position.set(1.20, 0, 9.15); // Authentic tactical wall covering right side
             this.keeper.baseZ = 24.3;
             this.keeper.baseX = -1.1; // Keeper guarding left side
             this.keeperGroup.position.set(-1.1, 0, 24.3);
-            this.camera.position.set(0, 1.16, -2.15);
-            this.camera.lookAt(0, 1.45, 12);
+            this.camera.fov = 52;
+            this.camera.position.set(0, 1.92, -3.70);
+            this.camera.lookAt(0, 0.55, 15.0);
+            this.camera.updateProjectionMatrix();
             this.ball.targetZ = 24.4;
         }
 
@@ -17462,11 +17777,11 @@ const Nss3DEngine = {
             }
 
             // Dynamic Forward Camera Tracking (EA Sports FC / Score! Hero sensation)
-            const baseCamZ = (this.duelType === 'freekick') ? -2.15 : -2.1;
-            const baseCamY = (this.duelType === 'freekick') ? 1.16 : 1.15;
-            this.camera.position.z = baseCamZ + p * 4.2;
-            this.camera.position.y = baseCamY + p * 0.35;
-            this.camera.lookAt(curX * 0.35, curY * 0.45 + 1.2, curZ + 5.0);
+            const baseCamZ = (this.duelType === 'freekick') ? -3.70 : -3.10;
+            const baseCamY = (this.duelType === 'freekick') ? 1.92 : 1.68;
+            this.camera.position.z = baseCamZ + p * 5.2;
+            this.camera.position.y = baseCamY + p * 0.20;
+            this.camera.lookAt(curX * 0.35, curY * 0.45 + 0.85, curZ + 5.0);
 
             // Record Ball Trail Points
             if (this.ballTrailPositions) {
