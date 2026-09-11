@@ -2239,12 +2239,8 @@
             <div id="pack-opening-scene" style="perspective: 1000px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
                 <h3 id="pack-opening-title" style="color: #FFD54F; font-family: 'Inter', sans-serif; font-weight: 800; font-size: 16px; margin-bottom: 25px; text-shadow: 0 0 10px rgba(255,213,79,0.3); text-transform: uppercase;">Paket Açılıyor...</h3>
                 
-                <!-- Shaking Card Pack Wrapper -->
-                <div id="pack-graphic-wrapper" onclick="triggerPackReveal()" style="width: 170px; height: 250px; background: url('gold_pack_bg.png'); background-size: cover; background-position: center; border: 2.5px solid #FFD54F; border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.8), 0 0 25px rgba(255,213,79,0.35); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; margin-bottom: 20px; transition: transform 0.5s ease, opacity 0.5s ease; cursor: pointer;">
-                    <div style="font-size: 48px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); transform: translateZ(20px);">🏆</div>
-                    <div style="font-family: 'Inter', sans-serif; font-weight: 900; color: #FFD54F; letter-spacing: 2px; margin-top: 15px; font-size: 16px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); transform: translateZ(15px);">FUT PACK</div>
-                    <div style="color: #fff; font-size: 9px; font-weight: 800; background: rgba(0,0,0,0.45); padding: 4px 12px; border-radius: 12px; margin-top: 25px; border: 1px solid rgba(255,255,255,0.15); transform: translateZ(10px);">TIKLA VE AÇ</div>
-                    <div class="glow-sparkle" style="position: absolute; top:0; left:0; width: 100%; height: 100%; border-radius: 10px; box-shadow: inset 0 0 30px rgba(255,215,0,0.5); opacity: 0; pointer-events:none;"></div>
+                <!-- Console-Grade EA FC Booster Pack Graphic Wrapper -->
+                <div id="pack-graphic-wrapper" class="fut-pack pack-tier-gold" onclick="triggerPackReveal()">
                 </div>
 
                 <!-- Reveal Packed Card (initially hidden, dynamically filled) -->
@@ -12115,7 +12111,9 @@ function afterWeekAdvanced() {
                         <!-- Silver Pack -->
                         <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 10px 14px; border-radius: 12px;">
                             <div style="display: flex; align-items: center; gap: 12px;">
-                                <div style="font-size: 24px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">⚪</div>
+                                <div class="mini-pack-preview pack-tier-silver">
+                                    <svg viewBox="0 0 40 40" width="22" height="22"><polygon points="20,4 36,12 32,32 20,38 8,32 4,12" fill="none" stroke="#ECEFF1" stroke-width="3"/><polygon points="20,12 23,19 30,19 24,24 26,31 20,26 14,31 16,24 10,19 17,19" fill="#FFF"/></svg>
+                                </div>
                                 <div>
                                     <h4 style="color: white; font-size: 13px; font-weight: 700; margin: 0;">Gümüş Oyuncu Paketi</h4>
                                     <p style="color: var(--text-muted); font-size: 10.5px; margin: 2px 0 0 0;">Kerem, Barış Alper, Semih Kılıçsoy yetenekleri</p>
@@ -12127,7 +12125,9 @@ function afterWeekAdvanced() {
                         <!-- Gold Pack -->
                         <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 10px 14px; border-radius: 12px;">
                             <div style="display: flex; align-items: center; gap: 12px;">
-                                <div style="font-size: 24px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">💛</div>
+                                <div class="mini-pack-preview pack-tier-gold">
+                                    <svg viewBox="0 0 40 40" width="22" height="22"><polygon points="20,4 36,12 32,32 20,38 8,32 4,12" fill="none" stroke="#FFE082" stroke-width="3"/><path d="M14 16 L26 16 L28 22 C28 26 24 28 20 28 C16 28 12 26 12 22 Z" fill="#FFE082"/></svg>
+                                </div>
                                 <div>
                                     <h4 style="color: white; font-size: 13px; font-weight: 700; margin: 0;">Altın Oyuncu Paketi</h4>
                                     <p style="color: var(--text-muted); font-size: 10.5px; margin: 2px 0 0 0;">Arda Güler, İcardi, Dzeko, Muslera elit yıldızları</p>
@@ -12139,7 +12139,9 @@ function afterWeekAdvanced() {
                         <!-- Icon Pack -->
                         <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 10px 14px; border-radius: 12px;">
                             <div style="display: flex; align-items: center; gap: 12px;">
-                                <div style="font-size: 24px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">💜</div>
+                                <div class="mini-pack-preview pack-tier-icon">
+                                    <svg viewBox="0 0 40 40" width="22" height="22"><polygon points="20,4 36,12 32,32 20,38 8,32 4,12" fill="none" stroke="#FFD54F" stroke-width="3"/><path d="M11 26 L29 26 L30 18 L24 22 L20 13 L16 22 L10 18 Z" fill="#FFD54F"/></svg>
+                                </div>
                                 <div>
                                     <h4 style="color: white; font-size: 13px; font-weight: 700; margin: 0;">Efsane İkon Paketi</h4>
                                     <p style="color: var(--text-muted); font-size: 10.5px; margin: 2px 0 0 0;">Pelé, Maradona, Ronaldinho, Zidane, Maldini</p>
@@ -12151,7 +12153,9 @@ function afterWeekAdvanced() {
                         <!-- Special Offer (3x Mega Fırsat Paketi) -->
                         <div style="display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, rgba(0,230,118,0.05), rgba(0,0,0,0.25)); border: 1px solid rgba(0,230,118,0.25); padding: 10px 14px; border-radius: 12px;">
                             <div style="display: flex; align-items: center; gap: 12px;">
-                                <div style="font-size: 24px; filter: drop-shadow(0 2px 4px rgba(0,230,118,0.4));">🔥</div>
+                                <div class="mini-pack-preview pack-tier-promo">
+                                    <svg viewBox="0 0 40 40" width="22" height="22"><polygon points="20,4 36,12 32,32 20,38 8,32 4,12" fill="none" stroke="#69F0AE" stroke-width="3"/><path d="M22 8 L14 22 L20 22 L18 34 L28 19 L22 19 Z" fill="#00E5FF"/></svg>
+                                </div>
                                 <div>
                                     <h4 style="color: #00E676; font-size: 13px; font-weight: 800; margin: 0;">3x Mega Fırsat Paketi</h4>
                                     <p style="color: var(--text-muted); font-size: 10.5px; margin: 2px 0 0 0;">Tek seferde 3 ayrı elit süperstar kartı aç</p>
@@ -12228,6 +12232,103 @@ function afterWeekAdvanced() {
             container.innerHTML = storeHtml + collectionHtml;
         }
 
+        // 🎴 RENDER HIGH-END EA FC CONSOLE BOOSTER PACK GRAPHIC (NO AI ARTIFACTS)
+        function renderFutPackGraphic(type) {
+            type = type || 'gold';
+            let brand = "RISE OF GREATNESS";
+            let edition = "ALTIN PRESTİJ";
+            let title = "ALTIN<br>SÜPERSTAR";
+            let sub = "1 OYUNCU KARTI";
+            let guarantee = "GARANTİLİ ELİT YILDIZ";
+            let tierClass = "pack-tier-gold";
+            let svgEmblem = `
+                <svg viewBox="0 0 100 100" width="100%" height="100%">
+                    <defs>
+                        <linearGradient id="goldGradShield" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#FFE082"/>
+                            <stop offset="50%" stop-color="#FFB300"/>
+                            <stop offset="100%" stop-color="#FF6F00"/>
+                        </linearGradient>
+                    </defs>
+                    <polygon points="50,4 92,25 82,78 50,96 18,78 8,25" fill="none" stroke="url(#goldGradShield)" stroke-width="4.5" filter="drop-shadow(0 4px 10px rgba(0,0,0,0.7))"/>
+                    <polygon points="50,14 82,31 74,70 50,84 26,70 18,31" fill="rgba(255, 215, 0, 0.12)"/>
+                    <path d="M36 34 L64 34 L68 48 C68 58 58 64 50 64 C42 64 32 58 32 48 Z" fill="url(#goldGradShield)" filter="drop-shadow(0 0 8px rgba(255,215,0,0.8))"/>
+                    <path d="M50 64 L50 72 M40 72 L60 72" stroke="#FFE082" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M34 38 Q24 44 32 52" stroke="#FFE082" stroke-width="2.5" fill="none"/>
+                    <path d="M66 38 Q76 44 68 52" stroke="#FFE082" stroke-width="2.5" fill="none"/>
+                </svg>
+            `;
+
+            if (type === 'icon') {
+                edition = "EFSANE / ICON";
+                title = "EFSANE<br>İKON";
+                guarantee = "GARANTİLİ DÜNYA EFSANESİ";
+                tierClass = "pack-tier-icon";
+                svgEmblem = `
+                    <svg viewBox="0 0 100 100" width="100%" height="100%">
+                        <polygon points="50,4 92,25 82,78 50,96 18,78 8,25" fill="none" stroke="#FFD54F" stroke-width="4" filter="drop-shadow(0 4px 12px rgba(224,64,251,0.6))"/>
+                        <polygon points="50,14 82,31 74,70 50,84 26,70 18,31" fill="rgba(123, 31, 162, 0.25)"/>
+                        <path d="M28 62 L72 62 L74 44 L60 52 L50 32 L40 52 L26 44 Z" fill="#FFD54F" filter="drop-shadow(0 0 10px #FFD54F)"/>
+                        <circle cx="50" cy="28" r="3.5" fill="#FFF8E1"/>
+                        <circle cx="26" cy="40" r="2.5" fill="#FFF8E1"/>
+                        <circle cx="74" cy="40" r="2.5" fill="#FFF8E1"/>
+                    </svg>
+                `;
+            } else if (type === 'silver') {
+                edition = "GÜMÜŞ SERİSİ";
+                title = "GÜMÜŞ<br>YETENEK";
+                guarantee = "GARANTİLİ YILDIZ ADAYI";
+                tierClass = "pack-tier-silver";
+                svgEmblem = `
+                    <svg viewBox="0 0 100 100" width="100%" height="100%">
+                        <polygon points="50,4 92,25 82,78 50,96 18,78 8,25" fill="none" stroke="#CFD8DC" stroke-width="4" filter="drop-shadow(0 4px 8px rgba(0,0,0,0.6))"/>
+                        <polygon points="50,14 82,31 74,70 50,84 26,70 18,31" fill="rgba(255,255,255,0.08)"/>
+                        <polygon points="50,28 56,42 70,42 59,52 63,66 50,56 37,66 41,52 30,42 44,42" fill="#ECEFF1" filter="drop-shadow(0 0 6px #FFFFFF)"/>
+                    </svg>
+                `;
+            } else if (type === 'promo') {
+                brand = "CHAMPIONS EDITION";
+                edition = "3X MEGA BUNDLE";
+                title = "MEGA<br>FIRSAT 3X";
+                sub = "3 AYRI SÜPERSTAR";
+                guarantee = "3X PEŞ PEŞE AÇILIŞ";
+                tierClass = "pack-tier-promo";
+                svgEmblem = `
+                    <svg viewBox="0 0 100 100" width="100%" height="100%">
+                        <polygon points="50,4 92,25 82,78 50,96 18,78 8,25" fill="none" stroke="#69F0AE" stroke-width="4.5" filter="drop-shadow(0 4px 12px rgba(0,230,118,0.7))"/>
+                        <polygon points="50,14 82,31 74,70 50,84 26,70 18,31" fill="rgba(0, 230, 118, 0.15)"/>
+                        <path d="M54 22 L36 50 L48 50 L44 76 L66 44 L52 44 Z" fill="#00E5FF" filter="drop-shadow(0 0 10px #00E676)"/>
+                    </svg>
+                `;
+            }
+
+            return {
+                tierClass: tierClass,
+                html: `
+                    <div class="fut-pack-sheen"></div>
+                    <div class="fut-pack-texture"></div>
+
+                    <div class="fut-pack-header">
+                        <div class="fut-pack-brand">${brand}</div>
+                        <div class="fut-pack-edition">${edition}</div>
+                    </div>
+
+                    <div class="fut-pack-center">
+                        <div class="fut-pack-emblem-wrap">
+                            ${svgEmblem}
+                        </div>
+                        <div class="fut-pack-title">${title}</div>
+                        <div class="fut-pack-sub">${sub}</div>
+                    </div>
+
+                    <div class="fut-pack-footer">
+                        <div class="fut-pack-guarantee">${guarantee}</div>
+                        <div class="fut-pack-tap-btn">⚡ DOKUN VE AÇ ⚡</div>
+                    </div>
+                `
+            };
+        }
+
         function buyPack(type) {
             let cost = 0;
             if (type === 'silver') cost = 10000;
@@ -12256,6 +12357,9 @@ function afterWeekAdvanced() {
                 overlay.style.display = "flex";
                 const packWrapper = document.getElementById("pack-graphic-wrapper");
                 if (packWrapper) {
+                    const packData = renderFutPackGraphic(type);
+                    packWrapper.className = `fut-pack ${packData.tierClass}`;
+                    packWrapper.innerHTML = packData.html;
                     packWrapper.style.display = "flex";
                     packWrapper.style.transform = "scale(1)";
                     packWrapper.style.opacity = "1";
@@ -12562,6 +12666,9 @@ function afterWeekAdvanced() {
                 
                 const packWrapper = document.getElementById("pack-graphic-wrapper");
                 if (packWrapper) {
+                    const packData = renderFutPackGraphic('promo');
+                    packWrapper.className = `fut-pack ${packData.tierClass}`;
+                    packWrapper.innerHTML = packData.html;
                     packWrapper.style.display = "flex";
                     packWrapper.style.transform = "scale(1)";
                     packWrapper.style.opacity = "1";
