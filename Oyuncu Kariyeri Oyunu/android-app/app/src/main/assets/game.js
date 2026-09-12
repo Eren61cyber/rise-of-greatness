@@ -994,6 +994,10 @@ const GAME = {
         if (this.state.proPassActive) {
             energyCost = Math.max(10, energyCost - 5); // Pro Pass kondisyon tasarrufu
         }
+        // 🛡️ İlk 3 Hafta Çaylak Koruma Kalkanı: %50 Kondisyon Tasarrufu
+        if (this.state.currentWeek <= 3) {
+            energyCost = Math.max(5, Math.round(energyCost * 0.5));
+        }
         if (this.state.kondisyon < energyCost) {
             alert(`Antrenman yapmak için en az %${energyCost} kondisyon gereklidir! Dinlenmelisin.`);
             return;
@@ -1285,6 +1289,14 @@ const GAME = {
 
         if (this.state.nationalBanWeeks && this.state.nationalBanWeeks > 0) {
             this.state.nationalBanWeeks--;
+        }
+
+        // 🛡️ Çaylak Koruma Kalkanı Sona Erme Bildirimi (Hafta 4'e geçildiğinde)
+        if (this.state.currentWeek === 4 && !this.state.rookieShieldEndedAlertShown) {
+            this.state.rookieShieldEndedAlertShown = true;
+            setTimeout(() => {
+                alert("📢 TEKNİK DİREKTÖR MESAJI:\n\n'Tebrikler evlat! İlk 3 haftalık uyum sürecini başarıyla atlattın. Çaylak Koruma Kalkanı sona erdi. Artık asıl profesyonel lig maratonu başladı! Kondisyonuna dikkat et ve sahada her şeyini ver!' ⚽🔥");
+            }, 600);
         }
 
         // Season End check at week 34
@@ -2433,6 +2445,21 @@ const GAME = {
         if (avatarContainer) {
             const svgContent = this.generateAvatar(this.state.age);
             avatarContainer.innerHTML = svgContent;
+        }
+
+        // 🛡️ Çaylak Koruma Kalkanı UI Güncellemesi
+        const rookieBanner = document.getElementById("rookie-shield-banner");
+        if (rookieBanner) {
+            if (this.state.currentWeek <= 3) {
+                rookieBanner.style.display = "flex";
+                const weeksBadge = document.getElementById("rookie-shield-weeks");
+                if (weeksBadge) {
+                    const rem = Math.max(1, 4 - this.state.currentWeek);
+                    weeksBadge.innerText = `Kalan: ${rem} Hafta`;
+                }
+            } else {
+                rookieBanner.style.display = "none";
+            }
         }
 
         // Update betting UI badges if available

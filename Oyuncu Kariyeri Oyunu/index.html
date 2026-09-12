@@ -510,6 +510,21 @@
             </div>
         </section>
 
+        <!-- 🛡️ İlk 3 Hafta Çaylak Koruma Kalkanı Banner -->
+        <div id="rookie-shield-banner" style="display:none; margin: 0 16px 10px 16px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.16), rgba(59, 130, 246, 0.14)); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 12px; padding: 8px 14px; align-items: center; justify-content: space-between; gap: 10px; box-shadow: 0 4px 14px rgba(0,0,0,0.25);">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4); display: flex; align-items: center; justify-content: center; font-size: 16px;">🛡️</div>
+                <div>
+                    <div style="font-size: 12px; font-weight: 800; color: #10b981; letter-spacing: 0.3px; display: flex; align-items: center; gap: 6px;">
+                        ÇAYLAK KORUMA KALKANI
+                        <span style="font-size: 9px; font-weight: 900; background: #10b981; color: #022c22; padding: 1px 5px; border-radius: 4px;">AKTİF</span>
+                    </div>
+                    <div style="font-size: 10.5px; color: #94a3b8; margin-top: 1px;">⚡ %50 Kondisyon Tasarrufu &amp; 💰 +%50 Ekstra Maç Primi</div>
+                </div>
+            </div>
+            <span id="rookie-shield-weeks" style="font-size: 10.5px; font-weight: 800; background: rgba(16,185,129,0.25); color: #34d399; border: 1px solid rgba(16,185,129,0.4); padding: 4px 9px; border-radius: 99px; white-space: nowrap;">Kalan: 3 Hafta</span>
+        </div>
+
         <!-- Tab Views Panels -->
         <main class="panel-container">
             
@@ -877,7 +892,7 @@
             <section id="panel-training" class="view-panel">
                 <div class="panel-header">
                     <h2>Antrenman Sahası</h2>
-                    <p>Mevkine özel antrenmanlar yap. Her idman %20 Kondisyon harcar.</p>
+                    <p id="training-energy-desc">Mevkine özel antrenmanlar yap. Her idman %20 Kondisyon harcar.</p>
                     <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px;">
                         <div class="glass" style="padding: 6px 12px; border-radius: 8px; font-size: 11.5px; font-weight: 800; color: var(--primary); display: inline-block; border: 1px dashed var(--primary); box-shadow: 0 0 10px rgba(0, 230, 118, 0.1);">
                             📋 HAFTALIK KALAN ANTRENMAN HAKKIN: <span id="training-count-indicator">4 / 4</span>
@@ -1460,11 +1475,14 @@
 
                     <!-- Group 2: Veri & Hesap -->
                     <div>
-                        <div style="font-size: 11px; font-weight: bold; color: #8b949e; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Veri & Hesap</div>
+                        <div style="font-size: 11px; font-weight: bold; color: #8b949e; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Kariyer Yedekleme &amp; Aktarma</div>
                         <div style="background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 10px;">
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                                <button onclick="exportCareerSave()" style="background: #21262d; color: #c9d1d9; border: 1px solid #30363d; padding: 10px; font-size: 11.5px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#30363d'" onmouseout="this.style.background='#21262d'">💾 Yedekle</button>
-                                <button onclick="importCareerSave()" style="background: #21262d; color: #c9d1d9; border: 1px solid #30363d; padding: 10px; font-size: 11.5px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#30363d'" onmouseout="this.style.background='#21262d'">📥 Yükle</button>
+                                <button onclick="openCareerBackupModal('export')" style="background: linear-gradient(135deg, #10b981, #059669); color: #ffffff; border: none; padding: 10px; font-size: 11.5px; font-weight: 700; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 8px rgba(16,185,129,0.25);">📋 Kodu Kopyala</button>
+                                <button onclick="openCareerBackupModal('import')" style="background: #21262d; color: #38bdf8; border: 1px solid rgba(56,189,248,0.3); padding: 10px; font-size: 11.5px; font-weight: 700; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">📥 Kod Yapıştır</button>
+                            </div>
+                            <div style="font-size: 10px; color: #8b949e; line-height: 1.35;">
+                                Kariyerinizi kaybetmemek için yedek kodunuzu kopyalayabilir veya başka bir cihaza tek tıkla aktarabilirsiniz.
                             </div>
                             <button onclick="openAvatarChangeModal()" style="background: #21262d; color: #c9d1d9; border: 1px solid #30363d; padding: 10px; font-size: 11.5px; font-weight: 600; border-radius: 6px; cursor: pointer; width: 100%; transition: background 0.2s;" onmouseover="this.style.background='#30363d'" onmouseout="this.style.background='#21262d'">📸 Profil Fotoğrafını Değiştir</button>
                         </div>
@@ -3964,6 +3982,54 @@
                     <p style="color: var(--primary); font-weight: bold; margin-top: 6px;">İletişim & Geliştirici: RiseUp Studios</p>
                 </div>
                 <button class="btn btn-primary" onclick="document.getElementById('privacy-modal').style.display='none'" style="width: 100%; margin-top: 16px; padding: 10px; font-size: 12px; font-weight: 800;">Kapat</button>
+            </div>
+        </div>
+
+        <!-- 💾 Kariyer Yedekleme & Aktarma Modalı -->
+        <div class="event-modal-overlay" id="career-backup-modal" style="background: rgba(0,0,0,0.85); z-index: 10035; display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
+            <div class="event-card glass" style="max-width: 420px; width: 92%; text-align: left; max-height: 85vh; overflow-y: auto; padding: 22px; border-radius: 16px; border: 1px solid rgba(0,229,183,0.3); background: #111722; box-shadow: 0 10px 30px rgba(0,0,0,0.7);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 20px;">💾</span>
+                        <div>
+                            <h3 style="margin: 0; color: #fff; font-size: 15px; font-weight: 800;">Kariyer Yedekleme &amp; Aktarma</h3>
+                            <p style="margin: 2px 0 0 0; font-size: 10.5px; color: #7b8ba1;">Cihazlar arası tek tıkla kodla veri aktarımı</p>
+                        </div>
+                    </div>
+                    <button onclick="closeCareerBackupModal()" style="background: rgba(255,255,255,0.08); border: none; color: #fff; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;">✕</button>
+                </div>
+
+                <!-- Tabs: Yedek Al (Kopyala) vs Yedek Yükle (Yapıştır) -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: rgba(0,0,0,0.3); padding: 4px; border-radius: 10px; margin-bottom: 16px;">
+                    <button id="tab-backup-export" onclick="switchBackupTab('export')" style="background: var(--primary); color: #0a0e17; border: none; padding: 8px; font-size: 11px; font-weight: 800; border-radius: 8px; cursor: pointer; transition: all 0.2s;">📋 Kodu Kopyala</button>
+                    <button id="tab-backup-import" onclick="switchBackupTab('import')" style="background: transparent; color: #8b949e; border: none; padding: 8px; font-size: 11px; font-weight: 700; border-radius: 8px; cursor: pointer; transition: all 0.2s;">📥 Kod Yapıştır</button>
+                </div>
+
+                <!-- Section 1: Export Content -->
+                <div id="backup-export-section">
+                    <div style="font-size: 11px; color: #cbd5e1; line-height: 1.4; margin-bottom: 10px;">
+                        Aşağıdaki kod mevcut tüm kariyer ilerlemenizi, paranızı ve istatistiklerinizi içerir. Kopyalayıp kendinize veya arkadaşınıza gönderebilirsiniz:
+                    </div>
+                    <textarea id="career-backup-textarea" readonly style="width: 100%; height: 110px; background: #0a0e17; color: #00e5b7; font-family: monospace; font-size: 10.5px; border: 1px solid #21262d; border-radius: 8px; padding: 10px; box-sizing: border-box; resize: none; word-break: break-all;"></textarea>
+                    <div style="display: flex; gap: 8px; margin-top: 12px;">
+                        <button id="btn-copy-backup-code" onclick="copyCareerBackupCode()" style="flex: 1; background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; padding: 11px; font-size: 12px; font-weight: 800; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                            📋 Panoya Kopyala
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Section 2: Import Content -->
+                <div id="backup-import-section" style="display: none;">
+                    <div style="font-size: 11px; color: #cbd5e1; line-height: 1.4; margin-bottom: 10px;">
+                        Daha önce kopyaladığınız kariyer kodunu aşağıdaki kutuya yapıştırın ve kariyerinizi anında geri yükleyin:
+                    </div>
+                    <textarea id="career-import-textarea" placeholder="Kariyer yedek kodunu buraya yapıştırın..." style="width: 100%; height: 110px; background: #0a0e17; color: #fff; font-family: monospace; font-size: 10.5px; border: 1px solid #21262d; border-radius: 8px; padding: 10px; box-sizing: border-box; resize: none;"></textarea>
+                    <div style="display: flex; gap: 8px; margin-top: 12px;">
+                        <button onclick="applyCareerImportCode()" style="flex: 1; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; border: none; padding: 11px; font-size: 12px; font-weight: 800; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                            🚀 Kariyeri Yükle ve Başlat
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -13660,6 +13726,15 @@ function afterWeekAdvanced() {
                 countIndicator.innerText = `${4 - used} / 4`;
             }
 
+            const energyDesc = document.getElementById("training-energy-desc");
+            if (energyDesc && GAME && GAME.state) {
+                if (GAME.state.currentWeek <= 3) {
+                    energyDesc.innerHTML = `Mevkine özel antrenmanlar yap. <span style="color:#10b981; font-weight:800; background:rgba(16,185,129,0.15); padding:2px 6px; border-radius:4px; border:1px solid rgba(16,185,129,0.3);">🛡️ Çaylak Kalkanı: İdman başı sadece %10 Kondisyon!</span>`;
+                } else {
+                    energyDesc.innerText = `Mevkine özel antrenmanlar yap. Her idman %20 Kondisyon harcar.`;
+                }
+            }
+
             const drills = (DATABASE.POSITION_DRILLS && DATABASE.POSITION_DRILLS[pos]) ? DATABASE.POSITION_DRILLS[pos] : DATABASE.POSITION_DRILLS["Forvet"];
             
             let html = "";
@@ -15732,6 +15807,10 @@ function afterWeekAdvanced() {
                 if (GAME.state.matchStaminaBonus) {
                     drainAmount = Math.round(drainAmount * (1 - GAME.state.matchStaminaBonus / 100));
                 }
+                // 🛡️ İlk 3 Hafta Çaylak Koruma Kalkanı: %50 Kondisyon Tasarrufu
+                if (GAME.state.currentWeek <= 3) {
+                    drainAmount = Math.round(drainAmount * 0.5);
+                }
                 GAME.state.kondisyon = Math.max(10, GAME.state.kondisyon - drainAmount);
             } else {
                 // Dropped players don't lose energy, they recover instead!
@@ -15833,6 +15912,10 @@ function afterWeekAdvanced() {
 
                 if (!isDropped) {
                     let calculatedPrim = Math.max(1000, Math.round((GAME.state.weeklySalary || 500) * (scoreDiff > 0 ? 1.0 : (scoreDiff === 0 ? 0.5 : 0.25)) + (playerGoalsThisMatch * 400) + (playerAssistsThisMatch * 250)));
+                    // 🛡️ İlk 3 Hafta Çaylak Koruma Kalkanı: %50 Ekstra Maç Primi
+                    if (GAME.state.currentWeek <= 3) {
+                        calculatedPrim = Math.round(calculatedPrim * 1.5);
+                    }
                     window._pendingMatchBonus = { prim: calculatedPrim, scoreDiff: scoreDiff };
                 }
 
@@ -15968,50 +16051,108 @@ function afterWeekAdvanced() {
             }
         }
 
-        // 💾 CAREER SAVE EXPORT
-        function exportCareerSave() {
-            try {
-                if (!GAME || !GAME.state) {
-                    alert("Kayıtlı kariyer verisi bulunamadı!");
-                    return;
-                }
-                const saveString = JSON.stringify(GAME.state);
-                const base64Code = btoa(unescape(encodeURIComponent(saveString)));
-                
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(base64Code).then(() => {
-                        alert("✅ Kariyer yedek kodunuz panoya kopyalandı! Bu kodu bir yere not edebilir veya başka bir cihaza aktarabilirsiniz.");
-                    }).catch(() => {
-                        prompt("Kariyer Yedek Kodunuz (Kopyalayıp saklayın):", base64Code);
-                    });
-                } else {
-                    prompt("Kariyer Yedek Kodunuz (Kopyalayıp saklayın):", base64Code);
-                }
-            } catch(e) {
-                alert("Yedek kodu oluşturulurken bir hata oluştu: " + e.message);
+        // 💾 CAREER BACKUP & RESTORE MODAL SYSTEM
+        function openCareerBackupModal(mode) {
+            const modal = document.getElementById("career-backup-modal");
+            if (!modal) return;
+            modal.style.display = "flex";
+            switchBackupTab(mode || 'export');
+        }
+
+        function closeCareerBackupModal() {
+            const modal = document.getElementById("career-backup-modal");
+            if (modal) modal.style.display = "none";
+        }
+
+        function switchBackupTab(tab) {
+            const exportSec = document.getElementById("backup-export-section");
+            const importSec = document.getElementById("backup-import-section");
+            const tabExp = document.getElementById("tab-backup-export");
+            const tabImp = document.getElementById("tab-backup-import");
+            if (tab === 'export') {
+                if (exportSec) exportSec.style.display = "block";
+                if (importSec) importSec.style.display = "none";
+                if (tabExp) { tabExp.style.background = "var(--primary)"; tabExp.style.color = "#0a0e17"; }
+                if (tabImp) { tabImp.style.background = "transparent"; tabImp.style.color = "#8b949e"; }
+                generateBackupCode();
+            } else {
+                if (exportSec) exportSec.style.display = "none";
+                if (importSec) importSec.style.display = "block";
+                if (tabExp) { tabExp.style.background = "transparent"; tabExp.style.color = "#8b949e"; }
+                if (tabImp) { tabImp.style.background = "#3b82f6"; tabImp.style.color = "#ffffff"; }
             }
         }
 
-        // 📥 CAREER SAVE IMPORT
-        function importCareerSave() {
-            const inputCode = prompt("Daha önce aldığınız Kariyer Yedek Kodunu buraya yapıştırın:");
-            if (!inputCode || inputCode.trim() === "") return;
-            
+        function generateBackupCode() {
             try {
-                const jsonString = decodeURIComponent(escape(atob(inputCode.trim())));
+                if (!GAME || !GAME.state) return;
+                const saveString = JSON.stringify(GAME.state);
+                const code = btoa(unescape(encodeURIComponent(saveString)));
+                const textarea = document.getElementById("career-backup-textarea");
+                if (textarea) textarea.value = code;
+            } catch(e) {
+                console.error("Backup code error:", e);
+            }
+        }
+
+        function copyCareerBackupCode() {
+            const textarea = document.getElementById("career-backup-textarea");
+            if (!textarea || !textarea.value) return;
+            const btn = document.getElementById("btn-copy-backup-code");
+            
+            textarea.select();
+            textarea.setSelectionRange(0, 999999);
+            
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(textarea.value).then(() => {
+                    if (btn) {
+                        const orig = btn.innerHTML;
+                        btn.innerHTML = "✅ KOPYALANDI!";
+                        btn.style.background = "#059669";
+                        setTimeout(() => { btn.innerHTML = orig; btn.style.background = ""; }, 2000);
+                    }
+                }).catch(() => {
+                    document.execCommand("copy");
+                    alert("✅ Kariyer kodu kopyalandı!");
+                });
+            } else {
+                document.execCommand("copy");
+                alert("✅ Kariyer kodu kopyalandı!");
+            }
+        }
+
+        function applyCareerImportCode() {
+            const textarea = document.getElementById("career-import-textarea");
+            if (!textarea || !textarea.value || textarea.value.trim() === "") {
+                alert("Lütfen geçerli bir kariyer kodu yapıştırın!");
+                return;
+            }
+            try {
+                const raw = textarea.value.trim();
+                const jsonString = decodeURIComponent(escape(atob(raw)));
                 const parsedState = JSON.parse(jsonString);
                 
-                if (parsedState && parsedState.playerName && parsedState.currentClub) {
-                    GAME.state = parsedState;
-                    GAME.saveGame();
-                    alert("🎉 Kariyeriniz başarıyla yüklendi! Oyun yenileniyor...");
-                    location.reload();
+                if (parsedState && (parsedState.playerName || parsedState.currentClub)) {
+                    if (confirm(`'${parsedState.playerName || "Futbolcu"}' (${parsedState.currentClub || "Kulüp"}) kariyerini geri yüklemek istediğinize emin misiniz? Mevcut kayıt üzerine yazılacaktır.`)) {
+                        GAME.state = parsedState;
+                        GAME.saveGame();
+                        alert("🎉 Kariyeriniz başarıyla yüklendi! Oyun yeniden başlatılıyor...");
+                        location.reload();
+                    }
                 } else {
-                    alert("Geçersiz yedek kodu! Lütfen doğru kodu girdiğinizden emin olun.");
+                    alert("Geçersiz yedek kodu! Lütfen doğru kodu yapıştırdığınızdan emin olun.");
                 }
             } catch(e) {
-                alert("Yedek kodu yüklenemedi! Kod bozuk veya hatalı: " + e.message);
+                alert("Yedek kodu yüklenemedi! Kod bozuk veya eksik: " + e.message);
             }
+        }
+
+        function exportCareerSave() {
+            openCareerBackupModal('export');
+        }
+
+        function importCareerSave() {
+            openCareerBackupModal('import');
         }
 
         // 📜 PRIVACY POLICY MODAL
@@ -16581,7 +16722,15 @@ function afterWeekAdvanced() {
                     GAME.state.careerLeagueStats[compKey].goals += pGoals;
                     GAME.state.careerLeagueStats[compKey].assists += pAssists;
 
-                    GAME.state.kondisyon = Math.max(10, GAME.state.kondisyon - 30);
+                    let matchDrain = 30;
+                    if (GAME.state.matchStaminaBonus) {
+                        matchDrain = Math.round(matchDrain * (1 - GAME.state.matchStaminaBonus / 100));
+                    }
+                    // 🛡️ İlk 3 Hafta Çaylak Koruma Kalkanı: %50 Kondisyon Tasarrufu
+                    if (GAME.state.currentWeek <= 3) {
+                        matchDrain = Math.round(matchDrain * 0.5);
+                    }
+                    GAME.state.kondisyon = Math.max(10, GAME.state.kondisyon - matchDrain);
 
 
                     let scoreDiff = result.score.player - result.score.opponent;
@@ -16719,6 +16868,10 @@ function afterWeekAdvanced() {
                     GAME.updateUI();
 
                     let calculatedPrim = Math.max(1000, Math.round((GAME.state.weeklySalary || 500) * (scoreDiff > 0 ? 1.0 : (scoreDiff === 0 ? 0.5 : 0.25)) + (pGoals * 400) + (pAssists * 250)));
+                    // 🛡️ İlk 3 Hafta Çaylak Koruma Kalkanı: %50 Ekstra Maç Primi
+                    if (GAME.state.currentWeek <= 3) {
+                        calculatedPrim = Math.round(calculatedPrim * 1.5);
+                    }
                     window._pendingMatchBonus = { prim: calculatedPrim, scoreDiff: scoreDiff };
 
                     if (!GAME.state.isNationalCallUp) {
