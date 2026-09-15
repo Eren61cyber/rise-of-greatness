@@ -2365,15 +2365,56 @@ const GAME = {
         for (let id in bindings) {
             const val = bindings[id];
             
+            // 60 FPS Rolling Number Ticker Helper
+            const animateNumberRoll = (node, start, end, suffix = "", prefix = "", isFormatted = false) => {
+                if (start === end || isNaN(start) || isNaN(end)) {
+                    node.innerText = `${prefix}${isFormatted ? end.toLocaleString() : end}${suffix}`;
+                    return;
+                }
+                const duration = 380;
+                const startTime = performance.now();
+                const step = (now) => {
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const ease = 1 - Math.pow(1 - progress, 3);
+                    const current = Math.round(start + (end - start) * ease);
+                    node.innerText = `${prefix}${isFormatted ? current.toLocaleString() : current}${suffix}`;
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    } else {
+                        node.innerText = `${prefix}${isFormatted ? end.toLocaleString() : end}${suffix}`;
+                    }
+                };
+                requestAnimationFrame(step);
+            };
+
             // Helper to update and animate
             const updateAndAnimate = (node) => {
                 let currentVal = id === "player-name" ? node.innerHTML : node.innerText;
                 if (currentVal != val) {
-                    if (id === "player-name") node.innerHTML = val;
-                    else node.innerText = val;
+                    if (id === "player-name") {
+                        node.innerHTML = val;
+                    } else {
+                        // Check if numeric stat eligible for smooth rolling ticker
+                        const isPercent = typeof val === "string" && val.endsWith("%");
+                        const isEuro = typeof val === "string" && val.includes("€");
+                        const cleanValStr = String(val).replace(/[^0-9.-]/g, "");
+                        const cleanCurStr = String(currentVal).replace(/[^0-9.-]/g, "");
+                        const newNum = typeof val === "number" ? val : parseFloat(cleanValStr);
+                        const oldNum = parseFloat(cleanCurStr);
+
+                        if (!isNaN(newNum) && !isNaN(oldNum) && cleanValStr.length > 0 && cleanCurStr.length > 0 && id !== "player-jersey-number" && id !== "current-week") {
+                            const suffix = isPercent ? "%" : (isEuro ? " €" : "");
+                            const prefix = (typeof val === "string" && val.startsWith("+")) ? "+" : "";
+                            const isFormatted = isEuro || id === "stat-followers" || id === "career-total-earnings";
+                            animateNumberRoll(node, oldNum, newNum, suffix, prefix, isFormatted);
+                        } else {
+                            node.innerText = val;
+                        }
+                    }
                     
                     // Trigger a subtle pop animation if it's a numeric stat change
-                    if (typeof val === 'number' || (typeof val === 'string' && val.match(/^[0-9]+(%)?( \?)?$/))) {
+                    if (typeof val === 'number' || (typeof val === 'string' && val.match(/^[0-9]+(%)?( €)?$/))) {
                         node.style.animation = 'none';
                         node.offsetHeight; /* trigger reflow */
                         node.style.animation = 'popUpdate 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';

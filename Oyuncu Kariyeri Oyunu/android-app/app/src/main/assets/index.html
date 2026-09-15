@@ -1524,6 +1524,9 @@
                                 <button type="button" onclick="document.getElementById('settings-modal').classList.remove('active'); openNssDuel('penalty', true);" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #020617; border: none; padding: 10px 8px; font-size: 11.5px; font-weight: 800; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 10px rgba(16,185,129,0.25);">
                                     <span>⚽ Penaltı Talimi</span>
                                 </button>
+                                <button type="button" onclick="testTransferTweetModal();" style="grid-column: span 2; background: linear-gradient(135deg, #ffd700 0%, #d4af37 100%); color: #07090e; border: none; padding: 10px 8px; font-size: 11.5px; font-weight: 900; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 12px rgba(255,215,0,0.3);">
+                                    <span>🚨 Resmi X Transfer Kartını Test Et</span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -3377,6 +3380,118 @@
                 <button class="penthouse-sign-button" id="btn-penthouse-sign" onclick="signPenthouseContractWithVFX()">
                     👑 KONTRATI İMZALA VE SAHAYA ÇIK
                 </button>
+            </div>
+        </div>
+
+        <!-- 🚨 RESMİ X (TWITTER) TRANSFER DUYURU KARTI MODAL (VIRAL SCREENSHOT HOOK) -->
+        <div class="x-tweet-overlay" id="official-transfer-tweet-modal">
+            <div class="x-tweet-card" id="x-tweet-card-element">
+                <!-- Top Bar: Club Crest, Verified Gold Badge, Handle, X Logo -->
+                <div class="x-header-row">
+                    <div class="x-author-group">
+                        <div class="x-club-logo-wrap" id="x-club-logo-wrap">
+                            <span id="x-club-crest-icon">⚽</span>
+                        </div>
+                        <div class="x-author-meta">
+                            <div class="x-author-title-row">
+                                <span class="x-author-name" id="x-club-full-name">Real Madrid C.F.</span>
+                                <!-- Official Gold Verified Checkmark Badge (Twitter Gold Org Badge) -->
+                                <span class="x-gold-badge" title="Onaylanmış Resmi Kulüp Hesabı">
+                                    <svg viewBox="0 0 22 22" width="18" height="18" fill="#e2b714">
+                                        <path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.136 2.136 5.37-5.37 1.293 1.302-6.663 6.662z"/>
+                                    </svg>
+                                </span>
+                            </div>
+                            <span class="x-author-handle" id="x-club-handle">@realmadrid · <span style="color:#71767b;">Şimdi</span></span>
+                        </div>
+                    </div>
+                    <div class="x-brand-logo">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Tweet Text Content -->
+                <div class="x-tweet-body" id="x-tweet-text-content">
+                    🚨 <strong>RESMİ AÇIKLAMA:</strong> Ailemize hoş geldin <span class="x-highlight" id="x-tweet-player-name">OYUNCU ADI</span>! Kulübümüz, geleceğin süperstarı ile <span class="x-highlight" id="x-tweet-years">3</span> yıllık resmi sözleşme imzalamıştır. Tarih yazmaya hazır mısın? 🏆✍️
+                    <div class="x-tweet-hashtags" id="x-tweet-hashtags">#WelcomeToTheClub #HereWeGo #TransferOfficial</div>
+                </div>
+
+                <!-- Embedded Luxury Media Poster (Card inside Tweet) -->
+                <div class="x-poster-card shimmer-badge" id="x-poster-element">
+                    <div class="x-poster-badge">
+                        <span>⭐ OFFICIAL SIGNING</span>
+                    </div>
+
+                    <div class="x-poster-player-row">
+                        <div class="x-poster-player-info">
+                            <h3 id="x-poster-player-title">OYUNCU ADI</h3>
+                            <p id="x-poster-club-subtitle">REAL MADRID CF · YENİ TRANSFER</p>
+                        </div>
+                        <div class="x-poster-ovr-box">
+                            <span class="x-poster-ovr-num" id="x-poster-ovr-val">84</span>
+                            <span class="x-poster-ovr-pos" id="x-poster-pos-val">ST</span>
+                        </div>
+                    </div>
+
+                    <!-- 3-Column Financial Highlights -->
+                    <div class="x-poster-stats-grid">
+                        <div class="x-poster-stat-item">
+                            <span class="x-poster-stat-label">💵 HAFTALIK</span>
+                            <span class="x-poster-stat-val gold" id="x-poster-salary-val">75.000 €</span>
+                        </div>
+                        <div class="x-poster-stat-item">
+                            <span class="x-poster-stat-label">💰 İMZA PARASI</span>
+                            <span class="x-poster-stat-val" id="x-poster-bonus-val">600.000 €</span>
+                        </div>
+                        <div class="x-poster-stat-item">
+                            <span class="x-poster-stat-label">🔒 SERBEST KALMA</span>
+                            <span class="x-poster-stat-val gold" id="x-poster-buyout-val">25.000.000 €</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tweet Time Stamp & Source -->
+                <div class="x-tweet-time-row">
+                    <span id="x-tweet-clock">20:45</span> · <span id="x-tweet-date">15 Eyl 2026</span> · <strong style="color:#ffffff;">X for iPhone</strong>
+                </div>
+
+                <!-- Engagement Metrics Counters -->
+                <div class="x-engagement-row">
+                    <div class="x-engage-item">
+                        <span class="x-engage-num" id="x-count-retweets">48.5K</span>
+                        <span class="x-engage-txt">Yeniden Gönderi</span>
+                    </div>
+                    <div class="x-engage-item">
+                        <span class="x-engage-num" id="x-count-quotes">12.4K</span>
+                        <span class="x-engage-txt">Alıntı</span>
+                    </div>
+                    <div class="x-engage-item">
+                        <span class="x-engage-num" id="x-count-likes">210K</span>
+                        <span class="x-engage-txt">Beğeni</span>
+                    </div>
+                    <div class="x-engage-item">
+                        <span class="x-engage-num" id="x-count-views">3.8M</span>
+                        <span class="x-engage-txt">Görüntülenme</span>
+                    </div>
+                </div>
+
+                <!-- Modal Action Buttons -->
+                <div class="x-action-buttons">
+                    <button class="x-btn-share" id="btn-x-tweet-share" onclick="shareOrSaveTransferTweet()">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                            <path d="M12 2.5a.75.75 0 0 1 .75.75v11.19l3.72-3.72a.75.75 0 1 1 1.06 1.06l-5 5a.75.75 0 0 1-1.06 0l-5-5a.75.75 0 1 1 1.06-1.06l3.72 3.72V3.25A.75.75 0 0 1 12 2.5zM3.75 16a.75.75 0 0 1 .75.75v3.5c0 .414.336.75.75.75h13.5a.75.75 0 0 0 .75-.75v-3.5a.75.75 0 0 1 1.5 0v3.5A2.25 2.25 0 0 1 18.75 22.5H5.25A2.25 2.25 0 0 1 3 20.25v-3.5a.75.75 0 0 1 .75-.75z"/>
+                        </svg>
+                        <span>📸 KARTI PAYLAŞ</span>
+                    </button>
+                    <button class="x-btn-continue" id="btn-x-tweet-continue" onclick="closeOfficialTransferTweetModal()">
+                        <span>SAHAYA ADIM AT</span>
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -5743,6 +5858,34 @@
 
 
 
+        function triggerStaggerEntrance(panel) {
+            if (!panel) return;
+            const selectors = [
+                ".glass",
+                ".card",
+                ".dashboard-card",
+                ".stat-card",
+                ".training-action-card",
+                ".training-stat-row",
+                ".lifestyle-card",
+                ".car-item-card",
+                ".transfer-offer-card",
+                ".social-post-card",
+                ".table-responsive",
+                ".next-match-card"
+            ];
+            const cards = panel.querySelectorAll(selectors.join(", "));
+            if (!cards || cards.length === 0) return;
+            
+            const maxStagger = Math.min(cards.length, 12);
+            for (let i = 0; i < maxStagger; i++) {
+                const el = cards[i];
+                el.style.animation = "none";
+                void el.offsetWidth;
+                el.style.animation = `consoleStaggerIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) ${i * 0.035}s both`;
+            }
+        }
+
         // Tab system logic
         const tabs = document.querySelectorAll(".nav-tab");
         const panels = document.querySelectorAll(".view-panel");
@@ -5755,7 +5898,10 @@
                 tab.classList.add("active");
                 const target = tab.getAttribute("data-target");
                 const targetPanel = document.getElementById(target);
-                if (targetPanel) targetPanel.classList.add("active");
+                if (targetPanel) {
+                    targetPanel.classList.add("active");
+                    triggerStaggerEntrance(targetPanel);
+                }
 
                 // Update tab items & refresh UI bindings
                 if (typeof GAME !== "undefined" && typeof GAME.updateUI === "function") {
@@ -9471,6 +9617,154 @@
             }, 700);
         }
 
+        let officialTweetCallback = null;
+
+        function getClubTwitterHandle(clubName) {
+            if (!clubName) return "@club";
+            const lower = clubName.toLowerCase();
+            if (lower.includes("real madrid")) return "@realmadrid";
+            if (lower.includes("barcelona")) return "@FCBarcelona";
+            if (lower.includes("manchester city")) return "@ManCity";
+            if (lower.includes("manchester united")) return "@ManUtd";
+            if (lower.includes("liverpool")) return "@LFC";
+            if (lower.includes("arsenal")) return "@Arsenal";
+            if (lower.includes("bayern")) return "@FCBayern";
+            if (lower.includes("paris") || lower.includes("psg")) return "@PSG_inside";
+            if (lower.includes("galatasaray") || lower.includes("galatastar")) return "@GalatasaraySK";
+            if (lower.includes("fenerbahçe") || lower.includes("fenerba")) return "@Fenerbahce";
+            if (lower.includes("beşiktaş") || lower.includes("kartal")) return "@Besiktas";
+            if (lower.includes("trabzon")) return "@Trabzonspor";
+            if (lower.includes("inter")) return "@Inter";
+            if (lower.includes("milan")) return "@acmilan";
+            if (lower.includes("juventus")) return "@juventusfc";
+            return "@" + clubName.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+        }
+
+        function showOfficialTransferTweetModal(data = {}, onComplete = null) {
+            officialTweetCallback = onComplete;
+            const club = data.club || (typeof GAME !== "undefined" && GAME.state && GAME.state.currentClub) || "Real Madrid CF";
+            const pName = (typeof GAME !== "undefined" && GAME.state && GAME.state.playerName) || "Süperstar";
+            const pos = (typeof GAME !== "undefined" && GAME.state && GAME.state.position) || "ST";
+            const ovr = (typeof GAME !== "undefined" && GAME.state && GAME.state.rating) || 84;
+            const salary = data.salary || (typeof GAME !== "undefined" && GAME.state && GAME.state.weeklySalary) || 75000;
+            const signing = data.signing || 600000;
+            const years = data.years || 3;
+            const buyout = data.buyout || Math.round(salary * 52 * 4);
+
+            const clubNameEl = document.getElementById("x-club-full-name");
+            if (clubNameEl) clubNameEl.innerText = club;
+
+            const clubHandleEl = document.getElementById("x-club-handle");
+            if (clubHandleEl) clubHandleEl.innerHTML = `${getClubTwitterHandle(club)} · <span style="color:#71767b;">Şimdi</span>`;
+
+            const crestIcon = document.getElementById("x-club-crest-icon");
+            if (crestIcon) crestIcon.innerText = club.includes("Madrid") ? "👑" : club.includes("Trabzon") ? "🌊" : club.includes("Galata") ? "🦁" : club.includes("Fener") ? "🟡" : club.includes("Kartal") || club.includes("Beşiktaş") ? "🦅" : "⚽";
+
+            const tweetPName = document.getElementById("x-tweet-player-name");
+            if (tweetPName) tweetPName.innerText = pName;
+
+            const tweetYears = document.getElementById("x-tweet-years");
+            if (tweetYears) tweetYears.innerText = years;
+
+            const tweetHashtags = document.getElementById("x-tweet-hashtags");
+            if (tweetHashtags) {
+                const tagClub = club.replace(/[^a-zA-Z0-9]/g, "");
+                tweetHashtags.innerText = `#WelcomeToTheClub #${tagClub} #HereWeGo #TransferOfficial`;
+            }
+
+            const posterTitle = document.getElementById("x-poster-player-title");
+            if (posterTitle) posterTitle.innerText = pName.toUpperCase();
+
+            const posterClub = document.getElementById("x-poster-club-subtitle");
+            if (posterClub) posterClub.innerText = `${club.toUpperCase()} · RESMİ İMZA`;
+
+            const posterOvr = document.getElementById("x-poster-ovr-val");
+            if (posterOvr) posterOvr.innerText = ovr;
+
+            const posterPos = document.getElementById("x-poster-pos-val");
+            if (posterPos) posterPos.innerText = pos;
+
+            const posterSalary = document.getElementById("x-poster-salary-val");
+            if (posterSalary) posterSalary.innerText = salary.toLocaleString("tr-TR") + " €";
+
+            const posterBonus = document.getElementById("x-poster-bonus-val");
+            if (posterBonus) posterBonus.innerText = signing.toLocaleString("tr-TR") + " €";
+
+            const posterBuyout = document.getElementById("x-poster-buyout-val");
+            if (posterBuyout) posterBuyout.innerText = buyout.toLocaleString("tr-TR") + " €";
+
+            // Date & Time
+            const now = new Date();
+            const clockEl = document.getElementById("x-tweet-clock");
+            if (clockEl) {
+                const hh = String(now.getHours()).padStart(2, "0");
+                const mm = String(now.getMinutes()).padStart(2, "0");
+                clockEl.innerText = `${hh}:${mm}`;
+            }
+
+            // Realistic engagement numbers
+            const rtEl = document.getElementById("x-count-retweets");
+            if (rtEl) rtEl.innerText = (40 + Math.floor(Math.random() * 20)).toFixed(1) + "K";
+
+            const quoteEl = document.getElementById("x-count-quotes");
+            if (quoteEl) quoteEl.innerText = (10 + Math.floor(Math.random() * 8)).toFixed(1) + "K";
+
+            const likeEl = document.getElementById("x-count-likes");
+            if (likeEl) likeEl.innerText = (180 + Math.floor(Math.random() * 80)) + "K";
+
+            const viewsEl = document.getElementById("x-count-views");
+            if (viewsEl) viewsEl.innerText = (3.2 + Math.random() * 2).toFixed(1) + "M";
+
+            const modal = document.getElementById("official-transfer-tweet-modal");
+            if (modal) {
+                modal.classList.add("active");
+                modal.style.display = "flex";
+            }
+
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playLevelUp === "function") {
+                SoundManager.playLevelUp();
+            }
+        }
+
+        function closeOfficialTransferTweetModal() {
+            const modal = document.getElementById("official-transfer-tweet-modal");
+            if (modal) {
+                modal.classList.remove("active");
+                modal.style.display = "none";
+            }
+            if (typeof officialTweetCallback === "function") {
+                const cb = officialTweetCallback;
+                officialTweetCallback = null;
+                cb();
+            }
+        }
+
+        function shareOrSaveTransferTweet() {
+            const pName = (typeof GAME !== "undefined" && GAME.state && GAME.state.playerName) || "Süperstar";
+            const club = (typeof GAME !== "undefined" && GAME.state && GAME.state.currentClub) || "Real Madrid CF";
+            const shareText = `🚨 RESMİ AÇIKLAMA: ${pName}, ${club} ile rekor sözleşmeye imza attı! #RiseOfGreatness #HereWeGo`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: `${club} Transfer Duyurusu`,
+                    text: shareText,
+                    url: window.location.href
+                }).catch(() => {});
+            } else if (navigator.clipboard) {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    if (typeof showCustomAlert === "function") {
+                        showCustomAlert("📸 Resmi transfer duyurusu panoya kopyalandı! Sosyal medyada paylaşmaya hazır.", "KART KOPYALANDI!", "✨", "info");
+                    } else {
+                        alert("📸 Resmi transfer duyurusu panoya kopyalandı!");
+                    }
+                }).catch(() => {});
+            } else {
+                if (typeof showCustomAlert === "function") {
+                    showCustomAlert(shareText, "TRANSFER DUYURUSU", "📢", "info");
+                }
+            }
+        }
+
         function finalizePenthouseTransfer() {
             const modal = document.getElementById("transfer-penthouse-modal");
             if (modal) {
@@ -9485,18 +9779,20 @@
             GAME.saveGame();
             GAME.updateUI();
 
-            showCustomAlert(
-                `${currentPenthouseData.club} ile tarihi transfer sözleşmesi imzalandı!\n💰 İmza Parası: ${currentPenthouseData.signing.toLocaleString("tr-TR")} €\n💵 Haftalık Maaş: ${currentPenthouseData.salary.toLocaleString("tr-TR")} €\n⚽ Gol Primi: ${currentPenthouseData.goalBonus.toLocaleString("tr-TR")} €`,
-                "TRANSFER RESMİLEŞTİ!",
-                "👑",
-                "info"
-            );
-
-            if (typeof penthouseTransferCallback === "function") {
-                let cb = penthouseTransferCallback;
-                penthouseTransferCallback = null;
-                cb();
-            }
+            // Trigger the Viral Official X (Twitter) Transfer Card Modal!
+            showOfficialTransferTweetModal({
+                club: currentPenthouseData.club,
+                salary: currentPenthouseData.salary,
+                signing: currentPenthouseData.signing,
+                years: 3,
+                buyout: Math.round((currentPenthouseData.salary || 50000) * 52 * 4)
+            }, () => {
+                if (typeof penthouseTransferCallback === "function") {
+                    let cb = penthouseTransferCallback;
+                    penthouseTransferCallback = null;
+                    cb();
+                }
+            });
         }
 
         function closePenthouseModal() {
@@ -9512,6 +9808,19 @@
             if (sm) sm.classList.remove("active");
             openPenthouseTransferModal("Real Madrid CF", { salary: 90000, signing: 1200000, goalBonus: 10000 });
         }
+
+        function testTransferTweetModal() {
+            const sm = document.getElementById("settings-modal");
+            if (sm) sm.classList.remove("active");
+            showOfficialTransferTweetModal({
+                club: "Real Madrid CF",
+                salary: 125000,
+                signing: 1500000,
+                years: 4,
+                buyout: 75000000
+            });
+        }
+        window.testTransferTweetModal = testTransferTweetModal;
 
 function startNationalAnthemCeremony(matchData = null, onComplete = null) {
             anthemCallback = onComplete;

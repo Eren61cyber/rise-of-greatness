@@ -4,12 +4,13 @@
  */
 
 :root {
-    --bg-dark: #0b0d13;
-    --bg-app: #10141d;
-    --bg-card: #151a24;
-    --bg-card-glass: rgba(21, 26, 36, 0.95);
-    --border-glass: #1e2530;
-    --border-subtle: #181f2a;
+    --bg-dark: #07090e;
+    --bg-app: #0a0d14;
+    --bg-card: #0f131c;
+    --bg-card-glass: rgba(15, 19, 28, 0.78);
+    --border-glass: rgba(255, 215, 0, 0.12);
+    --border-subtle: #141a24;
+    --border-cyan: rgba(0, 240, 255, 0.16);
     --primary: #10b981;
     --primary-glow: rgba(16, 185, 129, 0.15);
     --secondary: #3b82f6;
@@ -18,6 +19,13 @@
     --accent-yellow: #f59e0b;
     --accent-red: #ef4444;
     --accent-green: #00e676;
+    --accent-gold: #ffd700;
+    --accent-gold-light: #fff2a3;
+    --accent-gold-dark: #b8860b;
+    --accent-gold-gradient: linear-gradient(135deg, #fff2a3 0%, #ffd700 45%, #b8860b 100%);
+    --accent-cyan: #00f0ff;
+    --accent-cyan-glow: rgba(0, 240, 255, 0.25);
+    --spring-easing: cubic-bezier(0.16, 1, 0.3, 1);
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
     --text-sub: #cbd5e1;
@@ -52,7 +60,10 @@
 
 body {
     background-color: var(--bg-dark);
-    background-image: none;
+    background-image: 
+        radial-gradient(circle at 50% -10%, rgba(255, 215, 0, 0.05) 0%, transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(0, 240, 255, 0.035) 0%, transparent 50%),
+        radial-gradient(circle at 0% 50%, rgba(16, 185, 129, 0.03) 0%, transparent 40%);
     color: var(--text-main);
     display: flex;
     justify-content: center;
@@ -69,19 +80,22 @@ body {
     display: none !important;
 }
 
-/* Base Sports Card utility - Clean Matte Mobile UI */
+/* Base Sports Card utility - Prestige Obsidian & Glass */
 .glass {
-    background: var(--bg-card);
+    background: var(--bg-card-glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--border-glass);
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    border-radius: 14px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
     position: relative;
     overflow: hidden;
-    transition: border-color 0.2s ease, transform 0.2s ease;
+    transition: border-color 0.35s var(--spring-easing), transform 0.35s var(--spring-easing), box-shadow 0.35s var(--spring-easing);
 }
 
 .glass:hover {
-    border-color: #2a3444;
+    border-color: rgba(255, 215, 0, 0.28);
+    box-shadow: 0 10px 36px rgba(0, 0, 0, 0.55), 0 0 20px rgba(255, 215, 0, 0.06);
 }
 
 .app-container {
@@ -6131,4 +6145,429 @@ input:not([type="checkbox"]):not([type="radio"]), textarea, select {
     0% { top: 0%; opacity: 0; }
     50% { opacity: 1; }
     100% { top: 100%; opacity: 0; }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ⚡ 60 FPS FLUID MOTION & PRESTIGE CONSOLE UI SYSTEM
+══════════════════════════════════════════════════════════════════ */
+
+/* Button & Card Spring Dynamics */
+.btn, button, .nav-tab, .action-btn, .shop-item-card, .training-item, .glass {
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), 
+                border-color 0.25s ease;
+}
+
+.btn:active, button:active, .nav-tab:active, .action-btn:active {
+    transform: scale(0.96) !important;
+}
+
+/* Prestige Text Gradients & Telemetry */
+.text-gold-gradient {
+    background: linear-gradient(135deg, #fff2a3 0%, #ffd700 45%, #b8860b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.metric-cyan {
+    color: #00f0ff !important;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.35);
+}
+
+.metric-gold {
+    color: #ffd700 !important;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.35);
+}
+
+/* Console Staggered Card Entrance */
+@keyframes consoleStaggerIn {
+    0% {
+        opacity: 0;
+        transform: translateY(16px) scale(0.98);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Specular Shimmer Sweep */
+@keyframes shimmerSweep {
+    0% {
+        transform: translateX(-150%) skewX(-20deg);
+    }
+    40%, 100% {
+        transform: translateX(250%) skewX(-20deg);
+    }
+}
+
+.shimmer-badge {
+    position: relative;
+    overflow: hidden;
+}
+
+.shimmer-badge::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+    transform: translateX(-150%) skewX(-20deg);
+    animation: shimmerSweep 3.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   🚨 RESMİ X (TWITTER) TRANSFER DUYURU KARTI (VIRAL SCREENSHOT HOOK)
+══════════════════════════════════════════════════════════════════ */
+
+.x-tweet-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10050;
+    background: rgba(3, 5, 8, 0.88);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    overflow-y: auto;
+    opacity: 0;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.x-tweet-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.x-tweet-card {
+    background: #000000;
+    border: 1px solid #2f3336;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 480px;
+    padding: 20px;
+    color: #e7e9ea;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(255, 215, 0, 0.08);
+    position: relative;
+    animation: modalScalePopIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalScalePopIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.92) translateY(16px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* X Tweet Header */
+.x-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.x-author-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.x-club-logo-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #111620;
+    border: 2px solid rgba(255, 215, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 0 16px rgba(255, 215, 0, 0.25);
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.x-author-meta {
+    display: flex;
+    flex-direction: column;
+}
+
+.x-author-title-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.x-author-name {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.x-gold-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+}
+
+.x-author-handle {
+    font-size: 13px;
+    color: #71767b;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.x-brand-logo {
+    color: #ffffff;
+    opacity: 0.85;
+}
+
+/* X Tweet Text Body */
+.x-tweet-body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.45;
+    color: #f7f9f9;
+    margin-bottom: 14px;
+    letter-spacing: -0.1px;
+}
+
+.x-tweet-body .x-highlight {
+    color: #ffd700;
+    font-weight: 700;
+}
+
+.x-tweet-hashtags {
+    margin-top: 6px;
+    color: #1d9bf0;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* X Embedded Luxury Media Poster */
+.x-poster-card {
+    background: radial-gradient(circle at 50% 20%, #171d2b 0%, #080b11 100%);
+    border: 1.5px solid rgba(255, 215, 0, 0.35);
+    border-radius: 16px;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 14px;
+    box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.8), 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.x-poster-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%);
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: #ffd700;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.x-poster-player-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.x-poster-player-info h3 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    margin: 0;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #ffffff 0%, #fff2a3 50%, #ffd700 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.x-poster-player-info p {
+    font-size: 12px;
+    color: #94a3b8;
+    margin: 3px 0 0 0;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.x-poster-ovr-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(0, 0, 0, 0.6) 100%);
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    border-radius: 10px;
+    padding: 6px 10px;
+    min-width: 48px;
+}
+
+.x-poster-ovr-num {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: #ffd700;
+    line-height: 1;
+}
+
+.x-poster-ovr-pos {
+    font-size: 10px;
+    font-weight: 800;
+    color: #94a3b8;
+}
+
+/* 3-Column Financial Breakdown */
+.x-poster-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 10px 8px;
+}
+
+.x-poster-stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.x-poster-stat-label {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 3px;
+}
+
+.x-poster-stat-val {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    font-weight: 900;
+    color: #00f0ff;
+    line-height: 1.1;
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
+}
+
+.x-poster-stat-val.gold {
+    color: #ffd700;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+}
+
+/* X Timestamp & Client */
+.x-tweet-time-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #71767b;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #2f3336;
+    margin-bottom: 12px;
+}
+
+/* X Engagement Counts */
+.x-engagement-row {
+    display: flex;
+    justify-content: space-around;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #2f3336;
+    margin-bottom: 14px;
+}
+
+.x-engage-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+}
+
+.x-engage-num {
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.x-engage-txt {
+    color: #71767b;
+}
+
+/* X Modal Bottom Action Buttons */
+.x-action-buttons {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.x-btn-share {
+    flex: 1;
+    background: rgba(29, 155, 240, 0.12);
+    border: 1.5px solid #1d9bf0;
+    color: #1d9bf0;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-weight: 800;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.x-btn-share:hover {
+    background: #1d9bf0;
+    color: #ffffff;
+    box-shadow: 0 0 16px rgba(29, 155, 240, 0.4);
+}
+
+.x-btn-continue {
+    flex: 1.2;
+    background: linear-gradient(135deg, #ffd700 0%, #d4af37 100%);
+    border: none;
+    color: #07090e;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(255, 215, 0, 0.35);
+    transition: all 0.25s ease;
+}
+
+.x-btn-continue:hover {
+    box-shadow: 0 6px 24px rgba(255, 215, 0, 0.55);
+    transform: translateY(-2px);
 }
