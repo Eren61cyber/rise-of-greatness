@@ -18566,9 +18566,39 @@ const Nss3DEngine = {
     // =========================================================================
     // 🎮 GAME LIFECYCLE & STAGE CONTROLLER
     // =========================================================================
+    safeResolve: function(isGoal, comment) {
+        if (this.resolved) return;
+        this.resolved = true;
+        
+        const engine = (typeof MatchEngine !== "undefined") ? MatchEngine : (typeof window !== "undefined" ? window.MatchEngine : null);
+        if (engine && typeof engine.resolveNssDuel === "function") {
+            engine.resolveNssDuel(isGoal, comment);
+        } else if (engine) {
+            if (isGoal) {
+                engine.score.player++;
+                engine.playerStats.goals++;
+            }
+            engine.isPausedForChoice = false;
+            engine.activeChoice = null;
+            if (engine.timer) clearTimeout(engine.timer);
+            engine.resumeTick();
+        }
+    },
+
     start: function(type = 'freekick', practice = false, opponent = null) {
-        this.init();
-        if (!this.canvas) return;
+        this.resolved = false;
+        try {
+            this.init();
+        } catch (e) {
+            console.error("NssDuel init error:", e);
+        }
+        if (!this.canvas) {
+            console.warn("NssDuel canvas not available, auto-resolving");
+            if (!practice) {
+                this.safeResolve(true, "Harika bir vuruşla topu ağlara yolladın! GOOOL!");
+            }
+            return;
+        }
 
         this.active = true;
         this.isPractice = practice;
@@ -19177,17 +19207,22 @@ const Nss3DEngine = {
         if (strikeBtn) strikeBtn.style.display = "none";
 
         if (!this.isPractice) {
+            if (bannerEl) {
+                bannerEl.onclick = () => {
+                    this.safeResolve(isGoal, resultComment);
+                    this.close();
+                };
+            }
+
             if (!isGoal && !this.hasUsedSecondChance && window.AdManager) {
                 this.promptSecondChance(resultComment);
                 return;
             }
 
             setTimeout(() => {
+                this.safeResolve(isGoal, resultComment);
                 this.close();
-                if (window.MatchEngine && typeof MatchEngine.resolveNssDuel === "function") {
-                    MatchEngine.resolveNssDuel(isGoal, resultComment);
-                }
-            }, 2400);
+            }, 1600);
         }
     },
 
@@ -19220,11 +19255,9 @@ const Nss3DEngine = {
 
         let autoTimer = setTimeout(() => {
             if (scBtn) scBtn.style.display = "none";
+            this.safeResolve(false, resultComment);
             this.close();
-            if (window.MatchEngine && typeof MatchEngine.resolveNssDuel === "function") {
-                MatchEngine.resolveNssDuel(false, resultComment);
-            }
-        }, 3800);
+        }, 2800);
 
         scBtn.onclick = () => {
             clearTimeout(autoTimer);
@@ -19240,10 +19273,8 @@ const Nss3DEngine = {
                     this.start(this.duelType, false, this.savedOpponent);
                 },
                 onCancelled: () => {
+                    this.safeResolve(false, resultComment);
                     this.close();
-                    if (window.MatchEngine && typeof MatchEngine.resolveNssDuel === "function") {
-                        MatchEngine.resolveNssDuel(false, resultComment);
-                    }
                 }
             });
         };
@@ -19255,6 +19286,11 @@ const Nss3DEngine = {
         if (this.animId) cancelAnimationFrame(this.animId);
         const modal = document.getElementById("nss-duel-modal");
         if (modal) modal.style.display = "none";
+
+        // Guarantee match continues if closed or interrupted
+        if (!this.isPractice && !this.resolved) {
+            this.safeResolve(false, "Vuruş tamamlandı, maç devam ediyor.");
+        }
     },
 
     // =========================================================================
@@ -19486,11 +19522,30 @@ window.NssDuel = Nss3DEngine;
 
 
         window.openNssDuel = function(type = 'freekick', isPractice = false) {
-            NssDuel.start(type, isPractice);
+            try {
+                NssDuel.start(type, isPractice);
+            } catch (err) {
+                console.error("NssDuel start exception, falling back:", err);
+                const engine = (typeof MatchEngine !== "undefined") ? MatchEngine : (typeof window !== "undefined" ? window.MatchEngine : null);
+                if (engine && typeof engine.resolveNssDuel === "function") {
+                    engine.resolveNssDuel(true, "Harika bir vuruş ve GOOOL!");
+                }
+            }
         };
 
         window.closeNssDuel = function() {
-            NssDuel.close();
+            try {
+                NssDuel.close();
+            } catch (e) {
+                console.error("NssDuel close error:", e);
+                const engine = (typeof MatchEngine !== "undefined") ? MatchEngine : (typeof window !== "undefined" ? window.MatchEngine : null);
+                if (engine && engine.isPausedForChoice) {
+                    engine.isPausedForChoice = false;
+                    engine.activeChoice = null;
+                    if (engine.timer) clearTimeout(engine.timer);
+                    engine.resumeTick();
+                }
+            }
         };
 
         window.resetNssDuelPractice = function() {

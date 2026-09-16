@@ -2424,43 +2424,33 @@ const MatchEngine = {
     },
 
     resolveNssDuel: function(isGoal, comment) {
-        let previousGoals = this.playerStats.goals;
         this.playerStats.shots++;
         if (isGoal) {
             this.score.player++;
             this.playerStats.goals++;
-            this.callbacks.onMinuteUpdate(this.min, this.score, comment || "GOOOL! İnanılmaz bir falsoyla topu 90'a astın!");
-            if (typeof SoundManager !== "undefined" && typeof SoundManager.playSpiker === "function") {
-                SoundManager.playSpiker("gol");
-            }
-            if (this.callbacks.onGoalScoredCelebration) {
-                const self = this;
-                this.callbacks.onGoalScoredCelebration(this.min, (celebrationText, celebrationCommentary) => {
-                    self.callbacks.onMinuteUpdate(self.min, self.score, celebrationCommentary);
-                    if (self.callbacks.onEventPause) {
-                        self.callbacks.onEventPause(`⚽ ${self.min}' GOOOL SEVİNCİ!`, `Muhteşem bir sevinç! Maça devam etmek için dokunun.`, () => {
-                            self.isPausedForChoice = false;
-                            self.resumeTick();
-                        });
-                    } else {
-                        self.isPausedForChoice = false;
-                        self.timer = setTimeout(function() { self.resumeTick(); }, 3000 / self.currentSpeed);
-                    }
-                });
-            } else {
-                this.isPausedForChoice = false;
-                const self = this;
-                this.timer = setTimeout(function() { self.resumeTick(); }, 2500 / self.currentSpeed);
+            const goalMsg = comment || "GOOOL! İnanılmaz bir falsoyla topu 90'a astın!";
+            this.callbacks.onMinuteUpdate(this.min, this.score, goalMsg);
+            if (typeof SoundManager !== "undefined") {
+                if (typeof SoundManager.playSpiker === "function") SoundManager.playSpiker("gol");
+                if (typeof SoundManager.playGoal === "function") SoundManager.playGoal();
+                if (typeof SoundManager.playCrowdCheer === "function") SoundManager.playCrowdCheer();
             }
         } else {
-            this.callbacks.onMinuteUpdate(this.min, this.score, comment || "KAÇTI! Top kalecide kaldı!");
+            const missMsg = comment || "KAÇTI! Top kalecide kaldı!";
+            this.callbacks.onMinuteUpdate(this.min, this.score, missMsg);
             if (typeof SoundManager !== "undefined" && typeof SoundManager.playSpiker === "function") {
                 SoundManager.playSpiker("kurtaris");
             }
-            this.isPausedForChoice = false;
-            const self = this;
-            this.timer = setTimeout(function() { self.resumeTick(); }, 2500 / self.currentSpeed);
         }
+
+        // Clean unpause & timer resume - guarantee match never freezes!
+        this.isPausedForChoice = false;
+        this.activeChoice = null;
+        if (this.timer) clearTimeout(this.timer);
+        const self = this;
+        this.timer = setTimeout(function() {
+            self.resumeTick();
+        }, 1200 / Math.max(1, self.currentSpeed));
     },
 
     resumeTick: function() {
@@ -2634,6 +2624,9 @@ const MatchEngine = {
     }
 };
 
+if (typeof window !== "undefined") {
+    window.MatchEngine = MatchEngine;
+}
 if (typeof module !== "undefined" && module.exports) {
     module.exports = MatchEngine;
 }
