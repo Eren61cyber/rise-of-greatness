@@ -460,58 +460,77 @@
         <!-- Core App Container -->
         <div class="app-container">
         
-        <!-- Header Profile Summary -->
-        <header class="main-header glass" style="background: #131926; border-bottom: 1px solid rgba(255,255,255,0.08); box-shadow: 0 4px 20px rgba(0,0,0,0.5); padding: 12px 16px; border-radius: 16px; margin-bottom: 10px;">
-            <div class="player-profile" style="display: flex; align-items: center; gap: 12px;">
+        <!-- Header Profile Summary (VIP Cockpit Header) -->
+        <header class="main-header vip-cockpit-header">
+            <!-- Sol: VIP Oyuncu Kimlik Kartı -->
+            <div class="vip-player-card">
                 <!-- Avatar with Age Badge (Clickable to change face) -->
-                <div style="position: relative; cursor: pointer;" onclick="openAvatarChangeModal()" title="Profil Fotoğrafını Değiştir">
-                    <div id="player-avatar-container" style="width: 44px; height: 44px; display: flex; justify-content: center; align-items: center; border-radius: 50%; overflow: hidden; background: rgba(255,255,255,0.06); border: 2px solid #00e5b7; box-shadow: 0 0 12px rgba(0,229,183,0.25); transition: transform 0.2s ease;"></div>
-                    <div style="position: absolute; bottom: -2px; right: -2px; background: #0a0e17; border: 1.5px solid #00e5b7; color: #00e5b7; font-size: 8.5px; font-weight: 900; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center;" id="player-age">17</div>
+                <div class="vip-avatar-wrap" onclick="openAvatarChangeModal()" title="Profil Fotoğrafını Değiştir">
+                    <div id="player-avatar-container"></div>
+                    <div class="vip-age-badge" id="player-age">17</div>
                 </div>
-                <div class="player-info">
-                    <div style="display: flex; align-items: center; gap: 6px;">
-                        <h1 id="player-name" style="font-size: 14px; font-weight: 800; color: #ffffff; letter-spacing: 0.3px; margin: 0;">YÜKLENİYOR...</h1>
-                        <span id="player-jersey-number-badge" onclick="openJerseyNumberModal()" title="Forma Numarasını Değiştir" style="cursor: pointer; background: rgba(0, 229, 183, 0.12); border: 1px solid rgba(0, 229, 183, 0.4); color: #00e5b7; font-size: 10px; font-weight: 900; padding: 1px 6px; border-radius: 6px; letter-spacing: 0.5px; transition: transform 0.15s ease;">#10</span>
+                <div class="vip-info-wrap">
+                    <div class="vip-name-row">
+                        <h1 id="player-name" class="vip-player-name">YÜKLENİYOR...</h1>
+                        <span id="player-jersey-number-badge" class="vip-jersey-badge" onclick="openJerseyNumberModal()" title="Forma Numarasını Değiştir">#10</span>
+                        <span class="vip-ovr-badge"><span class="bind-player-rating" id="player-rating">16</span> OVR</span>
                     </div>
-                    <p style="font-size: 10px; font-weight: 700; color: #7b8ba1; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px;"><span id="player-position">...</span> · <span id="player-age-text">...</span> · <span id="player-club" style="color: #00e5b7;">...</span></p>
+                    <p class="vip-sub-text">
+                        <span id="player-position">...</span> · <span id="player-club" class="vip-club-name">...</span>
+                    </p>
                 </div>
             </div>
-                <!-- Missions + Settings buttons -->
-                <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-                    <button id="btn-quick-test-hub" onclick="openTestHubModal()" title="Yeni Özellikleri Test Et" style="padding: 6px 10px; font-size: 11px; font-weight: 900; background: linear-gradient(135deg, rgba(255,215,0,0.25), rgba(0,229,255,0.25)); border: 1px solid #ffd700; border-radius: 8px; cursor: pointer; color: #ffd700; display: flex; align-items: center; gap: 4px; box-shadow: 0 0 10px rgba(255,215,0,0.35);">
-                        <span>🧪 TEST</span>
-                    </button>
-                    <div id="cloud-save-indicator" style="display: inline-flex; align-items: center; gap: 5px; font-size: 9.5px; font-weight: 800; color: #10b981; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); padding: 4px 8px; border-radius: 99px; letter-spacing: 0.3px;" title="Otomatik yerel ve bulut kaydı devrede">
-                        <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 6px #10b981; animation: pulse-save 2s infinite;"></span>
-                        ☁️ OTO KAYIT
-                    </div>
-                    <button id="btn-missions-open" class="btn" onclick="openMissionsModal()" title="Haftalık Görevler" style="position:relative; padding: 8px 10px; font-size: 15px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; cursor: pointer; color: white;">
-                        📋
-                        <span id="missions-badge" style="display:none; position:absolute; top:-4px; right:-4px; background:#f5a623; color:#0a0e17; font-size:9px; font-weight:900; min-width:14px; height:14px; border-radius:99px; padding:0 3px; line-height:14px; text-align:center;">0</span>
-                    </button>
-                    <button id="btn-settings-open" class="btn" style="padding: 8px 10px; font-size: 15px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; cursor: pointer; color: white;">☰</button>
+
+            <!-- Sağ: Minimalist Mat Füme Sistem/Geliştirici İkonları -->
+            <div class="cockpit-actions-wrap">
+                <button id="btn-quick-test-hub" class="cockpit-icon-btn" onclick="openTestHubModal()" title="Yeni Özellikleri Test Et">
+                    <span>🧪</span>
+                </button>
+                <div id="cloud-save-indicator" class="cockpit-dev-pill" title="Otomatik yerel ve bulut kaydı devrede">
+                    <span class="save-led"></span>
+                    <span>BULUT</span>
                 </div>
+                <button id="btn-missions-open" class="cockpit-icon-btn" onclick="openMissionsModal()" title="Haftalık Görevler">
+                    <span>📋</span>
+                    <span id="missions-badge" style="display:none; position:absolute; top:-4px; right:-4px; background:#f5a623; color:#0a0e17; font-size:9px; font-weight:900; min-width:14px; height:14px; border-radius:99px; padding:0 3px; line-height:14px; text-align:center;">0</span>
+                </button>
+                <button id="btn-settings-open" class="cockpit-icon-btn" title="Ayarlar">
+                    <span>⚙️</span>
+                </button>
+            </div>
         </header>
 
-        <!-- Redesigned Telemetry Status Bar -->
-        <section class="telemetry-bar-v2">
-            <div class="telemetry-v2-item">
+        <!-- Console Obsidian Status Pill Strip -->
+        <section class="status-pill-strip">
+            <div class="status-pill pill-money">
                 <span class="telemetry-v2-label">BAKİYE</span>
                 <span class="telemetry-v2-value val-money"><span id="stat-money">0 €</span></span>
             </div>
-            <div class="telemetry-v2-item">
+            <div class="status-pill pill-fitness">
                 <span class="telemetry-v2-label">ENERJİ</span>
                 <span class="telemetry-v2-value val-energy">⚡ <span id="stat-fitness">100%</span></span>
             </div>
-            <div class="telemetry-v2-item">
+            <div class="status-pill pill-morale">
                 <span class="telemetry-v2-label">MORAL</span>
                 <span class="telemetry-v2-value val-morale">❤️ <span id="stat-morale">75</span></span>
             </div>
-            <div class="telemetry-v2-item">
+            <div class="status-pill pill-fame">
                 <span class="telemetry-v2-label">ŞÖHRET</span>
                 <span class="telemetry-v2-value val-fame">⭐ <span id="stat-fame">0</span></span>
             </div>
         </section>
+
+        <!-- 📑 LÜKS TRANSFER FAKSI ROZETİ (PULSE FAX BADGE) -->
+        <div id="transfer-fax-badge" class="transfer-fax-badge" onclick="window.switchView('panel-transfers')">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 18px; filter: drop-shadow(0 0 6px rgba(0,229,255,0.6));">📑</span>
+                <div>
+                    <div style="font-weight: 900; font-size: 11px; color: #00e5ff; letter-spacing: 0.5px;">RESMİ TRANSFER FAKSI GELDİ!</div>
+                    <div id="transfer-fax-text" style="font-size: 10px; color: #cbd5e1;">Kulüplerden teklifler masada. İncelemek için dokun.</div>
+                </div>
+            </div>
+            <span style="font-size: 11px; font-weight: 800; color: #00e5ff; background: rgba(0,229,255,0.15); padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(0,229,255,0.3);">İncele ➔</span>
+        </div>
 
         <!-- 🛡️ İlk 3 Hafta Çaylak Koruma Kalkanı Banner -->
         <div id="rookie-shield-banner" style="display:none; margin: 0 16px 10px 16px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.16), rgba(59, 130, 246, 0.14)); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 12px; padding: 8px 14px; align-items: center; justify-content: space-between; gap: 10px; box-shadow: 0 4px 14px rgba(0,0,0,0.25);">
@@ -1162,6 +1181,7 @@
 
             <!-- 🚀 ULTRA-MODERN FLOATING CONSOLE NAVBAR (5 TABS + HERO MATCH BUTTON + LIVE BADGE PIPS) -->
             <nav class="bottom-nav floating-dock">
+                <div class="nav-sliding-pill" id="nav-sliding-pill"></div>
                 <!-- 1. ANA SAYFA -->
                 <button class="nav-tab active" data-target="panel-career" title="Ana Sayfa">
                     <div class="nav-icon-wrap">
@@ -6235,11 +6255,16 @@
             tab.addEventListener("click", () => {
                 if (window.HAPTIC && typeof window.HAPTIC.click === "function") {
                     window.HAPTIC.click();
+                } else if (navigator.vibrate) {
+                    try { navigator.vibrate(10); } catch(e) {}
                 }
                 tabs.forEach(t => t.classList.remove("active"));
                 panels.forEach(p => p.classList.remove("active"));
 
                 tab.classList.add("active");
+                if (typeof window.updateSlidingPill === "function") {
+                    window.updateSlidingPill(tab);
+                }
                 const target = tab.getAttribute("data-target");
                 const targetPanel = document.getElementById(target);
                 if (targetPanel) {
@@ -10283,6 +10308,8 @@
             }
             if (window.HAPTIC && typeof window.HAPTIC.click === "function") {
                 window.HAPTIC.click();
+            } else if (navigator.vibrate) {
+                try { navigator.vibrate(10); } catch(e) {}
             }
             const tabBtn = document.querySelector(`.nav-tab[data-target="${targetId}"]`);
             if (tabBtn) {
@@ -10301,6 +10328,9 @@
                 const parentBtn = document.querySelector(`.nav-tab[data-target="${parentTabTarget}"]`);
                 if (parentBtn) {
                     parentBtn.classList.add("active");
+                    if (typeof window.updateSlidingPill === "function") {
+                        window.updateSlidingPill(parentBtn);
+                    }
                 }
 
                 const targetPanel = document.getElementById(targetId);
@@ -10363,7 +10393,46 @@
                                   (s.unreadMessages && s.unreadMessages.length > 0);
                 pipSocial.style.display = hasSocial ? "block" : "none";
             }
+
+            // 5. Transfer Fax Banner in Header
+            const faxBadge = document.getElementById("transfer-fax-badge");
+            if (faxBadge) {
+                const hasOffers = (s.transferOffers && s.transferOffers.length > 0) || 
+                                  (s.activeTransferOffers && s.activeTransferOffers.length > 0) ||
+                                  s.isTestTransferWindowActive;
+                faxBadge.style.display = hasOffers ? "flex" : "none";
+                if (hasOffers) {
+                    const count = (s.activeTransferOffers && s.activeTransferOffers.length) || (s.transferOffers && s.transferOffers.length) || 1;
+                    const faxText = document.getElementById("transfer-fax-text");
+                    if (faxText) faxText.innerText = `${count} kulüpten resmi transfer teklifi masada. İncelemek için dokun.`;
+                }
+            }
         };
+
+        // 💫 SLIDING PILL DOCK INDICATOR
+        window.updateSlidingPill = function(activeBtn) {
+            const pill = document.getElementById("nav-sliding-pill");
+            if (!pill) return;
+            if (!activeBtn) activeBtn = document.querySelector(".bottom-nav.floating-dock .nav-tab.active");
+            if (!activeBtn || activeBtn.classList.contains("nav-hero-match")) {
+                pill.style.opacity = "0";
+                return;
+            }
+            const left = activeBtn.offsetLeft;
+            const width = activeBtn.offsetWidth;
+            if (width > 0) {
+                pill.style.left = (left + 4) + "px";
+                pill.style.width = (width - 8) + "px";
+                pill.style.opacity = "1";
+            }
+        };
+        window.addEventListener("resize", () => {
+            if (typeof window.updateSlidingPill === "function") window.updateSlidingPill();
+        });
+        setTimeout(() => {
+            if (typeof window.updateSlidingPill === "function") window.updateSlidingPill();
+        }, 300);
+
         window.switchTab = window.switchView;
         if (typeof GAME !== "undefined") {
             GAME.switchTab = window.switchView;
