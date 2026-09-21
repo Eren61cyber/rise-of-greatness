@@ -478,6 +478,9 @@
             </div>
                 <!-- Missions + Settings buttons -->
                 <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+                    <button id="btn-quick-test-hub" onclick="openTestHubModal()" title="Yeni Özellikleri Test Et" style="padding: 6px 10px; font-size: 11px; font-weight: 900; background: linear-gradient(135deg, rgba(255,215,0,0.25), rgba(0,229,255,0.25)); border: 1px solid #ffd700; border-radius: 8px; cursor: pointer; color: #ffd700; display: flex; align-items: center; gap: 4px; box-shadow: 0 0 10px rgba(255,215,0,0.35);">
+                        <span>🧪 TEST</span>
+                    </button>
                     <div id="cloud-save-indicator" style="display: inline-flex; align-items: center; gap: 5px; font-size: 9.5px; font-weight: 800; color: #10b981; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); padding: 4px 8px; border-radius: 99px; letter-spacing: 0.3px;" title="Otomatik yerel ve bulut kaydı devrede">
                         <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 6px #10b981; animation: pulse-save 2s infinite;"></span>
                         ☁️ OTO KAYIT
@@ -530,6 +533,20 @@
             
             <!-- PANEL 1: CAREER DASHBOARD -->
             <section id="panel-career" class="view-panel active">
+
+                <!-- Quick Test Hub Trigger Banner -->
+                <div style="margin-bottom: 12px; background: linear-gradient(135deg, rgba(255, 215, 0, 0.12), rgba(0, 229, 255, 0.12)); border: 1px dashed rgba(255, 215, 0, 0.45); border-radius: 12px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 20px;">🧪</span>
+                        <div>
+                            <div style="font-weight: 900; color: #ffd700; font-size: 12.5px;">YENİ ÖZELLİKLERİ TEST ET</div>
+                            <div style="font-size: 10.5px; color: #cbd5e1;">Transfer bildirimi, idman dengesi ve kart telafi sistemini dene.</div>
+                        </div>
+                    </div>
+                    <button onclick="openTestHubModal()" style="background: linear-gradient(135deg, #ffd700, #ff9900); color: #000; border: none; padding: 7px 14px; border-radius: 8px; font-weight: 900; font-size: 11.5px; cursor: pointer; white-space: nowrap; box-shadow: 0 2px 8px rgba(255,215,0,0.3);">
+                        Test Menüsü
+                    </button>
+                </div>
                 
                 <!-- MEVCUT SEVİYE & DIAMOND RADAR CHART CARD -->
                 <div class="ovr-radar-card">
@@ -1023,6 +1040,22 @@
                 <div class="panel-header">
                     <h2>Transferler & Menajerlik</h2>
                     <p>Kariyerini temsil edecek menajerini seç ve gelen transfer tekliflerini değerlendir.</p>
+                </div>
+
+                <!-- Transfer Window Test Card -->
+                <div class="card glass" style="margin-bottom: 15px; padding: 14px; background: linear-gradient(135deg, rgba(255, 215, 0, 0.12), rgba(0, 229, 255, 0.08)); border: 1.5px solid rgba(255, 215, 0, 0.45); border-radius: 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+                    <div>
+                        <div style="font-weight: 900; color: #ffd700; font-size: 13.5px; display: flex; align-items: center; gap: 6px;">
+                            <span>🔥 TRANSFER SEZONU BİLDİRİMİ</span>
+                            <span style="font-size: 9px; background: #ffd700; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 900;">YENİ</span>
+                        </div>
+                        <div style="font-size: 11px; color: #cbd5e1; margin-top: 3px;">
+                            14. ve 37. haftalarda açılan yeni animasyonlu transfer ekranını hemen görüntüle.
+                        </div>
+                    </div>
+                    <button onclick="testTransferWindowModal();" style="background: linear-gradient(135deg, #ffd700 0%, #ff9900 100%); color: #07090e; border: none; padding: 9px 16px; border-radius: 10px; font-weight: 900; font-size: 12px; cursor: pointer; white-space: nowrap; box-shadow: 0 2px 12px rgba(255, 215, 0, 0.35);">
+                        📋 Bildirimi Aç
+                    </button>
                 </div>
 
                 <!-- Agents Panel -->
@@ -1527,6 +1560,9 @@
                                 <button type="button" onclick="testTransferTweetModal();" style="grid-column: span 2; background: linear-gradient(135deg, #ffd700 0%, #d4af37 100%); color: #07090e; border: none; padding: 10px 8px; font-size: 11.5px; font-weight: 900; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 12px rgba(255,215,0,0.3);">
                                     <span>🚨 Resmi X Transfer Kartını Test Et</span>
                                 </button>
+                                <button type="button" onclick="testTransferWindowModal();" style="grid-column: span 2; background: linear-gradient(135deg, #00e5ff 0%, #0284c7 100%); color: #07090e; border: none; padding: 10px 8px; font-size: 11.5px; font-weight: 900; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 12px rgba(0,229,255,0.3); margin-top: 4px;">
+                                    <span>🔥 Transfer Dönemi Bildirimini Test Et</span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -1541,6 +1577,136 @@
                     <!-- Footer -->
                     <div style="text-align: center; color: #6e7681; font-size: 10px; margin-top: -4px;">
                         v1.0.6 • RiseUp Studios | <span onclick="openPrivacyPolicyModal()" style="text-decoration: underline; cursor: pointer;">Gizlilik Politikası</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- ROG NEW FEATURES TEST HUB MODAL -->
+        <div class="event-modal-overlay" id="rog-test-hub-modal" style="z-index: 99999; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: none; align-items: center; justify-content: center; background: rgba(5,7,10,0.88); backdrop-filter: blur(14px);">
+            <div class="event-card glass" style="max-width: 420px; padding: 0; overflow: hidden; background: radial-gradient(circle at 50% 0%, #151d2f 0%, #090c13 100%); border: 1.5px solid rgba(0, 229, 255, 0.45); border-radius: 20px; box-shadow: 0 0 35px rgba(0, 229, 255, 0.25);">
+                
+                <!-- Header -->
+                <div style="background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(255, 215, 0, 0.1)); padding: 18px 20px; border-bottom: 1px solid rgba(0, 229, 255, 0.25); display: flex; align-items: center; justify-content: space-between;">
+                    <div style="text-align: left;">
+                        <span style="font-size: 10px; font-weight: 900; background: linear-gradient(135deg, #00e5ff, #38bdf8); color: #02131e; padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">YENİLİK TEST MERKEZİ</span>
+                        <h2 style="color: #ffffff; font-size: 17px; font-weight: 900; margin: 4px 0 0 0; font-family: var(--font-heading);">Geliştirici &amp; Test Menüsü</h2>
+                    </div>
+                    <button onclick="closeTestHubModal()" style="background: rgba(255,255,255,0.08); border: none; color: #94a3b8; font-size: 20px; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;">&times;</button>
+                </div>
+
+                <!-- Test Actions List -->
+                <div style="padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; text-align: left;">
+                    
+                    <!-- 1. Transfer Window Modal Test -->
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,215,0,0.3); border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                        <div>
+                            <div style="font-weight: 800; color: #ffd700; font-size: 13px;">🔥 1. Transfer Sezonu Bildirimi</div>
+                            <div style="font-size: 10.5px; color: #94a3b8;">Hafta 14 &amp; 37 animasyonlu açılış ekranı.</div>
+                        </div>
+                        <button onclick="closeTestHubModal(); testTransferWindowModal();" style="background: linear-gradient(135deg, #ffd700, #ff9900); color: #000; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 900; font-size: 11.5px; cursor: pointer; white-space: nowrap;">
+                            Aç &amp; Gör
+                        </button>
+                    </div>
+
+                    <!-- 2. Diminishing Returns Training Test -->
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(16,185,129,0.3); border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                        <div>
+                            <div style="font-weight: 800; color: #10b981; font-size: 13px;">⚡ 2. İdman Stat Gelişimi</div>
+                            <div style="font-size: 10.5px; color: #94a3b8;">Azalan verimler (1/2, 1/3 ilerleme) testi.</div>
+                        </div>
+                        <button onclick="closeTestHubModal(); testTrainingProgression();" style="background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 900; font-size: 11.5px; cursor: pointer; white-space: nowrap;">
+                            İdman Yap
+                        </button>
+                    </div>
+
+                    <!-- 3. Card Pack Anti-99 Cap Test -->
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(56,189,248,0.3); border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                        <div>
+                            <div style="font-weight: 800; color: #38bdf8; font-size: 13px;">🃏 3. Kart Paketi &amp; Anti-99</div>
+                            <div style="font-size: 10.5px; color: #94a3b8;">85+ stat engeli &amp; +25k € telafi primi.</div>
+                        </div>
+                        <button onclick="closeTestHubModal(); testCardPackBuff();" style="background: linear-gradient(135deg, #38bdf8, #0284c7); color: #000; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 900; font-size: 11.5px; cursor: pointer; white-space: nowrap;">
+                            Kart Test Et
+                        </button>
+                    </div>
+
+                    <!-- 4. Fast Forward to Week 14 (Ara Transfer) -->
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(244,63,94,0.3); border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                        <div>
+                            <div style="font-weight: 800; color: #f43f5e; font-size: 13px;">⏩ 4. 14. Haftaya Işınlan</div>
+                            <div style="font-size: 10.5px; color: #94a3b8;">Ara transfer haftasına geç ve bildirimi canlı yaşa.</div>
+                        </div>
+                        <button onclick="closeTestHubModal(); testJumpToWeek(14);" style="background: linear-gradient(135deg, #f43f5e, #be123c); color: #fff; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 900; font-size: 11.5px; cursor: pointer; white-space: nowrap;">
+                            14. Haftaya Git
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- TRANSFER WINDOW OPENED NOTIFICATION MODAL -->
+        <div class="event-modal-overlay" id="transfer-window-modal" style="z-index: 99999; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: none; align-items: center; justify-content: center; background: rgba(5,7,10,0.88); backdrop-filter: blur(14px);">
+            <div class="event-card glass" style="max-width: 400px; padding: 0; overflow: hidden; background: radial-gradient(circle at 50% 0%, #172033 0%, #0a0d14 100%); border: 1.5px solid rgba(255, 215, 0, 0.4); text-align: center; box-shadow: 0 0 35px rgba(255, 215, 0, 0.2), 0 20px 40px rgba(0,0,0,0.8); border-radius: 20px;">
+                
+                <!-- Glowing Header Banner -->
+                <div style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(0, 229, 255, 0.1)); padding: 22px 18px 16px 18px; border-bottom: 1px solid rgba(255, 215, 0, 0.25); position: relative;">
+                    <div style="position: absolute; top: 12px; right: 14px;">
+                        <button onclick="closeTransferWindowModal()" style="background: rgba(255,255,255,0.08); border: none; color: #94a3b8; font-size: 18px; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;">&times;</button>
+                    </div>
+                    <div style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #ffd700, #ffaa00); color: #07090e; font-size: 10.5px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; box-shadow: 0 0 14px rgba(255, 215, 0, 0.4); margin-bottom: 10px;">
+                        <span>🔥 RESMİ BİLDİRİM</span>
+                    </div>
+                    <h2 id="transfer-window-title" style="color: #ffffff; font-size: 20px; font-weight: 900; margin: 0 0 6px 0; font-family: var(--font-heading); text-shadow: 0 2px 10px rgba(0,0,0,0.5);">
+                        ARA TRANSFER DÖNEMİ AÇILDI!
+                    </h2>
+                    <p id="transfer-window-subtitle" style="font-size: 12px; color: #cbd5e1; margin: 0; line-height: 1.45;">
+                        Kulüpler ve scoutlar masada! Menajerin yeni sözleşme tekliflerini getirdi.
+                    </p>
+                </div>
+
+                <!-- Body Content -->
+                <div style="padding: 20px 18px; display: flex; flex-direction: column; gap: 14px;">
+                    
+                    <!-- Player Snapshot Card -->
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: left;">
+                        <div>
+                            <div style="font-size: 10px; color: #8b949e; text-transform: uppercase; font-weight: 700;">Piyasa Değeri</div>
+                            <div id="tw-market-value" style="font-size: 16px; font-weight: 900; color: #00e5b7; font-family: var(--font-heading);">0 €</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 10px; color: #8b949e; text-transform: uppercase; font-weight: 700;">Mevcut Maaş</div>
+                            <div id="tw-current-salary" style="font-size: 16px; font-weight: 900; color: #38bdf8; font-family: var(--font-heading);">0 € / Hf</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 10px; color: #8b949e; text-transform: uppercase; font-weight: 700;">Mevcut Kulüp</div>
+                            <div id="tw-current-club" style="font-size: 13px; font-weight: 800; color: #f8fafc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">-</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 10px; color: #8b949e; text-transform: uppercase; font-weight: 700;">Menajer</div>
+                            <div id="tw-agent-name" style="font-size: 13px; font-weight: 800; color: #f59e0b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">-</div>
+                        </div>
+                    </div>
+
+                    <!-- Highlight Banner -->
+                    <div style="background: linear-gradient(135deg, rgba(0, 229, 183, 0.08), rgba(56, 189, 248, 0.08)); border: 1px dashed rgba(0, 229, 183, 0.4); border-radius: 12px; padding: 10px 12px; font-size: 11.5px; color: #e2e8f0; display: flex; align-items: center; gap: 10px; text-align: left;">
+                        <span style="font-size: 22px;">📋</span>
+                        <div>
+                            <div style="font-weight: 800; color: #00e5b7;">Masada 5 Yeni Transfer Teklifi Var!</div>
+                            <div style="color: #94a3b8; font-size: 10.5px;">Farklı liglerden kulüpler kariyerin için teklif sundu.</div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 4px;">
+                        <button onclick="goToTransferOffersFromModal()" style="background: linear-gradient(135deg, #ffd700 0%, #ff9900 100%); color: #07090e; border: none; padding: 13px 18px; border-radius: 12px; font-size: 13.5px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 18px rgba(255, 215, 0, 0.35); transition: transform 0.15s ease;">
+                            <span>📋 Teklifleri İncele &amp; Görüş</span>
+                        </button>
+                        <button onclick="closeTransferWindowModal()" style="background: rgba(255,255,255,0.06); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); padding: 10px 16px; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer;">
+                            Mevcut Kulübümde Kal
+                        </button>
                     </div>
 
                 </div>
@@ -7573,7 +7739,7 @@
         };
 
         // Difficulty selection handler
-        window._selectedDifficulty = "easy";
+        window._selectedDifficulty = "normal";
         window.selectDifficulty = function(mode) {
             window._selectedDifficulty = mode;
             const btns = { easy: "diff-btn-easy", normal: "diff-btn-normal", hard: "diff-btn-hard" };
@@ -9822,6 +9988,120 @@
         }
         window.testTransferTweetModal = testTransferTweetModal;
 
+        window.showTransferWindowModal = function(isSummer = false) {
+            const modal = document.getElementById("transfer-window-modal");
+            if (!modal) return;
+
+            const titleEl = document.getElementById("transfer-window-title");
+            const subEl = document.getElementById("transfer-window-subtitle");
+            const valEl = document.getElementById("tw-market-value");
+            const salEl = document.getElementById("tw-current-salary");
+            const clubEl = document.getElementById("tw-current-club");
+            const agentEl = document.getElementById("tw-agent-name");
+
+            if (isSummer) {
+                if (titleEl) titleEl.innerText = "☀️ BÜYÜK YAZ TRANSFERİ AÇILDI!";
+                if (subEl) subEl.innerText = "Sezon bitti! Avrupa devleri ve ligin büyükleri transfer için sıraya girdi.";
+            } else {
+                if (titleEl) titleEl.innerText = "❄️ ARA TRANSFER DÖNEMİ AÇILDI!";
+                if (subEl) subEl.innerText = "14. Hafta geldi! Kulüpler kadrolarını güçlendirmek için kapını çalıyor.";
+            }
+
+            if (typeof GAME !== "undefined" && GAME.state) {
+                const val = typeof DATABASE !== "undefined" ? DATABASE.calculateValue(GAME.state.rating, GAME.state.age) : 1000000;
+                if (valEl) valEl.innerText = val.toLocaleString() + " €";
+                if (salEl) salEl.innerText = (GAME.state.weeklySalary || 350).toLocaleString() + " € / Hf";
+                if (clubEl) clubEl.innerText = `${GAME.state.currentClub || "Kulüp"} (${GAME.state.currentLeague || "Lig"})`;
+                
+                let agentName = "Serbest Menajer";
+                if (GAME.state.agentId && typeof DATABASE !== "undefined") {
+                    const ag = DATABASE.AGENTS.find(a => a.id === GAME.state.agentId);
+                    if (ag) agentName = ag.name;
+                }
+                if (agentEl) agentEl.innerText = agentName;
+
+                GAME.checkForTransferOffers();
+            }
+
+            modal.style.display = "flex";
+            modal.classList.add("active");
+        };
+
+        window.closeTransferWindowModal = function() {
+            const modal = document.getElementById("transfer-window-modal");
+            if (modal) {
+                modal.classList.remove("active");
+                modal.style.display = "none";
+            }
+        };
+
+        window.goToTransferOffersFromModal = function() {
+            window.closeTransferWindowModal();
+            if (typeof switchView === "function") {
+                switchView("transfers");
+            }
+            if (typeof renderTransferOffers === "function") {
+                renderTransferOffers();
+            }
+        };
+
+        window.testTransferWindowModal = function() {
+            const sm = document.getElementById("settings-modal");
+            if (sm) sm.classList.remove("active");
+            const isSummer = (typeof GAME !== "undefined" && GAME.state && GAME.state.currentWeek >= 30);
+            window.showTransferWindowModal(isSummer);
+        };
+
+        window.openTestHubModal = function() {
+            const modal = document.getElementById("rog-test-hub-modal");
+            if (modal) {
+                modal.style.display = "flex";
+                modal.classList.add("active");
+            }
+        };
+
+        window.closeTestHubModal = function() {
+            const modal = document.getElementById("rog-test-hub-modal");
+            if (modal) {
+                modal.classList.remove("active");
+                modal.style.display = "none";
+            }
+        };
+
+        window.testTrainingProgression = function() {
+            if (typeof GAME !== "undefined") {
+                const sKey = (GAME.state.position === "Defans") ? "defense" : "shooting";
+                GAME.train(sKey);
+                if (typeof switchView === "function") switchView("training");
+                if (typeof renderTrainingPanel === "function") renderTrainingPanel();
+            }
+        };
+
+        window.testCardPackBuff = function() {
+            if (typeof GAME !== "undefined" && typeof applyPackPlayerBuffs === "function") {
+                const testPlayer = {
+                    id: "test_legend_" + Date.now(),
+                    name: "Cristiano Ronaldo (Test)",
+                    tier: "legend",
+                    stat: "shooting",
+                    buff: 2,
+                    isLegend: true
+                };
+                hasAwardedCurrentPack = false;
+                applyPackPlayerBuffs(testPlayer);
+            }
+        };
+
+        window.testJumpToWeek = function(targetWeek = 14) {
+            if (typeof GAME !== "undefined" && GAME.state) {
+                GAME.state.currentWeek = targetWeek - 1;
+                GAME.advanceWeek();
+                if (typeof showCustomAlert === "function") {
+                    showCustomAlert(`Hafta ${targetWeek} seviyesine geçildi! Transfer penceresi açıldı.`, "HAFTA İLERLEMESİ", "📅", "success");
+                }
+            }
+        };
+
 function startNationalAnthemCeremony(matchData = null, onComplete = null) {
             anthemCallback = onComplete;
             selectedCaptainTalk = "passion";
@@ -11300,7 +11580,12 @@ function afterWeekAdvanced() {
             }
 
             if (GAME.state.isEuropeanCupMatch) {
-                let cupName = GAME.state.qualifiedForEurope === "ChampionsLeague" ? "Şampiyonlar Ligi" : "Avrupa Ligi";
+                let isUcl = GAME.state.qualifiedForEurope === "ChampionsLeague";
+                let isUel = GAME.state.qualifiedForEurope === "EuropaLeague";
+                let cupName = isUcl ? "Şampiyonlar Ligi" : (isUel ? "Avrupa Ligi" : "Konferans Ligi");
+                let cupId = isUcl ? "cl" : (isUel ? "el" : "ecl");
+                let prizeMoney = isUcl ? 150000 : (isUel ? 85000 : 50000);
+                let prizeFollowers = isUcl ? 100000 : (isUel ? 50000 : 30000);
                 
                 if (scoreDiff > 0) {
                     if (GAME.state.europeanCupStage === 1) {
@@ -11308,16 +11593,15 @@ function afterWeekAdvanced() {
                         alert(`🏆 ÇEYREK FİNALDE ZAFER! Harika bir maç çıkartarak rakibinizi elediniz ve ${cupName} Yarı Finali'ne yükseldiniz!`);
                     } else if (GAME.state.europeanCupStage === 2) {
                         GAME.state.europeanCupStage = 3;
-                        alert(`🏆 YARI FİNALİ GEÇTİNİZ! Avrupa'nın en büyük sahnesinde adınızı ${cupName} FİNALİNE yazdırdınız! Bütün gözler dev finalde senin üzerinde olacak!`);
+                        alert(`🏆 YARI FİNALİ GEÇTİNİZ! Avrupa'nın büyük sahnesinde adınızı ${cupName} FİNALİNE yazdırdınız! Bütün gözler dev finalde senin üzerinde olacak!`);
                     } else if (GAME.state.europeanCupStage === 3) {
                         GAME.state.europeanCupStage = 4;
-                        let cupId = GAME.state.qualifiedForEurope === "ChampionsLeague" ? "cl" : "el";
                         if (!GAME.state.trophies) GAME.state.trophies = [];
-                        GAME.state.trophies.push({ id: cupId, name: `${cupName} Şampiyonluğu (${year})`, icon: "🏆" });
-                        GAME.state.money += 150000;
-                        GAME.state.totalEarnings = (GAME.state.totalEarnings || 0) + 150000;
-                        GAME.state.followers += 100000;
-                        alert(`🌟 AVRUPA ŞAMPİYONUSUNUZ! 🌟\n\nMuhteşem bir zafer! ${cupName} finalinde destan yazarak kupayı kazandınız! Adını Avrupa tarihine altın harflerle yazdırdın.\n\nPrimi: +150.000 € | Takipçi: +100.000`);
+                        GAME.state.trophies.push({ id: cupId, name: `UEFA ${cupName} Şampiyonluğu (${year})`, icon: "🏆" });
+                        GAME.state.money += prizeMoney;
+                        GAME.state.totalEarnings = (GAME.state.totalEarnings || 0) + prizeMoney;
+                        GAME.state.followers += prizeFollowers;
+                        alert(`🌟 AVRUPA ŞAMPİYONUSUNUZ! 🌟\n\nMuhteşem bir zafer! ${cupName} finalinde destan yazarak kupayı kazandınız! Adını Avrupa tarihine altın harflerle yazdırdın.\n\nPrimi: +${prizeMoney.toLocaleString()} € | Takipçi: +${prizeFollowers.toLocaleString()}`);
                         
                         GAME.state.qualifiedForEurope = null;
                         GAME.state.europeanCupStage = 0;
@@ -11338,13 +11622,12 @@ function afterWeekAdvanced() {
                             alert(`🏆 NEFES KESEN BİTİŞ! Berabere biten yarı final mücadelesinde penaltılarda rakibinizi devirerek FİNALE yükseldiniz!`);
                         } else if (GAME.state.europeanCupStage === 3) {
                             GAME.state.europeanCupStage = 4;
-                            let cupId = GAME.state.qualifiedForEurope === "ChampionsLeague" ? "cl" : "el";
                             if (!GAME.state.trophies) GAME.state.trophies = [];
-                            GAME.state.trophies.push({ id: cupId, name: `${cupName} Şampiyonluğu (${year})`, icon: "🏆" });
-                            GAME.state.money += 150000;
-                            GAME.state.totalEarnings = (GAME.state.totalEarnings || 0) + 150000;
-                            GAME.state.followers += 100000;
-                            alert(`🌟 DESTANSI AVRUPA ŞAMPİYONLUĞU! 🌟\n\n${cupName} finalinde penaltı atışlarıyla rakibinizi devirerek KUPAYI KALDIRDINIZ! Şampiyonuz!\n\nPrimi: +150.000 € | Takipçi: +100.000`);
+                            GAME.state.trophies.push({ id: cupId, name: `UEFA ${cupName} Şampiyonluğu (${year})`, icon: "🏆" });
+                            GAME.state.money += prizeMoney;
+                            GAME.state.totalEarnings = (GAME.state.totalEarnings || 0) + prizeMoney;
+                            GAME.state.followers += prizeFollowers;
+                            alert(`🌟 DESTANSI AVRUPA ŞAMPİYONLUĞU! 🌟\n\n${cupName} finalinde penaltı atışlarıyla rakibinizi devirerek KUPAYI KALDIRDINIZ! Şampiyonuz!\n\nPrimi: +${prizeMoney.toLocaleString()} € | Takipçi: +${prizeFollowers.toLocaleString()}`);
                             
                             GAME.state.qualifiedForEurope = null;
                             GAME.state.europeanCupStage = 0;
@@ -11421,12 +11704,14 @@ function afterWeekAdvanced() {
 
             // 2. Check European Cups (Weeks 6, 14, 22, 30 - if qualified)
             let isEuropeanWeek = (week === 6 || week === 14 || week === 22 || week === 30);
-            if (isEuropeanWeek && GAME.state.qualifiedForEurope && GAME.state.currentLeague === "Süper Lig") {
+            if (isEuropeanWeek && GAME.state.qualifiedForEurope) {
                 GAME.state.isEuropeanCupMatch = true;
                 
-                let pool = GAME.state.qualifiedForEurope === "ChampionsLeague" 
+                let isUcl = GAME.state.qualifiedForEurope === "ChampionsLeague";
+                let isUel = GAME.state.qualifiedForEurope === "EuropaLeague";
+                let pool = isUcl 
                     ? DATABASE.CHAMPIONS_LEAGUE_TEAMS 
-                    : DATABASE.EUROPA_LEAGUE_TEAMS;
+                    : (isUel ? DATABASE.EUROPA_LEAGUE_TEAMS : DATABASE.CONFERENCE_LEAGUE_TEAMS);
                 
                 let opponent = null;
                 if (GAME.state.nextOpponentName) {
@@ -11443,7 +11728,7 @@ function afterWeekAdvanced() {
                 
                 nextOpponent = opponent;
                 
-                let cupName = GAME.state.qualifiedForEurope === "ChampionsLeague" ? "Şampiyonlar Ligi" : "Avrupa Ligi";
+                let cupName = isUcl ? "Şampiyonlar Ligi" : (isUel ? "Avrupa Ligi" : "Konferans Ligi");
                 let stages = ["", "Çeyrek Final", "Yarı Final", "Final"];
                 let stageName = stages[GAME.state.europeanCupStage] || "Final";
                 
@@ -11455,7 +11740,7 @@ function afterWeekAdvanced() {
                         `${cupName.toUpperCase()} - ${stageName.toUpperCase()}`,
                         `AVRUPA GECESİ: ${GAME.state.currentClub.toUpperCase()} VS ${opponent.name.toUpperCase()}!`,
                         "Temsilcimiz Zirve Yolunda!",
-                        `Avrupa kupalarındaki gururumuz ${GAME.state.currentClub}, dev turnuvanın ${stageName} ayağında dişli rakibi ${opponent.name} karşısında sahne alıyor. Tüm Türkiye nefesini tuttu ve ${GAME.state.playerName}'in Avrupa sahnesindeki resitalini bekliyor.`
+                        `Avrupa kupalarındaki gururumuz ${GAME.state.currentClub}, dev turnuvanın ${stageName} ayağında dişli rakibi ${opponent.name} karşısında sahne alıyor. Tüm taraftarlar nefesini tuttu ve ${GAME.state.playerName}'in Avrupa sahnesindeki resitalini bekliyor.`
                     );
                 }
                 
@@ -11632,9 +11917,10 @@ function afterWeekAdvanced() {
                         if (t) { teamObj = t; break; }
                     }
                     if (!teamObj) {
-                        // Look in Champions/Europa League lists
+                        // Look in Champions/Europa/Conference League lists
                         teamObj = DATABASE.CHAMPIONS_LEAGUE_TEAMS.find(x => x.name === nextOpponent.name) 
-                            || DATABASE.EUROPA_LEAGUE_TEAMS.find(x => x.name === nextOpponent.name);
+                            || DATABASE.EUROPA_LEAGUE_TEAMS.find(x => x.name === nextOpponent.name)
+                            || (DATABASE.CONFERENCE_LEAGUE_TEAMS && DATABASE.CONFERENCE_LEAGUE_TEAMS.find(x => x.name === nextOpponent.name));
                     }
                     let ratingStr = teamObj ? `(H:${teamObj.att} O:${teamObj.mid} D:${teamObj.def})` : "";
                     
@@ -11649,10 +11935,12 @@ function afterWeekAdvanced() {
                             playBtn.innerText = "🏆 Süper Kupa Finalini Oyna";
                         }
                     } else if (GAME.state.isEuropeanCupMatch) {
-                        let cupName = GAME.state.qualifiedForEurope === "ChampionsLeague" ? "ŞAMPİYONLAR LİGİ" : "AVRUPA LİGİ";
+                        let isUcl = GAME.state.qualifiedForEurope === "ChampionsLeague";
+                        let isUel = GAME.state.qualifiedForEurope === "EuropaLeague";
+                        let cupName = isUcl ? "ŞAMPİYONLAR LİGİ" : (isUel ? "AVRUPA LİGİ" : "KONFERANS LİGİ");
                         let stages = ["", "Çeyrek Final", "Yarı Final", "Final"];
                         let stageName = stages[GAME.state.europeanCupStage] || "Final";
-                        let cupColor = GAME.state.qualifiedForEurope === "ChampionsLeague" ? "var(--primary)" : "#FF8800";
+                        let cupColor = isUcl ? "var(--primary)" : (isUel ? "#FF8800" : "#10B981");
                         
                         document.getElementById("next-opponent-text").innerHTML = `
                             <div style="font-size: 11px; color: ${cupColor}; font-weight: bold; margin-bottom: 4px; letter-spacing: 0.5px;">⭐ ${cupName} (${stageName.toUpperCase()})</div>
@@ -11836,6 +12124,50 @@ function afterWeekAdvanced() {
 
                     group.add(shield);
                     group.add(boss);
+                    group.add(base);
+
+                } else if (type.includes("el") || type.includes("avrupa_ligi") || type.includes("avrupa ligi") || type.includes("europa_league")) {
+                    // 🥈 UEFA EUROPA LEAGUE: Tall Faceted Silver Trophy with Gold Collar
+                    const cupBody = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.35, 1.9, 8), chromeMat);
+                    cupBody.position.y = 1.4;
+
+                    const collar = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.15, 16), goldMat);
+                    collar.position.y = 0.5;
+
+                    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.25, 0.35, 16), chromeMat);
+                    stem.position.y = 0.35;
+
+                    const base = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.85, 0.35, 8), obsidianMat);
+                    base.position.y = 0.17;
+
+                    group.add(cupBody);
+                    group.add(collar);
+                    group.add(stem);
+                    group.add(base);
+
+                } else if (type.includes("ecl") || type.includes("konferans") || type.includes("conference")) {
+                    // 🥉 UEFA CONFERENCE LEAGUE: Sleek Geometric Column with Emerald-tinted Base
+                    const cupBody = new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.45, 1.8, 32), chromeMat);
+                    cupBody.position.y = 1.35;
+
+                    const ringTop = new THREE.Mesh(new THREE.TorusGeometry(0.76, 0.06, 12, 32), emeraldMat);
+                    ringTop.rotation.x = Math.PI / 2;
+                    ringTop.position.y = 2.2;
+
+                    const ringBottom = new THREE.Mesh(new THREE.TorusGeometry(0.46, 0.05, 12, 32), emeraldMat);
+                    ringBottom.rotation.x = Math.PI / 2;
+                    ringBottom.position.y = 0.5;
+
+                    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.28, 0.35, 20), chromeMat);
+                    stem.position.y = 0.35;
+
+                    const base = new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.9, 0.35, 20), obsidianMat);
+                    base.position.y = 0.17;
+
+                    group.add(cupBody);
+                    group.add(ringTop);
+                    group.add(ringBottom);
+                    group.add(stem);
                     group.add(base);
 
                 } else if (type.includes("turkiye_kupasi") || type.includes("türkiye kupası") || type.includes("turkiye kupasi") || type.includes("kupa")) {
@@ -12116,6 +12448,8 @@ function afterWeekAdvanced() {
                 GAME.state.trophies = [
                     { id: "ballon_or", name: "Ballon d'Or (Altın Top)", year: 2028, club: "Real Madrid", apps: 42, goals: 38, assists: 19, ovr: 91 },
                     { id: "champions_league", name: "UEFA Şampiyonlar Ligi", year: 2028, club: "Real Madrid", apps: 13, goals: 12, assists: 7, ovr: 91 },
+                    { id: "el", name: "UEFA Avrupa Ligi", year: 2027, club: "Galatasaray", apps: 12, goals: 10, assists: 6, ovr: 87 },
+                    { id: "ecl", name: "UEFA Konferans Ligi", year: 2026, club: "Trabzonspor", apps: 12, goals: 9, assists: 5, ovr: 82 },
                     { id: "super_lig", name: "Süper Lig Şampiyonluğu", year: 2027, club: "Galatasaray", apps: 36, goals: 31, assists: 15, ovr: 86 },
                     { id: "super_kupa", name: "Türkiye Süper Kupa", year: 2027, club: "Galatasaray", apps: 1, goals: 2, assists: 1, ovr: 86 },
                     { id: "turkiye_kupasi", name: "Ziraat Türkiye Kupası", year: 2027, club: "Galatasaray", apps: 6, goals: 5, assists: 4, ovr: 86 }
@@ -13123,13 +13457,11 @@ function afterWeekAdvanced() {
             const isPremium = (activePackType === 'promo');
             GAME.state.collection.push({ id: player.id, date: Date.now(), isPremium: isPremium });
 
+            const stat = player.stat;
+            const buff = player.buff || 1;
+
             if (!isOwned) {
-                const stat = player.stat;
-                const buff = player.buff;
-                if (stat && GAME.state[stat] !== undefined) {
-                    GAME.state[stat] = Math.min(100, (GAME.state[stat] || 50) + buff);
-                }
-                
+                // Followers gain for new card
                 if (player.id === "guler") {
                     GAME.state.followers = (GAME.state.followers || 0) + 15000;
                 } else if (player.isLegend) {
@@ -13138,9 +13470,62 @@ function afterWeekAdvanced() {
                     GAME.state.followers = (GAME.state.followers || 0) + 10000;
                 }
 
-                GAME.saveGame();
-                GAME.updateUI();
+                // Anti-99 and Diminishing Returns for Cards
+                if (stat && GAME.state[stat] !== undefined) {
+                    const curVal = GAME.state[stat] || 50;
+                    if (typeof GAME.state.seasonCardStatBoosts === "undefined") {
+                        GAME.state.seasonCardStatBoosts = 0;
+                    }
+
+                    if (curVal >= 85) {
+                        // 85+ Cap: Cards cannot boost stats beyond 85 (prevent spamming 99)
+                        // Give cash & followers compensation instead
+                        const bonusCash = 25000;
+                        GAME.state.money = (GAME.state.money || 0) + bonusCash;
+                        GAME.state.totalEarnings = (GAME.state.totalEarnings || 0) + bonusCash;
+                        if (typeof showCustomAlert === "function") {
+                            showCustomAlert(`85+ yetenekler sadece antrenman ve maçla gelişir! Karttan +${bonusCash.toLocaleString()} € ve +5.000 Takipçi kazandın.`, "🃏 KART ÖDÜLÜ", "⭐", "info");
+                        }
+                    } else if (GAME.state.seasonCardStatBoosts >= 4) {
+                        // Season Cap: Max 4 stat points from cards per season
+                        const bonusCash = 20000;
+                        GAME.state.money = (GAME.state.money || 0) + bonusCash;
+                        GAME.state.totalEarnings = (GAME.state.totalEarnings || 0) + bonusCash;
+                        if (typeof showCustomAlert === "function") {
+                            showCustomAlert(`Bu sezon kartlardan stat artırma limitine ulaştın (Maks: +4)! Kulüp kasana +${bonusCash.toLocaleString()} € prim yatırıldı.`, "🃏 SEZON LİMİTİ", "💰", "info");
+                        }
+                    } else {
+                        // Allowed stat gain: at most +1 stat (or +2 for Legend when stat < 70)
+                        let actualGain = Math.min(buff, 1);
+                        if (player.isLegend && curVal < 70 && buff >= 2) {
+                            actualGain = 2;
+                        }
+                        GAME.state[stat] = Math.min(85, curVal + actualGain);
+                        GAME.state.seasonCardStatBoosts += actualGain;
+                        if (typeof showCustomAlert === "function") {
+                            showCustomAlert(`🃏 ${player.name} kartı yeteneğini artırdı! +${actualGain} ${stat.toUpperCase()} (Yeni: ${GAME.state[stat]})`, "KART BONUSU", "🔥", "success");
+                        }
+                    }
+                }
+            } else {
+                // Duplicate Card Compensation (Tekrar Eden Kart Telafisi)
+                let comp = 10000;
+                if (player.isLegend) comp = 50000;
+                else if (player.tier === "gold" || isPremium) comp = 25000;
+
+                GAME.state.money = (GAME.state.money || 0) + comp;
+                GAME.state.totalEarnings = (GAME.state.totalEarnings || 0) + comp;
+                if (typeof showCustomAlert === "function") {
+                    showCustomAlert(`Bu kart koleksiyonunda zaten var! Tekrar eden kart için +${comp.toLocaleString()} € telafi primi kazandın.`, "🃏 TEKRAR KART", "🪙", "info");
+                }
             }
+
+            // Always recalculate overall rating & update HUD/UI!
+            GAME.state.rating = GAME.calculateOverallRating();
+            GAME.saveGame();
+            GAME.updateUI();
+            if (typeof renderFutCard === "function") renderFutCard();
+            if (typeof renderTrainingPanel === "function") renderTrainingPanel();
         }
 
         function closePackModal() {
@@ -16601,8 +16986,9 @@ function afterWeekAdvanced() {
                 } else if (GAME.state.isEuropeanCupMatch) {
                     let stages = ["", "Çeyrek Final", "Yarı Final", "Final"];
                     let stageName = stages[GAME.state.europeanCupStage] || "Final";
-                    compIcon = "⭐";
-                    compName = GAME.state.qualifiedForEurope === "ChampionsLeague" ? `ŞAMPİYONLAR LİGİ (${stageName.toUpperCase()})` : `AVRUPA LİGİ (${stageName.toUpperCase()})`;
+                    let isUcl = GAME.state.qualifiedForEurope === "ChampionsLeague";
+                    let isUel = GAME.state.qualifiedForEurope === "EuropaLeague";
+                    compName = isUcl ? `ŞAMPİYONLAR LİGİ (${stageName.toUpperCase()})` : (isUel ? `AVRUPA LİGİ (${stageName.toUpperCase()})` : `KONFERANS LİGİ (${stageName.toUpperCase()})`);
                 }
 
                 const compIconEl = document.getElementById("scoreboard-comp-icon");

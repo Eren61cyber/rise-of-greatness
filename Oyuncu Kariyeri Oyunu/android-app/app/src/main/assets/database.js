@@ -11,7 +11,7 @@ const DATABASE = {
             teams: [
                 { name: "Galatastar", att: 85, mid: 84, def: 83, color: "#A90432", colorSec: "#FDB913" },
                 { name: "Fenerbaçe FK", att: 84, mid: 84, def: 84, color: "#002F6C", colorSec: "#FED141" },
-                { name: "Trabzon FK", att: 84, mid: 83, def: 81, color: "#800020", colorSec: "#00A4E4" },
+                { name: "Trabzon FK", att: 80, mid: 78, def: 78, color: "#800020", colorSec: "#00A4E4" },
                 { name: "Kartal FK", att: 83, mid: 83, def: 81, color: "#000000", colorSec: "#FFFFFF" },
                 { name: "Başakşehir FK", att: 77, mid: 76, def: 75, color: "#FF6600", colorSec: "#002F6C" },
                 { name: "Göztepe FK", att: 75, mid: 75, def: 74, color: "#FFD600", colorSec: "#D50000" },
@@ -74,7 +74,7 @@ const DATABASE = {
                 { name: "İskenderunspor", att: 49, mid: 49, def: 48, color: "#FF6600", colorSec: "#000000" },
                 { name: "Ankaraspor", att: 48, mid: 48, def: 48, color: "#0D47A1", colorSec: "#FFFFFF" },
                 { name: "Menemen", att: 48, mid: 48, def: 48, color: "#FFD600", colorSec: "#0D47A1" },
-                { name: "1461 Trabzon", att: 46, mid: 46, def: 46, color: "#800020", colorSec: "#00A4E4" }
+                { name: "1461 Trabzon", att: 54, mid: 53, def: 53, color: "#800020", colorSec: "#00A4E4" }
             ]
         },
         "3. Lig": {
@@ -230,6 +230,78 @@ const DATABASE = {
                 { name: "Bordeaux", att: 72, mid: 72, def: 71, color: "#1B3A4B", colorSec: "#FFFFFF" },
                 { name: "Red Star FC", att: 70, mid: 70, def: 69, color: "#D50000", colorSec: "#FFFFFF" }
             ]
+        },
+        "Eredivisie": {
+            country: "Hollanda",
+            prestige: 3.5,
+            teams: [
+                { name: "Ajax", att: 82, mid: 83, def: 80, color: "#D50000", colorSec: "#FFFFFF" },
+                { name: "PSV Eindhoven", att: 83, mid: 82, def: 81, color: "#E30613", colorSec: "#FFFFFF" },
+                { name: "Feyenoord", att: 81, mid: 81, def: 80, color: "#D50000", colorSec: "#000000" },
+                { name: "AZ Alkmaar", att: 79, mid: 79, def: 78, color: "#E30613", colorSec: "#FFFFFF" },
+                { name: "FC Twente", att: 78, mid: 78, def: 77, color: "#D50000", colorSec: "#FFFFFF" },
+                { name: "FC Utrecht", att: 77, mid: 76, def: 76, color: "#D50000", colorSec: "#FFFFFF" },
+                { name: "Go Ahead Eagles", att: 75, mid: 75, def: 74, color: "#FFD600", colorSec: "#D50000" },
+                { name: "Sparta Rotterdam", att: 75, mid: 74, def: 74, color: "#D50000", colorSec: "#FFFFFF" },
+                { name: "Heerenveen", att: 76, mid: 75, def: 75, color: "#0D47A1", colorSec: "#FFFFFF" },
+                { name: "NEC Nijmegen", att: 75, mid: 75, def: 74, color: "#D50000", colorSec: "#009240" },
+                { name: "Fortuna Sittard", att: 74, mid: 74, def: 73, color: "#FFD600", colorSec: "#009240" },
+                { name: "PEC Zwolle", att: 73, mid: 73, def: 73, color: "#0D47A1", colorSec: "#FFFFFF" },
+                { name: "Heracles Almelo", att: 73, mid: 73, def: 72, color: "#000000", colorSec: "#FFFFFF" },
+                { name: "Almere City", att: 72, mid: 72, def: 72, color: "#D50000", colorSec: "#000000" },
+                { name: "Willem II", att: 73, mid: 73, def: 72, color: "#0D47A1", colorSec: "#D50000" },
+                { name: "RKC Waalwijk", att: 72, mid: 72, def: 71, color: "#FFD600", colorSec: "#0D47A1" },
+                { name: "NAC Breda", att: 72, mid: 72, def: 71, color: "#FFD600", colorSec: "#000000" },
+                { name: "Excelsior", att: 71, mid: 71, def: 71, color: "#000000", colorSec: "#D50000" }
+            ]
+        },
+        "Liga Portugal": {
+            country: "Portekiz",
+            prestige: 3.5,
+            teams: [
+                { name: "Benfica", att: 84, mid: 83, def: 83, color: "#E30613", colorSec: "#FFFFFF" },
+                { name: "Sporting CP", att: 84, mid: 83, def: 82, color: "#009240", colorSec: "#FFFFFF" },
+                { name: "FC Porto", att: 83, mid: 82, def: 82, color: "#0052B4", colorSec: "#FFFFFF" },
+                { name: "SC Braga", att: 80, mid: 80, def: 79, color: "#E30613", colorSec: "#FFFFFF" },
+                { name: "Vitoria Guimaraes", att: 78, mid: 77, def: 77, color: "#FFFFFF", colorSec: "#000000" },
+                { name: "Moreirense", att: 75, mid: 75, def: 74, color: "#009240", colorSec: "#FFFFFF" },
+                { name: "Arouca", att: 75, mid: 74, def: 74, color: "#FFD600", colorSec: "#0D47A1" },
+                { name: "Famalicao", att: 75, mid: 75, def: 74, color: "#0D47A1", colorSec: "#FFFFFF" },
+                { name: "Boavista", att: 74, mid: 74, def: 73, color: "#000000", colorSec: "#FFFFFF" },
+                { name: "Gil Vicente", att: 74, mid: 73, def: 73, color: "#D50000", colorSec: "#0D47A1" },
+                { name: "Estoril Praia", att: 74, mid: 74, def: 73, color: "#FFD600", colorSec: "#0D47A1" },
+                { name: "Rio Ave", att: 74, mid: 73, def: 73, color: "#009240", colorSec: "#FFFFFF" },
+                { name: "Casa Pia", att: 73, mid: 73, def: 73, color: "#000000", colorSec: "#FFFFFF" },
+                { name: "Farense", att: 73, mid: 72, def: 72, color: "#000000", colorSec: "#FFFFFF" },
+                { name: "Nacional da Madeira", att: 72, mid: 72, def: 72, color: "#000000", colorSec: "#FFFFFF" },
+                { name: "Santa Clara", att: 73, mid: 73, def: 72, color: "#D50000", colorSec: "#FFFFFF" },
+                { name: "AVS Futebol", att: 71, mid: 72, def: 71, color: "#D50000", colorSec: "#FFFFFF" },
+                { name: "Estrela Amadora", att: 71, mid: 71, def: 71, color: "#D50000", colorSec: "#009240" }
+            ]
+        },
+        "Saudi Pro League": {
+            country: "Suudi Arabistan",
+            prestige: 4,
+            teams: [
+                { name: "Al-Hilal", att: 85, mid: 84, def: 83, color: "#0052B4", colorSec: "#FFFFFF" },
+                { name: "Al-Nassr", att: 86, mid: 83, def: 81, color: "#FFD600", colorSec: "#0D47A1" },
+                { name: "Al-Ittihad", att: 84, mid: 82, def: 82, color: "#FFD600", colorSec: "#000000" },
+                { name: "Al-Ahli", att: 83, mid: 82, def: 80, color: "#009240", colorSec: "#FFFFFF" },
+                { name: "Al-Shabab", att: 78, mid: 78, def: 77, color: "#000000", colorSec: "#FFFFFF" },
+                { name: "Al-Ettifaq", att: 78, mid: 77, def: 77, color: "#009240", colorSec: "#D50000" },
+                { name: "Al-Taawoun", att: 76, mid: 76, def: 75, color: "#FFD600", colorSec: "#0D47A1" },
+                { name: "Al-Fateh", att: 75, mid: 75, def: 74, color: "#0D47A1", colorSec: "#009240" },
+                { name: "Al-Fayha", att: 74, mid: 74, def: 74, color: "#FF6600", colorSec: "#0D47A1" },
+                { name: "Al-Khaleej", att: 74, mid: 73, def: 73, color: "#FFD600", colorSec: "#009240" },
+                { name: "Al-Raed", att: 73, mid: 73, def: 73, color: "#D50000", colorSec: "#000000" },
+                { name: "Damac", att: 73, mid: 73, def: 72, color: "#D50000", colorSec: "#FFD600" },
+                { name: "Al-Wehda", att: 73, mid: 72, def: 72, color: "#D50000", colorSec: "#FFFFFF" },
+                { name: "Al-Okhdood", att: 72, mid: 72, def: 71, color: "#0D47A1", colorSec: "#000000" },
+                { name: "Al-Riyadh", att: 72, mid: 71, def: 71, color: "#D50000", colorSec: "#000000" },
+                { name: "Al-Qadsiah", att: 79, mid: 78, def: 77, color: "#D50000", colorSec: "#FFD600" },
+                { name: "Al-Kholood", att: 71, mid: 71, def: 71, color: "#D50000", colorSec: "#FFFFFF" },
+                { name: "Al-Orobah", att: 71, mid: 70, def: 70, color: "#FFD600", colorSec: "#009240" }
+            ]
         }
     },
 
@@ -282,7 +354,7 @@ const DATABASE = {
         { name: "Olympiakos", att: 75, mid: 75, def: 74, color: "#D50000", colorSec: "#FFFFFF" },
         { name: "Galatasaray", att: 81, mid: 80, def: 79, color: "#A90432", colorSec: "#F1A80A" },
         { name: "Fenerbahçe", att: 80, mid: 80, def: 79, color: "#FFFF00", colorSec: "#0000FF" },
-        { name: "Trabzonspor", att: 78, mid: 78, def: 77, color: "#800020", colorSec: "#00A4E4" },
+        { name: "Trabzonspor", att: 80, mid: 78, def: 78, color: "#800020", colorSec: "#00A4E4" },
         { name: "Beşiktaş", att: 79, mid: 79, def: 78, color: "#000000", colorSec: "#FFFFFF" },
         { name: "Başakşehir FK", att: 76, mid: 76, def: 75, color: "#FF6600", colorSec: "#002F6C" },
         { name: "Göztepe FK", att: 75, mid: 75, def: 74, color: "#FFD600", colorSec: "#D50000" }
@@ -318,6 +390,41 @@ const DATABASE = {
         { name: "Kaşımpaşa FK", att: 68, mid: 68, def: 67, color: "#0D47A1", colorSec: "#FFFFFF" },
         { name: "Antalya FK", att: 67, mid: 66, def: 66, color: "#D50000", colorSec: "#FFFFFF" },
         { name: "Sivas FK", att: 72, mid: 71, def: 71, color: "#D50000", colorSec: "#FFFFFF" }
+    ],
+
+    CONFERENCE_LEAGUE_TEAMS: [
+        { name: "Chelsea", att: 83, mid: 83, def: 82, color: "#034694", colorSec: "#FFFFFF" },
+        { name: "Fiorentina", att: 78, mid: 78, def: 78, color: "#4B0082", colorSec: "#FFFFFF" },
+        { name: "Real Betis", att: 78, mid: 79, def: 77, color: "#009640", colorSec: "#FFFFFF" },
+        { name: "Heerenveen", att: 76, mid: 75, def: 75, color: "#0D47A1", colorSec: "#FFFFFF" },
+        { name: "Gent", att: 76, mid: 76, def: 75, color: "#0052B4", colorSec: "#FFFFFF" },
+        { name: "Cercle Brugge", att: 74, mid: 74, def: 73, color: "#009240", colorSec: "#000000" },
+        { name: "Rapid Wien", att: 75, mid: 75, def: 74, color: "#009240", colorSec: "#FFFFFF" },
+        { name: "LASK", att: 74, mid: 74, def: 74, color: "#000000", colorSec: "#FFFFFF" },
+        { name: "Panathinaikos", att: 76, mid: 76, def: 75, color: "#009240", colorSec: "#FFFFFF" },
+        { name: "Legia Varşova", att: 75, mid: 75, def: 74, color: "#000000", colorSec: "#009240" },
+        { name: "Jagiellonia", att: 74, mid: 73, def: 73, color: "#FFD600", colorSec: "#D50000" },
+        { name: "Vitoria Guimaraes", att: 78, mid: 77, def: 77, color: "#FFFFFF", colorSec: "#000000" },
+        { name: "St. Gallen", att: 74, mid: 74, def: 73, color: "#009240", colorSec: "#FFFFFF" },
+        { name: "Lugano", att: 74, mid: 74, def: 74, color: "#000000", colorSec: "#FFFFFF" },
+        { name: "Molde", att: 75, mid: 74, def: 74, color: "#0052B4", colorSec: "#FFFFFF" },
+        { name: "Djurgarden", att: 73, mid: 73, def: 73, color: "#0D47A1", colorSec: "#FFD600" },
+        { name: "Apoel", att: 73, mid: 73, def: 73, color: "#FFD600", colorSec: "#0D47A1" },
+        { name: "Omonia", att: 73, mid: 72, def: 72, color: "#009240", colorSec: "#FFFFFF" },
+        { name: "Pafos", att: 72, mid: 72, def: 72, color: "#0D47A1", colorSec: "#FFFFFF" },
+        { name: "Astana", att: 73, mid: 73, def: 72, color: "#FFD600", colorSec: "#00E5FF" },
+        { name: "Hearts", att: 74, mid: 73, def: 73, color: "#800020", colorSec: "#FFFFFF" },
+        { name: "Celje", att: 72, mid: 72, def: 71, color: "#0D47A1", colorSec: "#FFD600" },
+        { name: "TSC Backa Topola", att: 72, mid: 72, def: 71, color: "#0052B4", colorSec: "#FFFFFF" },
+        { name: "Borac Banja Luka", att: 71, mid: 71, def: 71, color: "#D50000", colorSec: "#0052B4" },
+        { name: "Petrocub", att: 70, mid: 70, def: 70, color: "#0D47A1", colorSec: "#FFFFFF" },
+        { name: "Dinamo Minsk", att: 71, mid: 71, def: 70, color: "#0052B4", colorSec: "#FFFFFF" },
+        { name: "Noah", att: 70, mid: 70, def: 69, color: "#000000", colorSec: "#FFFFFF" },
+        { name: "Vikingur", att: 70, mid: 69, def: 69, color: "#D50000", colorSec: "#000000" },
+        { name: "Trabzonspor", att: 80, mid: 78, def: 78, color: "#800020", colorSec: "#00A4E4" },
+        { name: "Başakşehir FK", att: 76, mid: 76, def: 75, color: "#FF6600", colorSec: "#002F6C" },
+        { name: "Sivasspor", att: 72, mid: 71, def: 71, color: "#D50000", colorSec: "#FFFFFF" },
+        { name: "Larne", att: 68, mid: 68, def: 68, color: "#D50000", colorSec: "#FFFFFF" }
     ],
 
     getRandomAmateurClub: function() {

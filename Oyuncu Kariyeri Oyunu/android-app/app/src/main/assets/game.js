@@ -1006,17 +1006,56 @@ const GAME = {
         this.state.kondisyon -= energyCost;
         this.state.weeklyTrainingCount++;
 
-        // Difficulty-based stat gain
+        // Diminishing returns training progression curve
         const diff = this.state.difficulty || "normal";
-        let statGain = 1;
-        if (diff === "easy") {
-            statGain = 2; // Başlangıç: double gain
-        } else if (diff === "hard") {
-            // Zor: +1 only every other training (alternating)
-            this.state._hardTrainCounter = (this.state._hardTrainCounter || 0) + 1;
-            statGain = (this.state._hardTrainCounter % 2 === 0) ? 1 : 0;
+        const currentStatVal = this.state[targetKey] || 50;
+
+        let drillsNeeded = 1;
+        if (currentStatVal >= 92) {
+            drillsNeeded = 4; // 92+ Efsanevi seviye: 4 idman = +1 stat
+        } else if (currentStatVal >= 85) {
+            drillsNeeded = 3; // 85-91 Elit seviye: 3 idman = +1 stat
+        } else if (currentStatVal >= 75) {
+            drillsNeeded = 2; // 75-84 Profesyonel seviye: 2 idman = +1 stat
+        } else {
+            drillsNeeded = 1; // <75 Temel gelişim: 1 idman = +1 stat
         }
-        this.state[targetKey] = Math.min(100, (this.state[targetKey] || 50) + statGain);
+
+        // Difficulty modifier
+        if (diff === "easy") {
+            drillsNeeded = Math.max(1, drillsNeeded - 1);
+        } else if (diff === "hard") {
+            drillsNeeded += 1;
+        }
+
+        if (!this.state._trainProg_) this.state._trainProg_ = {};
+        this.state._trainProg_[targetKey] = (this.state._trainProg_[targetKey] || 0) + 1;
+
+        let statGain = 0;
+        let progCount = this.state._trainProg_[targetKey];
+        if (progCount >= drillsNeeded) {
+            statGain = 1;
+            this.state._trainProg_[targetKey] = 0;
+        }
+
+        this.state[targetKey] = Math.min(99, currentStatVal + statGain);
+
+        // Feedback toast / alert
+        const statLabels = {
+            shooting: "Şut", passing: "Pas", speed: "Hız",
+            dribbling: "Top Sürme", defense: "Defans", physical: "Fizik"
+        };
+        const sLabel = statLabels[targetKey] || targetKey.toUpperCase();
+
+        if (statGain > 0) {
+            if (typeof showCustomAlert === "function") {
+                showCustomAlert(`+1 ${sLabel}! Yeni Seviye: ${this.state[targetKey]}`, "⚡ İDMAN GELİŞİMİ", "💪", "success");
+            }
+        } else {
+            if (typeof showCustomAlert === "function") {
+                showCustomAlert(`${sLabel} idmanı yapıldı (${progCount}/${drillsNeeded} ilerleme)`, "İDMAN", "🏃", "info");
+            }
+        }
 
         this.state.weeksSinceLastTraining = 0;
 
@@ -1296,6 +1335,16 @@ const GAME = {
             this.state.rookieShieldEndedAlertShown = true;
             setTimeout(() => {
                 alert("📢 TEKNİK DİREKTÖR MESAJI:\n\n'Tebrikler evlat! İlk 3 haftalık uyum sürecini başarıyla atlattın. Çaylak Koruma Kalkanı sona erdi. Artık asıl profesyonel lig maratonu başladı! Kondisyonuna dikkat et ve sahada her şeyini ver!' ⚽🔥");
+            }, 600);
+        }
+
+        // 🌟 Transfer Sezonu Açılış Bildirimi (Hafta 14: Ara Transfer, Hafta 37: Yaz Transferi)
+        if (this.state.currentWeek === 14 || this.state.currentWeek === 37) {
+            this.checkForTransferOffers();
+            setTimeout(() => {
+                if (typeof window !== "undefined" && typeof window.showTransferWindowModal === "function") {
+                    window.showTransferWindowModal(this.state.currentWeek === 37);
+                }
             }, 600);
         }
 
@@ -2875,6 +2924,11 @@ const GAME = {
                 this.state.europeanCupStage = 1;
                 this.state.wonLeagueLastSeason = false;
                 promotionMsg = `🥉 Ligi ${rank}. sırada tamamlayarak gelecek sezon <strong>Avrupa Ligi</strong>'ne katılmaya hak kazandınız!`;
+            } else if (rank === 5) {
+                this.state.qualifiedForEurope = "ConferenceLeague";
+                this.state.europeanCupStage = 1;
+                this.state.wonLeagueLastSeason = false;
+                promotionMsg = `🥉 Ligi 5. sırada tamamlayarak gelecek sezon <strong>UEFA Konferans Ligi</strong>'ne katılmaya hak kazandınız!`;
             } else if (rank >= 15) {
                 this.state.currentLeague = "1. Lig";
                 this.state.weeklySalary = Math.round(this.state.weeklySalary * 0.75); // 25% indirim
@@ -2887,8 +2941,39 @@ const GAME = {
                 this.state.europeanCupStage = 0;
                 this.state.wonLeagueLastSeason = false;
             }
+        } else if (["Premier League", "La Liga", "Serie A", "Bundesliga", "Ligue 1", "Eredivisie", "Liga Portugal"].includes(curLeague)) {
+            const year = 2026 + (this.state.age - 17);
+            if (rank === 1) {
+                bonus += 200000;
+                followerGain += 100000;
+                promotionMsg = `🏆 <strong>${curLeague.toUpperCase()} ŞAMPİYONLUĞU!</strong> Dünyanın en zorlu liglerinden birini zirvede tamamladınız! 200,000 € şampiyonluk primi kazandınız!`;
+                this.state.qualifiedForEurope = "ChampionsLeague";
+                this.state.europeanCupStage = 1;
+                this.state.wonLeagueLastSeason = true;
+                if (!this.state.trophies) this.state.trophies = [];
+                this.state.trophies.push({ id: curLeague.toLowerCase().replace(/\s+/g, '_'), name: `${curLeague} Şampiyonluğu (${year})`, icon: "🏆" });
+            } else if (rank <= 4) {
+                this.state.qualifiedForEurope = "ChampionsLeague";
+                this.state.europeanCupStage = 1;
+                this.state.wonLeagueLastSeason = false;
+                promotionMsg = `🥈 Ligi ${rank}. sırada tamamlayarak gelecek sezon <strong>UEFA Şampiyonlar Ligi</strong>'ne katılmaya hak kazandınız!`;
+            } else if (rank <= 6) {
+                this.state.qualifiedForEurope = "EuropaLeague";
+                this.state.europeanCupStage = 1;
+                this.state.wonLeagueLastSeason = false;
+                promotionMsg = `🥈 Ligi ${rank}. sırada tamamlayarak gelecek sezon <strong>UEFA Avrupa Ligi</strong>'ne katılmaya hak kazandınız!`;
+            } else if (rank === 7) {
+                this.state.qualifiedForEurope = "ConferenceLeague";
+                this.state.europeanCupStage = 1;
+                this.state.wonLeagueLastSeason = false;
+                promotionMsg = `🥉 Ligi 7. sırada tamamlayarak gelecek sezon <strong>UEFA Konferans Ligi</strong>'ne katılmaya hak kazandınız!`;
+            } else {
+                this.state.qualifiedForEurope = null;
+                this.state.europeanCupStage = 0;
+                this.state.wonLeagueLastSeason = false;
+            }
         } else {
-            // Lower leagues cannot qualify for Europe
+            // Lower leagues and Saudi Pro League cannot qualify for UEFA Europe
             this.state.qualifiedForEurope = null;
             this.state.europeanCupStage = 0;
             this.state.wonLeagueLastSeason = false;
@@ -2972,6 +3057,7 @@ const GAME = {
         this.state.currentWeek = 1;
         this.state.transferredThisWindow = false;
         this.state.activeTransferOffers = [];
+        this.state.seasonCardStatBoosts = 0;
 
         
         // Reset league table & scorers for the current league
