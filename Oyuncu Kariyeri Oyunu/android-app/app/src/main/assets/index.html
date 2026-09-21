@@ -1670,7 +1670,7 @@
                 <div style="padding: 24px 20px 10px 20px; position: relative; z-index: 2;">
                     <div style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(0, 229, 255, 0.2)); border: 1px solid rgba(255, 215, 0, 0.6); padding: 4px 14px; border-radius: 99px; box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);">
                         <span style="font-size: 13px;">⚡</span>
-                        <span style="font-size: 11px; font-weight: 900; letter-spacing: 1.5px; color: #ffd700; text-transform: uppercase;">EA FC SEVİYE ATLAMA</span>
+                        <span style="font-size: 11px; font-weight: 900; letter-spacing: 1.5px; color: #ffd700; text-transform: uppercase;">PRO GELİŞİM • YETENEK ARTIŞI</span>
                     </div>
                     <h2 style="font-family: var(--font-heading); font-size: 22px; font-weight: 900; color: #ffffff; margin: 10px 0 4px 0; text-shadow: 0 2px 12px rgba(0,0,0,0.7); letter-spacing: 0.5px;">YETENEK GELİŞİMİ</h2>
                     <p style="font-size: 11.5px; color: #94a3b8; margin: 0;">Sıkı antrenman meyvesini verdi! Yetenek puanın kalıcı olarak arttı.</p>
@@ -14812,15 +14812,38 @@ function afterWeekAdvanced() {
             }
 
             offers.forEach(offer => {
-                const eliteBadge = offer.isElite ? `<span class="event-tag" style="background: var(--accent-yellow); color: black; font-weight: 800; padding: 2px 6px; border-radius: 4px; font-size: 9px; margin-left: 6px;">ELİT TEKLİF ⭐️</span>` : '';
+                const eliteBadge = offer.isElite ? `<span class="bid-elite-badge">⭐ ELİT TEKLİF</span>` : '';
+                const teamInitials = offer.teamName.split(" ").slice(0, 2).map(w => w[0]).join("").toUpperCase();
+                
                 container.innerHTML += `
-                    <div class="offer-card glass" style="border-left: 6px solid ${offer.teamColor}">
-                        <div class="details">
-                            <h3 style="display:flex; align-items:center;">${offer.teamName} ${eliteBadge}</h3>
-                            <p>${offer.leagueName} | Başlangıç Teklifi</p>
-                            <span class="salary-tag">${offer.salary.toLocaleString()} € / Hafta</span>
+                    <div class="official-club-bid-card" style="border-left: 5px solid ${offer.teamColor};">
+                        <!-- Club Info -->
+                        <div class="bid-club-col">
+                            <div class="bid-team-crest" style="background: ${offer.teamColor};">
+                                <span>${teamInitials}</span>
+                            </div>
+                            <div style="text-align: left; min-width: 0;">
+                                <div style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+                                    <h4 class="bid-club-title">${offer.teamName}</h4>
+                                    ${eliteBadge}
+                                </div>
+                                <div class="bid-league-badge">${offer.leagueName}</div>
+                            </div>
                         </div>
-                        <button class="btn btn-primary" onclick="openNegotiation('${offer.teamName}', '${offer.leagueName}', ${offer.salary}, '${offer.teamColor}')">Görüşmeye Başla</button>
+
+                        <!-- Financial Package -->
+                        <div class="bid-financial-col">
+                            <div class="bid-financial-label">HAFTALIK MAAŞ</div>
+                            <div class="bid-financial-salary">${offer.salary.toLocaleString()} € / Hafta</div>
+                        </div>
+
+                        <!-- Action Button -->
+                        <div class="bid-action-col">
+                            <button class="btn-bid-negotiate" onclick="openNegotiation('${offer.teamName}', '${offer.leagueName}', ${offer.salary}, '${offer.teamColor}')">
+                                <span class="btn-specular-sweep"></span>
+                                <span>MASAYA OTUR ➔</span>
+                            </button>
+                        </div>
                     </div>
                 `;
             });
@@ -15359,27 +15382,102 @@ function afterWeekAdvanced() {
 
             DATABASE.AGENTS.forEach(agent => {
                 const isActive = (activeAgentId === agent.id);
-                let buttonHTML = "";
                 
-                if (isActive) {
-                    buttonHTML = `<span class="event-tag" style="background: var(--primary); color: #04140e; font-weight: 800; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-family: var(--font-heading);">AKTİF</span>`;
-                } else {
-                    const costText = agent.cost > 0 ? `${agent.cost.toLocaleString()} €` : 'Bedava';
-                    buttonHTML = `<button class="btn btn-secondary" style="padding: 6px 12px; font-size: 11.5px;" onclick="hireAgentClicked('${agent.id}')">Kirala (${costText})</button>`;
+                // Tier configuration
+                let tierClass = "tier-silver";
+                let sealClass = "seal-silver";
+                let pillClass = "pill-silver";
+                let tierText = "GÜMÜŞ • LİSANSLI TEMSİLCİ";
+                let sealIcon = "💼";
+
+                if (agent.id === "bedirhan") {
+                    tierClass = "tier-bronze";
+                    sealClass = "seal-bronze";
+                    pillClass = "pill-bronze";
+                    tierText = "BRONZ • SOKAK TEMSİLCİSİ";
+                    sealIcon = "👨🏻‍💼";
+                } else if (agent.id === "izi") {
+                    tierClass = "tier-platinum";
+                    sealClass = "seal-platinum";
+                    pillClass = "pill-platinum";
+                    tierText = "PLATİN • DANIŞMAN";
+                    sealIcon = "👩🏼‍💼";
+                } else if (agent.id === "mino") {
+                    tierClass = "tier-gold";
+                    sealClass = "seal-gold";
+                    pillClass = "pill-gold";
+                    tierText = "ALTIN • ELİT SÜPER MENAJER";
+                    sealIcon = "🕶️";
                 }
 
+                // Buttons
+                let actionHTML = "";
+                if (isActive) {
+                    actionHTML = `
+                        <div class="agency-active-tag">
+                            <span>🛡️</span>
+                            <span>AKTİF SÖZLEŞME</span>
+                        </div>
+                    `;
+                } else {
+                    if (agent.id === "bedirhan") {
+                        actionHTML = `
+                            <button class="btn-agency-contract" onclick="hireAgentClicked('bedirhan')">
+                                <span class="btn-specular-sweep"></span>
+                                <span>🤝 GÖREVE ÇAĞIR (ÜCRETSİZ)</span>
+                            </button>
+                        `;
+                    } else {
+                        const costStr = agent.cost > 0 ? `${agent.cost.toLocaleString()} €` : 'Ücretsiz';
+                        actionHTML = `
+                            <button class="btn-agency-contract" onclick="hireAgentClicked('${agent.id}')">
+                                <span class="btn-specular-sweep"></span>
+                                <span>✍️ ANLAŞMA İMZALA (${costStr})</span>
+                            </button>
+                        `;
+                    }
+                }
+
+                const commPercent = Math.round(agent.commissionRate * 100);
+                const negPercent = Math.round(agent.negotiationBonus * 100);
+                const commBarWidth = Math.min(100, Math.round((agent.commissionRate / 0.10) * 100));
+                const negBarWidth = Math.min(100, Math.round((agent.negotiationBonus / 0.40) * 100));
+                const commColor = agent.commissionRate <= 0.04 ? '#10b981' : '#f59e0b';
+
                 container.innerHTML += `
-                    <div class="glass" style="padding: 12px; border-radius: 10px; border: 1px solid ${isActive ? 'var(--primary)' : 'var(--border-glass)'}; display: flex; align-items: center; justify-content: space-between; gap: 10px; background: ${isActive ? 'rgba(16, 185, 129, 0.05)' : 'var(--bg-card)'};">
-                        <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
-                            ${getAgentIconSVG(agent.id)}
-                            <div style="text-align: left;">
-                                <h4 style="margin: 0; color: white; font-size: 14px; font-weight: 800; font-family: var(--font-heading);">${agent.name} <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">(${agent.title})</span></h4>
-                                <p style="margin: 3px 0 0 0; font-size: 11.5px; color: #cbd5e1; line-height: 1.35;">${agent.desc}</p>
-                                <p style="margin: 3px 0 0 0; font-size: 10.5px; color: var(--accent-yellow); font-weight: 600;">Komisyon: %${agent.commissionRate * 100} | Zam Şansı: +%${agent.negotiationBonus * 100}</p>
+                    <div class="agency-contract-card ${tierClass} ${isActive ? 'is-active' : ''}">
+                        <div style="display: flex; align-items: flex-start; gap: 14px; flex: 1;">
+                            <div class="agency-seal-badge ${sealClass}">
+                                <span>${sealIcon}</span>
+                            </div>
+                            <div style="text-align: left; flex: 1; min-width: 0;">
+                                <div class="agency-tier-pill ${pillClass}">${tierText}</div>
+                                <h4 style="margin: 0; color: #ffffff; font-size: 15px; font-weight: 900; font-family: var(--font-heading); letter-spacing: 0.3px;">
+                                    ${agent.name} <span style="font-size: 11px; color: #94a3b8; font-weight: 600;">(${agent.title})</span>
+                                </h4>
+                                <p style="margin: 3px 0 6px 0; font-size: 11px; color: #cbd5e1; line-height: 1.4;">${agent.desc}</p>
+                                
+                                <div class="agency-stats-row">
+                                    <div class="agency-stat-col">
+                                        <span class="agency-stat-label">KOMİSYON</span>
+                                        <div class="agency-stat-bar-wrap">
+                                            <div class="agency-stat-bar" style="width: ${commBarWidth}%; background: ${commColor};"></div>
+                                        </div>
+                                        <span class="agency-stat-val">%${commPercent}</span>
+                                    </div>
+                                    <div class="agency-stat-divider"></div>
+                                    <div class="agency-stat-col">
+                                        <span class="agency-stat-label">ZAM ŞANSI</span>
+                                        <div class="agency-stat-bar-wrap">
+                                            <div class="agency-stat-bar" style="width: ${negBarWidth}%; background: #38bdf8;"></div>
+                                        </div>
+                                        <span class="agency-stat-val">+%${negPercent}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div style="flex-shrink: 0;">
-                            ${buttonHTML}
+                            ${actionHTML}
                         </div>
                     </div>
                 `;

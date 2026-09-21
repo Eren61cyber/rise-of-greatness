@@ -6892,3 +6892,421 @@ input:not([type="checkbox"]):not([type="radio"]), textarea, select {
         opacity: 1;
     }
 }
+
+/* ==========================================================================
+   💼 EXECUTIVE AGENCY BUREAU (LİSANSLI MENAJERLİK SÖZLEŞME KARTLARI)
+   ========================================================================== */
+
+.agency-contract-card {
+    position: relative;
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+}
+
+/* Tier Hierarchies */
+.agency-contract-card.tier-bronze {
+    background: linear-gradient(135deg, rgba(32, 22, 16, 0.75) 0%, rgba(16, 12, 10, 0.9) 100%);
+    border: 1px solid rgba(205, 127, 50, 0.35);
+    box-shadow: inset 0 1px 0 rgba(205, 127, 50, 0.15), 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.agency-contract-card.tier-silver {
+    background: linear-gradient(135deg, rgba(20, 26, 40, 0.75) 0%, rgba(10, 14, 22, 0.9) 100%);
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    box-shadow: inset 0 1px 0 rgba(148, 163, 184, 0.2), 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.agency-contract-card.tier-platinum {
+    background: linear-gradient(135deg, rgba(14, 30, 48, 0.75) 0%, rgba(8, 16, 28, 0.9) 100%);
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    box-shadow: inset 0 1px 0 rgba(56, 189, 248, 0.2), 0 4px 20px rgba(56, 189, 248, 0.1);
+}
+
+.agency-contract-card.tier-gold {
+    background: linear-gradient(135deg, rgba(38, 28, 10, 0.8) 0%, rgba(16, 12, 6, 0.95) 100%);
+    border: 1px solid rgba(255, 215, 0, 0.5);
+    box-shadow: inset 0 1px 0 rgba(255, 215, 0, 0.3), 0 4px 25px rgba(255, 215, 0, 0.15);
+}
+
+/* Active Contract Card */
+.agency-contract-card.is-active {
+    border-color: rgba(16, 185, 129, 0.75) !important;
+    box-shadow: 0 0 25px rgba(16, 185, 129, 0.2), inset 0 0 15px rgba(16, 185, 129, 0.08) !important;
+}
+
+.agency-contract-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Agency Avatar / Seal Badge */
+.agency-seal-badge {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.agency-seal-badge.seal-bronze {
+    background: linear-gradient(135deg, #3d2417 0%, #1a100a 100%);
+    border: 1.5px solid rgba(205, 127, 50, 0.6);
+}
+
+.agency-seal-badge.seal-silver {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border: 1.5px solid rgba(148, 163, 184, 0.6);
+}
+
+.agency-seal-badge.seal-platinum {
+    background: linear-gradient(135deg, #0c2d48 0%, #05192d 100%);
+    border: 1.5px solid rgba(56, 189, 248, 0.6);
+}
+
+.agency-seal-badge.seal-gold {
+    background: linear-gradient(135deg, #422006 0%, #1c0a00 100%);
+    border: 1.5px solid rgba(255, 215, 0, 0.7);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.35);
+}
+
+/* Agency Card Header & Tier Pill */
+.agency-tier-pill {
+    font-size: 9.5px;
+    font-weight: 900;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 2px;
+}
+.agency-tier-pill.pill-bronze {
+    background: rgba(205, 127, 50, 0.2);
+    color: #f59e0b;
+    border: 1px solid rgba(205, 127, 50, 0.4);
+}
+.agency-tier-pill.pill-silver {
+    background: rgba(148, 163, 184, 0.2);
+    color: #e2e8f0;
+    border: 1px solid rgba(148, 163, 184, 0.4);
+}
+.agency-tier-pill.pill-platinum {
+    background: rgba(56, 189, 248, 0.2);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.4);
+}
+.agency-tier-pill.pill-gold {
+    background: rgba(255, 215, 0, 0.2);
+    color: #ffd700;
+    border: 1px solid rgba(255, 215, 0, 0.5);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.25);
+}
+
+/* Agency Compact Stats Bars */
+.agency-stats-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 6px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 5px 10px;
+}
+
+.agency-stat-col {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex: 1;
+}
+
+.agency-stat-label {
+    font-size: 9px;
+    font-weight: 800;
+    color: #94a3b8;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.agency-stat-bar-wrap {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.agency-stat-bar {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.4s ease-out;
+}
+
+.agency-stat-val {
+    font-size: 10.5px;
+    font-weight: 900;
+    color: #ffffff;
+    font-family: var(--font-heading);
+    white-space: nowrap;
+}
+
+.agency-stat-divider {
+    width: 1px;
+    height: 14px;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* Agency Contract Action Button */
+.btn-agency-contract {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    color: #ffd700;
+    padding: 9px 14px;
+    border-radius: 10px;
+    font-size: 11.5px;
+    font-weight: 900;
+    font-family: var(--font-heading);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.btn-agency-contract:hover {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 215, 0, 0.05) 100%);
+    border-color: rgba(255, 215, 0, 0.7);
+    color: #ffffff;
+    box-shadow: 0 0 16px rgba(255, 215, 0, 0.3);
+    transform: translateY(-1px);
+}
+
+.btn-agency-contract:active {
+    transform: scale(0.97);
+}
+
+.agency-active-tag {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.15) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.6);
+    color: #10b981;
+    font-size: 11px;
+    font-weight: 900;
+    font-family: var(--font-heading);
+    padding: 8px 14px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.25);
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+/* ==========================================================================
+   📄 OFFICIAL CLUB BIDS (RESMİ KULÜP TRANSFER TEKLİFLERİ)
+   ========================================================================== */
+
+#offers-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    scroll-snap-type: y proximity;
+}
+
+.official-club-bid-card {
+    position: relative;
+    border-radius: 14px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    background: linear-gradient(135deg, rgba(18, 24, 38, 0.85) 0%, rgba(10, 14, 22, 0.95) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    scroll-snap-align: start;
+}
+
+.official-club-bid-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 215, 0, 0.35);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.6), 0 0 18px rgba(255, 215, 0, 0.12);
+}
+
+.bid-club-col {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1.2;
+    min-width: 0;
+}
+
+.bid-team-crest {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 14px;
+    font-family: var(--font-heading);
+    color: #ffffff;
+    flex-shrink: 0;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+}
+
+.bid-club-title {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 900;
+    color: #ffffff;
+    font-family: var(--font-heading);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: 0.3px;
+}
+
+.bid-league-badge {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: #94a3b8;
+    font-size: 9.5px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 3px;
+}
+
+.bid-elite-badge {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.25) 0%, rgba(255, 170, 0, 0.15) 100%);
+    border: 1px solid rgba(255, 215, 0, 0.6);
+    color: #ffd700;
+    font-size: 9px;
+    font-weight: 900;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    margin-left: 6px;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.25);
+}
+
+.bid-financial-col {
+    text-align: center;
+    padding: 0 10px;
+    flex: 1;
+}
+
+.bid-financial-label {
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #94a3b8;
+    margin-bottom: 2px;
+}
+
+.bid-financial-salary {
+    font-size: 17px;
+    font-weight: 900;
+    color: #ffd700;
+    font-family: var(--font-heading);
+    text-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+}
+
+.bid-action-col {
+    flex-shrink: 0;
+}
+
+.btn-bid-negotiate {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.12) 0%, rgba(255, 170, 0, 0.04) 100%);
+    border: 1px solid rgba(255, 215, 0, 0.45);
+    color: #ffd700;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 900;
+    font-family: var(--font-heading);
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.btn-bid-negotiate:hover {
+    background: linear-gradient(135deg, #ffd700 0%, #ff9900 100%);
+    color: #050811;
+    border-color: #ffd700;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.45);
+    transform: scale(1.03);
+}
+
+.btn-bid-negotiate:active {
+    transform: scale(0.97);
+}
+
+@media (max-width: 540px) {
+    .official-club-bid-card {
+        flex-wrap: wrap;
+        padding: 12px 14px;
+        gap: 10px;
+    }
+    .bid-club-col {
+        flex: 1 1 100%;
+    }
+    .bid-financial-col {
+        text-align: left;
+        padding: 0;
+        flex: 1;
+    }
+    .bid-action-col {
+        flex: 0 0 auto;
+    }
+    .agency-contract-card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .agency-contract-card > div:first-child {
+        width: 100%;
+    }
+    .agency-contract-card > div:last-child {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+    .btn-agency-contract,
+    .agency-active-tag {
+        width: 100%;
+        text-align: center;
+    }
+}
