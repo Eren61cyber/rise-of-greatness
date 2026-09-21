@@ -6902,11 +6902,28 @@ input:not([type="checkbox"]):not([type="radio"]), textarea, select {
     border-radius: 14px;
     padding: 14px 16px;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    min-height: auto;
+    box-sizing: border-box;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     overflow: hidden;
+}
+
+.agency-desc-text {
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.35;
+    font-size: 0.82rem;
+    color: #cbd5e1;
+    margin: 3px 0 6px 0;
+}
+
+.agency-btn-full {
+    width: 100% !important;
+    box-sizing: border-box;
+    justify-content: center;
 }
 
 /* Tier Hierarchies */
@@ -7309,4 +7326,283 @@ input:not([type="checkbox"]):not([type="radio"]), textarea, select {
         width: 100%;
         text-align: center;
     }
+}
+
+/* ==========================================================================
+   🏆 LUXURY OBSIDIAN & GOLD THEME (UI REVISION)
+   ========================================================================== */
+
+/* 1. Rolling Ticker Glow */
+.money-rolling-glow {
+    text-shadow: 0 0 14px #00e5b7, 0 0 24px rgba(0, 229, 183, 0.7);
+    transition: text-shadow 0.2s ease;
+    animation: moneyPulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes moneyPulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.06); }
+}
+
+/* 2. Bank Receipt Strip (Sezon Limiti & Finansal Dekont) */
+.bank-receipt-strip {
+    background: linear-gradient(135deg, rgba(38, 28, 10, 0.9) 0%, rgba(16, 12, 6, 0.95) 100%);
+    border: 1.5px solid rgba(255, 215, 0, 0.5);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin: 10px 0;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(255, 215, 0, 0.08);
+}
+
+.btn-alert-confirm {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 900;
+    font-family: var(--font-heading);
+    cursor: pointer;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.18) 0%, rgba(255, 170, 0, 0.06) 100%);
+    border: 1.5px solid rgba(255, 215, 0, 0.5);
+    color: #ffd700;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    letter-spacing: 0.5px;
+}
+
+.btn-alert-confirm:hover {
+    background: linear-gradient(135deg, #ffd700 0%, #ff9900 100%);
+    color: #080c14;
+    border-color: #ffd700;
+    box-shadow: 0 0 22px rgba(255, 215, 0, 0.5);
+    transform: scale(1.02);
+}
+
+.btn-alert-confirm:active {
+    transform: scale(0.97);
+}
+
+/* 3. Luxury Carbon Fiber Car Cards & Buttons */
+.luxury-carbon-car-card {
+    background: linear-gradient(135deg, rgba(24, 28, 38, 0.95) 0%, rgba(12, 16, 24, 0.98) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.luxury-carbon-car-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 215, 0, 0.1);
+}
+
+.btn-car-buy {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.16) 0%, rgba(255, 170, 0, 0.06) 100%);
+    border: 1px solid rgba(255, 215, 0, 0.5);
+    color: #ffd700;
+    padding: 9px 15px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 900;
+    font-family: var(--font-heading);
+    cursor: pointer;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-car-buy:hover {
+    background: linear-gradient(135deg, #ffd700 0%, #ff9900 100%);
+    color: #080c14;
+    border-color: #ffd700;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.45);
+    transform: scale(1.03);
+}
+
+.btn-car-buy:active {
+    transform: scale(0.97);
+}
+
+.btn-car-locked {
+    background: rgba(30, 35, 45, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #64748b;
+    opacity: 0.4;
+    cursor: not-allowed;
+    padding: 9px 15px;
+    border-radius: 10px;
+    font-size: 11.5px;
+    font-weight: 800;
+    font-family: var(--font-heading);
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-car-owned {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    color: #10b981;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 800;
+    font-family: var(--font-heading);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.btn-car-owned:hover {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #ef4444;
+}
+
+/* 4. Professional TradingView / Binance Crypto Mini Cards */
+.crypto-binance-card {
+    background: linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(10, 15, 26, 0.98) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.crypto-binance-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.btn-crypto-buy {
+    position: relative;
+    overflow: hidden;
+    flex: 1;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #f8fafc;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 11.5px;
+    font-weight: 800;
+    font-family: var(--font-heading);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-crypto-buy:hover {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.18) 0%, rgba(255, 170, 0, 0.06) 100%);
+    border-color: rgba(255, 215, 0, 0.5);
+    color: #ffd700;
+    box-shadow: 0 0 14px rgba(255, 215, 0, 0.25);
+    transform: translateY(-1px);
+}
+
+.btn-crypto-sell {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    color: #f87171;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 11.5px;
+    font-weight: 800;
+    font-family: var(--font-heading);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.btn-crypto-sell:hover {
+    background: rgba(239, 68, 68, 0.25);
+    border-color: #ef4444;
+    color: #ffffff;
+}
+
+/* 5. E-Sports Franchise Contract Card */
+.esports-franchise-contract {
+    background: radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.18) 0%, rgba(8, 14, 26, 0.95) 100%);
+    border: 1.5px solid rgba(14, 165, 233, 0.45);
+    border-radius: 18px;
+    padding: 22px 20px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 25px rgba(14, 165, 233, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.esports-cyber-crest {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.25) 0%, rgba(2, 132, 199, 0.1) 100%);
+    border: 1.5px solid #0ea5e9;
+    box-shadow: 0 0 20px rgba(14, 165, 233, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 12px auto;
+}
+
+.btn-esports-found {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding: 13px 20px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 900;
+    font-family: var(--font-heading);
+    cursor: pointer;
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.2) 0%, rgba(2, 132, 199, 0.08) 100%);
+    border: 1.5px solid rgba(14, 165, 233, 0.6);
+    color: #38bdf8;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4), 0 0 15px rgba(14, 165, 233, 0.2);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    letter-spacing: 0.5px;
+}
+
+.btn-esports-found:hover {
+    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+    color: #ffffff;
+    border-color: #38bdf8;
+    box-shadow: 0 0 25px rgba(14, 165, 233, 0.5);
+    transform: scale(1.02);
+}
+
+.btn-esports-found:active {
+    transform: scale(0.97);
 }

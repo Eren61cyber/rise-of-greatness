@@ -497,7 +497,7 @@
         <section class="telemetry-bar-v2">
             <div class="telemetry-v2-item">
                 <span class="telemetry-v2-label">BAKİYE</span>
-                <span class="telemetry-v2-value val-money">$ <span id="stat-money">0</span></span>
+                <span class="telemetry-v2-value val-money"><span id="stat-money">0 €</span></span>
             </div>
             <div class="telemetry-v2-item">
                 <span class="telemetry-v2-label">ENERJİ</span>
@@ -2584,7 +2584,7 @@
                 </div>
                 <div id="custom-alert-msg" style="padding:0 20px 20px; font-size:13.5px; color:#cbd5e1; line-height:1.6; white-space:pre-wrap;">Mesajınız buraya gelecek...</div>
                 <div style="padding:15px 20px; background:rgba(0,0,0,0.2); border-top:1px solid rgba(255,255,255,0.05);">
-                    <button onclick="document.getElementById('custom-alert-modal').style.display='none'" class="btn" style="width:100%; padding:10px; border-radius:10px; font-weight:800; background:var(--primary); color:#0a0e17;">TAMAM</button>
+                    <button id="custom-alert-btn" onclick="document.getElementById('custom-alert-modal').style.display='none'" class="btn" style="width:100%; padding:10px; border-radius:10px; font-weight:800; background:var(--primary); color:#0a0e17;">TAMAM</button>
                 </div>
             </div>
         </div>
@@ -4457,14 +4457,50 @@
             const titleEl = document.getElementById("custom-alert-title");
             const msgEl = document.getElementById("custom-alert-msg");
             const iconEl = document.getElementById("custom-alert-icon");
+            const btnEl = document.getElementById("custom-alert-btn");
             
-            msgEl.innerText = msg;
+            // Check if Sezon Limiti / Finansal Dekont
+            const isSeasonLimit = title.includes("SEZON LİMİTİ") || title.includes("SEZON LİMİTİ") || msg.includes("limitine ulaştın");
+            
+            if (isSeasonLimit) {
+                icon = "🏅";
+                title = "🏅 SEZON LİMİTİ";
+                type = "gold";
+                msgEl.innerHTML = `
+                    <div style="margin-bottom: 10px; font-weight: 600; color: #cbd5e1;">${msg}</div>
+                    <div class="bank-receipt-strip">
+                        <div style="font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px;">RESMİ KULÜP DEKONTU</div>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; color: #ffd700; font-weight: 900; font-size: 15px; font-family: var(--font-heading);">
+                            <span>🏦</span>
+                            <span>Kasanıza +20.000 € Yatırıldı</span>
+                        </div>
+                    </div>
+                `;
+                if (btnEl) {
+                    btnEl.className = "btn-alert-confirm";
+                    btnEl.innerText = "[ ANLADIM • DEVAM ET ]";
+                }
+            } else {
+                msgEl.innerText = msg;
+                if (btnEl) {
+                    btnEl.className = "btn";
+                    btnEl.innerText = "TAMAM";
+                    btnEl.style.width = "100%";
+                    btnEl.style.padding = "10px";
+                    btnEl.style.borderRadius = "10px";
+                    btnEl.style.fontWeight = "800";
+                    btnEl.style.background = "var(--primary)";
+                    btnEl.style.color = "#0a0e17";
+                }
+            }
+
             titleEl.innerText = title;
             iconEl.innerText = icon;
             
             let color = "#10b981"; 
             if (type === "error" || type === "danger" || type === "warning") color = "#ef4444";
             else if (type === "info") color = "#00e5b7";
+            else if (type === "gold") color = "#ffd700";
             
             if (msg.includes("Sakatlığınız") || msg.includes("dinlenin") || msg.includes("yetersiz") || msg.includes("Krizde") || msg.includes("Cezalı")) {
                 titleEl.style.color = "#ef4444";
@@ -4473,7 +4509,8 @@
                 titleEl.innerText = "UYARI";
             } else {
                 titleEl.style.color = color;
-                modal.querySelector('.glass').style.borderColor = `rgba(${color === '#00e5b7' ? '0,229,183' : '16,185,129'}, 0.4)`;
+                const borderRgba = color === '#ffd700' ? 'rgba(255, 215, 0, 0.5)' : (color === '#00e5b7' ? 'rgba(0, 229, 183, 0.4)' : 'rgba(16, 185, 129, 0.4)');
+                modal.querySelector('.glass').style.borderColor = borderRgba;
             }
 
             modal.style.display = "flex";
@@ -9678,7 +9715,7 @@
                 GAME.addSocialPost("@france_football", "Ballon d'Or", `${pName}: 'Bu ödül tüm takımımın.' Tüm dünya ayakta alkışlıyor!`);
             } else if (speechType === "confident") {
                 GAME.state.followers = (GAME.state.followers || 0) + 250000;
-                GAME.state.bakiye = (GAME.state.bakiye || 0) + 50000;
+                GAME.state.money = (GAME.state.money || 0) + 50000;
                 GAME.state.moral = 100;
                 GAME.addSocialPost("@marca_sport", "Paris", `${pName} Ballon d'Or'u aldı: 'Dünyanın en iyisi olduğumu kanıtladım!'`);
             } else {
@@ -10047,7 +10084,7 @@
             }
 
             GAME.state.currentClub = currentPenthouseData.club;
-            GAME.state.bakiye = (GAME.state.bakiye || 0) + currentPenthouseData.signing;
+            GAME.state.money = (GAME.state.money || 0) + currentPenthouseData.signing;
             GAME.state.followers = (GAME.state.followers || 0) + 75000;
             GAME.state.hocaGuveni = 90;
             GAME.saveGame();
@@ -10665,19 +10702,23 @@ function startNationalAnthemCeremony(matchData = null, onComplete = null) {
                         </div>
                     `;
                 } else {
-                    const btnClass = canAfford ? "btn-primary" : "btn-disabled";
-                    const disabledAttr = canAfford ? "" : "disabled";
-                    const btnText = canAfford ? `🛒 SATIN AL (${car.price})` : `YETERSİZ BAKİYE (${car.price})`;
+                    const formattedBalance = (typeof window.formatMoney === 'function') ? window.formatMoney(GAME.state.money) : (GAME.state.money.toLocaleString("tr-TR") + ' €');
                     actionContainer.innerHTML = `
                         <div style="width: 100%; text-align: center; margin-bottom: 8px;">
                             <span style="font-size: 11px; font-weight: 800; color: #f59e0b; background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.35); padding: 4px 12px; border-radius: 6px; display: inline-flex; align-items: center; gap: 5px;">
-                                🔒 KİLİTLİ • SATIN ALINMADI (Bakiye: ${GAME.state.money.toLocaleString()} €)
+                                🔒 KİLİTLİ • SATIN ALINMADI (Bakiye: ${formattedBalance})
                             </span>
                         </div>
                         <div style="display: flex; justify-content: center; gap: 10px; width: 100%;">
-                            <button class="btn ${btnClass}" ${disabledAttr} onclick="buyGarageCar('${car.id}')" style="flex: 1.4; padding: 12px; font-size: 12.5px; font-weight: 900; border-radius: 12px; text-transform: uppercase;">
-                                ${btnText}
-                            </button>
+                            ${canAfford ? `
+                                <button class="btn btn-car-buy" onclick="buyGarageCar('${car.id}')" style="flex: 1.4; padding: 12px; font-size: 12.5px; font-weight: 900; border-radius: 12px; text-transform: uppercase;">
+                                    [ 🔑 SATIN AL • ${car.price} ]
+                                </button>
+                            ` : `
+                                <button class="btn btn-car-locked" disabled style="flex: 1.4; padding: 12px; font-size: 12.5px; font-weight: 900; border-radius: 12px; text-transform: uppercase;">
+                                    [ 🔒 YETERSİZ BAKİYE • ${car.price} ]
+                                </button>
+                            `}
                             <button class="btn" onclick="alert('Bu süper aracı kullanmak ve egzozunu patlatmak için önce satın almalısınız!');" style="flex: 0.6; opacity: 0.5; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: #94a3b8; border-radius: 12px; padding: 12px; font-size: 11px; font-weight: 700;">
                                 🔒 Kilitli
                             </button>
@@ -13931,19 +13972,20 @@ function afterWeekAdvanced() {
 
                 if (isOwned) {
                     let refundVal = Math.round(item.cost * 0.5);
-                    buttonHTML = `<button class="btn" onclick="GAME.cancelItem('${item.id}'); renderLifestyleCars();" style="padding: 8px 12px; font-size: 11px; font-weight: 700; border-radius: 8px; flex-shrink: 0; white-space: nowrap; background: rgba(245, 158, 11, 0.15); color: var(--accent-yellow); border: 1px solid rgba(245, 158, 11, 0.35);">Sat (${refundVal.toLocaleString()} €)</button>`;
+                    buttonHTML = `<button class="btn btn-car-owned" onclick="GAME.cancelItem('${item.id}'); renderLifestyleCars();">GARAJINDA • Sat (${refundVal.toLocaleString("tr-TR")} €)</button>`;
                 } else {
-                    let btnClass = canAfford ? "btn-primary" : "btn-disabled";
-                    let disabledAttr = !canAfford ? "disabled" : "";
-                    let opacityStyle = !canAfford ? "opacity: 0.4; cursor: not-allowed;" : "";
-                    buttonHTML = `<button class="btn ${btnClass}" ${disabledAttr} onclick="GAME.buyItem('${item.id}'); renderLifestyleCars();" style="padding: 8px 14px; font-size: 12px; border-radius: 8px; flex-shrink: 0; white-space: nowrap; ${opacityStyle}">${item.cost.toLocaleString()} € Satın Al</button>`;
+                    if (canAfford) {
+                        buttonHTML = `<button class="btn btn-car-buy" onclick="GAME.buyItem('${item.id}'); renderLifestyleCars();">[ 🔑 SATIN AL • ${item.cost.toLocaleString("tr-TR")} € ]</button>`;
+                    } else {
+                        buttonHTML = `<button class="btn btn-car-locked" disabled>[ 🔒 YETERSİZ BAKİYE • ${item.cost.toLocaleString("tr-TR")} € ]</button>`;
+                    }
                 }
 
                 container.innerHTML += `
-                    <div class="shop-card glass" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border-glass); background: #131822; margin-bottom: 8px;">
+                    <div class="luxury-carbon-car-card">
                         <div class="details" style="flex: 1; padding-right: 12px;">
                             <h3 style="margin: 0 0 3px 0; font-size: 13.5px; font-weight: 700; color: #f8fafc; font-family: var(--font-heading);">${item.name}</h3>
-                            <p class="desc" style="margin: 0; font-size: 11.5px; color: var(--text-muted); line-height: 1.35;">${item.desc}</p>
+                            <p class="desc" style="margin: 0; font-size: 11.5px; color: #94a3b8; line-height: 1.35;">${item.desc}</p>
                         </div>
                         ${buttonHTML}
                     </div>
@@ -14067,18 +14109,20 @@ function afterWeekAdvanced() {
                 if (ownedAmount > 0 && avgPrice > 0) {
                     const pnlPct = (((curPrice - avgPrice) / avgPrice) * 100);
                     const isProfit = pnlPct >= 0;
-                    pnlBadge = `<span style="font-size: 10px; font-weight: 800; color: ${isProfit ? '#10b981' : '#ef4444'}; background: ${isProfit ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)'}; padding: 2px 6px; border-radius: 4px;">${isProfit ? '▲ +' : '▼ '}${pnlPct.toFixed(1)}%</span>`;
+                    const pnlColor = isProfit ? '#00e5b7' : '#f87171';
+                    const pnlBg = isProfit ? 'rgba(0, 229, 183, 0.15)' : 'rgba(248, 113, 113, 0.15)';
+                    pnlBadge = `<span style="font-size: 10px; font-weight: 800; color: ${pnlColor}; background: ${pnlBg}; padding: 2px 6px; border-radius: 4px;">${isProfit ? '▲ +' : '▼ '}${pnlPct.toFixed(1)}%</span>`;
                 }
 
                 container.innerHTML += `
-                    <div class="shop-card glass" style="display: flex; flex-direction: column; gap: 10px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border-glass); background: #131822; margin-bottom: 8px;">
+                    <div class="crypto-binance-card">
                         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                             <div>
                                 <div style="font-size: 13.5px; font-weight: 800; color: #f8fafc;">${coin.name}</div>
                                 <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">${coin.desc}</div>
                             </div>
                             <div style="text-align: right;">
-                                <div style="font-size: 14px; font-weight: 900; color: #ffd700; font-family: 'Space Grotesk', sans-serif;">${curPrice >= 1 ? curPrice.toLocaleString() : curPrice.toFixed(4)} €</div>
+                                <div style="font-size: 14px; font-weight: 900; color: #ffd700; font-family: 'Space Grotesk', sans-serif;">${curPrice >= 1 ? curPrice.toLocaleString("tr-TR") : curPrice.toFixed(4)} €</div>
                                 <div style="margin-top: 2px;">${pnlBadge}</div>
                             </div>
                         </div>
@@ -14086,14 +14130,14 @@ function afterWeekAdvanced() {
                         ${ownedAmount > 0 ? `
                             <div style="background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 8px; font-size: 11px; color: #cbd5e1; display: flex; justify-content: space-between; align-items: center;">
                                 <span>Portföyünüz: <strong>${ownedAmount.toFixed(4)} ${coin.symbol}</strong></span>
-                                <span style="font-weight: 700; color: #00e5ff;">(${holdingValue.toLocaleString()} €)</span>
+                                <span style="font-weight: 700; color: #00e5ff;">(${holdingValue.toLocaleString("tr-TR")} €)</span>
                             </div>
                         ` : ''}
 
                         <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-primary" onclick="promptBuyCrypto('${coin.id}', '${coin.symbol}')" style="flex: 1; padding: 8px 12px; font-size: 11.5px; font-weight: 700; border-radius: 8px;">💵 Satın Al</button>
+                            <button class="btn btn-crypto-buy" onclick="promptBuyCrypto('${coin.id}', '${coin.symbol}')"><span>💎</span> Satın Al</button>
                             ${ownedAmount > 0 ? `
-                                <button class="btn" onclick="GAME.sellCrypto('${coin.id}'); renderInvestmentsAndCrypto();" style="padding: 8px 14px; font-size: 11.5px; font-weight: 700; border-radius: 8px; background: rgba(239, 68, 68, 0.15); color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.35);">Tümünü Sat</button>
+                                <button class="btn btn-crypto-sell" onclick="GAME.sellCrypto('${coin.id}'); renderInvestmentsAndCrypto();">Tümünü Sat</button>
                             ` : ''}
                         </div>
                     </div>
@@ -14306,18 +14350,27 @@ function afterWeekAdvanced() {
 
             if (!team) {
                 container.innerHTML = `
-                    <div class="card glass" style="padding: 18px; border-radius: 14px; background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1.5px solid rgba(168, 85, 247, 0.4); text-align: center;">
-                        <div style="font-size: 32px; margin-bottom: 8px;">🎮</div>
-                        <h3 style="margin: 0 0 6px 0; font-size: 16px; font-weight: 800; color: #f8fafc;">Kendi E-Spor Kulübünü Kur!</h3>
-                        <p style="font-size: 11.5px; color: #94a3b8; line-height: 1.5; margin: 0 0 16px 0;">
-                            EA FC ve Valorant turnuvalarında yarışacak profesyonel e-spor takımını kur. Kulübün maç kazandıkça kupa kaldır, turnuva para ödülleri kazan ve yüz binlerce hayran topla!
-                        </p>
-                        <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px; margin-bottom: 14px; font-size: 12px; color: #c084fc; font-weight: 700;">
-                            Kurulum Maliyeti: 50.000 € (Gaming House + 5 Pro Oyuncu)
+                    <div class="esports-franchise-contract">
+                        <div class="esports-cyber-crest">
+                            <span>🎮</span>
                         </div>
-                        <button class="btn btn-primary" onclick="foundEsportsTeam()" style="padding: 12px 24px; font-size: 13px; font-weight: 800; border-radius: 10px; width: 100%;">
-                            👑 Kulübü Kur (50.000 €)
-                        </button>
+                        <div style="font-size: 10px; font-weight: 800; color: #38bdf8; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px;">
+                            E-SPORTS FRANCHISE CONTRACT
+                        </div>
+                        <h3 style="margin: 0 0 8px 0; font-size: 17px; font-weight: 900; color: #f8fafc; font-family: var(--font-heading);">
+                            Kendi E-Spor Kulübünü Kur!
+                        </h3>
+                        <p style="font-size: 12px; color: #94a3b8; line-height: 1.5; margin: 0 auto 16px auto; max-width: 360px;">
+                            Global espor liglerinde yarışacak profesyonel kulübünü kur. Gaming House ve 5 elit esporcu ile şampiyonalara katıl, turnuva ödüllerini topla ve yüz binlerce hayran kazan!
+                        </p>
+                        <div style="background: rgba(0, 0, 0, 0.45); border: 1px solid rgba(14, 165, 233, 0.25); padding: 10px 14px; border-radius: 10px; margin-bottom: 16px; font-size: 12px; color: #38bdf8; font-weight: 800; display: inline-flex; align-items: center; gap: 8px;">
+                            <span>⚡ Kurulum Yatırımı:</span> <span style="color: #ffd700; font-size: 13px;">50.000 €</span>
+                        </div>
+                        <div>
+                            <button class="btn btn-esports-found" onclick="foundEsportsTeam()">
+                                <span>[ 🏆 KULÜBÜ RESMEN KUR (50.000 €) ]</span>
+                            </button>
+                        </div>
                     </div>
                 `;
             } else {
@@ -15414,7 +15467,7 @@ function afterWeekAdvanced() {
                 let actionHTML = "";
                 if (isActive) {
                     actionHTML = `
-                        <div class="agency-active-tag">
+                        <div class="agency-active-tag agency-btn-full">
                             <span>🛡️</span>
                             <span>AKTİF SÖZLEŞME</span>
                         </div>
@@ -15422,15 +15475,15 @@ function afterWeekAdvanced() {
                 } else {
                     if (agent.id === "bedirhan") {
                         actionHTML = `
-                            <button class="btn-agency-contract" onclick="hireAgentClicked('bedirhan')">
+                            <button class="btn-agency-contract agency-btn-full" onclick="hireAgentClicked('bedirhan')">
                                 <span class="btn-specular-sweep"></span>
                                 <span>🤝 GÖREVE ÇAĞIR (ÜCRETSİZ)</span>
                             </button>
                         `;
                     } else {
-                        const costStr = agent.cost > 0 ? `${agent.cost.toLocaleString()} €` : 'Ücretsiz';
+                        const costStr = agent.cost > 0 ? `${agent.cost.toLocaleString("tr-TR")} €` : 'Ücretsiz';
                         actionHTML = `
-                            <button class="btn-agency-contract" onclick="hireAgentClicked('${agent.id}')">
+                            <button class="btn-agency-contract agency-btn-full" onclick="hireAgentClicked('${agent.id}')">
                                 <span class="btn-specular-sweep"></span>
                                 <span>✍️ ANLAŞMA İMZALA (${costStr})</span>
                             </button>
@@ -15446,7 +15499,7 @@ function afterWeekAdvanced() {
 
                 container.innerHTML += `
                     <div class="agency-contract-card ${tierClass} ${isActive ? 'is-active' : ''}">
-                        <div style="display: flex; align-items: flex-start; gap: 14px; flex: 1;">
+                        <div style="display: flex; align-items: flex-start; gap: 14px; width: 100%;">
                             <div class="agency-seal-badge ${sealClass}">
                                 <span>${sealIcon}</span>
                             </div>
@@ -15455,7 +15508,7 @@ function afterWeekAdvanced() {
                                 <h4 style="margin: 0; color: #ffffff; font-size: 15px; font-weight: 900; font-family: var(--font-heading); letter-spacing: 0.3px;">
                                     ${agent.name} <span style="font-size: 11px; color: #94a3b8; font-weight: 600;">(${agent.title})</span>
                                 </h4>
-                                <p style="margin: 3px 0 6px 0; font-size: 11px; color: #cbd5e1; line-height: 1.4;">${agent.desc}</p>
+                                <p class="agency-desc-text">${agent.desc}</p>
                                 
                                 <div class="agency-stats-row">
                                     <div class="agency-stat-col">
@@ -15476,7 +15529,7 @@ function afterWeekAdvanced() {
                                 </div>
                             </div>
                         </div>
-                        <div style="flex-shrink: 0;">
+                        <div style="width: 100%; margin-top: 6px;">
                             ${actionHTML}
                         </div>
                     </div>

@@ -185,6 +185,11 @@ const ANALYTICS = {
 if (typeof window !== "undefined") {
     window.ANALYTICS = ANALYTICS;
     try { ANALYTICS.init(); } catch(e) {}
+    window.formatMoney = function(val) {
+        if (val === null || val === undefined || isNaN(val)) return "0 €";
+        const num = Math.round(Number(val));
+        return num.toLocaleString("tr-TR") + " €";
+    };
 }
 
 const GAME = {
@@ -234,8 +239,49 @@ const GAME = {
     saveKey: "soccer_atlas_career_save",
     matchSimulatedThisWeek: false,
 
+    syncMoneyState: function() {
+        if (!this.state) return;
+        if (!this.state.player) {
+            this.state.player = {};
+        }
+        const stateObj = this.state;
+        const playerObj = this.state.player;
+
+        ['cash', 'bakiye', 'balance'].forEach(prop => {
+            const desc = Object.getOwnPropertyDescriptor(stateObj, prop);
+            if (desc && desc.get) return;
+            if (typeof stateObj[prop] === 'number' && stateObj[prop] !== stateObj.money) {
+                stateObj.money = stateObj[prop];
+            }
+            try {
+                delete stateObj[prop];
+                Object.defineProperty(stateObj, prop, {
+                    get: () => stateObj.money,
+                    set: (val) => { stateObj.money = Number(val) || 0; },
+                    enumerable: true,
+                    configurable: true
+                });
+            } catch(e) {}
+        });
+
+        ['money', 'cash', 'bakiye', 'balance'].forEach(prop => {
+            const desc = Object.getOwnPropertyDescriptor(playerObj, prop);
+            if (desc && desc.get) return;
+            try {
+                delete playerObj[prop];
+                Object.defineProperty(playerObj, prop, {
+                    get: () => stateObj.money,
+                    set: (val) => { stateObj.money = Number(val) || 0; },
+                    enumerable: true,
+                    configurable: true
+                });
+            } catch(e) {}
+        });
+    },
+
     init: function() {
         this.loadGame();
+        this.syncMoneyState();
         this.updateUI();
     },
 
@@ -472,6 +518,7 @@ const GAME = {
         this.updateTeammateName();
         this.initLeagueTable();
         this.initLeagueScorers(true);
+        this.syncMoneyState();
         this.saveGame();
         this.updateUI();
     },
@@ -910,6 +957,7 @@ const GAME = {
 
                 this.checkDailyLoginReward();
                 this.matchSimulatedThisWeek = false;
+                this.syncMoneyState();
 
                 console.log("Loaded game state successfully!");
             } catch (e) {
@@ -2385,7 +2433,7 @@ const GAME = {
             "stat-morale": this.state.moral + "%",
             "stat-trust": this.state.hocaGuveni + "%",
             "stat-followers": this.state.followers.toLocaleString(),
-            "stat-money": this.state.money.toLocaleString() + " €",
+            "stat-money": (typeof window !== "undefined" && window.formatMoney) ? window.formatMoney(this.state.money) : (this.state.money.toLocaleString("tr-TR") + " €"),
             "skill-shooting": this.state.shooting,
             "skill-passing": this.state.passing,
             "skill-speed": this.state.speed,
@@ -2400,7 +2448,7 @@ const GAME = {
             "season-goals": this.state.seasonGoals || 0,
             "season-assists": this.state.seasonAssists || 0,
             "season-apps": this.state.seasonApps || 0,
-            "career-total-earnings": (this.state.totalEarnings || 0).toLocaleString(),
+            "career-total-earnings": (this.state.totalEarnings || 0).toLocaleString("tr-TR"),
             "career-biggest-win": this.state.biggestWin || "Yok",
             "career-biggest-loss": this.state.biggestLoss || "Yok",
             "career-emotional-match": this.state.mostEmotionalMatch || "Kariyerinde henüz unutulmaz bir dram yaşanmadı.",
@@ -2440,7 +2488,7 @@ const GAME = {
             // 60 FPS Rolling Number Ticker Helper
             const animateNumberRoll = (node, start, end, suffix = "", prefix = "", isFormatted = false) => {
                 if (start === end || isNaN(start) || isNaN(end)) {
-                    node.innerText = `${prefix}${isFormatted ? end.toLocaleString() : end}${suffix}`;
+                    node.innerText = `${prefix}${isFormatted ? end.toLocaleString("tr-TR") : end}${suffix}`;
                     return;
                 }
                 const duration = 380;
@@ -2450,11 +2498,11 @@ const GAME = {
                     const progress = Math.min(elapsed / duration, 1);
                     const ease = 1 - Math.pow(1 - progress, 3);
                     const current = Math.round(start + (end - start) * ease);
-                    node.innerText = `${prefix}${isFormatted ? current.toLocaleString() : current}${suffix}`;
+                    node.innerText = `${prefix}${isFormatted ? current.toLocaleString("tr-TR") : current}${suffix}`;
                     if (progress < 1) {
                         requestAnimationFrame(step);
                     } else {
-                        node.innerText = `${prefix}${isFormatted ? end.toLocaleString() : end}${suffix}`;
+                        node.innerText = `${prefix}${isFormatted ? end.toLocaleString("tr-TR") : end}${suffix}`;
                     }
                 };
                 requestAnimationFrame(step);
@@ -2470,10 +2518,10 @@ const GAME = {
                         // Check if numeric stat eligible for smooth rolling ticker
                         const isPercent = typeof val === "string" && val.endsWith("%");
                         const isEuro = typeof val === "string" && val.includes("€");
-                        const cleanValStr = String(val).replace(/[^0-9.-]/g, "");
-                        const cleanCurStr = String(currentVal).replace(/[^0-9.-]/g, "");
-                        const newNum = typeof val === "number" ? val : parseFloat(cleanValStr);
-                        const oldNum = parseFloat(cleanCurStr);
+                        const cleanValStr = String(val).replace(/\./g, "").replace(/,/g, "").replace(/[^0-9-]/g, "");
+                        const cleanCurStr = String(currentVal).replace(/\./g, "").replace(/,/g, "").replace(/[^0-9-]/g, "");
+                        const newNum = typeof val === "number" ? val : parseInt(cleanValStr, 10);
+                        const oldNum = parseInt(cleanCurStr, 10);
 
                         if (!isNaN(newNum) && !isNaN(oldNum) && cleanValStr.length > 0 && cleanCurStr.length > 0 && id !== "player-jersey-number" && id !== "current-week") {
                             const suffix = isPercent ? "%" : (isEuro ? " €" : "");
