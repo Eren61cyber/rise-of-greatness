@@ -624,42 +624,6 @@
                     </div>
                 </div>
 
-                <!-- Relationships Card -->
-                <div class="card glass" style="margin-top: 10px; padding: 14px;">
-                    <div style="font-size: 11px; font-weight: 800; color: var(--accent-yellow); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-yellow);"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Kulüp & Çevre İlişkileri
-                    </div>
-                    <div style="display: flex; flex-direction: column; gap: 12px;">
-                        <div>
-                            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #ccc; margin-bottom: 4px;">
-                                <span style="font-weight: 600;">👨‍💼 Teknik Direktör Güveni</span>
-                                <span id="career-rel-trust" style="font-weight: bold;">50%</span>
-                            </div>
-                            <div class="progress-bar" style="height: 4px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden;">
-                                <div class="fill trust" id="career-bar-trust" style="width: 50%; height: 100%; border-radius: 4px; background: #3b82f6;"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #ccc; margin-bottom: 4px;">
-                                <span style="font-weight: 600;">🤝 Takım Arkadaşları Uyum</span>
-                                <span id="career-rel-team" style="font-weight: bold;">50%</span>
-                            </div>
-                            <div class="progress-bar" style="height: 4px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden;">
-                                <div class="fill" id="career-bar-team" style="width: 50%; height: 100%; border-radius: 4px; background: #10b981;"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #ccc; margin-bottom: 4px;">
-                                <span style="font-weight: 600;">🗣️ Taraftar & Medya Desteği</span>
-                                <span id="career-rel-fans" style="font-weight: bold;">50%</span>
-                            </div>
-                            <div class="progress-bar" style="height: 4px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden;">
-                                <div class="fill" id="career-bar-fans" style="width: 50%; height: 100%; border-radius: 4px; background: #f59e0b;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Social Media Feed Card -->
                 <div class="card glass" style="margin-top: 10px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
                     <div style="font-size: 11px; font-weight: 800; color: var(--accent-blue); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px;">
@@ -1124,6 +1088,42 @@
 
                 <!-- 6. İlişkiler & Aile Container -->
                 <div class="shop-list" id="social-relations-container" style="display: none; flex-direction: column; gap: 12px;">
+                    <!-- Kulüp & Çevre İlişkileri Card -->
+                    <div class="card glass" style="padding: 14px; border-radius: 12px; border: 1px solid rgba(255, 215, 0, 0.25); background: linear-gradient(135deg, rgba(255, 215, 0, 0.06) 0%, rgba(13, 19, 32, 0.85) 100%);">
+                        <div style="font-size: 11.5px; font-weight: 800; color: var(--accent-yellow); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-yellow);"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Kulüp & Çevre İlişkileri
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div>
+                                <div style="display: flex; justify-content: space-between; font-size: 12px; color: #ccc; margin-bottom: 4px;">
+                                    <span style="font-weight: 600;">👨‍💼 Teknik Direktör Güveni</span>
+                                    <span id="career-rel-trust" style="font-weight: bold;">50%</span>
+                                </div>
+                                <div class="progress-bar" style="height: 5px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden;">
+                                    <div class="fill trust" id="career-bar-trust" style="width: 50%; height: 100%; border-radius: 4px; background: #3b82f6;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display: flex; justify-content: space-between; font-size: 12px; color: #ccc; margin-bottom: 4px;">
+                                    <span style="font-weight: 600;">🤝 Takım Arkadaşları Uyum</span>
+                                    <span id="career-rel-team" style="font-weight: bold;">50%</span>
+                                </div>
+                                <div class="progress-bar" style="height: 5px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden;">
+                                    <div class="fill" id="career-bar-team" style="width: 50%; height: 100%; border-radius: 4px; background: #10b981;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display: flex; justify-content: space-between; font-size: 12px; color: #ccc; margin-bottom: 4px;">
+                                    <span style="font-weight: 600;">🗣️ Taraftar & Medya Desteği</span>
+                                    <span id="career-rel-fans" style="font-weight: bold;">50%</span>
+                                </div>
+                                <div class="progress-bar" style="height: 5px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden;">
+                                    <div class="fill" id="career-bar-fans" style="width: 50%; height: 100%; border-radius: 4px; background: #f59e0b;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div id="social-status-container" style="margin-bottom: 20px;">
                         <!-- Rendered dynamically -->
                     </div>
@@ -1523,25 +1523,6 @@
                                 Kariyerinizi kaybetmemek için yedek kodunuzu kopyalayabilir veya başka bir cihaza tek tıkla aktarabilirsiniz.
                             </div>
                             <button onclick="openAvatarChangeModal()" style="background: #21262d; color: #c9d1d9; border: 1px solid #30363d; padding: 10px; font-size: 11.5px; font-weight: 600; border-radius: 6px; cursor: pointer; width: 100%; transition: background 0.2s;" onmouseover="this.style.background='#30363d'" onmouseout="this.style.background='#21262d'">📸 Profil Fotoğrafını Değiştir</button>
-                        </div>
-                    </div>
-
-                    <!-- Group 2.5: Google E-Tablo Canlı Analitik -->
-                    <div>
-                        <div style="font-size: 11px; font-weight: bold; color: #10b981; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: space-between;">
-                            <span>📊 Google E-Tablo Analitik</span>
-                            <span style="font-size: 9px; font-weight: normal; color: #8b949e;">Canlı Telemetri</span>
-                        </div>
-                        <div style="background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
-                            <div style="font-size: 10.5px; color: #8b949e; line-height: 1.4;">
-                                Maç ve ekonomi verilerini kendi Google E-Tablonuza anlık satır satır aktarmak için Webhook URL'nizi bağlayın.
-                            </div>
-                            <input type="text" id="settings-sheets-url" placeholder="https://script.google.com/macros/s/.../exec" style="width: 100%; background: #0d1117; border: 1px solid #30363d; color: #c9d1d9; padding: 8px 10px; font-size: 11px; border-radius: 6px; box-sizing: border-box;">
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 2px;">
-                                <button onclick="saveGoogleSheetsUrl()" style="background: #10b981; color: #022c22; border: none; padding: 8px; font-size: 11px; font-weight: 700; border-radius: 6px; cursor: pointer;">💾 Bağlantıyı Kaydet</button>
-                                <button onclick="testGoogleSheetsConnection()" style="background: #21262d; color: #38bdf8; border: 1px solid #30363d; padding: 8px; font-size: 11px; font-weight: 700; border-radius: 6px; cursor: pointer;">🧪 Test Verisi At</button>
-                            </div>
-                            <div id="settings-sheets-status" style="font-size: 10px; text-align: center; display: none;"></div>
                         </div>
                     </div>
 
