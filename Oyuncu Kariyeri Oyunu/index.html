@@ -548,6 +548,18 @@
                     </button>
                 </div>
                 
+                <!-- 🏆 KUPA VİTRİNİ & KARİYER MÜZESİ SHORTCUT BANNER -->
+                <div class="card glass" style="margin-bottom: 12px; padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; border-radius: 12px; background: linear-gradient(135deg, rgba(255, 215, 0, 0.12) 0%, rgba(16, 20, 30, 0.75) 100%); border: 1px solid rgba(255, 215, 0, 0.3); cursor: pointer;" onclick="window.switchView('panel-my-career')">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 22px;">🏆</span>
+                        <div>
+                            <div style="font-weight: 800; font-size: 12.5px; color: #ffd700; letter-spacing: 0.4px;">KUPA VİTRİNİ & KARİYER MÜZESİ</div>
+                            <div style="font-size: 10px; color: #94a3b8;">Tüm kupaların, sezon kayıtların ve ödüllerin</div>
+                        </div>
+                    </div>
+                    <span style="font-size: 13px; color: #ffd700; font-weight: 800;">İncele ➔</span>
+                </div>
+
                 <!-- MEVCUT SEVİYE & DIAMOND RADAR CHART CARD -->
                 <div class="ovr-radar-card">
                     <div class="ovr-left-block">
@@ -704,8 +716,9 @@
             <!-- PANEL: MY CAREER (KARİYERİM) -->
             <section id="panel-my-career" class="view-panel">
                 <div class="panel-header" style="margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
-                    <div>
-                        <h2>Kariyerim</h2>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <button class="btn" onclick="window.switchView('panel-career')" style="padding: 5px 10px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); color: #cbd5e1; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer;">‹ 🏠 Ana Sayfa</button>
+                        <h2 style="margin: 0;">Kariyerim</h2>
                     </div>
                     <button class="btn" onclick="openJerseyNumberModal()" style="display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: rgba(0,229,183,0.1); border: 1px solid rgba(0,229,183,0.3); color: #00e5b7; font-size: 11px; font-weight: 800; border-radius: 8px; cursor: pointer;">
                         👕 Forma: <span id="player-jersey-number">#10</span> (Değiştir)
@@ -952,6 +965,7 @@
                         <button class="shop-sub-tab" id="shop-sub-nutrition-btn" onclick="switchShopSubTab('nutrition')">🥗 Sporcu Beslenmesi</button>
                         <button class="shop-sub-tab" id="shop-sub-packs-btn" onclick="switchShopSubTab('packs')">🌟 Kart Paketi</button>
                         <button class="shop-sub-tab" id="shop-sub-propass-btn" onclick="switchShopSubTab('propass')">👑 Pro Pass</button>
+                        <button class="shop-sub-tab" style="background: rgba(255, 215, 0, 0.12); color: #ffd700; border: 1px dashed rgba(255, 215, 0, 0.4);" onclick="window.switchView('panel-social')">💎 Lüks Yaşam & Garaj ➔</button>
                     </div>
                     <button class="shop-scroll-btn" onclick="scrollShopTabs(120)" title="Sağa Kaydır">›</button>
                 </div>
@@ -1093,6 +1107,7 @@
                         <button class="shop-sub-tab" id="social-sub-tefeci-btn" onclick="switchSocialSubTab('tefeci')">💰 Tefeci</button>
                         <button class="shop-sub-tab" id="social-sub-esports-btn" onclick="switchSocialSubTab('esports')">🎮 E-Spor</button>
                         <button class="shop-sub-tab" id="social-sub-relations-btn" onclick="switchSocialSubTab('relations')">❤️ İlişkiler & Aile</button>
+                        <button class="shop-sub-tab" style="background: rgba(0, 229, 183, 0.12); color: #00e5b7; border: 1px dashed rgba(0, 229, 183, 0.4);" onclick="window.switchView('panel-shop')">🛍️ Futbol Mağazası ➔</button>
                     </div>
                     <button class="shop-scroll-btn" onclick="scrollSocialTabs(120)" title="Sağa Kaydır">›</button>
                 </div>
@@ -1145,37 +1160,52 @@
                 </div>
             </section>
 
-            <nav class="bottom-nav glass">
-            <button class="nav-tab active" data-target="panel-career">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                Ana Sayfa
-            </button>
-            <button class="nav-tab" data-target="panel-my-career">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                Kariyer
+            <!-- 🚀 ULTRA-MODERN FLOATING CONSOLE NAVBAR (5 TABS + HERO MATCH BUTTON + LIVE BADGE PIPS) -->
+            <nav class="bottom-nav floating-dock">
+                <!-- 1. ANA SAYFA -->
+                <button class="nav-tab active" data-target="panel-career" title="Ana Sayfa">
+                    <div class="nav-icon-wrap">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        <span class="nav-badge-pip pip-gold" id="nav-pip-career" style="display: none;"></span>
+                    </div>
+                    <span class="nav-label">Ana Sayfa</span>
+                </button>
 
-            </button>
-            <button class="nav-tab" data-target="panel-training">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5h11"/><path d="M6.5 17.5h11"/><path d="M3 10h2v4H3z"/><path d="M19 10h2v4h-2z"/><path d="M5 12h14"/><path d="M8 8v8"/><path d="M16 8v8"/></svg>
-                Antrenman
-            </button>
-            <button class="nav-tab" data-target="panel-standings">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
-                Maç
-            </button>
-            <button class="nav-tab" data-target="panel-shop">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                Mağaza
-            </button>
-            <button class="nav-tab" data-target="panel-transfers">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Kulüp
-            </button>
-            <button class="nav-tab" data-target="panel-social">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                Hayat
-            </button>
-        </nav>
+                <!-- 2. GELİŞİM / ANTRENMAN -->
+                <button class="nav-tab" data-target="panel-training" title="Antrenman & Gelişim">
+                    <div class="nav-icon-wrap">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5h11"/><path d="M6.5 17.5h11"/><path d="M3 10h2v4H3z"/><path d="M19 10h2v4h-2z"/><path d="M5 12h14"/><path d="M8 8v8"/><path d="M16 8v8"/></svg>
+                        <span class="nav-badge-pip pip-emerald" id="nav-pip-training" style="display: none;"></span>
+                    </div>
+                    <span class="nav-label">Gelişim</span>
+                </button>
+
+                <!-- 3. HERO CENTER: MAÇ GÜNÜ -->
+                <button class="nav-tab nav-hero-match" data-target="panel-standings" title="Maç Günü & Lig Durumu">
+                    <div class="hero-match-disc">
+                        <svg class="hero-match-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                    </div>
+                    <span class="hero-label">MAÇ</span>
+                </button>
+
+                <!-- 4. KULÜP & TRANSFERLER -->
+                <button class="nav-tab" data-target="panel-transfers" title="Kulüp & Sözleşme">
+                    <div class="nav-icon-wrap">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        <span class="nav-badge-pip pip-cyan" id="nav-pip-transfers" style="display: none;"></span>
+                    </div>
+                    <span class="nav-label">Kulüp</span>
+                </button>
+
+                <!-- 5. LÜKS YAŞAM & SOSYAL -->
+                <button class="nav-tab" data-target="panel-social" title="Lüks Yaşam & Mağaza">
+                    <div class="nav-icon-wrap">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <span class="nav-badge-pip pip-red" id="nav-pip-social" style="display: none;"></span>
+                    </div>
+                    <span class="nav-label">Yaşam</span>
+                </button>
+            </nav>
 
         
 
@@ -6203,6 +6233,9 @@
 
         tabs.forEach(tab => {
             tab.addEventListener("click", () => {
+                if (window.HAPTIC && typeof window.HAPTIC.click === "function") {
+                    window.HAPTIC.click();
+                }
                 tabs.forEach(t => t.classList.remove("active"));
                 panels.forEach(p => p.classList.remove("active"));
 
@@ -10248,19 +10281,87 @@
             if (!targetId.startsWith("panel-")) {
                 targetId = "panel-" + targetId;
             }
+            if (window.HAPTIC && typeof window.HAPTIC.click === "function") {
+                window.HAPTIC.click();
+            }
             const tabBtn = document.querySelector(`.nav-tab[data-target="${targetId}"]`);
             if (tabBtn) {
                 tabBtn.click();
             } else {
+                // Sub-panel routing: highlight parent tab button
+                let parentTabTarget = targetId;
+                if (targetId === "panel-my-career") parentTabTarget = "panel-career";
+                if (targetId === "panel-shop") parentTabTarget = "panel-social";
+
                 const tabs = document.querySelectorAll(".nav-tab");
                 const panels = document.querySelectorAll(".view-panel");
                 tabs.forEach(t => t.classList.remove("active"));
                 panels.forEach(p => p.classList.remove("active"));
+
+                const parentBtn = document.querySelector(`.nav-tab[data-target="${parentTabTarget}"]`);
+                if (parentBtn) {
+                    parentBtn.classList.add("active");
+                }
+
                 const targetPanel = document.getElementById(targetId);
                 if (targetPanel) {
                     targetPanel.classList.add("active");
                     if (typeof triggerStaggerEntrance === "function") triggerStaggerEntrance(targetPanel);
                 }
+
+                if (targetId === "panel-my-career") {
+                    if (typeof updateTrophyShowcase === "function") updateTrophyShowcase();
+                    if (typeof renderCareerLeagueBreakdown === "function") renderCareerLeagueBreakdown();
+                    if (typeof renderCareerHistoryArchive === "function") renderCareerHistoryArchive();
+                }
+                if (targetId === "panel-shop") {
+                    if (typeof renderBootSponsors === "function") renderBootSponsors();
+                }
+                if (typeof GAME !== "undefined" && typeof GAME.updateUI === "function") {
+                    GAME.updateUI();
+                }
+            }
+        };
+
+        // 🔔 LIVE NOTIFICATION BADGE UPDATE FUNCTION
+        window.updateNavBadges = function() {
+            if (typeof GAME === "undefined" || !GAME.state) return;
+            const s = GAME.state;
+
+            // 1. Ana Sayfa: Daily rewards or unclaimed finished missions
+            const pipCareer = document.getElementById("nav-pip-career");
+            if (pipCareer) {
+                const hasDaily = s.pendingDailyReward && s.pendingDailyReward.active;
+                const hasMissions = s.weeklyMissions && s.weeklyMissions.some(m => m.done && !m.claimed);
+                pipCareer.style.display = (hasDaily || hasMissions) ? "block" : "none";
+            }
+
+            // 2. Gelişim (Training): Remaining trainings available with enough stamina
+            const pipTraining = document.getElementById("nav-pip-training");
+            if (pipTraining) {
+                const maxTrainings = s.proPassActive ? 5 : 4;
+                const remaining = maxTrainings - (s.weeklyTrainingCount || 0);
+                const energyCost = (s.currentWeek <= 3) ? 10 : 20;
+                const canTrain = remaining > 0 && (s.kondisyon || 0) >= energyCost;
+                pipTraining.style.display = canTrain ? "block" : "none";
+            }
+
+            // 3. Kulüp (Transfers): Active transfer offers or open transfer window
+            const pipTransfers = document.getElementById("nav-pip-transfers");
+            if (pipTransfers) {
+                const hasOffers = (s.transferOffers && s.transferOffers.length > 0) || 
+                                  (s.activeTransferOffers && s.activeTransferOffers.length > 0) ||
+                                  s.isTestTransferWindowActive;
+                pipTransfers.style.display = hasOffers ? "block" : "none";
+            }
+
+            // 4. Yaşam (Social): Unread social / events / girlfriend
+            const pipSocial = document.getElementById("nav-pip-social");
+            if (pipSocial) {
+                const hasSocial = (s.unreadSocialCount && s.unreadSocialCount > 0) || 
+                                  (s.pendingGirlfriendEvent) ||
+                                  (s.unreadMessages && s.unreadMessages.length > 0);
+                pipSocial.style.display = hasSocial ? "block" : "none";
             }
         };
         window.switchTab = window.switchView;

@@ -2648,6 +2648,9 @@ const GAME = {
         if (typeof updateProPassUI === "function") {
             updateProPassUI();
         }
+        if (typeof window !== "undefined" && typeof window.updateNavBadges === "function") {
+            window.updateNavBadges();
+        }
         const futCardEl = document.querySelector(".fut-card");
         if (futCardEl) {
             if (this.state.proPassActive) {
