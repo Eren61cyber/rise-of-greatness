@@ -1048,7 +1048,16 @@ const GAME = {
         const sLabel = statLabels[targetKey] || targetKey.toUpperCase();
 
         if (statGain > 0) {
-            if (typeof showCustomAlert === "function") {
+            if (typeof window !== "undefined" && typeof window.showTrainingLevelUpModal === "function") {
+                window.showTrainingLevelUpModal({
+                    statKey: targetKey,
+                    statName: sLabel.toUpperCase(),
+                    oldVal: currentStatVal,
+                    newVal: this.state[targetKey],
+                    gain: statGain,
+                    overallRating: this.calculateOverallRating()
+                });
+            } else if (typeof showCustomAlert === "function") {
                 showCustomAlert(`+1 ${sLabel}! Yeni Seviye: ${this.state[targetKey]}`, "⚡ İDMAN GELİŞİMİ", "💪", "success");
             }
         } else {

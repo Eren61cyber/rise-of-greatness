@@ -6571,3 +6571,324 @@ input:not([type="checkbox"]):not([type="radio"]), textarea, select {
     box-shadow: 0 6px 24px rgba(255, 215, 0, 0.55);
     transform: translateY(-2px);
 }
+
+/* ==========================================================================
+   🎮 CONSOLE-GRADE CINEMATIC MODALS (EA SPORTS FC & FM DEADLINE DAY)
+   ========================================================================== */
+
+/* 1. EA FC Level-Up Sunburst & Shimmer Aura */
+.levelup-sunburst-bg {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(255, 215, 0, 0.18) 0%, rgba(255, 215, 0, 0.05) 35%, transparent 70%);
+    pointer-events: none;
+    animation: sunburstRotate 20s linear infinite;
+    z-index: 1;
+}
+
+@keyframes sunburstRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.levelup-shimmer-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 320px;
+    height: 320px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    box-shadow: 0 0 60px rgba(255, 215, 0, 0.22), inset 0 0 40px rgba(0, 229, 255, 0.15);
+    pointer-events: none;
+    z-index: 1;
+    animation: ringPulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes ringPulse {
+    0% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.6; }
+    100% { transform: translate(-50%, -50%) scale(1.06); opacity: 1; }
+}
+
+/* 2. Stat Upgrade Obsidian Badge */
+.stat-upgrade-obsidian-badge {
+    background: linear-gradient(180deg, #111827 0%, #080c14 100%);
+    border: 1.5px solid rgba(255, 215, 0, 0.45);
+    border-radius: 20px;
+    padding: 18px 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 0 25px rgba(255, 215, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 18px;
+}
+
+.badge-aura-pulse {
+    position: absolute;
+    inset: -2px;
+    border-radius: 20px;
+    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.4), transparent);
+    animation: auraSweep 3s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes auraSweep {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.badge-inner-content {
+    position: relative;
+    z-index: 2;
+}
+
+/* Neon Green Pulse Badge */
+.neon-plus-badge {
+    background: rgba(16, 185, 129, 0.18);
+    border: 1.5px solid #10b981;
+    color: #10b981;
+    font-size: 13px;
+    font-weight: 900;
+    padding: 4px 10px;
+    border-radius: 8px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 0 14px rgba(16, 185, 129, 0.5);
+    animation: neonPulse 1.4s infinite ease-in-out;
+}
+
+@keyframes neonPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 12px rgba(16, 185, 129, 0.4); }
+    50% { transform: scale(1.08); box-shadow: 0 0 22px rgba(16, 185, 129, 0.85); }
+}
+
+@keyframes arrowBounce {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(4px); }
+}
+
+/* Console Upgrade Action Button */
+.btn-console-upgrade {
+    width: 100%;
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
+    border: 1.5px solid #ffd700;
+    color: #ffd700;
+    font-family: var(--font-heading);
+    font-size: 13.5px;
+    font-weight: 900;
+    letter-spacing: 0.8px;
+    padding: 14px 20px;
+    border-radius: 14px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 0 20px rgba(255, 215, 0, 0.35);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+}
+
+.btn-console-upgrade:hover {
+    box-shadow: 0 6px 25px rgba(255, 215, 0, 0.5);
+}
+
+.btn-console-upgrade:active {
+    transform: scale(0.97);
+}
+
+/* Specular Light Sweep on Buttons */
+.btn-specular-sweep {
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transform: skewX(-20deg);
+    animation: specularSweep 3.5s infinite;
+    pointer-events: none;
+}
+
+@keyframes specularSweep {
+    0%, 70% { left: -75%; }
+    100% { left: 125%; }
+}
+
+/* ==========================================================================
+   📺 SKY SPORTS DEADLINE DAY BROADCAST STYLES
+   ========================================================================== */
+
+/* Live Pulsing Dot */
+.live-pulsing-dot {
+    width: 8px;
+    height: 8px;
+    background: #ef4444;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #ef4444;
+    animation: liveDotPulse 1.2s infinite ease-in-out;
+}
+
+@keyframes liveDotPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.35); opacity: 0.4; }
+}
+
+/* Executive Scouting Dossier (Leather/Folder Finish with delicate gold lines) */
+.executive-scouting-dossier {
+    background: linear-gradient(135deg, #18202f 0%, #0d121c 100%);
+    border: 1.5px solid rgba(255, 215, 0, 0.35);
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+}
+
+.dossier-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-12deg);
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    color: rgba(255, 255, 255, 0.03);
+    pointer-events: none;
+    user-select: none;
+    font-family: var(--font-heading);
+}
+
+.dossier-cell {
+    padding: 12px 14px;
+    text-align: left;
+    position: relative;
+    z-index: 2;
+}
+
+.dossier-label {
+    font-size: 9.5px;
+    color: #8b949e;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+}
+
+.dossier-value {
+    font-size: 16px;
+    font-weight: 900;
+    font-family: var(--font-heading);
+    margin-top: 2px;
+}
+
+.dossier-value-sub {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: #f8fafc;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Luxury Transfer Envelope with Gold Seal */
+.luxury-transfer-envelope {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.08) 0%, rgba(245, 158, 11, 0.05) 100%);
+    border: 1px solid rgba(255, 215, 0, 0.35);
+    border-radius: 14px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.gold-wax-seal {
+    width: 38px;
+    height: 38px;
+    background: radial-gradient(circle at 35% 35%, #ffd700 0%, #b8860b 80%, #785203 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #261601;
+    font-weight: 900;
+    font-size: 17px;
+    font-family: var(--font-heading);
+    box-shadow: 0 0 16px rgba(255, 215, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.6);
+    flex-shrink: 0;
+    animation: sealGlow 2s infinite alternate ease-in-out;
+}
+
+@keyframes sealGlow {
+    0% { transform: scale(1); filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.4)); }
+    100% { transform: scale(1.06); filter: drop-shadow(0 0 16px rgba(255, 215, 0, 0.8)); }
+}
+
+/* Primary Deadline Day Button */
+.btn-deadline-primary {
+    width: 100%;
+    background: linear-gradient(135deg, #FFD700 0%, #B8860B 100%);
+    color: #07090e;
+    border: none;
+    padding: 14px 20px;
+    border-radius: 14px;
+    font-size: 13.5px;
+    font-weight: 900;
+    font-family: var(--font-heading);
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 22px rgba(255, 215, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+}
+
+.btn-deadline-primary:active {
+    transform: scale(0.97);
+}
+
+.btn-deadline-secondary {
+    background: rgba(255, 255, 255, 0.04);
+    color: #94a3b8;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-deadline-secondary:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #cbd5e1;
+}
+
+.btn-deadline-secondary:active {
+    transform: scale(0.97);
+}
+
+/* Springy modal popup animation */
+.event-modal-overlay.active .training-levelup-card,
+.event-modal-overlay.active .deadline-broadcast-card {
+    animation: consoleModalSpring 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes consoleModalSpring {
+    0% {
+        transform: scale(0.92);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1.0);
+        opacity: 1;
+    }
+}

@@ -1658,65 +1658,126 @@
             </div>
         </div>
 
-        <!-- TRANSFER WINDOW OPENED NOTIFICATION MODAL -->
-        <div class="event-modal-overlay" id="transfer-window-modal" style="z-index: 10050; display: none; align-items: center; justify-content: center; background: rgba(5,7,10,0.88); backdrop-filter: blur(14px); padding: 16px; overflow-y: auto;">
-            <div class="event-card glass" style="max-width: 400px; max-height: 88vh; overflow-y: auto; padding: 0; background: radial-gradient(circle at 50% 0%, #172033 0%, #0a0d14 100%); border: 1.5px solid rgba(255, 215, 0, 0.4); text-align: center; box-shadow: 0 0 35px rgba(255, 215, 0, 0.2), 0 20px 40px rgba(0,0,0,0.8); border-radius: 20px;">
+        <!-- EA SPORTS FC SEVİYE ATLAMA / İDMAN GELİŞİMİ MODALI -->
+        <div class="event-modal-overlay" id="training-level-up-modal" style="z-index: 10050; display: none; align-items: center; justify-content: center; background: rgba(3, 5, 10, 0.9); backdrop-filter: blur(14px); padding: 16px; overflow-y: auto;">
+            <div class="training-levelup-card glass" style="max-width: 390px; width: 100%; max-height: 90vh; overflow: hidden; padding: 0; position: relative; background: radial-gradient(circle at 50% 20%, #151d2f 0%, #080c14 100%); border: 1.5px solid rgba(255, 215, 0, 0.5); border-radius: 24px; box-shadow: 0 0 50px rgba(255, 215, 0, 0.25), 0 25px 50px rgba(0,0,0,0.85); text-align: center;">
                 
-                <!-- Glowing Header Banner -->
-                <div style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(0, 229, 255, 0.1)); padding: 22px 18px 16px 18px; border-bottom: 1px solid rgba(255, 215, 0, 0.25); position: relative;">
+                <!-- Radial Sunburst Glow in Background -->
+                <div class="levelup-sunburst-bg"></div>
+                <div class="levelup-shimmer-ring"></div>
+
+                <!-- Top Header Pill -->
+                <div style="padding: 24px 20px 10px 20px; position: relative; z-index: 2;">
+                    <div style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(0, 229, 255, 0.2)); border: 1px solid rgba(255, 215, 0, 0.6); padding: 4px 14px; border-radius: 99px; box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);">
+                        <span style="font-size: 13px;">⚡</span>
+                        <span style="font-size: 11px; font-weight: 900; letter-spacing: 1.5px; color: #ffd700; text-transform: uppercase;">EA FC SEVİYE ATLAMA</span>
+                    </div>
+                    <h2 style="font-family: var(--font-heading); font-size: 22px; font-weight: 900; color: #ffffff; margin: 10px 0 4px 0; text-shadow: 0 2px 12px rgba(0,0,0,0.7); letter-spacing: 0.5px;">YETENEK GELİŞİMİ</h2>
+                    <p style="font-size: 11.5px; color: #94a3b8; margin: 0;">Sıkı antrenman meyvesini verdi! Yetenek puanın kalıcı olarak arttı.</p>
+                </div>
+
+                <!-- Centered Luxury Attribute Upgrade Badge -->
+                <div style="padding: 14px 24px 22px 24px; position: relative; z-index: 2;">
+                    <div class="stat-upgrade-obsidian-badge">
+                        <div class="badge-aura-pulse"></div>
+                        <div class="badge-inner-content">
+                            <div id="levelup-stat-name" style="font-size: 13px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: #00e5b7; text-shadow: 0 0 10px rgba(0, 229, 183, 0.5);">DEFANS</div>
+                            
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 14px; margin: 12px 0;">
+                                <span id="levelup-old-stat" style="font-size: 32px; font-weight: 900; color: #64748b; font-family: var(--font-heading);">59</span>
+                                <span style="font-size: 24px; color: #ffd700; filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6)); animation: arrowBounce 1.2s infinite ease-in-out;">➔</span>
+                                <span id="levelup-new-stat" style="font-size: 40px; font-weight: 900; color: #ffffff; font-family: var(--font-heading); text-shadow: 0 0 20px rgba(255, 255, 255, 0.6);">60</span>
+                                <span class="neon-plus-badge">[ +1 ]</span>
+                            </div>
+
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 11px; color: #cbd5e1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 6px 12px;">
+                                <span>⭐ Güncel Oyuncu Geneli:</span>
+                                <strong id="levelup-ovr-val" style="color: #ffd700; font-size: 12.5px; font-family: var(--font-heading);">72 OVR</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Button -->
+                    <button onclick="closeTrainingLevelUpModal()" class="btn-console-upgrade">
+                        <span class="btn-specular-sweep"></span>
+                        <span>⚡ GELİŞİMİ KADROYA İŞLE</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- TRANSFER WINDOW OPENED NOTIFICATION MODAL (SKY SPORTS DEADLINE DAY BROADCAST) -->
+        <div class="event-modal-overlay" id="transfer-window-modal" style="z-index: 10050; display: none; align-items: center; justify-content: center; background: rgba(3, 5, 10, 0.92); backdrop-filter: blur(14px); padding: 16px; overflow-y: auto;">
+            <div class="deadline-broadcast-card glass" style="max-width: 420px; width: 100%; max-height: 88vh; overflow-y: auto; padding: 0; background: radial-gradient(circle at 50% 0%, #172033 0%, #080b12 100%); border: 1.5px solid rgba(255, 215, 0, 0.5); text-align: center; box-shadow: 0 0 45px rgba(255, 215, 0, 0.25), 0 25px 60px rgba(0,0,0,0.9); border-radius: 24px;">
+                
+                <!-- TV Broadcast Ribbon (Sky Sports Deadline Day Style) -->
+                <div style="background: linear-gradient(135deg, rgba(220, 38, 38, 0.25), rgba(255, 215, 0, 0.15)); padding: 22px 20px 16px 20px; border-bottom: 1px solid rgba(255, 215, 0, 0.3); position: relative;">
                     <div style="position: absolute; top: 12px; right: 14px;">
-                        <button onclick="closeTransferWindowModal()" style="background: rgba(255,255,255,0.08); border: none; color: #94a3b8; font-size: 18px; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;">&times;</button>
+                        <button onclick="closeTransferWindowModal()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: #94a3b8; font-size: 18px; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">&times;</button>
                     </div>
-                    <div style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #ffd700, #ffaa00); color: #07090e; font-size: 10.5px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; box-shadow: 0 0 14px rgba(255, 215, 0, 0.4); margin-bottom: 10px;">
-                        <span>🔥 RESMİ BİLDİRİM</span>
+
+                    <!-- Pulsing Live Broadcast Pill -->
+                    <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(239, 68, 68, 0.6); padding: 4px 14px; border-radius: 99px; box-shadow: 0 0 15px rgba(239, 68, 68, 0.4); margin-bottom: 10px;">
+                        <span class="live-pulsing-dot"></span>
+                        <span id="tw-broadcast-badge" style="font-size: 10.5px; font-weight: 900; letter-spacing: 1px; color: #f87171; text-transform: uppercase;">TRANSFER PENCERESİ AÇILDI • 14. HAFTA</span>
                     </div>
-                    <h2 id="transfer-window-title" style="color: #ffffff; font-size: 20px; font-weight: 900; margin: 0 0 6px 0; font-family: var(--font-heading); text-shadow: 0 2px 10px rgba(0,0,0,0.5);">
-                        ARA TRANSFER DÖNEMİ AÇILDI!
+
+                    <h2 id="transfer-window-title" style="color: #ffffff; font-size: 20px; font-weight: 900; margin: 2px 0 6px 0; font-family: var(--font-heading); text-shadow: 0 2px 12px rgba(0,0,0,0.8); letter-spacing: 0.5px;">
+                        CANLI TRANSFER MERKEZİ
                     </h2>
                     <p id="transfer-window-subtitle" style="font-size: 12px; color: #cbd5e1; margin: 0; line-height: 1.45;">
-                        Kulüpler ve scoutlar masada! Menajerin yeni sözleşme tekliflerini getirdi.
+                        Avrupa ve lig kulüpleri masada. Menajerin faksına resmi teklifler düşmeye başladı.
                     </p>
                 </div>
 
-                <!-- Body Content -->
+                <!-- Executive Scouting Dossier Body -->
                 <div style="padding: 20px 18px; display: flex; flex-direction: column; gap: 14px;">
                     
-                    <!-- Player Snapshot Card -->
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: left;">
-                        <div>
-                            <div style="font-size: 10px; color: #8b949e; text-transform: uppercase; font-weight: 700;">Piyasa Değeri</div>
-                            <div id="tw-market-value" style="font-size: 16px; font-weight: 900; color: #00e5b7; font-family: var(--font-heading);">0 €</div>
+                    <!-- Leather-Finish Executive Scouting Dossier (2x2 with delicate gold lines) -->
+                    <div class="executive-scouting-dossier">
+                        <div class="dossier-watermark">CONFIDENTIAL</div>
+                        
+                        <div class="dossier-cell" style="border-right: 1px solid rgba(255, 215, 0, 0.25); border-bottom: 1px solid rgba(255, 215, 0, 0.25);">
+                            <div class="dossier-label">PİYASA DEĞERİ</div>
+                            <div id="tw-market-value" class="dossier-value" style="color: #00e5b7;">0 €</div>
                         </div>
-                        <div>
-                            <div style="font-size: 10px; color: #8b949e; text-transform: uppercase; font-weight: 700;">Mevcut Maaş</div>
-                            <div id="tw-current-salary" style="font-size: 16px; font-weight: 900; color: #38bdf8; font-family: var(--font-heading);">0 € / Hf</div>
+
+                        <div class="dossier-cell" style="border-bottom: 1px solid rgba(255, 215, 0, 0.25);">
+                            <div class="dossier-label">MEVCUT MAAŞ</div>
+                            <div id="tw-current-salary" class="dossier-value" style="color: #38bdf8;">0 € / Hf</div>
                         </div>
-                        <div>
-                            <div style="font-size: 10px; color: #8b949e; text-transform: uppercase; font-weight: 700;">Mevcut Kulüp</div>
-                            <div id="tw-current-club" style="font-size: 13px; font-weight: 800; color: #f8fafc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">-</div>
+
+                        <div class="dossier-cell" style="border-right: 1px solid rgba(255, 215, 0, 0.25);">
+                            <div class="dossier-label">MEVCUT KULÜP</div>
+                            <div id="tw-current-club" class="dossier-value-sub">-</div>
                         </div>
-                        <div>
-                            <div style="font-size: 10px; color: #8b949e; text-transform: uppercase; font-weight: 700;">Menajer</div>
-                            <div id="tw-agent-name" style="font-size: 13px; font-weight: 800; color: #f59e0b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">-</div>
+
+                        <div class="dossier-cell">
+                            <div class="dossier-label">YETKİLİ MENAJER</div>
+                            <div id="tw-agent-name" class="dossier-value-sub" style="color: #f59e0b;">-</div>
                         </div>
                     </div>
 
-                    <!-- Highlight Banner -->
-                    <div style="background: linear-gradient(135deg, rgba(0, 229, 183, 0.08), rgba(56, 189, 248, 0.08)); border: 1px dashed rgba(0, 229, 183, 0.4); border-radius: 12px; padding: 10px 12px; font-size: 11.5px; color: #e2e8f0; display: flex; align-items: center; gap: 10px; text-align: left;">
-                        <span style="font-size: 22px;">📋</span>
-                        <div>
-                            <div style="font-weight: 800; color: #00e5b7;">Masada 5 Yeni Transfer Teklifi Var!</div>
-                            <div style="color: #94a3b8; font-size: 10.5px;">Farklı liglerden kulüpler kariyerin için teklif sundu.</div>
+                    <!-- Luxury Transfer Envelope with Gold Seal -->
+                    <div class="luxury-transfer-envelope">
+                        <div class="gold-wax-seal">
+                            <span>5</span>
+                        </div>
+                        <div style="text-align: left; flex: 1;">
+                            <div style="font-weight: 900; color: #ffd700; font-size: 13px; letter-spacing: 0.3px;">Masada 5 Yeni Transfer Teklifi Var!</div>
+                            <div style="color: #94a3b8; font-size: 10.5px; margin-top: 2px;">Kulüpler resmi teklif mektuplarını scout ofisine sundu.</div>
                         </div>
                     </div>
 
                     <!-- Action Buttons -->
-                    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 4px;">
-                        <button onclick="goToTransferOffersFromModal()" style="background: linear-gradient(135deg, #ffd700 0%, #ff9900 100%); color: #07090e; border: none; padding: 13px 18px; border-radius: 12px; font-size: 13.5px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 18px rgba(255, 215, 0, 0.35); transition: transform 0.15s ease;">
-                            <span>📋 Teklifleri İncele &amp; Görüş</span>
+                    <div style="display: flex; flex-direction: column; gap: 9px; margin-top: 4px;">
+                        <button onclick="goToTransferOffersFromModal()" class="btn-deadline-primary">
+                            <span class="btn-specular-sweep"></span>
+                            <span>💼 TEKLİFLERİ MASAYA YATIR ➔</span>
                         </button>
-                        <button onclick="closeTransferWindowModal()" style="background: rgba(255,255,255,0.06); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); padding: 10px 16px; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer;">
-                            Mevcut Kulübümde Kal
+                        <button onclick="closeTransferWindowModal()" class="btn-deadline-secondary">
+                            Kulübe Sadık Kal ve Reddet
                         </button>
                     </div>
 
@@ -4516,6 +4577,8 @@
                         closeTestHubModal();
                     } else if (id === 'transfer-window-modal' && typeof closeTransferWindowModal === 'function') {
                         closeTransferWindowModal();
+                    } else if (id === 'training-level-up-modal' && typeof closeTrainingLevelUpModal === 'function') {
+                        closeTrainingLevelUpModal();
                     } else {
                         topModal.classList.remove('active');
                         topModal.style.display = 'none';
@@ -4597,6 +4660,36 @@
                         console.warn("Web Audio API is not supported or blocked in this browser:", e);
                         this.audioCtx = null;
                     }
+                }
+            },
+
+            playLevelUp: function() {
+                if (!this.enabled) return;
+                try {
+                    this.initAudio();
+                    let ctx = this.audioCtx;
+                    if (!ctx) return;
+                    let now = ctx.currentTime;
+
+                    // Rich console-like chord: C4, G4, C5, E5 with warm lowpass and exponential decay
+                    let freqs = [261.63, 392.00, 523.25, 659.25];
+                    freqs.forEach((freq, idx) => {
+                        let osc = ctx.createOscillator();
+                        let gain = ctx.createGain();
+                        osc.type = (idx === 0) ? "triangle" : "sine";
+                        osc.frequency.setValueAtTime(freq, now + idx * 0.05);
+                        
+                        gain.gain.setValueAtTime(0.001, now + idx * 0.05);
+                        gain.gain.linearRampToValueAtTime(0.28 / (idx + 1), now + idx * 0.05 + 0.08);
+                        gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.2);
+
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(now + idx * 0.05);
+                        osc.stop(now + 1.25);
+                    });
+                } catch(e) {
+                    console.error("Audio error in playLevelUp:", e);
                 }
             },
 
@@ -10003,10 +10096,53 @@
         }
         window.testTransferTweetModal = testTransferTweetModal;
 
+        window.showTrainingLevelUpModal = function(data) {
+            if (!data) return;
+            const modal = document.getElementById("training-level-up-modal");
+            if (!modal) return;
+
+            const nameEl = document.getElementById("levelup-stat-name");
+            const oldEl = document.getElementById("levelup-old-stat");
+            const newEl = document.getElementById("levelup-new-stat");
+            const ovrEl = document.getElementById("levelup-ovr-val");
+
+            if (nameEl) nameEl.innerText = data.statName || data.statKey || "YETENEK";
+            if (oldEl) oldEl.innerText = data.oldVal != null ? data.oldVal : "--";
+            if (newEl) newEl.innerText = data.newVal != null ? data.newVal : "--";
+            if (ovrEl) {
+                const ovr = data.overallRating || (typeof GAME !== "undefined" && GAME.state ? GAME.state.rating : null);
+                ovrEl.innerText = ovr ? (ovr + " OVR") : "-- OVR";
+            }
+
+            // Synthesized Web Audio Level-Up Chord
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playLevelUp === "function") {
+                SoundManager.playLevelUp();
+            }
+
+            // Micro-haptic pattern
+            if (typeof navigator !== "undefined" && navigator.vibrate) {
+                try { navigator.vibrate([15, 30, 20]); } catch(e) {}
+            } else if (window.HAPTIC && typeof window.HAPTIC.impact === "function") {
+                window.HAPTIC.impact();
+            }
+
+            modal.style.display = "flex";
+            modal.classList.add("active");
+        };
+
+        window.closeTrainingLevelUpModal = function() {
+            const modal = document.getElementById("training-level-up-modal");
+            if (modal) {
+                modal.classList.remove("active");
+                modal.style.display = "none";
+            }
+        };
+
         window.showTransferWindowModal = function(isSummer = false) {
             const modal = document.getElementById("transfer-window-modal");
             if (!modal) return;
 
+            const badgeEl = document.getElementById("tw-broadcast-badge");
             const titleEl = document.getElementById("transfer-window-title");
             const subEl = document.getElementById("transfer-window-subtitle");
             const valEl = document.getElementById("tw-market-value");
@@ -10015,11 +10151,13 @@
             const agentEl = document.getElementById("tw-agent-name");
 
             if (isSummer) {
-                if (titleEl) titleEl.innerText = "☀️ BÜYÜK YAZ TRANSFERİ AÇILDI!";
-                if (subEl) subEl.innerText = "Sezon bitti! Avrupa devleri ve ligin büyükleri transfer için sıraya girdi.";
+                if (badgeEl) badgeEl.innerText = "TRANSFER PENCERESİ AÇILDI • SEZON SONU (37. HF)";
+                if (titleEl) titleEl.innerText = "CANLI TRANSFER MERKEZİ";
+                if (subEl) subEl.innerText = "Avrupa ve Türkiye'de dev kulüpler masada. Menajerin gelen teklifleri dosyalamaya başladı.";
             } else {
-                if (titleEl) titleEl.innerText = "❄️ ARA TRANSFER DÖNEMİ AÇILDI!";
-                if (subEl) subEl.innerText = "14. Hafta geldi! Kulüpler kadrolarını güçlendirmek için kapını çalıyor.";
+                if (badgeEl) badgeEl.innerText = "TRANSFER PENCERESİ AÇILDI • 14. HAFTA";
+                if (titleEl) titleEl.innerText = "CANLI TRANSFER MERKEZİ";
+                if (subEl) subEl.innerText = "Avrupa ve Türkiye'de kulüpler masada. Menajerin gelen teklifleri dosyalamaya başladı.";
             }
 
             if (typeof GAME !== "undefined" && GAME.state) {
@@ -10036,6 +10174,23 @@
                 if (agentEl) agentEl.innerText = agentName;
 
                 GAME.checkForTransferOffers(true);
+
+                // Update envelope offer count dynamically
+                const envelopeCount = modal.querySelector(".gold-wax-seal span");
+                const envelopeTitle = modal.querySelector(".luxury-transfer-envelope div div:first-child");
+                const offerCount = (GAME.state.transferOffers && GAME.state.transferOffers.length) ? GAME.state.transferOffers.length : 5;
+                if (envelopeCount) envelopeCount.innerText = offerCount;
+                if (envelopeTitle) envelopeTitle.innerText = `Masada ${offerCount} Yeni Transfer Teklifi Var!`;
+            }
+
+            // Level-up audio chord & haptic
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playLevelUp === "function") {
+                SoundManager.playLevelUp();
+            }
+            if (typeof navigator !== "undefined" && navigator.vibrate) {
+                try { navigator.vibrate([20, 40, 20]); } catch(e) {}
+            } else if (window.HAPTIC && typeof window.HAPTIC.impact === "function") {
+                window.HAPTIC.impact();
             }
 
             modal.style.display = "flex";
@@ -10125,13 +10280,21 @@
         window.testTrainingProgression = function() {
             if (typeof GAME !== "undefined" && GAME.state) {
                 const sKey = (GAME.state.position === "Defans") ? "defense" : "shooting";
+                const statName = (sKey === "defense") ? "DEFANS" : "ŞUT";
                 const oldVal = GAME.state[sKey] || 50;
                 GAME.train(sKey);
                 const newVal = GAME.state[sKey] || 50;
                 if (typeof window.switchView === "function") window.switchView("panel-training");
                 if (typeof renderTrainingPanel === "function") renderTrainingPanel();
-                if (typeof showCustomAlert === "function") {
-                    showCustomAlert(`İdman yapıldı: ${sKey.toUpperCase()} (${oldVal} ➔ ${newVal}). Azalan verimler devrede!`, "İDMAN TESTİ", "⚡", "info");
+                if (typeof window.showTrainingLevelUpModal === "function") {
+                    window.showTrainingLevelUpModal({
+                        statKey: sKey,
+                        statName: statName,
+                        oldVal: oldVal,
+                        newVal: newVal,
+                        gain: Math.max(1, newVal - oldVal),
+                        overallRating: GAME.state.rating
+                    });
                 }
             }
         };
