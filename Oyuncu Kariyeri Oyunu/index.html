@@ -4820,8 +4820,11 @@
                 }
             },
 
-            playWhistle: function(type = "single") {
-                if (!this.enabled) return;
+            playWhistle: function(type = "single", callback) {
+                if (!this.enabled) {
+                    if (callback) callback();
+                    return;
+                }
                 try {
                     let sfxFile = (type === "triple" || type === "son_duduk" || type === "full_time") ? "sounds/whistle_triple.mp3" : "sounds/whistle.mp3";
                     let audio = new Audio(sfxFile);
@@ -4832,8 +4835,13 @@
                             this.synthesizeWhistle(type);
                         });
                     }
+                    if (callback) {
+                        let delay = (type === "triple" || type === "son_duduk") ? 950 : (type === "double" ? 600 : 350);
+                        setTimeout(callback, delay);
+                    }
                 } catch(e) {
                     this.synthesizeWhistle(type);
+                    if (callback) setTimeout(callback, 350);
                 }
             },
 
@@ -4842,11 +4850,12 @@
                     this.initAudio();
                     let ctx = this.audioCtx;
                     if (!ctx) return;
+                    if (ctx.state === "suspended") ctx.resume();
                     let now = ctx.currentTime;
 
-                    let blastCount = (type === "triple" || type === "son_duduk") ? 3 : 1;
-                    let blastTimes = (blastCount === 3) ? [0, 0.45, 0.90] : [0];
-                    let blastDurations = (blastCount === 3) ? [0.32, 0.32, 1.0] : [0.65];
+                    let blastCount = (type === "triple" || type === "son_duduk") ? 3 : (type === "double" ? 2 : 1);
+                    let blastTimes = (blastCount === 3) ? [0, 0.45, 0.90] : (blastCount === 2 ? [0, 0.35] : [0]);
+                    let blastDurations = (blastCount === 3) ? [0.32, 0.32, 0.85] : (blastCount === 2 ? [0.25, 0.45] : [0.65]);
 
                     for (let b = 0; b < blastCount; b++) {
                         let tStart = now + blastTimes[b];
@@ -5590,10 +5599,25 @@
                 try {
                     this.initAudio();
                     let ctx = this.audioCtx;
-                    if (!ctx) return;
-                    this.playDoubleWhistle(ctx, () => {
-                        this.playCrowdCheer(ctx);
-                    });
+                    if (ctx && ctx.state === "suspended") ctx.resume();
+
+                    // 1. Referee double whistle
+                    this.playWhistle("double");
+
+                    // 2. Spiker Gol scream
+                    if (typeof this.playSpiker === "function") {
+                        this.playSpiker("gol");
+                    }
+
+                    // 3. Huge stadium roar
+                    this.playCrowdCheer(ctx);
+
+                    // 4. Haptic celebration rumble
+                    if (window.HAPTIC && typeof window.HAPTIC.impact === "function") {
+                        window.HAPTIC.impact();
+                    } else if (navigator.vibrate) {
+                        try { navigator.vibrate([70, 40, 70, 40, 100]); } catch(e) {}
+                    }
                 } catch(e) {
                     console.error("Audio error in playGoal:", e);
                 }
@@ -5604,8 +5628,8 @@
                 try {
                     this.initAudio();
                     let ctx = this.audioCtx;
-                    if (!ctx) return;
-                    this.playWhistle(ctx, () => {
+                    if (ctx && ctx.state === "suspended") ctx.resume();
+                    this.playWhistle("single", () => {
                         this.playCrowdBoo(ctx);
                     });
                 } catch(e) {
@@ -5618,11 +5642,187 @@
                 try {
                     this.initAudio();
                     let ctx = this.audioCtx;
-                    if (!ctx) return;
-                    this.playCrowdMiss(ctx);
+                    if (ctx && ctx.state === "suspended") ctx.resume();
+                    this.playMissGasp();
                 } catch(e) {
                     console.error("Audio error in playMiss:", e);
                 }
+            },
+
+            playPostHit: function() {
+                if (!this.enabled) return;
+                try {
+                    this.initAudio();
+                    let ctx = this.audioCtx;
+                    if (!ctx) return;
+                    if (ctx.state === "suspended") ctx.resume();
+                    let now = ctx.currentTime;
+
+                    // 1. Dual metallic ring resonance (1180Hz + 2460Hz)
+                    [1180, 2460].forEach((freq, idx) => {
+                        let osc = ctx.createOscillator();
+                        let gain = ctx.createGain();
+                        osc.type = "sine";
+                        osc.frequency.setValueAtTime(freq, now);
+                        osc.frequency.exponentialRampToValueAtTime(freq * 0.96, now + 0.35);
+                        gain.gain.setValueAtTime(0.35 / (idx + 1), now);
+                        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.38);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(now);
+                        osc.stop(now + 0.4);
+                    });
+
+                    // 2. Heavy physical ball thud
+                    let thudOsc = ctx.createOscillator();
+                    let thudGain = ctx.createGain();
+                    thudOsc.type = "triangle";
+                    thudOsc.frequency.setValueAtTime(75, now);
+                    thudOsc.frequency.exponentialRampToValueAtTime(32, now + 0.09);
+                    thudGain.gain.setValueAtTime(0.45, now);
+                    thudGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.1);
+                    thudOsc.connect(thudGain);
+                    thudGain.connect(ctx.destination);
+                    thudOsc.start(now);
+                    thudOsc.stop(now + 0.11);
+
+                    // 3. Followed by crowd collective gasp (disappointment)
+                    setTimeout(() => {
+                        this.playMissGasp();
+                    }, 120);
+
+                    if (window.HAPTIC && typeof window.HAPTIC.impact === "function") {
+                        window.HAPTIC.impact();
+                    } else if (navigator.vibrate) {
+                        try { navigator.vibrate([40, 50, 40]); } catch(e) {}
+                    }
+                } catch(e) {
+                    console.error("Audio error in playPostHit:", e);
+                }
+            },
+
+            playMissGasp: function() {
+                if (!this.enabled) return;
+                try {
+                    this.initAudio();
+                    let ctx = this.audioCtx;
+                    if (!ctx) return;
+                    if (ctx.state === "suspended") ctx.resume();
+                    let now = ctx.currentTime;
+                    let bufferSize = Math.floor(ctx.sampleRate * 1.8);
+                    let buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                    let data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        data[i] = (Math.random() * 2 - 1) * (0.6 + 0.4 * Math.sin(i / 200));
+                    }
+                    let noise = ctx.createBufferSource();
+                    noise.buffer = buffer;
+
+                    let filter = ctx.createBiquadFilter();
+                    filter.type = "bandpass";
+                    filter.frequency.setValueAtTime(650, now);
+                    filter.frequency.exponentialRampToValueAtTime(260, now + 1.2);
+                    filter.Q.setValueAtTime(2.2, now);
+
+                    let gain = ctx.createGain();
+                    gain.gain.setValueAtTime(0.001, now);
+                    gain.gain.linearRampToValueAtTime(0.32, now + 0.12);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.8);
+
+                    noise.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(ctx.destination);
+                    noise.start(now);
+                    noise.stop(now + 1.8);
+                } catch(e) {
+                    console.error("Audio error in playMissGasp:", e);
+                }
+            },
+
+            playMatchStart: function() {
+                if (!this.enabled) return;
+                this.playWhistle("single", () => {
+                    try {
+                        this.initAudio();
+                        let ctx = this.audioCtx;
+                        if (!ctx) return;
+                        if (ctx.state === "suspended") ctx.resume();
+                        let now = ctx.currentTime;
+                        let bufferSize = Math.floor(ctx.sampleRate * 2.0);
+                        let buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                        let data = buffer.getChannelData(0);
+                        for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+                        let noise = ctx.createBufferSource();
+                        noise.buffer = buffer;
+                        let filter = ctx.createBiquadFilter();
+                        filter.type = "bandpass";
+                        filter.frequency.setValueAtTime(450, now);
+                        filter.frequency.linearRampToValueAtTime(800, now + 0.8);
+                        filter.frequency.linearRampToValueAtTime(350, now + 2.0);
+                        let gain = ctx.createGain();
+                        gain.gain.setValueAtTime(0.001, now);
+                        gain.gain.linearRampToValueAtTime(0.18, now + 0.5);
+                        gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.0);
+                        noise.connect(filter);
+                        filter.connect(gain);
+                        gain.connect(ctx.destination);
+                        noise.start(now);
+                    } catch(e) {}
+                });
+            },
+
+            playMatchEnd: function() {
+                if (!this.enabled) return;
+                this.playWhistle("triple");
+                if (typeof this.playSpiker === "function") {
+                    setTimeout(() => {
+                        this.playSpiker("son_duduk");
+                    }, 500);
+                }
+            },
+
+            playConsoleClick: function() {
+                if (!this.enabled) return;
+                try {
+                    this.initAudio();
+                    let ctx = this.audioCtx;
+                    if (!ctx) return;
+                    if (ctx.state === "suspended") ctx.resume();
+                    let now = ctx.currentTime;
+                    let osc = ctx.createOscillator();
+                    let gain = ctx.createGain();
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(850, now);
+                    osc.frequency.exponentialRampToValueAtTime(420, now + 0.028);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.03);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.032);
+                } catch(e) {}
+            },
+
+            playConsoleTab: function() {
+                if (!this.enabled) return;
+                try {
+                    this.initAudio();
+                    let ctx = this.audioCtx;
+                    if (!ctx) return;
+                    if (ctx.state === "suspended") ctx.resume();
+                    let now = ctx.currentTime;
+                    let osc = ctx.createOscillator();
+                    let gain = ctx.createGain();
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(1050, now);
+                    osc.frequency.exponentialRampToValueAtTime(550, now + 0.035);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.038);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.04);
+                } catch(e) {}
             },
 
             playMessageSent: function() {
@@ -5685,56 +5885,8 @@
                 }
             },
 
-            playWhistle: function(ctx, callback) {
-                if (!this.enabled) return;
-                try {
-                    this.initAudio();
-                    let activeCtx = ctx || this.audioCtx;
-                    if (!activeCtx) return;
-                    let now = activeCtx.currentTime;
-                    let osc = activeCtx.createOscillator();
-                    let gain = activeCtx.createGain();
-                    osc.type = "sine";
-                    osc.frequency.setValueAtTime(900, now);
-                    osc.frequency.linearRampToValueAtTime(1100, now + 0.1);
-                    osc.frequency.linearRampToValueAtTime(900, now + 0.25);
-                    
-                    gain.gain.setValueAtTime(0.15, now);
-                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-
-                    osc.connect(gain);
-                    gain.connect(activeCtx.destination);
-                    osc.start(now);
-                    osc.stop(now + 0.3);
-
-                    if (callback) {
-                        setTimeout(callback, 200);
-                    }
-                } catch(e) {
-                    console.error("Audio error in playWhistle:", e);
-                }
-            },
-
             playDoubleWhistle: function(ctx, callback) {
-                if (!this.enabled) return;
-                try {
-                    this.initAudio();
-                    let activeCtx = ctx || this.audioCtx;
-                    if (!activeCtx) return;
-                    let now = activeCtx.currentTime;
-                    // First blast
-                    this.playWhistle(activeCtx);
-                    // Second blast shortly after
-                    setTimeout(() => {
-                        this.playWhistle(activeCtx);
-                    }, 300);
-
-                    if (callback) {
-                        setTimeout(callback, 500);
-                    }
-                } catch(e) {
-                    console.error("Audio error in playDoubleWhistle:", e);
-                }
+                this.playWhistle("double", callback);
             },
 
             playCrowdCheer: function(ctx) {
@@ -6188,6 +6340,9 @@
                 } else if (navigator.vibrate) {
                     try { navigator.vibrate(10); } catch(e) {}
                 }
+                if (typeof SoundManager !== "undefined" && typeof SoundManager.playConsoleTab === "function") {
+                    SoundManager.playConsoleTab();
+                }
                 tabs.forEach(t => t.classList.remove("active"));
                 panels.forEach(p => p.classList.remove("active"));
 
@@ -6244,6 +6399,16 @@
 
             });
         });
+
+        // 🎮 CONSOLE SOUND FX DELEGATION (EA SPORTS FC STYLE)
+        document.addEventListener("click", function(e) {
+            const clickTarget = e.target.closest(".shop-sub-tab, .cockpit-icon-btn, .btn, .agency-btn-full, .filter-chip, .market-filter-btn, .settings-tab-btn, .stat-box-item, .btn-car-buy, .btn-crypto-buy");
+            if (clickTarget) {
+                if (typeof SoundManager !== "undefined" && typeof SoundManager.playConsoleClick === "function") {
+                    SoundManager.playConsoleClick();
+                }
+            }
+        }, { passive: true });
 
         function getBackstory(city, district) {
             const c = (city || "").toLowerCase().trim();
@@ -10245,6 +10410,9 @@
             if (tabBtn) {
                 tabBtn.click();
             } else {
+                if (typeof SoundManager !== "undefined" && typeof SoundManager.playConsoleTab === "function") {
+                    SoundManager.playConsoleTab();
+                }
                 // Sub-panel routing: highlight parent tab button
                 let parentTabTarget = targetId;
                 if (targetId === "panel-my-career") parentTabTarget = "panel-career";
