@@ -1777,10 +1777,23 @@ const GAME = {
     },
 
     isTransferWindowActive: function() {
+        if (this.state && this.state.isTestTransferWindowActive) return true;
         const w = this.state.currentWeek;
         // Ara Transfer Dönemi: 14 - 21. haftalar arası
         // Yaz Transfer Dönemi: 37. hafta (sezon sonu)
         return ((w >= 14 && w <= 21) || w === 37);
+    },
+
+    switchTab: function(target) {
+        if (typeof window !== "undefined" && typeof window.switchView === "function") {
+            window.switchView(target);
+        }
+    },
+
+    switchView: function(target) {
+        if (typeof window !== "undefined" && typeof window.switchView === "function") {
+            window.switchView(target);
+        }
     },
 
 
@@ -1827,20 +1840,21 @@ const GAME = {
         return coachMsg;
     },
 
-    checkForTransferOffers: function() {
-        if (!this.isTransferWindowActive()) {
+    checkForTransferOffers: function(force = false) {
+        const isTest = (this.state && this.state.isTestTransferWindowActive);
+        if (!this.isTransferWindowActive() && !force && !isTest) {
             this.state.activeTransferOffers = [];
             return [];
         }
 
         // Bu transfer penceresinde zaten başka bir takıma imza atıldıysa yeni teklif üretilmez (Tek transfer hakkı)
-        if (this.state.transferredThisWindow) {
+        if (this.state.transferredThisWindow && !force && !isTest) {
             this.state.activeTransferOffers = [];
             return [];
         }
 
-        // Eğer halihazırda bu transfer dönemi için teklifler oluşturulmuşsa onları döndür
-        if (this.state.activeTransferOffers && this.state.activeTransferOffers.length > 0) {
+        // Eğer halihazırda bu transfer dönemi için teklifler oluşturulmuşsa ve zorlama yoksa onları döndür
+        if (!force && this.state.activeTransferOffers && this.state.activeTransferOffers.length > 0) {
             return this.state.activeTransferOffers;
         }
 

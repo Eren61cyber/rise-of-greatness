@@ -1584,8 +1584,8 @@
         </div>
 
         <!-- ROG NEW FEATURES TEST HUB MODAL -->
-        <div class="event-modal-overlay" id="rog-test-hub-modal" style="z-index: 99999; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: none; align-items: center; justify-content: center; background: rgba(5,7,10,0.88); backdrop-filter: blur(14px);">
-            <div class="event-card glass" style="max-width: 420px; padding: 0; overflow: hidden; background: radial-gradient(circle at 50% 0%, #151d2f 0%, #090c13 100%); border: 1.5px solid rgba(0, 229, 255, 0.45); border-radius: 20px; box-shadow: 0 0 35px rgba(0, 229, 255, 0.25);">
+        <div class="event-modal-overlay" id="rog-test-hub-modal" style="z-index: 10050; display: none; align-items: center; justify-content: center; background: rgba(5,7,10,0.88); backdrop-filter: blur(14px); padding: 16px; overflow-y: auto;">
+            <div class="event-card glass" style="max-width: 420px; max-height: 88vh; overflow-y: auto; padding: 0; background: radial-gradient(circle at 50% 0%, #151d2f 0%, #090c13 100%); border: 1.5px solid rgba(0, 229, 255, 0.45); border-radius: 20px; box-shadow: 0 0 35px rgba(0, 229, 255, 0.25);">
                 
                 <!-- Header -->
                 <div style="background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(255, 215, 0, 0.1)); padding: 18px 20px; border-bottom: 1px solid rgba(0, 229, 255, 0.25); display: flex; align-items: center; justify-content: space-between;">
@@ -1610,10 +1610,21 @@
                         </button>
                     </div>
 
-                    <!-- 2. Diminishing Returns Training Test -->
+                    <!-- 2. Direct Transfer Offers View Test -->
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,215,0,0.3); border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                        <div>
+                            <div style="font-weight: 800; color: #ffd700; font-size: 13px;">📋 2. Gelen Transfer Teklifleri</div>
+                            <div style="font-size: 10.5px; color: #94a3b8;">5 kulüpten teklif üret ve görüşmeleri başlat.</div>
+                        </div>
+                        <button onclick="closeTestHubModal(); goToTransferOffersFromModal();" style="background: linear-gradient(135deg, #ffd700, #ff9900); color: #000; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 900; font-size: 11.5px; cursor: pointer; white-space: nowrap;">
+                            Teklifleri Gör
+                        </button>
+                    </div>
+
+                    <!-- 3. Diminishing Returns Training Test -->
                     <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(16,185,129,0.3); border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
                         <div>
-                            <div style="font-weight: 800; color: #10b981; font-size: 13px;">⚡ 2. İdman Stat Gelişimi</div>
+                            <div style="font-weight: 800; color: #10b981; font-size: 13px;">⚡ 3. İdman Stat Gelişimi</div>
                             <div style="font-size: 10.5px; color: #94a3b8;">Azalan verimler (1/2, 1/3 ilerleme) testi.</div>
                         </div>
                         <button onclick="closeTestHubModal(); testTrainingProgression();" style="background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 900; font-size: 11.5px; cursor: pointer; white-space: nowrap;">
@@ -1621,10 +1632,10 @@
                         </button>
                     </div>
 
-                    <!-- 3. Card Pack Anti-99 Cap Test -->
+                    <!-- 4. Card Pack Anti-99 Cap Test -->
                     <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(56,189,248,0.3); border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
                         <div>
-                            <div style="font-weight: 800; color: #38bdf8; font-size: 13px;">🃏 3. Kart Paketi &amp; Anti-99</div>
+                            <div style="font-weight: 800; color: #38bdf8; font-size: 13px;">🃏 4. Kart Paketi &amp; Anti-99</div>
                             <div style="font-size: 10.5px; color: #94a3b8;">85+ stat engeli &amp; +25k € telafi primi.</div>
                         </div>
                         <button onclick="closeTestHubModal(); testCardPackBuff();" style="background: linear-gradient(135deg, #38bdf8, #0284c7); color: #000; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 900; font-size: 11.5px; cursor: pointer; white-space: nowrap;">
@@ -1632,10 +1643,10 @@
                         </button>
                     </div>
 
-                    <!-- 4. Fast Forward to Week 14 (Ara Transfer) -->
+                    <!-- 5. Fast Forward to Week 14 (Ara Transfer) -->
                     <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(244,63,94,0.3); border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
                         <div>
-                            <div style="font-weight: 800; color: #f43f5e; font-size: 13px;">⏩ 4. 14. Haftaya Işınlan</div>
+                            <div style="font-weight: 800; color: #f43f5e; font-size: 13px;">⏩ 5. 14. Haftaya Işınlan</div>
                             <div style="font-size: 10.5px; color: #94a3b8;">Ara transfer haftasına geç ve bildirimi canlı yaşa.</div>
                         </div>
                         <button onclick="closeTestHubModal(); testJumpToWeek(14);" style="background: linear-gradient(135deg, #f43f5e, #be123c); color: #fff; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 900; font-size: 11.5px; cursor: pointer; white-space: nowrap;">
@@ -1648,8 +1659,8 @@
         </div>
 
         <!-- TRANSFER WINDOW OPENED NOTIFICATION MODAL -->
-        <div class="event-modal-overlay" id="transfer-window-modal" style="z-index: 99999; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: none; align-items: center; justify-content: center; background: rgba(5,7,10,0.88); backdrop-filter: blur(14px);">
-            <div class="event-card glass" style="max-width: 400px; padding: 0; overflow: hidden; background: radial-gradient(circle at 50% 0%, #172033 0%, #0a0d14 100%); border: 1.5px solid rgba(255, 215, 0, 0.4); text-align: center; box-shadow: 0 0 35px rgba(255, 215, 0, 0.2), 0 20px 40px rgba(0,0,0,0.8); border-radius: 20px;">
+        <div class="event-modal-overlay" id="transfer-window-modal" style="z-index: 10050; display: none; align-items: center; justify-content: center; background: rgba(5,7,10,0.88); backdrop-filter: blur(14px); padding: 16px; overflow-y: auto;">
+            <div class="event-card glass" style="max-width: 400px; max-height: 88vh; overflow-y: auto; padding: 0; background: radial-gradient(circle at 50% 0%, #172033 0%, #0a0d14 100%); border: 1.5px solid rgba(255, 215, 0, 0.4); text-align: center; box-shadow: 0 0 35px rgba(255, 215, 0, 0.2), 0 20px 40px rgba(0,0,0,0.8); border-radius: 20px;">
                 
                 <!-- Glowing Header Banner -->
                 <div style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(0, 229, 255, 0.1)); padding: 22px 18px 16px 18px; border-bottom: 1px solid rgba(255, 215, 0, 0.25); position: relative;">
@@ -4501,6 +4512,10 @@
                         closeBootCustomizer();
                     } else if (id === 'custom-alert-modal') {
                         topModal.style.display = 'none';
+                    } else if (id === 'rog-test-hub-modal' && typeof closeTestHubModal === 'function') {
+                        closeTestHubModal();
+                    } else if (id === 'transfer-window-modal' && typeof closeTransferWindowModal === 'function') {
+                        closeTransferWindowModal();
                     } else {
                         topModal.classList.remove('active');
                         topModal.style.display = 'none';
@@ -10020,7 +10035,7 @@
                 }
                 if (agentEl) agentEl.innerText = agentName;
 
-                GAME.checkForTransferOffers();
+                GAME.checkForTransferOffers(true);
             }
 
             modal.style.display = "flex";
@@ -10035,10 +10050,43 @@
             }
         };
 
+        window.switchView = function(target) {
+            if (!target) return;
+            let targetId = target;
+            if (!targetId.startsWith("panel-")) {
+                targetId = "panel-" + targetId;
+            }
+            const tabBtn = document.querySelector(`.nav-tab[data-target="${targetId}"]`);
+            if (tabBtn) {
+                tabBtn.click();
+            } else {
+                const tabs = document.querySelectorAll(".nav-tab");
+                const panels = document.querySelectorAll(".view-panel");
+                tabs.forEach(t => t.classList.remove("active"));
+                panels.forEach(p => p.classList.remove("active"));
+                const targetPanel = document.getElementById(targetId);
+                if (targetPanel) {
+                    targetPanel.classList.add("active");
+                    if (typeof triggerStaggerEntrance === "function") triggerStaggerEntrance(targetPanel);
+                }
+            }
+        };
+        window.switchTab = window.switchView;
+        if (typeof GAME !== "undefined") {
+            GAME.switchTab = window.switchView;
+            GAME.switchView = window.switchView;
+        }
+
         window.goToTransferOffersFromModal = function() {
             window.closeTransferWindowModal();
-            if (typeof switchView === "function") {
-                switchView("transfers");
+            if (typeof GAME !== "undefined" && GAME.state) {
+                GAME.state.isTestTransferWindowActive = true;
+                if (typeof GAME.checkForTransferOffers === "function") {
+                    GAME.checkForTransferOffers(true);
+                }
+            }
+            if (typeof window.switchView === "function") {
+                window.switchView("panel-transfers");
             }
             if (typeof renderTransferOffers === "function") {
                 renderTransferOffers();
@@ -10048,6 +10096,12 @@
         window.testTransferWindowModal = function() {
             const sm = document.getElementById("settings-modal");
             if (sm) sm.classList.remove("active");
+            if (typeof GAME !== "undefined" && GAME.state) {
+                GAME.state.isTestTransferWindowActive = true;
+                if (typeof GAME.checkForTransferOffers === "function") {
+                    GAME.checkForTransferOffers(true);
+                }
+            }
             const isSummer = (typeof GAME !== "undefined" && GAME.state && GAME.state.currentWeek >= 30);
             window.showTransferWindowModal(isSummer);
         };
@@ -10069,11 +10123,16 @@
         };
 
         window.testTrainingProgression = function() {
-            if (typeof GAME !== "undefined") {
+            if (typeof GAME !== "undefined" && GAME.state) {
                 const sKey = (GAME.state.position === "Defans") ? "defense" : "shooting";
+                const oldVal = GAME.state[sKey] || 50;
                 GAME.train(sKey);
-                if (typeof switchView === "function") switchView("training");
+                const newVal = GAME.state[sKey] || 50;
+                if (typeof window.switchView === "function") window.switchView("panel-training");
                 if (typeof renderTrainingPanel === "function") renderTrainingPanel();
+                if (typeof showCustomAlert === "function") {
+                    showCustomAlert(`İdman yapıldı: ${sKey.toUpperCase()} (${oldVal} ➔ ${newVal}). Azalan verimler devrede!`, "İDMAN TESTİ", "⚡", "info");
+                }
             }
         };
 
@@ -14526,7 +14585,9 @@ function afterWeekAdvanced() {
             if (!container) return;
             container.innerHTML = "";
 
-            if (!GAME.isTransferWindowActive()) {
+            const isTestActive = (typeof GAME !== "undefined" && GAME.state && GAME.state.isTestTransferWindowActive);
+
+            if (!GAME.isTransferWindowActive() && !isTestActive) {
                 container.innerHTML = `
                     <div class="empty-state glass" style="padding: 24px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; min-height: 250px;">
                         <div style="font-size: 48px; filter: drop-shadow(0 0 10px rgba(0, 230, 118, 0.2));">🔒</div>
@@ -14542,7 +14603,7 @@ function afterWeekAdvanced() {
                 return;
             }
 
-            if (GAME.state.transferredThisWindow) {
+            if (GAME.state.transferredThisWindow && !isTestActive) {
                 const nextWindowText = GAME.state.currentWeek <= 21 ? "37. Hafta (Sezon Sonu Yaz Dönemi)" : "Gelecek Sezon 14. Hafta";
                 container.innerHTML = `
                     <div class="empty-state glass" style="padding: 28px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; min-height: 260px; border: 1.5px solid rgba(16, 185, 129, 0.35); background: linear-gradient(180deg, rgba(16, 185, 129, 0.06) 0%, rgba(13, 19, 31, 0.9) 100%);">
@@ -14564,10 +14625,27 @@ function afterWeekAdvanced() {
                 return;
             }
 
-            let offers = GAME.checkForTransferOffers();
+            let offers = GAME.checkForTransferOffers(isTestActive);
             if (!offers || offers.length === 0) {
                 container.innerHTML = `<div class="empty-state glass">Şu an sizi transfer etmek isteyen kulüp bulunmuyor. Derecenizi yükseltin!</div>`;
                 return;
+            }
+
+            if (isTestActive) {
+                container.innerHTML += `
+                    <div style="margin-bottom: 12px; background: rgba(255, 215, 0, 0.1); border: 1px dashed rgba(255, 215, 0, 0.5); border-radius: 12px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 18px;">🧪</span>
+                            <div>
+                                <div style="font-weight: 900; color: #ffd700; font-size: 12px;">TEST MODU: TRANSFER TEKLİFLERİ AÇIK</div>
+                                <div style="font-size: 10.5px; color: #cbd5e1;">5 kulüpten teklif hazır. İstediğinle görüşme başlatabilirsin.</div>
+                            </div>
+                        </div>
+                        <button onclick="GAME.checkForTransferOffers(true); renderTransferOffers();" style="background: linear-gradient(135deg, #ffd700, #ff9900); color: #000; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 900; font-size: 11px; cursor: pointer; white-space: nowrap;">
+                            🔄 Yenile
+                        </button>
+                    </div>
+                `;
             }
 
             offers.forEach(offer => {
