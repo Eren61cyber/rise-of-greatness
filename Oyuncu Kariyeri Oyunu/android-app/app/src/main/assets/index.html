@@ -487,6 +487,9 @@
                     <span class="save-led"></span>
                     <span>BULUT</span>
                 </div>
+                <button id="btn-promo-test-hub" class="cockpit-icon-btn" onclick="openTestHubModal()" title="🎬 Tanıtım & Test Stüdyosu (Yönetmen Modu)" style="background: rgba(255, 215, 0, 0.12); border: 1px solid rgba(255, 215, 0, 0.4); color: #ffd700;">
+                    <span>🎬</span>
+                </button>
                 <button id="btn-missions-open" class="cockpit-icon-btn" onclick="openMissionsModal()" title="Haftalık Görevler">
                     <span>📋</span>
                     <span id="missions-badge" style="display:none; position:absolute; top:-4px; right:-4px; background:#f5a623; color:#0a0e17; font-size:9px; font-weight:900; min-width:14px; height:14px; border-radius:99px; padding:0 3px; line-height:14px; text-align:center;">0</span>
@@ -1547,6 +1550,22 @@
                         </div>
                     </div>
 
+                    <!-- Group 2.8: Tanıtım & Test Stüdyosu (Yönetmen Modu) -->
+                    <div>
+                        <div style="font-size: 11px; font-weight: bold; color: #ffd700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: space-between;">
+                            <span>🎬 Tanıtım &amp; Test Stüdyosu</span>
+                            <span style="font-size: 9px; font-weight: 800; background: rgba(255,215,0,0.2); color: #ffd700; padding: 2px 6px; border-radius: 4px;">YÖNETMEN MODU</span>
+                        </div>
+                        <div style="background: rgba(255,215,0,0.04); border: 1px solid rgba(255,215,0,0.25); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+                            <div style="font-size: 10.5px; color: #94a3b8; line-height: 1.4;">
+                                Tanıtım filmi ve video kayıtları için tüm sahneleri (Sözleşme, 3D VAR, Garaj, 3D Kupa, Siyah Futbol) tek tıkla test et.
+                            </div>
+                            <button type="button" onclick="document.getElementById('settings-modal').classList.remove('active'); openTestHubModal();" style="background: linear-gradient(135deg, #ffd700 0%, #f59e0b 100%); color: #020617; border: none; padding: 10px; font-size: 12px; font-weight: 900; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 12px rgba(255,215,0,0.25);">
+                                <span>🎬 Test &amp; Tanıtım Stüdyosunu Aç</span>
+                            </button>
+                        </div>
+                    </div>
+
                     <!-- Group 3: Tehlikeli Bölge -->
 
                     <div>
@@ -1563,74 +1582,127 @@
             </div>
         </div>
 
-        <!-- ROG NEW FEATURES TEST HUB MODAL -->
-        <div class="event-modal-overlay" id="rog-test-hub-modal" style="z-index: 10050; display: none; align-items: center; justify-content: center; background: rgba(5,7,10,0.88); backdrop-filter: blur(14px); padding: 16px; overflow-y: auto;">
-            <div class="event-card glass" style="max-width: 420px; max-height: 88vh; overflow-y: auto; padding: 0; background: radial-gradient(circle at 50% 0%, #151d2f 0%, #090c13 100%); border: 1.5px solid rgba(0, 229, 255, 0.45); border-radius: 20px; box-shadow: 0 0 35px rgba(0, 229, 255, 0.25);">
+        <!-- ROG PROMO & TEST STUDIO MODAL (DIRECTOR'S HUB) -->
+        <div class="event-modal-overlay" id="rog-test-hub-modal" style="z-index: 10050; display: none; align-items: center; justify-content: center; background: rgba(3,5,10,0.92); backdrop-filter: blur(14px); padding: 14px; overflow-y: auto;">
+            <div class="event-card glass" style="max-width: 440px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 0; background: radial-gradient(circle at 50% 0%, #172239 0%, #080c14 100%); border: 1.5px solid rgba(255, 215, 0, 0.45); border-radius: 22px; box-shadow: 0 0 45px rgba(255, 215, 0, 0.2), 0 25px 60px rgba(0,0,0,0.9);">
                 
                 <!-- Header -->
-                <div style="background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(255, 215, 0, 0.1)); padding: 18px 20px; border-bottom: 1px solid rgba(0, 229, 255, 0.25); display: flex; align-items: center; justify-content: space-between;">
+                <div style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(0, 229, 255, 0.1)); padding: 16px 20px; border-bottom: 1px solid rgba(255, 215, 0, 0.25); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background-color: #0c1322; z-index: 10;">
                     <div style="text-align: left;">
-                        <span style="font-size: 10px; font-weight: 900; background: linear-gradient(135deg, #00e5ff, #38bdf8); color: #02131e; padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">YENİLİK TEST MERKEZİ</span>
-                        <h2 style="color: #ffffff; font-size: 17px; font-weight: 900; margin: 4px 0 0 0; font-family: var(--font-heading);">Geliştirici &amp; Test Menüsü</h2>
+                        <span style="font-size: 10px; font-weight: 900; background: linear-gradient(135deg, #ffd700, #ff9900); color: #02131e; padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">YÖNETMEN MODU • TANITIM FİLMİ</span>
+                        <h2 style="color: #ffffff; font-size: 17px; font-weight: 900; margin: 4px 0 0 0; font-family: var(--font-heading); display: flex; align-items: center; gap: 6px;">
+                            <span>🎬</span> Test &amp; Tanıtım Stüdyosu
+                        </h2>
                     </div>
-                    <button onclick="closeTestHubModal()" style="background: rgba(255,255,255,0.08); border: none; color: #94a3b8; font-size: 20px; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;">&times;</button>
+                    <button onclick="closeTestHubModal()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; font-size: 18px; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;">&times;</button>
                 </div>
 
-                <!-- Test Actions List -->
-                <div style="padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; text-align: left;">
+                <div style="padding: 16px 18px; display: flex; flex-direction: column; gap: 14px; text-align: left;">
                     
-                    <!-- 1. Transfer Window Modal Test -->
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,215,0,0.3); border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
-                        <div>
-                            <div style="font-weight: 800; color: #ffd700; font-size: 13px;">🔥 1. Transfer Sezonu Bildirimi</div>
-                            <div style="font-size: 10.5px; color: #94a3b8;">Hafta 14 &amp; 37 animasyonlu açılış ekranı.</div>
+                    <!-- BÖLÜM 1: DRAMATİK BAŞLANGIÇ & SÖZLEŞME -->
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+                        <div style="font-size: 11px; font-weight: 900; color: #10b981; letter-spacing: 0.5px; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between;">
+                            <span>📄 1. Dramatik Başlangıç &amp; Sözleşme</span>
+                            <span style="font-size: 9px; font-weight: 700; color: #94a3b8;">Giriş &amp; Altyapı</span>
                         </div>
-                        <button onclick="closeTestHubModal(); testTransferWindowModal();" style="background: linear-gradient(135deg, #ffd700, #ff9900); color: #000; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 900; font-size: 11.5px; cursor: pointer; white-space: nowrap;">
-                            Aç &amp; Gör
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <button onclick="testPromoContract()" style="background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; padding: 10px 8px; border-radius: 8px; font-weight: 800; font-size: 11px; cursor: pointer; text-align: center; box-shadow: 0 2px 10px rgba(16,185,129,0.25);">
+                                📝 Kulüp Teklifleri &amp; İmza
+                            </button>
+                            <button onclick="testPromoTrial()" style="background: linear-gradient(135deg, #00e5b7, #0284c7); color: #02131e; border: none; padding: 10px 8px; border-radius: 8px; font-weight: 900; font-size: 11px; cursor: pointer; text-align: center; box-shadow: 0 2px 10px rgba(0,229,183,0.25);">
+                                🏟️ 3D Altyapı Seçmeleri
+                            </button>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <button onclick="testPromoTefeci()" style="background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff; border: none; padding: 9px 8px; border-radius: 8px; font-weight: 800; font-size: 10.5px; cursor: pointer; text-align: center; box-shadow: 0 2px 10px rgba(239,68,68,0.25);">
+                                💰 Tefeci Rıza &amp; Borç Masası
+                            </button>
+                            <button onclick="testPromoBackstory()" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.2); color: #cbd5e1; padding: 9px 8px; border-radius: 8px; font-weight: 700; font-size: 10.5px; cursor: pointer; text-align: center;">
+                                🌆 Memleketten Zirveye
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- BÖLÜM 2: MAÇ İÇİ AKSİYON & 3D VAR İNCELEMESİ -->
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+                        <div style="font-size: 11px; font-weight: 900; color: #00e5ff; letter-spacing: 0.5px; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between;">
+                            <span>⚽ 2. Maç İçi Aksiyon &amp; 3D VAR</span>
+                            <span style="font-size: 9px; font-weight: 700; color: #94a3b8;">Heyecan Anı</span>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <button onclick="testPromoVarOffside()" style="background: linear-gradient(135deg, #00e5ff, #0284c7); color: #02131e; border: none; padding: 10px 8px; border-radius: 8px; font-weight: 900; font-size: 11px; cursor: pointer; text-align: center; box-shadow: 0 2px 10px rgba(0,229,255,0.25);">
+                                📺 3D UEFA VAR (Ofsayt)
+                            </button>
+                            <button onclick="testPromoVarPenalty()" style="background: linear-gradient(135deg, #38bdf8, #0369a1); color: #fff; border: none; padding: 10px 8px; border-radius: 8px; font-weight: 800; font-size: 11px; cursor: pointer; text-align: center; box-shadow: 0 2px 10px rgba(56,189,248,0.25);">
+                                🚨 3D VAR (Penaltı)
+                            </button>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <button onclick="testPromoNssFrikik()" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #020617; border: none; padding: 9px 8px; border-radius: 8px; font-weight: 800; font-size: 10.5px; cursor: pointer; text-align: center; box-shadow: 0 2px 10px rgba(245,158,11,0.25);">
+                                🎯 NSS Frikik Şut Mekaniği
+                            </button>
+                            <button onclick="testPromoNssPenalty()" style="background: linear-gradient(135deg, #10b981, #059669); color: #020617; border: none; padding: 9px 8px; border-radius: 8px; font-weight: 800; font-size: 10.5px; cursor: pointer; text-align: center; box-shadow: 0 2px 10px rgba(16,185,129,0.25);">
+                                ⚽ NSS Penaltı Kapışması
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- BÖLÜM 3: SÜPERSTAR GARAJI / SPOR ARABA -->
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(244, 63, 94, 0.3); border-radius: 14px; padding: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                        <div>
+                            <div style="font-weight: 900; color: #f43f5e; font-size: 12px; text-transform: uppercase;">🏎️ 3. Süperstar Garajı &amp; Arabalar</div>
+                            <div style="font-size: 10px; color: #94a3b8;">Ferrari, Lambo, Porsche + Egzoz gaza basma &amp; plaka.</div>
+                        </div>
+                        <button onclick="testPromoGarage()" style="background: linear-gradient(135deg, #f43f5e, #be123c); color: #fff; border: none; padding: 10px 14px; border-radius: 8px; font-weight: 900; font-size: 11.5px; cursor: pointer; white-space: nowrap; box-shadow: 0 2px 12px rgba(244,63,94,0.3);">
+                            Garajı Aç ➔
                         </button>
                     </div>
 
-                    <!-- 2. Direct Transfer Offers View Test -->
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,215,0,0.3); border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
-                        <div>
-                            <div style="font-weight: 800; color: #ffd700; font-size: 13px;">📋 2. Gelen Transfer Teklifleri</div>
-                            <div style="font-size: 10.5px; color: #94a3b8;">5 kulüpten teklif üret ve görüşmeleri başlat.</div>
+                    <!-- BÖLÜM 4: 3D KUPA MÜZESİ & BALLON D'OR -->
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255, 215, 0, 0.35); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+                        <div style="font-size: 11px; font-weight: 900; color: #ffd700; letter-spacing: 0.5px; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between;">
+                            <span>🏆 4. 3D Kupa Müzesi &amp; Ballon d'Or</span>
+                            <span style="font-size: 9px; font-weight: 700; color: #94a3b8;">360° Şeref Salonu</span>
                         </div>
-                        <button onclick="closeTestHubModal(); goToTransferOffersFromModal();" style="background: linear-gradient(135deg, #ffd700, #ff9900); color: #000; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 900; font-size: 11.5px; cursor: pointer; white-space: nowrap;">
-                            Teklifleri Gör
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <button onclick="testPromoTrophyMuseum()" style="background: linear-gradient(135deg, #ffd700, #ff9900); color: #000; border: none; padding: 10px 8px; border-radius: 8px; font-weight: 900; font-size: 11px; cursor: pointer; text-align: center; box-shadow: 0 2px 12px rgba(255,215,0,0.3);">
+                                🏛️ 3D Kupa Şeref Salonu
+                            </button>
+                            <button onclick="testPromoBallonDorCinematic()" style="background: linear-gradient(135deg, #f59e0b, #b45309); color: #fff; border: none; padding: 10px 8px; border-radius: 8px; font-weight: 900; font-size: 11px; cursor: pointer; text-align: center; box-shadow: 0 2px 12px rgba(245,158,11,0.25);">
+                                🌟 Ballon d'Or Hedefi
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- BÖLÜM 5: KRAMPON ATÖLYESİ, SİYAH FUTBOL & BASIN -->
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+                        <div style="font-size: 11px; font-weight: 900; color: #c084fc; letter-spacing: 0.5px; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between;">
+                            <span>👟 &amp; 🎙️ 5. Krampon Atölyesi &amp; Medya</span>
+                            <span style="font-size: 9px; font-weight: 700; color: #94a3b8;">Stüdyo &amp; Basın</span>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <button onclick="testPromoBootCustomizer()" style="background: linear-gradient(135deg, #00e5b7, #059669); color: #02131e; border: none; padding: 10px 8px; border-radius: 8px; font-weight: 900; font-size: 11px; cursor: pointer; text-align: center; box-shadow: 0 2px 10px rgba(0,229,183,0.25);">
+                                👟 Krampon Atölyesi
+                            </button>
+                            <button onclick="testPromoSiyahFutbol()" style="background: linear-gradient(135deg, #a855f7, #6b21a8); color: #fff; border: none; padding: 10px 8px; border-radius: 8px; font-weight: 900; font-size: 11px; cursor: pointer; text-align: center; box-shadow: 0 2px 10px rgba(168,85,247,0.3);">
+                                📺 Siyah Futbol Masası
+                            </button>
+                        </div>
+                        <button onclick="testPromoPressInterview()" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(192, 132, 252, 0.4); color: #e9d5ff; padding: 9px 8px; border-radius: 8px; font-weight: 800; font-size: 11px; cursor: pointer; text-align: center;">
+                            🎙️ Canlı Flash Röportaj &amp; Basın Odası
                         </button>
                     </div>
 
-                    <!-- 3. Diminishing Returns Training Test -->
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(16,185,129,0.3); border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
-                        <div>
-                            <div style="font-weight: 800; color: #10b981; font-size: 13px;">⚡ 3. İdman Stat Gelişimi</div>
-                            <div style="font-size: 10.5px; color: #94a3b8;">Azalan verimler (1/2, 1/3 ilerleme) testi.</div>
-                        </div>
-                        <button onclick="closeTestHubModal(); testTrainingProgression();" style="background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 900; font-size: 11.5px; cursor: pointer; white-space: nowrap;">
-                            İdman Yap
+                    <!-- DİĞER HIZLI TESTLER -->
+                    <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 10px; display: flex; justify-content: space-between; gap: 8px;">
+                        <button onclick="testJumpToWeek(14)" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #94a3b8; padding: 8px; border-radius: 6px; font-size: 10px; font-weight: 700; cursor: pointer;">
+                            ⏩ 14. Hafta (Transfer)
                         </button>
-                    </div>
-
-                    <!-- 4. Card Pack Anti-99 Cap Test -->
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(56,189,248,0.3); border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
-                        <div>
-                            <div style="font-weight: 800; color: #38bdf8; font-size: 13px;">🃏 4. Kart Paketi &amp; Anti-99</div>
-                            <div style="font-size: 10.5px; color: #94a3b8;">85+ stat engeli &amp; +25k € telafi primi.</div>
-                        </div>
-                        <button onclick="closeTestHubModal(); testCardPackBuff();" style="background: linear-gradient(135deg, #38bdf8, #0284c7); color: #000; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 900; font-size: 11.5px; cursor: pointer; white-space: nowrap;">
-                            Kart Test Et
+                        <button onclick="testTransferWindowModal()" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #94a3b8; padding: 8px; border-radius: 6px; font-size: 10px; font-weight: 700; cursor: pointer;">
+                            🔥 Transfer Ekranı
                         </button>
-                    </div>
-
-                    <!-- 5. Fast Forward to Week 14 (Ara Transfer) -->
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(244,63,94,0.3); border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
-                        <div>
-                            <div style="font-weight: 800; color: #f43f5e; font-size: 13px;">⏩ 5. 14. Haftaya Işınlan</div>
-                            <div style="font-size: 10.5px; color: #94a3b8;">Ara transfer haftasına geç ve bildirimi canlı yaşa.</div>
-                        </div>
-                        <button onclick="closeTestHubModal(); testJumpToWeek(14);" style="background: linear-gradient(135deg, #f43f5e, #be123c); color: #fff; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 900; font-size: 11.5px; cursor: pointer; white-space: nowrap;">
-                            14. Haftaya Git
+                        <button onclick="testCardPackBuff()" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #94a3b8; padding: 8px; border-radius: 6px; font-size: 10px; font-weight: 700; cursor: pointer;">
+                            🃏 Kart Paketi
                         </button>
                     </div>
 
@@ -1895,9 +1967,12 @@
         <!-- INTRO & TRIAL MODAL (7-SCENE STORY-DRIVEN WIZARD) -->
         <div class="event-modal-overlay" id="intro-modal" style="position: fixed; inset: 0; background: rgba(4, 7, 13, 0.94); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 10000; overflow-y: auto; padding: 20px 12px; display: none; align-items: center; justify-content: center;">
             <div class="event-card glass" id="intro-card" style="max-width: 520px; width: 100%; text-align: center; border: 1px solid rgba(255, 215, 0, 0.2); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(0, 229, 183, 0.08); border-radius: 24px; padding: 28px 24px; margin: auto; background: #0c121e; position: relative;">
+                
+                <!-- Quick Close Button for Video / Test Recording -->
+                <button onclick="document.getElementById('intro-modal').style.display='none'; document.getElementById('intro-modal').classList.remove('active');" style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #cbd5e1; font-size: 18px; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 100;" title="Kapat">&times;</button>
 
                 <!-- Progress Header: Dots + Minimal Step Counter -->
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-right: 36px;">
                     <!-- Progress Indicator Dots -->
                     <div id="intro-progress-bar" style="display: flex; align-items: center; gap: 6px;">
                         <div class="intro-dot active" data-step="goal" style="width: 24px; height: 4px; border-radius: 2px; background: #00e5b7; transition: all 0.3s ease;"></div>
@@ -10582,6 +10657,193 @@
             }
         };
 
+        // ══════════════════════════════════════════════════════
+        // 🎬 VİTRİN & TANITIM STÜDYOSU (YÖNETMEN TEST FONKSİYONLARI)
+        // ══════════════════════════════════════════════════════
+        
+        // 1.1 Resmi Kulüp Sözleşmesi & İmza Töreni
+        window.testPromoContract = function() {
+            window.closeTestHubModal();
+            const introModal = document.getElementById('intro-modal');
+            if (introModal) {
+                introModal.style.display = 'flex';
+                introModal.classList.add('active');
+            }
+            if (typeof trialScore === 'undefined' || trialScore === 0) {
+                trialScore = 4;
+            }
+            if (typeof renderThreeClubOffers === 'function') {
+                renderThreeClubOffers();
+            }
+            if (typeof goToIntroStep === 'function') {
+                goToIntroStep('contract');
+            }
+            if (typeof SoundManager !== 'undefined' && typeof SoundManager.playConsoleTab === 'function') {
+                SoundManager.playConsoleTab();
+            }
+        };
+
+        // 1.2 Altyapı Seçmeleri (3D Taktik Mini Saha)
+        window.testPromoTrial = function() {
+            window.closeTestHubModal();
+            const introModal = document.getElementById('intro-modal');
+            if (introModal) {
+                introModal.style.display = 'flex';
+                introModal.classList.add('active');
+            }
+            if (typeof goToIntroStep === 'function') {
+                goToIntroStep('trial');
+            }
+            if (typeof SoundManager !== 'undefined' && typeof SoundManager.playWhistle === 'function') {
+                SoundManager.playWhistle('single');
+            }
+        };
+
+        // 1.3 Tefeci Rıza & Yeraltı Borç Masası
+        window.testPromoTefeci = function() {
+            window.closeTestHubModal();
+            if (typeof GAME !== 'undefined' && GAME.state) {
+                if (!GAME.state.tefeciBorc || GAME.state.tefeciBorc === 0) {
+                    GAME.state.tefeciBorc = 150000;
+                    GAME.state.tefeciHaftalikGeriOdeme = 18750;
+                }
+            }
+            if (typeof window.switchView === 'function') {
+                window.switchView('panel-social');
+            }
+            if (typeof switchSocialSubTab === 'function') {
+                switchSocialSubTab('tefeci');
+            }
+            if (typeof renderTefeciPanel === 'function') {
+                renderTefeciPanel();
+            }
+            if (typeof SoundManager !== 'undefined' && typeof SoundManager.playConsoleClick === 'function') {
+                SoundManager.playConsoleClick();
+            }
+        };
+
+        // 1.4 Memleketten Zirveye (Hikaye & Hayal)
+        window.testPromoBackstory = function() {
+            window.closeTestHubModal();
+            const introModal = document.getElementById('intro-modal');
+            if (introModal) {
+                introModal.style.display = 'flex';
+                introModal.classList.add('active');
+            }
+            if (typeof goToIntroStep === 'function') {
+                goToIntroStep('backstory');
+            }
+            if (typeof startStoryTypewriter === 'function') {
+                startStoryTypewriter();
+            }
+            if (typeof SoundManager !== 'undefined' && typeof SoundManager.playConsoleTab === 'function') {
+                SoundManager.playConsoleTab();
+            }
+        };
+
+        // 2.1 3D UEFA VAR İncelemesi (Ofsayt)
+        window.testPromoVarOffside = function() {
+            window.closeTestHubModal();
+            if (typeof window.triggerVarReview === 'function') {
+                window.triggerVarReview('offside', (isSuccess) => {
+                    console.log('VAR ofsayt incelemesi tamamlandı:', isSuccess);
+                });
+            }
+        };
+
+        // 2.2 3D UEFA VAR İncelemesi (Penaltı)
+        window.testPromoVarPenalty = function() {
+            window.closeTestHubModal();
+            if (typeof window.triggerVarReview === 'function') {
+                window.triggerVarReview('penalty', (isSuccess) => {
+                    console.log('VAR penaltı incelemesi tamamlandı:', isSuccess);
+                });
+            }
+        };
+
+        // 2.3 NSS Frikik Şut Mekaniği
+        window.testPromoNssFrikik = function() {
+            window.closeTestHubModal();
+            if (typeof openNssDuel === 'function') {
+                openNssDuel('freekick', true);
+            }
+        };
+
+        // 2.4 NSS Penaltı Kapışması
+        window.testPromoNssPenalty = function() {
+            window.closeTestHubModal();
+            if (typeof openNssDuel === 'function') {
+                openNssDuel('penalty', true);
+            }
+        };
+
+        // 3.1 3D Süperstar Garajı & Spor Araba
+        window.testPromoGarage = function() {
+            window.closeTestHubModal();
+            if (typeof GAME !== 'undefined' && GAME.state) {
+                if (!GAME.state.ownedCars || GAME.state.ownedCars.length === 0) {
+                    GAME.state.ownedCars = ['ferrari', 'lambo', 'gwagon'];
+                }
+            }
+            if (typeof openGarageShowroom === 'function') {
+                openGarageShowroom();
+            }
+        };
+
+        // 4.1 3D WebGL Kupa Şeref Salonu (360° İnceleme)
+        window.testPromoTrophyMuseum = function() {
+            window.closeTestHubModal();
+            if (typeof testTrophyMuseum === 'function') {
+                testTrophyMuseum();
+            } else if (typeof openTrophyInspector === 'function') {
+                openTrophyInspector(0);
+            }
+        };
+
+        // 4.2 Ballon d'Or Hedefi & Altın Heykel
+        window.testPromoBallonDorCinematic = function() {
+            window.closeTestHubModal();
+            const introModal = document.getElementById('intro-modal');
+            if (introModal) {
+                introModal.style.display = 'flex';
+                introModal.classList.add('active');
+            }
+            if (typeof goToIntroStep === 'function') {
+                goToIntroStep('goal');
+            }
+            if (typeof SoundManager !== 'undefined' && typeof SoundManager.playConsoleTab === 'function') {
+                SoundManager.playConsoleTab();
+            }
+        };
+
+        // 5.1 Özel Krampon Atölyesi (Signature Lab)
+        window.testPromoBootCustomizer = function() {
+            window.closeTestHubModal();
+            if (typeof openBootCustomizer === 'function') {
+                openBootCustomizer();
+            }
+        };
+
+        // 5.2 Siyah Futbol Canlı Prime-Time Masası
+        window.testPromoSiyahFutbol = function() {
+            window.closeTestHubModal();
+            if (typeof showSiyahFutbolModal === 'function') {
+                showSiyahFutbolModal({ performanceRating: 9.9, goals: 3, assists: 1 }, () => {
+                    console.log('Siyah Futbol masasından ayrılındı.');
+                });
+            }
+        };
+
+        // 5.3 Canlı Flash Röportaj & Basın Odası
+        window.testPromoPressInterview = function() {
+            window.closeTestHubModal();
+            if (typeof openInterviewModal === 'function') {
+                openInterviewModal(9.8, 3, 1, () => {
+                    console.log('Basın toplantısı tamamlandı.');
+                });
+            }
+        };
+
         window.testTrainingProgression = function() {
             if (typeof GAME !== "undefined" && GAME.state) {
                 const sKey = (GAME.state.position === "Defans") ? "defense" : "shooting";
@@ -12887,8 +13149,16 @@ function afterWeekAdvanced() {
         }
 
         function renderInspectCurrentTrophy() {
-            const trophies = GAME.state.trophies || [];
-            if (trophies.length === 0) return;
+            let trophies = (GAME && GAME.state && GAME.state.trophies) ? GAME.state.trophies : [];
+            if (trophies.length === 0) {
+                trophies = [
+                    { id: "ballon_or", name: "Ballon d'Or (Altın Top)", year: 2028, club: "Real Madrid", apps: 42, goals: 38, assists: 19, ovr: 91 },
+                    { id: "champions_league", name: "UEFA Şampiyonlar Ligi", year: 2028, club: "Real Madrid", apps: 13, goals: 12, assists: 7, ovr: 91 },
+                    { id: "super_lig", name: "Süper Lig Şampiyonluğu", year: 2027, club: "Galatasaray", apps: 36, goals: 31, assists: 15, ovr: 86 },
+                    { id: "turkiye_kupasi", name: "Ziraat Türkiye Kupası", year: 2027, club: "Galatasaray", apps: 6, goals: 5, assists: 4, ovr: 86 }
+                ];
+                if (GAME && GAME.state) GAME.state.trophies = trophies;
+            }
 
             if (inspectActiveTrophyIndex < 0) inspectActiveTrophyIndex = trophies.length - 1;
             if (inspectActiveTrophyIndex >= trophies.length) inspectActiveTrophyIndex = 0;

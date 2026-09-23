@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Rise of Greatness - Viral Dikey Tanıtım Animasyonu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Rajdhani:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background: #06080d;
+      font-family: 'Outfit', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    /* Üst Kontrol Çubuğu */
+    .top-controls {
+      position: fixed;
+      top: 12px;
+      z-index: 9999;
+      display: flex;
+      gap: 10px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      padding: 8px 16px;
+      border-radius: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .ctrl-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #e2e8f0;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .ctrl-btn:hover, .ctrl-btn.active {
+      background: #f5a623;
+      color: #000;
+      border-color: #f5a623;
+      transform: translateY(-1px);
+    }
+
+    /* 9:16 Dikey Mobil Sahne Çerçevesi */
+    #phone-wrapper {
+      position: relative;
+      width: 420px;
+      height: 746px; /* 9:16 approx standard preview */
+      max-height: 90vh;
+      border-radius: 36px;
+      overflow: hidden;
+      box-shadow: 0 0 60px rgba(245, 166, 35, 0.2), 0 20px 50px rgba(0,0,0,0.9);
+      border: 3px solid rgba(255, 255, 255, 0.15);
+      background: #000;
+      transform-origin: center center;
+    }
+
+    @media (max-height: 820px) {
+      #phone-wrapper {
+        width: 360px;
+        height: 640px;
+      }
+    }
+
+    #stage {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: #0b0f19;
+    }
+
+    /* Flash Efekti */
+    #flash {
+      position: absolute;
+      inset: 0;
+      background: #fff;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 8000;
+      transition: opacity 0.1s ease;
+    }
+
+    /* İlerleme Çubuğu (TikTok Story Bar Stili) */
+    .story-bars {
+      position: absolute;
+      top: 14px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      gap: 5px;
+      z-index: 5000;
+    }
+
+    .bar-seg {
+      flex: 1;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      width: 0%;
+      background: #fff;
+      border-radius: 3px;
+      transition: width linear;
+    }
+
+    /* TikTok UI Mockup Overlay */
+    .tiktok-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4500;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 50px 16px 20px;
+    }
+
+    .tiktok-overlay.visible {
+      display: flex;
+    }
+
+    .tt-right-sidebar {
+      position: absolute;
+      right: 12px;
+      bottom: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .tt-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 24px;
+      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.8));
+    }
+
+    .tt-count {
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .tt-bottom-info {
+      position: absolute;
+      left: 14px;
+      bottom: 24px;
+      max-width: 75%;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.9));
+    }
+
+    .tt-username {
+      font-weight: 800;
+      font-size: 14px;
+      margin-bottom: 4px;
+      color: #00e5ff;
+    }
+
+    .tt-caption {
+      font-size: 12px;
+      line-height: 1.35;
+      color: rgba(255,255,255,0.9);
+    }
+
+    /* Sahneler Temel Yapısı */
+    .scene {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 20px;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.96);
+      transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 10;
+      text-align: center;
+    }
+
+    .scene.active {
+      opacity: 1;
+      pointer-events: all;
+      transform: scale(1);
+    }
+
+    /* Partiküller / Işık Efektleri */
+    .glow-circle {
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.35;
+      z-index: 1;
+      pointer-events: none;
+      animation: pulseGlow 4s infinite alternate ease-in-out;
+    }
+
+    @keyframes pulseGlow {
+      0% { transform: scale(0.85); opacity: 0.25; }
+      100% { transform: scale(1.15); opacity: 0.45; }
+    }
+
+    /* ──────── SAHNE 1: HOOK (3. LİG'DEN ZİRVEYE) ──────── */
+    #scene-1 {
+      background: radial-gradient(circle at 50% 40%, #1e112a 0%, #08030f 100%);
+    }
+
+    .hook-badge {
+      background: rgba(239, 68, 68, 0.25);
+      border: 1px solid #ef4444;
+      color: #ff6b6b;
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      animation: badgeBlink 1s infinite alternate;
+      z-index: 2;
+    }
+
+    @keyframes badgeBlink {
+      from { box-shadow: 0 0 10px rgba(239,68,68,0.3); }
+      to { box-shadow: 0 0 25px rgba(239,68,68,0.8); }
+    }
+
+    .hook-title {
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      z-index: 2;
+      text-transform: uppercase;
+    }
+
+    .hook-title span {
+      background: linear-gradient(135deg, #f5a623, #ff3366);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .debt-card {
+      width: 88%;
+      background: rgba(20, 15, 30, 0.75);
+      border: 1px solid rgba(255, 75, 75, 0.35);
+      border-radius: 20px;
+      padding: 16px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+      margin-bottom: 24px;
+      z-index: 2;
+      animation: shakeCard 2.5s infinite ease-in-out;
+    }
+
+    @keyframes shakeCard {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      20% { transform: translateY(-3px) rotate(-1deg); }
+      40% { transform: translateY(3px) rotate(1deg); }
+    }
+
+    .debt-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: #94a3b8;
+      margin-bottom: 8px;
+    }
+
+    .debt-val {
+      font-weight: 800;
+      color: #ef4444;
+      font-size: 15px;
+    }
+
+    .stamp-haciz {
+      display: inline-block;
+      border: 3px solid #ef4444;
+      color: #ef4444;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 26px;
+      font-weight: 900;
+      padding: 4px 18px;
+      letter-spacing: 4px;
+      border-radius: 8px;
+      transform: rotate(-10deg) scale(0);
+      margin-top: 6px;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .stamp-haciz.stamped {
+      transform: rotate(-10deg) scale(1);
+    }
+
+    .hook-tagline {
+      font-size: 14px;
+      color: #cbd5e1;
+      font-weight: 600;
+      z-index: 2;
+      background: rgba(0,0,0,0.4);
+      padding: 8px 16px;
+      border-radius: 30px;
+    }
+
+    /* ──────── SAHNE 2: MAÇ VE 3D VAR SİSTEMİ ──────── */
+    #scene-2 {
+      background: radial-gradient(circle at 50% 30%, #0a2916 0%, #030f08 100%);
+    }
+
+    .match-min {
+      background: #00ff87;
+      color: #000;
+      font-weight: 900;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      margin-bottom: 12px;
+      z-index: 2;
+    }
+
+    .match-header {
+      font-size: 28px;
+      font-weight: 900;
+      margin-bottom: 18px;
+      z-index: 2;
+    }
+
+    /* VAR Monitörü Kutusu */
+    .var-monitor-box {
+      width: 90%;
+      background: #111827;
+      border: 2px solid #00e5ff;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 0 35px rgba(0, 229, 255, 0.3);
+      z-index: 2;
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .var-topbar {
+      background: #00e5ff;
+      color: #000;
+      font-weight: 900;
+      font-size: 11px;
+      letter-spacing: 2px;
+      padding: 4px;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .var-screen {
+      position: relative;
+      height: 200px;
+      background: #050a12;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .var-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.85;
+    }
+
+    .var-lines {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, rgba(0, 229, 255, 0.08) 0px, rgba(0, 229, 255, 0.08) 2px, transparent 2px, transparent 4px);
+      pointer-events: none;
+    }
+
+    .var-calibrating {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 11px;
+      color: #00ff87;
+      background: rgba(0,0,0,0.7);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .var-decision {
+      margin-top: 12px;
+      font-size: 24px;
+      font-weight: 900;
+      color: #00ff87;
+      text-shadow: 0 0 20px rgba(0, 255, 135, 0.8);
+      z-index: 2;
+      opacity: 0;
+      transform: scale(0.6);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .var-decision.show {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    /* ──────── SAHNE 3: SÜPERSTAR GARAJI & YAŞAM ──────── */
+    #scene-3 {
+      background: radial-gradient(circle at 50% 30%, #1e1b4b 0%, #060517 100%);
+    }
+
+    .garage-title {
+      font-size: 30px;
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 14px;
+      z-index: 2;
+    }
+
+    .garage-title span {
+      color: #fdb913;
+    }
+
+    .car-container {
+      width: 92%;
+      border-radius: 20px;
+      border: 1px solid rgba(253, 185, 19, 0.4);
+      background: rgba(15, 12, 35, 0.7);
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(253, 185, 19, 0.15);
+      margin-bottom: 16px;
+      z-index: 2;
+    }
+
+    .car-container img {
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .rev-meter {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: rgba(0,0,0,0.6);
+    }
+
+    .rev-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #94a3b8;
+    }
+
+    .rev-val {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 18px;
+      font-weight: 900;
+      color: #fdb913;
+    }
+
+    .garage-features {
+      display: flex;
+      gap: 8px;
+      width: 92%;
+      z-index: 2;
+    }
+
+    .g-feat {
+      flex: 1;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 10px 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+
+    /* ──────── SAHNE 4: 3D KUPA & BALLON D'OR ──────── */
+    #scene-4 {
+      background: radial-gradient(circle at 50% 30%, #312306 0%, #0d0901 100%);
+    }
+
+    .trophy-badge {
+      background: rgba(245, 166, 35, 0.2);
+      border: 1px solid #f5a623;
+      color: #f5a623;
+      padding: 5px 14px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+      z-index: 2;
+    }
+
+    .trophy-heading {
+      font-size: 32px;
+      font-weight: 900;
+      margin-bottom: 14px;
+      z-index: 2;
+      background: linear-gradient(135deg, #fff, #f5a623);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .trophy-image-box {
+      width: 90%;
+      height: 220px;
+      border-radius: 24px;
+      border: 2px solid rgba(245, 166, 35, 0.5);
+      background: rgba(20, 15, 5, 0.7);
+      box-shadow: 0 0 50px rgba(245, 166, 35, 0.35);
+      overflow: hidden;
+      margin-bottom: 16px;
+      z-index: 2;
+    }
+
+    .trophy-image-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .confetti-area {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      width: 8px;
+      height: 12px;
+      background: #f5a623;
+      animation: dropConfetti 2.5s infinite linear;
+    }
+
+    @keyframes dropConfetti {
+      0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(750px) rotate(720deg); opacity: 0; }
+    }
+
+    /* ──────── SAHNE 5: OUTRO (HEMEN İNDİR) ──────── */
+    #scene-5 {
+      background: radial-gradient(circle at 50% 30%, #0d1b2a 0%, #050a10 100%);
+    }
+
+    .game-logo-large {
+      width: 130px;
+      height: 130px;
+      border-radius: 30px;
+      box-shadow: 0 0 45px rgba(0, 229, 255, 0.4);
+      margin-bottom: 20px;
+      z-index: 2;
+      animation: pulseLogo 2s infinite ease-in-out;
+    }
+
+    @keyframes pulseLogo {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(0, 229, 255, 0.4); }
+      50% { transform: scale(1.06); box-shadow: 0 0 65px rgba(0, 229, 255, 0.8); }
+    }
+
+    .outro-title {
+      font-size: 28px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 8px;
+      z-index: 2;
+    }
+
+    .outro-sub {
+      font-size: 14px;
+      color: #94a3b8;
+      max-width: 80%;
+      margin-bottom: 24px;
+      line-height: 1.4;
+      z-index: 2;
+    }
+
+    .playstore-button {
+      background: linear-gradient(135deg, #00e5ff, #00ff87);
+      color: #000;
+      font-size: 16px;
+      font-weight: 900;
+      padding: 14px 34px;
+      border-radius: 50px;
+      box-shadow: 0 10px 35px rgba(0, 255, 135, 0.4);
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      animation: ctaBounce 1.5s infinite;
+      text-decoration: none;
+    }
+
+    @keyframes ctaBounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .stars-row {
+      display: flex;
+      gap: 4px;
+      color: #f5a623;
+      font-size: 18px;
+      margin-top: 16px;
+      z-index: 2;
+    }
+
+    .stars-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.7);
+      margin-top: 6px;
+      z-index: 2;
+      font-weight: 600;
+    }
+
+    /* Başlangıç Başlat Butonu Overlay */
+    #start-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(6, 8, 13, 0.92);
+      backdrop-filter: blur(12px);
+      z-index: 9000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .start-big-btn {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f5a623, #ff3366);
+      border: none;
+      color: #fff;
+      font-size: 36px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 50px rgba(245, 166, 35, 0.6);
+      transition: all 0.3s ease;
+      animation: startPulse 1.6s infinite;
+    }
+
+    @keyframes startPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); box-shadow: 0 0 70px rgba(245, 166, 35, 0.9); }
+    }
+
+    .countdown-text {
+      font-size: 64px;
+      font-weight: 900;
+      color: #00e5ff;
+      display: none;
+      animation: countPop 0.6s ease;
+    }
+
+    @keyframes countPop {
+      0% { transform: scale(0.3); opacity: 0; }
+      70% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Kontrol Barı -->
+  <div class="top-controls">
+    <button class="ctrl-btn" id="btn-play-pause">
+      <span>▶️</span> Başlat / Yeniden Oynat
+    </button>
+    <button class="ctrl-btn" id="btn-toggle-ui">
+      <span>📱</span> TikTok UI Göster/Gizle
+    </button>
+    <button class="ctrl-btn" id="btn-mute">
+      <span>🔊</span> Ses Açık
+    </button>
+  </div>
+
+  <!-- Telefon Mockup Çerçevesi -->
+  <div id="phone-wrapper">
+    <div id="stage">
+      <div id="flash"></div>
+
+      <!-- TikTok Story Progress Bar -->
+      <div class="story-bars">
+        <div class="bar-seg"><div class="bar-fill" id="fill-0"></div></div>
+        <div class="bar-seg"><div class="bar-fill" id="fill-1"></div></div>
+        <div class="bar-seg"><div class="bar-fill" id="fill-2"></div></div>
+        <div class="bar-seg"><div class="bar-fill" id="fill-3"></div></div>
+        <div class="bar-seg"><div class="bar-fill" id="fill-4"></div></div>
+      </div>
+
+      <!-- TikTok UI Overlay (İsteğe bağlı) -->
+      <div class="tiktok-overlay" id="tiktok-overlay">
+        <div></div>
+        <div class="tt-right-sidebar">
+          <div class="tt-icon">
+            <span style="color:#ff3366;">❤️</span>
+            <span class="tt-count">48.2K</span>
+          </div>
+          <div class="tt-icon">
+            <span>💬</span>
+            <span class="tt-count">1,240</span>
+          </div>
+          <div class="tt-icon">
+            <span>🔖</span>
+            <span class="tt-count">9,812</span>
+          </div>
+          <div class="tt-icon">
+            <span>↗️</span>
+            <span class="tt-count">Paylaş</span>
+          </div>
+        </div>
+        <div class="tt-bottom-info">
+          <div class="tt-username">@riseofgreatness.game</div>
+          <div class="tt-caption">NSS severler ağlıyor, Türk usulü 3D futbolcu kariyeri çıkmış! 😱⚽ #futbol #oyun #kariyer #keşfet</div>
+        </div>
+      </div>
+
+      <!-- SAHNE 1: HOOK (3. LİG & HACİZ) -->
+      <div class="scene" id="scene-0">
+        <div class="glow-circle" style="background:#ef4444; top:10%;"></div>
+        <div class="hook-badge">⚠️ KARİYER BAŞLANGICI</div>
+        <h1 class="hook-title">HAYALLER <span>BALLON D'OR</span><br>GERÇEKLER <span>3. LİG</span></h1>
+        
+        <div class="debt-card">
+          <div class="debt-row">
+            <span>Kulüp:</span>
+            <b style="color:#fff;">Yozgat 1959 FK</b>
+          </div>
+          <div class="debt-row">
+            <span>Haftalık Maaş:</span>
+            <b style="color:#4ade80;">1.250 ₺</b>
+          </div>
+          <div class="debt-row">
+            <span>Baba Evinin Borcu:</span>
+            <span class="debt-val">-480.000 ₺</span>
+          </div>
+          <div class="stamp-haciz" id="stamp-haciz">HACİZLİ!</div>
+        </div>
+
+        <div class="hook-tagline">🔥 Kendi Efsaneni Sıfırdan Yaz</div>
+      </div>
+
+      <!-- SAHNE 2: MAÇ & VAR SİSTEMİ -->
+      <div class="scene" id="scene-1">
+        <div class="glow-circle" style="background:#00ff87; top:20%;"></div>
+        <div class="match-min">⏱️ 90+4 DERBİ MAÇI</div>
+        <h2 class="match-header">HAKEM VAR'A GİDİYOR! 📺</h2>
+
+        <div class="var-monitor-box">
+          <div class="var-topbar">
+            <span>● CANLI VAR İNCELEMESİ</span>
+          </div>
+          <div class="var-screen">
+            <img src="reklam_assets/gplay_screenshot_5.png" alt="VAR Screen" onerror="this.src='store_assets/screenshot_5_var.png'">
+            <div class="var-lines"></div>
+            <div class="var-calibrating">OFSAYT ÇİZGİSİ ÇEKİLİYOR...</div>
+          </div>
+        </div>
+
+        <div class="var-decision" id="var-decision">
+          ⚽ GOL GEÇERLİ! 🚀
+        </div>
+      </div>
+
+      <!-- SAHNE 3: LÜKS GARAJ & KRAMPON ATÖLYESİ -->
+      <div class="scene" id="scene-2">
+        <div class="glow-circle" style="background:#fdb913; top:15%;"></div>
+        <h2 class="garage-title">SÜPERSTAR <span>GARAJI</span> &<br>İMZA KRAMPONLAR 👟</h2>
+
+        <div class="car-container">
+          <img src="reklam_assets/gplay_screenshot_3.png" alt="Garage" onerror="this.src='store_assets/screenshot_3_garage.png'">
+          <div class="rev-meter">
+            <span class="rev-label">DEVİR: 8500 RPM (V12)</span>
+            <span class="rev-val">🔊 FERRARI 812</span>
+          </div>
+        </div>
+
+        <div class="garage-features">
+          <div class="g-feat">🏎️ 5+ Süper Araba</div>
+          <div class="g-feat">🎨 Özel Krampon Tasarla</div>
+          <div class="g-feat">🏢 Penthouse Pazarlık</div>
+        </div>
+      </div>
+
+      <!-- SAHNE 4: 3D KUPA & BALLON D'OR -->
+      <div class="scene" id="scene-3">
+        <div class="glow-circle" style="background:#f5a623; top:25%;"></div>
+        <div class="confetti-area" id="confetti-container"></div>
+        <div class="trophy-badge">🏆 3D KUPA MÜZESİ</div>
+        <h2 class="trophy-heading">DÜNYANIN EN İYİSİ OLDUN!</h2>
+
+        <div class="trophy-image-box">
+          <img src="reklam_assets/gplay_screenshot_2.png" alt="Ballon d'Or" onerror="this.src='store_assets/screenshot_2_trophy_museum.png'">
+        </div>
+
+        <div class="hook-tagline" style="border: 1px solid rgba(245,166,35,0.4); color:#f5a623;">
+          ✨ Kupaları 360° Çevir ve İncele
+        </div>
+      </div>
+
+      <!-- SAHNE 5: OUTRO & GOOGLE PLAY INDIR -->
+      <div class="scene" id="scene-4">
+        <div class="glow-circle" style="background:#00e5ff; top:20%;"></div>
+        <img class="game-logo-large" src="logo.png" alt="Logo" onerror="this.src='store_assets/app_icon_512.png'">
+        <h2 class="outro-title">RISE OF GREATNESS</h2>
+        <p class="outro-sub">3. Lig'den dünya devlerine uzanan gerçek Türk futbolcu kariyeri.</p>
+
+        <a class="playstore-button" href="https://play.google.com/store" target="_blank">
+          <span>📲</span> GOOGLE PLAY'DEN İNDİR
+        </a>
+
+        <div class="stars-row">★★★★★</div>
+        <div class="stars-label">120 FPS • Tamamen İnternetsiz (Offline)</div>
+      </div>
+
+      <!-- Başlangıç Ekranı -->
+      <div id="start-overlay">
+        <button class="start-big-btn" id="start-btn">▶</button>
+        <h3 style="font-size:20px; font-weight:800;">Dikey Reklam Animasyonu</h3>
+        <p style="font-size:13px; color:#94a3b8; max-width:80%;">TikTok / Reels / Shorts için otomatik akar. Ekran kaydı alarak doğrudan paylaşabilirsin!</p>
+        <div class="countdown-text" id="countdown">3</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ──────── SES YÖNETİMİ (AUDIO ENGINE) ────────
+    let isMuted = false;
+    let audioCtx = null;
+
+    const audioWhistle = new Audio('sounds/whistle.mp3');
+    const audioGol = new Audio('sounds/spiker/gol_1.mp3');
+    const audioFerrari = new Audio('sounds/engine_ferrari.mp3');
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playSound(audioEl) {
+      if (isMuted) return;
+      try {
+        audioEl.currentTime = 0;
+        audioEl.play().catch(e => console.log('Audio autoplay prevented:', e));
+      } catch (e) {}
+    }
+
+    // Web Audio ile yapay bas patlaması (Whoosh/Bass Drop)
+    function playBassDrop() {
+      if (isMuted || !audioCtx) return;
+      const t = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(140, t);
+      osc.frequency.exponentialRampToValueAtTime(35, t + 0.45);
+      gain.gain.setValueAtTime(0.4, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.45);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(t);
+      osc.stop(t + 0.5);
+    }
+
+    // ──────── SAHNE ZAMANLAMALARI (SCENE ENGINE) ────────
+    // Sahne süreleri (milisaniye cinsinden): Toplam ~17-18 saniye (ideal Shorts/TikTok süresi)
+    const SCENE_DURATIONS = [3600, 3800, 3800, 3800, 4500];
+    const TOTAL_SCENES = 5;
+    let currentSceneIdx = 0;
+    let sceneTimer = null;
+    let progressAnimFrame = null;
+    let sceneStartTime = 0;
+    let isPlaying = false;
+
+    function flash() {
+      const el = document.getElementById('flash');
+      el.style.opacity = '0.9';
+      setTimeout(() => {
+        el.style.opacity = '0';
+      }, 70);
+    }
+
+    function showScene(idx) {
+      currentSceneIdx = idx;
+      flash();
+      playBassDrop();
+
+      // Eski sahneleri kapat
+      for (let i = 0; i < TOTAL_SCENES; i++) {
+        const sc = document.getElementById(`scene-${i}`);
+        if (sc) sc.classList.remove('active');
+        const fill = document.getElementById(`fill-${i}`);
+        if (i < idx) {
+          fill.style.width = '100%';
+        } else if (i > idx) {
+          fill.style.width = '0%';
+        }
+      }
+
+      // Yeni sahneyi aç
+      const activeSc = document.getElementById(`scene-${idx}`);
+      if (activeSc) activeSc.classList.add('active');
+
+      // Sahneye özel efektler
+      triggerSceneEffects(idx);
+
+      // İlerleme çubuğunu başlat
+      startProgressBar(idx);
+
+      // Sonraki sahneye geçiş zamanlayıcısı
+      clearTimeout(sceneTimer);
+      if (idx < TOTAL_SCENES - 1) {
+        sceneTimer = setTimeout(() => {
+          showScene(idx + 1);
+        }, SCENE_DURATIONS[idx]);
+      }
+    }
+
+    function triggerSceneEffects(idx) {
+      if (idx === 0) {
+        // Sahne 1: Haciz damgası
+        playSound(audioWhistle);
+        const stamp = document.getElementById('stamp-haciz');
+        stamp.classList.remove('stamped');
+        setTimeout(() => stamp.classList.add('stamped'), 600);
+      } else if (idx === 1) {
+        // Sahne 2: VAR ve Gol
+        const decision = document.getElementById('var-decision');
+        decision.classList.remove('show');
+        setTimeout(() => {
+          decision.classList.add('show');
+          playSound(audioGol);
+        }, 1400);
+      } else if (idx === 2) {
+        // Sahne 3: Garaj & Motor Sesi
+        setTimeout(() => {
+          playSound(audioFerrari);
+        }, 400);
+      } else if (idx === 3) {
+        // Sahne 4: Ballon d'Or Konfeti
+        createConfetti();
+      } else if (idx === 4) {
+        // Sahne 5: Outro
+        playBassDrop();
+      }
+    }
+
+    function startProgressBar(idx) {
+      const fill = document.getElementById(`fill-${idx}`);
+      const duration = SCENE_DURATIONS[idx];
+      sceneStartTime = performance.now();
+
+      cancelAnimationFrame(progressAnimFrame);
+      function updateBar(now) {
+        const elapsed = now - sceneStartTime;
+        const pct = Math.min((elapsed / duration) * 100, 100);
+        fill.style.width = pct + '%';
+        if (pct < 100 && currentSceneIdx === idx) {
+          progressAnimFrame = requestAnimationFrame(updateBar);
+        }
+      }
+      progressAnimFrame = requestAnimationFrame(updateBar);
+    }
+
+    function createConfetti() {
+      const container = document.getElementById('confetti-container');
+      container.innerHTML = '';
+      const colors = ['#f5a623', '#00e5ff', '#fff', '#00ff87', '#ff3366'];
+      for (let i = 0; i < 40; i++) {
+        const conf = document.createElement('div');
+        conf.className = 'confetti-piece';
+        conf.style.left = Math.random() * 100 + '%';
+        conf.style.background = colors[Math.floor(Math.random() * colors.length)];
+        conf.style.animationDelay = (Math.random() * 1.5) + 's';
+        conf.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
+        container.appendChild(conf);
+      }
+    }
+
+    function startAnimationFlow() {
+      initAudio();
+      const overlay = document.getElementById('start-overlay');
+      const startBtn = document.getElementById('start-btn');
+      const countdown = document.getElementById('countdown');
+
+      startBtn.style.display = 'none';
+      countdown.style.display = 'block';
+
+      let count = 3;
+      countdown.textContent = count;
+      const countInterval = setInterval(() => {
+        count--;
+        if (count > 0) {
+          countdown.textContent = count;
+        } else {
+          clearInterval(countInterval);
+          overlay.style.display = 'none';
+          isPlaying = true;
+          showScene(0);
+        }
+      }, 700);
+    }
+
+    // ──────── KULLANICI KONTROLLERİ ────────
+    document.getElementById('start-btn').addEventListener('click', startAnimationFlow);
+
+    document.getElementById('btn-play-pause').addEventListener('click', () => {
+      document.getElementById('start-overlay').style.display = 'none';
+      showScene(0);
+    });
+
+    const toggleUiBtn = document.getElementById('btn-toggle-ui');
+    toggleUiBtn.addEventListener('click', () => {
+      const ttOverlay = document.getElementById('tiktok-overlay');
+      ttOverlay.classList.toggle('visible');
+      toggleUiBtn.classList.toggle('active');
+    });
+
+    const muteBtn = document.getElementById('btn-mute');
+    muteBtn.addEventListener('click', () => {
+      isMuted = !isMuted;
+      muteBtn.innerHTML = isMuted ? '<span>🔇</span> Ses Kapalı' : '<span>🔊</span> Ses Açık';
+      muteBtn.classList.toggle('active', isMuted);
+    });
+
+    // Sahneye tıklayınca sonraki sahneye atlama
+    document.getElementById('phone-wrapper').addEventListener('click', (e) => {
+      if (e.target.closest('#start-overlay') || e.target.closest('.playstore-button')) return;
+      if (currentSceneIdx < TOTAL_SCENES - 1) {
+        showScene(currentSceneIdx + 1);
+      } else {
+        showScene(0);
+      }
+    });
+  </script>
+</body>
+</html>
