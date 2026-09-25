@@ -3,663 +3,673 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>Rise of Greatness - Türk Usulü 3D Futbolcu Kariyer Oyunu</title>
-  <meta name="description" content="3. Lig'den Ballon d'Or'a! 3D kupa müzesi, lüks garaj, tefeci borçları ve gerçek Türk futbol kariyeri. Hemen web'de oyna veya Google Play'den indir!">
+  <title>Rise of Greatness — Türkiye'nin 3D Futbolcu Kariyer Oyunu</title>
+  <meta name="description" content="3. Lig'den Ballon d'Or'a! 3D kupa müzesi, lüks garaj, tefeci borçları ve gerçek Türk futbol kariyeri. Hemen web'de oyna!">
   <link rel="icon" type="image/png" href="logo.png">
   <link rel="apple-touch-icon" href="logo.png">
-
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,900&family=Rajdhani:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Rajdhani:wght@600;700;800&display=swap" rel="stylesheet">
 
   <style>
+    /* ═══════════════════════════════════════
+       TOKENS & RESET
+    ═══════════════════════════════════════ */
     :root {
-      --bg-dark: #050811;
-      --bg-card: rgba(14, 20, 36, 0.75);
-      --border-card: rgba(255, 255, 255, 0.08);
-      --primary: #00e5ff;
-      --accent-gold: #ffd000;
-      --accent-green: #00ff87;
-      --accent-red: #ff3366;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
+      --obsidian: #07090e;
+      --bg-card:  rgba(11, 15, 26, 0.82);
+      --border-gold: rgba(255, 208, 0, 0.25);
+      --border-dim:  rgba(255, 255, 255, 0.07);
+      --gold:   #ffd000;
+      --gold2:  #ff8800;
+      --cyan:   #00e5ff;
+      --green:  #00ff87;
+      --text:   #f4f6fb;
+      --muted:  #8a96b0;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
+    *, *::before, *::after {
+      margin: 0; padding: 0;
       box-sizing: border-box;
-      scroll-behavior: smooth;
     }
+
+    html { scroll-behavior: smooth; }
 
     body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      font-family: 'Montserrat', sans-serif;
+      background: var(--obsidian);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
       overflow-x: hidden;
       line-height: 1.6;
     }
 
-    /* Arka Plan Glow ve Grid Efektleri */
+    /* ═══════════════════════════════════════
+       AMBIENT BACKGROUND GLOWS
+    ═══════════════════════════════════════ */
     .bg-ambient {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 0;
       overflow: hidden;
     }
 
-    .ambient-glow-1 {
+    .glow-gold {
       position: absolute;
-      top: -150px;
-      left: 10%;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(0, 229, 255, 0.15) 0%, transparent 70%);
-      filter: blur(80px);
-    }
-
-    .ambient-glow-2 {
-      position: absolute;
-      top: 30%;
-      right: -100px;
-      width: 700px;
-      height: 700px;
-      background: radial-gradient(circle, rgba(255, 208, 0, 0.1) 0%, transparent 70%);
-      filter: blur(90px);
-    }
-
-    .ambient-glow-3 {
-      position: absolute;
-      bottom: 10%;
-      left: -100px;
-      width: 800px;
-      height: 800px;
-      background: radial-gradient(circle, rgba(255, 51, 102, 0.12) 0%, transparent 70%);
+      top: -200px; right: -100px;
+      width: 900px; height: 900px;
+      background: radial-gradient(circle, rgba(255,208,0,.12) 0%, transparent 65%);
       filter: blur(100px);
+      animation: driftGold 14s ease-in-out infinite alternate;
     }
 
-    /* ── STICKY NAVBAR ── */
+    .glow-cyan {
+      position: absolute;
+      bottom: 20%; left: -150px;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(0,229,255,.1) 0%, transparent 65%);
+      filter: blur(90px);
+      animation: driftCyan 18s ease-in-out infinite alternate;
+    }
+
+    @keyframes driftGold {
+      from { transform: translate(0, 0); }
+      to   { transform: translate(-80px, 120px); }
+    }
+    @keyframes driftCyan {
+      from { transform: translate(0, 0); }
+      to   { transform: translate(100px, -60px); }
+    }
+
+    /* ═══════════════════════════════════════
+       NAVBAR
+    ═══════════════════════════════════════ */
     .navbar {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: rgba(5, 8, 17, 0.85);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border-card);
-      padding: 16px 32px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(7, 9, 14, 0.88);
+      backdrop-filter: blur(18px) saturate(1.3);
+      border-bottom: 1px solid var(--border-dim);
+      padding: 15px 32px;
+      display: flex; justify-content: space-between; align-items: center;
     }
 
     .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      color: #fff;
+      display: flex; align-items: center; gap: 11px;
+      text-decoration: none; color: #fff;
     }
 
     .nav-logo {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+      width: 42px; height: 42px;
+      border-radius: 11px;
+      box-shadow: 0 0 18px rgba(255,208,0,.5);
     }
 
     .nav-title {
-      font-weight: 900;
-      font-size: 18px;
-      letter-spacing: 0.5px;
-      background: linear-gradient(135deg, #fff, #ffd000);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 19px; font-weight: 800;
+      letter-spacing: 0.8px;
+      background: linear-gradient(135deg, #fff 20%, var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
 
     .nav-links {
-      display: flex;
-      gap: 28px;
-      list-style: none;
+      display: flex; gap: 28px; list-style: none;
     }
 
     .nav-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 14px;
-      transition: color 0.2s;
+      color: var(--muted); text-decoration: none;
+      font-size: 13px; font-weight: 700; letter-spacing: .3px;
+      transition: color .2s;
     }
-
-    .nav-links a:hover {
-      color: var(--primary);
-    }
-
-    .nav-actions {
-      display: flex;
-      gap: 12px;
-    }
+    .nav-links a:hover { color: var(--gold); }
 
     .btn-nav-play {
-      background: linear-gradient(135deg, #00e5ff, #00ff87);
-      color: #000;
-      font-size: 13px;
-      font-weight: 900;
-      padding: 8px 18px;
-      border-radius: 30px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #000; font-size: 13px; font-weight: 900;
+      padding: 9px 20px; border-radius: 30px;
       text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
-      transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 7px;
+      box-shadow: 0 0 22px rgba(255,208,0,.35);
+      transition: all .2s;
+      white-space: nowrap;
     }
-
     .btn-nav-play:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 30px rgba(0, 255, 135, 0.6);
+      box-shadow: 0 0 36px rgba(255,208,0,.65);
     }
 
-    /* ── HERO BÖLÜMÜ ── */
+    /* ═══════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════ */
     .hero {
-      position: relative;
-      z-index: 10;
-      padding: 80px 32px 100px;
-      max-width: 1280px;
-      margin: 0 auto;
+      position: relative; z-index: 10;
+      padding: 90px 32px 110px;
+      max-width: 1300px; margin: 0 auto;
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
-      gap: 50px;
-      align-items: center;
+      gap: 60px; align-items: center;
     }
 
     .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(0, 229, 255, 0.12);
-      border: 1px solid rgba(0, 229, 255, 0.3);
-      color: var(--primary);
-      padding: 6px 16px;
-      border-radius: 30px;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 20px;
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,208,0,.1);
+      border: 1px solid rgba(255,208,0,.3);
+      color: var(--gold);
+      padding: 6px 16px; border-radius: 30px;
+      font-size: 11px; font-weight: 800;
+      letter-spacing: 1.8px; text-transform: uppercase;
+      margin-bottom: 22px;
     }
 
     .hero-title {
-      font-size: 54px;
-      font-weight: 900;
-      line-height: 1.12;
-      letter-spacing: -1px;
-      margin-bottom: 20px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 60px; font-weight: 800; line-height: 1.08;
+      letter-spacing: -1px; margin-bottom: 22px;
       text-transform: uppercase;
     }
 
-    .gold-gradient {
-      background: linear-gradient(135deg, #fff 15%, #ffd000 65%, #ff8800 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 20px rgba(255, 208, 0, 0.4));
+    .grad-gold {
+      background: linear-gradient(135deg, #fff 15%, var(--gold) 60%, var(--gold2) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 22px rgba(255,208,0,.45));
     }
-
-    .cyan-gradient {
-      background: linear-gradient(135deg, #fff 15%, #00e5ff 65%, #00ff87 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.4));
+    .grad-cyan {
+      background: linear-gradient(135deg, #fff 15%, var(--cyan) 60%, var(--green) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
 
     .hero-desc {
-      font-size: 17px;
-      color: var(--text-muted);
-      line-height: 1.7;
-      margin-bottom: 36px;
-      max-width: 580px;
+      font-size: 17px; color: var(--muted);
+      line-height: 1.75; margin-bottom: 38px; max-width: 560px;
     }
 
     .hero-ctas {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-bottom: 40px;
+      display: flex; flex-wrap: wrap; gap: 14px;
+      margin-bottom: 44px;
     }
 
-    .cta-main {
-      background: linear-gradient(135deg, #ffd000, #ff8800);
-      color: #000;
-      font-size: 16px;
-      font-weight: 900;
-      padding: 16px 36px;
-      border-radius: 40px;
+    .cta-gold {
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #000; font-size: 15px; font-weight: 900;
+      padding: 16px 36px; border-radius: 40px;
       text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 10px 30px rgba(255, 208, 0, 0.35);
-      transition: all 0.25s;
+      display: inline-flex; align-items: center; gap: 10px;
+      box-shadow: 0 10px 32px rgba(255,208,0,.38);
+      transition: all .25s; white-space: nowrap;
     }
-
-    .cta-main:hover {
+    .cta-gold:hover {
       transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 15px 45px rgba(255, 208, 0, 0.6);
+      box-shadow: 0 18px 48px rgba(255,208,0,.65);
     }
 
-    .cta-secondary {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      color: #fff;
-      font-size: 16px;
-      font-weight: 800;
-      padding: 16px 32px;
-      border-radius: 40px;
+    .cta-glass {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.15);
+      color: #fff; font-size: 15px; font-weight: 800;
+      padding: 16px 32px; border-radius: 40px;
       text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      backdrop-filter: blur(8px);
-      transition: all 0.25s;
+      display: inline-flex; align-items: center; gap: 10px;
+      backdrop-filter: blur(10px);
+      transition: all .25s; white-space: nowrap;
     }
-
-    .cta-secondary:hover {
-      background: rgba(0, 229, 255, 0.12);
-      border-color: var(--primary);
-      color: var(--primary);
+    .cta-glass:hover {
+      background: rgba(255,208,0,.1);
+      border-color: var(--gold);
+      color: var(--gold);
       transform: translateY(-3px);
     }
 
-    .hero-stats {
-      display: flex;
-      gap: 32px;
-      border-top: 1px solid var(--border-card);
-      padding-top: 24px;
+    /* ── Tech Strip (replaces fake metrics) ── */
+    .tech-strip {
+      display: flex; flex-wrap: wrap; gap: 24px;
+      border-top: 1px solid var(--border-dim);
+      padding-top: 26px;
     }
 
-    .stat-item {
-      display: flex;
-      flex-direction: column;
+    .tech-item {
+      display: flex; align-items: center; gap: 10px;
     }
 
-    .stat-val {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 26px;
-      font-weight: 900;
-      color: #fff;
+    .tech-icon {
+      font-size: 22px; line-height: 1;
+      filter: drop-shadow(0 0 8px rgba(255,208,0,.5));
     }
 
-    .stat-lbl {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 600;
+    .tech-label {
+      font-size: 13px; font-weight: 700;
+      letter-spacing: .5px;
+      color: #d4dae8;
     }
 
-    /* 3D Telefon Mockup */
-    .hero-phone-container {
+    /* ═══════════════════════════════════════
+       PHONE MOCKUP — AUTO-ROTATING 4 SCREENS
+    ═══════════════════════════════════════ */
+    .hero-phone-wrap {
       position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      display: flex; justify-content: center; align-items: center;
+    }
+
+    .phone-orbit {
+      position: absolute;
+      width: 420px; height: 420px; border-radius: 50%;
+      border: 1px dashed rgba(255,208,0,.15);
+      animation: spin 30s linear infinite;
+    }
+    .phone-orbit-2 {
+      width: 340px; height: 340px;
+      border: 1px dashed rgba(0,229,255,.1);
+      animation: spin 20s linear infinite reverse;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
     }
 
     .phone-mockup {
-      width: 320px;
-      height: 640px;
-      background: #090d18;
-      border-radius: 44px;
-      padding: 12px;
-      box-shadow: 
-        0 0 0 2px rgba(255, 255, 255, 0.15),
-        0 30px 80px rgba(0, 0, 0, 0.9),
-        0 0 60px rgba(0, 229, 255, 0.2);
-      transform: rotateY(-12deg) rotateX(8deg);
-      transition: transform 0.5s ease;
-      position: relative;
+      width: 300px; height: 610px;
+      background: linear-gradient(180deg, #11151f 0%, #090c14 100%);
+      border-radius: 46px;
+      padding: 11px;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.12),
+        0 0 0 2px rgba(255,208,0,.12),
+        0 40px 90px rgba(0,0,0,.95),
+        0 0 60px rgba(255,208,0,.12);
+      transform: rotateY(-14deg) rotateX(6deg) perspective(900px);
+      transition: transform .6s cubic-bezier(.16,1,.3,1);
+      position: relative; z-index: 2;
+    }
+    .phone-mockup:hover {
+      transform: rotateY(0deg) rotateX(0deg) perspective(900px) scale(1.03);
     }
 
-    .phone-mockup:hover {
-      transform: rotateY(0deg) rotateX(0deg) scale(1.03);
+    /* Notch */
+    .phone-notch {
+      position: absolute; top: 15px;
+      left: 50%; transform: translateX(-50%);
+      width: 90px; height: 24px;
+      background: #07090e;
+      border-radius: 12px; z-index: 5;
     }
 
     .phone-screen {
-      width: 100%;
-      height: 100%;
-      border-radius: 34px;
-      overflow: hidden;
-      position: relative;
+      width: 100%; height: 100%;
+      border-radius: 36px; overflow: hidden;
+      position: relative; background: #000;
     }
 
-    .phone-screen img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .phone-slide {
+      position: absolute; inset: 0;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    .phone-slide.active { opacity: 1; }
+
+    .phone-slide img {
+      width: 100%; height: 100%; object-fit: cover;
     }
 
-    .phone-badge-floating {
+    /* HERE WE GO card (Screen 4 — no img, coded) */
+    .hwg-card {
+      width: 100%; height: 100%;
+      background: linear-gradient(160deg, #0d1320 0%, #07090e 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 10px; padding: 24px;
+      text-align: center;
+    }
+    .hwg-x-icon {
+      font-size: 32px; line-height: 1;
+      margin-bottom: 4px;
+    }
+    .hwg-here-we-go {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 26px; font-weight: 800;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      filter: drop-shadow(0 0 14px rgba(255,208,0,.6));
+    }
+    .hwg-player {
+      font-size: 17px; font-weight: 900; color: #fff;
+    }
+    .hwg-club {
+      font-size: 14px; color: var(--cyan); font-weight: 700;
+    }
+    .hwg-fee {
+      background: rgba(255,208,0,.12);
+      border: 1px solid rgba(255,208,0,.35);
+      color: var(--gold); font-size: 13px; font-weight: 800;
+      padding: 6px 16px; border-radius: 20px; margin-top: 4px;
+    }
+    .hwg-emojis { font-size: 22px; letter-spacing: 2px; margin-top: 4px; }
+    .hwg-footer {
+      font-size: 11px; color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,.07);
+      padding-top: 10px; margin-top: 6px; width: 100%;
+      text-align: center;
+    }
+
+    /* Floating badge beside phone */
+    .badge-float {
       position: absolute;
-      top: 15%;
-      left: -35px;
-      background: rgba(14, 20, 36, 0.95);
-      border: 1px solid var(--accent-gold);
-      padding: 10px 18px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      background: rgba(11,15,26,.96);
+      border: 1px solid var(--border-gold);
+      padding: 10px 16px; border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.8);
       backdrop-filter: blur(12px);
-      animation: floatBadge 3s ease-in-out infinite;
-    }
-
-    @keyframes floatBadge {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
-
-    /* ── MEGA ÖZELLİKLER (BENTO GRID) ── */
-    .section {
-      position: relative;
       z-index: 10;
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 80px 32px;
+    }
+    .badge-top {
+      top: 12%; left: -45px;
+      animation: floatUp 3.5s ease-in-out infinite;
+    }
+    .badge-bot {
+      bottom: 18%; right: -45px;
+      animation: floatDown 4s ease-in-out infinite;
+    }
+    .badge-label { font-size: 10px; color: var(--gold); font-weight: 800; letter-spacing: 1px; }
+    .badge-val   { font-size: 17px; font-weight: 900; color: #fff; }
+
+    @keyframes floatUp   { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    @keyframes floatDown { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); }  }
+
+    /* Slide dots */
+    .phone-dots {
+      position: absolute; bottom: -28px;
+      left: 50%; transform: translateX(-50%);
+      display: flex; gap: 7px;
+    }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,.25);
+      transition: all .4s;
+    }
+    .dot.active {
+      width: 22px; border-radius: 4px;
+      background: var(--gold);
+      box-shadow: 0 0 10px rgba(255,208,0,.6);
+    }
+
+    /* ═══════════════════════════════════════
+       SECTION SHELL
+    ═══════════════════════════════════════ */
+    .section {
+      position: relative; z-index: 10;
+      max-width: 1300px; margin: 0 auto; padding: 90px 32px;
     }
 
     .section-header {
-      text-align: center;
-      margin-bottom: 60px;
+      text-align: center; margin-bottom: 60px;
     }
 
-    .section-badge {
-      display: inline-block;
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--accent-gold);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 10px;
+    .section-eyebrow {
+      font-size: 11px; font-weight: 800;
+      color: var(--gold); letter-spacing: 3px;
+      text-transform: uppercase; margin-bottom: 12px;
     }
 
     .section-title {
-      font-size: 38px;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: -0.5px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 42px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: -.5px;
       margin-bottom: 14px;
     }
 
     .section-sub {
-      color: var(--text-muted);
-      font-size: 16px;
-      max-width: 620px;
-      margin: 0 auto;
+      color: var(--muted); font-size: 16px;
+      max-width: 600px; margin: 0 auto;
     }
 
-    .bento-grid {
+    /* ═══════════════════════════════════════
+       FEATURES — 4 GLASSMORPHISM CARDS
+    ═══════════════════════════════════════ */
+    .features-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
     }
 
-    .bento-card {
+    .feat-card {
       background: var(--bg-card);
-      border: 1px solid var(--border-card);
-      border-radius: 24px;
-      padding: 32px 28px;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      position: relative;
-      overflow: hidden;
+      border: 1px solid var(--border-gold);
+      border-radius: 22px; padding: 34px 26px;
+      backdrop-filter: blur(14px) saturate(1.2);
+      box-shadow:
+        0 4px 24px rgba(0,0,0,.5),
+        inset 0 1px 0 rgba(255,208,0,.08);
+      transition: all .3s cubic-bezier(.16,1,.3,1);
+      position: relative; overflow: hidden;
     }
 
-    .bento-card:hover {
-      border-color: var(--primary);
-      transform: translateY(-5px);
-      box-shadow: 0 15px 40px rgba(0, 229, 255, 0.15);
+    .feat-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 30% 0%, rgba(255,208,0,.06) 0%, transparent 60%);
+      pointer-events: none;
     }
 
-    .bento-icon {
-      font-size: 40px;
-      margin-bottom: 20px;
+    .feat-card:hover {
+      border-color: rgba(255,208,0,.55);
+      transform: translateY(-6px);
+      box-shadow:
+        0 18px 50px rgba(255,208,0,.12),
+        inset 0 1px 0 rgba(255,208,0,.2);
+    }
+
+    .feat-emoji {
+      font-size: 36px; margin-bottom: 18px; display: block;
+      filter: drop-shadow(0 0 10px rgba(255,208,0,.4));
+    }
+
+    .feat-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 20px; font-weight: 800;
+      color: #fff; margin-bottom: 10px;
+      letter-spacing: .3px;
+    }
+
+    .feat-desc {
+      font-size: 14px; color: var(--muted); line-height: 1.65;
+    }
+
+    .feat-tag {
       display: inline-block;
+      margin-top: 14px;
+      font-size: 11px; font-weight: 800;
+      color: var(--gold); letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border-top: 1px solid rgba(255,208,0,.2);
+      padding-top: 10px;
     }
 
-    .bento-title {
-      font-size: 20px;
-      font-weight: 900;
-      margin-bottom: 12px;
-    }
-
-    .bento-desc {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-
-    .bento-span-2 {
-      grid-column: span 2;
-    }
-
-    /* ── EKRAN GÖRÜNTÜLERİ GALERİSİ ── */
+    /* ═══════════════════════════════════════
+       GALLERY
+    ═══════════════════════════════════════ */
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
-      gap: 16px;
+      gap: 14px;
     }
 
     .gallery-item {
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid var(--border-card);
-      background: #000;
-      cursor: pointer;
-      position: relative;
-      transition: all 0.3s;
-    }
-
-    .gallery-item:hover {
-      transform: translateY(-8px) scale(1.03);
-      border-color: var(--accent-gold);
-      box-shadow: 0 15px 35px rgba(255, 208, 0, 0.25);
+      border-radius: 16px; overflow: hidden;
+      border: 1px solid var(--border-dim);
+      background: #000; cursor: pointer;
+      position: relative; aspect-ratio: 9/16;
+      transition: all .3s cubic-bezier(.16,1,.3,1);
     }
 
     .gallery-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform .5s ease;
     }
 
-    /* ── FRAGMAN VİDEO BÖLÜMÜ ── */
-    .trailer-box {
-      max-width: 800px;
-      margin: 0 auto;
-      border-radius: 28px;
-      overflow: hidden;
-      border: 2px solid var(--border-card);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 50px rgba(0, 229, 255, 0.15);
+    .gallery-item:hover {
+      transform: translateY(-8px) scale(1.04);
+      border-color: var(--border-gold);
+      box-shadow: 0 16px 40px rgba(255,208,0,.22);
+    }
+    .gallery-item:hover img { transform: scale(1.05); }
+
+    .gallery-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 12px 10px 10px;
+      background: linear-gradient(transparent, rgba(7,9,14,.92));
+      font-size: 11px; font-weight: 800;
+      color: var(--gold); letter-spacing: .8px;
+      text-align: center;
+    }
+
+    /* ═══════════════════════════════════════
+       VIDEO TRAILER
+    ═══════════════════════════════════════ */
+    .trailer-wrap {
+      max-width: 820px; margin: 0 auto;
+      border-radius: 26px; overflow: hidden;
+      border: 1px solid var(--border-gold);
+      box-shadow: 0 24px 70px rgba(0,0,0,.85), 0 0 50px rgba(255,208,0,.1);
       background: #000;
     }
 
-    .trailer-box video {
-      width: 100%;
-      height: auto;
-      max-height: 500px;
-      display: block;
-      object-fit: cover;
+    .trailer-wrap video {
+      width: 100%; height: auto;
+      max-height: 520px; display: block; object-fit: cover;
     }
 
-    /* ── YORUMLAR (TESTIMONIALS) ── */
+    /* ═══════════════════════════════════════
+       REVIEWS
+    ═══════════════════════════════════════ */
     .reviews-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
+      grid-template-columns: repeat(3, 1fr); gap: 20px;
     }
 
     .review-card {
       background: var(--bg-card);
-      border: 1px solid var(--border-card);
-      border-radius: 20px;
-      padding: 28px;
+      border: 1px solid var(--border-dim);
+      border-radius: 20px; padding: 28px;
+      backdrop-filter: blur(10px);
+      transition: border-color .3s;
     }
+    .review-card:hover { border-color: var(--border-gold); }
 
-    .review-stars {
-      color: var(--accent-gold);
-      font-size: 18px;
-      margin-bottom: 12px;
-    }
+    .review-stars { color: var(--gold); font-size: 17px; margin-bottom: 12px; }
+    .review-text  { font-size: 14px; color: #dde3f0; line-height: 1.65; font-style: italic; margin-bottom: 16px; }
+    .review-author { font-size: 13px; font-weight: 800; color: var(--cyan); }
 
-    .review-text {
-      font-size: 14px;
-      color: #e2e8f0;
-      line-height: 1.6;
-      margin-bottom: 16px;
-      font-style: italic;
-    }
-
-    .review-author {
-      font-size: 13px;
-      font-weight: 800;
-      color: var(--primary);
-    }
-
-    /* ── SIKÇA SORULAN SORULAR (FAQ) ── */
+    /* ═══════════════════════════════════════
+       FAQ
+    ═══════════════════════════════════════ */
     .faq-container {
-      max-width: 800px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+      max-width: 820px; margin: 0 auto;
+      display: flex; flex-direction: column; gap: 12px;
     }
 
     .faq-item {
       background: var(--bg-card);
-      border: 1px solid var(--border-card);
-      border-radius: 16px;
-      overflow: hidden;
+      border: 1px solid var(--border-dim);
+      border-radius: 14px; overflow: hidden;
+      transition: border-color .25s;
     }
+    .faq-item.open { border-color: var(--border-gold); }
 
-    .faq-question {
+    .faq-q {
       padding: 20px 24px;
-      font-size: 16px;
-      font-weight: 800;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: background 0.2s;
+      font-size: 15px; font-weight: 800;
+      cursor: pointer; user-select: none;
+      display: flex; justify-content: space-between; align-items: center;
+      transition: color .2s;
     }
+    .faq-item.open .faq-q { color: var(--gold); }
 
-    .faq-question:hover {
-      background: rgba(255, 255, 255, 0.03);
+    .faq-q .chevron {
+      font-size: 12px; color: var(--muted);
+      transition: transform .3s;
     }
+    .faq-item.open .faq-q .chevron { transform: rotate(180deg); color: var(--gold); }
 
-    .faq-answer {
+    .faq-a {
       padding: 0 24px 20px;
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.6;
-      display: none;
+      font-size: 14px; color: var(--muted);
+      line-height: 1.65; display: none;
     }
+    .faq-item.open .faq-a { display: block; }
 
-    .faq-item.open .faq-answer {
-      display: block;
-    }
-
-    .faq-item.open .faq-question {
-      color: var(--primary);
-    }
-
-    /* ── FOOTER ── */
+    /* ═══════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════ */
     .footer {
-      border-top: 1px solid var(--border-card);
-      background: rgba(3, 5, 10, 0.95);
-      padding: 60px 32px 30px;
-      position: relative;
-      z-index: 10;
+      border-top: 1px solid var(--border-dim);
+      background: rgba(4, 6, 11, 0.97);
+      padding: 60px 32px 32px;
+      position: relative; z-index: 10;
     }
 
-    .footer-content {
-      max-width: 1280px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 24px;
+    .footer-inner {
+      max-width: 1300px; margin: 0 auto;
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 24px;
       margin-bottom: 40px;
     }
 
-    .footer-left {
-      display: flex;
-      align-items: center;
-      gap: 16px;
+    .footer-brand {
+      display: flex; align-items: center; gap: 14px;
     }
 
     .footer-links {
-      display: flex;
-      gap: 24px;
+      display: flex; gap: 26px; flex-wrap: wrap;
     }
 
     .footer-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 600;
-      transition: color 0.2s;
+      color: var(--muted); text-decoration: none;
+      font-size: 14px; font-weight: 600;
+      transition: color .2s;
     }
-
-    .footer-links a:hover {
-      color: var(--primary);
-    }
+    .footer-links a:hover { color: var(--gold); }
 
     .footer-bottom {
-      max-width: 1280px;
-      margin: 0 auto;
-      text-align: center;
-      font-size: 12px;
-      color: #64748b;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      padding-top: 24px;
+      max-width: 1300px; margin: 0 auto;
+      text-align: center; font-size: 12px; color: #4a5370;
+      border-top: 1px solid rgba(255,255,255,.04);
+      padding-top: 22px;
     }
 
-    /* Responsive Uyumluluk */
-    @media (max-width: 1024px) {
-      .hero {
-        grid-template-columns: 1fr;
-        text-align: center;
-        padding-top: 40px;
-      }
-      .hero-title { font-size: 40px; }
-      .hero-desc { margin: 0 auto 30px; }
-      .hero-ctas { justify-content: center; }
-      .hero-stats { justify-content: center; }
-      .bento-grid { grid-template-columns: repeat(2, 1fr); }
-      .bento-span-2 { grid-column: span 1; }
+    /* ═══════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      .hero { grid-template-columns: 1fr; text-align: center; padding-top: 50px; }
+      .hero-title { font-size: 48px; }
+      .hero-desc, .tech-strip { margin-inline: auto; }
+      .hero-ctas, .tech-strip { justify-content: center; }
+      .hero-phone-wrap { margin-top: 40px; }
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
       .gallery-grid { grid-template-columns: repeat(3, 1fr); }
       .reviews-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 768px) {
-      .navbar { padding: 14px 20px; }
+      .navbar { padding: 13px 18px; }
       .nav-links { display: none; }
-      .hero-title { font-size: 32px; }
-      .bento-grid { grid-template-columns: 1fr; }
+      .hero-title { font-size: 36px; }
+      .section-title { font-size: 30px; }
+      .features-grid { grid-template-columns: 1fr; }
       .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-      .footer-content { flex-direction: column; text-align: center; }
+      .footer-inner { flex-direction: column; text-align: center; }
+      .badge-top, .badge-bot { display: none; }
+      .phone-mockup { width: 260px; height: 530px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Arka Plan Işık Efektleri -->
-  <div class="bg-ambient">
-    <div class="ambient-glow-1"></div>
-    <div class="ambient-glow-2"></div>
-    <div class="ambient-glow-3"></div>
+  <!-- Ambient Glow Background -->
+  <div class="bg-ambient" aria-hidden="true">
+    <div class="glow-gold"></div>
+    <div class="glow-cyan"></div>
   </div>
 
-  <!-- Sticky Navbar -->
+  <!-- ══════════ NAVBAR ══════════ -->
   <nav class="navbar">
     <a href="landing.html" class="nav-brand">
       <img class="nav-logo" src="logo.png" alt="Rise of Greatness">
@@ -674,151 +684,207 @@
       <li><a href="#faq">SSS</a></li>
     </ul>
 
-    <div class="nav-actions">
-      <!-- Doğrudan Web'de Oyna Butonu -->
-      <a href="index.html" class="btn-nav-play">
-        <span>🎮</span> Web'de Oyna
-      </a>
-    </div>
+    <a href="index.html" class="btn-nav-play">⚡ Hemen Oyna</a>
   </nav>
 
-  <!-- Hero Bölümü -->
+  <!-- ══════════ HERO ══════════ -->
   <section class="hero">
+    <!-- Left: copy + CTAs -->
     <div class="hero-left">
-      <div class="hero-badge">🇹🇷 TÜRKİYE'NİN EN İYİ 3D FUTBOLCU RPG'Sİ</div>
+      <div class="hero-badge">🇹🇷 TÜRKİYE'NİN #1 FUTBOLCU KARIYER RPG'Sİ</div>
+
       <h1 class="hero-title">
-        3. LİG'DEN <span class="cyan-gradient">BALLON D'OR'A</span><br>
-        KENDİ EFSANENİ <span class="gold-gradient">YAZ!</span>
+        3. LİG'DEN<br>
+        <span class="grad-cyan">BALLON D'OR'A</span><br>
+        KENDİ EFSANENİ<br>
+        <span class="grad-gold">YAZ!</span>
       </h1>
+
       <p class="hero-desc">
-        Altyapı seçmelerinden başla, derbilerde 90+4 golü at, tefeci borçlarını kapat ve dünya devlerinin zirvesine tırman! 3D WebGL kupa müzesi, lüks süperstar garajı ve Türk futbolunun sokak ruhu burada.
+        Altyapı seçmelerinden başla, derbilerde 90+4 golü at, tefeci borçlarını kapat ve dünya devlerinin zirvesine tırman. 3D WebGL kupa müzesi, lüks süperstar garajı, kripto yatırım paneli ve Türk futbolunun sokak ruhu — hepsi burada.
       </p>
 
       <div class="hero-ctas">
-        <!-- Oyuna Başla (Web Sürümü) -->
-        <a href="index.html" class="cta-main">
-          <span>🚀</span> HEMEN WEB'DE OYNA
-        </a>
-        <!-- Google Play Store İndir -->
-        <a href="https://play.google.com/store" target="_blank" class="cta-secondary">
-          <span>📲</span> GOOGLE PLAY'DEN İNDİR
-        </a>
-        <!-- Doğrudan APK İndir -->
-        <a href="RiseOfGreatness-v1.1.6.apk" download class="cta-secondary" style="font-size: 14px; padding: 14px 24px;">
-          <span>📦</span> APK İndir (v1.1.6)
-        </a>
+        <a href="index.html" class="cta-gold">⚡ HEMEN OYNA (TARAYICI) ➔</a>
+        <a href="RiseOfGreatness-v1.1.6.apk" download class="cta-glass">📥 APK İNDİR (v1.1.6)</a>
       </div>
 
-      <div class="hero-stats">
-        <div class="stat-item">
-          <span class="stat-val">120 FPS</span>
-          <span class="stat-lbl">Ultra Akıcı Performans</span>
+      <!-- Tech Strip — NO fake metrics -->
+      <div class="tech-strip">
+        <div class="tech-item">
+          <span class="tech-icon">⚡</span>
+          <span class="tech-label">60–120 FPS</span>
         </div>
-        <div class="stat-item">
-          <span class="stat-val">%100 OFFLINE</span>
-          <span class="stat-lbl">Tamamen İnternetsiz</span>
+        <div class="tech-item">
+          <span class="tech-icon">🌐</span>
+          <span class="tech-label">TARAYICIDA ANINDA OYNA</span>
         </div>
-        <div class="stat-item">
-          <span class="stat-val">4.9 ★★★★★</span>
-          <span class="stat-lbl">50.000+ İndirme</span>
+        <div class="tech-item">
+          <span class="tech-icon">📱</span>
+          <span class="tech-label">%100 MOBİL &amp; PWA</span>
         </div>
       </div>
     </div>
 
-    <!-- 3D Telefon Vitrini -->
-    <div class="hero-phone-container">
-      <div class="phone-badge-floating">
-        <div style="font-size: 10px; color: var(--accent-gold); font-weight: 800; letter-spacing: 1px;">GENÇ YETENEK</div>
-        <div style="font-size: 18px; font-weight: 900; color: #fff;">REYTING: 99 OVR 🔥</div>
+    <!-- Right: rotating phone -->
+    <div class="hero-phone-wrap">
+      <div class="phone-orbit"></div>
+      <div class="phone-orbit phone-orbit-2"></div>
+
+      <!-- Floating badge top-left -->
+      <div class="badge-float badge-top">
+        <div class="badge-label">SÖZLEŞME TEKLİFİ</div>
+        <div class="badge-val">Ankaragücü 🔥</div>
       </div>
 
-      <div class="phone-mockup">
+      <div class="phone-mockup" id="phoneMockup">
+        <div class="phone-notch"></div>
         <div class="phone-screen">
-          <img src="reklam_assets/gplay_screenshot_1.png" alt="Rise of Greatness Gameplay">
+
+          <!-- Screen 1: Lüks Menajerlik & Transferler -->
+          <div class="phone-slide active" id="slide-0">
+            <img src="reklam_assets/gplay_screenshot_2.png" alt="Dev Transferler — Menajerlik & Sözleşmeler">
+          </div>
+
+          <!-- Screen 2: Milyarder Hayat / Garaj -->
+          <div class="phone-slide" id="slide-1">
+            <img src="reklam_assets/gplay_screenshot_5.png" alt="Lüks Garaj & Yatırım Dünyası">
+          </div>
+
+          <!-- Screen 3: Kariyer / Stat Paneli -->
+          <div class="phone-slide" id="slide-2">
+            <img src="reklam_assets/gplay_screenshot_3.png" alt="Kaderini Belirle — Kariyer & İlişkiler">
+          </div>
+
+          <!-- Screen 4: HERE WE GO Transfer Kartı (no img, coded) -->
+          <div class="phone-slide" id="slide-3">
+            <div class="hwg-card">
+              <div class="hwg-x-icon">𝕏</div>
+              <div class="hwg-here-we-go">HERE WE GO! 🚨</div>
+              <div class="hwg-player">Mino Polat → Real Madrid</div>
+              <div class="hwg-club">Ankaragücü'nden Dünya Devine</div>
+              <div class="hwg-fee">💶 Transfer Bedeli: €142M</div>
+              <div class="hwg-emojis">🏆 🇹🇷 ✈️</div>
+              <div class="hwg-footer">@RiseOfGreatness • Resmi Transfer Duyurusu</div>
+            </div>
+          </div>
+
         </div>
+      </div>
+
+      <!-- Floating badge bottom-right -->
+      <div class="badge-float badge-bot">
+        <div class="badge-label">GARAJ</div>
+        <div class="badge-val">Ferrari 488 🏎️</div>
+      </div>
+
+      <!-- Slide dots -->
+      <div class="phone-dots" id="phoneDots">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
       </div>
     </div>
   </section>
 
-  <!-- Mega Özellikler (Bento Grid) -->
+  <!-- ══════════ FEATURES — 4 GLASSMORPHISM CARDS ══════════ -->
   <section class="section" id="ozellikler">
     <div class="section-header">
-      <span class="section-badge">BENZERSİZ DENEYİM</span>
+      <div class="section-eyebrow">BENZERSİZ DENEYİM</div>
       <h2 class="section-title">FUTBOL SADECE 90 DAKİKA DEĞİLDİR</h2>
       <p class="section-sub">Saha içindeki taktiksel kararlarından saha dışındaki lüks yaşamına kadar her anı bizzat sen yönet.</p>
     </div>
 
-    <div class="bento-grid">
-      <!-- 1. Kupa Müzesi -->
-      <div class="bento-card">
-        <span class="bento-icon">🏛️</span>
-        <h3 class="bento-title">3D Kupa Müzesi</h3>
-        <p class="bento-desc">Kazandığın Ballon d'Or, Şampiyonlar Ligi ve Süper Lig kupalarını 360° parmağınla çevir, metalik ışık yansımalarını ve altın plaketini incele.</p>
+    <div class="features-grid">
+
+      <!-- Card 1 -->
+      <div class="feat-card">
+        <span class="feat-emoji">👔</span>
+        <h3 class="feat-title">Menajerlik &amp; Sözleşme Pazarlıkları</h3>
+        <p class="feat-desc">
+          Isparta 32'den Ankaragücü'ne, Galatasaray'dan Real Madrid'e — transfer görüşmelerini bizzat yönet. Madde madde maaş müzakeresi, vize anlaşmazlıkları ve bonservis savaşları.
+        </p>
+        <span class="feat-tag">TRANSFER &amp; AJAN SİSTEMİ</span>
       </div>
 
-      <!-- 2. Süperstar Garajı -->
-      <div class="bento-card">
-        <span class="bento-icon">🏎️</span>
-        <h3 class="bento-title">Lüks Garaj & V12 Sesleri</h3>
-        <p class="bento-desc">Ferrari, Porsche, Lamborghini gibi süper arabaları garajına çek. Gerçek motor devir sesleriyle gazla ve sokaklarda tarzını konuştur.</p>
+      <!-- Card 2 -->
+      <div class="feat-card">
+        <span class="feat-emoji">🏎️</span>
+        <h3 class="feat-title">3D Garaj &amp; Yatırım Dünyası</h3>
+        <p class="feat-desc">
+          Bordo Doğan SLX'ten Lamborghini Urus'a uzanan lüks garaj. Gerçek V12 sesleri, kripto borsa paneli (BTC, ETH, ATL Coin) ve Boğaz yalısı yatırımı.
+        </p>
+        <span class="feat-tag">GARAJ &amp; KRİPTO BORSA</span>
       </div>
 
-      <!-- 3. Krampon Atölyesi -->
-      <div class="bento-card">
-        <span class="bento-icon">👟</span>
-        <h3 class="bento-title">İmza Krampon Atölyesi</h3>
-        <p class="bento-desc">Kendi kramponunun renklerini, krom tabanını ve bağcıklarını kendin tasarla. Maçlarda ekstra hız ve bitiricilik bonusu kazan.</p>
+      <!-- Card 3 -->
+      <div class="feat-card">
+        <span class="feat-emoji">🎯</span>
+        <h3 class="feat-title">3D Vuruş Motoru</h3>
+        <p class="feat-desc">
+          WebGL tabanlı gerçekçi top fiziği: köşe direk, ofsayt iptali, VAR incelemesi. Krampon atölyesinde kendi imza kramponunu tasarla ve maçta bonus kazan.
+        </p>
+        <span class="feat-tag">3D WEBGL FİZİK ENGİNİ</span>
       </div>
 
-      <!-- 4. VAR İnceleme Sistemi -->
-      <div class="bento-card">
-        <span class="bento-icon">⚽</span>
-        <h3 class="bento-title">3D VAR İnceleme Sistemi</h3>
-        <p class="bento-desc">Hakem düdüğü çaldı, nefesler tutuldu! 3D VAR monitöründe ofsayt ve gol çizgisi kameralarını bizzat izle. Hakem kararıyla stadyumu inlet!</p>
+      <!-- Card 4 -->
+      <div class="feat-card">
+        <span class="feat-emoji">📰</span>
+        <h3 class="feat-title">Medya, Magazin &amp; Sosyal Medya</h3>
+        <p class="feat-desc">
+          Maç sonu basın odası, Siyah Futbol TV yorumları, X (Twitter) transfer duyuru kartları ve manşet haberler — tüm medya baskısını yönet.
+        </p>
+        <span class="feat-tag">BASIN &amp; SOSYAL MEDYA</span>
       </div>
 
-      <!-- 5. Siyah Futbol Masası -->
-      <div class="bento-card">
-        <span class="bento-icon">📺</span>
-        <h3 class="bento-title">Siyah Futbol & Basın Odası</h3>
-        <p class="bento-desc">Maç sonu gazetecilerin kışkırtıcı sorularına taktiksel cevaplar ver. Gece ise televizyon ekranında yorumcuların hararetli tartışmalarını izle!</p>
-      </div>
-
-      <!-- 6. Finans & Tefeci Rıza -->
-      <div class="bento-card">
-        <span class="bento-icon">🏢</span>
-        <h3 class="bento-title">Borsa, Gayrimenkul & Tefeci</h3>
-        <p class="bento-desc">Kazandığın haftalık maaşları borsada ve kriptoda değerlendir. Zor günlerde tefecinin kapısını çal ya da Boğaz'da yalı satın al!</p>
-      </div>
     </div>
   </section>
 
-  <!-- Ekran Görüntüleri Galerisi -->
+  <!-- ══════════ GALLERY ══════════ -->
   <section class="section" id="galeri">
     <div class="section-header">
-      <span class="section-badge">GÖRSEL ŞÖLEN</span>
+      <div class="section-eyebrow">GÖRSEL ŞÖLEN</div>
       <h2 class="section-title">OYUNDAN KARELER</h2>
       <p class="section-sub">1080p Ultra HD grafikler, akıcı arayüz ve zengin futbolcu yaşam simülasyonu.</p>
     </div>
 
     <div class="gallery-grid">
-      <div class="gallery-item"><img src="reklam_assets/gplay_screenshot_1.png" alt="Futbol Yıldızı Ol"></div>
-      <div class="gallery-item"><img src="reklam_assets/gplay_screenshot_2.png" alt="Dev Transferler"></div>
-      <div class="gallery-item"><img src="reklam_assets/gplay_screenshot_3.png" alt="Kaderini Belirle"></div>
-      <div class="gallery-item"><img src="reklam_assets/gplay_screenshot_4.png" alt="Şöhret ve Baskı"></div>
-      <div class="gallery-item"><img src="reklam_assets/gplay_screenshot_5.png" alt="Milyarder Hayat"></div>
-      <div class="gallery-item"><img src="reklam_assets/gplay_screenshot_6.png" alt="Kendi Takımını Kur"></div>
+      <div class="gallery-item">
+        <img src="reklam_assets/gplay_screenshot_1.png" alt="Futbol Yıldızı Ol" loading="lazy">
+        <div class="gallery-label">FUTBOL YILDIZI OL</div>
+      </div>
+      <div class="gallery-item">
+        <img src="reklam_assets/gplay_screenshot_2.png" alt="Dev Transferler" loading="lazy">
+        <div class="gallery-label">DEV TRANSFERLER</div>
+      </div>
+      <div class="gallery-item">
+        <img src="reklam_assets/gplay_screenshot_3.png" alt="Kaderini Belirle" loading="lazy">
+        <div class="gallery-label">KADERİNİ BELİRLE</div>
+      </div>
+      <div class="gallery-item">
+        <img src="reklam_assets/gplay_screenshot_4.png" alt="Şöhret ve Baskı" loading="lazy">
+        <div class="gallery-label">ŞÖHRET &amp; BASKI</div>
+      </div>
+      <div class="gallery-item">
+        <img src="reklam_assets/gplay_screenshot_5.png" alt="Milyarder Hayat" loading="lazy">
+        <div class="gallery-label">MİLYARDER HAYAT</div>
+      </div>
+      <div class="gallery-item">
+        <img src="reklam_assets/gplay_screenshot_6.png" alt="Kendi Takımını Kur" loading="lazy">
+        <div class="gallery-label">KENDİ TAKIMINI KUR</div>
+      </div>
     </div>
   </section>
 
-  <!-- Fragman Video Alanı -->
+  <!-- ══════════ VIDEO TRAILER ══════════ -->
   <section class="section" id="fragman">
     <div class="section-header">
-      <span class="section-badge">RESMİ TANITIM</span>
+      <div class="section-eyebrow">RESMİ TANITIM</div>
       <h2 class="section-title">OYUN İÇİ FRAGMANI İZLE</h2>
     </div>
 
-    <div class="trailer-box">
+    <div class="trailer-wrap">
       <video controls poster="store_assets/feature_graphic_1024x500.png">
         <source src="Oyun_Portre_Tanitim.mp4" type="video/mp4">
         Tarayıcınız video etiketini desteklemiyor.
@@ -826,10 +892,10 @@
     </div>
   </section>
 
-  <!-- Oyuncu Yorumları -->
+  <!-- ══════════ REVIEWS ══════════ -->
   <section class="section" id="yorumlar">
     <div class="section-header">
-      <span class="section-badge">TOPLULUK</span>
+      <div class="section-eyebrow">TOPLULUK</div>
       <h2 class="section-title">OYUNCULAR NE DİYOR?</h2>
     </div>
 
@@ -842,53 +908,53 @@
 
       <div class="review-card">
         <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Krampon boyama atölyesi ve garajdaki Ferrari'nin gerçek motor sesi inanılmaz bir hava katmış. Kesinlikle internetsiz oynanabilmesi en büyük artısı."</p>
+        <p class="review-text">"Garajdaki Ferrari'nin gerçek motor sesi inanılmaz bir hava katmış. Kripto borsa panelini keşfedince oyunu bırakamadım. Kesinlikle internetsiz oynanabilmesi en büyük artısı."</p>
         <div class="review-author">Burak T. — Süper Lig Şampiyonu</div>
       </div>
 
       <div class="review-card">
         <div class="review-stars">★★★★★</div>
-        <p class="review-text">"VAR incelemesi geldiğinde kalbim duracak gibi oldu :D Siyah Futbol masasındaki Rasim Ozan göndermeleri çok komik. Elinize sağlık!"</p>
+        <p class="review-text">"VAR incelemesi geldiğinde kalbim duracak gibi oldu! Siyah Futbol masasındaki yorumcu göndermeleri çok komik. HERE WE GO transfer kartı sosyal medyada çıldırttı."</p>
         <div class="review-author">Serkan D. — Ballon d'Or Kazananı</div>
       </div>
     </div>
   </section>
 
-  <!-- SSS (FAQ) -->
+  <!-- ══════════ FAQ ══════════ -->
   <section class="section" id="faq">
     <div class="section-header">
-      <span class="section-badge">MERAK EDİLENLER</span>
+      <div class="section-eyebrow">MERAK EDİLENLER</div>
       <h2 class="section-title">SIKÇA SORULAN SORULAR</h2>
     </div>
 
     <div class="faq-container">
       <div class="faq-item">
-        <div class="faq-question">Oyun internet olmadan (Offline) oynanabilir mi? <span>▼</span></div>
-        <div class="faq-answer">Evet! Rise of Greatness tamamen çevrimdışı (offline) oynanabilir şekilde geliştirilmiştir. Metroda, uçakta veya internetinizin olmadığı her yerde kariyerinize devam edebilirsiniz.</div>
+        <div class="faq-q">Oyun internet olmadan (Offline) oynanabilir mi? <span class="chevron">▼</span></div>
+        <div class="faq-a">Evet! Rise of Greatness tamamen çevrimdışı oynanabilir şekilde geliştirilmiştir. Metroda, uçakta veya internetsiz her yerde kariyerinize devam edebilirsiniz.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-question">Oyun tamamen ücretsiz mi? <span>▼</span></div>
-        <div class="faq-answer">Evet, Rise of Greatness'ı web üzerinden veya Google Play Store'dan tamamen ücretsiz olarak indirebilir ve oynayabilirsiniz.</div>
+        <div class="faq-q">Oyun tamamen ücretsiz mi? <span class="chevron">▼</span></div>
+        <div class="faq-a">Evet, Rise of Greatness'ı tarayıcıda anında ücretsiz oynayabilir veya APK olarak indirip kurabilirsiniz. Hiçbir gizli ücret yoktur.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-question">Düşük sistemli telefonlarda kasar mı? <span>▼</span></div>
-        <div class="faq-answer">Hayır. Oyun WebGL ve hafif donanım hızlandırma mimarisiyle sıfırdan optimize edildi. Eski model telefonlarda bile 60-120 FPS akıcı çalışır ve bataryanızı sömürmez.</div>
+        <div class="faq-q">Düşük sistemli telefonlarda kasar mı? <span class="chevron">▼</span></div>
+        <div class="faq-a">Hayır. Oyun WebGL ve hafif donanım hızlandırma mimarisiyle sıfırdan optimize edildi. Eski model telefonlarda bile 60–120 FPS akıcı çalışır ve bataryayı sömürmez.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-question">Kayıtlı ilerlemem kaybolur mu? <span>▼</span></div>
-        <div class="faq-answer">Kariyeriniz cihazınızın yerel hafızasına (ve Google Play Bulut hesabınıza) güvenli bir şekilde otomatik kaydedilir.</div>
+        <div class="faq-q">Kayıtlı ilerlemem kaybolur mu? <span class="chevron">▼</span></div>
+        <div class="faq-a">Kariyeriniz cihazınızın yerel hafızasına güvenli şekilde otomatik kaydedilir. Tarayıcı sürümünde ise LocalStorage ile saklanır.</div>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- ══════════ FOOTER ══════════ -->
   <footer class="footer">
-    <div class="footer-content">
-      <div class="footer-left">
-        <img src="riseup_studios_logo.png" alt="RiseUp Studios" style="height: 38px;">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="riseup_studios_logo.png" alt="RiseUp Studios" style="height: 36px;">
         <span style="font-weight: 800; font-size: 15px;">RiseUp Studios © 2026</span>
       </div>
 
@@ -905,11 +971,38 @@
     </div>
   </footer>
 
+  <!-- ══════════ SCRIPTS ══════════ -->
   <script>
-    // FAQ Akordiyon Aç/Kapa
-    document.querySelectorAll('.faq-question').forEach(q => {
+    // ── Phone Screen Auto-Rotator (4s fade) ──
+    (function() {
+      const slides = document.querySelectorAll('.phone-slide');
+      const dots   = document.querySelectorAll('#phoneDots .dot');
+      let current  = 0;
+
+      function goTo(n) {
+        slides[current].classList.remove('active');
+        dots[current].classList.remove('active');
+        current = (n + slides.length) % slides.length;
+        slides[current].classList.add('active');
+        dots[current].classList.add('active');
+      }
+
+      setInterval(() => goTo(current + 1), 4000);
+
+      // click dots to jump
+      dots.forEach((d, i) => d.addEventListener('click', () => {
+        clearInterval(); goTo(i);
+      }));
+    })();
+
+    // ── FAQ Accordion ──
+    document.querySelectorAll('.faq-q').forEach(q => {
       q.addEventListener('click', () => {
         const item = q.parentElement;
+        // close others
+        document.querySelectorAll('.faq-item.open').forEach(o => {
+          if (o !== item) o.classList.remove('open');
+        });
         item.classList.toggle('open');
       });
     });
