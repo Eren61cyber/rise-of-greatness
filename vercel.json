@@ -1,6 +1,15 @@
 {
-  "trailingSlash": true,
   "cleanUrls": false,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/", "destination": "/Oyuncu Kariyeri Oyunu/index.html" },
+    { "source": "/game", "destination": "/Oyuncu Kariyeri Oyunu/index.html" },
+    { "source": "/showcase", "destination": "/Oyuncu Kariyeri Oyunu/showcase.html" },
+    { "source": "/promo", "destination": "/Oyuncu Kariyeri Oyunu/tanitim_animasyon.html" },
+    { "source": "/privacy", "destination": "/Oyuncu Kariyeri Oyunu/privacy-policy.html" },
+    { "source": "/landing", "destination": "/Oyuncu Kariyeri Oyunu/landing.html" },
+    { "source": "/:match*", "destination": "/Oyuncu Kariyeri Oyunu/:match*" }
+  ],
   "headers": [
     {
       "source": "/(.*)",

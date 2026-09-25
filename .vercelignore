@@ -1,0 +1,7 @@
+# Large build files & zips that exceed Vercel deployment limits (50MB+)
+*.zip
+*.apk
+*.aab
+**/android-app/
+*.tmp
+*.log

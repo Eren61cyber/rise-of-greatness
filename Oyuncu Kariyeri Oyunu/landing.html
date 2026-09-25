@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Rise of Greatness - Türk Usulü 3D Futbolcu Kariyer Oyunu</title>
+  <meta name="description" content="3. Lig'den Ballon d'Or'a! 3D kupa müzesi, lüks garaj, tefeci borçları ve gerçek Türk futbol kariyeri. Hemen web'de oyna veya Google Play'den indir!">
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,900&family=Rajdhani:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #050811;
+      --bg-card: rgba(14, 20, 36, 0.75);
+      --border-card: rgba(255, 255, 255, 0.08);
+      --primary: #00e5ff;
+      --accent-gold: #ffd000;
+      --accent-green: #00ff87;
+      --accent-red: #ff3366;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Montserrat', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Arka Plan Glow ve Grid Efektleri */
+    .bg-ambient {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .ambient-glow-1 {
+      position: absolute;
+      top: -150px;
+      left: 10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0, 229, 255, 0.15) 0%, transparent 70%);
+      filter: blur(80px);
+    }
+
+    .ambient-glow-2 {
+      position: absolute;
+      top: 30%;
+      right: -100px;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(255, 208, 0, 0.1) 0%, transparent 70%);
+      filter: blur(90px);
+    }
+
+    .ambient-glow-3 {
+      position: absolute;
+      bottom: 10%;
+      left: -100px;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(255, 51, 102, 0.12) 0%, transparent 70%);
+      filter: blur(100px);
+    }
+
+    /* ── STICKY NAVBAR ── */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(5, 8, 17, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-card);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .nav-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+    }
+
+    .nav-title {
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, #fff, #ffd000);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-nav-play {
+      background: linear-gradient(135deg, #00e5ff, #00ff87);
+      color: #000;
+      font-size: 13px;
+      font-weight: 900;
+      padding: 8px 18px;
+      border-radius: 30px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+      transition: all 0.2s;
+    }
+
+    .btn-nav-play:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(0, 255, 135, 0.6);
+    }
+
+    /* ── HERO BÖLÜMÜ ── */
+    .hero {
+      position: relative;
+      z-index: 10;
+      padding: 80px 32px 100px;
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 229, 255, 0.12);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      color: var(--primary);
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-size: 54px;
+      font-weight: 900;
+      line-height: 1.12;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .gold-gradient {
+      background: linear-gradient(135deg, #fff 15%, #ffd000 65%, #ff8800 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 20px rgba(255, 208, 0, 0.4));
+    }
+
+    .cyan-gradient {
+      background: linear-gradient(135deg, #fff 15%, #00e5ff 65%, #00ff87 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.4));
+    }
+
+    .hero-desc {
+      font-size: 17px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 36px;
+      max-width: 580px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .cta-main {
+      background: linear-gradient(135deg, #ffd000, #ff8800);
+      color: #000;
+      font-size: 16px;
+      font-weight: 900;
+      padding: 16px 36px;
+      border-radius: 40px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 30px rgba(255, 208, 0, 0.35);
+      transition: all 0.25s;
+    }
+
+    .cta-main:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 15px 45px rgba(255, 208, 0, 0.6);
+    }
+
+    .cta-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 800;
+      padding: 16px 32px;
+      border-radius: 40px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      backdrop-filter: blur(8px);
+      transition: all 0.25s;
+    }
+
+    .cta-secondary:hover {
+      background: rgba(0, 229, 255, 0.12);
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-3px);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 32px;
+      border-top: 1px solid var(--border-card);
+      padding-top: 24px;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-val {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 26px;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .stat-lbl {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* 3D Telefon Mockup */
+    .hero-phone-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .phone-mockup {
+      width: 320px;
+      height: 640px;
+      background: #090d18;
+      border-radius: 44px;
+      padding: 12px;
+      box-shadow: 
+        0 0 0 2px rgba(255, 255, 255, 0.15),
+        0 30px 80px rgba(0, 0, 0, 0.9),
+        0 0 60px rgba(0, 229, 255, 0.2);
+      transform: rotateY(-12deg) rotateX(8deg);
+      transition: transform 0.5s ease;
+      position: relative;
+    }
+
+    .phone-mockup:hover {
+      transform: rotateY(0deg) rotateX(0deg) scale(1.03);
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      border-radius: 34px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .phone-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .phone-badge-floating {
+      position: absolute;
+      top: 15%;
+      left: -35px;
+      background: rgba(14, 20, 36, 0.95);
+      border: 1px solid var(--accent-gold);
+      padding: 10px 18px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      backdrop-filter: blur(12px);
+      animation: floatBadge 3s ease-in-out infinite;
+    }
+
+    @keyframes floatBadge {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* ── MEGA ÖZELLİKLER (BENTO GRID) ── */
+    .section {
+      position: relative;
+      z-index: 10;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 80px 32px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--accent-gold);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: 38px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+      margin-bottom: 14px;
+    }
+
+    .section-sub {
+      color: var(--text-muted);
+      font-size: 16px;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .bento-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 24px;
+      padding: 32px 28px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bento-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 229, 255, 0.15);
+    }
+
+    .bento-icon {
+      font-size: 40px;
+      margin-bottom: 20px;
+      display: inline-block;
+    }
+
+    .bento-title {
+      font-size: 20px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    .bento-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .bento-span-2 {
+      grid-column: span 2;
+    }
+
+    /* ── EKRAN GÖRÜNTÜLERİ GALERİSİ ── */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+    }
+
+    .gallery-item {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border-card);
+      background: #000;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-8px) scale(1.03);
+      border-color: var(--accent-gold);
+      box-shadow: 0 15px 35px rgba(255, 208, 0, 0.25);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ── FRAGMAN VİDEO BÖLÜMÜ ── */
+    .trailer-box {
+      max-width: 800px;
+      margin: 0 auto;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 2px solid var(--border-card);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 50px rgba(0, 229, 255, 0.15);
+      background: #000;
+    }
+
+    .trailer-box video {
+      width: 100%;
+      height: auto;
+      max-height: 500px;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* ── YORUMLAR (TESTIMONIALS) ── */
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .review-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 20px;
+      padding: 28px;
+    }
+
+    .review-stars {
+      color: var(--accent-gold);
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+
+    .review-text {
+      font-size: 14px;
+      color: #e2e8f0;
+      line-height: 1.6;
+      margin-bottom: 16px;
+      font-style: italic;
+    }
+
+    .review-author {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    /* ── SIKÇA SORULAN SORULAR (FAQ) ── */
+    .faq-container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      padding: 20px 24px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s;
+    }
+
+    .faq-question:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .faq-answer {
+      padding: 0 24px 20px;
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      display: none;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    .faq-item.open .faq-question {
+      color: var(--primary);
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      border-top: 1px solid var(--border-card);
+      background: rgba(3, 5, 10, 0.95);
+      padding: 60px 32px 30px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .footer-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    .footer-bottom {
+      max-width: 1280px;
+      margin: 0 auto;
+      text-align: center;
+      font-size: 12px;
+      color: #64748b;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 24px;
+    }
+
+    /* Responsive Uyumluluk */
+    @media (max-width: 1024px) {
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding-top: 40px;
+      }
+      .hero-title { font-size: 40px; }
+      .hero-desc { margin: 0 auto 30px; }
+      .hero-ctas { justify-content: center; }
+      .hero-stats { justify-content: center; }
+      .bento-grid { grid-template-columns: repeat(2, 1fr); }
+      .bento-span-2 { grid-column: span 1; }
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .reviews-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .navbar { padding: 14px 20px; }
+      .nav-links { display: none; }
+      .hero-title { font-size: 32px; }
+      .bento-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-content { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Arka Plan Işık Efektleri -->
+  <div class="bg-ambient">
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+    <div class="ambient-glow-3"></div>
+  </div>
+
+  <!-- Sticky Navbar -->
+  <nav class="navbar">
+    <a href="landing.html" class="nav-brand">
+      <img class="nav-logo" src="logo.png" alt="Rise of Greatness">
+      <span class="nav-title">RISE OF GREATNESS</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#ozellikler">Özellikler</a></li>
+      <li><a href="#galeri">Galeri</a></li>
+      <li><a href="#fragman">Fragman</a></li>
+      <li><a href="#yorumlar">Yorumlar</a></li>
+      <li><a href="#faq">SSS</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <!-- Doğrudan Web'de Oyna Butonu -->
+      <a href="index.html" class="btn-nav-play">
+        <span>🎮</span> Web'de Oyna
+      </a>
+    </div>
+  </nav>
+
+  <!-- Hero Bölümü -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-badge">🇹🇷 TÜRKİYE'NİN EN İYİ 3D FUTBOLCU RPG'Sİ</div>
+      <h1 class="hero-title">
+        3. LİG'DEN <span class="cyan-gradient">BALLON D'OR'A</span><br>
+        KENDİ EFSANENİ <span class="gold-gradient">YAZ!</span>
+      </h1>
+      <p class="hero-desc">
+        Altyapı seçmelerinden başla, derbilerde 90+4 golü at, tefeci borçlarını kapat ve dünya devlerinin zirvesine tırman! 3D WebGL kupa müzesi, lüks süperstar garajı ve Türk futbolunun sokak ruhu burada.
+      </p>
+
+      <div class="hero-ctas">
+        <!-- Oyuna Başla (Web Sürümü) -->
+        <a href="index.html" class="cta-main">
+          <span>🚀</span> HEMEN WEB'DE OYNA
+        </a>
+        <!-- Google Play Store İndir -->
+        <a href="https://play.google.com/store" target="_blank" class="cta-secondary">
+          <span>📲</span> GOOGLE PLAY'DEN İNDİR
+        </a>
+        <!-- Doğrudan APK İndir -->
+        <a href="RiseOfGreatness-v1.1.6.apk" download class="cta-secondary" style="font-size: 14px; padding: 14px 24px;">
+          <span>📦</span> APK İndir (v1.1.6)
+        </a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-val">120 FPS</span>
+          <span class="stat-lbl">Ultra Akıcı Performans</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val">%100 OFFLINE</span>
+          <span class="stat-lbl">Tamamen İnternetsiz</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val">4.9 ★★★★★</span>
+          <span class="stat-lbl">50.000+ İndirme</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3D Telefon Vitrini -->
+    <div class="hero-phone-container">
+      <div class="phone-badge-floating">
+        <div style="font-size: 10px; color: var(--accent-gold); font-weight: 800; letter-spacing: 1px;">GENÇ YETENEK</div>
+        <div style="font-size: 18px; font-weight: 900; color: #fff;">REYTING: 99 OVR 🔥</div>
+      </div>
+
+      <div class="phone-mockup">
+        <div class="phone-screen">
+          <img src="reklam_assets/gplay_screenshot_1.png" alt="Rise of Greatness Gameplay">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mega Özellikler (Bento Grid) -->
+  <section class="section" id="ozellikler">
+    <div class="section-header">
+      <span class="section-badge">BENZERSİZ DENEYİM</span>
+      <h2 class="section-title">FUTBOL SADECE 90 DAKİKA DEĞİLDİR</h2>
+      <p class="section-sub">Saha içindeki taktiksel kararlarından saha dışındaki lüks yaşamına kadar her anı bizzat sen yönet.</p>
+    </div>
+
+    <div class="bento-grid">
+      <!-- 1. Kupa Müzesi -->
+      <div class="bento-card">
+        <span class="bento-icon">🏛️</span>
+        <h3 class="bento-title">3D Kupa Müzesi</h3>
+        <p class="bento-desc">Kazandığın Ballon d'Or, Şampiyonlar Ligi ve Süper Lig kupalarını 360° parmağınla çevir, metalik ışık yansımalarını ve altın plaketini incele.</p>
+      </div>
+
+      <!-- 2. Süperstar Garajı -->
+      <div class="bento-card">
+        <span class="bento-icon">🏎️</span>
+        <h3 class="bento-title">Lüks Garaj & V12 Sesleri</h3>
+        <p class="bento-desc">Ferrari, Porsche, Lamborghini gibi süper arabaları garajına çek. Gerçek motor devir sesleriyle gazla ve sokaklarda tarzını konuştur.</p>
+      </div>
+
+      <!-- 3. Krampon Atölyesi -->
+      <div class="bento-card">
+        <span class="bento-icon">👟</span>
+        <h3 class="bento-title">İmza Krampon Atölyesi</h3>
+        <p class="bento-desc">Kendi kramponunun renklerini, krom tabanını ve bağcıklarını kendin tasarla. Maçlarda ekstra hız ve bitiricilik bonusu kazan.</p>
+      </div>
+
+      <!-- 4. VAR İnceleme Sistemi -->
+      <div class="bento-card">
+        <span class="bento-icon">⚽</span>
+        <h3 class="bento-title">3D VAR İnceleme Sistemi</h3>
+        <p class="bento-desc">Hakem düdüğü çaldı, nefesler tutuldu! 3D VAR monitöründe ofsayt ve gol çizgisi kameralarını bizzat izle. Hakem kararıyla stadyumu inlet!</p>
+      </div>
+
+      <!-- 5. Siyah Futbol Masası -->
+      <div class="bento-card">
+        <span class="bento-icon">📺</span>
+        <h3 class="bento-title">Siyah Futbol & Basın Odası</h3>
+        <p class="bento-desc">Maç sonu gazetecilerin kışkırtıcı sorularına taktiksel cevaplar ver. Gece ise televizyon ekranında yorumcuların hararetli tartışmalarını izle!</p>
+      </div>
+
+      <!-- 6. Finans & Tefeci Rıza -->
+      <div class="bento-card">
+        <span class="bento-icon">🏢</span>
+        <h3 class="bento-title">Borsa, Gayrimenkul & Tefeci</h3>
+        <p class="bento-desc">Kazandığın haftalık maaşları borsada ve kriptoda değerlendir. Zor günlerde tefecinin kapısını çal ya da Boğaz'da yalı satın al!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ekran Görüntüleri Galerisi -->
+  <section class="section" id="galeri">
+    <div class="section-header">
+      <span class="section-badge">GÖRSEL ŞÖLEN</span>
+      <h2 class="section-title">OYUNDAN KARELER</h2>
+      <p class="section-sub">1080p Ultra HD grafikler, akıcı arayüz ve zengin futbolcu yaşam simülasyonu.</p>
+    </div>
+
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="reklam_assets/gplay_screenshot_1.png" alt="Futbol Yıldızı Ol"></div>
+      <div class="gallery-item"><img src="reklam_assets/gplay_screenshot_2.png" alt="Dev Transferler"></div>
+      <div class="gallery-item"><img src="reklam_assets/gplay_screenshot_3.png" alt="Kaderini Belirle"></div>
+      <div class="gallery-item"><img src="reklam_assets/gplay_screenshot_4.png" alt="Şöhret ve Baskı"></div>
+      <div class="gallery-item"><img src="reklam_assets/gplay_screenshot_5.png" alt="Milyarder Hayat"></div>
+      <div class="gallery-item"><img src="reklam_assets/gplay_screenshot_6.png" alt="Kendi Takımını Kur"></div>
+    </div>
+  </section>
+
+  <!-- Fragman Video Alanı -->
+  <section class="section" id="fragman">
+    <div class="section-header">
+      <span class="section-badge">RESMİ TANITIM</span>
+      <h2 class="section-title">OYUN İÇİ FRAGMANI İZLE</h2>
+    </div>
+
+    <div class="trailer-box">
+      <video controls poster="store_assets/feature_graphic_1024x500.png">
+        <source src="Oyun_Portre_Tanitim.mp4" type="video/mp4">
+        Tarayıcınız video etiketini desteklemiyor.
+      </video>
+    </div>
+  </section>
+
+  <!-- Oyuncu Yorumları -->
+  <section class="section" id="yorumlar">
+    <div class="section-header">
+      <span class="section-badge">TOPLULUK</span>
+      <h2 class="section-title">OYUNCULAR NE DİYOR?</h2>
+    </div>
+
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Yıllardır New Star Soccer oynayan biri olarak söylüyorum, Türk futboluna uyarlanmış hali tek kelimeyle başyapıt olmuş. Tefeci Rıza detayı beni benden aldı!"</p>
+        <div class="review-author">Emre K. — TFF 2. Lig Forveti</div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Krampon boyama atölyesi ve garajdaki Ferrari'nin gerçek motor sesi inanılmaz bir hava katmış. Kesinlikle internetsiz oynanabilmesi en büyük artısı."</p>
+        <div class="review-author">Burak T. — Süper Lig Şampiyonu</div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"VAR incelemesi geldiğinde kalbim duracak gibi oldu :D Siyah Futbol masasındaki Rasim Ozan göndermeleri çok komik. Elinize sağlık!"</p>
+        <div class="review-author">Serkan D. — Ballon d'Or Kazananı</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SSS (FAQ) -->
+  <section class="section" id="faq">
+    <div class="section-header">
+      <span class="section-badge">MERAK EDİLENLER</span>
+      <h2 class="section-title">SIKÇA SORULAN SORULAR</h2>
+    </div>
+
+    <div class="faq-container">
+      <div class="faq-item">
+        <div class="faq-question">Oyun internet olmadan (Offline) oynanabilir mi? <span>▼</span></div>
+        <div class="faq-answer">Evet! Rise of Greatness tamamen çevrimdışı (offline) oynanabilir şekilde geliştirilmiştir. Metroda, uçakta veya internetinizin olmadığı her yerde kariyerinize devam edebilirsiniz.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Oyun tamamen ücretsiz mi? <span>▼</span></div>
+        <div class="faq-answer">Evet, Rise of Greatness'ı web üzerinden veya Google Play Store'dan tamamen ücretsiz olarak indirebilir ve oynayabilirsiniz.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Düşük sistemli telefonlarda kasar mı? <span>▼</span></div>
+        <div class="faq-answer">Hayır. Oyun WebGL ve hafif donanım hızlandırma mimarisiyle sıfırdan optimize edildi. Eski model telefonlarda bile 60-120 FPS akıcı çalışır ve bataryanızı sömürmez.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Kayıtlı ilerlemem kaybolur mu? <span>▼</span></div>
+        <div class="faq-answer">Kariyeriniz cihazınızın yerel hafızasına (ve Google Play Bulut hesabınıza) güvenli bir şekilde otomatik kaydedilir.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-left">
+        <img src="riseup_studios_logo.png" alt="RiseUp Studios" style="height: 38px;">
+        <span style="font-weight: 800; font-size: 15px;">RiseUp Studios © 2026</span>
+      </div>
+
+      <div class="footer-links">
+        <a href="index.html">Web'de Oyna</a>
+        <a href="privacy-policy.html">Gizlilik Politikası</a>
+        <a href="showcase.html">Özellik Vitrini</a>
+        <a href="tanitim_animasyon.html">Animasyon</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      Rise of Greatness tüm hakları saklıdır. Bu bağımsız bir Türk futbolcu yaşam ve kariyer simülasyonudur.
+    </div>
+  </footer>
+
+  <script>
+    // FAQ Akordiyon Aç/Kapa
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => {
+        const item = q.parentElement;
+        item.classList.toggle('open');
+      });
+    });
+  </script>
+</body>
+</html>
