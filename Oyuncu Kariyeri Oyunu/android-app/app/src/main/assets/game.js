@@ -524,8 +524,12 @@ const GAME = {
     },
 
     saveGame: function() {
-        localStorage.setItem(this.saveKey, JSON.stringify(this.state));
-        console.log("Game state successfully saved!");
+        try {
+            localStorage.setItem(this.saveKey, JSON.stringify(this.state));
+            console.log("Game state successfully saved!");
+        } catch (e) {
+            console.warn("Storage save failed or quota exceeded:", e);
+        }
     },
 
     // ═══════════════════════════════════════════════════════
@@ -3119,27 +3123,7 @@ const GAME = {
             isChampion: (rank === 1)
         });
 
-        // Reset season stats & transfer state
-        this.state.seasonGoals = 0;
-
-        this.state.seasonAssists = 0;
-        this.state.seasonApps = 0;
-        this.state.currentLeagueGoals = 0;
-        this.state.currentLeagueAssists = 0;
-        this.state.currentLeagueApps = 0;
-        this.state.mostEmotionalMatch = null;
-        this.state.currentWeek = 1;
-        this.state.transferredThisWindow = false;
-        this.state.activeTransferOffers = [];
-        this.state.seasonCardStatBoosts = 0;
-
-        
-        // Reset league table & scorers for the current league
-        this.initLeagueTable();
-        this.initLeagueScorers(true);
-        this.state.nextOpponentName = null; 
-        
-        // 🏅 Build award ceremony data for this season
+        // 🏅 Build award ceremony data for this season (Calculated BEFORE resetting league scorers!)
         const goals = seasonStats.goals;
         const assists = seasonStats.assists;
         const rating = this.state.rating;
@@ -3152,9 +3136,10 @@ const GAME = {
             this.state.totalEarnings = (this.state.totalEarnings || 0) + 15000;
             this.state.followers += 10000;
         }
-        // Gol Krallığı
+        // Gol Krallığı (Gerçek lig gol kralı kontrolü)
         const topScorer = (this.state.leagueScorers || [])[0];
-        if (topScorer && goals > 0 && goals >= (topScorer.goals || 0)) {
+        const topScorerGoals = (topScorer && typeof topScorer.goals === "number") ? topScorer.goals : 12;
+        if (goals > 0 && goals >= topScorerGoals) {
             awards.push({ icon: "⚽", title: "Gol Krallığı", desc: `${goals} golle liginin gol kralı oldun! Altın Bot ödülü!`, bonus: 25000 });
             this.state.money += 25000;
             this.state.totalEarnings = (this.state.totalEarnings || 0) + 25000;
@@ -3176,6 +3161,24 @@ const GAME = {
         }
 
         this.state.pendingAwardCeremony = awards.length > 0 ? { awards, season: this.state.age } : null;
+
+        // Reset season stats & transfer state for the new season
+        this.state.seasonGoals = 0;
+        this.state.seasonAssists = 0;
+        this.state.seasonApps = 0;
+        this.state.currentLeagueGoals = 0;
+        this.state.currentLeagueAssists = 0;
+        this.state.currentLeagueApps = 0;
+        this.state.mostEmotionalMatch = null;
+        this.state.currentWeek = 1;
+        this.state.transferredThisWindow = false;
+        this.state.activeTransferOffers = [];
+        this.state.seasonCardStatBoosts = 0;
+
+        // Reset league table & scorers for the new season
+        this.initLeagueTable();
+        this.initLeagueScorers(true);
+        this.state.nextOpponentName = null;
 
         if (typeof ANALYTICS !== "undefined") {
             ANALYTICS.logEvent("season_end", { age: this.state.age, rank: rank, goals: seasonStats.goals, assists: seasonStats.assists });

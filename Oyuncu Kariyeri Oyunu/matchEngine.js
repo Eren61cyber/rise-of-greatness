@@ -6,6 +6,7 @@
 const MatchEngine = {
     currentSpeed: 1,
     min: 0,
+    get currentMinute() { return this.min; },
     score: { player: 0, opponent: 0 },
     timer: null,
     playerState: null,
@@ -2509,6 +2510,8 @@ const MatchEngine = {
                 if (typeof SoundManager !== "undefined" && typeof SoundManager.playWhistle === "function") {
                     SoundManager.playWhistle("double");
                 }
+            } else if (self.min === 65 && self.isBenched) {
+                self.callbacks.onMinuteUpdate(self.min, self.score, `🔄 Oyuna Giriyorsun! Teknik direktör seni sahaya sürüyor. Kendini göstermek için son 25 dakika!`);
             }
             if (self.min > 90) {
                 // Match finished!

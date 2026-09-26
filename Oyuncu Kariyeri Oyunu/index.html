@@ -1923,7 +1923,7 @@
                 
                 <!-- Live Broadcast Badge -->
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;">
-                    <div style="display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 900; color: #ef4444; letter-spacing: 1px;">
+                    <div id="interview-tag" style="display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 900; color: #ef4444; letter-spacing: 1px;">
                         <span style="width: 8px; height: 8px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 8px #ef4444; display: inline-block;"></span>
                         🔴 CANLI YAYIN | FLASH RÖPORTAJ
                     </div>
@@ -17289,7 +17289,7 @@ function afterWeekAdvanced() {
             if (sBtn) sBtn.disabled = true;
 
             // PRE MATCH DERBY INTERVIEW LOGIC
-            const derbyTeams = ["Galatastar", "Kartal FK", "Trabzonstar", "Bahçeşehir"];
+            const derbyTeams = ["Galatastar", "Fenerbaçe FK", "Kartal FK", "Trabzon FK", "Başakşehir FK"];
             if (nextOpponent && derbyTeams.includes(nextOpponent.name)) {
                 let wKey = `preMatchInterviewDone_w${GAME.state.currentWeek}`;
                 if (!GAME.state[wKey]) {
@@ -17663,8 +17663,10 @@ function afterWeekAdvanced() {
             if (!SoundManager) return;
             const isOn = SoundManager.musicEnabled;
             SoundManager.toggleMusic(!isOn);
-            btn.textContent = !isOn ? "🎵" : "🔇";
-            btn.style.opacity = !isOn ? "1" : "0.5";
+            if (btn) {
+                btn.textContent = !isOn ? "🎵" : "🔇";
+                btn.style.opacity = !isOn ? "1" : "0.5";
+            }
         }
 
         // 🎖️ MANUAL JUBILEE TRIGGER
@@ -17863,6 +17865,19 @@ function afterWeekAdvanced() {
                         mid: 50,
                         def: 50
                     };
+                }
+
+                // PRE MATCH DERBY INTERVIEW LOGIC (Live match)
+                const derbyTeams = ["Galatastar", "Fenerbaçe FK", "Kartal FK", "Trabzon FK", "Başakşehir FK"];
+                if (nextOpponent && derbyTeams.includes(nextOpponent.name)) {
+                    let wKey = `preMatchInterviewDone_w${GAME.state.currentWeek}`;
+                    if (!GAME.state[wKey]) {
+                        GAME.state[wKey] = true;
+                        openPreMatchInterview(nextOpponent.name, () => {
+                            startMatch();
+                        });
+                        return;
+                    }
                 }
 
                 const matchView = document.getElementById("match-view");
@@ -18482,8 +18497,8 @@ function afterWeekAdvanced() {
                         if (streak === 3 || (streak >= 5 && streak % 5 === 0)) {
                             setTimeout(() => { showStreakFlash(streak); }, 400);
                         }
-                        // Dramatic headline - interactive matches track injury time via MatchEngine
-                        const isLastMinute = (typeof MatchEngine !== "undefined" && MatchEngine.currentMinute && MatchEngine.currentMinute >= 88);
+                        // Dramatic headline - interactive matches track injury time via MatchEngine (88+ & 90+)
+                        const isLastMinute = (typeof MatchEngine !== "undefined" && ((MatchEngine.min && MatchEngine.min >= 88) || (MatchEngine.currentMinute && MatchEngine.currentMinute >= 88)));
                         checkDramaticHeadline(pGoals, pRating, scoreDiff, isLastMinute);
                         updateMissionsBadge();
                         updateStreakBadge();
