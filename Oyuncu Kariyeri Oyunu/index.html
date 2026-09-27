@@ -10928,11 +10928,20 @@ function startNationalAnthemCeremony(matchData = null, onComplete = null) {
             const ctx = canvas.getContext("2d");
             if (!ctx) return;
 
+            // Hi-DPI / Retina scaling — prevents blurry canvas on high-density screens
+            const dpr = window.devicePixelRatio || 2;
+            const cssW = canvas.clientWidth  || canvas.width;
+            const cssH = canvas.clientHeight || canvas.height;
+            canvas.width  = cssW * dpr;
+            canvas.height = cssH * dpr;
+            ctx.scale(dpr, dpr);
+
             // Generate crisp high-res offscreen Turkish flag template
             const offCanvas = document.createElement("canvas");
-            offCanvas.width = 400;
-            offCanvas.height = 260;
+            offCanvas.width = 400 * dpr;
+            offCanvas.height = 260 * dpr;
             const offCtx = offCanvas.getContext("2d");
+            offCtx.scale(dpr, dpr);
 
             const W = 400, H = 260;
             // 1. Red Al Zemin
@@ -19159,6 +19168,13 @@ const Nss3DEngine = {
 
         if (this.hudCanvas) {
             this.hudCtx = this.hudCanvas.getContext("2d");
+            // Hi-DPI HUD canvas — crisp Retina text & icons
+            const dpr = window.devicePixelRatio || 2;
+            const hudW = this.hudCanvas.clientWidth  || this.W;
+            const hudH = this.hudCanvas.clientHeight || this.H;
+            this.hudCanvas.width  = hudW * dpr;
+            this.hudCanvas.height = hudH * dpr;
+            this.hudCtx.scale(dpr, dpr);
         }
 
         // WebGL Hardware Renderer
@@ -19168,7 +19184,8 @@ const Nss3DEngine = {
             alpha: false,
             powerPreference: "high-performance"
         });
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        // Use up to 3× DPR for 4K / Ultra-HD sharpness
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 3));
         this.renderer.setSize(this.W, this.H, false);
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
