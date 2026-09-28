@@ -1040,7 +1040,7 @@
                                 <span class="llc-live-dot"></span>
                                 <span class="gold">CANLI</span> LİG MERKEZİ
                             </div>
-                            <div style="font-size:9px; color:rgba(255,215,0,0.45); font-weight:700; letter-spacing:1px;">EA SPORTS FC STYLE</div>
+                            <div style="font-size:9px; color:rgba(255,215,0,0.45); font-weight:700; letter-spacing:1px;">RiseUp Studios</div>
                         </div>
 
                         <div id="llc-tabs-wrap"></div>
@@ -1396,7 +1396,7 @@
                     <div class="hero-match-disc">
                         <svg class="hero-match-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
                     </div>
-                    <span class="hero-label">MAÇ</span>
+                    <span class="hero-label">PUAN TABLOSU</span>
                 </button>
 
                 <!-- 4. KULÜP & TRANSFERLER -->
@@ -12314,18 +12314,35 @@ function afterWeekAdvanced() {
         function proceedPostMatch() {
             if (window._pendingMatchBonus && window.AdManager && typeof window.AdManager.showMatchBonusModal === "function") {
                 const bonusData = window._pendingMatchBonus;
-                window._pendingMatchBonus = null;
-                AdManager.showMatchBonusModal(bonusData.prim, bonusData.scoreDiff, () => {
-                    GAME.advanceWeek();
-                    determineNextOpponent();
-                    afterWeekAdvanced();
-                });
-                return;
+
+                // ── Reklam modalını 5 maçta bir göster ──
+                if (!GAME.state._adMatchCounter) GAME.state._adMatchCounter = 0;
+                GAME.state._adMatchCounter++;
+
+                if (GAME.state._adMatchCounter >= 5) {
+                    GAME.state._adMatchCounter = 0;
+                    window._pendingMatchBonus = null;
+                    AdManager.showMatchBonusModal(bonusData.prim, bonusData.scoreDiff, () => {
+                        GAME.advanceWeek();
+                        determineNextOpponent();
+                        afterWeekAdvanced();
+                    });
+                    return;
+                } else {
+                    // Reklamı gösterme, primini doğrudan ver ve devam et
+                    window._pendingMatchBonus = null;
+                    if (GAME && GAME.state) {
+                        GAME.state.money += bonusData.prim;
+                        GAME.saveGame();
+                        GAME.updateUI();
+                    }
+                }
             }
             GAME.advanceWeek();
             determineNextOpponent();
             afterWeekAdvanced();
         }
+
 
         function triggerInterview(rating, goals, assists) {
             if (!GAME.state.matchesSinceLastInterview) GAME.state.matchesSinceLastInterview = 0;
