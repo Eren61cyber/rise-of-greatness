@@ -19309,6 +19309,8 @@ const Nss3DEngine = {
     textures: {
         pitch: null,
         ball: null,
+        ballBump: null,
+        ballShadow: null,
         net: null,
         wallJerseys: [],
         keeperJersey: null,
@@ -19321,37 +19323,46 @@ const Nss3DEngine = {
     buildTextures: function() {
         if (this.textures.pitch) return;
 
-        // 1. Grass Pitch Texture (1024x1024)
+        // 1. Photorealistic Stadium Grass Pitch Texture (1024x1024)
         const pCanvas = document.createElement("canvas");
         pCanvas.width = 1024;
         pCanvas.height = 1024;
         const pCtx = pCanvas.getContext("2d");
 
-        // Alternating mowing stripes
-        const stripeCount = 20;
+        // Premier League / Champions League Alternating Mowing Bands
+        const stripeCount = 24;
         const stripeH = 1024 / stripeCount;
         for (let i = 0; i < stripeCount; i++) {
-            pCtx.fillStyle = (i % 2 === 0) ? "#0f421f" : "#155728";
+            // Subtle directional sheen contrast
+            pCtx.fillStyle = (i % 2 === 0) ? "#124b22" : "#195c2b";
+            pCtx.fillRect(0, i * stripeH, 1024, stripeH);
+
+            // Subtle vertical lawnmower roller gradient
+            const g = pCtx.createLinearGradient(0, i * stripeH, 0, (i + 1) * stripeH);
+            g.addColorStop(0, "rgba(255, 255, 255, 0.04)");
+            g.addColorStop(0.5, "rgba(0, 0, 0, 0.0)");
+            g.addColorStop(1, "rgba(0, 0, 0, 0.06)");
+            pCtx.fillStyle = g;
             pCtx.fillRect(0, i * stripeH, 1024, stripeH);
         }
 
-        // Fine turf blade stippling
-        pCtx.fillStyle = "rgba(255, 255, 255, 0.03)";
-        for (let i = 0; i < 6000; i++) {
+        // Fine turf blade fibers (micro-noise)
+        pCtx.fillStyle = "rgba(255, 255, 255, 0.04)";
+        for (let i = 0; i < 18000; i++) {
             const rx = Math.random() * 1024;
             const ry = Math.random() * 1024;
-            pCtx.fillRect(rx, ry, 2, 2);
+            pCtx.fillRect(rx, ry, 1.5, 3.5);
         }
-        pCtx.fillStyle = "rgba(0, 0, 0, 0.07)";
-        for (let i = 0; i < 6000; i++) {
+        pCtx.fillStyle = "rgba(5, 25, 10, 0.12)";
+        for (let i = 0; i < 22000; i++) {
             const rx = Math.random() * 1024;
             const ry = Math.random() * 1024;
-            pCtx.fillRect(rx, ry, 2, 2);
+            pCtx.fillRect(rx, ry, 1.5, 3.0);
         }
 
-        // Regulation Pitch Lines (Brilliant White)
-        pCtx.strokeStyle = "rgba(255, 255, 255, 0.88)";
-        pCtx.lineWidth = 7;
+        // Regulation Pitch Lines (Brilliant White with subtle chalk texture)
+        pCtx.strokeStyle = "rgba(255, 255, 255, 0.92)";
+        pCtx.lineWidth = 7.5;
         // Goal Line
         pCtx.beginPath();
         pCtx.moveTo(60, 960);
@@ -19361,12 +19372,19 @@ const Nss3DEngine = {
         pCtx.strokeRect(312, 800, 400, 160);
         // 18-yard box (Penalty area)
         pCtx.strokeRect(162, 480, 700, 480);
-        // Penalty Spot
+        // Penalty Spot with subtle turf wear ring
+        pCtx.strokeStyle = "rgba(18, 55, 25, 0.4)";
+        pCtx.lineWidth = 5;
+        pCtx.beginPath();
+        pCtx.arc(512, 640, 22, 0, Math.PI * 2);
+        pCtx.stroke();
         pCtx.fillStyle = "#ffffff";
         pCtx.beginPath();
         pCtx.arc(512, 640, 10, 0, Math.PI * 2);
         pCtx.fill();
         // Penalty Arc (D)
+        pCtx.strokeStyle = "rgba(255, 255, 255, 0.92)";
+        pCtx.lineWidth = 7.5;
         pCtx.beginPath();
         pCtx.arc(512, 640, 180, Math.PI * 1.12, Math.PI * 1.88);
         pCtx.stroke();
@@ -19375,58 +19393,169 @@ const Nss3DEngine = {
         this.textures.pitch.wrapS = THREE.RepeatWrapping;
         this.textures.pitch.wrapT = THREE.RepeatWrapping;
 
-        // 2. Champions League Match Ball Texture (512x512)
+        // 2. Official Champions League / EA FC Match Ball Texture (1024x1024)
         const bCanvas = document.createElement("canvas");
-        bCanvas.width = 512;
-        bCanvas.height = 512;
+        bCanvas.width = 1024;
+        bCanvas.height = 1024;
         const bCtx = bCanvas.getContext("2d");
 
-        // White leather base with subtle sheen
-        bCtx.fillStyle = "#f8fafc";
-        bCtx.fillRect(0, 0, 512, 512);
+        // Pearlescent Pure White Leather Base
+        bCtx.fillStyle = "#fafbfe";
+        bCtx.fillRect(0, 0, 1024, 1024);
 
-        // Hexagonal seam outlines
-        bCtx.strokeStyle = "rgba(15, 23, 42, 0.15)";
-        bCtx.lineWidth = 3;
-        for (let y = 0; y < 512; y += 64) {
-            bCtx.beginPath();
-            bCtx.moveTo(0, y);
-            bCtx.lineTo(512, y);
-            bCtx.stroke();
+        // Leather micro-grain pebble texture
+        bCtx.fillStyle = "rgba(0, 0, 0, 0.035)";
+        for (let i = 0; i < 25000; i++) {
+            bCtx.fillRect(Math.random() * 1024, Math.random() * 1024, 1.5, 1.5);
+        }
+        bCtx.fillStyle = "rgba(255, 255, 255, 0.07)";
+        for (let i = 0; i < 25000; i++) {
+            bCtx.fillRect(Math.random() * 1024, Math.random() * 1024, 1.5, 1.5);
         }
 
-        // Iconic Champions League Stars (Navy & Gold)
-        const drawStar = (cx, cy, r, rot) => {
+        // Bump Map Canvas (1024x1024) for 3D Leather & Seam Depth
+        const bumpCanvas = document.createElement("canvas");
+        bumpCanvas.width = 1024;
+        bumpCanvas.height = 1024;
+        const bumpCtx = bumpCanvas.getContext("2d");
+        bumpCtx.fillStyle = "#808080"; // Neutral height
+        bumpCtx.fillRect(0, 0, 1024, 1024);
+
+        // Draw Interlocking Starball Panels
+        const drawStarPanel = (cx, cy, r, rot) => {
             bCtx.save();
             bCtx.translate(cx, cy);
             bCtx.rotate(rot);
-            bCtx.fillStyle = "#0c1b33";
-            bCtx.strokeStyle = "#fbbf24";
-            bCtx.lineWidth = 4;
+
+            bumpCtx.save();
+            bumpCtx.translate(cx, cy);
+            bumpCtx.rotate(rot);
+
+            // Rich multi-stop gradient (Midnight Navy → Electric Cyan → Magenta/Gold highlight)
+            const sg = bCtx.createRadialGradient(0, 0, r * 0.1, 0, 0, r);
+            sg.addColorStop(0, "#08152e");
+            sg.addColorStop(0.55, "#0b2654");
+            sg.addColorStop(0.85, "#0284c7");
+            sg.addColorStop(1.0, "#06b6d4");
+
+            bCtx.fillStyle = sg;
             bCtx.beginPath();
             for (let i = 0; i < 5; i++) {
-                bCtx.lineTo(Math.cos((18 + i * 72) * Math.PI / 180) * r, -Math.sin((18 + i * 72) * Math.PI / 180) * r);
-                bCtx.lineTo(Math.cos((54 + i * 72) * Math.PI / 180) * (r * 0.42), -Math.sin((54 + i * 72) * Math.PI / 180) * (r * 0.42));
+                const a1 = (18 + i * 72) * Math.PI / 180;
+                const a2 = (54 + i * 72) * Math.PI / 180;
+                bCtx.lineTo(Math.cos(a1) * r, -Math.sin(a1) * r);
+                bCtx.lineTo(Math.cos(a2) * (r * 0.44), -Math.sin(a2) * (r * 0.44));
             }
             bCtx.closePath();
             bCtx.fill();
+
+            // Inner geometric facets for 3D look
+            bCtx.strokeStyle = "rgba(255, 255, 255, 0.25)";
+            bCtx.lineWidth = 1.5;
+            for (let i = 0; i < 5; i++) {
+                const a1 = (18 + i * 72) * Math.PI / 180;
+                bCtx.beginPath();
+                bCtx.moveTo(0, 0);
+                bCtx.lineTo(Math.cos(a1) * r, -Math.sin(a1) * r);
+                bCtx.stroke();
+            }
+
+            // Outer metallic gold edge border
+            bCtx.strokeStyle = "#f59e0b";
+            bCtx.lineWidth = 5.0;
             bCtx.stroke();
+
+            // Deep Inset Seams (Panel indentation)
+            bCtx.strokeStyle = "rgba(10, 16, 30, 0.9)";
+            bCtx.lineWidth = 3.0;
+            bCtx.stroke();
+
+            // Bump Map: Puffed panel interior + deep recessed seams
+            bumpCtx.fillStyle = "#9a9a9a"; // Slightly raised panel
+            bumpCtx.beginPath();
+            for (let i = 0; i < 5; i++) {
+                const a1 = (18 + i * 72) * Math.PI / 180;
+                const a2 = (54 + i * 72) * Math.PI / 180;
+                bumpCtx.lineTo(Math.cos(a1) * r, -Math.sin(a1) * r);
+                bumpCtx.lineTo(Math.cos(a2) * (r * 0.44), -Math.sin(a2) * (r * 0.44));
+            }
+            bumpCtx.closePath();
+            bumpCtx.fill();
+
+            // Recessed groove seam on bump map
+            bumpCtx.strokeStyle = "#151515"; // Deep cut
+            bumpCtx.lineWidth = 7;
+            bumpCtx.stroke();
+
             bCtx.restore();
+            bumpCtx.restore();
         };
 
-        drawStar(128, 128, 70, 0);
-        drawStar(384, 128, 70, 0.6);
-        drawStar(256, 384, 75, 0.3);
-        drawStar(64, 400, 50, 0.9);
-        drawStar(448, 400, 50, 0.2);
+        // Layout Starball Panels around the spherical texture
+        const starLayout = [
+            { x: 256, y: 220, r: 160, rot: 0 },
+            { x: 768, y: 220, r: 160, rot: 0.62 },
+            { x: 512, y: 512, r: 180, rot: 0.31 },
+            { x: 140, y: 780, r: 145, rot: 0.95 },
+            { x: 884, y: 780, r: 145, rot: -0.45 },
+            { x: 512, y: 960, r: 130, rot: 0.15 },
+            { x: 0,   y: 480, r: 130, rot: 0.7 },
+            { x: 1024,y: 480, r: 130, rot: 0.7 }
+        ];
+        starLayout.forEach(s => drawStarPanel(s.x, s.y, s.r, s.rot));
 
-        // UEFA branding emblem in gold
-        bCtx.fillStyle = "#fbbf24";
-        bCtx.font = "900 24px sans-serif";
+        // Nike Flight / Speedshell Aerodynamic Flow Grooves
+        bCtx.strokeStyle = "rgba(14, 165, 233, 0.45)";
+        bCtx.lineWidth = 3.5;
+        bCtx.beginPath();
+        bCtx.arc(512, 512, 340, 0, Math.PI * 2);
+        bCtx.stroke();
+        bCtx.beginPath();
+        bCtx.arc(512, 512, 420, 0, Math.PI * 2);
+        bCtx.stroke();
+
+        bumpCtx.strokeStyle = "#252525";
+        bumpCtx.lineWidth = 4;
+        bumpCtx.beginPath();
+        bumpCtx.arc(512, 512, 340, 0, Math.PI * 2);
+        bumpCtx.stroke();
+
+        // Official Match Ball Branding Badges
+        bCtx.save();
+        bCtx.fillStyle = "#f59e0b";
+        bCtx.font = "900 26px sans-serif";
         bCtx.textAlign = "center";
-        bCtx.fillText("⭐ UEFA ★ FINAL ⭐", 256, 260);
+        bCtx.fillText("★ RISE OF GREATNESS ★", 512, 490);
+
+        bCtx.fillStyle = "#0c1b33";
+        bCtx.font = "800 16px sans-serif";
+        bCtx.fillText("OFFICIAL MATCH BALL • HYPERMOTION", 512, 518);
+
+        // FIFA Quality Pro Stamp
+        bCtx.strokeStyle = "#0c1b33";
+        bCtx.lineWidth = 2.5;
+        bCtx.strokeRect(436, 532, 152, 32);
+        bCtx.fillStyle = "#0c1b33";
+        bCtx.font = "900 13px sans-serif";
+        bCtx.fillText("FIFA QUALITY PRO", 512, 553);
+        bCtx.restore();
 
         this.textures.ball = new THREE.CanvasTexture(bCanvas);
+        this.textures.ballBump = new THREE.CanvasTexture(bumpCanvas);
+
+        // Soft Ambient Occlusion Ground Contact Shadow (Feathered Radial Gradient)
+        const sCanvas = document.createElement("canvas");
+        sCanvas.width = 128;
+        sCanvas.height = 128;
+        const sCtx = sCanvas.getContext("2d");
+        const sGrad = sCtx.createRadialGradient(64, 64, 0, 64, 64, 64);
+        sGrad.addColorStop(0,   "rgba(3, 12, 5, 0.88)");
+        sGrad.addColorStop(0.35,"rgba(5, 15, 6, 0.58)");
+        sGrad.addColorStop(0.70,"rgba(8, 20, 10, 0.20)");
+        sGrad.addColorStop(1.0, "rgba(0, 0, 0, 0.0)");
+        sCtx.fillStyle = sGrad;
+        sCtx.fillRect(0, 0, 128, 128);
+        this.textures.ballShadow = new THREE.CanvasTexture(sCanvas);
 
         // 3. Dynamic Hexagonal Net Grid Texture (128x128)
         const nCanvas = document.createElement("canvas");
@@ -19783,22 +19912,54 @@ const Nss3DEngine = {
         this.buildGrassField();
     },
 
+    // ★ Custom Tapered 3D Grass Blade Geometry (Realistic Sharp Tip & Curved Arc)
+    createTaperedBladeGeometry: function() {
+        const geo = new THREE.BufferGeometry();
+        // 4 height tiers (y: 0, 0.09, 0.19, 0.29m), tapering from 0.052m at root to 0.006m at tip
+        // Natural forward curvature (z curves from 0 to 0.042m)
+        const positions = [
+            // Level 0 (Root / Anchor)
+            -0.026, 0.00, 0.000,   0.026, 0.00, 0.000,
+            // Level 1 (Lower-mid)
+            -0.023, 0.09, 0.007,   0.023, 0.09, 0.007,
+            // Level 2 (Upper-mid)
+            -0.015, 0.19, 0.022,   0.015, 0.19, 0.022,
+            // Level 3 (Pointed Tip)
+            -0.003, 0.29, 0.046,   0.003, 0.29, 0.046
+        ];
+        const indices = [
+            0, 1, 2,  1, 3, 2,  // segment 1
+            2, 3, 4,  3, 5, 4,  // segment 2
+            4, 5, 6,  5, 7, 4   // segment 3
+        ];
+        const uvs = [
+            0.0, 0.0,   1.0, 0.0,
+            0.1, 0.31,  0.9, 0.31,
+            0.25, 0.65, 0.75, 0.65,
+            0.45, 1.0,  0.55, 1.0
+        ];
+
+        geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+        geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+        geo.setIndex(indices);
+        geo.computeVertexNormals();
+        return geo;
+    },
+
     // ★ Instanced 3D Grass Blades Generator with Dynamic Wind Shader
     buildGrassField: function() {
         try {
             if (typeof THREE.InstancedMesh === "undefined") return;
-            const bladeCount = 4500;
-            // 2-segment tapered blade geometry with pivot anchor at root
-            const bladeGeo = new THREE.PlaneGeometry(0.045, 0.28, 1, 2);
-            bladeGeo.translate(0, 0.14, 0);
+            const bladeCount = 8000;
+            const bladeGeo = this.createTaperedBladeGeometry();
 
             const grassMat = new THREE.MeshStandardMaterial({
-                roughness: 0.65,
+                roughness: 0.58,
                 metalness: 0.04,
                 side: THREE.DoubleSide
             });
 
-            // GPU Hardware-accelerated Wind Sway
+            // GPU Hardware-accelerated Harmonic Wind Wave Shader
             grassMat.onBeforeCompile = (shader) => {
                 shader.uniforms.uTime = { value: 0 };
                 this._grassShader = shader;
@@ -19806,10 +19967,12 @@ const Nss3DEngine = {
                 shader.vertexShader = shader.vertexShader.replace(
                     '#include <begin_vertex>',
                     `#include <begin_vertex>
-                    float windAngle = uTime * 2.8 + instanceMatrix[3].x * 0.9 + instanceMatrix[3].z * 0.7;
-                    float sway = sin(windAngle) * 0.05 * (position.y * 3.5);
+                    // Multi-frequency wind gusts traveling across the pitch
+                    float w1 = sin(uTime * 2.6 + instanceMatrix[3].x * 0.8 + instanceMatrix[3].z * 0.55);
+                    float w2 = cos(uTime * 4.2 + instanceMatrix[3].x * 1.4 - instanceMatrix[3].z * 0.9) * 0.35;
+                    float sway = (w1 + w2) * 0.052 * (position.y * 3.4);
                     transformed.x += sway;
-                    transformed.z += sway * 0.35;`
+                    transformed.z += sway * 0.42;`
                 );
             };
 
@@ -19819,26 +19982,30 @@ const Nss3DEngine = {
 
             const dummy = new THREE.Object3D();
             const color = new THREE.Color();
-            const turfColors = [0x236829, 0x2e7d32, 0x388e3c, 0x1b5e20, 0x43a047, 0x33691e, 0x4caf50];
+            // Rich stadium grass color variety (deep roots, sunlit blades, fresh turf)
+            const turfColors = [
+                0x15451c, 0x1b5424, 0x22662c, 0x2a7a35, 
+                0x328f40, 0x3aa44b, 0x184d20, 0x42b353
+            ];
 
             for (let i = 0; i < bladeCount; i++) {
-                const rx = (Math.random() - 0.5) * 17;
-                let rz;
-                if (Math.random() < 0.52) {
-                    // Action corridor: penalty spot & freekick positions (8m to 26m)
-                    rz = 8 + Math.random() * 17;
+                let rx, rz;
+                // 65% of blades concentrated in the camera's primary field of view & around the ball!
+                if (i < 5200) {
+                    rx = (Math.random() - 0.5) * 8.5; // [-4.25m, +4.25m]
+                    rz = -1.8 + Math.random() * 9.5;  // [-1.8m, +7.7m]
                 } else {
-                    // Goalmouth & penalty box (-0.5m to 12m)
-                    rz = -0.5 + Math.random() * 14;
+                    rx = (Math.random() - 0.5) * 16.0;
+                    rz = 7.7 + Math.random() * 18.0;
                 }
 
                 dummy.position.set(rx, 0, rz);
                 dummy.rotation.y = Math.random() * Math.PI * 2;
-                dummy.rotation.x = (Math.random() - 0.5) * 0.22;
-                dummy.rotation.z = (Math.random() - 0.5) * 0.22;
+                dummy.rotation.x = (Math.random() - 0.5) * 0.28;
+                dummy.rotation.z = (Math.random() - 0.5) * 0.28;
 
-                const scH = 0.7 + Math.random() * 0.65;
-                const scW = 0.8 + Math.random() * 0.45;
+                const scH = 0.72 + Math.random() * 0.55;
+                const scW = 0.80 + Math.random() * 0.45;
                 dummy.scale.set(scW, scH, scW);
                 dummy.updateMatrix();
 
@@ -19846,7 +20013,8 @@ const Nss3DEngine = {
 
                 const baseHex = turfColors[Math.floor(Math.random() * turfColors.length)];
                 color.setHex(baseHex);
-                color.multiplyScalar(0.85 + Math.random() * 0.3);
+                // Slight per-blade luminosity micro-variation
+                color.multiplyScalar(0.85 + Math.random() * 0.28);
                 this.grassInstancedMesh.setColorAt(i, color);
             }
 
@@ -20452,26 +20620,49 @@ const Nss3DEngine = {
         this.scene.add(this.keeperGroup);
     },
 
-    // 6. 3D Match Ball (Champions League Starball)
+    // 6. 3D Match Ball (Champions League / EA FC Pro Match Ball)
     buildBall: function() {
-        const ballGeo = new THREE.SphereGeometry(0.26, 32, 32);
-        const ballMat = new THREE.MeshStandardMaterial({
-            map: this.textures.ball,
-            roughness: 0.22,
-            metalness: 0.18
-        });
+        // High-poly sphere (64x64) for console-grade silhouette
+        const ballGeo = new THREE.SphereGeometry(0.26, 64, 64);
+        
+        // PBR Physical Material with Clearcoat Gloss & 3D Bump Mapped Seams
+        let ballMat;
+        try {
+            ballMat = new THREE.MeshPhysicalMaterial({
+                map: this.textures.ball,
+                bumpMap: this.textures.ballBump || null,
+                bumpScale: 0.028,
+                roughness: 0.28,
+                metalness: 0.08,
+                clearcoat: 0.92,
+                clearcoatRoughness: 0.12
+            });
+        } catch (e) {
+            // Fallback for older WebGL implementations
+            ballMat = new THREE.MeshStandardMaterial({
+                map: this.textures.ball,
+                bumpMap: this.textures.ballBump || null,
+                bumpScale: 0.025,
+                roughness: 0.30,
+                metalness: 0.10
+            });
+        }
+
         this.ballMesh = new THREE.Mesh(ballGeo, ballMat);
         this.ballMesh.position.set(0, 0.26, 0);
         this.ballMesh.castShadow = true;
+        this.ballMesh.receiveShadow = false;
         this.scene.add(this.ballMesh);
 
-        // Contact shadow on turf
+        // Soft Feathered Ambient Occlusion Contact Shadow on Turf
         const shadowMat = new THREE.MeshBasicMaterial({
-            color: 0x000000,
+            map: this.textures.ballShadow || null,
+            color: (this.textures.ballShadow ? 0xffffff : 0x000000),
             transparent: true,
-            opacity: 0.65
+            opacity: 0.82,
+            depthWrite: false
         });
-        this.ballShadow = new THREE.Mesh(new THREE.CircleGeometry(0.30, 24), shadowMat);
+        this.ballShadow = new THREE.Mesh(new THREE.CircleGeometry(0.38, 32), shadowMat);
         this.ballShadow.rotation.x = -Math.PI / 2;
         this.ballShadow.position.set(0, 0.005, 0);
         this.scene.add(this.ballShadow);
