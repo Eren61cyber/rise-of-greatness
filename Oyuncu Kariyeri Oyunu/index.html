@@ -19164,6 +19164,23 @@ const Nss3DEngine = {
     W: 440,
     H: 290,
 
+    // ★ AAA Post-Processing Pipeline State
+    postFX: {
+        vignetteStrength: 0.0,
+        chromaticAberr: 0.0,
+        screenShake: { x: 0, y: 0, mag: 0, decay: 0.88 },
+        godRayAlpha: 0.0,
+        bloomFlash: 0.0,
+        slowMoFactor: 1.0,
+    },
+
+    // ★ Spectator Phone Flash Particles
+    fanFlashes: [],
+    fanFlashTimer: 0,
+
+    // ★ Wind Slipstream Trail Particles
+    trailParticles: [],
+
     // 3D Objects & Meshes
     pitchMesh: null,
     stadiumMesh: null,
@@ -19602,18 +19619,20 @@ const Nss3DEngine = {
             this.hudCtx.scale(dpr, dpr);
         }
 
-        // WebGL Hardware Renderer
+        // WebGL Hardware Renderer — ACESFilmicToneMapping for cinema film palette
         this.renderer = new THREE.WebGLRenderer({
             canvas: this.canvas,
             antialias: true,
             alpha: false,
             powerPreference: "high-performance"
         });
-        // Use up to 3× DPR for 4K / Ultra-HD sharpness
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 3));
         this.renderer.setSize(this.W, this.H, false);
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        // ★ ACES Filmic Tone Mapping — Cinema-grade colour palette (EA FC HyperMotion)
+        this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        this.renderer.toneMappingExposure = 1.1;
 
         // Scene & Fog
         this.scene = new THREE.Scene();
@@ -19634,22 +19653,22 @@ const Nss3DEngine = {
         this.scene.add(frontKey);
         this.scene.add(frontKey.target);
 
-        // Left Floodlight (positioned high and angled toward mid-pitch & goal)
+        // Left Floodlight — ★ upgraded shadow map 2048 for pin-sharp shadows
         this.spotLightL = new THREE.SpotLight(0xffffff, 1.7, 60, Math.PI / 4, 0.5, 1.0);
         this.spotLightL.position.set(-15, 18, 4);
         this.spotLightL.target.position.set(0, 1.5, 18);
         this.spotLightL.castShadow = true;
-        this.spotLightL.shadow.mapSize.set(1024, 1024);
+        this.spotLightL.shadow.mapSize.set(2048, 2048);
         this.spotLightL.shadow.bias = -0.001;
         this.scene.add(this.spotLightL);
         this.scene.add(this.spotLightL.target);
 
-        // Right Floodlight
+        // Right Floodlight — ★ upgraded shadow map 2048
         this.spotLightR = new THREE.SpotLight(0xffffff, 1.7, 60, Math.PI / 4, 0.5, 1.0);
         this.spotLightR.position.set(15, 18, 4);
         this.spotLightR.target.position.set(0, 1.5, 18);
         this.spotLightR.castShadow = true;
-        this.spotLightR.shadow.mapSize.set(1024, 1024);
+        this.spotLightR.shadow.mapSize.set(2048, 2048);
         this.spotLightR.shadow.bias = -0.001;
         this.scene.add(this.spotLightR);
         this.scene.add(this.spotLightR.target);
@@ -19660,6 +19679,43 @@ const Nss3DEngine = {
         this.rimLight.target.position.set(0, 1, 0);
         this.scene.add(this.rimLight);
         this.scene.add(this.rimLight.target);
+
+        // ★ Volumetric Projector God Rays (cone meshes, additive blending)
+        const godRayMat = new THREE.MeshBasicMaterial({
+            color: 0xfff5ea,
+            transparent: true,
+            opacity: 0.045,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            side: THREE.DoubleSide
+        });
+        const godGeoL = new THREE.ConeGeometry(6, 22, 16, 1, true);
+        const godMeshL = new THREE.Mesh(godGeoL, godRayMat);
+        godMeshL.position.set(-15, 6, 6);
+        godMeshL.rotation.x = 0.5;
+        godMeshL.rotation.z = -0.35;
+        godMeshL.name = "godRayL";
+        this.scene.add(godMeshL);
+        const godGeoR = new THREE.ConeGeometry(6, 22, 16, 1, true);
+        const godMeshR = new THREE.Mesh(godGeoR, godRayMat.clone());
+        godMeshR.position.set(15, 6, 6);
+        godMeshR.rotation.x = 0.5;
+        godMeshR.rotation.z = 0.35;
+        godMeshR.name = "godRayR";
+        this.scene.add(godMeshR);
+        this._godRayMats = [godRayMat, godMeshR.material];
+
+        // ★ Fan Flash Particles — initialise pool of 40 random spectator flashes
+        this.fanFlashes = [];
+        this.fanFlashTimer = 0;
+        for (let i = 0; i < 40; i++) {
+            this.fanFlashes.push({
+                x: 20 + Math.random() * (this.W - 40),
+                y: 4 + Math.random() * 55,
+                alpha: 0, size: 1.5 + Math.random() * 2.5,
+                life: 0, maxLife: 8 + Math.random() * 18
+            });
+        }
 
         // Build Textures & Models
         this.buildTextures();
@@ -19676,6 +19732,7 @@ const Nss3DEngine = {
             e.preventDefault();
             this.handleCanvasClick(e);
         };
+
 
         const strikeBtn = document.getElementById("nss-btn-strike");
         if (strikeBtn) {
@@ -20498,7 +20555,7 @@ const Nss3DEngine = {
 
         NssAudio.playLock();
         if (navigator.vibrate) {
-            try { navigator.vibrate(25); } catch(e){}
+            try { navigator.vibrate([30]); } catch(e){}
         }
 
         const instrEl = document.getElementById("nss-duel-instruction");
@@ -20547,8 +20604,17 @@ const Nss3DEngine = {
 
         NssAudio.playKick();
         if (navigator.vibrate) {
-            try { navigator.vibrate([45, 25, 45]); } catch(e){}
+            try { navigator.vibrate([60, 20, 60]); } catch(e){}
         }
+        // ★ God Ray pulse on kick
+        if (this._godRayMats) {
+            this._godRayMats.forEach(m => { m.opacity = 0.15; });
+        }
+        // ★ Reset camera FOV before flight (slow-mo will zoom it in later)
+        this.camera.fov = (this.duelType === 'freekick') ? 52 : 50;
+        this.camera.updateProjectionMatrix();
+        this.postFX.slowMoFactor = 1.0;
+
 
         const instrEl = document.getElementById("nss-duel-instruction");
         const strikeBtn = document.getElementById("nss-btn-strike");
@@ -20749,12 +20815,51 @@ const Nss3DEngine = {
                 }
             }
 
-            // Dynamic Forward Camera Tracking (EA Sports FC / Score! Hero sensation)
+            // ★ HyperMotion Dolly-In Camera — Nişan: top arkası 35cm yüksek; Vuruş: Dolly-In yaylanma
             const baseCamZ = (this.duelType === 'freekick') ? -3.70 : -3.10;
             const baseCamY = (this.duelType === 'freekick') ? 1.92 : 1.68;
-            this.camera.position.z = baseCamZ + p * 5.2;
-            this.camera.position.y = baseCamY + p * 0.20;
+
+            // ★ Matrix Slow-Mo — son 0.4s (p >= 0.78) 0.3x hız; kamera topa odaklanır
+            const inSlowMoZone = (p >= 0.78);
+            if (inSlowMoZone) {
+                this.postFX.slowMoFactor = 0.3;
+                // Dolly-in: kamera topa yaklaşır (lens-zoom sensation)
+                const slowP = (p - 0.78) / 0.22;
+                this.camera.position.z = baseCamZ + p * 5.2 - slowP * 1.2;
+                this.camera.position.y = baseCamY + p * 0.20 + slowP * 0.35;
+                this.camera.fov = (this.duelType === 'freekick' ? 52 : 50) - slowP * 8; // BokehPass zoom-in
+                this.camera.updateProjectionMatrix();
+                // ★ Chromatic Aberration — yüksek hız anında mikro renk sapması
+                this.postFX.chromaticAberr = Math.min(0.85, slowP * 0.9);
+            } else {
+                this.postFX.slowMoFactor = 1.0;
+                this.postFX.chromaticAberr = Math.max(0, this.postFX.chromaticAberr - 0.06);
+                this.camera.position.z = baseCamZ + p * 5.2;
+                this.camera.position.y = baseCamY + p * 0.20;
+            }
             this.camera.lookAt(curX * 0.35, curY * 0.45 + 0.85, curZ + 5.0);
+
+            // ★ Screen Shake — vuruş anında (p < 0.05)
+            if (p < 0.06 && this.postFX.screenShake.mag < 0.1) {
+                this.postFX.screenShake.mag = 3.5;
+            }
+
+            // ★ Vignette pulse on shot
+            if (p < 0.12) {
+                this.postFX.vignetteStrength = Math.min(0.72, this.postFX.vignetteStrength + 0.08);
+            } else {
+                this.postFX.vignetteStrength = Math.max(0.0, this.postFX.vignetteStrength - 0.018);
+            }
+
+            // ★ Wind Slipstream Trail Particles — spawn on ball flight
+            if (p > 0.04 && p < 0.92 && Math.random() < 0.55) {
+                this.trailParticles.push({
+                    wx: curX, wy: curY, wz: curZ,
+                    alpha: 0.7 + Math.random() * 0.3,
+                    size: 0.04 + Math.random() * 0.06,
+                    age: 0
+                });
+            }
 
             // Record Ball Trail Points
             if (this.ballTrailPositions) {
@@ -20772,8 +20877,19 @@ const Nss3DEngine = {
             }
         }
 
+        // ★ Screen Shake decay
+        const sh = this.postFX.screenShake;
+        if (sh.mag > 0.01) {
+            sh.x = (Math.random() * 2 - 1) * sh.mag;
+            sh.y = (Math.random() * 2 - 1) * sh.mag;
+            sh.mag *= sh.decay;
+        } else {
+            sh.x = 0; sh.y = 0; sh.mag = 0;
+        }
+
         this.updateNetPhysics();
     },
+
 
     updateNetPhysics: function() {
         if (this.netRipple.active && this.backNetMesh) {
@@ -20900,7 +21016,7 @@ const Nss3DEngine = {
         }
     },
 
-    // 🎬 Start Broadcast Slow-Motion Replay
+    // 🎬 Start Broadcast Slow-Motion Replay (★ Gol sonrası kalenin arkasından dönen kutlama açısı)
     startReplay: function(isTrue90, resultComment) {
         this.replay.active = true;
         this.replay.progress = 0.65; // Replays final 35% of flight
@@ -20909,13 +21025,28 @@ const Nss3DEngine = {
         this.replay.resultComment = resultComment;
         this.replay.origCamPos = this.camera.position.clone();
 
+        // ★ Bloom Flash on Goal (white flash fades over 0.8s)
+        this.postFX.bloomFlash = 1.0;
+
+        // ★ Fan Flash Burst — spectators explode with phone flashes on goal
+        this.fanFlashes.forEach(f => {
+            f.life = 0;
+            f.alpha = 0.6 + Math.random() * 0.4;
+            f.maxLife = 4 + Math.random() * 10;
+        });
+
         const goalZ = (this.duelType === 'freekick') ? 24.4 : 11.0;
-        // Cinematic Behind-The-Net Close-Up Angle (Looking through the net into the pitch)
-        const camX = this.ball.targetX * 0.70;
-        const camY = Math.max(1.8, this.ball.targetY + 0.35);
-        const camZ = goalZ + 2.2;
+        // ★ Cinematic orbital behind-the-net celebration angle
+        // Camera orbits from behind the goal, slightly above & to the side, looking toward the ball in the net
+        const orbitAngle = (this.ball.targetX >= 0) ? -0.45 : 0.45; // Orbit away from where ball went
+        const camX = Math.sin(orbitAngle) * 5.5 + this.ball.targetX * 0.25;
+        const camY = Math.max(2.1, this.ball.targetY + 0.55);
+        const camZ = goalZ + 2.8;
         this.camera.position.set(camX, camY, camZ);
-        this.camera.lookAt(this.ball.targetX, this.ball.targetY, goalZ - 2.5);
+        this.camera.lookAt(this.ball.targetX * 0.5, this.ball.targetY * 0.6, goalZ - 1.8);
+        // ★ Restore FOV from slow-mo zoom to wide celebration angle
+        this.camera.fov = 42;
+        this.camera.updateProjectionMatrix();
 
         const instrEl = document.getElementById("nss-duel-instruction");
         if (instrEl) {
@@ -20923,6 +21054,7 @@ const Nss3DEngine = {
             instrEl.style.color = "#f43f5e";
         }
     },
+
 
     skipReplay: function() {
         if (!this.replay.active) return;
@@ -21075,15 +21207,123 @@ const Nss3DEngine = {
             this.renderer.render(this.scene, this.camera);
         }
 
+        // ★ God Ray material opacity — slowly decay back to resting value
+        if (this._godRayMats) {
+            this._godRayMats.forEach(m => {
+                if (m.opacity > 0.045) m.opacity = Math.max(0.045, m.opacity - 0.004);
+            });
+        }
+
         // 2. Render 2D Broadcast HUD Overlay
         if (!this.hudCtx) return;
         const ctx = this.hudCtx;
-        ctx.clearRect(0, 0, this.W, this.H);
+        const W = this.W, H = this.H;
+
+        // ★ Screen Shake — offset the entire canvas context before drawing
+        const sh = this.postFX.screenShake;
+        ctx.save();
+        ctx.clearRect(-20, -20, W + 40, H + 40);
+        ctx.translate(sh.x || 0, sh.y || 0);
+
+        // ★ Chromatic Aberration — triple-draw RGB ghost layers
+        const ca = this.postFX.chromaticAberr;
+        if (ca > 0.05) {
+            // Red channel ghost
+            ctx.save();
+            ctx.globalAlpha = ca * 0.18;
+            ctx.globalCompositeOperation = "screen";
+            ctx.fillStyle = "rgba(255,0,0,1)";
+            ctx.translate(-ca * 4, 0);
+            ctx.fillRect(0, 0, W, H);
+            ctx.restore();
+            // Blue channel ghost
+            ctx.save();
+            ctx.globalAlpha = ca * 0.14;
+            ctx.globalCompositeOperation = "screen";
+            ctx.fillStyle = "rgba(0,0,255,1)";
+            ctx.translate(ca * 4, 0);
+            ctx.fillRect(0, 0, W, H);
+            ctx.restore();
+        }
+
+        // ★ Fan Flash Particles — spectator phone flashes in top 60px strip
+        this.fanFlashTimer++;
+        const flashInterval = Math.max(3, 8 - Math.floor(this.fanFlashes.filter(f => f.alpha > 0).length / 5));
+        this.fanFlashes.forEach(f => {
+            if (f.life > 0) {
+                f.life--;
+                const fl = f.life / f.maxLife;
+                ctx.save();
+                ctx.globalAlpha = f.alpha * fl;
+                const grad = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.size * 8);
+                grad.addColorStop(0, '#ffffff');
+                grad.addColorStop(0.4, 'rgba(220,235,255,0.6)');
+                grad.addColorStop(1, 'rgba(150,200,255,0)');
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.arc(f.x, f.y, f.size * 8, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            } else if (this.fanFlashTimer % flashInterval === 0 && Math.random() < 0.3) {
+                // Randomly reignite a flash
+                f.x = 15 + Math.random() * (W - 30);
+                f.y = 4 + Math.random() * 58;
+                f.life = f.maxLife;
+                f.alpha = 0.25 + Math.random() * 0.35;
+            }
+        });
 
         // Slow-Mo Replay Telemetry HUD
         if (this.replay.active) {
+            // ★ Bloom Flash decay on replay
+            if (this.postFX.bloomFlash > 0) {
+                this.postFX.bloomFlash = Math.max(0, this.postFX.bloomFlash - 0.06);
+                ctx.save();
+                ctx.globalAlpha = this.postFX.bloomFlash * 0.55;
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, W, H);
+                ctx.restore();
+            }
             this.renderReplayHUD(ctx, time);
+            ctx.restore(); // screen shake restore
             return;
+        }
+
+        // ★ Bloom Flash (also shown outside replay if triggered)
+        if (this.postFX.bloomFlash > 0) {
+            this.postFX.bloomFlash = Math.max(0, this.postFX.bloomFlash - 0.05);
+            ctx.save();
+            ctx.globalAlpha = this.postFX.bloomFlash * 0.6;
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, W, H);
+            ctx.restore();
+        }
+
+        // ★ Wind Slipstream Trail Particles — 3D→2D projected glow dots
+        if (this.stage === 3 && this.trailParticles && this.trailParticles.length > 0) {
+            this.trailParticles = this.trailParticles.filter(function(tp) {
+                tp.age++;
+                if (tp.age > 20) return false;
+                const tv = new THREE.Vector3(tp.wx, tp.wy, tp.wz);
+                tv.project(Nss3DEngine.camera);
+                const sx = (tv.x * 0.5 + 0.5) * W;
+                const sy = (-(tv.y * 0.5) + 0.5) * H;
+                const fade = 1 - tp.age / 20;
+                const radius = tp.size * 55 * fade;
+                if (radius < 0.5) return false;
+                ctx.save();
+                ctx.globalAlpha = tp.alpha * fade;
+                const tGrad = ctx.createRadialGradient(sx, sy, 0, sx, sy, radius);
+                tGrad.addColorStop(0,   'rgba(251,191,36,0.95)'); // gold core
+                tGrad.addColorStop(0.45,'rgba(20,255,210,0.5)');  // turkuaz mid
+                tGrad.addColorStop(1,   'rgba(0,0,0,0)');
+                ctx.fillStyle = tGrad;
+                ctx.beginPath();
+                ctx.arc(sx, sy, radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+                return true;
+            });
         }
 
         // Stage 1: Golden Laser Aiming Crosshair
@@ -21102,7 +21342,24 @@ const Nss3DEngine = {
             this.renderTrajectoryPreview(ctx, bx, by);
             this.renderBallTouchHUD(ctx, bx, by, br);
         }
+
+        // ★ Vignette — cinematic corner darkening (driven by shot pulse + always-on subtle)
+        const vigBase = 0.22; // always-on subtle vignette
+        const vigTotal = vigBase + this.postFX.vignetteStrength * 0.5;
+        if (vigTotal > 0.05) {
+            const vgGrad = ctx.createRadialGradient(W * 0.5, H * 0.5, H * 0.32, W * 0.5, H * 0.5, H * 0.92);
+            vgGrad.addColorStop(0, 'rgba(0,0,0,0)');
+            vgGrad.addColorStop(1, `rgba(0,0,0,${Math.min(0.88, vigTotal)})`);
+            ctx.save();
+            ctx.globalAlpha = 1;
+            ctx.fillStyle = vgGrad;
+            ctx.fillRect(0, 0, W, H);
+            ctx.restore();
+        }
+
+        ctx.restore(); // ★ end screen-shake transform
     },
+
 
     // Replay Television Bug & Skip Button
     renderReplayHUD: function(ctx, time) {
@@ -21146,17 +21403,41 @@ const Nss3DEngine = {
         ctx.restore();
     },
 
-    // Holographic Laser Crosshair (Stage 1)
+    // ★ AAA Holographic Laser Crosshair (Stage 1) — Neon altın/turkuaz segmented ring
     renderGoldenLaserReticle: function(ctx, time) {
         const ax = this.aim.screenX;
         const ay = this.aim.screenY;
 
+        // ★ Outer Turkuaz segmented orbit ring (12 curved arcs with gap)
         ctx.save();
-        // Rotating dashed gold ring
+        ctx.translate(ax, ay);
+        ctx.rotate(-time * 0.0025);
+        const segCount = 12;
+        const outerR = 22;
+        for (let i = 0; i < segCount; i++) {
+            const startA = (i / segCount) * Math.PI * 2;
+            const endA = startA + (Math.PI * 2 / segCount) * 0.72;
+            const segAlpha = 0.5 + 0.5 * Math.sin(time * 0.009 + i * 0.55);
+            ctx.save();
+            ctx.strokeStyle = `rgba(20,255,210,${segAlpha})`;
+            ctx.lineWidth = 2.0;
+            ctx.shadowColor = '#14ffce';
+            ctx.shadowBlur = 6;
+            ctx.beginPath();
+            ctx.arc(0, 0, outerR, startA, endA);
+            ctx.stroke();
+            ctx.restore();
+        }
+        ctx.restore();
+
+        // Inner rotating dashed gold ring
+        ctx.save();
         ctx.translate(ax, ay);
         ctx.rotate(time * 0.0035);
         ctx.strokeStyle = "#fbbf24";
         ctx.lineWidth = 1.8;
+        ctx.shadowColor = '#fbbf24';
+        ctx.shadowBlur = 4;
         ctx.setLineDash([7, 4]);
         ctx.beginPath();
         ctx.arc(0, 0, 16, 0, Math.PI * 2);
@@ -21171,15 +21452,24 @@ const Nss3DEngine = {
         ctx.moveTo(ax - 8, ay);
         ctx.lineTo(ax + 8, ay);
         ctx.moveTo(ax, ay - 8);
-        ctx.lineTo(ax + 8, ay);
+        ctx.lineTo(ax, ay + 8);
         ctx.stroke();
+        ctx.restore();
 
-        // Central pulsating laser dot
+        // ★ Central dot — Green Timed Finishing: flashes green when aim near 90° corner
+        const is90Corner = (ay < 100 && (ax < 165 || ax > 275));
+        const dotColor = is90Corner
+            ? `rgba(0, ${Math.floor(220 + 35 * Math.sin(time * 0.025))}, 100, 1)` // green pulsing
+            : "#f59e0b"; // gold
         const pulseR = 2.6 + Math.sin(time * 0.012) * 1.2;
-        ctx.fillStyle = "#f59e0b";
+        ctx.save();
+        ctx.shadowColor = is90Corner ? '#22c55e' : '#f59e0b';
+        ctx.shadowBlur = 10;
+        ctx.fillStyle = dotColor;
         ctx.beginPath();
         ctx.arc(ax, ay, pulseR, 0, Math.PI * 2);
         ctx.fill();
+        ctx.restore();
 
         // Luminous laser halo
         const halo = ctx.createRadialGradient(ax, ay, 0, ax, ay, 14);
@@ -21191,14 +21481,15 @@ const Nss3DEngine = {
         ctx.fill();
 
         // Telemetry Range Tag
-        ctx.fillStyle = "#fde047";
+        const tagColor = is90Corner ? '#4ade80' : '#fde047';
+        ctx.fillStyle = tagColor;
         ctx.font = "900 9px sans-serif";
         ctx.textAlign = "center";
-        const is90Corner = (ay < 100 && (ax < 165 || ax > 275));
         const tagText = is90Corner ? "🎯 90° ÇATAL KİLİTLİ" : (this.duelType === 'freekick' ? "HUD • 24.5 METRE" : "HUD • 11.0 METRE");
-        ctx.fillText(tagText, ax, ay - 22);
+        ctx.fillText(tagText, ax, ay - 28);
         ctx.restore();
     },
+
 
     // Golden Trajectory Arc Preview (Stage 2)
     renderTrajectoryPreview: function(ctx, bx, by) {
@@ -21286,6 +21577,58 @@ const Nss3DEngine = {
             ctx.fill();
             ctx.stroke();
         }
+
+        // ★ Kavisli Segmentli Arc Power Bar
+        // Merkeze yakın vuruş = maksimum güç; kenara yakın = az güç (curl efekti artar)
+        const spDist = this.strikePoint ? Math.sqrt(this.strikePoint.x * this.strikePoint.x + this.strikePoint.y * this.strikePoint.y) : 0.5;
+        const powerVal = Math.min(1, Math.max(0.1, 1 - spDist * 0.75));
+        const pbCx = bx;
+        const pbCy = by - br - 14;
+        const pbR = br * 0.88;
+        const pbStartAngle = Math.PI * 1.15;   // alt-sol
+        const pbEndAngle   = Math.PI * 1.85;   // alt-sağ (üstten geçen ark)
+        const pbTotalArc   = pbEndAngle - pbStartAngle;  // ~0.70π
+        const pbSegCount   = 10;
+        const pbGap        = 0.04;             // segment arası boşluk (rad)
+        const pbSegArc     = (pbTotalArc / pbSegCount) - pbGap;
+        const pbFilledSegs = Math.round(powerVal * pbSegCount);
+
+        for (let s = 0; s < pbSegCount; s++) {
+            const segStart = pbStartAngle + s * (pbTotalArc / pbSegCount);
+            const segEnd   = segStart + pbSegArc;
+            const filled   = s < pbFilledSegs;
+            const ratio    = s / (pbSegCount - 1);
+            // Renk: yeşil→sarı→kırmızı
+            let segColor;
+            if (!filled) {
+                segColor = 'rgba(255,255,255,0.12)';
+            } else if (ratio < 0.4) {
+                segColor = 'rgba(74,222,128,0.92)';   // yeşil
+            } else if (ratio < 0.7) {
+                segColor = 'rgba(250,204,21,0.92)';   // sarı
+            } else {
+                segColor = 'rgba(239,68,68,0.92)';    // kırmızı
+            }
+            ctx.save();
+            ctx.strokeStyle = segColor;
+            ctx.lineWidth = 5;
+            ctx.lineCap = 'round';
+            if (filled) {
+                ctx.shadowColor = segColor;
+                ctx.shadowBlur  = 8;
+            }
+            ctx.beginPath();
+            ctx.arc(pbCx, pbCy, pbR, segStart, segEnd);
+            ctx.stroke();
+            ctx.restore();
+        }
+        // Etiket: GÜÇ
+        ctx.save();
+        ctx.fillStyle = 'rgba(255,255,255,0.65)';
+        ctx.font = '700 6.5px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('GÜÇ ' + Math.round(powerVal * 100) + '%', pbCx, pbCy + 4);
+        ctx.restore();
 
         ctx.restore();
     }
