@@ -19544,18 +19544,18 @@ const Nss3DEngine = {
         this.textures.ballBump = new THREE.CanvasTexture(bumpCanvas);
 
         // Soft Ambient Occlusion Ground Contact Shadow (Feathered Radial Gradient)
-        const sCanvas = document.createElement("canvas");
-        sCanvas.width = 128;
-        sCanvas.height = 128;
-        const sCtx = sCanvas.getContext("2d");
-        const sGrad = sCtx.createRadialGradient(64, 64, 0, 64, 64, 64);
-        sGrad.addColorStop(0,   "rgba(3, 12, 5, 0.88)");
-        sGrad.addColorStop(0.35,"rgba(5, 15, 6, 0.58)");
-        sGrad.addColorStop(0.70,"rgba(8, 20, 10, 0.20)");
-        sGrad.addColorStop(1.0, "rgba(0, 0, 0, 0.0)");
-        sCtx.fillStyle = sGrad;
-        sCtx.fillRect(0, 0, 128, 128);
-        this.textures.ballShadow = new THREE.CanvasTexture(sCanvas);
+        const shadowCanvas = document.createElement("canvas");
+        shadowCanvas.width = 128;
+        shadowCanvas.height = 128;
+        const shadowCtx = shadowCanvas.getContext("2d");
+        const shadowGrad = shadowCtx.createRadialGradient(64, 64, 0, 64, 64, 64);
+        shadowGrad.addColorStop(0,   "rgba(3, 12, 5, 0.88)");
+        shadowGrad.addColorStop(0.35,"rgba(5, 15, 6, 0.58)");
+        shadowGrad.addColorStop(0.70,"rgba(8, 20, 10, 0.20)");
+        shadowGrad.addColorStop(1.0, "rgba(0, 0, 0, 0.0)");
+        shadowCtx.fillStyle = shadowGrad;
+        shadowCtx.fillRect(0, 0, 128, 128);
+        this.textures.ballShadow = new THREE.CanvasTexture(shadowCanvas);
 
         // 3. Dynamic Hexagonal Net Grid Texture (128x128)
         const nCanvas = document.createElement("canvas");
@@ -19930,7 +19930,7 @@ const Nss3DEngine = {
         const indices = [
             0, 1, 2,  1, 3, 2,  // segment 1
             2, 3, 4,  3, 5, 4,  // segment 2
-            4, 5, 6,  5, 7, 4   // segment 3
+            4, 5, 6,  5, 7, 6   // segment 3
         ];
         const uvs = [
             0.0, 0.0,   1.0, 0.0,
