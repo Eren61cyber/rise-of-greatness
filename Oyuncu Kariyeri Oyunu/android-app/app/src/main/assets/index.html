@@ -815,63 +815,296 @@
                     Emekli Ol & Kariyeri Sonlandır
                 </button>
             </section>
-            <section id="panel-standings" class="view-panel">
-                <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-                    <div>
-                        <h2>Lig Puan Durumları</h2>
-                        <p>Türkiye liglerindeki puan durumu ve sıralamalar.</p>
-                    </div>
-                </div>
+            <section id="panel-standings" class="view-panel" style="padding:0; overflow:hidden;">
 
-                <!-- League Tabs -->
-                <div id="standings-tabs-container" style="display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap;">
-                </div>
-                <div id="standings-league-label" style="font-size:11px; color:var(--text-muted); margin-bottom:8px; text-align:center;"></div>
-                <div class="card glass" style="padding: 0; overflow-x: auto; border-radius: 8px;">
-                    <table class="standings-table" style="min-width: 320px;">
-                        <thead>
-                            <tr>
-                                <th style="text-align: left; width: 45px;">#</th>
-                                <th style="text-align: left;">Takım</th>
-                                <th style="text-align: center; width: 35px;">OM</th>
-                                <th style="text-align: center; width: 30px;">G</th>
-                                <th style="text-align: center; width: 30px;">B</th>
-                                <th style="text-align: center; width: 30px; ">M</th>
-                                <th style="text-align: center; width: 35px;">AV</th>
-                                <th style="text-align: center; width: 35px;">P</th>
-                            </tr>
-                        </thead>
-                        <tbody id="standings-body">
-                            <!-- Standings simulated here -->
-                        </tbody>
-                    </table>
-                </div>
-                <div style="text-align: center; margin-top: 14px;">
-                    <button class="btn btn-secondary" onclick="showFixturesModal()" style="font-size: 11.5px; padding: 8px 16px; width: 80%; max-width: 220px; font-weight: bold;">
-                        📅 Lig Fikstürünü Göster
-                    </button>
-                </div>
+                <!-- ═══ CANLI LİG MERKEZİ — Holographic Studio ═══ -->
+                <style>
+                    #llc-root {
+                        position: relative;
+                        background: #07080f;
+                        min-height: 100vh;
+                        overflow: hidden;
+                        font-family: var(--font-heading, 'Rajdhani', sans-serif);
+                    }
+                    #llc-canvas-bg {
+                        position: fixed;
+                        top: 0; left: 0;
+                        width: 100%; height: 100%;
+                        pointer-events: none;
+                        z-index: 0;
+                    }
+                    #llc-sheen {
+                        position: fixed;
+                        top: -60%; left: -60%;
+                        width: 220%; height: 220%;
+                        background: radial-gradient(ellipse 30% 20% at 50% 50%, rgba(255,215,0,0.07) 0%, transparent 70%);
+                        pointer-events: none;
+                        z-index: 1;
+                        transition: transform 0.08s linear;
+                    }
+                    #llc-content { position: relative; z-index: 2; padding: 0 0 90px 0; }
+                    #llc-header {
+                        padding: 18px 16px 10px 16px;
+                        display: flex; align-items: center; justify-content: space-between;
+                        border-bottom: 1px solid rgba(255,215,0,0.12);
+                    }
+                    #llc-header-title {
+                        font-size: 17px; font-weight: 900; letter-spacing: 2px;
+                        text-transform: uppercase; color: #fff;
+                        text-shadow: 0 0 20px rgba(255,215,0,0.4);
+                    }
+                    #llc-header-title .gold { color: #ffd700; }
+                    .llc-live-dot {
+                        width: 8px; height: 8px; border-radius: 50%;
+                        background: #ef4444; box-shadow: 0 0 10px #ef4444;
+                        animation: llcPulse 1.4s infinite;
+                        margin-right: 6px; display: inline-block;
+                    }
+                    @keyframes llcPulse {
+                        0%,100% { opacity:1; transform:scale(1); }
+                        50% { opacity:0.4; transform:scale(0.7); }
+                    }
+                    #llc-tabs-wrap { display:flex; gap:6px; padding:10px 16px 6px; flex-wrap:wrap; }
+                    .llc-tab {
+                        padding: 5px 12px; border-radius: 20px; font-size: 11px;
+                        font-weight: 700; letter-spacing: 0.5px;
+                        border: 1px solid rgba(255,215,0,0.2);
+                        background: rgba(255,255,255,0.04); color: #94a3b8;
+                        cursor: pointer; transition: all 0.25s;
+                    }
+                    .llc-tab.active {
+                        background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,215,0,0.08));
+                        border-color: rgba(255,215,0,0.5); color: #ffd700;
+                        box-shadow: 0 0 12px rgba(255,215,0,0.15);
+                    }
+                    #llc-league-label {
+                        font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+                        text-transform: uppercase; color: rgba(255,215,0,0.5);
+                        text-align: center; padding: 4px 16px 8px;
+                    }
+                    #llc-table-wrap {
+                        margin: 0 12px; border-radius: 16px; overflow: hidden;
+                        border: 1px solid rgba(255,215,0,0.12);
+                        box-shadow: 0 0 35px rgba(255,215,0,0.08), inset 0 1px 1px rgba(255,215,0,0.2);
+                        background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(0,0,0,0.2) 100%);
+                    }
+                    #llc-thead {
+                        display: grid;
+                        grid-template-columns: 36px 1fr 76px 28px 28px 28px 32px 36px;
+                        padding: 8px 12px;
+                        background: rgba(255,215,0,0.06);
+                        border-bottom: 1px solid rgba(255,215,0,0.12);
+                    }
+                    .llc-th {
+                        font-size: 9px; font-weight: 800; letter-spacing: 1.5px;
+                        text-transform: uppercase; color: rgba(255,215,0,0.6);
+                        text-align: center;
+                    }
+                    .llc-th:nth-child(2) { text-align: left; }
+                    #llc-tbody { display: flex; flex-direction: column; }
+                    .llc-row {
+                        display: grid;
+                        grid-template-columns: 36px 1fr 76px 28px 28px 28px 32px 36px;
+                        align-items: center; padding: 9px 12px;
+                        border-bottom: 1px solid rgba(255,255,255,0.04);
+                        cursor: pointer; transition: background 0.2s;
+                        position: relative; overflow: hidden;
+                    }
+                    .llc-row::before {
+                        content: ''; position: absolute;
+                        top: 0; left: -100%; width: 60%; height: 100%;
+                        background: linear-gradient(90deg, transparent, rgba(255,215,0,0.04), transparent);
+                        transition: left 0.4s; pointer-events: none;
+                    }
+                    .llc-row:hover::before { left: 150%; }
+                    .llc-row:hover { background: rgba(255,255,255,0.04); }
+                    .llc-row.llc-hero {
+                        background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(0,229,183,0.05));
+                        border-left: 3px solid #ffd700;
+                        border-bottom: 1px solid rgba(255,215,0,0.15);
+                        animation: goldPulse 3s infinite;
+                    }
+                    @keyframes goldPulse {
+                        0%,100% { box-shadow: 0 0 0px rgba(255,215,0,0); }
+                        50% { box-shadow: inset 0 0 20px rgba(255,215,0,0.06), 0 0 15px rgba(255,215,0,0.08); }
+                    }
+                    .llc-rank { font-size:12px; font-weight:900; color:#64748b; text-align:center; }
+                    .llc-rank.champion { color:#ffd700; text-shadow:0 0 8px rgba(255,215,0,0.6); }
+                    .llc-rank.europe { color:#60a5fa; }
+                    .llc-rank.relegation { color:#ef4444; }
+                    .llc-shield-wrap { display:flex; align-items:center; gap:8px; overflow:hidden; }
+                    .llc-shield { flex-shrink:0; width:26px; height:30px; position:relative; display:flex; align-items:center; justify-content:center; }
+                    .llc-shield svg { width:26px; height:30px; filter:drop-shadow(0 2px 4px rgba(0,0,0,0.6)); }
+                    .llc-shield-initial {
+                        position:absolute; font-size:7px; font-weight:900;
+                        color:rgba(255,255,255,0.95); letter-spacing:-0.5px;
+                        text-align:center; text-shadow:0 1px 2px rgba(0,0,0,0.9);
+                        line-height:1; pointer-events:none;
+                    }
+                    .llc-team-info { overflow:hidden; }
+                    .llc-team-name {
+                        font-size:12px; font-weight:700; color:#e2e8f0;
+                        white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;
+                    }
+                    .llc-row.llc-hero .llc-team-name { color:#ffd700; font-weight:900; }
+                    .llc-stars { font-size:9px; margin-top:1px; letter-spacing:0.5px; display:flex; align-items:center; gap:1px; }
+                    .llc-star-full { color:#ffd700; }
+                    .llc-star-half { color:#ffd700; opacity:0.55; }
+                    .llc-star-empty { color:rgba(255,255,255,0.1); }
+                    .llc-form-wrap { display:flex; gap:2px; align-items:center; justify-content:center; }
+                    .llc-pill {
+                        width:13px; height:13px; border-radius:3px;
+                        display:flex; align-items:center; justify-content:center;
+                        font-size:6px; font-weight:900; cursor:default;
+                        position:relative; flex-shrink:0;
+                    }
+                    .llc-pill.G { background:rgba(16,185,129,0.25); color:#10b981; border:1px solid rgba(16,185,129,0.4); box-shadow:0 0 4px rgba(16,185,129,0.3); }
+                    .llc-pill.B { background:rgba(100,116,139,0.2); color:#94a3b8; border:1px solid rgba(100,116,139,0.3); }
+                    .llc-pill.M { background:rgba(239,68,68,0.2); color:#ef4444; border:1px solid rgba(239,68,68,0.35); box-shadow:0 0 4px rgba(239,68,68,0.2); }
+                    .llc-pill-tooltip {
+                        display:none; position:absolute; bottom:calc(100% + 6px); left:50%;
+                        transform:translateX(-50%);
+                        background:rgba(10,12,20,0.97); border:1px solid rgba(255,215,0,0.25);
+                        border-radius:6px; padding:4px 8px; font-size:9px; color:#fff;
+                        white-space:nowrap; z-index:999; pointer-events:none;
+                        box-shadow:0 4px 12px rgba(0,0,0,0.5);
+                    }
+                    .llc-pill:hover .llc-pill-tooltip { display:block; }
+                    .llc-cell { text-align:center; font-size:11px; color:#64748b; font-weight:600; }
+                    .llc-pts { text-align:center; font-size:13px; font-weight:900; color:#f1f5f9; }
+                    .llc-row.llc-hero .llc-pts { color:#ffd700; text-shadow:0 0 8px rgba(255,215,0,0.5); }
 
-                <!-- Lig Krallıkları (Gol & Asist) -->
-                <div class="card glass" style="margin-top: 16px; padding: 12px;">
-                    <div style="font-size: 12px; font-weight: 800; color: var(--accent-yellow); text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
-                        <span id="league-scorers-title">👑 LİG KRALLIKLARI</span>
-                        <div style="display:flex; gap:4px;">
-                            <button class="btn btn-primary" style="padding:4px 8px; font-size:10px;" onclick="document.getElementById('scorers-table').style.display=''; document.getElementById('assists-table').style.display='none';">GOL</button>
-                            <button class="btn btn-secondary" style="padding:4px 8px; font-size:10px;" onclick="document.getElementById('scorers-table').style.display='none'; document.getElementById('assists-table').style.display='';">ASİST</button>
+                    /* Expanding Dossier */
+                    .llc-dossier-wrap { display:none; }
+                    .llc-dossier-wrap.open { display:block; }
+                    .llc-dossier-inner {
+                        margin: 0 12px 10px 12px;
+                        background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(0,0,0,0.3));
+                        border: 1px solid rgba(255,215,0,0.15); border-radius:12px;
+                        padding:14px; display:grid; grid-template-columns:1fr 1fr;
+                        gap:10px; position:relative; overflow:hidden;
+                        animation: dossierOpen 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+                    }
+                    @keyframes dossierOpen {
+                        from { opacity:0; transform:scaleY(0.6); transform-origin:top; }
+                        to { opacity:1; transform:scaleY(1); }
+                    }
+                    .llc-dossier-inner::before {
+                        content:''; position:absolute; inset:0;
+                        background:radial-gradient(ellipse at 80% 20%, rgba(255,215,0,0.05) 0%, transparent 60%);
+                        pointer-events:none;
+                    }
+                    .llc-dossier-label { font-size:8px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,215,0,0.5); margin-bottom:2px; }
+                    .llc-dossier-val { font-size:12px; font-weight:800; color:#e2e8f0; }
+                    .llc-dossier-next {
+                        grid-column:1/-1; background:rgba(255,215,0,0.05);
+                        border:1px solid rgba(255,215,0,0.1); border-radius:8px; padding:8px 12px;
+                        display:flex; align-items:center; justify-content:space-between;
+                    }
+                    .llc-countdown { font-size:11px; font-weight:900; color:#ffd700; letter-spacing:1px; }
+
+                    /* News Ticker */
+                    #llc-ticker {
+                        position: fixed; bottom: 56px; left:0; right:0; z-index:100;
+                        background: linear-gradient(90deg, #0a0a0a, #100808, #0a0a0a);
+                        border-top: 1px solid rgba(239,68,68,0.4);
+                        display:flex; align-items:center; height:28px; overflow:hidden;
+                        box-shadow: 0 -4px 20px rgba(239,68,68,0.1);
+                    }
+                    #llc-ticker-badge {
+                        flex-shrink:0; padding:0 10px; height:100%;
+                        display:flex; align-items:center; gap:5px; background:#ef4444;
+                        font-size:8px; font-weight:900; letter-spacing:1px; color:#fff; white-space:nowrap;
+                    }
+                    #llc-ticker-scroll {
+                        flex:1; overflow:hidden; height:100%; display:flex; align-items:center;
+                        mask-image:linear-gradient(90deg, transparent 0%, black 5%, black 95%, transparent 100%);
+                    }
+                    #llc-ticker-text {
+                        white-space:nowrap; font-size:10px; font-weight:700; color:#e2e8f0;
+                        animation:llcTickerScroll 35s linear infinite; letter-spacing:0.5px;
+                    }
+                    @keyframes llcTickerScroll {
+                        0% { transform:translateX(100vw); }
+                        100% { transform:translateX(-100%); }
+                    }
+                </style>
+
+                <div id="llc-root">
+                    <canvas id="llc-canvas-bg"></canvas>
+                    <div id="llc-sheen"></div>
+
+                    <div id="llc-content">
+                        <div id="llc-header">
+                            <div id="llc-header-title">
+                                <span class="llc-live-dot"></span>
+                                <span class="gold">CANLI</span> LİG MERKEZİ
+                            </div>
+                            <div style="font-size:9px; color:rgba(255,215,0,0.45); font-weight:700; letter-spacing:1px;">EA SPORTS FC STYLE</div>
+                        </div>
+
+                        <div id="llc-tabs-wrap"></div>
+                        <div id="llc-league-label"></div>
+
+                        <div id="llc-table-wrap">
+                            <div id="llc-thead">
+                                <div class="llc-th">#</div>
+                                <div class="llc-th" style="text-align:left;">TAKIM</div>
+                                <div class="llc-th">FORM</div>
+                                <div class="llc-th">O</div>
+                                <div class="llc-th">G</div>
+                                <div class="llc-th">B</div>
+                                <div class="llc-th">AV</div>
+                                <div class="llc-th">P</div>
+                            </div>
+                            <div id="llc-tbody"></div>
+                        </div>
+
+                        <div style="text-align:center; margin:12px 12px 4px;">
+                            <button class="btn btn-secondary" onclick="showFixturesModal()" style="font-size:11.5px; padding:8px 16px; width:80%; max-width:220px; font-weight:bold;">
+                                📅 Lig Fikstürünü Göster
+                            </button>
+                        </div>
+
+                        <!-- Lig Krallıkları -->
+                        <div style="margin:12px 12px 0; border-radius:16px; border:1px solid rgba(255,215,0,0.12); background:linear-gradient(180deg,rgba(255,255,255,0.03) 0%,rgba(0,0,0,0.15) 100%); padding:14px; box-shadow:0 0 20px rgba(255,215,0,0.04);">
+                            <div style="font-size:12px; font-weight:800; color:var(--accent-yellow); text-transform:uppercase; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between;">
+                                <span id="league-scorers-title">👑 LİG KRALLIKLARI</span>
+                                <div style="display:flex; gap:4px;">
+                                    <button class="btn btn-primary" style="padding:4px 8px; font-size:10px;" onclick="document.getElementById('scorers-table').style.display=''; document.getElementById('assists-table').style.display='none';">GOL</button>
+                                    <button class="btn btn-secondary" style="padding:4px 8px; font-size:10px;" onclick="document.getElementById('scorers-table').style.display='none'; document.getElementById('assists-table').style.display='';">ASİST</button>
+                                </div>
+                            </div>
+                            <div style="overflow-x:auto;">
+                                <table id="scorers-table" class="standings-table" style="min-width:250px;">
+                                    <thead><tr><th style="width:30px;text-align:center;">#</th><th style="text-align:left">Oyuncu</th><th style="text-align:center">Gol</th></tr></thead>
+                                    <tbody id="top-scorers-body"></tbody>
+                                </table>
+                                <table id="assists-table" class="standings-table" style="min-width:250px; display:none;">
+                                    <thead><tr><th style="width:30px;text-align:center;">#</th><th style="text-align:left">Oyuncu</th><th style="text-align:center">Asist</th></tr></thead>
+                                    <tbody id="top-assists-body"></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div style="overflow-x: auto;">
-                        <table id="scorers-table" class="standings-table" style="min-width: 250px;">
-                            <thead><tr><th style="width:30px; text-align:center;">#</th><th style="text-align:left">Oyuncu</th><th style="text-align:center">Gol</th></tr></thead>
-                            <tbody id="top-scorers-body"></tbody>
-                        </table>
-                        <table id="assists-table" class="standings-table" style="min-width: 250px; display: none;">
-                            <thead><tr><th style="width:30px; text-align:center;">#</th><th style="text-align:left">Oyuncu</th><th style="text-align:center">Asist</th></tr></thead>
-                            <tbody id="top-assists-body"></tbody>
-                        </table>
+
+                    <!-- News Ticker -->
+                    <div id="llc-ticker">
+                        <div id="llc-ticker-badge">
+                            <span class="llc-live-dot" style="width:6px;height:6px;background:#fff;"></span>
+                            🔴 CANLI LİG MERKEZİ
+                        </div>
+                        <div id="llc-ticker-scroll">
+                            <span id="llc-ticker-text">Yükleniyor...</span>
+                        </div>
                     </div>
+                </div>
+
+                <!-- Hidden legacy table IDs kept for compat -->
+                <div style="display:none;">
+                    <table><tbody id="standings-body"></tbody></table>
+                    <div id="standings-tabs-container"></div>
+                    <div id="standings-league-label"></div>
                 </div>
             </section>
 
@@ -10928,11 +11161,20 @@ function startNationalAnthemCeremony(matchData = null, onComplete = null) {
             const ctx = canvas.getContext("2d");
             if (!ctx) return;
 
+            // Hi-DPI / Retina scaling — prevents blurry canvas on high-density screens
+            const dpr = window.devicePixelRatio || 2;
+            const cssW = canvas.clientWidth  || canvas.width;
+            const cssH = canvas.clientHeight || canvas.height;
+            canvas.width  = cssW * dpr;
+            canvas.height = cssH * dpr;
+            ctx.scale(dpr, dpr);
+
             // Generate crisp high-res offscreen Turkish flag template
             const offCanvas = document.createElement("canvas");
-            offCanvas.width = 400;
-            offCanvas.height = 260;
+            offCanvas.width = 400 * dpr;
+            offCanvas.height = 260 * dpr;
             const offCtx = offCanvas.getContext("2d");
+            offCtx.scale(dpr, dpr);
 
             const W = 400, H = 260;
             // 1. Red Al Zemin
@@ -16260,10 +16502,135 @@ function afterWeekAdvanced() {
 
 
         // Render standings table
+        /* ════ LLC — CANLI LİG MERKEZİ RENDER ENGINE ════ */
+
+        function llcOvrToStars(avg) {
+            if (avg >= 89) return 5.0; if (avg >= 86) return 4.5;
+            if (avg >= 83) return 4.0; if (avg >= 79) return 3.5;
+            if (avg >= 75) return 3.0; if (avg >= 70) return 2.5;
+            if (avg >= 65) return 2.0; if (avg >= 58) return 1.5;
+            if (avg >= 45) return 1.0; return 0.5;
+        }
+
+        function llcRenderStars(stars) {
+            let html = '';
+            for (let i = 1; i <= 5; i++) {
+                if (stars >= i) html += '<span class="llc-star-full">★</span>';
+                else if (stars >= i - 0.5) html += '<span class="llc-star-half">★</span>';
+                else html += '<span class="llc-star-empty">★</span>';
+            }
+            return html;
+        }
+
+        function llcShield(color, colorSec, initials) {
+            const c1 = color || '#3b82f6', c2 = colorSec || '#1e40af';
+            const id = initials.replace(/[^a-z0-9]/gi,'');
+            return `<div class="llc-shield">
+                <svg viewBox="0 0 26 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="sg${id}" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="${c1}"/><stop offset="100%" stop-color="${c2}"/>
+                        </linearGradient>
+                        <filter id="sf${id}"><feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-color="${c1}" flood-opacity="0.5"/></filter>
+                    </defs>
+                    <path d="M13 1 L25 5 L25 15 Q25 24 13 29 Q1 24 1 15 L1 5 Z" fill="url(#sg${id})" filter="url(#sf${id})" stroke="${c1}" stroke-width="0.5" stroke-opacity="0.6"/>
+                    <path d="M13 3 L23 6.5 L23 15 Q23 22.5 13 27 Q3 22.5 3 15 L3 6.5 Z" fill="rgba(255,255,255,0.07)"/>
+                </svg>
+                <span class="llc-shield-initial">${initials}</span>
+            </div>`;
+        }
+
+        function llcFormPills(row) {
+            let results = row._form || [];
+            if (results.length === 0) {
+                const total = (row.won||0) + (row.drawn||0) + (row.lost||0);
+                if (total === 0) return '<span style="font-size:9px;color:#475569;">—</span>';
+                const pool = [];
+                for (let i=0;i<(row.won||0);i++) pool.push('G');
+                for (let i=0;i<(row.drawn||0);i++) pool.push('B');
+                for (let i=0;i<(row.lost||0);i++) pool.push('M');
+                let h = 0; for (let c of (row.name||'')) h = (h*31 + c.charCodeAt(0)) | 0;
+                pool.sort(() => (h++ % 3) - 1);
+                results = pool.slice(-5);
+            }
+            return results.slice(-5).map(r => {
+                const tip = r==='G'?'Galibiyet':r==='B'?'Beraberlik':'Mağlubiyet';
+                return `<div class="llc-pill ${r}" title="${tip}"><span class="llc-pill-tooltip">${tip}</span>${r}</div>`;
+            }).join('');
+        }
+
+        function llcFindTeam(rowName) {
+            const norm = s => s ? s.toLowerCase().replace(/[^a-z0-9]/g,'').replace('fk','').replace('spor','').replace('por','') : '';
+            const map = {'galatasaray':'galatastar','fenerbahce':'fenerbacefk','besiktas':'kartalfk','trabzonspor':'trabzonfk','istanbulbasaksehir':'basaksehirfk','basaksehir':'basaksehirfk','samsunspor':'samsunfk','caykurrizespor':'rizefk','rizespor':'rizefk','konyaspor':'konyafk','kocaelispor':'kocaelifk','alanyaspor':'alanyafk','kasimpasa':'kasimpasafk','eyupspor':'eyupsporfk','antalyaspor':'antalyafk','kayserispor':'kayserifk','sivasspor':'sivasfk','bodrumfk':'bodrum','adanademirspor':'adanademirfk','hatayspor':'hatayfk','goztepe':'goztepefk'};
+            let sn = norm(rowName); if (map[sn]) sn = map[sn];
+            for (let lg in DATABASE.LEAGUES) {
+                let t = DATABASE.LEAGUES[lg].teams.find(x => { let d=norm(x.name); return d===sn||d.includes(sn)||sn.includes(d); });
+                if (t) return t;
+            }
+            return null;
+        }
+
+        // Ticker init (run once)
+        (function llcInitTicker() {
+            function buildTicker() {
+                const el = document.getElementById('llc-ticker-text');
+                if (!el || !GAME || !GAME.state) return;
+                const club = GAME.state.currentClub || 'Takımın';
+                const week = GAME.state.currentWeek || 1;
+                const goals = GAME.state.seasonGoals || 0;
+                const items = [
+                    `${club} şampiyonluk yürüyüşünü sürdürüyor! `,
+                    `⚽ Gol krallığında kıyasıya mücadele devam ediyor `,
+                    `📅 ${week}. Hafta maçları için geri sayım başladı `,
+                    `🌟 Bu sezon ${goals} gol ile parıldıyorsun! `,
+                    `🏆 Şampiyonlar Ligi hedefi giderek yaklaşıyor `,
+                    `📊 Lig tablosunda çekişme doruk noktasında! `,
+                    `⚡ Derbi ateşi yaklaşıyor — hazır mısın? `,
+                ];
+                el.textContent = items.join(' • ');
+            }
+            setTimeout(buildTicker, 800);
+        })();
+
+        // WebGL canvas particles + gyro parallax (init once)
+        (function llcInitFX() {
+            const canvas = document.getElementById('llc-canvas-bg');
+            if (!canvas || canvas._llcInit) return;
+            canvas._llcInit = true;
+            const ctx = canvas.getContext('2d');
+            const pts = Array.from({length:55}, () => ({
+                x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight,
+                vx:(Math.random()-0.5)*0.25, vy:(Math.random()-0.5)*0.25,
+                r:Math.random()*1.4+0.4, a:Math.random()*0.35+0.05
+            }));
+            function resize() { canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
+            resize(); window.addEventListener('resize', resize);
+            function frame() {
+                if (!document.getElementById('panel-standings')?.classList.contains('active')) { requestAnimationFrame(frame); return; }
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                pts.forEach(p => {
+                    p.x=(p.x+p.vx+canvas.width)%canvas.width;
+                    p.y=(p.y+p.vy+canvas.height)%canvas.height;
+                    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+                    ctx.fillStyle=`rgba(255,215,0,${p.a})`; ctx.fill();
+                });
+                const g=ctx.createRadialGradient(canvas.width*.5,canvas.height*.25,0,canvas.width*.5,canvas.height*.25,canvas.width*.55);
+                g.addColorStop(0,'rgba(255,215,0,0.045)'); g.addColorStop(1,'rgba(0,0,0,0)');
+                ctx.fillStyle=g; ctx.fillRect(0,0,canvas.width,canvas.height);
+                requestAnimationFrame(frame);
+            }
+            frame();
+            // Parallax
+            const sheen = document.getElementById('llc-sheen');
+            const moveSheen = (x,y) => { if(!sheen) return; const px=(x/window.innerWidth-.5)*28,py=(y/window.innerHeight-.5)*18; sheen.style.transform=`translate(${px}px,${py}px)`; };
+            window.addEventListener('mousemove', e => moveSheen(e.clientX,e.clientY));
+            if (window.DeviceOrientationEvent) window.addEventListener('deviceorientation', e => moveSheen(((e.gamma||0)+90)/180*window.innerWidth, ((e.beta||0)+90)/180*window.innerHeight));
+        })();
+
         function renderLeagueTable() {
-            const tbody = document.getElementById("standings-body");
-            if (!tbody) return;
-            tbody.innerHTML = "";
+            // Legacy compat
+            const legacyTbody = document.getElementById("standings-body");
+            if (legacyTbody) legacyTbody.innerHTML = "";
 
             let tableData = [];
             let leagueLabel = "";
@@ -16285,131 +16652,181 @@ function afterWeekAdvanced() {
 
             const leagueName = (currentStandingsTab === 'current') ? GAME.state.currentLeague : currentStandingsTab;
 
-            // Always sort robustly before rendering to ensure correct UI presentation
+            // ── LLC: Render tabs ──
+            const llcTabsWrap = document.getElementById('llc-tabs-wrap');
+            if (llcTabsWrap) {
+                llcTabsWrap.innerHTML = '';
+                const tabsContainer = document.getElementById('standings-tabs-container');
+                if (tabsContainer) {
+                    tabsContainer.querySelectorAll('button').forEach(btn => {
+                        const tab = document.createElement('button');
+                        tab.className = 'llc-tab' + (btn.classList.contains('active') ? ' active' : '');
+                        tab.textContent = btn.textContent;
+                        tab.onclick = btn.onclick;
+                        llcTabsWrap.appendChild(tab);
+                    });
+                }
+            }
+
+            // ── LLC: Update label ──
+            const llcLabel = document.getElementById('llc-league-label');
+            if (llcLabel) llcLabel.textContent = leagueLabel;
+
+            // ── LLC: Sort ──
             tableData.sort((a, b) => {
                 const pDiff = Number(b.points) - Number(a.points);
                 if (pDiff !== 0) return pDiff;
-                
-                const gdA = Number(a.gf) - Number(a.ga);
-                const gdB = Number(b.gf) - Number(b.ga);
+                const gdA = Number(a.gf) - Number(a.ga), gdB = Number(b.gf) - Number(b.ga);
                 if (gdB !== gdA) return gdB - gdA;
-                
                 return Number(b.gf) - Number(a.gf);
             });
 
+            // ── LLC: Render rows ──
+            const llcTbody = document.getElementById('llc-tbody');
+            if (!llcTbody) return;
+            llcTbody.innerHTML = '';
+
             tableData.forEach((row, idx) => {
-                let isPlayerClub = (row.name === GAME.state.currentClub);
-                let highlightClass = isPlayerClub ? "highlight-row" : "";
-                
-                let zoneIndicator = "";
-                let zoneStyle = "";
-                
-                if (leagueName === "Süper Lig") {
-                    if (idx === 0) {
-                        zoneIndicator = " 👑";
-                        zoneStyle = "color: var(--accent-yellow); font-weight: bold;";
-                    } else if (idx < 3) {
-                        zoneIndicator = " 🇪🇺";
-                        zoneStyle = "color: var(--secondary); font-weight: bold;";
-                    } else if (idx >= 14) {
-                        zoneIndicator = " 🔻";
-                        zoneStyle = "color: var(--accent-red);";
-                    }
-                } else if (leagueName === "1. Lig" || leagueName === "2. Lig" || leagueName === "3. Lig") {
-                    if (idx < 3) {
-                        zoneIndicator = " 🔼";
-                        zoneStyle = "color: var(--primary); font-weight: bold;";
-                    } else if (idx >= (tableData.length - 3)) {
-                        zoneIndicator = " 🔻";
-                        zoneStyle = "color: var(--accent-red);";
-                    }
+                const isPlayerClub = (row.name === GAME.state.currentClub);
+
+                // Zone class
+                let rankClass = '';
+                if (leagueName === 'Süper Lig') {
+                    if (idx === 0) rankClass = 'champion';
+                    else if (idx < 3) rankClass = 'europe';
+                    else if (idx >= 14) rankClass = 'relegation';
+                } else if (['1. Lig','2. Lig','3. Lig'].includes(leagueName)) {
+                    if (idx < 3) rankClass = 'europe';
+                    else if (idx >= tableData.length - 3) rankClass = 'relegation';
                 }
 
-                // Get team ratings from database (robust case-insensitive normalized matching)
-                let teamObj = null;
-                const normalizeName = (str) => {
-                    if (!str) return "";
-                    return str.toLowerCase()
-                        .replace(/[^a-z0-9]/g, "")
-                        .replace("fk", "")
-                        .replace("spor", "")
-                        .replace("por", "");
-                };
-                
-                const nameOverrideMap = {
-                    "galatasaray": "galatastar",
-                    "fenerbahce": "fenerbacefk",
-                    "besiktas": "kartalfk",
-                    "trabzonspor": "trabzonfk",
-                    "istanbulbasaksehir": "basaksehirfk",
-                    "basaksehir": "basaksehirfk",
-                    "samsunspor": "samsunfk",
-                    "caykurrizespor": "rizefk",
-                    "rizespor": "rizefk",
-                    "konyaspor": "konyafk",
-                    "kocaelispor": "kocaelifk",
-                    "alanyaspor": "alanyafk",
-                    "kasimpasa": "kasimpasafk",
-                    "eyupspor": "eyupsporfk",
-                    "antalyaspor": "antalyafk",
-                    "kayserispor": "kayserifk",
-                    "sivasspor": "sivasfk",
-                    "bodrumfk": "bodrum",
-                    "adanademirspor": "adanademirfk",
-                    "hatayspor": "hatayfk",
-                    "goztepe": "goztepefk"
-                };
-
-                let searchNorm = normalizeName(row.name);
-                if (nameOverrideMap[searchNorm]) {
-                    searchNorm = nameOverrideMap[searchNorm];
-                }
-                
-                for (let lg in DATABASE.LEAGUES) {
-                    let t = DATABASE.LEAGUES[lg].teams.find(x => {
-                        let dbNorm = normalizeName(x.name);
-                        return dbNorm === searchNorm || dbNorm.includes(searchNorm) || searchNorm.includes(dbNorm);
-                    });
-                    if (t) {
-                        teamObj = t;
-                        break;
-                    }
-                }
-                
-                let att = 70, mid = 70, def = 70;
-                let teamColor = "#3b82f6";
+                // Team data
+                const teamObj = llcFindTeam(row.name);
+                let att = 70, mid = 70, def = 70, color = '#3b82f6', colorSec = '#1e40af';
                 if (teamObj) {
-                    att = teamObj.att;
-                    mid = teamObj.mid;
-                    def = teamObj.def;
-                    teamColor = teamObj.color || "#3b82f6";
+                    att = teamObj.att; mid = teamObj.mid; def = teamObj.def;
+                    color = teamObj.color || color; colorSec = teamObj.colorSec || colorSec;
                 } else {
-                    if (leagueName === "Süper Lig") { att = 71; mid = 70; def = 70; }
-                    else if (leagueName === "1. Lig") { att = 61; mid = 60; def = 60; }
-                    else if (leagueName === "2. Lig") { att = 51; mid = 50; def = 50; }
-                    else { att = 43; mid = 42; def = 42; }
+                    if (leagueName === 'Süper Lig') { att=71; mid=70; def=70; }
+                    else if (leagueName === '1. Lig') { att=61; mid=60; def=60; }
+                    else if (leagueName === '2. Lig') { att=51; mid=50; def=50; }
+                    else { att=43; mid=42; def=42; }
                 }
-                
                 const avgOvr = Math.round((att + mid + def) / 3);
-                const teamBadge = `<span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:${teamColor}; margin-right:6px; vertical-align:middle; box-shadow: 0 0 4px ${teamColor}66;"></span>`;
-                const powerTag = `<span style="font-size: 10px; color: #64748b; margin-left: 5px; font-weight: 600;">⚡${avgOvr}</span>`;
+                const stars = llcOvrToStars(avgOvr);
+                const starsHtml = llcRenderStars(stars);
 
-                tbody.innerHTML += `
-                    <tr class="${highlightClass}">
-                        <td style="${zoneStyle}; text-align: center; width: 32px;">${idx + 1}${zoneIndicator}</td>
-                        <td class="standings-team-name">${teamBadge}${row.name}${isPlayerClub ? ' ⭐' : ''}${powerTag}</td>
-                        <td style="text-align: center; color: #9ca1a6;">${row.played}</td>
-                        <td style="text-align: center; color: #9ca1a6;">${row.won}</td>
-                        <td style="text-align: center; color: #9ca1a6;">${row.drawn}</td>
-                        <td style="text-align: center; color: #9ca1a6;">${row.lost}</td>
-                        <td style="text-align: center; color: #9ca1a6;">${row.gf - row.ga > 0 ? `+${row.gf - row.ga}` : row.gf - row.ga}</td>
-                        <td class="standings-points" style="text-align: center;">${row.points}</td>
-                    </tr>
+                // Shield initials
+                const words = row.name.split(/\s+/);
+                const initials = words.length >= 2 ? (words[0][0] + words[1][0]).toUpperCase() : row.name.slice(0,2).toUpperCase();
+                const shieldHtml = llcShield(color, colorSec, initials);
+
+                // Form pills
+                const formHtml = llcFormPills(row);
+
+                // Goal diff
+                const gd = (row.gf||0) - (row.ga||0);
+                const gdStr = gd > 0 ? `+${gd}` : `${gd}`;
+
+                // Hero badge
+                const heroBadge = isPlayerClub
+                    ? `<span style="font-size:9px; color:#00e5b7; margin-left:4px;">★ ${GAME.state.jerseyNumber || '#10'}</span>`
+                    : '';
+
+                // Rank indicators
+                const rankSuffix = rankClass === 'champion' ? ' 👑' : rankClass === 'europe' ? ' 🇪🇺' : rankClass === 'relegation' ? ' 🔻' : '';
+
+                // Unique dossier ID
+                const dossierIdSuffix = row.name.replace(/[^a-z0-9]/gi,'');
+
+                // Build row HTML
+                const rowEl = document.createElement('div');
+                rowEl.className = 'llc-row' + (isPlayerClub ? ' llc-hero' : '');
+                rowEl.innerHTML = `
+                    <div class="llc-rank ${rankClass}">${idx+1}${rankSuffix}</div>
+                    <div class="llc-shield-wrap">
+                        ${shieldHtml}
+                        <div class="llc-team-info">
+                            <div class="llc-team-name">${row.name}${heroBadge}</div>
+                            <div class="llc-stars">${starsHtml}</div>
+                        </div>
+                    </div>
+                    <div class="llc-form-wrap">${formHtml}</div>
+                    <div class="llc-cell">${row.played||0}</div>
+                    <div class="llc-cell">${row.won||0}</div>
+                    <div class="llc-cell">${row.drawn||0}</div>
+                    <div class="llc-cell">${gdStr}</div>
+                    <div class="llc-pts">${row.points||0}</div>
                 `;
+
+                // Dossier wrapper
+                const dossierWrap = document.createElement('div');
+                dossierWrap.className = 'llc-dossier-wrap';
+                dossierWrap.id = `llc-dossier-${dossierIdSuffix}`;
+                dossierWrap.innerHTML = `<div class="llc-dossier-inner" id="llc-dossier-inner-${dossierIdSuffix}"></div>`;
+
+                // Expand toggle
+                rowEl.addEventListener('click', () => {
+                    const alreadyOpen = dossierWrap.classList.contains('open');
+                    // Close all
+                    document.querySelectorAll('.llc-dossier-wrap.open').forEach(d => d.classList.remove('open'));
+                    if (!alreadyOpen) {
+                        const inner = document.getElementById(`llc-dossier-inner-${dossierIdSuffix}`);
+                        if (inner && !inner._built) {
+                            inner.innerHTML = `
+                                <div>
+                                    <div class="llc-dossier-label">📊 Takım Gücü (ATK/ORT/DEF)</div>
+                                    <div class="llc-dossier-val">${starsHtml} <span style="font-size:10px;color:#64748b;">${att}/${mid}/${def}</span></div>
+                                </div>
+                                <div>
+                                    <div class="llc-dossier-label">🏆 Durum</div>
+                                    <div class="llc-dossier-val" style="font-size:11px;">${row.points||0} puan · ${row.gf||0} gol</div>
+                                </div>
+                                <div>
+                                    <div class="llc-dossier-label">⚽ Oynadığı Maçlar</div>
+                                    <div class="llc-dossier-val">${row.played||0} maç — ${row.won||0}G ${row.drawn||0}B ${row.lost||0}M</div>
+                                </div>
+                                <div>
+                                    <div class="llc-dossier-label">🎯 Averaj</div>
+                                    <div class="llc-dossier-val">${row.gf||0} Attı · ${row.ga||0} Yedi · ${gdStr}</div>
+                                </div>
+                                <div class="llc-dossier-next">
+                                    <div>
+                                        <div class="llc-dossier-label">${isPlayerClub ? '📅 Sonraki Rakip' : '📅 Lig Pozisyonu'}</div>
+                                        <div class="llc-countdown">${isPlayerClub ? ((GAME.state.nextOpponentName && GAME.state.nextOpponentName !== '?') ? 'vs ' + GAME.state.nextOpponentName : 'Yakında') : (idx+1) + '. Sıra'}</div>
+                                    </div>
+                                    <span style="font-size:20px;">${isPlayerClub ? '🎯' : '🏟️'}</span>
+                                </div>
+                            `;
+                            inner._built = true;
+                        }
+                        dossierWrap.classList.add('open');
+                    }
+                });
+
+                llcTbody.appendChild(rowEl);
+                llcTbody.appendChild(dossierWrap);
             });
 
-
+            // ── LLC: Update ticker with fresh data ──
+            const tickerEl = document.getElementById('llc-ticker-text');
+            if (tickerEl && GAME && GAME.state) {
+                const club = GAME.state.currentClub || 'Takımın';
+                const week = GAME.state.currentWeek || 1;
+                const goals = GAME.state.seasonGoals || 0;
+                const leader = tableData[0] ? tableData[0].name : '?';
+                tickerEl.textContent = [
+                    `${club} şampiyonluk yürüyüşünü sürdürüyor!`,
+                    `⚽ Gol krallığında ${goals} golle mücadele devam ediyor`,
+                    `📅 ${week}. Hafta maçları nefes kesiyor`,
+                    `🏆 Lider ${leader} — taht sallantıda!`,
+                    `🌟 Bu sezon ${goals} gol ile parıldıyorsun!`,
+                    `📊 Lig tablosunda çekişme doruk noktasında`,
+                    `⚡ Derbi ateşi yaklaşıyor — hazır mısın?`,
+                ].join('   •   ');
+            }
         }
+
 
         // Gol ve Asist Krallığını Çiz
         function renderLeagueScorers() {
@@ -19159,6 +19576,13 @@ const Nss3DEngine = {
 
         if (this.hudCanvas) {
             this.hudCtx = this.hudCanvas.getContext("2d");
+            // Hi-DPI HUD canvas — crisp Retina text & icons
+            const dpr = window.devicePixelRatio || 2;
+            const hudW = this.hudCanvas.clientWidth  || this.W;
+            const hudH = this.hudCanvas.clientHeight || this.H;
+            this.hudCanvas.width  = hudW * dpr;
+            this.hudCanvas.height = hudH * dpr;
+            this.hudCtx.scale(dpr, dpr);
         }
 
         // WebGL Hardware Renderer
@@ -19168,7 +19592,8 @@ const Nss3DEngine = {
             alpha: false,
             powerPreference: "high-performance"
         });
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        // Use up to 3× DPR for 4K / Ultra-HD sharpness
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 3));
         this.renderer.setSize(this.W, this.H, false);
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
