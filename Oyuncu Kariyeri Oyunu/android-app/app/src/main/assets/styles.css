@@ -3,6 +3,33 @@
  * Clean, professional, modern sports manager UI design system.
  */
 
+/* ═══════════════════════════════════════════════════════════
+   HI-DPI / RETINA SHARPNESS POLICY
+   Prevents blurry text, fuzzy canvas and muddy images
+   on high-density screens (Retina, 4K, AMOLED).
+═══════════════════════════════════════════════════════════ */
+
+/* 1 — Subpixel typography antialiasing */
+*, *::before, *::after {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* 2 — Crisp image & canvas rendering + GPU layer promotion */
+img, canvas, video {
+    image-rendering: -webkit-optimize-contrast; /* Safari/Chrome */
+    image-rendering: crisp-edges;               /* Firefox */
+    transform: translateZ(0);                    /* GPU raster layer */
+    backface-visibility: hidden;                 /* Prevent subpixel shift */
+    -webkit-backface-visibility: hidden;
+}
+
+/* Exception: photos / screenshots should stay smooth */
+img[data-smooth="true"] {
+    image-rendering: auto;
+}
+
 :root {
     --bg-dark: #07090e;
     --bg-app: #0a0d14;
