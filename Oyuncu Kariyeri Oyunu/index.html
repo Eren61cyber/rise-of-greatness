@@ -19098,32 +19098,44 @@ function afterWeekAdvanced() {
                     this.init();
                     if (!this.ctx) return;
                     const now = this.ctx.currentTime;
+                    // ★ 60Hz tok sinus bas darbesi
+                    const thump = this.ctx.createOscillator();
+                    const thumpGain = this.ctx.createGain();
+                    thump.type = "sine";
+                    thump.frequency.setValueAtTime(60, now);
+                    thump.frequency.exponentialRampToValueAtTime(26, now + 0.14);
+                    thumpGain.gain.setValueAtTime(0.90, now);
+                    thumpGain.gain.exponentialRampToValueAtTime(0.001, now + 0.20);
+                    thump.connect(thumpGain); thumpGain.connect(this.ctx.destination);
+                    thump.start(now); thump.stop(now + 0.20);
+                    // 145Hz leather body resonance
                     const osc = this.ctx.createOscillator();
                     const gain = this.ctx.createGain();
                     osc.type = "sine";
                     osc.frequency.setValueAtTime(145, now);
                     osc.frequency.exponentialRampToValueAtTime(34, now + 0.18);
-                    gain.gain.setValueAtTime(0.75, now);
+                    gain.gain.setValueAtTime(0.55, now);
                     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
                     osc.connect(gain);
                     gain.connect(this.ctx.destination);
                     osc.start(now);
                     osc.stop(now + 0.22);
-
-                    const bufferSize = Math.floor(this.ctx.sampleRate * 0.05);
+                    // ★ Krampon deri surtunme (bandpass leather friction)
+                    const bufferSize = Math.floor(this.ctx.sampleRate * 0.08);
                     const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
                     const data = buffer.getChannelData(0);
                     for (let i = 0; i < bufferSize; i++) {
-                        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.2));
+                        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.18));
                     }
                     const noise = this.ctx.createBufferSource();
                     noise.buffer = buffer;
                     const filter = this.ctx.createBiquadFilter();
-                    filter.type = "lowpass";
-                    filter.frequency.value = 1400;
+                    filter.type = "bandpass";
+                    filter.frequency.value = 2400;
+                    filter.Q.value = 1.4;
                     const nGain = this.ctx.createGain();
-                    nGain.gain.setValueAtTime(0.5, now);
-                    nGain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    nGain.gain.setValueAtTime(0.42, now);
+                    nGain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
                     noise.connect(filter);
                     filter.connect(nGain);
                     nGain.connect(this.ctx.destination);
@@ -19162,18 +19174,29 @@ function afterWeekAdvanced() {
                     this.init();
                     if (!this.ctx) return;
                     const now = this.ctx.currentTime;
-                    [1240, 1860, 2480].forEach((freq, idx) => {
+                    // ★ 4-harmonik metallik direk sesi (cinlayan harmonikler)
+                    [1240, 1860, 2480, 3720].forEach((freq, idx) => {
                         const osc = this.ctx.createOscillator();
                         const gain = this.ctx.createGain();
                         osc.type = "sine";
                         osc.frequency.setValueAtTime(freq, now);
-                        gain.gain.setValueAtTime(0.28 / (idx + 1), now);
-                        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.75);
-                        osc.connect(gain);
-                        gain.connect(this.ctx.destination);
-                        osc.start(now);
-                        osc.stop(now + 0.75);
+                        osc.frequency.setValueAtTime(freq * 1.012, now + 0.02);
+                        osc.frequency.exponentialRampToValueAtTime(freq * 0.988, now + 1.25);
+                        gain.gain.setValueAtTime(0.30 / (idx + 1), now);
+                        gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.25 - idx * 0.16);
+                        osc.connect(gain); gain.connect(this.ctx.destination);
+                        osc.start(now); osc.stop(now + 1.25);
                     });
+                    // Tok metal carpi sesi
+                    const metalThud = this.ctx.createOscillator();
+                    const metalGain = this.ctx.createGain();
+                    metalThud.type = "triangle";
+                    metalThud.frequency.setValueAtTime(185, now);
+                    metalThud.frequency.exponentialRampToValueAtTime(50, now + 0.09);
+                    metalGain.gain.setValueAtTime(0.65, now);
+                    metalGain.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
+                    metalThud.connect(metalGain); metalGain.connect(this.ctx.destination);
+                    metalThud.start(now); metalThud.stop(now + 0.11);
                 } catch(e) {}
             },
             playGlove: function() {
@@ -19192,6 +19215,50 @@ function afterWeekAdvanced() {
                     gain.connect(this.ctx.destination);
                     osc.start(now);
                     osc.stop(now + 0.15);
+                } catch(e) {}
+            },
+            // ★ Falso Wind Resonance: Doppler Shift Bandpass White Noise
+            playWind: function(progress) {
+                try {
+                    this.init();
+                    if (!this.ctx) return;
+                    const now = this.ctx.currentTime;
+                    const bufferSize = Math.floor(this.ctx.sampleRate * 0.22);
+                    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) { data[i] = (Math.random() * 2 - 1); }
+                    const noise = this.ctx.createBufferSource();
+                    noise.buffer = buffer;
+                    const windFilter = this.ctx.createBiquadFilter();
+                    windFilter.type = "bandpass";
+                    const baseFreq = 200 + (progress || 0) * 700;
+                    windFilter.frequency.setValueAtTime(baseFreq, now);
+                    windFilter.frequency.linearRampToValueAtTime(baseFreq * 1.32, now + 0.22);
+                    windFilter.Q.value = 3.5;
+                    const wg = this.ctx.createGain();
+                    wg.gain.setValueAtTime(0.055 + (progress || 0) * 0.07, now);
+                    wg.gain.linearRampToValueAtTime(0.001, now + 0.22);
+                    noise.connect(windFilter); windFilter.connect(wg); wg.connect(this.ctx.destination);
+                    noise.start(now);
+                } catch(e) {}
+            },
+            // ★ Timed Finishing perfect timing chime
+            playPerfectTiming: function() {
+                try {
+                    this.init();
+                    if (!this.ctx) return;
+                    const now = this.ctx.currentTime;
+                    [880, 1320, 1760, 2200].forEach((freq, i) => {
+                        const osc = this.ctx.createOscillator();
+                        const g = this.ctx.createGain();
+                        osc.type = "sine";
+                        osc.frequency.setValueAtTime(freq, now + i * 0.04);
+                        g.gain.setValueAtTime(0, now + i * 0.04);
+                        g.gain.linearRampToValueAtTime(0.22 / (i + 1), now + i * 0.04 + 0.03);
+                        g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.04 + 0.28);
+                        osc.connect(g); g.connect(this.ctx.destination);
+                        osc.start(now + i * 0.04); osc.stop(now + i * 0.04 + 0.28);
+                    });
                 } catch(e) {}
             }
         };
@@ -19352,6 +19419,15 @@ const Nss3DEngine = {
         z: 9.15,
         jumpY: 0
     },
+
+    // ★ Timed Finishing System
+    timedFinishing: {
+        active: false, triggered: false, isPerfect: false,
+        bonusApplied: false, bannerTimer: 0, windowStart: 0
+    },
+
+    // ★ Squash & Stretch deformasyon state
+    squash: { active: false, phase: 0, timer: 0, triggeredPost: false },
 
     // Net Physics / Ripple on Goal
     netRipple: {
@@ -20006,31 +20082,70 @@ const Nss3DEngine = {
     buildGrassField: function() {
         try {
             if (typeof THREE.InstancedMesh === "undefined") return;
-            const bladeCount = 8000;
+            // ★ 30k Instanced Blades + Full Custom SSS ShaderMaterial (EA FC / Unreal Engine Grade)
+            const bladeCount = 30000;
             const bladeGeo = this.createTaperedBladeGeometry();
 
-            const grassMat = new THREE.MeshStandardMaterial({
-                roughness: 0.58,
-                metalness: 0.04,
-                side: THREE.DoubleSide
+            const grassMat = new THREE.ShaderMaterial({
+                side: THREE.DoubleSide,
+                transparent: true,
+                uniforms: {
+                    uTime:    { value: 0 },
+                    uBallPos: { value: new THREE.Vector3(0, 0.26, 0) },
+                    uSunDir:  { value: new THREE.Vector3(-0.55, 0.72, -0.42).normalize() }
+                },
+                vertexShader: `
+                    precision highp float;
+                    uniform float uTime;
+                    uniform vec3  uBallPos;
+                    varying vec2  vUv;
+                    varying float vHeight;
+                    varying float vBallProx;
+                    varying vec3  vNormal;
+                    void main() {
+                        vUv = uv; vHeight = position.y;
+                        vec4 worldPos = instanceMatrix * vec4(position, 1.0);
+                        vBallProx = 1.0 - clamp(distance(worldPos.xz, uBallPos.xz) / 2.2, 0.0, 1.0);
+                        vec4 ip = instanceMatrix[3];
+                        float wind = position.y * 3.4;
+                        float w1 = sin(uTime * 2.6 + ip.x * 0.8 + ip.z * 0.55);
+                        float w2 = cos(uTime * 4.2 + ip.x * 1.4 - ip.z * 0.9) * 0.35;
+                        float w3 = sin(uTime * 7.1 + ip.x * 2.1 + ip.z * 1.8) * 0.12;
+                        float ballPush = vBallProx * 0.16 * sign(worldPos.x - uBallPos.x);
+                        float sway = (w1 + w2 + w3 + ballPush) * 0.052 * wind;
+                        vec3 pos = position;
+                        pos.x += sway; pos.z += sway * 0.42;
+                        vNormal = normalize(mat3(instanceMatrix) * normal);
+                        gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4(pos, 1.0);
+                    }
+                `,
+                fragmentShader: `
+                    precision highp float;
+                    uniform vec3  uSunDir;
+                    uniform float uTime;
+                    varying vec2  vUv;
+                    varying float vHeight;
+                    varying float vBallProx;
+                    varying vec3  vNormal;
+                    void main() {
+                        vec3 root = vec3(0.068, 0.22, 0.085);
+                        vec3 tip  = vec3(0.19,  0.56, 0.22);
+                        vec3 base = mix(root, tip, clamp(vHeight * 2.5, 0.0, 1.0));
+                        // ★ SSS: back-lit zumrut translucency
+                        float backLight = max(0.0, dot(-uSunDir, vNormal));
+                        float sss = pow(backLight, 2.0) * 0.62;
+                        vec3 sssColor = vec3(0.12, 0.82, 0.35) * sss;
+                        float diff = max(0.14, dot(vNormal, uSunDir));
+                        float spec = pow(max(0.0, dot(reflect(-uSunDir, vNormal), vec3(0,0,-1))), 18.0) * 0.16;
+                        vec3 ballGlow = vec3(0.3, 0.88, 0.42) * vBallProx * 0.22;
+                        vec3 color = base * diff + sssColor + ballGlow + spec;
+                        float alpha = 1.0 - max(0.0, (vHeight - 0.82) * 3.5);
+                        gl_FragColor = vec4(color, clamp(alpha, 0.0, 1.0));
+                    }
+                `
             });
-
-            // GPU Hardware-accelerated Harmonic Wind Wave Shader
-            grassMat.onBeforeCompile = (shader) => {
-                shader.uniforms.uTime = { value: 0 };
-                this._grassShader = shader;
-                shader.vertexShader = 'uniform float uTime;\n' + shader.vertexShader;
-                shader.vertexShader = shader.vertexShader.replace(
-                    '#include <begin_vertex>',
-                    `#include <begin_vertex>
-                    // Multi-frequency wind gusts traveling across the pitch
-                    float w1 = sin(uTime * 2.6 + instanceMatrix[3].x * 0.8 + instanceMatrix[3].z * 0.55);
-                    float w2 = cos(uTime * 4.2 + instanceMatrix[3].x * 1.4 - instanceMatrix[3].z * 0.9) * 0.35;
-                    float sway = (w1 + w2) * 0.052 * (position.y * 3.4);
-                    transformed.x += sway;
-                    transformed.z += sway * 0.42;`
-                );
-            };
+            this._grassShader = { uniforms: grassMat.uniforms };
+            this._grassMaterial = grassMat;
 
             this.grassInstancedMesh = new THREE.InstancedMesh(bladeGeo, grassMat, bladeCount);
             this.grassInstancedMesh.receiveShadow = true;
@@ -20895,6 +21010,20 @@ const Nss3DEngine = {
     },
 
     lockAim: function() {
+        // ★ Timed Finishing: 2nd press during ball flight
+        if (this.stage === 3 && this.timedFinishing && this.timedFinishing.active && !this.timedFinishing.triggered) {
+            const elapsed = performance.now() / 1000 - this.timedFinishing.windowStart;
+            const flightDur = (this.duelType === 'freekick') ? 2.78 : 1.65;
+            this.timedFinishing.triggered = true;
+            this.timedFinishing.isPerfect = (elapsed >= flightDur * 0.82 && elapsed <= flightDur * 0.96);
+            this.timedFinishing.bannerTimer = 1.8;
+            if (this.timedFinishing.isPerfect) {
+                NssAudio.playPerfectTiming();
+                if (navigator.vibrate) { try { navigator.vibrate([20]); } catch(e){} }
+                this.ball.falsoOffset *= 1.35;
+            }
+            return;
+        }
         if (this.stage !== 1) return;
         this.stage = 2;
         this.aim.lockedX = this.aim.x;
@@ -20955,7 +21084,18 @@ const Nss3DEngine = {
         }
         // ★ God Ray pulse on kick
         if (this._godRayMats) {
-            this._godRayMats.forEach(m => { m.opacity = 0.15; });
+            this._godRayMats.forEach(m => { m.opacity = 0.18; });
+        }
+        // ★ Squash & Stretch init
+        if (this.squash) { this.squash.active = true; this.squash.phase = 1; this.squash.timer = 0; }
+        // ★ Timed Finishing activate
+        if (this.timedFinishing) {
+            this.timedFinishing.active = true;
+            this.timedFinishing.triggered = false;
+            this.timedFinishing.isPerfect = false;
+            this.timedFinishing.bonusApplied = false;
+            this.timedFinishing.bannerTimer = 0;
+            this.timedFinishing.windowStart = performance.now() / 1000;
         }
         // ★ Reset camera FOV before flight (slow-mo will zoom it in later)
         this.camera.fov = (this.duelType === 'freekick') ? 52 : 50;
@@ -21040,6 +21180,10 @@ const Nss3DEngine = {
         // ★ GPU Instanced Grass Wind Sway Shader Uniform
         if (this._grassShader && this._grassShader.uniforms && this._grassShader.uniforms.uTime) {
             this._grassShader.uniforms.uTime.value = (time || 0) * 0.001;
+            // ★ Ball pos for SSS proximity shader
+            if (this.ballMesh && this._grassShader.uniforms.uBallPos) {
+                this._grassShader.uniforms.uBallPos.value.copy(this.ballMesh.position);
+            }
         }
 
         const goalZ = (this.duelType === 'freekick') ? 24.4 : 11.0;
@@ -21200,7 +21344,7 @@ const Nss3DEngine = {
                 this.postFX.vignetteStrength = Math.max(0.0, this.postFX.vignetteStrength - 0.018);
             }
 
-            // ★ Wind Slipstream Trail Particles — spawn on ball flight
+            // ★ Wind Slipstream Trail Particles
             if (p > 0.04 && p < 0.92 && Math.random() < 0.55) {
                 this.trailParticles.push({
                     wx: curX, wy: curY, wz: curZ,
@@ -21208,6 +21352,29 @@ const Nss3DEngine = {
                     size: 0.04 + Math.random() * 0.06,
                     age: 0
                 });
+            }
+            // ★ Falso wind Doppler SFX (periodic during flight)
+            if (Math.random() < 0.022 && p > 0.08 && p < 0.88) { NssAudio.playWind(p); }
+            // ★ Squash & Stretch physics
+            if (this.squash && this.squash.active && this.ballMesh) {
+                this.squash.timer += 0.016;
+                if (this.squash.phase === 1) {
+                    const sq = Math.min(1, this.squash.timer / 0.033);
+                    this.ballMesh.scale.set(1.0 + sq * 0.10, 1.0 - sq * 0.12, 1.0 + sq * 0.10);
+                    if (this.squash.timer >= 0.033) { this.squash.phase = 2; this.squash.timer = 0; }
+                } else if (this.squash.phase === 2) {
+                    const st = Math.min(1, this.squash.timer / 0.12);
+                    const ease = 1 - Math.pow(1 - st, 3);
+                    this.ballMesh.scale.set(1+(1-ease)*0.10, 1-(1-ease)*0.12, 1+(1-ease)*0.10);
+                    if (this.squash.timer >= 0.12) {
+                        this.ballMesh.scale.set(1, 1, 1);
+                        this.squash.active = false; this.squash.phase = 0;
+                    }
+                }
+            }
+            // ★ Timed Finishing banner decay
+            if (this.timedFinishing && this.timedFinishing.triggered && this.timedFinishing.bannerTimer > 0) {
+                this.timedFinishing.bannerTimer -= 0.016;
             }
 
             // Record Ball Trail Points
@@ -21571,6 +21738,12 @@ const Nss3DEngine = {
             if (typeof SoundManager !== "undefined" && typeof SoundManager.playMiss === "function") {
                 SoundManager.playMiss();
             }
+            // ★ Squash on post hit
+            if (this.ballMesh && this.squash && !this.squash.active) {
+                this.squash.active = true; this.squash.phase = 1; this.squash.timer = 0; this.squash.triggeredPost = true;
+            }
+            // ★ Impulse screen shake (tok metal sarsinti)
+            this.postFX.screenShake.mag = 5.5;
             resultComment = "İnanılmaz an! Çatala çarpan top direkten sahaya geri döndü!";
             this.showResultBanner(false, false, "💥 DİREKTEN DÖNDÜ! (Çat sesi stadyumu inletti!)", "MİLİMETRELERLE DİREĞE TAKILDI!", resultComment);
 
@@ -21904,6 +22077,16 @@ const Nss3DEngine = {
         if (this.stage === 1) {
             this.renderGoldenLaserReticle(ctx, time);
         }
+        // ★ Timed Finishing banner
+        if (this.stage === 3 && this.timedFinishing && this.timedFinishing.triggered && this.timedFinishing.bannerTimer > 0) {
+            this.renderTimedFinishingBanner(ctx);
+        }
+        // ★ Sky Sports Broadcast HUD
+        if (this.stage <= 3 && !this.replay.active) {
+            this.renderBroadcastHUD(ctx, time);
+        }
+        // ★ Anamorphic Streak Flare
+        this.renderAnamorphicFlare(ctx, time);
 
         // Stage 2: Ball Strike Point & Golden Trajectory Preview
         if (this.stage === 2) {
@@ -21982,36 +22165,60 @@ const Nss3DEngine = {
         const ax = this.aim.screenX;
         const ay = this.aim.screenY;
 
-        // ★ Outer Turkuaz segmented orbit ring (12 curved arcs with gap)
+        const is90Corner = (ay < 100 && (ax < 165 || ax > 275));
+        // ★ Haptic: 90 corner'a ilk kez girilince 20ms titreşim
+        if (is90Corner && !this._last90Lock) {
+            this._last90Lock = true;
+            if (navigator.vibrate) { try { navigator.vibrate([20]); } catch(e){} }
+        } else if (!is90Corner) {
+            this._last90Lock = false;
+        }
+
+        // ★ Outer Segmented Orbit Ring — Turkuaz normal, Neon Yeşil 90° locked
         ctx.save();
         ctx.translate(ax, ay);
         ctx.rotate(-time * 0.0025);
         const segCount = 12;
         const outerR = 22;
+        const outerColor = is90Corner ? '0,255,100' : '20,255,210';
+        const outerShadow = is90Corner ? '#00ff64' : '#14ffce';
         for (let i = 0; i < segCount; i++) {
             const startA = (i / segCount) * Math.PI * 2;
             const endA = startA + (Math.PI * 2 / segCount) * 0.72;
-            const segAlpha = 0.5 + 0.5 * Math.sin(time * 0.009 + i * 0.55);
+            const segAlpha = 0.55 + 0.45 * Math.sin(time * 0.009 + i * 0.55);
             ctx.save();
-            ctx.strokeStyle = `rgba(20,255,210,${segAlpha})`;
-            ctx.lineWidth = 2.0;
-            ctx.shadowColor = '#14ffce';
-            ctx.shadowBlur = 6;
+            ctx.strokeStyle = `rgba(${outerColor},${segAlpha})`;
+            ctx.lineWidth = is90Corner ? 2.4 : 2.0;
+            ctx.shadowColor = outerShadow;
+            ctx.shadowBlur = is90Corner ? 12 : 6;
             ctx.beginPath();
             ctx.arc(0, 0, outerR, startA, endA);
             ctx.stroke();
             ctx.restore();
         }
+        // ★ Second outer ring (neon green when locked, invisible otherwise)
+        if (is90Corner) {
+            const pulseR2 = outerR + 5 + Math.sin(time * 0.018) * 2;
+            ctx.save();
+            ctx.strokeStyle = `rgba(0,255,100,0.35)`;
+            ctx.lineWidth = 1.2;
+            ctx.shadowColor = '#00ff64';
+            ctx.shadowBlur = 18;
+            ctx.beginPath();
+            ctx.arc(0, 0, pulseR2, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.restore();
+        }
         ctx.restore();
 
-        // Inner rotating dashed gold ring
+        // Inner rotating dashed ring — Gold normal, Neon Yeşil 90° locked
         ctx.save();
         ctx.translate(ax, ay);
         ctx.rotate(time * 0.0035);
-        ctx.strokeStyle = "#fbbf24";
+        ctx.strokeStyle = is90Corner ? "#00ff64" : "#fbbf24";
         ctx.lineWidth = 1.8;
-        ctx.shadowColor = '#fbbf24';
-        ctx.shadowBlur = 4;
+        ctx.shadowColor = is90Corner ? '#00ff64' : '#fbbf24';
+        ctx.shadowBlur = is90Corner ? 10 : 4;
         ctx.setLineDash([7, 4]);
         ctx.beginPath();
         ctx.arc(0, 0, 16, 0, Math.PI * 2);
@@ -22030,8 +22237,7 @@ const Nss3DEngine = {
         ctx.stroke();
         ctx.restore();
 
-        // ★ Central dot — Green Timed Finishing: flashes green when aim near 90° corner
-        const is90Corner = (ay < 100 && (ax < 165 || ax > 275));
+        // ★ Central dot — Green when 90° locked
         const dotColor = is90Corner
             ? `rgba(0, ${Math.floor(220 + 35 * Math.sin(time * 0.025))}, 100, 1)` // green pulsing
             : "#f59e0b"; // gold
@@ -22047,7 +22253,7 @@ const Nss3DEngine = {
 
         // Luminous laser halo
         const halo = ctx.createRadialGradient(ax, ay, 0, ax, ay, 14);
-        halo.addColorStop(0, "rgba(250, 204, 21, 0.55)");
+        halo.addColorStop(0, is90Corner ? "rgba(0,255,100,0.50)" : "rgba(250, 204, 21, 0.55)");
         halo.addColorStop(1, "rgba(250, 204, 21, 0)");
         ctx.fillStyle = halo;
         ctx.beginPath();
@@ -22063,6 +22269,7 @@ const Nss3DEngine = {
         ctx.fillText(tagText, ax, ay - 28);
         ctx.restore();
     },
+
 
 
     // Golden Trajectory Arc Preview (Stage 2)
@@ -22090,6 +22297,96 @@ const Nss3DEngine = {
             else ctx.lineTo(x, y);
         }
         ctx.stroke();
+        ctx.restore();
+    },
+
+    // ★ Sky Sports / EA FC Broadcast HUD (bottom broadcast bar)
+    renderBroadcastHUD: function(ctx, time) {
+        const W = this.W, H = this.H;
+        const barH = 26, barY = H - barH - 4;
+        ctx.save();
+        ctx.globalAlpha = 0.90;
+        const bg = ctx.createLinearGradient(0, barY, 0, barY + barH);
+        bg.addColorStop(0, 'rgba(8,14,32,0.97)');
+        bg.addColorStop(1, 'rgba(4,8,20,0.93)');
+        ctx.fillStyle = bg;
+        if (ctx.roundRect) ctx.roundRect(6, barY, W-12, barH, 5);
+        else ctx.rect(6, barY, W-12, barH);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = '#b8922a';
+        ctx.fillRect(6, barY, 3, barH);
+        const ovr = (window.GAME && GAME.state && GAME.state.shooting) || 75;
+        const dist = this.duelType === 'freekick' ? '24.5M' : '11.0M';
+        ctx.fillStyle = '#facc15'; ctx.font = '700 7.5px sans-serif'; ctx.textAlign = 'left';
+        ctx.fillText('OVR', 15, barY + 11);
+        ctx.fillStyle = '#ffffff'; ctx.font = '900 11px sans-serif';
+        ctx.fillText(String(ovr), 15, barY + 22);
+        ctx.strokeStyle = 'rgba(180,140,40,0.45)'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(45, barY+4); ctx.lineTo(45, barY+barH-4); ctx.stroke();
+        ctx.fillStyle = '#94a3b8'; ctx.font = '700 7.5px sans-serif';
+        ctx.fillText('MESAFE', 52, barY+11);
+        ctx.fillStyle = '#f8fafc'; ctx.font = '800 10px sans-serif';
+        ctx.fillText(dist, 52, barY+22);
+        ctx.beginPath(); ctx.moveTo(97, barY+4); ctx.lineTo(97, barY+barH-4); ctx.stroke();
+        ctx.fillStyle = '#94a3b8'; ctx.font = '700 7.5px sans-serif';
+        ctx.fillText('RÜZGAR', 104, barY+11);
+        ctx.fillStyle = '#38bdf8'; ctx.font = '800 10px sans-serif';
+        ctx.fillText('12 KM/S BATI', 104, barY+22);
+        const lbl = this.stage===1?'NİŞAN AL':this.stage===2?'VURUŞ':'UÇUYOR';
+        const pulse = 0.6 + 0.4*Math.sin((time||0)*0.012);
+        ctx.globalAlpha = pulse; ctx.textAlign = 'right';
+        ctx.fillStyle = this.stage===3?'#f43f5e':'#facc15';
+        ctx.font = '900 9px sans-serif';
+        ctx.fillText(lbl, W-10, barY+17);
+        ctx.restore();
+    },
+
+    // ★ Anamorphic Streak Flare (projektore bakan kamera - mavi/altin yatay cizgiler)
+    renderAnamorphicFlare: function(ctx, time) {
+        const W = this.W, H = this.H;
+        const baseStr = this.stage===1?0.32:this.stage===2?0.20:0.08;
+        const str = baseStr * (0.75 + 0.25*Math.sin((time||0)*0.007));
+        if (str < 0.04) return;
+        const fps = [{ x:W*0.08, y:H*0.20 }, { x:W*0.92, y:H*0.20 }];
+        ctx.save();
+        ctx.globalCompositeOperation = 'screen';
+        fps.forEach(fp => {
+            const cx = fp.x/W;
+            const bl = ctx.createLinearGradient(0, fp.y, W, fp.y);
+            bl.addColorStop(0,'rgba(0,0,0,0)'); bl.addColorStop(Math.max(0,cx-0.14),'rgba(0,0,0,0)');
+            bl.addColorStop(cx,`rgba(90,170,255,${str*0.5})`); bl.addColorStop(Math.min(1,cx+0.14),'rgba(0,0,0,0)');
+            bl.addColorStop(1,'rgba(0,0,0,0)');
+            ctx.fillStyle = bl; ctx.fillRect(0, fp.y-2.5, W, 5);
+            const gd = ctx.createLinearGradient(0, fp.y, W, fp.y);
+            gd.addColorStop(0,'rgba(0,0,0,0)'); gd.addColorStop(Math.max(0,cx-0.20),'rgba(0,0,0,0)');
+            gd.addColorStop(cx,`rgba(255,210,75,${str*0.35})`); gd.addColorStop(Math.min(1,cx+0.20),'rgba(0,0,0,0)');
+            gd.addColorStop(1,'rgba(0,0,0,0)');
+            ctx.fillStyle = gd; ctx.fillRect(0, fp.y-1, W, 2);
+        });
+        ctx.restore();
+    },
+
+    // ★ Timed Finishing: "MUKEMMEL ZAMANLAMA" neon yeşil banner
+    renderTimedFinishingBanner: function(ctx) {
+        const W = this.W;
+        const ok = this.timedFinishing.isPerfect;
+        const fade = Math.min(1, this.timedFinishing.bannerTimer / 0.5);
+        const bW = ok ? 200 : 148;
+        const bX = (W-bW)/2, bY = 45, bH = 24;
+        ctx.save(); ctx.globalAlpha = fade;
+        ctx.fillStyle = ok ? 'rgba(0,230,80,0.18)' : 'rgba(250,200,20,0.14)';
+        if (ctx.roundRect) ctx.roundRect(bX,bY,bW,bH,5); else ctx.rect(bX,bY,bW,bH);
+        ctx.fill();
+        ctx.strokeStyle = ok ? 'rgba(0,255,100,0.9)' : 'rgba(250,200,20,0.7)';
+        ctx.lineWidth = 1.5;
+        if (ctx.roundRect) ctx.roundRect(bX,bY,bW,bH,5); else ctx.rect(bX,bY,bW,bH);
+        ctx.stroke();
+        ctx.fillStyle = ok ? '#00ff64' : '#facc15';
+        ctx.font = ok ? '900 10.5px sans-serif' : '800 10px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.shadowColor = ok ? '#00ff64' : '#facc15'; ctx.shadowBlur = 10;
+        ctx.fillText(ok ? '⚡ MÜKEMMEL ZAMANLAMA! +FALSO' : '● ZAMANLAMA BONUSU', W/2, bY+16);
         ctx.restore();
     },
 
