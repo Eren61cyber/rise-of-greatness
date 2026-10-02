@@ -19913,46 +19913,60 @@ const Nss3DEngine = {
 
         // Scene & Fog
         this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color(0x030712);
-        this.scene.fog = new THREE.FogExp2(0x050c1e, 0.015);
+        this.scene.background = new THREE.Color(0x060d1a);  // deep night blue-black
+        this.scene.fog = new THREE.FogExp2(0x0d1a2e, 0.010);  // lighter atmospheric fog, no purple
 
         // Perspective Camera (Behind-the-ball shoulder view)
         this.camera = new THREE.PerspectiveCamera(50, this.W / this.H, 0.1, 100);
 
         // Stadium Lighting
-        this.ambientLight = new THREE.AmbientLight(0x22364c, 0.85);
+        // ★ Clean neutral-white ambient (no purple tint)
+        this.ambientLight = new THREE.AmbientLight(0xffffff, 0.80);
         this.scene.add(this.ambientLight);
 
-        // Soft front key light for ball and kicker area
-        const frontKey = new THREE.DirectionalLight(0xfff5ea, 0.5);
+        // Soft front fill light (ball & kicker area)
+        const frontKey = new THREE.DirectionalLight(0xfff8f0, 0.55);
         frontKey.position.set(0, 6, -5);
         frontKey.target.position.set(0, 0, 4);
         this.scene.add(frontKey);
         this.scene.add(frontKey.target);
 
-        // Left Floodlight — ★ upgraded shadow map 2048 for pin-sharp shadows
-        this.spotLightL = new THREE.SpotLight(0xffffff, 1.7, 60, Math.PI / 4, 0.5, 1.0);
-        this.spotLightL.position.set(-15, 18, 4);
-        this.spotLightL.target.position.set(0, 1.5, 18);
+        // ★ Left Floodlight Tower — warm white, sharp shadows
+        this.spotLightL = new THREE.SpotLight(0xf4f8ff, 1.65, 70, Math.PI / 3.8, 0.45, 0.8);
+        this.spotLightL.position.set(-18, 22, 0);
+        this.spotLightL.target.position.set(0, 0, 18);
         this.spotLightL.castShadow = true;
         this.spotLightL.shadow.mapSize.set(2048, 2048);
-        this.spotLightL.shadow.bias = -0.001;
+        this.spotLightL.shadow.bias = -0.0005;
         this.scene.add(this.spotLightL);
         this.scene.add(this.spotLightL.target);
 
-        // Right Floodlight — ★ upgraded shadow map 2048
-        this.spotLightR = new THREE.SpotLight(0xffffff, 1.7, 60, Math.PI / 4, 0.5, 1.0);
-        this.spotLightR.position.set(15, 18, 4);
-        this.spotLightR.target.position.set(0, 1.5, 18);
+        // ★ Right Floodlight Tower
+        this.spotLightR = new THREE.SpotLight(0xf4f8ff, 1.65, 70, Math.PI / 3.8, 0.45, 0.8);
+        this.spotLightR.position.set(18, 22, 0);
+        this.spotLightR.target.position.set(0, 0, 18);
         this.spotLightR.castShadow = true;
         this.spotLightR.shadow.mapSize.set(2048, 2048);
-        this.spotLightR.shadow.bias = -0.001;
+        this.spotLightR.shadow.bias = -0.0005;
         this.scene.add(this.spotLightR);
         this.scene.add(this.spotLightR.target);
 
-        // Dramatic Rim Light behind goal
-        this.rimLight = new THREE.DirectionalLight(0x38bdf8, 0.75);
-        this.rimLight.position.set(0, 8, 30);
+        // ★ Back floodlights (behind goal, illuminating keeper side)
+        const backFloodL = new THREE.SpotLight(0xf0f4ff, 1.2, 55, Math.PI / 4, 0.5, 0.9);
+        backFloodL.position.set(-10, 20, 32);
+        backFloodL.target.position.set(0, 0, 10);
+        backFloodL.castShadow = false;
+        this.scene.add(backFloodL); this.scene.add(backFloodL.target);
+
+        const backFloodR = new THREE.SpotLight(0xf0f4ff, 1.2, 55, Math.PI / 4, 0.5, 0.9);
+        backFloodR.position.set(10, 20, 32);
+        backFloodR.target.position.set(0, 0, 10);
+        backFloodR.castShadow = false;
+        this.scene.add(backFloodR); this.scene.add(backFloodR.target);
+
+        // Subtle cool rim from behind goal (depth separation)
+        this.rimLight = new THREE.DirectionalLight(0xc8d8ff, 0.35);
+        this.rimLight.position.set(0, 10, 32);
         this.rimLight.target.position.set(0, 1, 0);
         this.scene.add(this.rimLight);
         this.scene.add(this.rimLight.target);
@@ -20026,13 +20040,17 @@ const Nss3DEngine = {
         }
     },
 
-    // 1. 3D Grass Pitch
+    // ★ Premier League Broadcast Stadium Turf (pürüzsüz + mower stripes + çizgiler)
     buildPitch: function() {
-        const geo = new THREE.PlaneGeometry(60, 90, 24, 24);
+        // Build procedural Premier League pitch texture
+        const pitchTex = this.buildPitchTexture();
+
+        const geo = new THREE.PlaneGeometry(60, 90, 1, 1);
         const mat = new THREE.MeshStandardMaterial({
-            map: this.textures.pitch,
-            roughness: 0.82,
-            metalness: 0.05
+            map: pitchTex,
+            roughness: 0.80,
+            metalness: 0.10,
+            envMapIntensity: 0.3
         });
         this.pitchMesh = new THREE.Mesh(geo, mat);
         this.pitchMesh.rotation.x = -Math.PI / 2;
@@ -20040,164 +20058,133 @@ const Nss3DEngine = {
         this.pitchMesh.receiveShadow = true;
         this.scene.add(this.pitchMesh);
 
-        // ★ 3D Instanced Grass Blades (EA FC 24 / Unreal Engine Console Grade Turf)
-        this.buildGrassField();
+        // Null out grass shader so update loop skips it safely
+        this._grassShader = null;
+        this._grassMaterial = null;
+        this.grassInstancedMesh = null;
     },
 
-    // ★ Custom Tapered 3D Grass Blade Geometry (Realistic Sharp Tip & Curved Arc)
-    createTaperedBladeGeometry: function() {
-        const geo = new THREE.BufferGeometry();
-        // 4 height tiers (y: 0, 0.09, 0.19, 0.29m), tapering from 0.052m at root to 0.006m at tip
-        // Natural forward curvature (z curves from 0 to 0.042m)
-        const positions = [
-            // Level 0 (Root / Anchor)
-            -0.026, 0.00, 0.000,   0.026, 0.00, 0.000,
-            // Level 1 (Lower-mid)
-            -0.023, 0.09, 0.007,   0.023, 0.09, 0.007,
-            // Level 2 (Upper-mid)
-            -0.015, 0.19, 0.022,   0.015, 0.19, 0.022,
-            // Level 3 (Pointed Tip)
-            -0.003, 0.29, 0.046,   0.003, 0.29, 0.046
-        ];
-        const indices = [
-            0, 1, 2,  1, 3, 2,  // segment 1
-            2, 3, 4,  3, 5, 4,  // segment 2
-            4, 5, 6,  5, 7, 6   // segment 3
-        ];
-        const uvs = [
-            0.0, 0.0,   1.0, 0.0,
-            0.1, 0.31,  0.9, 0.31,
-            0.25, 0.65, 0.75, 0.65,
-            0.45, 1.0,  0.55, 1.0
-        ];
+    // ★ Procedural Premier League pitch texture: mower stripes + pitch markings
+    buildPitchTexture: function() {
+        const S = 1024; // texture resolution
+        const c = document.createElement('canvas');
+        c.width = S; c.height = S;
+        const ctx = c.getContext('2d');
 
-        geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-        geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
-        geo.setIndex(indices);
-        geo.computeVertexNormals();
-        return geo;
-    },
-
-    // ★ Instanced 3D Grass Blades Generator with Dynamic Wind Shader
-    buildGrassField: function() {
-        try {
-            if (typeof THREE.InstancedMesh === "undefined") return;
-            // ★ 30k Instanced Blades + Full Custom SSS ShaderMaterial (EA FC / Unreal Engine Grade)
-            const bladeCount = 30000;
-            const bladeGeo = this.createTaperedBladeGeometry();
-
-            const grassMat = new THREE.ShaderMaterial({
-                side: THREE.DoubleSide,
-                transparent: true,
-                uniforms: {
-                    uTime:    { value: 0 },
-                    uBallPos: { value: new THREE.Vector3(0, 0.26, 0) },
-                    uSunDir:  { value: new THREE.Vector3(-0.55, 0.72, -0.42).normalize() }
-                },
-                vertexShader: `
-                    precision highp float;
-                    uniform float uTime;
-                    uniform vec3  uBallPos;
-                    varying vec2  vUv;
-                    varying float vHeight;
-                    varying float vBallProx;
-                    varying vec3  vNormal;
-                    void main() {
-                        vUv = uv; vHeight = position.y;
-                        vec4 worldPos = instanceMatrix * vec4(position, 1.0);
-                        vBallProx = 1.0 - clamp(distance(worldPos.xz, uBallPos.xz) / 2.2, 0.0, 1.0);
-                        vec4 ip = instanceMatrix[3];
-                        float wind = position.y * 3.4;
-                        float w1 = sin(uTime * 2.6 + ip.x * 0.8 + ip.z * 0.55);
-                        float w2 = cos(uTime * 4.2 + ip.x * 1.4 - ip.z * 0.9) * 0.35;
-                        float w3 = sin(uTime * 7.1 + ip.x * 2.1 + ip.z * 1.8) * 0.12;
-                        float ballPush = vBallProx * 0.16 * sign(worldPos.x - uBallPos.x);
-                        float sway = (w1 + w2 + w3 + ballPush) * 0.052 * wind;
-                        vec3 pos = position;
-                        pos.x += sway; pos.z += sway * 0.42;
-                        vNormal = normalize(mat3(instanceMatrix) * normal);
-                        gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4(pos, 1.0);
-                    }
-                `,
-                fragmentShader: `
-                    precision highp float;
-                    uniform vec3  uSunDir;
-                    uniform float uTime;
-                    varying vec2  vUv;
-                    varying float vHeight;
-                    varying float vBallProx;
-                    varying vec3  vNormal;
-                    void main() {
-                        vec3 root = vec3(0.068, 0.22, 0.085);
-                        vec3 tip  = vec3(0.19,  0.56, 0.22);
-                        vec3 base = mix(root, tip, clamp(vHeight * 2.5, 0.0, 1.0));
-                        // ★ SSS: back-lit zumrut translucency
-                        float backLight = max(0.0, dot(-uSunDir, vNormal));
-                        float sss = pow(backLight, 2.0) * 0.62;
-                        vec3 sssColor = vec3(0.12, 0.82, 0.35) * sss;
-                        float diff = max(0.14, dot(vNormal, uSunDir));
-                        float spec = pow(max(0.0, dot(reflect(-uSunDir, vNormal), vec3(0,0,-1))), 18.0) * 0.16;
-                        vec3 ballGlow = vec3(0.3, 0.88, 0.42) * vBallProx * 0.22;
-                        vec3 color = base * diff + sssColor + ballGlow + spec;
-                        float alpha = 1.0 - max(0.0, (vHeight - 0.82) * 3.5);
-                        gl_FragColor = vec4(color, clamp(alpha, 0.0, 1.0));
-                    }
-                `
-            });
-            this._grassShader = { uniforms: grassMat.uniforms };
-            this._grassMaterial = grassMat;
-
-            this.grassInstancedMesh = new THREE.InstancedMesh(bladeGeo, grassMat, bladeCount);
-            this.grassInstancedMesh.receiveShadow = true;
-            this.grassInstancedMesh.castShadow = false;
-
-            const dummy = new THREE.Object3D();
-            const color = new THREE.Color();
-            // Rich stadium grass color variety (deep roots, sunlit blades, fresh turf)
-            const turfColors = [
-                0x15451c, 0x1b5424, 0x22662c, 0x2a7a35, 
-                0x328f40, 0x3aa44b, 0x184d20, 0x42b353
-            ];
-
-            for (let i = 0; i < bladeCount; i++) {
-                let rx, rz;
-                // 65% of blades concentrated in the camera's primary field of view & around the ball!
-                if (i < 5200) {
-                    rx = (Math.random() - 0.5) * 8.5; // [-4.25m, +4.25m]
-                    rz = -1.8 + Math.random() * 9.5;  // [-1.8m, +7.7m]
-                } else {
-                    rx = (Math.random() - 0.5) * 16.0;
-                    rz = 7.7 + Math.random() * 18.0;
-                }
-
-                dummy.position.set(rx, 0, rz);
-                dummy.rotation.y = Math.random() * Math.PI * 2;
-                dummy.rotation.x = (Math.random() - 0.5) * 0.28;
-                dummy.rotation.z = (Math.random() - 0.5) * 0.28;
-
-                const scH = 0.72 + Math.random() * 0.55;
-                const scW = 0.80 + Math.random() * 0.45;
-                dummy.scale.set(scW, scH, scW);
-                dummy.updateMatrix();
-
-                this.grassInstancedMesh.setMatrixAt(i, dummy.matrix);
-
-                const baseHex = turfColors[Math.floor(Math.random() * turfColors.length)];
-                color.setHex(baseHex);
-                // Slight per-blade luminosity micro-variation
-                color.multiplyScalar(0.85 + Math.random() * 0.28);
-                this.grassInstancedMesh.setColorAt(i, color);
-            }
-
-            this.grassInstancedMesh.instanceMatrix.needsUpdate = true;
-            if (this.grassInstancedMesh.instanceColor) {
-                this.grassInstancedMesh.instanceColor.needsUpdate = true;
-            }
-
-            this.scene.add(this.grassInstancedMesh);
-        } catch (err) {
-            console.warn("Instanced grass build error, falling back to flat pitch:", err);
+        // -- Mower stripe pattern (alternating dark/light rows) --
+        // Map: texture V=0 -> near camera (z~-35), V=1 -> far (z~+55). 90m long.
+        const stripeW = S / 14; // 14 alternating stripes
+        for (let i = 0; i < 14; i++) {
+            // Slightly vary shade for realism
+            const lightStripe = i % 2 === 0;
+            ctx.fillStyle = lightStripe ? '#2d6a30' : '#1e4620';
+            ctx.fillRect(0, Math.round(i * stripeW), S, Math.round(stripeW) + 1);
         }
+
+        // -- Pitch markings (white lines) --
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.92)';
+        ctx.lineWidth = 4;
+        ctx.lineCap = 'round';
+
+        // Helper: map world metres to texture pixels
+        // World: x in [-30, 30], z in [-35, 55] (total 90m length, 60m wide)
+        // Plane is centred at z=10, so world z range on plane: 10 - 45 = -35 to 10 + 45 = 55
+        const wX = (wx) => ((wx + 30) / 60) * S;
+        const wZ = (wz) => ((wz + 35) / 90) * S;
+
+        // Full pitch outline
+        ctx.beginPath();
+        ctx.rect(wX(-30)+3, wZ(-35)+3, S-6, S-6);
+        ctx.stroke();
+
+        // -- Penalty area (near camera side, z~0 to z~16.5) --
+        // Standard penalty box: 40.32m wide, 16.5m deep
+        // Centre near camera side: z from -2 to 14 (world), x from -20.16 to 20.16
+        ctx.beginPath();
+        ctx.rect(wX(-20.16), wZ(-2), wX(20.16) - wX(-20.16), wZ(14) - wZ(-2));
+        ctx.stroke();
+
+        // Goal area (6-yard box): 18.32m wide, 5.5m deep
+        ctx.beginPath();
+        ctx.rect(wX(-9.16), wZ(-2), wX(9.16) - wX(-9.16), wZ(3.5) - wZ(-2));
+        ctx.stroke();
+
+        // -- Goal line (behind goal, z=-2) and goal mouth --
+        ctx.beginPath();
+        ctx.moveTo(wX(-3.66), wZ(-2));
+        ctx.lineTo(wX(3.66), wZ(-2));
+        ctx.stroke();
+
+        // -- Penalty spot --
+        ctx.beginPath();
+        ctx.arc(wX(0), wZ(11), 6, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,255,255,0.9)';
+        ctx.fill();
+
+        // -- Penalty arc (D) --
+        ctx.beginPath();
+        // 9.15m radius arc centred on penalty spot, outside the penalty area
+        const penaltySpotPx = { x: wX(0), y: wZ(11) };
+        const arcRadiusPx = (9.15 / 90) * S;
+        ctx.arc(penaltySpotPx.x, penaltySpotPx.y, arcRadiusPx, Math.PI * 1.24, Math.PI * 1.76);
+        ctx.stroke();
+
+        // -- Halfway line (z=28 = midfield in world) --
+        ctx.strokeStyle = 'rgba(255,255,255,0.60)';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(wX(-30), wZ(28));
+        ctx.lineTo(wX(30), wZ(28));
+        ctx.stroke();
+
+        // Centre circle (9.15m radius)
+        ctx.beginPath();
+        ctx.arc(wX(0), wZ(28), (9.15 / 90) * S, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Centre spot
+        ctx.beginPath();
+        ctx.arc(wX(0), wZ(28), 5, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,255,255,0.75)';
+        ctx.fill();
+
+        // -- Far penalty area (z~42 to z~58) --
+        ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.rect(wX(-20.16), wZ(42), wX(20.16) - wX(-20.16), wZ(58) - wZ(42));
+        ctx.stroke();
+
+        // Far penalty spot
+        ctx.beginPath();
+        ctx.arc(wX(0), wZ(45), 5, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,255,255,0.65)';
+        ctx.fill();
+
+        // -- Corner flags (small arc at each corner) --
+        ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+        ctx.lineWidth = 2.5;
+        [[-30, -35], [30, -35]].forEach(([cx, cz]) => {
+            ctx.beginPath();
+            const px = wX(cx);
+            const pz = wZ(cz);
+            const r = (1.0 / 90) * S;
+            ctx.arc(px, pz, r, cx < 0 ? 0 : Math.PI, cx < 0 ? Math.PI / 2 : Math.PI / 2 * 3);
+            ctx.stroke();
+        });
+
+        // -- Subtle grass texture noise overlay (microfibre feel) --
+        for (let y = 0; y < S; y += 2) {
+            const even = (Math.floor(y / stripeW) % 2 === 0);
+            ctx.fillStyle = even ? 'rgba(255,255,255,0.012)' : 'rgba(0,0,0,0.015)';
+            ctx.fillRect(0, y, S, 2);
+        }
+
+        const tex = new THREE.CanvasTexture(c);
+        tex.wrapS = THREE.RepeatWrapping;
+        tex.wrapT = THREE.RepeatWrapping;
+        tex.anisotropy = 8;
+        return tex;
     },
 
     // 2. Curved Stadium Grandstand Backdrop
@@ -21178,9 +21165,9 @@ const Nss3DEngine = {
     // =========================================================================
     update: function(time) {
         // ★ GPU Instanced Grass Wind Sway Shader Uniform
+        // Grass shader update (null-safe: grass blades removed in favour of flat pitch)
         if (this._grassShader && this._grassShader.uniforms && this._grassShader.uniforms.uTime) {
             this._grassShader.uniforms.uTime.value = (time || 0) * 0.001;
-            // ★ Ball pos for SSS proximity shader
             if (this.ballMesh && this._grassShader.uniforms.uBallPos) {
                 this._grassShader.uniforms.uBallPos.value.copy(this.ballMesh.position);
             }
