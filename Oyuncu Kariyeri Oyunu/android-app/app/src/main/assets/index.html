@@ -1196,11 +1196,11 @@
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(0, 229, 183, 0.15); display: flex; align-items: center; justify-content: center; font-size: 20px; border: 1px solid rgba(0, 229, 183, 0.3);">⚡</div>
                         <div>
-                            <div style="font-size: 13px; font-weight: 800; color: #fff;">Özel VIP Masaj & Serum Terapi</div>
-                            <div style="font-size: 11px; color: var(--accent-green); margin-top: 1px;">Kısa bir sponsor videosu izle, Kondisyonunu anında +50 yenile!</div>
+                            <div style="font-size: 13px; font-weight: 800; color: #fff;">Kulüp Fizyoterapist & Masaj Seansı</div>
+                            <div style="font-size: 11px; color: var(--accent-green); margin-top: 1px;">Özel toparlanma seansı ile Kondisyonunu anında +50 yenile!</div>
                         </div>
                     </div>
-                    <button class="btn btn-reward-ad" onclick="if(window.AdManager) AdManager.requestRewardedCondition();" style="padding: 8px 14px; font-size: 11px; border-radius: 8px; flex-shrink: 0;">🎬 İZLE & DOLDUR</button>
+                    <button class="btn btn-reward-ad" onclick="if(window.AdManager) AdManager.requestRewardedCondition();" style="padding: 8px 14px; font-size: 11px; border-radius: 8px; flex-shrink: 0;">⚡ YENİLE (+50)</button>
                 </div>
 
                 <div class="training-list" id="training-drills-container" style="display: flex; flex-direction: column; gap: 10px;">
@@ -1860,7 +1860,7 @@
                     
                     <!-- Footer -->
                     <div style="text-align: center; color: #6e7681; font-size: 10px; margin-top: -4px;">
-                        v1.0.6 • RiseUp Studios | <span onclick="openPrivacyPolicyModal()" style="text-decoration: underline; cursor: pointer;">Gizlilik Politikası</span>
+                        v1.1.6 (Build 17) • RiseUp Studios | <span onclick="openPrivacyPolicyModal()" style="text-decoration: underline; cursor: pointer; color: #38bdf8;">Gizlilik Politikası</span>
                     </div>
 
                 </div>
@@ -3139,8 +3139,8 @@
         </div>
 
 
-        <!-- HIGH-END REWARDED AD BROADCAST MODAL -->
-        <div class="event-modal-overlay" id="ad-modal" style="background: rgba(0,0,0,0.95); z-index: 10020; display: none; align-items: center; justify-content: center; padding: 15px;">
+        <!-- REWARD NOTICE MODAL (AD BROADCAST REMOVED FOR CLEAN PLAY STORE COMPLIANCE) -->
+        <div class="event-modal-overlay" id="ad-modal" style="display: none !important;">
             <div class="event-card glass" style="max-width: 420px; width: 100%; text-align: center; border: 2px solid #00e5ff; box-shadow: 0 0 35px rgba(0, 229, 255, 0.3); padding: 22px; border-radius: 16px; margin: 10px;">
                 
                 <!-- Sponsor Top Ribbon -->
@@ -3198,12 +3198,12 @@
                 <div style="background: radial-gradient(circle at center, rgba(0,230,118,0.12), rgba(0,0,0,0.4)); border: 1.5px dashed rgba(0,230,118,0.4); border-radius: 12px; padding: 18px; margin-bottom: 20px;">
                     <div style="font-size: 11px; color: #cbd5e1; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Kazanılan Maç Primi</div>
                     <div style="font-size: 32px; font-weight: 900; color: #00e676; font-family: 'Rajdhani', sans-serif; text-shadow: 0 0 15px rgba(0,230,118,0.5); margin: 4px 0;" id="prim-amount-display">+10.000 €</div>
-                    <div style="font-size: 11px; color: #ffd700; font-weight: 800;" id="prim-boost-preview">⚡ Reklam izlersen: +20.000 € alacaksın!</div>
+                    <div style="font-size: 11px; color: #ffd700; font-weight: 800;" id="prim-boost-preview">🔥 Yönetim Başarı Primi: +20.000 € alabilirsin!</div>
                 </div>
 
                 <div style="display: flex; flex-direction: column; gap: 10px;">
                     <button class="btn btn-reward-ad reward-pulsing-glow" id="btn-prim-double" style="width: 100%; padding: 14px; font-size: 13.5px; border-radius: 10px;">
-                        🎬 REKLAM İZLE & 2X YAP (<span id="prim-doubled-amount">+20.000 €</span>)
+                        🔥 2X PRİMİ KABUL ET (<span id="prim-doubled-amount">+20.000 €</span>)
                     </button>
                     <button class="btn btn-secondary" id="btn-prim-claim-normal" style="width: 100%; padding: 11px; font-size: 12.5px; border-radius: 10px; color: #94a3b8; border: 1px solid rgba(255,255,255,0.1);">
                         Normal Primi Al ve Devam Et (<span id="prim-normal-amount">+10.000 €</span>)
@@ -4989,14 +4989,42 @@
             }
         };
 
-        // 🔋 LIFECYCLE (Battery & Audio Pause on app minimize)
+        // 🔋 LIFECYCLE (Auto-Save & Audio Pause on app minimize / backgrounding)
         window.onAppPause = function() {
             try {
+                if (window.GAME && typeof window.GAME.saveGame === "function") {
+                    window.GAME.saveGame();
+                }
                 if (window.SoundManager && SoundManager.bgMusicElement) {
                     SoundManager.bgMusicElement.pause();
                 }
             } catch (e) {}
         };
+
+        // 💾 AUTO-SAVE ON APP BACKGROUND / TAB SWITCH
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'hidden') {
+                try {
+                    if (window.GAME && typeof window.GAME.saveGame === "function") {
+                        window.GAME.saveGame();
+                    }
+                } catch(e) {}
+            }
+        });
+        window.addEventListener('pagehide', function() {
+            try {
+                if (window.GAME && typeof window.GAME.saveGame === "function") {
+                    window.GAME.saveGame();
+                }
+            } catch(e) {}
+        });
+        window.addEventListener('beforeunload', function() {
+            try {
+                if (window.GAME && typeof window.GAME.saveGame === "function") {
+                    window.GAME.saveGame();
+                }
+            } catch(e) {}
+        });
 
         window.onAppResume = function() {
             try {
@@ -14018,7 +14046,7 @@ function afterWeekAdvanced() {
                     </h3>
                     <div style="display: flex; flex-direction: column; gap: 10px;">
                         
-                        <!-- Sponsored Free Gold Pack (Rewarded Ad) -->
+                        <!-- Daily Free Club Gold Pack -->
                         <div style="display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(0, 230, 118, 0.08)); border: 1.5px solid rgba(255, 215, 0, 0.45); padding: 10px 14px; border-radius: 12px; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.12);">
                             <div style="display: flex; align-items: center; gap: 12px;">
                                 <div class="mini-pack-preview pack-tier-gold" style="position: relative;">
@@ -14027,13 +14055,13 @@ function afterWeekAdvanced() {
                                 </div>
                                 <div>
                                     <div style="display: flex; align-items: center; gap: 6px;">
-                                        <h4 style="color: #ffd700; font-size: 13px; font-weight: 800; margin: 0;">Sponsorlu Altın Paket</h4>
+                                        <h4 style="color: #ffd700; font-size: 13px; font-weight: 800; margin: 0;">Günlük Kulüp Hediyesi Altın Paket</h4>
                                         <span style="background: rgba(0,230,118,0.2); color: #00e676; font-size: 9px; font-weight: 900; padding: 1px 6px; border-radius: 6px; border: 0.5px solid #00e676;">GÜNDE 3 HAK</span>
                                     </div>
-                                    <p style="color: var(--text-muted); font-size: 10.5px; margin: 2px 0 0 0;">Kısa video izle, 50.000 € değerindeki Altın Paketi ÜCRETSİZ aç! (Kalan: ${window.AdManager ? AdManager.getRemainingFreePacks() : 3} / 3)</p>
+                                    <p style="color: var(--text-muted); font-size: 10.5px; margin: 2px 0 0 0;">Kulüp yönetiminin hediyesi 50.000 € değerindeki Altın Paketi ÜCRETSİZ aç! (Kalan: ${window.AdManager ? AdManager.getRemainingFreePacks() : 3} / 3)</p>
                                 </div>
                             </div>
-                            <button class="btn btn-reward-ad" onclick="if(window.AdManager) AdManager.requestFreePack();" style="padding: 7px 12px; font-size: 10.5px; flex-shrink: 0;" ${window.AdManager && AdManager.getRemainingFreePacks() <= 0 ? 'disabled style="opacity:0.5;"' : ''}>${window.AdManager && AdManager.getRemainingFreePacks() <= 0 ? 'YARIN YENİLENİR' : '🎬 İZLE & AÇ'}</button>
+                            <button class="btn btn-reward-ad" onclick="if(window.AdManager) AdManager.requestFreePack();" style="padding: 7px 12px; font-size: 10.5px; flex-shrink: 0;" ${window.AdManager && AdManager.getRemainingFreePacks() <= 0 ? 'disabled style="opacity:0.5;"' : ''}>${window.AdManager && AdManager.getRemainingFreePacks() <= 0 ? 'YARIN YENİLENİR' : '🎁 ÜCRETSİZ AÇ'}</button>
                         </div>
 
                         <!-- Silver Pack -->
@@ -17007,21 +17035,9 @@ function afterWeekAdvanced() {
         };
 
         // ══════════════════════════════════════════════════════════════════
-        // 🎬 UNIVERSAL REWARDED ADS & MONETIZATION ENGINE (ADMANAGER)
+        // 🎁 REWARDS & BONUS ENGINE (CLEAN PLAY STORE COMPLIANT)
         // ══════════════════════════════════════════════════════════════════
         window.AdManager = {
-            isAdPlaying: false,
-            adInterval: null,
-            currentAdCallback: null,
-
-            sponsors: [
-                { brand: "RED BULL ENERGY", slogan: "Maksimum enerji, durdurulamaz saha performansı!", icon: "⚡", badge: "RED BULL KANATLANDIRIR" },
-                { brand: "EA SPORTS FC 25", slogan: "Kulübe katıl, kendi efsaneni dünya çapında yaz!", icon: "⚽", badge: "EA SPORTS FC" },
-                { brand: "NIKE FOOTBALL", slogan: "Yalnızca en iyiler için tasarlandı. Just Do It.", icon: "👟", badge: "NIKE PRO" },
-                { brand: "GOOGLE PLAY PASS", slogan: "Yüzlerce oyun ve uygulama, hepsi parmaklarının ucunda!", icon: "🎮", badge: "GOOGLE PLAY" },
-                { brand: "TURKISH AIRLINES", slogan: "Dünyanın en çok ülkesine uçan hava yoluyla sahaya!", icon: "✈️", badge: "TURKISH AIRLINES" }
-            ],
-
             getRemainingFreePacks: function() {
                 if (!GAME || !GAME.state) return 3;
                 const today = new Date().toISOString().slice(0, 10);
@@ -17040,96 +17056,40 @@ function afterWeekAdvanced() {
             },
 
             showRewardedAd: function({ title, rewardLabel, onRewarded, onCancelled }) {
-                if (this.isAdPlaying) return;
-
-                // Native Android Google AdMob Bridge Check
+                // Native Android Google AdMob Bridge Check (if present in future)
                 if (window.Android && typeof window.Android.showRewardedAd === "function") {
                     window._nativeAdRewardCallback = onRewarded;
                     window.Android.showRewardedAd();
                     return;
                 }
 
-                this.isAdPlaying = true;
-                this.currentAdCallback = onRewarded;
-
-                const adModal = document.getElementById("ad-modal");
-                const progressBar = document.getElementById("ad-progress-bar");
-                const timerText = document.getElementById("ad-timer-text");
-                const rewardLabelEl = document.getElementById("ad-reward-label");
-                const brandEl = document.getElementById("ad-commercial-brand");
-                const sloganEl = document.getElementById("ad-commercial-slogan");
-                const iconEl = document.getElementById("ad-commercial-icon");
-                const badgeEl = document.getElementById("ad-sponsor-badge");
-
-                const sp = this.sponsors[Math.floor(Math.random() * this.sponsors.length)];
-                if (brandEl) brandEl.innerText = sp.brand;
-                if (sloganEl) sloganEl.innerText = sp.slogan;
-                if (iconEl) iconEl.innerText = sp.icon;
-                if (badgeEl) badgeEl.innerText = sp.badge;
-                if (rewardLabelEl) rewardLabelEl.innerText = rewardLabel || "Ödül Kilidi";
-
-                let timeLeft = 5;
-                if (timerText) timerText.innerText = `${timeLeft} sn`;
-                if (progressBar) {
-                    progressBar.style.transition = "none";
-                    progressBar.style.width = "0%";
-                    setTimeout(() => {
-                        progressBar.style.transition = `width ${timeLeft}s linear`;
-                        progressBar.style.width = "100%";
-                    }, 50);
+                // Clean immediate reward execution without fake commercials
+                if (window.HAPTIC && typeof window.HAPTIC.goal === "function") {
+                    try { window.HAPTIC.goal(); } catch(e){}
                 }
-
-                if (adModal) adModal.style.display = "flex";
-
-                if (window.SoundManager && typeof window.SoundManager.playClick === "function") {
-                    try { window.SoundManager.playClick(); } catch(e){}
+                if (typeof onRewarded === "function") {
+                    onRewarded();
                 }
-
-                if (this.adInterval) clearInterval(this.adInterval);
-                this.adInterval = setInterval(() => {
-                    timeLeft--;
-                    if (timerText) timerText.innerText = `${timeLeft} sn`;
-
-                    if (timeLeft <= 0) {
-                        clearInterval(this.adInterval);
-                        this.adInterval = null;
-                        this.isAdPlaying = false;
-                        if (adModal) adModal.style.display = "none";
-
-                        if (window.HAPTIC && typeof window.HAPTIC.goal === "function") {
-                            window.HAPTIC.goal();
-                        }
-
-                        if (typeof this.currentAdCallback === "function") {
-                            const cb = this.currentAdCallback;
-                            this.currentAdCallback = null;
-                            cb();
-                        }
-                    }
-                }, 1000);
             },
 
             cancelAd: function() {
-                if (this.adInterval) {
-                    clearInterval(this.adInterval);
-                    this.adInterval = null;
-                }
-                this.isAdPlaying = false;
-                this.currentAdCallback = null;
                 const adModal = document.getElementById("ad-modal");
                 if (adModal) adModal.style.display = "none";
             },
 
             requestRewardedCondition: function() {
                 this.showRewardedAd({
-                    title: "VIP Masaj & Serum Terapi",
+                    title: "Kulüp Fizyoterapist & Masaj Seansı",
                     rewardLabel: "Kazanılacak: +50 Kondisyon",
                     onRewarded: () => {
                         if (GAME && GAME.state) {
                             GAME.state.kondisyon = Math.min(100, (GAME.state.kondisyon || 0) + 50);
                             GAME.updateUI();
                             GAME.saveGame();
-                            alert("⚡ Harika! VIP Masaj & Serum ile +50 Kondisyon kazandın ve enerjin yenilendi!");
+                            if (window.SoundManager && typeof window.SoundManager.playSuccess === "function") {
+                                window.SoundManager.playSuccess();
+                            }
+                            alert("⚡ Harika! Kulüp Fizyoterapist & Masör seansı uygulandı, Kondisyonun +50 yenilendi!");
                             if (typeof determineNextOpponent === "function") determineNextOpponent();
                         }
                     }
@@ -17144,7 +17104,7 @@ function afterWeekAdvanced() {
                 }
 
                 this.showRewardedAd({
-                    title: "Sponsorlu Altın Paket",
+                    title: "Kulüp Hediyesi Altın Paket",
                     rewardLabel: "Kazanılacak: 1 Adet Ücretsiz Altın Paket",
                     onRewarded: () => {
                         this.useFreePack();
@@ -17193,7 +17153,7 @@ function afterWeekAdvanced() {
                 }
 
                 if (amountDisplay) amountDisplay.innerText = `+${baseBonus.toLocaleString()} €`;
-                if (boostPreview) boostPreview.innerText = `⚡ Reklam izlersen: +${doubledBonus.toLocaleString()} € alacaksın!`;
+                if (boostPreview) boostPreview.innerText = `🔥 Yönetim Başarı Primi: +${doubledBonus.toLocaleString()} € alabilirsin!`;
                 if (normalSpan) normalSpan.innerText = `+${baseBonus.toLocaleString()} €`;
                 if (doubledSpan) doubledSpan.innerText = `+${doubledBonus.toLocaleString()} €`;
 
@@ -17201,22 +17161,16 @@ function afterWeekAdvanced() {
 
                 btnDouble.onclick = () => {
                     modal.style.display = "none";
-                    this.showRewardedAd({
-                        title: "2x Maç Primi Bonusu",
-                        rewardLabel: `Kazanılacak: +${doubledBonus.toLocaleString()} € Nakit Prim`,
-                        onRewarded: () => {
-                            if (GAME && GAME.state) {
-                                GAME.state.money += doubledBonus;
-                                GAME.saveGame();
-                                GAME.updateUI();
-                                if (window.SoundManager && typeof window.SoundManager.playCoin === "function") {
-                                    window.SoundManager.playCoin();
-                                }
-                                alert(`🎉 KASAN DOLDU TAŞTI!\n\nReklamı izledin ve maç primini 2'ye katlayarak +${doubledBonus.toLocaleString()} € kazandın!`);
-                            }
-                            if (typeof onProceed === "function") onProceed();
+                    if (GAME && GAME.state) {
+                        GAME.state.money += doubledBonus;
+                        GAME.saveGame();
+                        GAME.updateUI();
+                        if (window.SoundManager && typeof window.SoundManager.playCoin === "function") {
+                            window.SoundManager.playCoin();
                         }
-                    });
+                        alert(`🎉 KASAN DOLDU TAŞTI!\n\nYönetim başarı primini 2'ye katlayarak +${doubledBonus.toLocaleString()} € hesabına yatırdı!`);
+                    }
+                    if (typeof onProceed === "function") onProceed();
                 };
 
                 btnClaimNormal.onclick = () => {
@@ -21885,7 +21839,7 @@ const Nss3DEngine = {
             scBtn.style.borderRadius = "10px";
             scBtn.style.boxShadow = "0 0 25px rgba(0, 230, 118, 0.7)";
             scBtn.style.whiteSpace = "nowrap";
-            scBtn.innerHTML = "🎬 REKLAM İZLE: İKİNCİ ŞANS (Tekrar Vur)";
+            scBtn.innerHTML = "🎯 İKİNCİ ŞANS (Tekrar Vur)";
             const modalInner = modal ? modal.querySelector(".glass") : null;
             if (modalInner) modalInner.appendChild(scBtn);
         }
