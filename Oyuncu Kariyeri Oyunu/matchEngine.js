@@ -304,16 +304,38 @@ const MatchEngine = {
                     return;
                 }
             }
-            // Generic commentary
-            else if (Math.random() < 0.15) {
-                const comments = [
-                    "Orta sahada kıran kırana mücadele devam ediyor.",
-                    "Rakip takımın atak hazırlığı defansımız tarafından kesildi.",
-                    "Seyirciler tezahüratlarla stadı inletiyor.",
-                    "Hoca kenardan taktik direktifler veriyor.",
-                    "Sert bir müdahale, hakem oyunu devam ettirdi."
+            // Generic Broadcast Telemetry & Tactical Commentary (State Guard Protected)
+            else if (Math.random() < 0.14) {
+                const broadcastLines = [
+                    "Orta sahada top kapma mücadelesi kızıştı, tempo kontrol altında.",
+                    "Rakip takımın kanat bindirmesi savunma kademesi tarafından kesildi.",
+                    "Tribünlerden yoğun uğultu yükseliyor, takımlar alan savunmasında.",
+                    "Teknik heyet kenardan takımı önde baskıya davet ediyor.",
+                    "Sert bir ikili mücadele, hakem avantaja bırakarak oyunu akıttı.",
+                    "Top ceza yayının hemen dışında sıkıştı, iki taraf da boşluk kolluyor.",
+                    "Kısa paslarla tempo dengeleniyor, orta sahada pas trafiği yoğun.",
+                    "Kaleci oyunu eliyle hızla kurarak kontra atak başlattı.",
+                    "Hava topu mücadelesinde sert temas, hakem taç atışıyla oyunu başlattı.",
+                    "Savunma hattı ofsayt çizgisini kusursuz kurarak tehlikeyi savuşturdu.",
+                    "Rakip ceza sahası önüne yığıldı, savunmamız boşluk vermiyor.",
+                    "Köşe gönderi yakınında pres sonuç verdi, top yeniden takımımızda.",
+                    "Ceza sahası dışından seken topu orta saha oyuncularımız topladı.",
+                    "Geniş alanda top çevrilerek rakip savunmanın dengesi bozulmaya çalışılıyor.",
+                    "Stadyum hoparlörlerinden anons yapıldı, taraftarlar maça ortak olmaya çalışıyor."
                 ];
-                callbacks.onMinuteUpdate(self.min, self.score, comments[Math.floor(Math.random() * comments.length)]);
+
+                if (!self._lastGenericMin || (self.min - self._lastGenericMin >= 3)) {
+                    let picked = broadcastLines[Math.floor(Math.random() * broadcastLines.length)];
+                    if (picked !== self._lastGenericText) {
+                        self._lastGenericMin = self.min;
+                        self._lastGenericText = picked;
+                        callbacks.onMinuteUpdate(self.min, self.score, picked);
+                    } else {
+                        callbacks.onMinuteUpdate(self.min, self.score, null);
+                    }
+                } else {
+                    callbacks.onMinuteUpdate(self.min, self.score, null);
+                }
             } else {
                 callbacks.onMinuteUpdate(self.min, self.score, null);
             }
@@ -2677,15 +2699,37 @@ const MatchEngine = {
                     self.momentumDuration = 12;
                 }
                 self.callbacks.onMinuteUpdate(self.min, self.score, `GOOOOL!!! Takım arkadaşların harika paslaşmalarla golü buluyor!`);
-            } else if (Math.random() < 0.15) {
-                const comments = [
-                    "Orta sahada kıran kırana mücadele devam ediyor.",
-                    "Rakip takımın atak hazırlığı defansımız tarafından kesildi.",
-                    "Seyirciler tezahüratlarla stadı inletiyor.",
-                    "Hoca kenardan taktik direktifler veriyor.",
-                    "Sert bir müdahale, hakem oyunu devam ettirdi."
+            } else if (Math.random() < 0.14) {
+                const broadcastLines = [
+                    "Orta sahada top kapma mücadelesi kızıştı, tempo kontrol altında.",
+                    "Rakip takımın kanat bindirmesi savunma kademesi tarafından kesildi.",
+                    "Tribünlerden yoğun uğultu yükseliyor, takımlar alan savunmasında.",
+                    "Teknik heyet kenardan takımı önde baskıya davet ediyor.",
+                    "Sert bir ikili mücadele, hakem avantaja bırakarak oyunu akıttı.",
+                    "Top ceza yayının hemen dışında sıkıştı, iki taraf da boşluk kolluyor.",
+                    "Kısa paslarla tempo dengeleniyor, orta sahada pas trafiği yoğun.",
+                    "Kaleci oyunu eliyle hızla kurarak kontra atak başlattı.",
+                    "Hava topu mücadelesinde sert temas, hakem taç atışıyla oyunu başlattı.",
+                    "Savunma hattı ofsayt çizgisini kusursuz kurarak tehlikeyi savuşturdu.",
+                    "Rakip ceza sahası önüne yığıldı, savunmamız boşluk vermiyor.",
+                    "Köşe gönderi yakınında pres sonuç verdi, top yeniden takımımızda.",
+                    "Ceza sahası dışından seken topu orta saha oyuncularımız topladı.",
+                    "Geniş alanda top çevrilerek rakip savunmanın dengesi bozulmaya çalışılıyor.",
+                    "Stadyum hoparlörlerinden anons yapıldı, taraftarlar maça ortak olmaya çalışıyor."
                 ];
-                self.callbacks.onMinuteUpdate(self.min, self.score, comments[Math.floor(Math.random() * comments.length)]);
+
+                if (!self._lastGenericMin || (self.min - self._lastGenericMin >= 3)) {
+                    let picked = broadcastLines[Math.floor(Math.random() * broadcastLines.length)];
+                    if (picked !== self._lastGenericText) {
+                        self._lastGenericMin = self.min;
+                        self._lastGenericText = picked;
+                        self.callbacks.onMinuteUpdate(self.min, self.score, picked);
+                    } else {
+                        self.callbacks.onMinuteUpdate(self.min, self.score, null);
+                    }
+                } else {
+                    self.callbacks.onMinuteUpdate(self.min, self.score, null);
+                }
             } else {
                 self.callbacks.onMinuteUpdate(self.min, self.score, null);
             }

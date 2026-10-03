@@ -1498,15 +1498,19 @@
 
             <!-- TV BROADCAST MASTER SCOREBOARD -->
             <div class="broadcast-scoreboard glass">
-                <!-- Top Competition Banner -->
+                <!-- Top Competition Banner & Broadcast Ribbon -->
                 <div class="scoreboard-competition-ribbon">
                     <div class="comp-title-wrapper">
                         <span class="comp-icon" id="scoreboard-comp-icon">🏆</span>
                         <span class="comp-name" id="scoreboard-comp-name">TFF SÜPER LİG</span>
                     </div>
-                    <div class="live-pill">
-                        <span class="live-blink-dot"></span>
-                        <span id="scoreboard-live-status">CANLI</span>
+                    <div class="scoreboard-live-group">
+                        <div class="live-pill broadcast-ruby-live">
+                            <span class="live-blink-dot ruby-dot"></span>
+                            <span id="scoreboard-live-status">CANLI</span>
+                            <span id="scoreboard-live-min" style="margin-left: 2px;">0'</span>
+                        </div>
+                        <div class="extra-time-plaque" id="scoreboard-extra-time" style="display: none;">+4</div>
                     </div>
                 </div>
 
@@ -1550,21 +1554,27 @@
                     </div>
                 </div>
 
-                <!-- Match Live Stats & Possession Bar -->
+                <!-- Live Dominance & Momentum Bar + Opta Telemetry -->
                 <div class="scoreboard-live-bar">
-                    <div class="possession-bar-wrapper">
-                        <span id="possession-home-txt" style="display:none;"></span>
-                        <div class="possession-track">
-                            <div class="possession-fill-home" id="possession-home-bar" style="width: 52%;"></div>
+                    <div class="broadcast-momentum-wrapper">
+                        <div class="broadcast-momentum-bar">
+                            <div class="momentum-fill-home" id="possession-home-bar" style="width: 52%;"></div>
                         </div>
-                        <span id="possession-away-txt" style="display:none;"></span>
+                        <div class="broadcast-telemetry-row">
+                            <span class="telemetry-item" id="telemetry-possession">TOPLA OYNAMA: %52 - %48</span>
+                            <span class="telemetry-sep">•</span>
+                            <span class="telemetry-item" id="telemetry-xg">xG: 0.00 - 0.00</span>
+                        </div>
                     </div>
+                    <span id="possession-home-txt" style="display:none;"></span>
+                    <span id="possession-away-txt" style="display:none;"></span>
                 </div>
 
 
                 <!-- Player Live Performance Bar & Match Speed -->
                 <div class="scoreboard-player-hud">
                     <div class="player-hud-stat live-rating-badge" id="live-rating-badge">
+                        <div class="rating-sheen"></div>
                         <span class="hud-label">⭐ REYTİNG</span>
                         <span class="hud-val" id="live-player-rating">6.0</span>
                     </div>
@@ -1581,19 +1591,24 @@
 
             </div>
 
-            <!-- Stadium Pitch-Side Animated LED Advertising Board -->
-            <div class="stadium-led-ribbon" id="pitchside-ad-banner">
-                <div class="led-ribbon-track">
-                    <span class="led-item gold">👑 RISE OF GREATNESS PRO PASS • VIP AYRICALIKLAR</span>
-                    <span class="led-item green">⚡ RED BULL • KANATLANDIRIR</span>
-                    <span class="led-item cyan">⚽ EA SPORTS FC 25 • ULTIMATE TEAM</span>
-                    <span class="led-item red">✈️ TURKISH AIRLINES • WIDEN YOUR WORLD</span>
-                    <span class="led-item purple">👟 NIKE FOOTBALL • JUST DO IT</span>
-                    <span class="led-item gold">👑 RISE OF GREATNESS PRO PASS • VIP AYRICALIKLAR</span>
-                    <span class="led-item green">⚡ RED BULL • KANATLANDIRIR</span>
-                    <span class="led-item cyan">⚽ EA SPORTS FC 25 • ULTIMATE TEAM</span>
-                    <span class="led-item red">✈️ TURKISH AIRLINES • WIDEN YOUR WORLD</span>
-                    <span class="led-item purple">👟 NIKE FOOTBALL • JUST DO IT</span>
+            <!-- Stadium Broadcast Telemetry Ribbon (Quiet Luxury) -->
+            <div class="broadcast-ticker-ribbon" id="pitchside-ad-banner">
+                <div class="ticker-track">
+                    <span class="ticker-item gold">📊 OPTA CANLI VERİ MERKEZİ</span>
+                    <span class="ticker-sep">•</span>
+                    <span class="ticker-item titanium">PREMIER BROADCAST QUALITY</span>
+                    <span class="ticker-sep">•</span>
+                    <span class="ticker-item ruby">BALL TRACKING ACTIVE</span>
+                    <span class="ticker-sep">•</span>
+                    <span class="ticker-item emerald">RESMİ YAYIN SİNYALİ 120 FPS</span>
+                    <span class="ticker-sep">•</span>
+                    <span class="ticker-item gold">📊 OPTA CANLI VERİ MERKEZİ</span>
+                    <span class="ticker-sep">•</span>
+                    <span class="ticker-item titanium">PREMIER BROADCAST QUALITY</span>
+                    <span class="ticker-sep">•</span>
+                    <span class="ticker-item ruby">BALL TRACKING ACTIVE</span>
+                    <span class="ticker-sep">•</span>
+                    <span class="ticker-item emerald">RESMİ YAYIN SİNYALİ 120 FPS</span>
                 </div>
             </div>
 
@@ -1608,22 +1623,29 @@
                 </div>
             </div>
 
-            <!-- Match Decision Card (Pops up inside match overlay when choice is triggered) -->
-            <div id="match-decision-card" style="display: none; padding: 14px; margin-bottom: 10px; background: #0f172a; border: 1.5px solid rgba(245, 158, 11, 0.6); border-radius: 14px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(245, 158, 11, 0.15); animation: fadeIn 0.25s ease;">
-                <div style="background: #F59E0B; color: #050B14; font-size: 10px; font-weight: 900; padding: 3px 8px; border-radius: 6px; letter-spacing: 0.5px; text-transform: uppercase; width: fit-content;" id="decision-title">KRİTİK POZİSYON</div>
-                <p id="decision-desc" style="font-size: 13px; font-weight: 600; margin: 8px 0 12px 0; line-height: 1.4; color: #F1F5F9;"></p>
-                <div id="decision-options-container" style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
-                    <!-- Tactical action cards will render here -->
+            <!-- Match Decision Card (Clutch Decision Hub - 6 Second Ember Timer) -->
+            <div id="match-decision-card" style="display: none;">
+                <!-- 6-Second Ember Timer Bar on Top Edge -->
+                <div class="decision-ember-bar">
+                    <div class="decision-ember-fill" id="decision-ember-fill"></div>
+                </div>
+                <div class="decision-header-row">
+                    <div class="decision-badge" id="decision-title">KRİTİK POZİSYON</div>
+                    <div class="decision-countdown-pill" id="decision-countdown-pill">⏱️ 6.0s</div>
+                </div>
+                <p id="decision-desc"></p>
+                <div id="decision-options-container">
+                    <!-- Tactical action plaque buttons will render here -->
                 </div>
             </div>
 
-            <!-- Interactive Match Continue / Goal Pause Banner -->
-            <div id="match-continue-banner" class="glass" style="display: none; padding: 14px 18px; margin-bottom: 10px; border: 2px solid #00e5b7; background: linear-gradient(135deg, rgba(0,229,183,0.18), rgba(4,20,14,0.9)); border-radius: 12px; box-shadow: 0 4px 25px rgba(0, 229, 183, 0.35); align-items: center; justify-content: space-between; gap: 12px; animation: pulse 1.8s infinite;">
+            <!-- Interactive Match Continue Banner (Quiet Luxury) -->
+            <div id="match-continue-banner" class="broadcast-continue-banner" style="display: none;">
                 <div style="text-align: left; flex: 1;">
-                    <div id="match-continue-title" style="color: #00e5b7; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">⚽ GOOOL SEVİNCİ</div>
-                    <div id="match-continue-msg" style="color: #fff; font-size: 13.5px; font-weight: 700; margin-top: 2px;">Maça devam etmek için dokunun</div>
+                    <div id="match-continue-title" class="continue-title">⚽ GOOOL SEVİNCİ</div>
+                    <div id="match-continue-msg" class="continue-msg">Maça devam etmek için dokunun</div>
                 </div>
-                <button id="btn-match-continue" class="btn btn-primary" style="padding: 10px 22px; font-weight: 900; font-size: 13px; letter-spacing: 0.5px; background: #00e5b7; color: #04140e; border: none; border-radius: 8px; cursor: pointer; flex-shrink: 0; box-shadow: 0 0 15px rgba(0,229,183,0.5);">DEVAM ET ➔</button>
+                <button id="btn-match-continue" class="continue-btn">DEVAM ET ➔</button>
             </div>
         </section>
 
@@ -18499,6 +18521,23 @@ function afterWeekAdvanced() {
                         else if (min === 90) minText = "90' (M.S.)";
                         document.getElementById("match-time").innerText = minText;
 
+                        const liveMinEl = document.getElementById("scoreboard-live-min");
+                        if (liveMinEl) liveMinEl.innerText = min + "'";
+
+                        // Extra time badge calculation
+                        const extraTimeEl = document.getElementById("scoreboard-extra-time");
+                        if (extraTimeEl) {
+                            if (min >= 44 && min <= 45) {
+                                extraTimeEl.style.display = "inline-block";
+                                extraTimeEl.innerText = "+2";
+                            } else if (min >= 88 && min <= 90) {
+                                extraTimeEl.style.display = "inline-block";
+                                extraTimeEl.innerText = "+4";
+                            } else {
+                                extraTimeEl.style.display = "none";
+                            }
+                        }
+
                         if (scoreHomeEl) scoreHomeEl.innerText = score.player;
                         if (scoreAwayEl) scoreAwayEl.innerText = score.opponent;
                         if (matchScoreEl) matchScoreEl.innerText = `${score.player} - ${score.opponent}`;
@@ -18519,88 +18558,125 @@ function afterWeekAdvanced() {
                         if (liveGoalsEl) liveGoalsEl.innerText = pG;
                         if (liveAssistsEl) liveAssistsEl.innerText = pA;
 
+                        // Minimalist EA FC Specular Sheen Logic
                         if (liveRatingBadge) {
-                            if (currentLiveRating >= 7.5) {
-                                liveRatingBadge.style.borderColor = "#00E676";
-                                liveRatingBadge.style.backgroundColor = "rgba(0, 230, 118, 0.18)";
-                                if (liveRatingEl) liveRatingEl.style.color = "#00E676";
-                            } else if (currentLiveRating >= 6.5) {
-                                liveRatingBadge.style.borderColor = "#FFD600";
-                                liveRatingBadge.style.backgroundColor = "rgba(255, 214, 0, 0.15)";
-                                if (liveRatingEl) liveRatingEl.style.color = "#FFD600";
-                            } else {
-                                liveRatingBadge.style.borderColor = "#EF4444";
-                                liveRatingBadge.style.backgroundColor = "rgba(239, 68, 68, 0.15)";
-                                if (liveRatingEl) liveRatingEl.style.color = "#EF4444";
+                            liveRatingBadge.classList.remove("sheen-active", "rating-poor");
+                            if (currentLiveRating >= 7.0) {
+                                liveRatingBadge.classList.add("sheen-active");
+                            } else if (currentLiveRating < 6.0) {
+                                liveRatingBadge.classList.add("rating-poor");
                             }
                         }
 
-                        // Dynamic possession flutter
+                        // Dynamic possession & Dominance Bar flutter
                         let possShift = Math.floor(Math.sin(min * 0.3) * 3);
                         let currentPoss = Math.max(30, Math.min(70, basePoss + (score.player - score.opponent) * 2 + possShift));
                         if (possHomeTxt) possHomeTxt.innerText = `%${currentPoss}`;
                         if (possAwayTxt) possAwayTxt.innerText = `%${100 - currentPoss}`;
                         if (possBar) possBar.style.width = `${currentPoss}%`;
 
-                        // Trigger animations on score change
+                        // Opta Telemetry Real-Time Updates
+                        const telePoss = document.getElementById("telemetry-possession");
+                        if (telePoss) telePoss.innerText = `TOPLA OYNAMA: %${currentPoss} - %${100 - currentPoss}`;
+
+                        const teleXg = document.getElementById("telemetry-xg");
+                        if (teleXg) {
+                            const pShots = (MatchEngine.playerStats.shots || 0) + (pG > 0 ? pG : 0);
+                            let hXg = (score.player * 0.72) + (pShots * 0.16) + (min * 0.007);
+                            let aXg = (score.opponent * 0.68) + (min * 0.006);
+                            hXg = Math.max(score.player * 0.9, hXg).toFixed(2);
+                            aXg = Math.max(score.opponent * 0.85, aXg).toFixed(2);
+                            teleXg.innerText = `xG: ${hXg} - ${aXg}`;
+                        }
+
+                        // Trigger animations & Stadium Rumble on score change
                         if (score.player > lastPlayerScore) {
                             triggerGoalEffect("scored");
+                            MatchAudio.playStadiumRumble();
                         } else if (score.opponent > lastOpponentScore) {
                             triggerGoalEffect("conceded");
                         }
                         lastPlayerScore = score.player;
                         lastOpponentScore = score.opponent;
 
-                        // 60. dakika: Sadece hiçbir varlık gösteremeyen ve takım gerideyken taktik değişiklik
+                        // 60. dakika: Taktik değişiklik
                         const totalPlayerImpact = (MatchEngine.playerStats.goals || 0) + (MatchEngine.playerStats.assists || 0) + (MatchEngine.playerStats.tackles || 0) + (MatchEngine.playerStats.passes || 0);
                         if (min === 60 && !playerSubbedOff && !MatchEngine.isSentOff && !MatchEngine.isBenched && !MatchEngine.isDropped && totalPlayerImpact === 0 && score.opponent > score.player && Math.random() < 0.15) {
                             playerSubbedOff = true;
                             MatchEngine.isSubbedOff = true;
                             MatchEngine.choiceMinutes = [];
                             timelineLog.innerHTML += `
-                                <div style="border-left: 2.5px solid var(--accent-yellow); padding-left: 8px; margin: 8px 0; background: rgba(255,193,7,0.08); border-radius:4px; padding: 8px;">
-                                    <strong style="color: var(--accent-yellow);">60' 🔄 OYUNCU DEĞİŞİKLİĞİ!</strong><br>
-                                    <span style="color: #ccc; font-size: 12px;">Teknik Direktör: <em>"${GAME.state.playerName}, bugün takım geride ve pozisyon bulamadın. Seni dinlendiriyorum."</em></span>
+                                <div class="broadcast-feed-card event-card-tactic">
+                                    <div class="feed-card-header">
+                                        <span class="feed-card-min">60'</span>
+                                        <span class="event-badge tactic-badge">🔄 OYUNCU DEĞİŞİKLİĞİ</span>
+                                    </div>
+                                    <div class="feed-card-body">
+                                        Teknik Direktör: <em>"${GAME.state.playerName}, bugün takım geride ve pozisyon bulamadın. Seni dinlendiriyorum."</em>
+                                    </div>
                                 </div>
                             `;
                             GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 2);
                             timelineLog.scrollTop = timelineLog.scrollHeight;
                         }
                         
+                        // State Guard: Block mechanical repetitive / duplicate commentary
                         if (comment) {
-                            let eventClass = "";
-                            
-                            if (comment.includes("GOOOL")) {
-                                eventClass = "goal";
-                                SoundManager.playGoal();
-                            } else if (comment.includes("MAALESEF GOL") || comment.includes("Gol Yedik")) {
-                                eventClass = "conceded";
-                                SoundManager.playConceded();
-                            } else if (comment.includes("KIRMIZI KART") || comment.includes("ihraç")) {
-                                eventClass = "card-red";
-                            } else if (comment.includes("SARI KART")) {
-                                eventClass = "card-yellow";
-                            } else if (comment.includes("kurtardı") || comment.includes("kaleci")) {
-                                eventClass = "save";
-                                SoundManager.playMiss();
-                            } else if (comment.includes("kaçtı") || comment.includes("döndü") || comment.includes("direk") || comment.includes("dışarı") || comment.includes("şut") || comment.includes("vurdu")) {
-                                eventClass = "shot";
-                                SoundManager.playMiss();
-                            } else if (comment.includes("müdahale") || comment.includes("top kap") || comment.includes("söktü") || comment.includes("kayarak")) {
-                                eventClass = "tackle";
-                            } else if (comment.includes("taktik") || comment.includes("hoca") || comment.includes("uyarı")) {
-                                eventClass = "tactic";
-                            } else if (comment.includes("oyundan") || comment.includes("değişiklik")) {
-                                eventClass = "sub";
-                            }
-
-                            // Clean any lightning, emojis or weird symbols from comment
                             let cleanComment = comment.replace(/[⚡👟🗣️🔄🧤⚽❌🟨🟥💪👑]/g, '').replace(/\s+/g, ' ').trim();
 
+                            if (!window._feedStateGuard) {
+                                window._feedStateGuard = { lastText: "", lastMin: -1, lastFillerMin: -10 };
+                            }
+                            const guard = window._feedStateGuard;
+
+                            const isFiller = cleanComment.includes("mücadele devam ediyor") || cleanComment.includes("taktik direktifler") || cleanComment.includes("tezahüratlarla") || cleanComment.includes("atak hazırlığı") || cleanComment.includes("tempo kontrol");
+
+                            if (cleanComment === guard.lastText) return; // Exact repeat blocked
+                            if (isFiller && (min - guard.lastFillerMin < 3)) return; // Consecutive filler blocked
+
+                            guard.lastText = cleanComment;
+                            guard.lastMin = min;
+                            if (isFiller) guard.lastFillerMin = min;
+
+                            let cardClass = "event-card-normal";
+                            let badgeHtml = "";
+
+                            if (comment.includes("GOOOL") || comment.includes("GOL")) {
+                                cardClass = "event-card-goal";
+                                badgeHtml = '<span class="event-badge goal-badge">⚽ GOL</span>';
+                                SoundManager.playGoal();
+                            } else if (comment.includes("MAALESEF GOL") || comment.includes("Gol Yedik")) {
+                                cardClass = "event-card-conceded";
+                                badgeHtml = '<span class="event-badge conceded-badge">RÜZGAR DÖNDÜ</span>';
+                                SoundManager.playConceded();
+                            } else if (comment.includes("VAR") || comment.includes("inceleme") || comment.includes("İnceleme")) {
+                                cardClass = "event-card-var";
+                                badgeHtml = '<span class="event-badge var-badge">⚖️ VAR KONTROLÜ</span>';
+                            } else if (comment.includes("KIRMIZI KART") || comment.includes("ihraç")) {
+                                cardClass = "event-card-red";
+                                badgeHtml = '<span class="event-badge red-badge">🟥 KIRMIZI KART</span>';
+                            } else if (comment.includes("SARI KART")) {
+                                cardClass = "event-card-yellow";
+                                badgeHtml = '<span class="event-badge yellow-badge">🟨 SARI KART</span>';
+                            } else if (comment.includes("faul") || comment.includes("tehlikeli") || comment.includes("duran top") || comment.includes("serbest vuruş")) {
+                                cardClass = "event-card-foul";
+                                badgeHtml = '<span class="event-badge foul-badge">⚠️ FAUL & TEHLİKE</span>';
+                            } else if (comment.includes("kurtardı") || comment.includes("kaleci") || comment.includes("müdahale") || comment.includes("direk")) {
+                                cardClass = "event-card-defense";
+                                badgeHtml = '<span class="event-badge defense-badge">🛡️ SAVUNMA</span>';
+                                SoundManager.playMiss();
+                            } else if (comment.includes("taktik") || comment.includes("hoca") || comment.includes("değişiklik")) {
+                                cardClass = "event-card-tactic";
+                                badgeHtml = '<span class="event-badge tactic-badge">🔄 TAKTİK</span>';
+                            }
+
                             timelineLog.innerHTML += `
-                                <div class="match-feed-item ${eventClass}">
-                                    <span class="match-feed-min">${min}'</span>
-                                    <span class="match-feed-text">${cleanComment}</span>
+                                <div class="broadcast-feed-card ${cardClass}">
+                                    <div class="feed-card-header">
+                                        <span class="feed-card-min">${min}'</span>
+                                        ${badgeHtml}
+                                    </div>
+                                    <div class="feed-card-body">${cleanComment}</div>
                                 </div>
                             `;
                             timelineLog.scrollTop = timelineLog.scrollHeight;
@@ -18619,54 +18695,59 @@ function afterWeekAdvanced() {
                     const optionsContainer = document.getElementById("decision-options-container");
                     optionsContainer.innerHTML = "";
 
+                    // Start 6-Second Adrenaline Ember Countdown Timer & Heartbeat
+                    startClutchDecisionTimer(minute);
+
                     choiceData.options.forEach((opt, idx) => {
                         let rawText = opt.text || "";
                         let rawDesc = opt.effect || "";
 
-                        // Determine card theme purely for subtle styling
-                        let theme = "theme-shoot";
-                        let lText = (rawText + " " + rawDesc).toLowerCase();
+                        // Determine Success Percentage (from opt.successChance or baseline)
+                        let chanceRate = (typeof opt.successChance === "number") ? opt.successChance : 0.60;
+                        let succPerc = Math.round(chanceRate * 100);
 
-                        if (lText.includes("kay") || lText.includes("sök") || lText.includes("savunma") || lText.includes("müdahale") || lText.includes("kap")) {
-                            theme = "theme-defense";
-                        } else if (lText.includes("pas") || lText.includes("kaçır") || lText.includes("orta") || lText.includes("taktik") || lText.includes("aç") || lText.includes("özür") || lText.includes("kabullen")) {
-                            theme = "theme-pass";
-                        } else if (lText.includes("hız") || lText.includes("depar") || lText.includes("kontra") || lText.includes("koş") || lText.includes("boşa")) {
-                            theme = "theme-speed";
-                        } else if (lText.includes("fizik") || lText.includes("yıkılma") || lText.includes("ayakta") || lText.includes("güç")) {
-                            theme = "theme-defense";
-                        } else if (lText.includes("çalım") || lText.includes("sakla") || lText.includes("falso") || lText.includes("röveşata") || lText.includes("aşırtma") || lText.includes("viral") || lText.includes("itiraz")) {
-                            theme = "theme-skill";
-                        } else {
-                            theme = "theme-shoot";
+                        // Determine Risk Class & Badge
+                        let riskClass = "risk-balanced";
+                        let riskBadge = '<span class="risk-badge balanced">DENGELİ</span>';
+                        if (succPerc >= 70) {
+                            riskClass = "risk-safe";
+                            riskBadge = '<span class="risk-badge safe">GÜVENLİ</span>';
+                        } else if (succPerc < 50) {
+                            riskClass = "risk-high";
+                            riskBadge = '<span class="risk-badge high">YÜKSEK RİSK</span>';
                         }
 
-                        // Clean emojis and symbols from button title
-                        let cleanTitle = rawText.replace(/^[^\w\s\u00C0-\u017F\u0100-\u024F]+/g, '').replace(/[⚡👟🗣️🔄🧤⚽❌🟨🟥💪👑]/g, '').trim();
+                        // Determine Reward Label
+                        let rewardText = "Tehlikeli Hücum Fırsatı";
+                        let lText = (rawText + " " + rawDesc).toLowerCase();
+                        if (lText.includes("şut") || lText.includes("aşırtma") || lText.includes("röveşata") || lText.includes("vuruş") || lText.includes("dokun")) {
+                            rewardText = (succPerc < 50) ? "90'a Jeneriklik Gol" : "Net Skor Fırsatı";
+                        } else if (lText.includes("ara pas") || lText.includes("kilit") || lText.includes("orta") || lText.includes("asist")) {
+                            rewardText = "Net Asist Şansı";
+                        } else if (lText.includes("verkaç") || lText.includes("depar") || lText.includes("hız") || lText.includes("birebir") || lText.includes("sıyrıl")) {
+                            rewardText = "Birebir Kaleci Fırsatı";
+                        } else if (lText.includes("kayarak") || lText.includes("müdahale") || lText.includes("omuz") || lText.includes("sindir") || lText.includes("kademe")) {
+                            rewardText = "Kritik Savunma Müdahalesi";
+                        }
+
+                        // Clean emojis from button title
+                        let cleanTitle = rawText.replace(/^[^wsÀ-ſĀ-ɏ]+/g, '').replace(/[⚡👟🗣️🔄🧤⚽❌🟨🟥💪👑]/g, '').trim();
                         if (!cleanTitle) cleanTitle = rawText;
 
-                        // DO NOT show stat calculation hints, percentages, or average formulas
-                        let cleanDesc = "";
-                        if (rawDesc) {
-                            let eff = rawDesc;
-                            const isFormula = eff.includes("ortalamasına") || eff.includes("yeteneğine") || eff.includes("%") || eff.includes("oranı") || eff.includes("şut ve") || eff.includes("pas ve") || eff.includes("hız ve") || eff.includes("fiziksel");
-                            if (!isFormula) {
-                                cleanDesc = eff;
-                            }
-                        }
-
                         optionsContainer.innerHTML += `
-                            <button class="match-action-card ${theme}" onclick="chooseMatchOption(${idx})">
-                                <div class="action-card-left">
-                                    <div class="action-card-title">${cleanTitle}</div>
-                                    ${cleanDesc ? `<div class="action-card-desc">${cleanDesc}</div>` : ''}
+                            <button class="match-action-plaque ${riskClass}" onclick="chooseMatchOption(${idx})">
+                                <div class="plaque-left">
+                                    <div class="plaque-title">${cleanTitle}</div>
+                                    <div class="plaque-subtext">
+                                        <span class="plaque-chance">Başarı: %${succPerc}</span>
+                                        <span class="plaque-sep">|</span>
+                                        <span class="plaque-reward">Ödül: ${rewardText}</span>
+                                    </div>
                                 </div>
+                                ${riskBadge}
                             </button>
                         `;
-
                     });
-
-
 
                     decCard.style.display = "block";
                     timelineLog.scrollTop = timelineLog.scrollHeight;
@@ -18985,11 +19066,217 @@ function afterWeekAdvanced() {
         }
 
 
-        function chooseMatchOption(optionIdx) {
+
+        // =========================================================================
+        // 🎙️ WEB AUDIO API MATCH SOUND SYNTHESIZER (ORGANIC STADIUM FREQUENCIES)
+        // No external MP3 required: Pure Sub-bass, Filtered Noise & Impact Physics
+        // =========================================================================
+        const MatchAudio = {
+            ctx: null,
+            heartbeatInterval: null,
+            init: function() {
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    if (AudioCtx) this.ctx = new AudioCtx();
+                }
+                if (this.ctx && this.ctx.state === "suspended") {
+                    this.ctx.resume();
+                }
+            },
+            // 60Hz Sub-bass Heartbeat Pulse for Clutch Decision Hub
+            startHeartbeat: function() {
+                try {
+                    this.init();
+                    if (!this.ctx) return;
+                    this.stopHeartbeat();
+                    const beat = () => {
+                        try {
+                            if (!this.ctx) return;
+                            const now = this.ctx.currentTime;
+                            [0, 0.22].forEach((offset, idx) => {
+                                const osc = this.ctx.createOscillator();
+                                const gain = this.ctx.createGain();
+                                osc.type = "sine";
+                                const startF = idx === 0 ? 60 : 52;
+                                osc.frequency.setValueAtTime(startF, now + offset);
+                                osc.frequency.exponentialRampToValueAtTime(32, now + offset + 0.16);
+
+                                gain.gain.setValueAtTime(0.001, now + offset);
+                                gain.gain.linearRampToValueAtTime(0.35, now + offset + 0.02);
+                                gain.gain.exponentialRampToValueAtTime(0.0001, now + offset + 0.18);
+
+                                osc.connect(gain);
+                                gain.connect(this.ctx.destination);
+                                osc.start(now + offset);
+                                osc.stop(now + offset + 0.20);
+                            });
+                        } catch(e) {}
+                    };
+                    beat();
+                    this.heartbeatInterval = setInterval(beat, 1100);
+                } catch(e) {}
+            },
+            stopHeartbeat: function() {
+                if (this.heartbeatInterval) {
+                    clearInterval(this.heartbeatInterval);
+                    this.heartbeatInterval = null;
+                }
+            },
+            // Tok Krampon Darbesi: Low-pass filtered noise + 85Hz body thump
+            playKramponStrike: function() {
+                try {
+                    this.init();
+                    if (!this.ctx) return;
+                    const now = this.ctx.currentTime;
+
+                    // 85Hz Sub-body thump
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(88, now);
+                    osc.frequency.exponentialRampToValueAtTime(32, now + 0.14);
+                    gain.gain.setValueAtTime(0.65, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.16);
+
+                    // Filtered leather friction burst
+                    const bufSize = Math.floor(this.ctx.sampleRate * 0.06);
+                    const buffer = this.ctx.createBuffer(1, bufSize, this.ctx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufSize; i++) {
+                        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufSize * 0.28));
+                    }
+                    const noise = this.ctx.createBufferSource();
+                    noise.buffer = buffer;
+                    const filter = this.ctx.createBiquadFilter();
+                    filter.type = "lowpass";
+                    filter.frequency.value = 850;
+                    const nGain = this.ctx.createGain();
+                    nGain.gain.setValueAtTime(0.42, now);
+                    nGain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+                    noise.connect(filter);
+                    filter.connect(nGain);
+                    nGain.connect(this.ctx.destination);
+                    noise.start(now);
+                } catch(e) {}
+            },
+            // Derinden yükselen tok stadyum bas dalgalanması (Goal Boom)
+            playStadiumRumble: function() {
+                try {
+                    this.init();
+                    if (!this.ctx) return;
+                    const now = this.ctx.currentTime;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = "triangle";
+                    osc.frequency.setValueAtTime(50, now);
+                    osc.frequency.exponentialRampToValueAtTime(26, now + 1.3);
+                    gain.gain.setValueAtTime(0.01, now);
+                    gain.gain.linearRampToValueAtTime(0.60, now + 0.12);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 1.4);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 1.4);
+                } catch(e) {}
+            }
+        };
+
+        let decisionCountdownId = null;
+        let decisionCountdownStart = null;
+        const CLUTCH_TIMEOUT_MS = 6000;
+
+        function startClutchDecisionTimer(minute) {
+            clearClutchDecisionTimer();
+            MatchAudio.startHeartbeat();
+
+            const matchView = document.getElementById("match-view");
+            if (matchView) matchView.classList.add("decision-focus-active");
+
+            const emberFill = document.getElementById("decision-ember-fill");
+            const countdownPill = document.getElementById("decision-countdown-pill");
+
+            if (emberFill) {
+                emberFill.style.transition = "none";
+                emberFill.style.width = "100%";
+                void emberFill.offsetWidth; // Force reflow
+                emberFill.style.transition = "width 6s linear";
+                emberFill.style.width = "0%";
+            }
+
+            decisionCountdownStart = Date.now();
+            decisionCountdownId = setInterval(() => {
+                const elapsed = Date.now() - decisionCountdownStart;
+                const remaining = Math.max(0, (CLUTCH_TIMEOUT_MS - elapsed) / 1000);
+
+                if (countdownPill) {
+                    countdownPill.innerText = `⏱️ ${remaining.toFixed(1)}s`;
+                }
+
+                if (remaining <= 0) {
+                    clearClutchDecisionTimer();
+                    onClutchDecisionTimeout(minute);
+                }
+            }, 100);
+        }
+
+        function clearClutchDecisionTimer() {
+            if (decisionCountdownId) {
+                clearInterval(decisionCountdownId);
+                decisionCountdownId = null;
+            }
+            MatchAudio.stopHeartbeat();
+            const matchView = document.getElementById("match-view");
+            if (matchView) matchView.classList.remove("decision-focus-active");
+        }
+
+        function onClutchDecisionTimeout(minute) {
+            const decCard = document.getElementById("match-decision-card");
+            if (decCard) decCard.style.display = "none";
+
+            if (typeof SoundManager !== "undefined" && typeof SoundManager.playMiss === "function") {
+                SoundManager.playMiss();
+            }
+            if (navigator.vibrate) {
+                try { navigator.vibrate([80, 50, 80]); } catch(e){}
+            }
+
+            // Panic turnover scenario
+            const turnoverCommentary = `⏰ ${minute}' TELAŞLI TOP KAYBI! Karar süresi doldu; baskı altında bocaladın ve rakip savunma araya girip topu kaptı!`;
+            if (MatchEngine && MatchEngine.callbacks && typeof MatchEngine.callbacks.onMinuteUpdate === "function") {
+                MatchEngine.callbacks.onMinuteUpdate(minute, MatchEngine.score, turnoverCommentary);
+            }
+
+            // Penalty on performance rating
+            if (MatchEngine && MatchEngine.playerStats) {
+                MatchEngine.playerStats.passes = Math.max(0, (MatchEngine.playerStats.passes || 0) - 1);
+            }
+
+            // Resume match
+            MatchEngine.isPausedForChoice = false;
+            MatchEngine.activeChoice = null;
+        }
+
+        window.chooseMatchOption = function(optionIdx) {
+            clearClutchDecisionTimer();
+            MatchAudio.playKramponStrike();
+
+            // 20ms tok haptic titreşim
+            if (navigator.vibrate) {
+                try { navigator.vibrate(20); } catch(e){}
+            }
+
             const decCard = document.getElementById("match-decision-card");
             if (decCard) decCard.style.display = "none";
             MatchEngine.makeChoice(optionIdx);
+        };
+        function chooseMatchOption(optionIdx) {
+            window.chooseMatchOption(optionIdx);
         }
+
 
         // =========================================================================
         // SCORE! HERO / EA SPORTS FC STYLE BEHIND-THE-BALL 3D SET-PIECE ENGINE
