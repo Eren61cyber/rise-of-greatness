@@ -1631,7 +1631,7 @@
                 </div>
                 <div class="decision-header-row">
                     <div class="decision-badge" id="decision-title">KRİTİK POZİSYON</div>
-                    <div class="decision-countdown-pill" id="decision-countdown-pill">⏱️ 6.0s</div>
+                    <div class="decision-countdown-pill" id="decision-countdown-pill">⏱️ 11.0s</div>
                 </div>
                 <p id="decision-desc"></p>
                 <div id="decision-options-container">
@@ -18841,6 +18841,10 @@ function afterWeekAdvanced() {
                     modal.style.display = "flex";
                 },
                 onEventPause: function(title, msg, onContinue) {
+                    if (window.__rgMatchCenter && window.__rgMatchCenter.getState() === "CLUTCH_DECISION") {
+                        if (onContinue) onContinue();
+                        return;
+                    }
                     const banner = document.getElementById("match-continue-banner");
                     const titleEl = document.getElementById("match-continue-title");
                     const msgEl = document.getElementById("match-continue-msg");
@@ -18848,10 +18852,16 @@ function afterWeekAdvanced() {
                     
                     if (titleEl) titleEl.innerText = title;
                     if (msgEl) msgEl.innerText = msg;
-                    if (banner) banner.style.display = "flex";
+                    if (banner) {
+                        banner.style.display = "flex";
+                        banner.style.visibility = "visible";
+                    }
 
                     const handleContinue = () => {
-                        if (banner) banner.style.display = "none";
+                        if (banner) {
+                            banner.style.display = "none";
+                            banner.style.visibility = "hidden";
+                        }
                         btn.removeEventListener("click", handleContinue);
                         if (onContinue) onContinue();
                     };
@@ -19219,7 +19229,7 @@ function afterWeekAdvanced() {
 
         let decisionCountdownId = null;
         let decisionCountdownStart = null;
-        const CLUTCH_TIMEOUT_MS = 6000;
+        const CLUTCH_TIMEOUT_MS = 11000;
 
         function startClutchDecisionTimer(minute) {
             clearClutchDecisionTimer();
@@ -19228,6 +19238,12 @@ function afterWeekAdvanced() {
             const matchView = document.getElementById("match-view");
             if (matchView) matchView.classList.add("decision-focus-active");
 
+            const banner = document.getElementById("match-continue-banner");
+            if (banner) {
+                banner.style.display = "none";
+                banner.style.visibility = "hidden";
+            }
+
             const emberFill = document.getElementById("decision-ember-fill");
             const countdownPill = document.getElementById("decision-countdown-pill");
 
@@ -19235,7 +19251,7 @@ function afterWeekAdvanced() {
                 emberFill.style.transition = "none";
                 emberFill.style.width = "100%";
                 void emberFill.offsetWidth; // Force reflow
-                emberFill.style.transition = "width 6s linear";
+                emberFill.style.transition = "width 11s linear";
                 emberFill.style.width = "0%";
             }
 

@@ -21,7 +21,7 @@
     // ======================================================================
     var POOL_SIZE = 12;          // Olay kartı havuzu
     var MAX_OPTIONS = 5;         // Karar plaketi havuzu
-    var CLUTCH_MS = 6000;        // Karar süresi
+    var CLUTCH_MS = 11000;       // Karar süresi (11 saniye)
     var FEED_GAP = 8;            // Kartlar arası boşluk (px)
     var STIFFNESS = 180;         // Yay sertliği
     var DAMPING = 12;            // Yay sönümü
@@ -540,11 +540,13 @@
     var NOISE = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")";
 
     var CSS = [
-        ".rgmc-root{--rg-obsidian:#090a0d;--rg-ti-1:#161a22;--rg-ti-2:#232936;--rg-gold:#c5a059;--rg-gold-hi:#dfba73;--rg-emerald:#153e28;--rg-ruby:#6b1418;--rg-text:#ebe7de;--rg-muted:#8d94a1;--rg-edge:rgba(255,255,255,.08);position:relative;display:flex;flex-direction:column;gap:10px;flex:1 1 auto;min-height:0;width:100%;color:var(--rg-text);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none;touch-action:manipulation}",
+        ".rgmc-root{--rg-obsidian:#090a0d;--rg-ti-1:#161a22;--rg-ti-2:#232936;--rg-gold:#c5a059;--rg-gold-hi:#dfba73;--rg-emerald:#153e28;--rg-ruby:#6b1418;--rg-text:#ebe7de;--rg-muted:#8d94a1;--rg-edge:rgba(255,255,255,.08);position:relative;display:flex;flex-direction:column;gap:10px;flex:1 1 auto;min-height:0;width:100%;overflow:hidden;color:var(--rg-text);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none;touch-action:manipulation}",
         ".rgmc-legacy-hidden{display:none!important}",
         ".rgmc-stage{display:flex;flex-direction:column;gap:10px;flex:1 1 auto;min-height:0;transition:filter .45s cubic-bezier(.2,.8,.2,1)}",
         ".rgmc-stage.rgmc-dim{filter:blur(10px) brightness(.5);pointer-events:none}",
         ".performance-mode .rgmc-stage.rgmc-dim{filter:brightness(.45)}",
+        ".rgmc-root[data-state='CLUTCH_DECISION'] ~ #match-continue-banner, .rgmc-stage.rgmc-dim ~ #match-continue-banner{display:none!important;visibility:hidden!important;pointer-events:none!important}",
+        ".broadcast-continue-banner{position:absolute!important;bottom:14px!important;left:16px!important;right:16px!important;z-index:5!important;display:flex;padding:12px 16px;margin:0!important;border:1px solid rgba(212,175,55,.35);background:linear-gradient(135deg,rgba(139,30,36,.45) 0%,rgba(18,22,30,.96) 100%);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.85);align-items:center;justify-content:space-between;gap:12px}",
 
         /* --- 3 katmanlı glassmorphism --- */
         ".rgmc-glass{position:relative;isolation:isolate;overflow:hidden;border:1px solid var(--rg-edge);border-radius:16px;background:linear-gradient(180deg,rgba(35,41,54,.58) 0%,rgba(9,10,13,.82) 100%);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);box-shadow:0 18px 48px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08),inset 0 -1px 0 rgba(0,0,0,.5)}",
@@ -659,7 +661,7 @@
         ".rgmc-root[data-state='PRESSURE_BUILDUP'] .rgmc-vignette{opacity:.8}",
 
         /* --- Karar merkezi --- */
-        ".rgmc-clutch{position:absolute;left:0;right:0;bottom:0;z-index:6;padding:0 0 12px;visibility:hidden;will-change:transform;border-color:rgba(197,160,89,.28);box-shadow:0 -10px 50px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.1)}",
+        ".rgmc-clutch{position:absolute;left:0;right:0;bottom:0;z-index:20;padding:0 0 14px;visibility:hidden;will-change:transform;border-color:rgba(197,160,89,.35);background:linear-gradient(180deg,rgba(26,30,41,.98) 0%,rgba(9,10,13,.99) 100%);box-shadow:0 -12px 50px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.1)}",
         ".rgmc-fuse{position:relative;height:4px;margin-top:3px;background:rgba(255,255,255,.05);overflow:visible}",
         ".rgmc-fuse-fill{position:absolute;inset:0;transform-origin:left center;background:linear-gradient(90deg,#dfba73,#c5a059 55%,#a8602a);will-change:transform}",
         ".rgmc-fuse-head{position:absolute;top:-2px;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:#e0a867;box-shadow:0 0 8px 2px rgba(176,96,40,.55);will-change:left}",
@@ -1000,8 +1002,10 @@
         this.sheet = new Spring(this.world, {
             x: 1, target: 1, slowable: false,
             onUpdate: function (x) {
-                self.clutch.style.transform = "translate3d(0," + (x * 112).toFixed(2) + "%,0)";
-                self.clutch.style.visibility = x < 1.04 ? "visible" : "hidden";
+                var closed = x >= 0.98;
+                self.clutch.style.transform = "translate3d(0," + (x * 115).toFixed(2) + "%,0)";
+                self.clutch.style.visibility = closed ? "hidden" : "visible";
+                self.clutch.style.pointerEvents = closed ? "none" : "auto";
             }
         });
         this.momSpring = new Spring(this.world, {
@@ -1201,6 +1205,25 @@
             }
             return undefined;
         };
+        out.onEventPause = function (title, msg, onContinue) {
+            if (self.state === STATE.CLUTCH_DECISION) {
+                if (typeof onContinue === "function") {
+                    self._pendingContinue = onContinue;
+                }
+                return;
+            }
+            if (typeof legacy.onEventPause === "function") {
+                return legacy.onEventPause.call(legacy, title, msg, function () {
+                    var cb = document.getElementById("match-continue-banner");
+                    if (cb) {
+                        cb.style.display = "none";
+                        cb.style.visibility = "hidden";
+                    }
+                    if (typeof onContinue === "function") onContinue();
+                });
+            }
+            if (typeof onContinue === "function") onContinue();
+        };
         out.onMatchFinish = function (result) {
             try { self._onFinish(result); } catch (err) { if (global.console) console.error("[MatchCenter] onFinish", err); }
             if (typeof legacy.onMatchFinish === "function") return legacy.onMatchFinish.apply(legacy, arguments);
@@ -1386,6 +1409,11 @@
 
     MatchCenter.prototype._onChoice = function (minute, choiceData) {
         if (this.destroyed) return;
+        var cb = document.getElementById("match-continue-banner");
+        if (cb) {
+            cb.style.display = "none";
+            cb.style.visibility = "hidden";
+        }
         if (this.state === STATE.CLUTCH_DECISION) this._closeClutch();
         this._choiceData = choiceData;
         this._locked = false;
@@ -1470,7 +1498,7 @@
         var rem = Math.max(0, (this._fuseDeadline - nowMs()) / 1000);
         this._fuseRemaining = rem;
         this._renderFuse(rem / (CLUTCH_MS / 1000), rem);
-        if (!this._fuseUrgent && rem <= 2) {
+        if (!this._fuseUrgent && rem <= 3) {
             this._fuseUrgent = true;
             this.fuse.classList.add("rgmc-urgent");
             this.clutchTimer.classList.add("rgmc-urgent");
@@ -1491,6 +1519,22 @@
         this.audio.stopHeartbeat();
         this.stage.classList.remove("rgmc-dim");
         this.sheet.set(1);
+        var cb = document.getElementById("match-continue-banner");
+        if (cb) {
+            cb.style.display = "none";
+            cb.style.visibility = "hidden";
+        }
+        var self = this;
+        global.setTimeout(function () {
+            if (self.state !== STATE.CLUTCH_DECISION && self.clutch) {
+                self.clutch.style.visibility = "hidden";
+            }
+        }, 220);
+        if (typeof this._pendingContinue === "function") {
+            var pending = this._pendingContinue;
+            this._pendingContinue = null;
+            try { pending(); } catch (e) {}
+        }
     };
 
     MatchCenter.prototype._choose = function (idx) {
@@ -1546,6 +1590,11 @@
 
     MatchCenter.prototype._onFinish = function (result) {
         if (this.destroyed) return;
+        var cb = document.getElementById("match-continue-banner");
+        if (cb) {
+            cb.style.display = "none";
+            cb.style.visibility = "hidden";
+        }
         if (this.state === STATE.CLUTCH_DECISION) this._closeClutch();
         this.transition(STATE.FULLTIME);
         this.liveLabel.textContent = "BİTTİ";

@@ -1481,16 +1481,31 @@ body {
 
 /* ── Interactive Match Continue Banner (Quiet Luxury) ── */
 .broadcast-continue-banner {
+    position: absolute !important;
+    bottom: 14px !important;
+    left: 16px !important;
+    right: 16px !important;
+    z-index: 5 !important;
     display: flex;
     padding: 12px 16px;
-    margin-bottom: 8px;
+    margin: 0 !important;
     border: 1px solid rgba(212, 175, 55, 0.35);
-    background: linear-gradient(135deg, rgba(139, 30, 36, 0.35) 0%, rgba(18, 22, 30, 0.95) 100%);
+    background: linear-gradient(135deg, rgba(139, 30, 36, 0.45) 0%, rgba(18, 22, 30, 0.96) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.85);
     align-items: center;
     justify-content: space-between;
     gap: 12px;
+}
+
+.match-overlay.decision-focus-active .broadcast-continue-banner,
+.rgmc-root[data-state='CLUTCH_DECISION'] ~ .broadcast-continue-banner,
+.rgmc-stage.rgmc-dim ~ .broadcast-continue-banner {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
 }
 
 .continue-title {
