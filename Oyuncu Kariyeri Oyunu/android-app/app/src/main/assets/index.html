@@ -18730,8 +18730,8 @@ function afterWeekAdvanced() {
                             rewardText = "Kritik Savunma Müdahalesi";
                         }
 
-                        // Clean emojis from button title
-                        let cleanTitle = rawText.replace(/^[^wsÀ-ſĀ-ɏ]+/g, '').replace(/[⚡👟🗣️🔄🧤⚽❌🟨🟥💪👑]/g, '').trim();
+                        // Clean leading emojis/symbols from button title (keep all letters/digits)
+                        let cleanTitle = rawText.replace(/^[^\p{L}\p{N}]+/u, '').trim();
                         if (!cleanTitle) cleanTitle = rawText;
 
                         optionsContainer.innerHTML += `
@@ -18739,12 +18739,9 @@ function afterWeekAdvanced() {
                                 <div class="plaque-left">
                                     <div class="plaque-title">${cleanTitle}</div>
                                     <div class="plaque-subtext">
-                                        <span class="plaque-chance">Başarı: %${succPerc}</span>
-                                        <span class="plaque-sep">|</span>
                                         <span class="plaque-reward">Ödül: ${rewardText}</span>
                                     </div>
                                 </div>
-                                ${riskBadge}
                             </button>
                         `;
                     });
@@ -19255,9 +19252,13 @@ function afterWeekAdvanced() {
                 MatchEngine.playerStats.passes = Math.max(0, (MatchEngine.playerStats.passes || 0) - 1);
             }
 
-            // Resume match
+            // Resume match (tick loop stops while paused, so it must be restarted)
             MatchEngine.isPausedForChoice = false;
             MatchEngine.activeChoice = null;
+            if (MatchEngine.timer) clearTimeout(MatchEngine.timer);
+            MatchEngine.timer = setTimeout(function() {
+                MatchEngine.resumeTick();
+            }, 2000 / Math.max(1, MatchEngine.currentSpeed || 1));
         }
 
         window.chooseMatchOption = function(optionIdx) {
