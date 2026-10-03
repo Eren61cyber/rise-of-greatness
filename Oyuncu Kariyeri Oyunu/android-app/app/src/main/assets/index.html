@@ -4808,6 +4808,7 @@
     <script src="events.js?v=5.8.3"></script>
     <script src="game.js?v=5.8.3"></script>
     <script src="matchEngine.js?v=5.8.3"></script>
+    <script src="matchCenter.js?v=1.0.0"></script>
     
     <!-- MAIN CONTROLLER (Mounts everything) -->
     <script>
@@ -18514,7 +18515,7 @@ function afterWeekAdvanced() {
                 }
 
                 const launchMatchEngine = () => {
-                    MatchEngine.simulate(playerTeamObj, opponentObj, GAME.state, {
+                    const legacyMatchCallbacks = {
                     onMinuteUpdate: function(min, score, comment) {
                         let minText = min + "'";
                         if (min === 45) minText = "45' (İ.Y.)";
@@ -18592,7 +18593,7 @@ function afterWeekAdvanced() {
                         // Trigger animations & Stadium Rumble on score change
                         if (score.player > lastPlayerScore) {
                             triggerGoalEffect("scored");
-                            MatchAudio.playStadiumRumble();
+                            if (!window.__rgMatchCenter) MatchAudio.playStadiumRumble();
                         } else if (score.opponent > lastOpponentScore) {
                             triggerGoalEffect("conceded");
                         }
@@ -18617,6 +18618,9 @@ function afterWeekAdvanced() {
                                 </div>
                             `;
                             GAME.state.hocaGuveni = Math.max(0, GAME.state.hocaGuveni - 2);
+                            if (window.__rgMatchCenter) {
+                                window.__rgMatchCenter.pushEvent({ min: 60, type: "tactic", text: `Teknik Direktör: "${GAME.state.playerName}, bugün takım geride ve pozisyon bulamadın. Seni dinlendiriyorum."` });
+                            }
                             timelineLog.scrollTop = timelineLog.scrollHeight;
                         }
                         
@@ -19042,7 +19046,38 @@ function afterWeekAdvanced() {
                         proceedPostMatch();
                     }
                 }
-            });
+            };
+
+            // === Quiet Luxury Broadcast Maç Merkezi (matchCenter.js) ===
+            let mcInstance = null;
+            window.__rgMatchCenter = null;
+            if (typeof initMatchCenter === "function") {
+                try {
+                    mcInstance = initMatchCenter(matchView, {
+                        engine: MatchEngine,
+                        homeTeam: { name: playerTeamObj.name, color: playerTeamObj.color, initials: pInitials },
+                        awayTeam: { name: opponentObj.name, color: opponentObj.color, initials: oInitials },
+                        competition: { icon: compIcon, name: compName },
+                        getAttributes: () => ({
+                            speed: GAME.state.speed,
+                            dribbling: GAME.state.dribbling,
+                            passing: GAME.state.passing,
+                            shooting: GAME.state.shooting,
+                            physical: GAME.state.physical,
+                            kondisyon: GAME.state.kondisyon,
+                            moral: GAME.state.moral,
+                            takimUyumu: GAME.state.takimUyumu
+                        }),
+                        isMuted: () => (typeof SoundManager !== "undefined" && SoundManager.enabled === false),
+                        onSpeedChange: (s) => { currentMatchSpeed = s; }
+                    });
+                    window.__rgMatchCenter = mcInstance;
+                } catch (mcErr) {
+                    console.error("Maç Merkezi başlatılamadı, klasik arayüze dönülüyor:", mcErr);
+                    mcInstance = null;
+                }
+            }
+            MatchEngine.simulate(playerTeamObj, opponentObj, GAME.state, mcInstance ? mcInstance.bind(legacyMatchCallbacks) : legacyMatchCallbacks);
             };
 
             if (GAME.state.isNationalCallUp && typeof startNationalAnthemCeremony === "function") {
