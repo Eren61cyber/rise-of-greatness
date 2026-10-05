@@ -2408,7 +2408,7 @@ const MatchEngine = {
                 this.hasTriggeredVar = true;
                 this.isPausedForChoice = true;
                 this.activeChoice = null;
-                this.callbacks.onMinuteUpdate(this.min, this.score, `📺 ${this.min}' Hakem kulaklığına dokunuyor! Gol pozisyonunda potansiyel ofsayt için 3D UEFA VAR incelemesi başlatıldı...`);
+                this.callbacks.onMinuteUpdate(this.min, this.score, `📺 ${this.min}' Hakem kulaklığına dokunuyor! Gol pozisyonunda potansiyel ofsayt için 3D VAR incelemesi başlatıldı...`);
 
                 const self = this;
                 window.triggerVarReview("offside", (isVarGoal) => {
