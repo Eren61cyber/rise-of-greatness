@@ -1,4 +1,4 @@
-package com.futbolatlasi.kariyer;
+package com.riseupstudios.riseofgreatness;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -52,7 +52,7 @@ public class MainActivity extends Activity implements PurchasesUpdatedListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Ekran Yenileme Hızını 120Hz olarak talep et (Yüksek Akıcılık)
+        // Ekran Yenileme HÄ±zÄ±nÄ± 120Hz olarak talep et (YÃ¼ksek AkÄ±cÄ±lÄ±k)
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             try {
                 WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
@@ -63,7 +63,7 @@ public class MainActivity extends Activity implements PurchasesUpdatedListener {
             }
         }
 
-        // Tam ekran - durum çubuğu gizli
+        // Tam ekran - durum Ã§ubuÄŸu gizli
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -76,10 +76,10 @@ public class MainActivity extends Activity implements PurchasesUpdatedListener {
         webView = new WebView(this);
         setContentView(webView);
 
-        // WebView ayarları
+        // WebView ayarlarÄ±
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
-        settings.setDomStorageEnabled(true);           // localStorage için şart!
+        settings.setDomStorageEnabled(true);           // localStorage iÃ§in ÅŸart!
         settings.setAllowFileAccess(true);
         settings.setAllowContentAccess(true);
         settings.setMediaPlaybackRequiresUserGesture(false); // Video otomatik oynat
@@ -87,15 +87,15 @@ public class MainActivity extends Activity implements PurchasesUpdatedListener {
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         settings.setLoadWithOverviewMode(true);
         settings.setUseWideViewPort(true);
-        settings.setSupportZoom(false);                // Zoom kapalı (oyun için)
+        settings.setSupportZoom(false);                // Zoom kapalÄ± (oyun iÃ§in)
         settings.setBuiltInZoomControls(false);
         settings.setDisplayZoomControls(false);
-        settings.setTextZoom(100);                     // Sistem yazı boyutunun oyunu büyütmesini engelle
+        settings.setTextZoom(100);                     // Sistem yazÄ± boyutunun oyunu bÃ¼yÃ¼tmesini engelle
 
-        // JavaScript Interface Bağlantısı (Android <-> Web Oyunu)
+        // JavaScript Interface BaÄŸlantÄ±sÄ± (Android <-> Web Oyunu)
         webView.addJavascriptInterface(new WebAppInterface(), "Android");
 
-        // Chrome client (alert/confirm/prompt özelleştirildi)
+        // Chrome client (alert/confirm/prompt Ã¶zelleÅŸtirildi)
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onJsAlert(WebView view, String url, String message, final android.webkit.JsResult result) {
@@ -121,7 +121,7 @@ public class MainActivity extends Activity implements PurchasesUpdatedListener {
                         .setTitle("Rise Of Greatness")
                         .setMessage(message)
                         .setPositiveButton("Evet", (dialog, which) -> result.confirm())
-                        .setNegativeButton("Hayır", (dialog, which) -> result.cancel())
+                        .setNegativeButton("HayÄ±r", (dialog, which) -> result.cancel())
                         .setCancelable(false)
                         .create()
                         .show();
@@ -158,7 +158,7 @@ public class MainActivity extends Activity implements PurchasesUpdatedListener {
                         .setMessage(message)
                         .setView(container)
                         .setPositiveButton("Tamam", (dialog, which) -> result.confirm(input.getText().toString()))
-                        .setNegativeButton("İptal", (dialog, which) -> result.cancel())
+                        .setNegativeButton("Ä°ptal", (dialog, which) -> result.cancel())
                         .setCancelable(false)
                         .create()
                         .show();
@@ -170,7 +170,7 @@ public class MainActivity extends Activity implements PurchasesUpdatedListener {
             }
         });
 
-        // Sayfadan çıkışı engelle
+        // Sayfadan Ã§Ä±kÄ±ÅŸÄ± engelle
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -178,21 +178,21 @@ public class MainActivity extends Activity implements PurchasesUpdatedListener {
                     view.loadUrl(url);
                     return true;
                 }
-                return true; // Dış linkleri engelle
+                return true; // DÄ±ÅŸ linkleri engelle
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                // Sayfa yüklendiğinde var olan satın alımları kontrol et
+                // Sayfa yÃ¼klendiÄŸinde var olan satÄ±n alÄ±mlarÄ± kontrol et
                 checkExistingPurchases();
             }
         });
 
-        // Google Play Billing Başlatma
+        // Google Play Billing BaÅŸlatma
         initBillingClient();
 
-        // Oyunu yükle
+        // Oyunu yÃ¼kle
         webView.loadUrl("file:///android_asset/index.html");
     }
 
@@ -222,18 +222,18 @@ public class MainActivity extends Activity implements PurchasesUpdatedListener {
             @Override
             public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
                 if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                    Log.d(TAG, "Google Play Billing Bağlantısı Başarılı!");
+                    Log.d(TAG, "Google Play Billing BaÄŸlantÄ±sÄ± BaÅŸarÄ±lÄ±!");
                     isBillingConnected = true;
                     checkExistingPurchases();
                 } else {
-                    Log.w(TAG, "Billing bağlantısı kurulamadı. Kod: " + billingResult.getResponseCode());
+                    Log.w(TAG, "Billing baÄŸlantÄ±sÄ± kurulamadÄ±. Kod: " + billingResult.getResponseCode());
                     isBillingConnected = false;
                 }
             }
 
             @Override
             public void onBillingServiceDisconnected() {
-                Log.w(TAG, "Google Play Billing servisi koptu. Yeniden bağlanılıyor...");
+                Log.w(TAG, "Google Play Billing servisi koptu. Yeniden baÄŸlanÄ±lÄ±yor...");
                 isBillingConnected = false;
             }
         });
@@ -252,7 +252,7 @@ public class MainActivity extends Activity implements PurchasesUpdatedListener {
                     if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
                         for (String productId : purchase.getProducts()) {
                             if (productId.equals(PRO_PASS_PRODUCT_ID) || productId.equals("pro_pass")) {
-                                Log.d(TAG, "Aktif Pro Pass satın alımı bulundu!");
+                                Log.d(TAG, "Aktif Pro Pass satÄ±n alÄ±mÄ± bulundu!");
                                 handlePurchaseSuccess(purchase, true);
                                 return;
                             }
@@ -272,28 +272,28 @@ public class MainActivity extends Activity implements PurchasesUpdatedListener {
                 }
             }
         } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
-            Log.d(TAG, "Kullanıcı satın alma işlemini iptal etti.");
+            Log.d(TAG, "KullanÄ±cÄ± satÄ±n alma iÅŸlemini iptal etti.");
         } else {
-            Log.e(TAG, "Satın alma hatası: " + billingResult.getDebugMessage());
-            runOnUiThread(() -> Toast.makeText(MainActivity.this, "Ödeme tamamlanamadı: " + billingResult.getDebugMessage(), Toast.LENGTH_SHORT).show());
+            Log.e(TAG, "SatÄ±n alma hatasÄ±: " + billingResult.getDebugMessage());
+            runOnUiThread(() -> Toast.makeText(MainActivity.this, "Ã–deme tamamlanamadÄ±: " + billingResult.getDebugMessage(), Toast.LENGTH_SHORT).show());
         }
     }
 
     private void handlePurchaseSuccess(Purchase purchase, boolean isRestore) {
-        // Satın almayı onayla (Acknowledge)
+        // SatÄ±n almayÄ± onayla (Acknowledge)
         if (!purchase.isAcknowledged()) {
             AcknowledgePurchaseParams acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
                 .setPurchaseToken(purchase.getPurchaseToken())
                 .build();
             billingClient.acknowledgePurchase(acknowledgePurchaseParams, billingResult -> {
-                Log.d(TAG, "Satın alma onayı: " + billingResult.getResponseCode());
+                Log.d(TAG, "SatÄ±n alma onayÄ±: " + billingResult.getResponseCode());
             });
         }
 
-        // WebView içindeki JS'ye haber ver
+        // WebView iÃ§indeki JS'ye haber ver
         runOnUiThread(() -> {
             if (!isRestore) {
-                Toast.makeText(MainActivity.this, "👑 Tebrikler! Pro Pass VIP başarıyla aktif edildi!", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "ğŸ‘‘ Tebrikler! Pro Pass VIP baÅŸarÄ±yla aktif edildi!", Toast.LENGTH_LONG).show();
             }
             if (webView != null) {
                 webView.evaluateJavascript("if (window.onProPassPurchaseSuccess) { window.onProPassPurchaseSuccess(); } else if (window.GAME && window.GAME.activateProPassReal) { window.GAME.activateProPassReal(); }", null);
@@ -304,7 +304,7 @@ public class MainActivity extends Activity implements PurchasesUpdatedListener {
     public void launchPurchase(String productId) {
         if (!isBillingConnected || billingClient == null || !billingClient.isReady()) {
             runOnUiThread(() -> {
-                Toast.makeText(MainActivity.this, "Google Play Store bağlantısı kuruluyor...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Google Play Store baÄŸlantÄ±sÄ± kuruluyor...", Toast.LENGTH_SHORT).show();
                 startBillingConnection();
             });
             return;
@@ -338,13 +338,13 @@ public class MainActivity extends Activity implements PurchasesUpdatedListener {
 
                 runOnUiThread(() -> billingClient.launchBillingFlow(MainActivity.this, billingFlowParams));
             } else {
-                Log.e(TAG, "Ürün detayları bulunamadı: " + productId + " / Kod: " + billingResult.getResponseCode());
-                runOnUiThread(() -> Toast.makeText(MainActivity.this, "Ürün Google Play Console'da hazırlanıyor (Test/Taslak sürüm gereklidir).", Toast.LENGTH_LONG).show());
+                Log.e(TAG, "ÃœrÃ¼n detaylarÄ± bulunamadÄ±: " + productId + " / Kod: " + billingResult.getResponseCode());
+                runOnUiThread(() -> Toast.makeText(MainActivity.this, "ÃœrÃ¼n Google Play Console'da hazÄ±rlanÄ±yor (Test/Taslak sÃ¼rÃ¼m gereklidir).", Toast.LENGTH_LONG).show());
             }
         });
     }
 
-    // JavaScript'ten Çağrılabilen Köprü (Bridge) Sınıfı
+    // JavaScript'ten Ã‡aÄŸrÄ±labilen KÃ¶prÃ¼ (Bridge) SÄ±nÄ±fÄ±
     public class WebAppInterface {
         @JavascriptInterface
         public void buyProPass(String productId) {
@@ -406,17 +406,17 @@ public class MainActivity extends Activity implements PurchasesUpdatedListener {
         if (webView != null) {
             webView.evaluateJavascript("window.handleAndroidBack ? window.handleAndroidBack() : false", value -> {
                 if ("true".equalsIgnoreCase(value)) {
-                    // Web tarafında modal veya açık panel kapatıldı
+                    // Web tarafÄ±nda modal veya aÃ§Ä±k panel kapatÄ±ldÄ±
                     return;
                 }
-                // Ana ekranda: Çift basarak çıkış mekaniği
+                // Ana ekranda: Ã‡ift basarak Ã§Ä±kÄ±ÅŸ mekaniÄŸi
                 long currentTime = System.currentTimeMillis();
                 if (currentTime - lastBackPressTime < 2000) {
                     if (exitToast != null) exitToast.cancel();
                     finish();
                 } else {
                     lastBackPressTime = currentTime;
-                    exitToast = Toast.makeText(MainActivity.this, "Çıkmak için tekrar basın", Toast.LENGTH_SHORT);
+                    exitToast = Toast.makeText(MainActivity.this, "Ã‡Ä±kmak iÃ§in tekrar basÄ±n", Toast.LENGTH_SHORT);
                     exitToast.show();
                 }
             });
@@ -458,4 +458,5 @@ public class MainActivity extends Activity implements PurchasesUpdatedListener {
         super.onDestroy();
     }
 }
+
 

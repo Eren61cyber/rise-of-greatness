@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.futbolatlasi.kariyer'
+    namespace 'com.riseupstudios.riseofgreatness'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.futbolatlasi.kariyer"
+        applicationId "com.riseupstudios.riseofgreatness"
         minSdk 24
         targetSdk 34
         versionCode 19
