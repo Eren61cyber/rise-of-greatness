@@ -1288,8 +1288,6 @@
                 <div class="shop-list" id="shop-nutrition-container" style="display: none; flex-direction: column; gap: 12px;">
                     <!-- Dynamic nutrition & recovery rendering -->
                 </div>
-                    <!-- Dynamic nutrition & recovery rendering -->
-                </div>
 
                 <!-- 4. Kart Paketi Container -->
                 <div class="shop-list" id="shop-packs-container" style="display: none; flex-direction: column; gap: 12px;">
@@ -6841,7 +6839,7 @@
                     if (activeShopSubTab === 'boots') renderBootSponsors();
                     else if (activeShopSubTab === 'nutrition') renderNutritionAndRecovery();
                     else if (activeShopSubTab === 'packs') renderPacksPanel();
-                    else if (activeShopSubTab === 'propass') {}
+                    else if (activeShopSubTab === 'propass') { if (typeof updateProPassUI === 'function') updateProPassUI(); }
                 }
 
                 if (target === "panel-transfers") {
@@ -14894,6 +14892,8 @@ function afterWeekAdvanced() {
                 renderNutritionAndRecovery();
             } else if (tabName === 'packs') {
                 renderPacksPanel();
+            } else if (tabName === 'propass') {
+                if (typeof window.updateProPassUI === 'function') window.updateProPassUI();
             }
         }
 
