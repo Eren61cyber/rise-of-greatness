@@ -555,7 +555,7 @@
         ".rgmc-glass::after,.rgmc-plaque::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:var(--rgmc-sheen,0);transition:opacity .35s ease;background:radial-gradient(240px circle at var(--rgmc-mx,50%) var(--rgmc-my,0%),rgba(223,186,115,.13),transparent 62%),linear-gradient(112deg,transparent calc(var(--rgmc-mx,50%) - 70px),rgba(255,255,255,.07) calc(var(--rgmc-mx,50%) - 8px),rgba(223,186,115,.10) var(--rgmc-mx,50%),transparent calc(var(--rgmc-mx,50%) + 70px))}",
 
         /* --- Skor panosu --- */
-        ".rgmc-scoreboard{padding:10px 12px 12px;display:flex;flex-direction:column;gap:9px}",
+        ".rgmc-scoreboard{flex:0 0 auto;padding:9px 12px 10px;display:flex;flex-direction:column;gap:7px}",
         ".rgmc-scoreboard::selection{background:transparent}",
         ".rgmc-ribbon{display:flex;align-items:center;justify-content:center;gap:7px;padding-bottom:7px;border-bottom:1px solid transparent;border-image:linear-gradient(90deg,transparent,rgba(197,160,89,.55),rgba(255,255,255,.18),rgba(197,160,89,.55),transparent) 1}",
         ".rgmc-comp-icon{font-size:12px;filter:saturate(.6)}",
@@ -587,9 +587,13 @@
         ".rgmc-momentum.rgmc-away-lead .rgmc-mom-b{opacity:1}",
         ".rgmc-momentum::after{content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(255,255,255,.28)}",
         ".rgmc-root[data-state='PRESSURE_BUILDUP'] .rgmc-momentum{border-color:rgba(197,160,89,.5)}",
-        ".rgmc-telemetry{display:flex;align-items:center;justify-content:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--rg-muted);font-variant-numeric:tabular-nums;white-space:nowrap}",
-        ".rgmc-telemetry b{font-weight:800;color:var(--rg-text)}",
-        ".rgmc-tele-sep{color:rgba(197,160,89,.5)}",
+        ".rgmc-telemetry{display:flex;flex-direction:column;gap:4px;padding:2px 2px 0;font-variant-numeric:tabular-nums;white-space:nowrap}",
+        ".rgmc-tele-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px}",
+        ".rgmc-tele-side{display:flex;align-items:center;gap:6px;min-width:0}",
+        ".rgmc-tele-side.rgmc-tele-r{justify-content:flex-end}",
+        ".rgmc-tele-lab{font-size:9px;font-weight:800;letter-spacing:.18em;color:var(--rg-muted)}",
+        ".rgmc-tele-val{font-size:13px;font-weight:800;letter-spacing:.02em;color:var(--rg-text)}",
+        ".rgmc-tele-tag{flex:0 0 auto;min-width:22px;padding:2px 5px;border-radius:5px;border:1px solid rgba(255,255,255,.18);font-size:8.5px;font-weight:800;letter-spacing:.06em;line-height:1.2;text-align:center;color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}",
 
         /* --- Oyuncu reyting plaketi (EA FC) --- */
         ".rgmc-hud{display:flex;align-items:stretch;gap:8px}",
@@ -612,7 +616,7 @@
         ".rgmc-speed:active{transform:translateY(1px) scale(.97)}",
 
         /* --- Canlı anlatım --- */
-        ".rgmc-feed{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;padding:10px 12px 8px;gap:8px}",
+        ".rgmc-feed{flex:1 1 0;min-height:0;display:flex;flex-direction:column;padding:10px 12px 8px;gap:8px}",
         ".rgmc-feed-head{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:800;letter-spacing:.16em;color:var(--rg-gold)}",
         ".rgmc-feed-dot{width:6px;height:6px;border-radius:50%;background:var(--rg-gold);animation:rgmc-breathe 2.8s ease-in-out infinite}",
         ".rgmc-feed-state{margin-left:auto;font-weight:700;color:var(--rg-muted)}",
@@ -909,9 +913,13 @@
         this.momentum.appendChild(this.momFill);
         sb.appendChild(this.momentum);
         var tele = el("div", "rgmc-telemetry");
-        this.telePoss = el("span", "", "TOPLA OYNAMA: %50 - %50");
-        this.teleXg = el("span", "", "xG: 0.00 - 0.00");
-        tele.appendChild(this.telePoss); tele.appendChild(el("span", "rgmc-tele-sep", "|")); tele.appendChild(this.teleXg);
+        var rowP = this._teleRow("TOPLA OYNAMA", "%50", "%50");
+        var rowX = this._teleRow("xG", "0.00", "0.00");
+        this.telePossH = rowP.valL; this.telePossA = rowP.valR;
+        this.teleXgH = rowX.valL; this.teleXgA = rowX.valR;
+        this.teleTagsL = [rowP.tagL, rowX.tagL];
+        this.teleTagsR = [rowP.tagR, rowX.tagR];
+        tele.appendChild(rowP.row); tele.appendChild(rowX.row);
         sb.appendChild(tele);
 
         // HUD: reyting + gol + asist + hız
@@ -1051,6 +1059,22 @@
         }
     };
 
+    /** Takım etiketli telemetri satırı: [GS] değer — ETİKET — değer [FB] */
+    MatchCenter.prototype._teleRow = function (label, vL, vR) {
+        var row = el("div", "rgmc-tele-row");
+        var sl = el("span", "rgmc-tele-side");
+        var tagL = el("span", "rgmc-tele-tag", "EV");
+        var valL = el("b", "rgmc-tele-val", vL);
+        sl.appendChild(tagL); sl.appendChild(valL);
+        var lab = el("span", "rgmc-tele-lab", label);
+        var sr = el("span", "rgmc-tele-side rgmc-tele-r");
+        var valR = el("b", "rgmc-tele-val", vR);
+        var tagR = el("span", "rgmc-tele-tag", "DEP");
+        sr.appendChild(valR); sr.appendChild(tagR);
+        row.appendChild(sl); row.appendChild(lab); row.appendChild(sr);
+        return { row: row, tagL: tagL, tagR: tagR, valL: valL, valR: valR };
+    };
+
     MatchCenter.prototype._plaqueSpring = function (p) {
         return new Spring(this.world, {
             x: 1, target: 0, slowable: false,
@@ -1067,6 +1091,12 @@
         this.nameA.textContent = String(a.name || "RAKİP").toLocaleUpperCase("tr");
         this._setCrest(this.crestH, h);
         this._setCrest(this.crestA, a);
+        for (var ti = 0; ti < this.teleTagsL.length; ti++) {
+            this.teleTagsL[ti].textContent = this.crestH.textContent;
+            this.teleTagsL[ti].style.backgroundColor = h.color || "#455a64";
+            this.teleTagsR[ti].textContent = this.crestA.textContent;
+            this.teleTagsR[ti].style.backgroundColor = a.color || "#455a64";
+        }
         if (comp.icon) this.compIcon.textContent = comp.icon;
         if (comp.name) this.compName.textContent = comp.name;
 
@@ -1340,8 +1370,10 @@
     };
 
     MatchCenter.prototype._renderTelemetry = function () {
-        this.telePoss.textContent = "TOPLA OYNAMA: %" + this.poss + " - %" + (100 - this.poss);
-        this.teleXg.textContent = "xG: " + this.xgH.toFixed(2) + " - " + this.xgA.toFixed(2);
+        this.telePossH.textContent = "%" + this.poss;
+        this.telePossA.textContent = "%" + (100 - this.poss);
+        this.teleXgH.textContent = this.xgH.toFixed(2);
+        this.teleXgA.textContent = this.xgA.toFixed(2);
     };
 
     MatchCenter.prototype._computeRating = function () {
