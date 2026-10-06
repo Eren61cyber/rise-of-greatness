@@ -1177,9 +1177,10 @@
             </section>
 
             <!-- PANEL 3: TRAINING -->
+            <!-- PANEL 3: TRAINING -->
             <section id="panel-training" class="view-panel">
                 <div class="panel-header">
-                    <h2>Antrenman Sahası</h2>
+                    <h2>Gelişim & Antrenman</h2>
                     <p id="training-energy-desc">Mevkine özel antrenmanlar yap. Her idman %20 Kondisyon harcar.</p>
                     <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px;">
                         <div class="glass" style="padding: 6px 12px; border-radius: 8px; font-size: 11.5px; font-weight: 800; color: var(--primary); display: inline-block; border: 1px dashed var(--primary); box-shadow: 0 0 10px rgba(0, 230, 118, 0.1);">
@@ -1191,39 +1192,79 @@
                     </div>
                 </div>
 
-                <!-- VIP Sponsorlu Masaj & Serum (Rewarded Ad Conditioning) -->
-                <div class="glass" style="margin: 10px 0 12px 0; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(0, 229, 183, 0.4); background: linear-gradient(135deg, rgba(0, 229, 183, 0.08), rgba(15, 23, 42, 0.6)); display: flex; align-items: center; justify-content: space-between; gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(0, 229, 183, 0.15); display: flex; align-items: center; justify-content: center; font-size: 20px; border: 1px solid rgba(0, 229, 183, 0.3);">⚡</div>
-                        <div>
-                            <div style="font-size: 13px; font-weight: 800; color: #fff;">Kulüp Fizyoterapist & Masaj Seansı</div>
-                            <div style="font-size: 11px; color: var(--accent-green); margin-top: 1px;">Özel toparlanma seansı ile Kondisyonunu anında +50 yenile!</div>
-                        </div>
+                <!-- Gelişim Alt Sekmeleri (İdman Sahası & Sağlık & Enerji) -->
+                <div class="shop-sub-tab-wrapper" style="margin: 10px 0 12px 0;">
+                    <div class="shop-sub-tab-container" id="training-sub-tab-container" style="justify-content: flex-start; gap: 8px;">
+                        <button class="shop-sub-tab active" id="training-sub-drills-btn" onclick="switchTrainingSubTab('drills')">🏋️ İdman Sahası</button>
+                        <button class="shop-sub-tab" id="training-sub-health-btn" onclick="switchTrainingSubTab('health')">⚡ Sağlık & Enerji</button>
                     </div>
-                    <button class="btn btn-reward-ad" onclick="if(window.AdManager) AdManager.requestRewardedCondition();" style="padding: 8px 14px; font-size: 11px; border-radius: 8px; flex-shrink: 0;">⚡ YENİLE (+50)</button>
                 </div>
 
-                <div class="training-list" id="training-drills-container" style="display: flex; flex-direction: column; gap: 10px;">
-                    <!-- Dynamically populated based on player position -->
+                <!-- 1. İdman Sahası Görünümü (Varsayılan Aktif) -->
+                <div id="training-drills-view" style="display: flex; flex-direction: column; gap: 10px;">
+                    <!-- VIP Sponsorlu Masaj & Serum (Rewarded Ad Conditioning) -->
+                    <div class="glass" style="margin: 0 0 2px 0; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(0, 229, 183, 0.4); background: linear-gradient(135deg, rgba(0, 229, 183, 0.08), rgba(15, 23, 42, 0.6)); display: flex; align-items: center; justify-content: space-between; gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(0, 229, 183, 0.15); display: flex; align-items: center; justify-content: center; font-size: 20px; border: 1px solid rgba(0, 229, 183, 0.3);">⚡</div>
+                            <div>
+                                <div style="font-size: 13px; font-weight: 800; color: #fff;">Kulüp Fizyoterapist & Masaj Seansı</div>
+                                <div style="font-size: 11px; color: var(--accent-green); margin-top: 1px;">Özel toparlanma seansı ile Kondisyonunu anında +50 yenile!</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-reward-ad" onclick="if(window.AdManager) AdManager.requestRewardedCondition();" style="padding: 8px 14px; font-size: 11px; border-radius: 8px; flex-shrink: 0;">⚡ YENİLE (+50)</button>
+                    </div>
+
+                    <div class="training-list" id="training-drills-container" style="display: flex; flex-direction: column; gap: 10px;">
+                        <!-- Dynamically populated based on player position -->
+                    </div>
+
+                    <div class="card glass" style="padding: 10px 14px; border-radius: 10px; display: flex; align-items: center; justify-content: space-between; border: 1px dashed rgba(0, 229, 183, 0.3); background: rgba(0, 229, 183, 0.05); cursor: pointer; margin-top: 4px;" onclick="switchTrainingSubTab('health')">
+                        <div style="font-size: 11.5px; color: #cbd5e1; display:flex; align-items:center; gap:6px;">
+                            <span>⚡</span> <span>Kondisyonun mu azaldı? Takviye ve içeceklerle anında toparlan.</span>
+                        </div>
+                        <span style="font-size: 11px; color: #00e5b7; font-weight: 800; white-space: nowrap;">Sağlık & Enerji ➔</span>
+                    </div>
+                </div>
+
+                <!-- 2. Sağlık & Enerji Görünümü -->
+                <div id="training-health-view" style="display: none; flex-direction: column; gap: 10px;">
+                    <!-- VIP Sponsorlu Masaj & Serum (Rewarded Ad Conditioning) -->
+                    <div class="glass" style="margin: 0 0 2px 0; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(0, 229, 183, 0.4); background: linear-gradient(135deg, rgba(0, 229, 183, 0.08), rgba(15, 23, 42, 0.6)); display: flex; align-items: center; justify-content: space-between; gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(0, 229, 183, 0.15); display: flex; align-items: center; justify-content: center; font-size: 20px; border: 1px solid rgba(0, 229, 183, 0.3);">⚡</div>
+                            <div>
+                                <div style="font-size: 13px; font-weight: 800; color: #fff;">Kulüp Fizyoterapist & Masaj Seansı</div>
+                                <div style="font-size: 11px; color: var(--accent-green); margin-top: 1px;">Özel toparlanma seansı ile Kondisyonunu anında +50 yenile!</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-reward-ad" onclick="if(window.AdManager) AdManager.requestRewardedCondition();" style="padding: 8px 14px; font-size: 11px; border-radius: 8px; flex-shrink: 0;">⚡ YENİLE (+50)</button>
+                    </div>
+
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 4px 2px; margin-top: 4px;">
+                        <span style="font-size: 12.5px; font-weight: 800; color: #f8fafc; font-family: var(--font-heading); letter-spacing: 0.5px;">SAĞLIK & ENERJİ TAKVİYELERİ</span>
+                        <span style="font-size: 11px; color: var(--accent-green); font-weight: 700;">Hızlı Kondisyon & Sakatlık Koruması</span>
+                    </div>
+
+                    <!-- Dynamic consumables rendering container -->
+                    <div class="shop-list" id="shop-consumables-container" style="display: flex; flex-direction: column; gap: 10px;"></div>
                 </div>
             </section>
 
             <!-- PANEL 4: LIFESTYLE / SHOP -->
-            <!-- PANEL 4: PRO FOOTBALL SHOP (FUTBOL & PERFORMANS MAĞAZASI) -->
+            <!-- PANEL 4: PRO FOOTBALL SHOP (FUTBOL & YAŞAM MAĞAZASI) -->
             <section id="panel-shop" class="view-panel">
                 <div class="panel-header" style="margin-bottom: 10px;">
-                    <h2 style="font-family: var(--font-heading); font-size: 16px; font-weight: 800; letter-spacing: 0.5px; margin: 0; color: #f8fafc;">FUTBOL & PERFORMANS MAĞAZASI</h2>
+                    <h2 style="font-family: var(--font-heading); font-size: 16px; font-weight: 800; letter-spacing: 0.5px; margin: 0; color: #f8fafc;">FUTBOL & YAŞAM MAĞAZASI</h2>
                 </div>
                 
                 <div class="shop-sub-tab-wrapper">
                     <button class="shop-scroll-btn" onclick="scrollShopTabs(-120)" title="Sola Kaydır">‹</button>
                     <div class="shop-sub-tab-container" id="shop-sub-tab-container">
-                        <button class="shop-sub-tab active" id="shop-sub-boots-btn" onclick="switchShopSubTab('boots')">👟 Krampon & Sponsor</button>
-                        <button class="shop-sub-tab" id="shop-sub-consumables-btn" onclick="switchShopSubTab('consumables')">⚡ Sağlık & Enerji</button>
+                        <button class="shop-sub-tab active" id="shop-sub-boots-btn" onclick="switchShopSubTab('boots')">👟 Futbol Mağazası</button>
                         <button class="shop-sub-tab" id="shop-sub-nutrition-btn" onclick="switchShopSubTab('nutrition')">🥗 Sporcu Beslenmesi</button>
                         <button class="shop-sub-tab" id="shop-sub-packs-btn" onclick="switchShopSubTab('packs')">🌟 Kart Paketi</button>
                         <button class="shop-sub-tab" id="shop-sub-propass-btn" onclick="switchShopSubTab('propass')">👑 Pro Pass</button>
-                        <button class="shop-sub-tab" style="background: rgba(255, 215, 0, 0.12); color: #ffd700; border: 1px dashed rgba(255, 215, 0, 0.4);" onclick="window.switchView('panel-social')">💎 Lüks Yaşam & Garaj ➔</button>
+                        <button class="shop-sub-tab" style="background: rgba(255, 215, 0, 0.12); color: #ffd700; border: 1px dashed rgba(255, 215, 0, 0.4);" onclick="window.switchView('panel-social')">🏎️ Lüks Yaşam & Garaj ➔</button>
                     </div>
                     <button class="shop-scroll-btn" onclick="scrollShopTabs(120)" title="Sağa Kaydır">›</button>
                 </div>
@@ -1243,13 +1284,10 @@
                     <!-- Dynamic boots rendering -->
                 </div>
 
-                <!-- 2. Sağlık & Enerji Container -->
-                <div class="shop-list" id="shop-consumables-container" style="display: none; flex-direction: column; gap: 12px;">
-                    <!-- Dynamic consumables rendering -->
-                </div>
-
-                <!-- 3. Sporcu Beslenmesi Container -->
+                <!-- 2. Sporcu Beslenmesi Container -->
                 <div class="shop-list" id="shop-nutrition-container" style="display: none; flex-direction: column; gap: 12px;">
+                    <!-- Dynamic nutrition & recovery rendering -->
+                </div>
                     <!-- Dynamic nutrition & recovery rendering -->
                 </div>
 
@@ -1343,13 +1381,13 @@
                 <div class="shop-sub-tab-wrapper">
                     <button class="shop-scroll-btn" onclick="scrollSocialTabs(-120)" title="Sola Kaydır">‹</button>
                     <div class="shop-sub-tab-container" id="social-sub-tab-container">
+                        <button class="shop-sub-tab" style="background: rgba(0, 229, 183, 0.12); color: #00e5b7; border: 1px dashed rgba(0, 229, 183, 0.4);" onclick="window.switchView('panel-shop')">🛍️ Futbol Mağazası ➔</button>
                         <button class="shop-sub-tab active" id="social-sub-garage-btn" onclick="switchSocialSubTab('garage')">🏎️ Garaj & Araçlar</button>
                         <button class="shop-sub-tab" id="social-sub-estate-btn" onclick="switchSocialSubTab('estate')">🏢 Ev & Gayrimenkul</button>
                         <button class="shop-sub-tab" id="social-sub-invest-btn" onclick="switchSocialSubTab('invest')">📈 Borsa & Yatırım</button>
                         <button class="shop-sub-tab" id="social-sub-tefeci-btn" onclick="switchSocialSubTab('tefeci')">💰 Tefeci</button>
                         <button class="shop-sub-tab" id="social-sub-esports-btn" onclick="switchSocialSubTab('esports')">🎮 E-Spor</button>
                         <button class="shop-sub-tab" id="social-sub-relations-btn" onclick="switchSocialSubTab('relations')">❤️ İlişkiler & Aile</button>
-                        <button class="shop-sub-tab" style="background: rgba(0, 229, 183, 0.12); color: #00e5b7; border: 1px dashed rgba(0, 229, 183, 0.4);" onclick="window.switchView('panel-shop')">🛍️ Futbol Mağazası ➔</button>
                     </div>
                     <button class="shop-scroll-btn" onclick="scrollSocialTabs(120)" title="Sağa Kaydır">›</button>
                 </div>
@@ -1476,8 +1514,8 @@
                     <span class="nav-label">Kulüp</span>
                 </button>
 
-                <!-- 5. LÜKS YAŞAM & SOSYAL -->
-                <button class="nav-tab" data-target="panel-social" title="Lüks Yaşam & Mağaza">
+                <!-- 5. FUTBOL MAĞAZASI & YAŞAM -->
+                <button class="nav-tab" data-target="panel-shop" title="Futbol Mağazası & Yaşam">
                     <div class="nav-icon-wrap">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                         <span class="nav-badge-pip pip-red" id="nav-pip-social" style="display: none;"></span>
@@ -6797,11 +6835,11 @@
 
                 if (target === "panel-training") {
                     renderTrainingPanel();
+                    if (typeof renderConsumableItems === "function") renderConsumableItems();
                 }
                 if (target === "panel-shop") {
                     if (activeShopSubTab === 'boots') renderBootSponsors();
                     else if (activeShopSubTab === 'nutrition') renderNutritionAndRecovery();
-                    else if (activeShopSubTab === 'consumables') renderConsumableItems();
                     else if (activeShopSubTab === 'packs') renderPacksPanel();
                     else if (activeShopSubTab === 'propass') {}
                 }
@@ -10842,7 +10880,7 @@
                 // Sub-panel routing: highlight parent tab button
                 let parentTabTarget = targetId;
                 if (targetId === "panel-my-career") parentTabTarget = "panel-career";
-                if (targetId === "panel-shop") parentTabTarget = "panel-social";
+                if (targetId === "panel-shop" || targetId === "panel-social") parentTabTarget = "panel-shop";
 
                 const tabs = document.querySelectorAll(".nav-tab");
                 const panels = document.querySelectorAll(".view-panel");
@@ -10870,6 +10908,13 @@
                 }
                 if (targetId === "panel-shop") {
                     if (typeof renderBootSponsors === "function") renderBootSponsors();
+                }
+                if (targetId === "panel-social") {
+                    if (typeof renderLifestyleCars === "function") renderLifestyleCars();
+                }
+                if (targetId === "panel-training") {
+                    if (typeof renderTrainingPanel === "function") renderTrainingPanel();
+                    if (typeof renderConsumableItems === "function") renderConsumableItems();
                 }
                 if (typeof GAME !== "undefined" && typeof GAME.updateUI === "function") {
                     GAME.updateUI();
@@ -14739,6 +14784,7 @@ function afterWeekAdvanced() {
 
         let activeShopSubTab = 'boots';
         let activeSocialSubTab = 'garage';
+        let activeTrainingSubTab = 'drills';
 
         window.scrollShopTabs = function(offset) {
             const container = document.getElementById("shop-sub-tab-container");
@@ -14750,17 +14796,65 @@ function afterWeekAdvanced() {
             if (container) container.scrollBy({ left: offset, behavior: 'smooth' });
         };
 
+        function switchTrainingSubTab(tabName) {
+            activeTrainingSubTab = tabName;
+            
+            const btnDrills = document.getElementById("training-sub-drills-btn");
+            const btnHealth = document.getElementById("training-sub-health-btn");
+            
+            const viewDrills = document.getElementById("training-drills-view");
+            const viewHealth = document.getElementById("training-health-view");
+            
+            const setTabStyle = (btn, isActive) => {
+                if (!btn) return;
+                if (isActive) {
+                    btn.classList.add("active");
+                    btn.style.background = 'var(--primary)';
+                    btn.style.color = '#04140e';
+                    btn.style.borderColor = 'var(--primary)';
+                    btn.style.fontWeight = '800';
+                    btn.style.boxShadow = '0 0 10px rgba(16,185,129,0.25)';
+                } else {
+                    btn.classList.remove("active");
+                    btn.style.background = '#131822';
+                    btn.style.color = 'var(--text-muted)';
+                    btn.style.borderColor = 'var(--border-glass)';
+                    btn.style.fontWeight = '600';
+                    btn.style.boxShadow = 'none';
+                }
+            };
+            
+            setTabStyle(btnDrills, tabName === 'drills');
+            setTabStyle(btnHealth, tabName === 'health');
+            
+            if (viewDrills) viewDrills.style.display = (tabName === 'drills') ? 'flex' : 'none';
+            if (viewHealth) viewHealth.style.display = (tabName === 'health') ? 'flex' : 'none';
+            
+            if (tabName === 'drills') {
+                if (typeof renderTrainingPanel === "function") renderTrainingPanel();
+            } else if (tabName === 'health') {
+                if (typeof renderConsumableItems === "function") renderConsumableItems();
+            }
+        }
+        window.switchTrainingSubTab = switchTrainingSubTab;
+
         function switchShopSubTab(tabName) {
+            if (tabName === 'consumables') {
+                window.switchView('panel-training');
+                if (typeof window.switchTrainingSubTab === 'function') {
+                    window.switchTrainingSubTab('health');
+                }
+                return;
+            }
+
             activeShopSubTab = tabName;
             
             const btnNutrition = document.getElementById("shop-sub-nutrition-btn");
-            const btnConsumables = document.getElementById("shop-sub-consumables-btn");
             const btnBoots = document.getElementById("shop-sub-boots-btn");
             const btnPacks = document.getElementById("shop-sub-packs-btn");
             const btnPropass = document.getElementById("shop-sub-propass-btn");
             
             const containerNutrition = document.getElementById("shop-nutrition-container");
-            const containerConsumables = document.getElementById("shop-consumables-container");
             const containerBoots = document.getElementById("shop-boots-container");
             const containerPacks = document.getElementById("shop-packs-container");
             const containerPropass = document.getElementById("shop-propass-container");
@@ -14785,21 +14879,17 @@ function afterWeekAdvanced() {
             };
             
             setTabStyle(btnBoots, tabName === 'boots');
-            setTabStyle(btnConsumables, tabName === 'consumables');
             setTabStyle(btnNutrition, tabName === 'nutrition');
             setTabStyle(btnPacks, tabName === 'packs');
             setTabStyle(btnPropass, tabName === 'propass');
             
             if (containerBoots) containerBoots.style.display = (tabName === 'boots') ? 'flex' : 'none';
-            if (containerConsumables) containerConsumables.style.display = (tabName === 'consumables') ? 'flex' : 'none';
             if (containerNutrition) containerNutrition.style.display = (tabName === 'nutrition') ? 'flex' : 'none';
             if (containerPacks) containerPacks.style.display = (tabName === 'packs') ? 'flex' : 'none';
             if (containerPropass) containerPropass.style.display = (tabName === 'propass') ? 'flex' : 'none';
             
             if (tabName === 'boots') {
                 renderBootSponsors();
-            } else if (tabName === 'consumables') {
-                renderConsumableItems();
             } else if (tabName === 'nutrition') {
                 renderNutritionAndRecovery();
             } else if (tabName === 'packs') {
@@ -15647,6 +15737,9 @@ function afterWeekAdvanced() {
             });
 
             container.innerHTML = html;
+            if (typeof renderConsumableItems === "function") {
+                renderConsumableItems();
+            }
         }
 
         function renderBootSponsors() {
@@ -16830,8 +16923,8 @@ function afterWeekAdvanced() {
                     if (idx === 0) rankClass = 'champion';
                     else if (idx < 3) rankClass = 'europe';
                     else if (idx >= 14) rankClass = 'relegation';
-                } else if (['1. Lig','2. Lig','3. Lig'].includes(leagueName)) {
-                    if (idx < 3) rankClass = 'europe';
+                } else if (['1. Lig', '2. Lig', '3. Lig'].includes(leagueName)) {
+                    if (idx === 0) rankClass = 'champion';
                     else if (idx >= tableData.length - 3) rankClass = 'relegation';
                 }
 
@@ -16869,7 +16962,7 @@ function afterWeekAdvanced() {
                     : '';
 
                 // Rank indicators
-                const rankSuffix = rankClass === 'champion' ? ' 👑' : rankClass === 'europe' ? ' 🇪🇺' : rankClass === 'relegation' ? ' 🔻' : '';
+                const rankSuffix = rankClass === 'champion' ? ' 🏆' : rankClass === 'europe' ? ' 🇪🇺' : rankClass === 'relegation' ? ' 🔻' : '';
 
                 // Unique dossier ID
                 const dossierIdSuffix = row.name.replace(/[^a-z0-9]/gi,'');
