@@ -26,10 +26,12 @@ import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.PendingPurchasesParams;
 import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.QueryProductDetailsParams;
+import com.android.billingclient.api.QueryProductDetailsResult;
 import com.android.billingclient.api.QueryPurchasesParams;
 
 import java.util.ArrayList;
@@ -209,9 +211,13 @@ public class MainActivity extends Activity implements PurchasesUpdatedListener {
     }
 
     private void initBillingClient() {
+        PendingPurchasesParams pendingPurchasesParams = PendingPurchasesParams.newBuilder()
+            .enableOneTimeProducts()
+            .build();
+
         billingClient = BillingClient.newBuilder(this)
             .setListener(this)
-            .enablePendingPurchases()
+            .enablePendingPurchases(pendingPurchasesParams)
             .build();
 
         startBillingConnection();
@@ -322,7 +328,8 @@ public class MainActivity extends Activity implements PurchasesUpdatedListener {
             .setProductList(productList)
             .build();
 
-        billingClient.queryProductDetailsAsync(params, (billingResult, list) -> {
+        billingClient.queryProductDetailsAsync(params, (billingResult, productDetailsResult) -> {
+            List<ProductDetails> list = productDetailsResult != null ? productDetailsResult.getProductDetailsList() : null;
             if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && list != null && !list.isEmpty()) {
                 ProductDetails productDetails = list.get(0);
 
