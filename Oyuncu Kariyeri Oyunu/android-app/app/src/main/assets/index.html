@@ -152,6 +152,14 @@
                 }
             }, 400); // Small delay so bar visually hits 100%
         });
+        // Guaranteed fallback
+        setTimeout(function() {
+            var ls = document.getElementById('loading-screen');
+            if (ls && ls.style.display !== 'none') {
+                ls.style.opacity = '0';
+                setTimeout(function() { if (ls) ls.style.display = 'none'; }, 500);
+            }
+        }, 1200);
     </script>
 
     <!-- Intro Video Overlay -->
@@ -320,7 +328,7 @@
     </style>
 
     <!-- RiseUp Studios Cinematic Splash Overlay -->
-    <div id="intro-overlay" onclick="skipIntroDirectly(event)">
+    <div id="intro-overlay" onclick="this.style.opacity='0'; this.style.pointerEvents='none'; setTimeout(function(){ var o = document.getElementById('intro-overlay'); if (o) o.style.display='none'; }, 400); if (window.skipIntroDirectly) { try { skipIntroDirectly(event); } catch(e){} }">
         <!-- Ambient Glowing Aura -->
         <div class="riseup-ambient-aura"></div>
 
@@ -361,6 +369,17 @@
             <div class="riseup-brand-sub">PRESENTS</div>
         </div>
     </div>
+    <script>
+        // Guaranteed automatic fallback dismissal after 2.2s
+        setTimeout(function() {
+            var o = document.getElementById("intro-overlay");
+            if (o && o.style.display !== "none") {
+                o.style.opacity = "0";
+                o.style.pointerEvents = "none";
+                setTimeout(function() { if (o) o.style.display = "none"; }, 450);
+            }
+        }, 2200);
+    </script>
 
     <!-- Main Layout Wrapper (For Desktop Viewports) -->
     <div class="main-layout">
