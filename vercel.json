@@ -7,6 +7,7 @@
     { "source": "/showcase", "destination": "/Oyuncu Kariyeri Oyunu/showcase.html" },
     { "source": "/promo", "destination": "/Oyuncu Kariyeri Oyunu/tanitim_animasyon.html" },
     { "source": "/privacy", "destination": "/Oyuncu Kariyeri Oyunu/privacy-policy.html" },
+    { "source": "/delete-account", "destination": "/Oyuncu Kariyeri Oyunu/delete-account.html" },
     { "source": "/app-ads.txt", "destination": "/Oyuncu Kariyeri Oyunu/app-ads.txt" },
     { "source": "/landing", "destination": "/Oyuncu Kariyeri Oyunu/landing.html" },
     { "source": "/:match*", "destination": "/Oyuncu Kariyeri Oyunu/:match*" }
