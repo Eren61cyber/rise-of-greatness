@@ -21,7 +21,7 @@
     // ======================================================================
     var POOL_SIZE = 12;          // Olay kartı havuzu
     var MAX_OPTIONS = 5;         // Karar plaketi havuzu
-    var CLUTCH_MS = 11000;       // Karar süresi (11 saniye)
+    var CLUTCH_MS = 16000;       // Karar süresi (16 saniye)
     var FEED_GAP = 8;            // Kartlar arası boşluk (px)
     var STIFFNESS = 180;         // Yay sertliği
     var DAMPING = 12;            // Yay sönümü
@@ -838,7 +838,7 @@
         this._sheenPanel = null;
         this._sheenX = 0; this._sheenY = 0; this._sheenRaf = 0;
         this._fuseRaf = 0; this._fuseTimeout = 0; this._fuseDeadline = 0; this._fuseUrgent = false;
-        this._fuseRemaining = 6;
+        this._fuseRemaining = CLUTCH_MS / 1000;
         this._attrs = null;
         this._hidden = [];
         this._listeners = [];
@@ -978,7 +978,7 @@
         cl.appendChild(this.fuse);
         var ch = el("div", "rgmc-clutch-head");
         this.clutchBadge = el("span", "rgmc-clutch-badge", "KRİTİK POZİSYON");
-        this.clutchTimer = el("span", "rgmc-clutch-timer", "6.00s");
+        this.clutchTimer = el("span", "rgmc-clutch-timer", (CLUTCH_MS / 1000).toFixed(2) + "s");
         ch.appendChild(this.clutchBadge); ch.appendChild(this.clutchTimer);
         cl.appendChild(ch);
         this.clutchDesc = el("p", "rgmc-clutch-desc");

@@ -4,9 +4,9 @@
  */
 const ANALYTICS = {
     events: [],
-    DEFAULT_SHEETS_URL: "https://script.google.com/macros/s/AKfycbzKMjeyEacygpGb5Ge95_pxovL2FrIoxc-arhh0sIgpP38m1xFJzsLqQBBjSzxzcBcU/exec",
+    DEFAULT_SHEETS_URL: "",
     getSheetsUrl: function() {
-        return localStorage.getItem('rog_sheets_url') || this.DEFAULT_SHEETS_URL;
+        return localStorage.getItem('rog_sheets_url') || "";
     },
     setSheetsUrl: function(url) {
         if (url && typeof url === "string") {
@@ -458,7 +458,7 @@ const GAME = {
             familyEstateRejected: false,
             activeBootSponsor: null,
             activePurchasedBoot: null,
-            agentId: null,
+            agentId: "bedirhan", // Semtin abisi Bedirhan Abi ile kariyer başlar (%2 komisyon)
             takimUyumu: 50,
             taraftarSevgisi: 50,
             bootDurability: 100,
@@ -505,6 +505,8 @@ const GAME = {
             hotStreakBadRun: 0,     // +1 per <5.5 rated match; reset on good match
             weeklyMissions: [],     // Array of {id, desc, target, progress, done, reward}
             weeklyMissionsWeek: 0,  // Which week missions were generated for
+            redeemedCreatorCodes: [],
+            metinsStudioShown: false,
 
             socialFeed: [
                 {
@@ -524,9 +526,15 @@ const GAME = {
     },
 
     saveGame: function() {
+        if (typeof window !== "undefined" && window.__rogSkipAutoSave) {
+            return;
+        }
         try {
             localStorage.setItem(this.saveKey, JSON.stringify(this.state));
             console.log("Game state successfully saved!");
+            if (typeof window !== "undefined" && window.CloudSave && typeof window.CloudSave.scheduleAutoSync === "function") {
+                window.CloudSave.scheduleAutoSync(this.state);
+            }
         } catch (e) {
             console.warn("Storage save failed or quota exceeded:", e);
         }
@@ -958,6 +966,14 @@ const GAME = {
                     this.state.lastTransferredSeason = this.state.age || 17;
                     this.saveGame();
                 }
+                if (this.state.isTestTransferWindowActive) {
+                    this.state.isTestTransferWindowActive = false;
+                    this.saveGame();
+                }
+                if (!Array.isArray(this.state.redeemedCreatorCodes)) {
+                    this.state.redeemedCreatorCodes = [];
+                    this.saveGame();
+                }
 
                 this.checkDailyLoginReward();
                 this.matchSimulatedThisWeek = false;
@@ -1018,6 +1034,81 @@ const GAME = {
         return Math.max(30, Math.min(99, ovr));
     },
 
+    getDerbyInfo: function(playerClub, opponentName) {
+        if (!playerClub || !opponentName) return { isDerby: false };
+        const p = String(playerClub).trim();
+        const o = String(opponentName).trim();
+
+        const big4 = ["Galatastar", "Fenerbaçe FK", "Trabzon FK", "Kartal FK"];
+        if (big4.includes(p) && big4.includes(o)) {
+            if (p === "Trabzon FK" || o === "Trabzon FK") {
+                return { isDerby: true, title: "KARADENİZ FIRTINASI DEV DERBİSİ", subtitle: "Bordo-Mavi Tribünler Ayakta, Nefesler Tutuldu!" };
+            }
+            return { isDerby: true, title: "EZELİ DERBİ ATEŞİ", subtitle: "Tüm Türkiye Nefesini Tuttu!" };
+        }
+        if (big4.includes(o)) {
+            if (o === "Trabzon FK") {
+                return { isDerby: true, title: "TRABZON FIRTINASI VİTRİN MAÇI", subtitle: "Karadeniz Fırtınasına Karşı Büyük Sınav!" };
+            }
+            return { isDerby: true, title: "DEV VİTRİN MAÇI", subtitle: "Büyük Rakibe Karşı Rüştünü İspatla!" };
+        }
+
+        const pairs = [
+            { a: "Trabzon FK", b: "Rize FK", title: "KARADENİZ DERBİSİ" },
+            { a: "Trabzon FK", b: "Samsun FK", title: "KARADENİZ DERBİSİ" },
+            { a: "Kocaeli FK", b: "Sakaryaspor", title: "KÖRFEZ DERBİSİ" },
+            { a: "Göztepe FK", b: "Karşıyaka", title: "İZMİR DERBİSİ" },
+            { a: "MKE Ankaragücü", b: "Gençlerbirliği", title: "BAŞKENT DERBİSİ" },
+            { a: "Adana Demir FK", b: "Adana 01 FK", title: "ADANA DERBİSİ" },
+            { a: "Bursaspor", b: "Eskişehirspor", title: "ANADOLU EFSANELERİ DERBİSİ" },
+            { a: "Real Madrid", b: "Barcelona", title: "EL CLÁSICO" },
+            { a: "Real Madrid", b: "Atletico Madrid", title: "MADRİD DERBİSİ" },
+            { a: "Inter Milan", b: "AC Milan", title: "MİLANO DERBİSİ" }
+        ];
+        for (let i = 0; i < pairs.length; i++) {
+            const pair = pairs[i];
+            if ((p === pair.a && o === pair.b) || (p === pair.b && o === pair.a)) {
+                return { isDerby: true, title: pair.title, subtitle: "Şehirde Hayat Durdu, Tribünler Alev Alev!" };
+            }
+        }
+
+        const plGiants = ["Manchester City", "Manchester United", "Liverpool", "Arsenal", "Chelsea"];
+        if (plGiants.includes(p) && plGiants.includes(o)) {
+            return { isDerby: true, title: "PREMIER LİG DEV DERBİSİ", subtitle: "Dünya Basını Bu Maçı İzliyor!" };
+        }
+
+        if (this.state && (this.state.currentWeek || 1) >= 3 && Array.isArray(this.state.leagueTable) && this.state.leagueTable.length >= 3) {
+            const sorted = [...this.state.leagueTable].sort((a, b) => (b.pts - a.pts) || ((b.gf - b.ga) - (a.gf - a.ga)));
+            const oppRank = sorted.findIndex(t => t.name === o);
+            if (oppRank >= 0 && oppRank <= 2) {
+                return { isDerby: true, title: `ZİRVE DERBİSİ (${oppRank + 1}. SIRA)`, subtitle: "Şampiyonluk Yolunda 6 Puanlık Dev Kapışma!" };
+            }
+        }
+
+        return { isDerby: false };
+    },
+
+    getDrillsNeeded: function(statVal, diff = "normal") {
+        let drills = 1;
+        if (statVal >= 90) {
+            drills = 5; // 90+ Ballon d'Or / Dünya Klası: 5 idman = +1 stat
+        } else if (statVal >= 83) {
+            drills = 4; // 83-89 Yıldız Seviye: 4 idman = +1 stat
+        } else if (statVal >= 75) {
+            drills = 3; // 75-82 As Kadro Seviyesi: 3 idman = +1 stat
+        } else if (statVal >= 68) {
+            drills = 2; // 68-74 Gelişim Evresi: 2 idman = +1 stat
+        } else {
+            drills = 1; // <68 Çaylak / Temel Seviye: 1 idman = +1 stat
+        }
+        if (diff === "easy") {
+            drills = Math.max(1, drills - 1);
+        } else if (diff === "hard") {
+            drills += 1;
+        }
+        return drills;
+    },
+
     train: function(statType) {
         if (this.state.injuryWeeks > 0) {
             alert(`Sakatlığınız devam ediyor! Antrenman yapamazsınız. İyileşmenize ${this.state.injuryWeeks} hafta kaldı.`);
@@ -1042,7 +1133,13 @@ const GAME = {
             return;
         }
 
-        let energyCost = this.state.ownedItems.includes("doc_ahmet") ? 15 : 20;
+        const currentStatVal = this.state[targetKey] || 50;
+
+        let baseCost = this.state.ownedItems.includes("doc_ahmet") ? 15 : 20;
+        if (currentStatVal >= 85) {
+            baseCost += 5; // Elit seviye idman yoğunluğu: +5 Kondisyon
+        }
+        let energyCost = baseCost;
         if (this.state.proPassActive) {
             energyCost = Math.max(10, energyCost - 5); // Pro Pass kondisyon tasarrufu
         }
@@ -1058,27 +1155,9 @@ const GAME = {
         this.state.kondisyon -= energyCost;
         this.state.weeklyTrainingCount++;
 
-        // Diminishing returns training progression curve
+        // Logarithmic diminishing returns training progression curve
         const diff = this.state.difficulty || "normal";
-        const currentStatVal = this.state[targetKey] || 50;
-
-        let drillsNeeded = 1;
-        if (currentStatVal >= 92) {
-            drillsNeeded = 4; // 92+ Efsanevi seviye: 4 idman = +1 stat
-        } else if (currentStatVal >= 85) {
-            drillsNeeded = 3; // 85-91 Elit seviye: 3 idman = +1 stat
-        } else if (currentStatVal >= 75) {
-            drillsNeeded = 2; // 75-84 Profesyonel seviye: 2 idman = +1 stat
-        } else {
-            drillsNeeded = 1; // <75 Temel gelişim: 1 idman = +1 stat
-        }
-
-        // Difficulty modifier
-        if (diff === "easy") {
-            drillsNeeded = Math.max(1, drillsNeeded - 1);
-        } else if (diff === "hard") {
-            drillsNeeded += 1;
-        }
+        const drillsNeeded = this.getDrillsNeeded(currentStatVal, diff);
 
         if (!this.state._trainProg_) this.state._trainProg_ = {};
         this.state._trainProg_[targetKey] = (this.state._trainProg_[targetKey] || 0) + 1;
@@ -1457,13 +1536,12 @@ const GAME = {
         // Menajer Komisyonu Kesintisi
         let agentCommission = 0;
         let agentName = "";
-        if (this.state.agentId) {
-            const agent = DATABASE.AGENTS.find(a => a.id === this.state.agentId);
-            if (agent) {
-                agentCommission = Math.round(this.state.weeklySalary * agent.commissionRate);
-                salary = Math.max(0, salary - agentCommission);
-                agentName = agent.name;
-            }
+        let agentId = this.state.agentId || "bedirhan";
+        const agent = DATABASE.AGENTS.find(a => a.id === agentId);
+        if (agent) {
+            agentCommission = Math.round(this.state.weeklySalary * agent.commissionRate);
+            salary = Math.max(0, salary - agentCommission);
+            agentName = agent.name;
         }
 
         this.state.money += salary;
@@ -1566,6 +1644,23 @@ const GAME = {
         }
         if (this.state.ownedItems.includes("jet")) {
             weeklyDeduction += 15000;
+        }
+
+        // Garaj Lüks Araç Haftalık Bakım, Kasko & Garaj Giderleri
+        let carUpkeep = 0;
+        if (this.state.ownedCars && this.state.ownedCars.length > 0) {
+            const carUpkeepMap = {
+                porsche: 450, // Apex GT-RS Track
+                gwagon: 550,  // Titan G-600 Zırhlı 4x4
+                lambo: 750,   // Veloce V10 Trofeo
+                ferrari: 850, // Rosso V8 Corsa
+                rolls: 1100   // Imperial V12 Black Edition
+            };
+            this.state.ownedCars.forEach(carId => {
+                const cost = carUpkeepMap[carId] || 400;
+                carUpkeep += cost;
+            });
+            weeklyDeduction += carUpkeep;
         }
         
         // Sevgili haftalik giderini dus ve etkilerini uygula
@@ -1715,7 +1810,10 @@ const GAME = {
         }
         this.matchSimulatedThisWeek = false;
 
-        if (this.state.suspendedWeeks > 0) {
+        if (this.state.justReceivedRedCard) {
+            // Kırmızı kart bu maçta alındı; ceza önümüzdeki haftanın maçında geçerli olacak!
+            this.state.justReceivedRedCard = false;
+        } else if (this.state.suspendedWeeks > 0) {
             this.state.suspendedWeeks--;
             if (this.state.suspendedWeeks === 0) {
                 this.addSocialPost("@spor_manset", "Spor Mansetleri", `Cezasi bitti! Kirmizi kart cezasi sona eren genc yetenek ${this.state.playerName} yeniden formasina kavusuyor.`);
@@ -1774,6 +1872,12 @@ const GAME = {
 
         this.saveGame();
         this.updateUI();
+    },
+
+    applyRedCard: function(weeks = 1) {
+        if (!this.state) return;
+        this.state.suspendedWeeks = Math.max(this.state.suspendedWeeks || 0, weeks);
+        this.state.justReceivedRedCard = true;
     },
 
     simulateLeagueScorers: function() {
@@ -1838,7 +1942,6 @@ const GAME = {
     },
 
     isTransferWindowActive: function() {
-        if (this.state && this.state.isTestTransferWindowActive) return true;
         const w = this.state.currentWeek;
         // Ara Transfer Dönemi: 14 - 21. haftalar arası
         // Yaz Transfer Dönemi: 37. hafta (sezon sonu)
@@ -1902,14 +2005,13 @@ const GAME = {
     },
 
     checkForTransferOffers: function(force = false) {
-        const isTest = (this.state && this.state.isTestTransferWindowActive);
-        if (!this.isTransferWindowActive() && !force && !isTest) {
+        if (!this.isTransferWindowActive() && !force) {
             this.state.activeTransferOffers = [];
             return [];
         }
 
         // Bu transfer penceresinde zaten başka bir takıma imza atıldıysa yeni teklif üretilmez (Tek transfer hakkı)
-        if (this.state.transferredThisWindow && !force && !isTest) {
+        if (this.state.transferredThisWindow && !force) {
             this.state.activeTransferOffers = [];
             return [];
         }
@@ -4133,8 +4235,91 @@ const GAME = {
                 showCustomAlert(`Yeni Başarım Açıldı: ${achDefs[id].title}\n${achDefs[id].desc}`, "🏆 BAŞARIM", achDefs[id].icon, "success");
             }
         }
+    },
+
+    normalizeCreatorToken: function(raw, keepSpaces = false) {
+        if (!raw || typeof raw !== "string") return "";
+        const ascii = raw
+            .replace(/[\u0130İ]/g, "I").replace(/i/g, "I")
+            .replace(/\u0307/g, "")
+            .replace(/[Şş]/g, "S")
+            .replace(/[Ğğ]/g, "G")
+            .replace(/[Üü]/g, "U")
+            .replace(/[Öö]/g, "O")
+            .replace(/[Çç]/g, "C")
+            .replace(/ı/g, "I")
+            .toUpperCase();
+        return keepSpaces ? ascii.replace(/[^A-Z0-9]+/g, " ").trim() : ascii.replace(/[^A-Z0-9]/g, "");
+    },
+
+    isMetinsPlayerName: function(name) {
+        const cleaned = this.normalizeCreatorToken(name || "", true);
+        return /\b(METIN|METINS|METINSS|METIN2)\b/.test(cleaned);
+    },
+
+    isMetinsEasterEggActive: function() {
+        if (!this.state) return false;
+        const codes = Array.isArray(this.state.redeemedCreatorCodes) ? this.state.redeemedCreatorCodes : [];
+        return codes.includes("METINS") || this.isMetinsPlayerName(this.state.playerName);
+    },
+
+    redeemCreatorCode: function(rawCode, options = {}) {
+        const silent = Boolean(options && options.silent);
+        if (!this.state) {
+            return { ok: false, message: "Önce yeni bir kariyer başlatmalısın." };
+        }
+        const normalized = this.normalizeCreatorToken(rawCode, false);
+        const metinsAliases = ["METINS", "METIN", "METINABI", "METINSS", "METIN10", "METINCATALBAS", "METINS2"];
+        if (!metinsAliases.includes(normalized)) {
+            const err = "Geçersiz içerik üretici kodu! (Örn: METİNS)";
+            if (!silent && typeof showCustomAlert === "function") {
+                showCustomAlert(err, "❌ KOD BULUNAMADI", "⚠️", "warning");
+            }
+            return { ok: false, message: err };
+        }
+
+        if (!Array.isArray(this.state.redeemedCreatorCodes)) {
+            this.state.redeemedCreatorCodes = [];
+        }
+        if (this.state.redeemedCreatorCodes.includes("METINS")) {
+            const already = "METİNS özel paketi bu kariyerde zaten aktif edildi!";
+            if (!silent && typeof showCustomAlert === "function") {
+                showCustomAlert(already, "🎁 ZATEN AKTİF", "⚡", "info");
+            }
+            return { ok: false, alreadyActive: true, message: already };
+        }
+
+        this.state.redeemedCreatorCodes.push("METINS");
+        this.state.money = (Number(this.state.money) || 0) + 25000;
+        this.state.totalEarnings = (Number(this.state.totalEarnings) || 0) + 25000;
+        this.state.shooting = Math.min(99, (Number(this.state.shooting) || 50) + 3);
+        this.state.dribbling = Math.min(99, (Number(this.state.dribbling) || 50) + 2);
+        this.state.followers = (Number(this.state.followers) || 0) + 2500;
+        this.state.moral = 100;
+        this.state.rating = this.calculateOverallRating();
+
+        const pName = this.state.playerName || "Genç Yıldız";
+        this.addSocialPost(
+            "@metinss",
+            "Metins (Özel Konuk)",
+            `🔥 METİNS ÖZEL PAKETİ AÇILDI! ${pName} oyuna 25.000 € imza primi, +3 Şut (ikon dokunuşu!) ve Siyah Futbol VIP konuk yayını ile giriş yaptı! ⚽🎥`
+        );
+
+        this.syncMoneyState();
+        this.saveGame();
+        this.updateUI();
+
+        const okMsg = "🔥 METİNS ÖZEL PAKETİ AKTİF!\n+25.000 € İmza Bonusu\n+3 Şut & +2 Dribbling\n+2.500 Takipçi, Siyah Futbol VIP & İkon Pakette METİNS Kartı Garantisi!";
+        if (!silent && typeof showCustomAlert === "function") {
+            showCustomAlert(okMsg, "🎁 METİNS EASTER EGG", "⚡", "success");
+        }
+        return { ok: true, message: okMsg };
     }
 };
+
+if (typeof window !== "undefined") {
+    window.GAME = GAME;
+}
 
 if (typeof module !== "undefined" && module.exports) {
     module.exports = GAME;
