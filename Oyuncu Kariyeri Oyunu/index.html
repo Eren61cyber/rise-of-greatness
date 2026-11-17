@@ -19334,6 +19334,16 @@ function afterWeekAdvanced() {
                 GAME.saveGame();
             },
 
+            _getRewardedUnavailableMessage: function(reason) {
+                if (reason === "network_error") {
+                    return "📡 İnternet bağlantın kapalı veya zayıf görünüyor. Bağlantını kontrol edip tekrar dene.";
+                }
+                if (reason === "busy") {
+                    return "⏳ Reklam şu an hazırlanıyor, birkaç saniye sonra tekrar dene.";
+                }
+                return "🎬 Şu an uygun sponsor reklam bulunamadı. Kısa süre sonra tekrar deneyebilirsin.";
+            },
+
             requestRewardedCondition: function() {
                 this._requestRewarded("condition", (meta) => {
                     if (GAME && GAME.state) {
@@ -19348,10 +19358,10 @@ function afterWeekAdvanced() {
                         if (typeof determineNextOpponent === "function") determineNextOpponent();
                     }
                 }, (reason) => {
-                    if (reason === "not_ready") {
-                        alert("📡 Şu an hazır reklam bulunamadı. İnternet bağlantını kontrol edip birkaç saniye sonra tekrar dene.");
-                    } else if (reason === "dismissed") {
+                    if (reason === "dismissed") {
                         alert("🎬 +50 Kondisyon ödülünü almak için reklamı sonuna kadar izlemelisin.");
+                    } else {
+                        alert(this._getRewardedUnavailableMessage(reason));
                     }
                 });
             },
@@ -19371,10 +19381,10 @@ function afterWeekAdvanced() {
                     }
                     if (typeof renderPacksPanel === "function") renderPacksPanel();
                 }, (reason) => {
-                    if (reason === "not_ready") {
-                        alert("📡 Şu an hazır reklam bulunamadı. İnternet bağlantını kontrol edip birkaç saniye sonra tekrar dene.");
-                    } else if (reason === "dismissed") {
+                    if (reason === "dismissed") {
                         alert("🎬 Ücretsiz Altın Paketi açmak için reklamı sonuna kadar izlemelisin.");
+                    } else {
+                        alert(this._getRewardedUnavailableMessage(reason));
                     }
                 });
             },

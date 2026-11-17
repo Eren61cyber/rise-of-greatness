@@ -5,3 +5,5 @@ android-app/app/build/
 android-app/.idea/
 *.apk
 *.aab
+*.keystore
+*.jks
